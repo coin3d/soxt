@@ -257,25 +257,25 @@ SoXtPlaneViewer::createViewerButtons( // virtual, protected
     NULL );
 
 #if HAVE_LIBXPM
-  Pixmap xbutton = createPixmapFromXpmData( this->buttons.x, x_xpm );
-  if ( xbutton )
+  Pixmap xpixmap = createPixmapFromXpmData( this->buttons.x, x_xpm );
+  if ( xpixmap )
     XtVaSetValues( this->buttons.x,
       XmNlabelType, XmPIXMAP,
-      XmNlabelPixmap, xbutton,
+      XmNlabelPixmap, xpixmap,
       NULL );
 
-  Pixmap ybutton = createPixmapFromXpmData( this->buttons.y, y_xpm );
-  if ( ybutton )
+  Pixmap ypixmap = createPixmapFromXpmData( this->buttons.y, y_xpm );
+  if ( ypixmap )
     XtVaSetValues( this->buttons.y,
       XmNlabelType, XmPIXMAP,
-      XmNlabelPixmap, ybutton,
+      XmNlabelPixmap, ypixmap,
       NULL );
 
-  zbutton = createPixmapFromXpmData( this->buttons.y, z_xpm );
-  if ( zbutton )
+  Pixmap zpixmap = createPixmapFromXpmData( this->buttons.y, z_xpm );
+  if ( zpixmap )
     XtVaSetValues( this->buttons.z,
       XmNlabelType, XmPIXMAP,
-      XmNlabelPixmap, zbutton,
+      XmNlabelPixmap, zpixmap,
       NULL );
 #endif // HAVE_LIBXPM
 
