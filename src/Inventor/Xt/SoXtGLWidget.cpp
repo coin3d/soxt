@@ -452,6 +452,25 @@ SoXtGLWidget::isDrawToFrontBufferEnable(
 } // isDrawToFrontBufferEnable()
 
 /*!
+  Enables or disables quad buffer stereo.
+*/
+void 
+SoXtGLWidget::setQuadBufferStereo(const SbBool enable)
+{
+  // FIXME: do proper implementation. 20001123 mortene.
+}
+
+/*!
+  Returns \c TRUE if quad buffer stereo is enabled for this widget.
+*/
+SbBool 
+SoXtGLWidget::isQuadBufferStereo(void) const
+{
+  // FIXME: do proper implementation. 20001123 mortene.
+  return FALSE;
+}
+
+/*!
   This method is invoked when the overlay graphics should be redrawn.
 */
 

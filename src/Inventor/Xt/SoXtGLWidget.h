@@ -61,6 +61,8 @@ public:
   SbBool isBorder(void) const;
   void setDrawToFrontBufferEnable( SbBool enable );
   SbBool isDrawToFrontBufferEnable(void) const;
+  void setQuadBufferStereo(const SbBool enable);
+  SbBool isQuadBufferStereo(void) const;
 
 protected:
   SoXtGLWidget(
