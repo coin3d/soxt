@@ -70,7 +70,7 @@ protected:
   ~SoXtFullViewer(void);
 
   virtual void processEvent( XAnyEvent * event );
-  virtual SbBool eventFilter( Widget widget, XAnyEvent * event );
+  virtual Boolean eventFilter( Widget, XEvent * );
 
   Widget buildWidget( Widget parent );
 

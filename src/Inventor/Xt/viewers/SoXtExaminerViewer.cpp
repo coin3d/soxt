@@ -108,10 +108,12 @@ void
 SoXtExaminerViewer::processEvent(
   XAnyEvent * event )
 {
-  if ( this->processCommonEvents(event) ) return;
+  if ( this->processCommonEvents(event) )
+    return;
 
   SbVec2s canvassize = this->getGLSize();
   SbVec2s mousepos( 0, 0 );
+
   switch ( event->type ) {
   case ButtonPress:
   case ButtonRelease:
@@ -251,8 +253,6 @@ SoXtExaminerViewer::processEvent(
   } // switch ( event )
 
   common->lastmouseposition = norm_mousepos;
-
-  inherited::processEvent( event );
 } // processEvent()
 
 // *************************************************************************

@@ -75,7 +75,9 @@ SoXtGLWidget::SoXtGLWidget( // protected
   SbBool inParent,
   int glModes,
   SbBool buildNow )
-  : inherited( parent, name, inParent ), waitForExpose( TRUE ), drawToFrontBuffer( FALSE )
+: inherited( parent, name, inParent )
+, waitForExpose( TRUE )
+, drawToFrontBuffer( FALSE )
 {
   this->glLockLevel = 0;
   this->borderwidth = 0; // SOXT_BORDER_WIDTH;
@@ -101,12 +103,18 @@ SoXtGLWidget::~SoXtGLWidget( // virtual, protected
 
 // *************************************************************************
 
+/*!
+*/
+
 unsigned long
 SoXtGLWidget::getOverlayTransparentPixel(
   void )
 {
   return this->transparentPixel;
 } // getOverlayTransparentPixel()
+
+/*!
+*/
 
 int
 SoXtGLWidget::getOverlayColorMapSize(
@@ -115,12 +123,18 @@ SoXtGLWidget::getOverlayColorMapSize(
   return this->overlayColorMapSize;
 } // getOverlayColorMapSize()
 
+/*!
+*/
+
 int
 SoXtGLWidget::getColorMapSize(
   void )
 {
   return this->normalColorMapSize;
 } // getColorMapSize()
+
+/*!
+*/
 
 Window
 SoXtGLWidget::getNormalWindow(
@@ -130,6 +144,9 @@ SoXtGLWidget::getNormalWindow(
   return XtWindow( this->glxWidget );
 } // getNormalWindow()
 
+/*!
+*/
+
 Window
 SoXtGLWidget::getOverlayWindow(
   void )
@@ -138,12 +155,18 @@ SoXtGLWidget::getOverlayWindow(
   return (Window) NULL;
 } // getOverlayWindow()
 
+/*!
+*/
+
 GLXContext
 SoXtGLWidget::getNormalContext(
   void )
 {
   return this->normalContext;
 } // getNormalContext()
+
+/*!
+*/
 
 GLXContext
 SoXtGLWidget::getOverlayContext(
@@ -152,12 +175,18 @@ SoXtGLWidget::getOverlayContext(
   return this->overlayContext;
 } // getOverlayContext()
 
+/*!
+*/
+
 Widget
 SoXtGLWidget::getNormalWidget(
   void )
 {
   return this->glxWidget;
 } // getNormalWidget()
+
+/*!
+*/
 
 Widget
 SoXtGLWidget::getOverlayWidget(
@@ -167,12 +196,18 @@ SoXtGLWidget::getOverlayWidget(
   return (Widget) NULL;
 } // getOverlayWidget()
 
+/*!
+*/
+
 void
 SoXtGLWidget::setNormalVisual( // virtual
   XVisualInfo * visual )
 {
   this->normalVisual = visual;
 } // setNormalVisual()
+
+/*!
+*/
 
 XVisualInfo *
 SoXtGLWidget::getNormalVisual(
@@ -181,12 +216,18 @@ SoXtGLWidget::getNormalVisual(
   return this->normalVisual;
 } // setNormalVisual()
 
+/*!
+*/
+
 void
 SoXtGLWidget::setOverlayVisual( // virtual
   XVisualInfo * visual )
 {
   this->overlayVisual = visual;
 } // setOverlayVisual()
+
+/*!
+*/
 
 XVisualInfo *
 SoXtGLWidget::getOverlayVisual(
@@ -195,6 +236,9 @@ SoXtGLWidget::getOverlayVisual(
   return this->overlayVisual;
 } // getOverlayVisual()
 
+/*!
+*/
+
 void
 SoXtGLWidget::setDoubleBuffer( // virtual
   SbBool enable )
@@ -202,12 +246,18 @@ SoXtGLWidget::setDoubleBuffer( // virtual
   this->doubleBuffer = enable;
 } // setDoubleBuffer()
 
+/*!
+*/
+
 SbBool
 SoXtGLWidget::isDoubleBuffer(
   void )
 {
   return this->doubleBuffer;
 } // isDoubleBuffer()
+
+/*!
+*/
 
 void
 SoXtGLWidget::setBorder(
@@ -224,12 +274,18 @@ SoXtGLWidget::setBorder(
   }
 } // setBorder()
 
+/*!
+*/
+
 SbBool
 SoXtGLWidget::isBorder(
   void ) const
 {
   return (this->borderwidth != 0) ? TRUE : FALSE;
 } // isBorder()
+
+/*!
+*/
 
 void
 SoXtGLWidget::setDrawToFrontBufferEnable(
@@ -238,12 +294,18 @@ SoXtGLWidget::setDrawToFrontBufferEnable(
   this->drawToFrontBuffer = enable;
 } // setDrawToFrontBufferEnable()
 
+/*!
+*/
+
 SbBool
 SoXtGLWidget::isDrawToFrontBufferEnable(
   void ) const
 {
   return this->drawToFrontBuffer;
 } // isDrawToFrontBufferEnable()
+
+/*!
+*/
 
 void
 SoXtGLWidget::redrawOverlay( // virtual, protected
@@ -252,52 +314,18 @@ SoXtGLWidget::redrawOverlay( // virtual, protected
   SOXT_STUB();
 } // redrawOverlay()
 
+/*!
+*/
+
 void
 SoXtGLWidget::processEvent( // virtual, protected
-  XAnyEvent * event )
+  XAnyEvent * ) // event )
 {
-  switch ( event->type ) {
-  case MapNotify:
-    this->glInit();
-    break;
-
-  case Expose:
-    this->glRender();
-    this->waitForExpose = FALSE; // Gets flipped from TRUE on first expose.
-    break;
-
-  case ConfigureNotify:
-    if ( this->glxWidget != (Widget) NULL ) {
-      Dimension width, height;
-      XtVaGetValues( this->glxWidget,
-          XmNwidth, &width, XmNheight, &height, NULL );
-      this->glReshape( width, height );
-    }
-    break;
-
-  // ignore warnings when we're not handling the following harmless events:
-  case KeyPress:
-  case KeyRelease:
-  case ButtonPress:
-  case ButtonRelease:
-  case EnterNotify:
-  case LeaveNotify:
-  case MotionNotify:
-  case FocusIn:
-  case FocusOut:
-    break;
-
-  default:
-    static int warnings = 10; // number of warnings we give before we shut up
-    if ( warnings ) {
-      SoDebugError::postInfo( "SoXtGLWidget::processEvent",
-        "Don't know how to handle type %d XAnyEvents", event->type );
-      warnings--;
-    }
-    break;
-
-  } // switch ( event->type )
+  // nada
 } // processEvent()
+
+/*!
+*/
 
 void
 SoXtGLWidget::initGraphic( // virtual, protected
@@ -306,6 +334,9 @@ SoXtGLWidget::initGraphic( // virtual, protected
   SOXT_STUB();
 } // initGraphic()
 
+/*!
+*/
+
 void
 SoXtGLWidget::initOverlayGraphic( // virtual, protected
   void )
@@ -313,12 +344,18 @@ SoXtGLWidget::initOverlayGraphic( // virtual, protected
   SOXT_STUB();
 } // initOverlayGraphic()
 
+/*!
+*/
+
 void
 SoXtGLWidget::sizeChanged( // virtual, protected
   const SbVec2s size )
 {
   // nothing to do
 } // sizeChanged()
+
+/*!
+*/
 
 void
 SoXtGLWidget::widgetChanged( // virtual, protected
@@ -376,6 +413,9 @@ SoXtGLWidget::getGLSize( // protected
   return SbVec2s( width, height );
 } // getGLSize()
 
+/*!
+*/
+
 float
 SoXtGLWidget::getGLAspectRatio(
   void ) const
@@ -388,12 +428,18 @@ SoXtGLWidget::getGLAspectRatio(
 
 // *************************************************************************
 
+/*!
+*/
+
 void
 SoXtGLWidget::setStereoBuffer( // protected
   SbBool enable )
 {
   SOXT_STUB();
 } // setStereoBuffer()
+
+/*!
+*/
 
 SbBool
 SoXtGLWidget::isStereoBuffer( // protected
@@ -403,6 +449,9 @@ SoXtGLWidget::isStereoBuffer( // protected
   return FALSE;
 } // isStereoBuffer()
 
+/*!
+*/
+
 SbBool
 SoXtGLWidget::isRGBMode( // protected
   void )
@@ -410,6 +459,9 @@ SoXtGLWidget::isRGBMode( // protected
   SOXT_STUB();
   return TRUE;
 } // isRGBMode()
+
+/*!
+*/
 
 int
 SoXtGLWidget::getDisplayListShareGroup( // protected
@@ -421,16 +473,63 @@ SoXtGLWidget::getDisplayListShareGroup( // protected
 
 // *************************************************************************
 
+/*!
+*/
+
+Boolean
+SoXtGLWidget::eventFilter( // virtual
+  Widget widget,
+  XEvent * event )
+{
+  switch ( event->type ) {
+  case MapNotify:
+    this->glInit();
+    return False;
+    break;
+
+  case Expose:
+    this->glRender();
+    this->waitForExpose = FALSE; // Gets flipped from TRUE on first expose.
+    return False;
+    break;
+
+  case ConfigureNotify:
+    if ( this->glxWidget != (Widget) NULL ) {
+      Dimension width, height;
+      XtVaGetValues( this->glxWidget,
+          XmNwidth, &width, XmNheight, &height, NULL );
+      this->glReshape( width, height );
+    }
+    return False;
+    break;
+
+  default:
+    if ( widget == this->glxWidget ) {
+      this->processEvent( (XAnyEvent *) event );
+    }
+
+    break;
+  } // switch ( event->type )
+
+  return False;
+} // eventFilter()
+
+/*!
+*/
+
 void
-SoXtGLWidget::eventHandler( // static, protected
+SoXtGLWidget::eventCallback( // static, protected
   Widget widget,
   XtPointer user,
   XEvent * event,
   Boolean * dispatch )
 {
-  ((SoXtGLWidget *) user)->processEvent( (XAnyEvent *) event );
-  *dispatch = False;
-} // glWidgetEventHandler()
+  Boolean retval = ((SoXtGLWidget *) user)->eventFilter( widget, event );
+  if ( dispatch != NULL ) *dispatch = retval;
+} //eventFilter()
+
+/*!
+*/
 
 Widget
 SoXtGLWidget::buildWidget( // protected
@@ -518,11 +617,14 @@ SoXtGLWidget::buildWidget( // protected
   XtAddEventHandler( this->glxWidget,
       ExposureMask | StructureNotifyMask | ButtonPressMask | ButtonReleaseMask
       | PointerMotionMask | KeyPressMask | KeyReleaseMask,
-      False, SoXtGLWidget::eventHandler, this );
+      False, SoXtGLWidget::eventCallback, this );
 
   this->setBaseWidget( this->glxManager );
   return this->glxManager;
 } // buildWidget()
+
+/*!
+*/
 
 Widget
 SoXtGLWidget::getGlxMgrWidget( // protected
@@ -530,6 +632,9 @@ SoXtGLWidget::getGlxMgrWidget( // protected
 {
   return this->glxManager;
 } // getGlxMgrWidget()
+
+/*!
+*/
 
 Widget
 SoXtGLWidget::getGLWidget( // protected

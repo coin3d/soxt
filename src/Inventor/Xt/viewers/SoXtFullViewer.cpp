@@ -81,7 +81,6 @@ SoXtFullViewer::SoXtFullViewer( // protected
   Type type,
   SbBool build )
 : inherited( parent, name, inParent, type, FALSE )
-// , SoAnyFullViewer( this )
 , common( new SoAnyFullViewer( this ) )
 {
   this->viewerbase = NULL;
@@ -603,25 +602,6 @@ SoXtFullViewer::hide( // virtual
 //  if ( this->prefwindow )
 //    SoXt::hide( this->prefwindow );
 } // hide()
-
-// *************************************************************************
-
-/*!
-*/
-
-SbBool
-SoXtFullViewer::eventFilter( // virtual
-  Widget widget,
-  XAnyEvent * event )
-{
-  SoDebugError::postInfo( "SoXtFullViewer::eventFilter",
-    "widget = 0x%08x, event->type = %d", widget, event->type );
-//  inherited::eventFilter( widget, event );
-  SOXT_STUB();
-  // catch close events
-  // activate popupmenu
-  return FALSE;
-} // eventFilter()
 
 // *************************************************************************
 
@@ -1238,6 +1218,19 @@ void
 SoXtFullViewer::processEvent(
   XAnyEvent * event )
 {
+  inherited::processEvent( event );
+} // processEvent()
+
+/*!
+*/
+
+Boolean
+SoXtFullViewer::eventFilter( // virtual
+  Widget widget,
+  XEvent * event )
+{
+  inherited::eventFilter( widget, event );
+
   switch ( event->type ) {
   case ButtonPress:
     if ( ((XButtonEvent *) event)->button == 3 && this->menuenabled ) {
@@ -1246,7 +1239,7 @@ SoXtFullViewer::processEvent(
       if ( ! this->prefmenu )
         this->buildPopupMenu();
       this->prefmenu->PopUp( this->getGLWidget(), x, y );
-      return;
+      return False;
     } else {
 //      SoDebugError::postInfo( "button", "%d", ((XButtonEvent *) event)->button );
     }
@@ -1254,8 +1247,8 @@ SoXtFullViewer::processEvent(
   default:
     break;
   } // switch ( event->type )
-  inherited::processEvent( event );
-} // processEvent()
+  return True;
+} // eventFilter()
 
 // *************************************************************************
 

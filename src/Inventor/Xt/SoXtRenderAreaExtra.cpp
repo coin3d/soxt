@@ -31,14 +31,15 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/SoXtRenderArea.h>
 
+// *************************************************************************
+
+/*!
+*/
+
 void
 SoXtRenderArea::processEvent( // virtual, protected
   XAnyEvent * event )
 {
-  // Call the event callback, if it returns true, then the event has been
-  // handled and we can stop
-  if (invokeAppCB(event)) return;
-
   const SoEvent * sceneEvent = NULL;
 
   if ( this->devices.extra )
@@ -52,9 +53,7 @@ SoXtRenderArea::processEvent( // virtual, protected
   if ( ! sceneEvent && this->devices.keyboard )
     sceneEvent = this->devices.keyboard->translateEvent( event );
 
-  if ( ! sceneEvent ) {
-    inherited::processEvent( event );
-  } else {
+  if ( sceneEvent != NULL ) {
     assert( this->normalManager != NULL );
     assert( this->overlayManager != NULL );
     if ( ! this->overlayManager->processEvent( sceneEvent ) )
@@ -62,3 +61,4 @@ SoXtRenderArea::processEvent( // virtual, protected
   }
 } // processEvent()
 
+// *************************************************************************
