@@ -36,6 +36,19 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <assert.h>
+#include <stdlib.h>
+
+#include <X11/IntrinsicP.h>
+#include <X11/Xatom.h>
+#include <X11/Xutil.h>
+#ifdef HAVE_LIBXMU
+#include <X11/Xmu/StdCmap.h>
+#endif // HAVE_LIBXMU
+#include <Xm/Xm.h>
+#include <Xm/Form.h>
+#include <Xm/DrawingA.h>
+
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoBasic.h>
 #include <Inventor/SbViewportRegion.h>
@@ -44,23 +57,12 @@
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtResource.h>
 #include <Inventor/Xt/widgets/SoXtGLArea.h>
-
 #include <Inventor/Xt/SoXtGLWidget.h>
 #include <Inventor/Xt/SoXtGLWidgetP.h>
 #include <Inventor/Xt/SoAny.h>
 
-#include <Xm/Xm.h>
-#include <Xm/Form.h>
-#include <Xm/DrawingA.h>
-#include <X11/IntrinsicP.h>
-#include <X11/Xatom.h>
-#include <X11/Xutil.h>
-#ifdef HAVE_LIBXMU
-#include <X11/Xmu/StdCmap.h>
-#endif // HAVE_LIBXMU
-
-#include <assert.h>
-#include <stdlib.h>
+#define PRIVATE(obj) ((obj)->pimpl)
+#define PUBLIC(obj) ((obj)->pub)
 
 // *************************************************************************
 
@@ -1010,3 +1012,7 @@ SoXtGLWidgetP::exposeCB(Widget widget, XtPointer closure, XtPointer call_data)
 }
 
 // *************************************************************************
+
+#undef PRIVATE
+#undef PUBLIC
+

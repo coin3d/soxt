@@ -70,6 +70,9 @@
 
 #define SOXT_VISIBILITY_DEBUG 0
 
+#define PRIVATE(obj) ((obj)->pimpl)
+#define PUBLIC(obj) ((obj)->pub)
+
 // *************************************************************************
 
 // The private data and code for the SoXtComponent.
@@ -1067,3 +1070,7 @@ SoXtComponent::isFullScreen(void) const
 {
   return PRIVATE(this)->fullscreen;
 }
+
+#undef PRIVATE
+#undef PUBLIC
+
