@@ -5,18 +5,6 @@ AC_INIT(src/Inventor/Xt/SoXt.cpp)
 AC_CONFIG_AUX_DIR(cfg)
 
 # **************************************************************************
-# Make sure the given source repository is in sync with the master source
-# repository.
-
-SIM_AC_CVS_CHANGES([
-  # the moving of "conf-macros" to "cfg/m4"
-  SIM_AC_CVS_CHANGE([
-    rm -rf conf-macros
-    cvs co SoXtMacros
-  ], [test -d cfg/m4/CVS], [test ! -d conf-macros])
-])
-
-# **************************************************************************
 # Library versioning. For information about our versioning strategy, see the
 # document ``HACKING'' in the Coin CVS module.
 
