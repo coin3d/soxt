@@ -106,8 +106,7 @@ protected:
 
   SbBool doubleBuffer;
 
-  virtual Boolean eventFilter( Widget, XEvent * );
-  static void eventCallback( Widget, XtPointer, XEvent *, Boolean * );
+  static void eventHandler( Widget, SoXtGLWidget *, XAnyEvent *, Boolean * );
 
 protected:
   int glLockLevel;

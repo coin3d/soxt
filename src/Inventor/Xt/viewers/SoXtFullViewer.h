@@ -69,9 +69,6 @@ protected:
       BuildFlag flag, Type type, SbBool build );
   ~SoXtFullViewer(void);
 
-  virtual void processEvent( XAnyEvent * event );
-  virtual Boolean eventFilter( Widget, XEvent * );
-
   Widget buildWidget( Widget parent );
 
   virtual void buildDecoration( Widget parent );
@@ -139,6 +136,18 @@ protected:
   Pixmap createPixmapFromXpmData( Widget button, char ** xpm );
   Pixmap createInsensitivePixmapFromXpmData( Widget button, char ** xpm );
 
+  char * popupTitle;
+  SbBool popupEnabled;
+
+  // The prefmenu variable replaces these protected variables from
+  // Inventor:
+//    Widget popupWidget;
+//    Widget * popupToggleWidgets;
+//    Widget * drawStyleWidgets;
+//    Widget * bufferStyleWidgets;
+  SoAnyPopupMenu * prefmenu;
+
+
 private:
   Widget makePreferencesWindow(void);
   Widget makeSeekPreferences( Widget parent );
@@ -154,10 +163,6 @@ private:
   Widget wheels[NUMDECORATIONS];
   Widget wheellabels[NUMDECORATIONS];
   Widget decorform[NUMDECORATIONS];
-
-  SbString menutitle;
-  SoAnyPopupMenu * prefmenu;
-  SbBool menuenabled;
 
   Widget mainlayout;
   void showDecorationWidgets( SbBool enable );

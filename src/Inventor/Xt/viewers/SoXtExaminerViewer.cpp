@@ -40,6 +40,8 @@ static const char rcsid[] =
 #include <Inventor/Xt/viewers/SoAnyExaminerViewer.h>
 #include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
 
+#include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
+
 #if HAVE_LIBXPM
 #include "icons/ortho.xpm"
 #include "icons/perspective.xpm"
@@ -112,13 +114,13 @@ void
 SoXtExaminerViewer::processEvent(
   XAnyEvent * event )
 {
+  if ( SoXtViewer::processCommonEvents( event ) )
+    return; // handled in SoXtViewer
+
   if (!this->mapped) {
-    this->mapped = TRUE; // Must be done before setCursorRepresenation() call.
+    this->mapped = TRUE; // Must be set before setCursorRepresentation() call.
     this->setCursorRepresentation( this->mode );
   }
-
-  if ( this->processCommonEvents(event) )
-    return;
 
   SbVec2s canvassize = this->getGLSize();
   SbVec2s mousepos( 0, 0 );
@@ -149,8 +151,15 @@ SoXtExaminerViewer::processEvent(
   case ButtonPress:
     common->lastmouseposition = norm_mousepos;
     common->lastspinposition = norm_mousepos;
-    if ( ((XButtonEvent *) event)->button == Button3 )
+
+    if ( ((XButtonEvent *) event)->button == 3 && this->isPopupMenuEnabled() ) {
+      int x = ((XButtonEvent *) event)->x_root;
+      int y = ((XButtonEvent *) event)->y_root;
+      if ( ! this->prefmenu )
+        this->buildPopupMenu();
+      this->prefmenu->PopUp( this->getGLWidget(), x, y );
       break;
+    }
 
     if ( ((XButtonEvent *) event)->button == Button4 ) {
       common->zoom( 0.1f );

@@ -40,6 +40,11 @@ void
 SoXtRenderArea::processEvent( // virtual, protected
   XAnyEvent * event )
 {
+  if ( this->invokeAppCB( event ) )
+    return;
+
+  inherited::processEvent( event );
+
   const SoEvent * sceneEvent = NULL;
 
   if ( this->devices.extra )

@@ -82,6 +82,7 @@ SoXtFullViewer::SoXtFullViewer( // protected
   SbBool build )
 : inherited( parent, name, inParent, type, FALSE )
 , common( new SoAnyFullViewer( this ) )
+, popupTitle( NULL )
 {
   this->viewerbase = NULL;
   this->canvas = NULL;
@@ -96,7 +97,7 @@ SoXtFullViewer::SoXtFullViewer( // protected
 
   this->zoomrange = SbVec2f( 1.0f, 140.0f );
 
-  this->menuenabled = (flags & SoXtFullViewer::BUILD_POPUP) ? TRUE : FALSE;
+  this->popupEnabled = (flags & SoXtFullViewer::BUILD_POPUP) ? TRUE : FALSE;
   this->decorations = (flags & SoXtFullViewer::BUILD_DECORATION) ? TRUE : FALSE;
 
   this->appButtonsList = new SbPList;
@@ -169,7 +170,7 @@ void
 SoXtFullViewer::setPopupMenuEnabled(
   const SbBool enable )
 {
-  this->menuenabled = enable;
+  this->popupEnabled = enable;
 } // setPopupMenuEnabled()
 
 /*!
@@ -179,7 +180,7 @@ SbBool
 SoXtFullViewer::isPopupMenuEnabled(
   void ) const
 {
-  return this->menuenabled;
+  return this->popupEnabled;
 } // isPopupMenuEnabled()
 
 // *************************************************************************
@@ -1214,44 +1215,6 @@ SoXtFullViewer::showDecorationWidgets(
       XmNleftOffset, 0, XmNrightOffset, 0, XmNbottomOffset, 0, NULL );
   }
 } // showDecorationWidgets()
-
-// *************************************************************************
-
-void
-SoXtFullViewer::processEvent(
-  XAnyEvent * event )
-{
-  inherited::processEvent( event );
-} // processEvent()
-
-/*!
-*/
-
-Boolean
-SoXtFullViewer::eventFilter( // virtual
-  Widget widget,
-  XEvent * event )
-{
-  inherited::eventFilter( widget, event );
-
-  switch ( event->type ) {
-  case ButtonPress:
-    if ( ((XButtonEvent *) event)->button == 3 && this->menuenabled ) {
-      int x = ((XButtonEvent *) event)->x_root;
-      int y = ((XButtonEvent *) event)->y_root;
-      if ( ! this->prefmenu )
-        this->buildPopupMenu();
-      this->prefmenu->PopUp( this->getGLWidget(), x, y );
-      return False;
-    } else {
-//      SoDebugError::postInfo( "button", "%d", ((XButtonEvent *) event)->button );
-    }
-    break;
-  default:
-    break;
-  } // switch ( event->type )
-  return True;
-} // eventFilter()
 
 // *************************************************************************
 

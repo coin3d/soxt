@@ -319,9 +319,29 @@ SoXtGLWidget::redrawOverlay( // virtual, protected
 
 void
 SoXtGLWidget::processEvent( // virtual, protected
-  XAnyEvent * ) // event )
+  XAnyEvent * event )
 {
-  // nada
+  switch ( event->type ) {
+  case MapNotify:
+    this->glInit();
+    break;
+
+  case Expose:
+    this->glRender();
+    this->waitForExpose = FALSE; // Gets flipped from TRUE on first expose.
+    break;
+
+  case ConfigureNotify:
+    if ( this->glxWidget != (Widget) NULL ) {
+      Dimension width, height;
+      XtVaGetValues( this->glxWidget,
+          XmNwidth, &width, XmNheight, &height, NULL );
+      this->glReshape( width, height );
+    }
+    break;
+
+  } // switch ( event->type )
+
 } // processEvent()
 
 /*!
@@ -476,57 +496,16 @@ SoXtGLWidget::getDisplayListShareGroup( // protected
 /*!
 */
 
-Boolean
-SoXtGLWidget::eventFilter( // virtual
-  Widget widget,
-  XEvent * event )
-{
-  switch ( event->type ) {
-  case MapNotify:
-    this->glInit();
-    return False;
-    break;
-
-  case Expose:
-    this->glRender();
-    this->waitForExpose = FALSE; // Gets flipped from TRUE on first expose.
-    return False;
-    break;
-
-  case ConfigureNotify:
-    if ( this->glxWidget != (Widget) NULL ) {
-      Dimension width, height;
-      XtVaGetValues( this->glxWidget,
-          XmNwidth, &width, XmNheight, &height, NULL );
-      this->glReshape( width, height );
-    }
-    return False;
-    break;
-
-  default:
-    if ( widget == this->glxWidget ) {
-      this->processEvent( (XAnyEvent *) event );
-    }
-
-    break;
-  } // switch ( event->type )
-
-  return False;
-} // eventFilter()
-
-/*!
-*/
-
 void
-SoXtGLWidget::eventCallback( // static, protected
+SoXtGLWidget::eventHandler( // static, protected
   Widget widget,
-  XtPointer user,
-  XEvent * event,
+  SoXtGLWidget * user,
+  XAnyEvent * event,
   Boolean * dispatch )
 {
-  Boolean retval = ((SoXtGLWidget *) user)->eventFilter( widget, event );
-  if ( dispatch != NULL ) *dispatch = retval;
-} //eventFilter()
+  user->processEvent( event );
+  *dispatch = False;
+} // eventHandler()
 
 /*!
 */
@@ -617,7 +596,13 @@ SoXtGLWidget::buildWidget( // protected
   XtAddEventHandler( this->glxWidget,
       ExposureMask | StructureNotifyMask | ButtonPressMask | ButtonReleaseMask
       | PointerMotionMask | KeyPressMask | KeyReleaseMask,
-      False, SoXtGLWidget::eventCallback, this );
+      False,
+      // Our callback has this signature:
+      // (void (*)(_WidgetRec *, SoXtGLWidget *, XAnyEvent *, char *))
+      // ..so we need to cast to avoid a compiler warning or error.
+      (void (*)(_WidgetRec *, void *, _XEvent *, char *))
+        SoXtGLWidget::eventHandler,
+      this );
 
   this->setBaseWidget( this->glxManager );
   return this->glxManager;
