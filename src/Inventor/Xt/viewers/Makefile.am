@@ -8,27 +8,26 @@ INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 LIBS =
 
 BUILT_SOURCES = \
-	So@Gui@Viewer.h \
 	So@Gui@Viewer.cpp \
-	SoAnyFullViewer.h \
+	So@Gui@Viewer.h \
 	SoAnyFullViewer.cpp \
-	SoAnyExaminerViewer.h \
+	SoAnyFullViewer.h \
 	SoAnyExaminerViewer.cpp \
-	SoAnyPlaneViewer.h \
+	SoAnyExaminerViewer.h \
 	SoAnyPlaneViewer.cpp \
-	SoAnyConstrainedViewer.h \
+	SoAnyPlaneViewer.h \
 	SoAnyConstrainedViewer.cpp \
-	SoAnyFlyViewer.h \
+	SoAnyConstrainedViewer.h \
 	SoAnyFlyViewer.cpp \
-	SoAnyWalkViewer.h \
-	SoAnyWalkViewer.cpp
+	SoAnyFlyViewer.h \
+	SoAnyWalkViewer.cpp \
+	SoAnyWalkViewer.h
 
 ############################################################################
 ##
 
 libSoXtViewers_la_SOURCES = \
 	$(BUILT_SOURCES) \
-	So@Gui@ViewerExtra.cpp \
 	So@Gui@FullViewer.cpp \
 	So@Gui@FullViewer.h \
 	So@Gui@ExaminerViewer.cpp \
@@ -45,58 +44,48 @@ libSoXtViewers_la_SOURCES = \
 	So@Gui@CollisionViewer.h
 
 ############################################################################
-#
+##
 
-So@Gui@Viewer.h: $(top_srcdir)/src/Inventor/@Gui@/common/SoGuiViewer.h.in
+So@Gui@Viewer.h: $(srcdir)/../common/SoGuiViewer.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-So@Gui@Viewer.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/SoGuiViewer.cpp.in
+So@Gui@Viewer.cpp: $(srcdir)/../common/SoGuiViewer.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoAnyFullViewer.h: $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyFullViewer.h.in
+SoAnyFullViewer.h: $(srcdir)/../common/SoAnyFullViewer.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoAnyFullViewer.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyFullViewer.cpp.in
+SoAnyFullViewer.cpp: $(srcdir)/../common/SoAnyFullViewer.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoAnyExaminerViewer.h: \
-  $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyExaminerViewer.h.in
+SoAnyExaminerViewer.h: $(srcdir)/../common/SoAnyExaminerViewer.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoAnyExaminerViewer.cpp: \
-  $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyExaminerViewer.cpp.in
+SoAnyExaminerViewer.cpp: $(srcdir)/../common/SoAnyExaminerViewer.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoAnyPlaneViewer.h: \
-  $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyPlaneViewer.h.in
+SoAnyPlaneViewer.h: $(srcdir)/../common/SoAnyPlaneViewer.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoAnyPlaneViewer.cpp: \
-  $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyPlaneViewer.cpp.in
+SoAnyPlaneViewer.cpp: $(srcdir)/../common/SoAnyPlaneViewer.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoAnyConstrainedViewer.h: \
-  $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyConstrainedViewer.h.in
+SoAnyConstrainedViewer.h: $(srcdir)/../common/SoAnyConstrainedViewer.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoAnyConstrainedViewer.cpp: \
-  $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyConstrainedViewer.cpp.in
+SoAnyConstrainedViewer.cpp: $(srcdir)/../common/SoAnyConstrainedViewer.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoAnyFlyViewer.h: \
-  $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyFlyViewer.h.in
+SoAnyFlyViewer.h: $(srcdir)/../common/SoAnyFlyViewer.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoAnyFlyViewer.cpp: \
-  $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyFlyViewer.cpp.in
+SoAnyFlyViewer.cpp: $(srcdir)/../common/SoAnyFlyViewer.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoAnyWalkViewer.h: \
-  $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyWalkViewer.h.in
+SoAnyWalkViewer.h: $(srcdir)/../common/SoAnyWalkViewer.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoAnyWalkViewer.cpp: \
-  $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyWalkViewer.cpp.in
+SoAnyWalkViewer.cpp: $(srcdir)/../common/SoAnyWalkViewer.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 ############################################################################

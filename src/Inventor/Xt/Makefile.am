@@ -47,7 +47,6 @@ libSoXt_la_SOURCES = \
 	So@Gui@MaterialSliderSet.cpp \
 	So@Gui@PrintDialog.h \
 	So@Gui@PrintDialog.cpp \
-	So@Gui@RenderAreaExtra.cpp \
 	So@Gui@Resource.h \
 	So@Gui@Resource.cpp \
 	So@Gui@SliderSet.h \

@@ -159,7 +159,6 @@ libSoXt_la_SOURCES = \
 	So@Gui@MaterialSliderSet.cpp \
 	So@Gui@PrintDialog.h \
 	So@Gui@PrintDialog.cpp \
-	So@Gui@RenderAreaExtra.cpp \
 	So@Gui@Resource.h \
 	So@Gui@Resource.cpp \
 	So@Gui@SliderSet.h \
@@ -227,9 +226,9 @@ SoAnyMaterialListBuiltins.lo So@Gui@.lo So@Gui@Clipboard.lo \
 So@Gui@Component.lo So@Gui@Cursors.lo So@Gui@DirectionalLightEditor.lo \
 So@Gui@GLWidget.lo So@Gui@Icons.lo So@Gui@LightSliderSet.lo \
 So@Gui@MaterialEditor.lo So@Gui@MaterialList.lo \
-So@Gui@MaterialSliderSet.lo So@Gui@PrintDialog.lo \
-So@Gui@RenderAreaExtra.lo So@Gui@Resource.lo So@Gui@SliderSet.lo \
-So@Gui@SliderSetBase.lo So@Gui@TransformSliderSet.lo
+So@Gui@MaterialSliderSet.lo So@Gui@PrintDialog.lo So@Gui@Resource.lo \
+So@Gui@SliderSet.lo So@Gui@SliderSetBase.lo \
+So@Gui@TransformSliderSet.lo
 libSoXt_la_OBJECTS =  $(am_libSoXt_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -255,9 +254,8 @@ $(DEPDIR)/So@Gui@GLWidget.Plo $(DEPDIR)/So@Gui@Icons.Plo \
 $(DEPDIR)/So@Gui@LightSliderSet.Plo $(DEPDIR)/So@Gui@MaterialEditor.Plo \
 $(DEPDIR)/So@Gui@MaterialList.Plo \
 $(DEPDIR)/So@Gui@MaterialSliderSet.Plo $(DEPDIR)/So@Gui@PrintDialog.Plo \
-$(DEPDIR)/So@Gui@RenderArea.Plo $(DEPDIR)/So@Gui@RenderAreaExtra.Plo \
-$(DEPDIR)/So@Gui@Resource.Plo $(DEPDIR)/So@Gui@SliderSet.Plo \
-$(DEPDIR)/So@Gui@SliderSetBase.Plo \
+$(DEPDIR)/So@Gui@RenderArea.Plo $(DEPDIR)/So@Gui@Resource.Plo \
+$(DEPDIR)/So@Gui@SliderSet.Plo $(DEPDIR)/So@Gui@SliderSetBase.Plo \
 $(DEPDIR)/So@Gui@TransformSliderSet.Plo $(DEPDIR)/SoAnyMaterialList.Plo \
 $(DEPDIR)/SoAnyMaterialListBuiltins.Plo
 DIST_COMMON =  $(libSoXtinc_HEADERS) Makefile.am Makefile.in
@@ -451,7 +449,6 @@ maintainer-clean-tags:
 @AMDEP@include $(DEPDIR)/So@Gui@MaterialSliderSet.Plo
 @AMDEP@include $(DEPDIR)/So@Gui@PrintDialog.Plo
 @AMDEP@include $(DEPDIR)/So@Gui@RenderArea.Plo
-@AMDEP@include $(DEPDIR)/So@Gui@RenderAreaExtra.Plo
 @AMDEP@include $(DEPDIR)/So@Gui@Resource.Plo
 @AMDEP@include $(DEPDIR)/So@Gui@SliderSet.Plo
 @AMDEP@include $(DEPDIR)/So@Gui@SliderSetBase.Plo
