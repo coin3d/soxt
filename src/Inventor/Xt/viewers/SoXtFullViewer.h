@@ -158,6 +158,7 @@ protected: // preference sheet routines
   Widget createFramedSeekPrefSheetGuts( Widget parent );
   Widget createFramedZoomPrefSheetGuts( Widget parent );
   Widget createFramedClippingPrefSheetGuts( Widget parent );
+  Widget createFramedStereoPrefSheetGuts( Widget parent );
 
   SOXT_WIDGET_CALLBACK( prefSheetDestroy );
   SOXT_WIDGET_CALLBACK( seekPrefSheetField );
@@ -254,6 +255,9 @@ private:
   SOXT_WIDGET_CALLBACK( farwheelvaluechanged );
   SOXT_WIDGET_CALLBACK( nearvaluechanged );
   SOXT_WIDGET_CALLBACK( farvaluechanged );
+
+  Widget stereotoggle;
+  SOXT_WIDGET_CALLBACK( stereotoggled );
 
   SOXT_WIDGET_CALLBACK( increaseInteractiveCount );
   SOXT_WIDGET_CALLBACK( decreaseInteractiveCount );

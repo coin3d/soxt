@@ -393,7 +393,7 @@ SoXtFullViewer::buildBottomTrim( // virtual
   XtFree( (char *) labelstring );
 
   // add bottom thumb wheel
-  Widget wheel = XtVaCreateManagedWidget( "BottomWheel",
+  this->wheels[BOTTOMDECORATION] = XtVaCreateManagedWidget( "BottomWheel",
     soxtThumbWheelWidgetClass, trim,
     XmNorientation, XmHORIZONTAL,
     XmNshadowType, XmSHADOW_OUT,
@@ -410,11 +410,11 @@ SoXtFullViewer::buildBottomTrim( // virtual
     XmNwidth, 90,
     NULL );
 
-  XtAddCallback( wheel,
+  XtAddCallback( this->wheels[BOTTOMDECORATION],
     XmNarmCallback, SoXtFullViewer::bottomWheelStartCB, this );
-  XtAddCallback( wheel,
+  XtAddCallback( this->wheels[BOTTOMDECORATION],
     XmNdisarmCallback, SoXtFullViewer::bottomWheelFinishCB, this );
-  XtAddCallback( wheel,
+  XtAddCallback( this->wheels[BOTTOMDECORATION],
     XmNvalueChangedCallback, SoXtFullViewer::bottomWheelMotionCB, this );
 
   labelstring =
@@ -462,7 +462,7 @@ SoXtFullViewer::buildLeftTrim( // virtual
   XtManageChild( this->appButtonsForm );
 
   // add right thumb wheel
-  Widget wheel = XtVaCreateManagedWidget( "LeftWheel",
+  this->wheels[LEFTDECORATION] = XtVaCreateManagedWidget( "LeftWheel",
     soxtThumbWheelWidgetClass, trim,
     XmNorientation, XmVERTICAL,
     XmNshadowType, XmSHADOW_OUT,
@@ -478,11 +478,11 @@ SoXtFullViewer::buildLeftTrim( // virtual
     XmNheight, 90,
     NULL );
 
-  XtAddCallback( wheel,
+  XtAddCallback( this->wheels[LEFTDECORATION],
     XmNarmCallback, SoXtFullViewer::leftWheelStartCB, this );
-  XtAddCallback( wheel,
+  XtAddCallback( this->wheels[LEFTDECORATION],
     XmNdisarmCallback, SoXtFullViewer::leftWheelFinishCB, this );
-  XtAddCallback( wheel,
+  XtAddCallback( this->wheels[LEFTDECORATION],
     XmNvalueChangedCallback, SoXtFullViewer::leftWheelMotionCB, this );
 
   return trim;
@@ -510,7 +510,7 @@ SoXtFullViewer::buildRightTrim( // virtual
   XtManageChild( buttonForm );
 
   // add right thumb wheel
-  Widget wheel = XtVaCreateManagedWidget( "RightWheel",
+  this->wheels[RIGHTDECORATION] = XtVaCreateManagedWidget( "RightWheel",
     soxtThumbWheelWidgetClass, trim,
     XmNorientation, XmVERTICAL,
     XmNshadowType, XmSHADOW_OUT,
@@ -526,11 +526,11 @@ SoXtFullViewer::buildRightTrim( // virtual
     XmNheight, 90,
     NULL );
 
-  XtAddCallback( wheel,
+  XtAddCallback( this->wheels[RIGHTDECORATION],
     XmNarmCallback, SoXtFullViewer::rightWheelStartCB, this );
-  XtAddCallback( wheel,
+  XtAddCallback( this->wheels[RIGHTDECORATION],
     XmNdisarmCallback, SoXtFullViewer::rightWheelFinishCB, this );
-  XtAddCallback( wheel,
+  XtAddCallback( this->wheels[RIGHTDECORATION],
     XmNvalueChangedCallback, SoXtFullViewer::rightWheelMotionCB, this );
 
   return trim;
@@ -1027,8 +1027,8 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   SoXtFullViewer,
   leftWheelMotion )
 {
-  float * valueptr = (float *) call_data;
-  this->leftWheelMotion( *valueptr );
+  SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
+  this->leftWheelMotion( data->current );
 } // leftWheelMotionCB()
 
 /*!
@@ -1100,8 +1100,8 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   SoXtFullViewer,
   bottomWheelMotion )
 {
-  float * valueptr = (float *) call_data;
-  this->bottomWheelMotion( *valueptr );
+  SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
+  this->bottomWheelMotion( data->current );
 } // bottomWheelStart()
 
 /*!
@@ -1173,8 +1173,8 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   SoXtFullViewer,
   rightWheelMotion )
 {
-  float * valueptr = (float *) call_data;
-  this->rightWheelMotion( *valueptr );
+  SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
+  this->rightWheelMotion( data->current );
 } // rightWheelMotionCB()
 
 /*!
@@ -1418,13 +1418,14 @@ SoXtFullViewer::createDefaultPrefSheetParts( // protected
   if ( (widgets[num] = this->createFramedSeekPrefSheetGuts( form )) ) num++;
   if ( (widgets[num] = this->createFramedZoomPrefSheetGuts( form ) )) num++;
   if ( (widgets[num] = this->createFramedClippingPrefSheetGuts( form )) ) num++;
+  if ( (widgets[num] = this->createFramedStereoPrefSheetGuts( form )) ) num++;
 
-//  if ( ! (widgets[num++] = this->createSeekPrefSheetGuts( form )) ) num--;
-//  if ( ! (widgets[num++] = this->createSeekDistPrefSheetGuts( form )) ) num--;
-//  if ( ! (widgets[num++] = this->createZoomPrefSheetGuts( form ) )) num--;
-//  if ( ! (widgets[num++] = this->createClippingPrefSheetGuts( form )) ) num--;
+//  if ( (widgets[num] = this->createSeekPrefSheetGuts( form )) ) num++;
+//  if ( (widgets[num] = this->createSeekDistPrefSheetGuts( form )) ) num++;
+//  if ( (widgets[num] = this->createZoomPrefSheetGuts( form ) )) num++;
+//  if ( (widgets[num] = this->createClippingPrefSheetGuts( form )) ) num++;
+//  if ( (widgets[num] = this->createStereoPrefSheetGuts( form )) ) num++;
 
-  if ( (widgets[num] = this->createStereoPrefSheetGuts( form )) ) num++;
   if ( (widgets[num] = this->createSpeedPrefSheetGuts( form )) ) num++;
 } // createDefaultPrefSheetParts()
 
@@ -1554,6 +1555,26 @@ SoXtFullViewer::createFramedClippingPrefSheetGuts(
   this->createClippingPrefSheetGuts( frame );
   return frame;
 } // createFramedClippingPrefSheetGuts()
+
+Widget
+SoXtFullViewer::createFramedStereoPrefSheetGuts(
+  Widget parent )
+{
+  Widget frame = XtVaCreateManagedWidget( "stereoframe",
+    xmFrameWidgetClass, parent, NULL );
+
+  XmString labelstring = SoXt::encodeString( "Stereo Viewing Settings" );
+  Widget label = XtVaCreateManagedWidget( "stereoframelabel",
+    xmLabelGadgetClass, frame,
+    XmNchildType, XmFRAME_TITLE_CHILD,
+    XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
+    XmNlabelString, labelstring,
+    NULL );
+
+  this->createStereoPrefSheetGuts( frame );
+
+  return frame;
+} // createFramedStereoPrefSheetGuts()
 
 // *************************************************************************
 
@@ -1952,7 +1973,6 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
   XtAddCallback( this->farwheel, XmNdisarmCallback,
     SoXtFullViewer::decreaseInteractiveCountCB, (XtPointer) this );
 
-  SoDebugError::postInfo( "...", "setting value to %g", fardistance );
   SoXtThumbWheelSetValue( this->farwheel, fardistance );
 
   labelstring = SoXt::encodeString( "Far plane:" );
@@ -2042,10 +2062,23 @@ Widget
 SoXtFullViewer::createStereoPrefSheetGuts( // protected
   Widget parent )
 {
-#if SOXT_DEBUG
-  SOXT_STUB();
-#endif // SOXT_DEBUG
-  return (Widget) NULL;
+  Widget form = XtVaCreateManagedWidget( "stereoguts",
+    xmFormWidgetClass, parent, NULL );
+
+  XmString labelstring = SoXt::encodeString( "stereo viewing" );
+  this->stereotoggle = XtVaCreateManagedWidget( "stereotoggle",
+    xmToggleButtonWidgetClass, form,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNset, False,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  XtAddCallback( this->stereotoggle, XmNvalueChangedCallback,
+    SoXtFullViewer::stereotoggledCB, (XtPointer) this );
+
+  return form;
 } // createStereoPrefSheetGuts()
 
 /*!
@@ -2245,7 +2278,9 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   float farval = SoXtThumbWheelGetValue( this->farwheel );
   if ( val >= farval )
     val = farval - 0.001f;
-  SoXtThumbWheelSetValue( this->nearwheel, val );
+  float temp = SoXtThumbWheelGetValue( this->nearwheel );
+  if ( val != temp )
+    SoXtThumbWheelSetValue( this->nearwheel, val );
   char buf[16];
   sprintf( buf, "%g", val );
   XmTextSetString( this->nearvalue, buf );
@@ -2271,7 +2306,9 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   float val = atof( XmTextGetString( this->farvalue ) );
   if ( val <= nearval )
     val = nearval + 0.001f;
-  SoXtThumbWheelSetValue( this->farwheel, val );
+  float temp = SoXtThumbWheelGetValue( this->farwheel );
+  if ( temp != val )
+    SoXtThumbWheelSetValue( this->farwheel, val );
   char buf[16];
   sprintf( buf, "%g", val );
   XmTextSetString( this->farvalue, buf );
@@ -2287,7 +2324,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // farvaluechanged()
 
 // *************************************************************************
-
+  
 /*!
 */
 
@@ -2661,5 +2698,19 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   XtVaSetValues( this->absolutetoggle, XmNset, True, NULL );
   this->seekdistaspercentage = FALSE;
 } // absolutetoggled()
+
+// *************************************************************************
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtFullViewer,
+  stereotoggled )
+{
+  Boolean enable = False;
+  XtVaGetValues( this->stereotoggle, XmNset, &enable, NULL );
+  this->setStereoViewing( enable ? TRUE : FALSE );
+  XtVaSetValues( this->stereotoggle,
+    XmNset, this->isStereoViewing() ? True : False,
+    NULL );
+} // stereotoggled()
 
 // *************************************************************************
