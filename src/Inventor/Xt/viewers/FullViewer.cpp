@@ -595,16 +595,6 @@ SoXtFullViewer::buildLeftTrim(Widget parent)
   XtAddCallback(this->leftWheel,
                 XmNvalueChangedCallback, SoXtFullViewerP::leftWheelMotionCB, this);
 
-#if 0
-  Widget iconBar3D = this->getAppPushButtonParent();
-  Widget XButton = XmCreatePushButton(iconBar3D, (char *) "X", NULL, 0);
-  this->addAppPushButton(XButton);
-  Widget YButton = XmCreatePushButton(iconBar3D, (char *) "Y", NULL, 0);
-  this->addAppPushButton(YButton);
-  Widget ZButton = XmCreatePushButton(iconBar3D, (char *) "Z", NULL, 0);
-  this->addAppPushButton(ZButton);
-#endif
-
   return trim;
 }
 
