@@ -1672,7 +1672,10 @@ if test x"$with_opengl" != xno; then
     for sim_ac_gl_libcheck in $sim_ac_gl_first_gl "$sim_ac_gl_first_gl $sim_ac_gl_first_glu"  $sim_ac_gl_second_gl "$sim_ac_gl_second_gl $sim_ac_gl_second_glu"; do
       if test "x$sim_cv_lib_gl" = "xUNRESOLVED"; then
         LIBS="$sim_ac_gl_libcheck $sim_ac_save_libs"
-        AC_TRY_LINK([#include <GL/gl.h>
+        AC_TRY_LINK([#ifdef _WIN32
+                    #include <windows.h>
+                    #endif
+                    #include <GL/gl.h>
                     #include <GL/glu.h>],
                     [glPointSize(1.0f);
                     gluSphere(0L, 1.0, 1, 1);],
