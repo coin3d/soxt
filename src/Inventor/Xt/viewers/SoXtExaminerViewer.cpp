@@ -61,6 +61,10 @@ static const char rcsid[] =
 
 // *************************************************************************
 
+/*!
+  Public constructor.
+*/
+
 SoXtExaminerViewer::SoXtExaminerViewer(
   Widget parent,
   const char * name,
@@ -72,6 +76,10 @@ SoXtExaminerViewer::SoXtExaminerViewer(
 {
   this->constructor( TRUE );
 } // SoXtExaminerViewer()
+
+/*!
+  Protected constructor for derived viewers.
+*/
 
 SoXtExaminerViewer::SoXtExaminerViewer( // protected
   Widget parent,
@@ -85,6 +93,10 @@ SoXtExaminerViewer::SoXtExaminerViewer( // protected
 {
   this->constructor( build );
 } // SoXtExaminerViewer()
+
+/*!
+  Common constructor code.
+*/
 
 void
 SoXtExaminerViewer::constructor( // private
@@ -127,6 +139,9 @@ SoXtExaminerViewer::~SoXtExaminerViewer(
 } // ~SoXtExaminerViewer()
 
 // *************************************************************************
+
+/*!
+*/
 
 void
 SoXtExaminerViewer::processEvent(
