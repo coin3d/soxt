@@ -21,6 +21,7 @@
 
 #include <Inventor/errors/SoDebugError.h>
 
+#include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/viewers/SoAnyFlyViewer.h>
 #include <Inventor/Xt/viewers/SoXtFlyViewer.h>
 
@@ -38,6 +39,7 @@ SoXtFlyViewer::SoXtFlyViewer( // public
 : inherited( parent, name, inParent, flags, type, FALSE )
 , common( new SoAnyFlyViewer( this ) )
 {
+  this->constructor( TRUE );
 } // SoXtFlyViewer()
 
 /*!
@@ -54,6 +56,7 @@ SoXtFlyViewer::SoXtFlyViewer( // protected
 : inherited( parent, name, inParent, flags, type, FALSE )
 , common( new SoAnyFlyViewer( this ) )
 {
+  this->constructor( build );
 } // SoXtFlyViewer()
 
 /*!
@@ -64,6 +67,15 @@ void
 SoXtFlyViewer::constructor( // private
   SbBool build )
 {
+  this->prefshell = NULL;
+  this->prefsheet = NULL;
+  this->prefparts = NULL;
+  this->numprefparts = 0;
+
+  if ( build ) {
+    Widget base = inherited::buildWidget( this->getParentWidget() );
+    this->setBaseWidget( base );
+  }
 } // constructor()
 
 /*!
@@ -73,6 +85,7 @@ SoXtFlyViewer::constructor( // private
 SoXtFlyViewer::~SoXtFlyViewer(
   void )
 {
+  delete [] this->prefparts;
   delete common;
 } // ~SoXtFlyViewer()
 
@@ -105,6 +118,7 @@ void
 SoXtFlyViewer::setCamera( // virtual
   SoCamera * camera )
 {
+  inherited::setCamera( camera );
 } // setCamera()
 
 /*!
@@ -114,6 +128,7 @@ void
 SoXtFlyViewer::setCursorEnabled( // virtual
   SbBool enable )
 {
+  inherited::setCursorEnabled( enable );
 } // setCursorEnabled()
 
 /*!
@@ -123,6 +138,8 @@ void
 SoXtFlyViewer::setCameraType( // virtual
   SoType type )
 {
+  inherited::setCameraType( type );
+  SOXT_STUB();
 } // setCameraType()
 
 // *************************************************************************
@@ -182,6 +199,7 @@ void
 SoXtFlyViewer::setSeekMode( // virtual, protected
   SbBool enable )
 {
+  inherited::setSeekMode( enable );
 } // setSeekMode()
 
 /*!
@@ -202,6 +220,7 @@ void
 SoXtFlyViewer::rightWheelMotion( // virtual, protected
   float value )
 {
+  common->dolly( value - this->getRightWheelValue() );
   inherited::rightWheelMotion( value );
 } // rightWheelMotion()
 
@@ -212,6 +231,17 @@ void
 SoXtFlyViewer::createPrefSheet( // virtual, protected
   void )
 {
+  if ( ! this->prefshell ) {
+    this->prefparts = new Widget [ 16 ];
+    this->createPrefSheetShellAndForm( this->prefshell, this->prefsheet );
+    this->createDefaultPrefSheetParts( this->prefparts, this->numprefparts,
+      this->prefsheet );
+    this->prefparts[this->numprefparts] =
+      this->createFramedSpeedPrefSheetGuts( this->prefsheet );
+    if ( this->prefparts[this->numprefparts] != NULL ) this->numprefparts++;
+  }
+  this->layoutPartsAndMapPrefSheet( this->prefparts, this->numprefparts,
+    this->prefsheet, this->prefshell );
 } // createPrefSheet()
 
 /*!

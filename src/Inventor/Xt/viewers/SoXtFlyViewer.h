@@ -70,6 +70,9 @@ private:
 
   SoAnyFlyViewer * const common;
 
+  Widget prefshell, prefsheet, * prefparts;
+  int numprefparts;
+
 }; // class SoXtFlyViewer
 
 // *************************************************************************
