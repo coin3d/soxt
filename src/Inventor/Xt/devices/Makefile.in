@@ -151,7 +151,7 @@ libSoXtDevicesinc_HEADERS = \
 	So@Gui@LinuxJoystick.h
 
 subdir = src/Inventor/Xt/devices
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../../../config.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(noinst_LTLIBRARIES)
@@ -183,7 +183,7 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDF
 DIST_SOURCES =  $(libSoXtDevices_la_SOURCES)
 HEADERS =  $(libSoXtDevicesinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/So@Gui@Device.Plo \
 $(DEPDIR)/So@Gui@InputFocus.Plo $(DEPDIR)/So@Gui@Keyboard.Plo \
 $(DEPDIR)/So@Gui@LinuxJoystick.Plo $(DEPDIR)/So@Gui@Mouse.Plo \

@@ -1,10 +1,4 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
-#undef SOXT_MAJOR_VERSION
-#undef SOXT_MINOR_VERSION
-#undef SOXT_MICRO_VERSION
-#undef SOXT_VERSION
-#undef HAVE_SOPOLYGONOFFSET
-#undef HAVE_LIBXPM
 
 /* Define to enable Linux Joystick driver support */
 #undef HAVE_JOYSTICK_LINUX
@@ -39,6 +33,9 @@
 /* Define to enable use of SoMouseButtonEvent::BUTTON5 */
 #undef HAVE_SOMOUSEBUTTONEVENT_BUTTONS
 
+/* Define to enable use of the SoPolygonOffset node */
+#undef HAVE_SOPOLYGONOFFSET
+
 /* Define this to true if the __FUNCTION__ variable contains the current
    function name */
 #undef HAVE_VAR___FUNCTION__
@@ -56,6 +53,18 @@
 
 /* Define this to device handle to fallback on */
 #undef SOXT_LINUX_JOYSTICK_DEVICE
+
+/* SoXt major version */
+#undef SOXT_MAJOR_VERSION
+
+/* SoXt micro version */
+#undef SOXT_MICRO_VERSION
+
+/* SoXt minor version */
+#undef SOXT_MINOR_VERSION
+
+/* Version string for SoXt */
+#undef SOXT_VERSION
 
 /* Version number of package */
 #undef VERSION

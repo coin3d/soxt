@@ -154,10 +154,10 @@ BUILT_SOURCES = \
 noinst_DATA = $(BUILT_SOURCES)
 
 acdatadir = $(datadir)/aclocal
-acdata_DATA = conf-macros/so@gui@.m4
+acdata_DATA = cfg/m4/so@gui@.m4
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES =  soxt-config
 SCRIPTS =  $(bin_SCRIPTS)
@@ -166,9 +166,10 @@ DIST_SOURCES =
 DATA =  $(acdata_DATA) $(noinst_DATA)
 
 DIST_COMMON =  README ./stamp-h.in AUTHORS COPYING ChangeLog INSTALL \
-Makefile.am Makefile.in NEWS TODO acconfig.h aclocal.m4 config.guess \
-config.h.in config.sub configure configure.in depcomp install-sh \
-ltconfig ltmain.sh missing mkinstalldirs soxt-config.in
+Makefile.am Makefile.in NEWS TODO aclocal.m4 cfg/config.guess \
+cfg/config.sub cfg/install-sh cfg/ltconfig cfg/ltmain.sh cfg/missing \
+cfg/mkinstalldirs config.h.in configure configure.in install-sh \
+soxt-config.in
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -210,7 +211,7 @@ $(srcdir)/config.h.in: @MAINTAINER_MODE_TRUE@$(srcdir)/./stamp-h.in
 		rm -f $(srcdir)/./stamp-h.in; \
 		$(MAKE) $(srcdir)/./stamp-h.in; \
 	else :; fi
-$(srcdir)/./stamp-h.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) acconfig.h
+$(srcdir)/./stamp-h.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	@rm -f $(srcdir)/./stamp-h.in $(srcdir)/./stamp-h.inT
 	@echo timestamp > $(srcdir)/./stamp-h.inT 2> /dev/null
 	cd $(top_srcdir) && $(AUTOHEADER)
@@ -300,10 +301,11 @@ maintainer-clean-recursive:
 	@set fnord $(MAKEFLAGS); amf=$$2; \
 	dot_seen=no; \
 	rev=''; list='$(SUBDIRS)'; for subdir in $$list; do \
-	  rev="$$subdir $$rev"; \
-	  if test "$$subdir" = "."; then dot_seen=yes; else :; fi; \
+	  if test "$$subdir" = "."; then :; else \
+	    rev="$$subdir $$rev"; \
+	  fi; \
 	done; \
-	test "$$dot_seen" = "no" && rev=". $$rev"; \
+	rev="$$rev ."; \
 	target=`echo $@ | sed s/-recursive//`; \
 	for subdir in $$rev; do \
 	  echo "Making $$target in $$subdir"; \
@@ -411,6 +413,7 @@ dist-all: distdir
 distdir: $(DISTFILES)
 	-chmod -R a+w $(distdir) > /dev/null 2>&1; rm -rf $(distdir)
 	mkdir $(distdir)
+	$(mkinstalldirs) $(distdir)/cfg
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \

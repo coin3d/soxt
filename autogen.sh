@@ -1,5 +1,5 @@
 #! /bin/sh
-
+# **************************************************************************
 # Regenerate all files which are constructed by the autoconf, automake
 # and libtool tool-chain. Note: only developers should need to use this
 # script.
@@ -16,40 +16,24 @@ if test ! -f autogen.sh; then
   exit 1
 fi
 
-# required autotrio tool versions
-
-# Autoconf snapshot from ftp://alpha.gnu.org/gnu/autoconf/autoconf-2.49a.tar.gz
-AUTOCONF_VER=2.49a
+AUTOCONF_VER=2.49b   # Autoconf from CVS
 AUTOMAKE_VER=1.4a    # CVS development version
 LIBTOOL_VER=1.3.5
 
+PROJECT=SoXt
 GUI=Xt
-PROJECT=So$GUI
-MACRODIR=conf-macros
-DIE=false
+MACRODIR=cfg/m4
 
 SUBPROJECTS="$MACRODIR data"
-SUBPROJECTNAMES="$MACRODIR SoXtData"
+SUBPROJECTNAMES="SoXtMacros SoXtData"
 AUTOMAKE_ADD=
 
 if test "$1" = "--clean"; then
-  rm -f aclocal.m4 \
-	config.guess \
-	config.h.in \
-	config.sub \
-	configure \
-	depcomp \
-	install-sh \
-	ltconfig \
-	ltmain.sh \
-	missing \
-	mkinstalldirs \
-	stamp-h*
-  find . -name Makefile.in -print | \
-        egrep -v '^\./(examples|ivexamples)/' | xargs rm
+  rm -f config.h.in configure stamp-h*
+  find . -name Makefile.in -print | xargs rm
   exit 0
 elif test "$1" = "--add"; then
-  AUTOMAKE_ADD="--add-missing --gnu --copy"
+  AUTOMAKE_ADD=""
 fi
 
 echo "Checking the installed configuration tools..."
@@ -121,30 +105,34 @@ for project in $SUBPROJECTS; do
   shift
 done
 
-$DIE && exit 1
+# abnormal exit?
+${DIE=false} && echo "" && exit 1
 
-echo "Running aclocal (generating aclocal.m4)..."
+# generate aux/aclocal.m4
+echo "Running aclocal..."
 aclocal -I $MACRODIR
 
-echo "Running autoheader (generating config.h.in)..."
+# generate config.h.in
+echo "Running autoheader..."
 autoheader
 
-echo "Running automake (generating the Makefile.in files)..."
+# generate Makefile.in templates
+echo "Running automake..."
 echo "[ignore any \"directory should not contain '/'\" warning]"
 automake $AUTOMAKE_ADD
 
-AMBUGFIXES=`find . \( -name Makefile.in.diff \) | egrep -v '^\./(data|examples|ivexamples)'`
-
-fixmsg=0
+AMBUGFIXES=`find . \( -name Makefile.in.diff \) | egrep -v '^\./data'`
 for bugfix in $AMBUGFIXES; do
-  if test $fixmsg -eq 0; then
+  : ${fixmsg=true}
+  $fixmsg && {
     echo "[correcting automake bugs]"
-    fixmsg=1
-  fi
+    fixmsg=false
+  }
   patch -p0 < $bugfix
 done
 
-echo "Running autoconf (generating ./configure)..."
+# generate configure
+echo "Running autoconf..."
 autoconf
 
 echo "Done."

@@ -45,7 +45,7 @@ BUILT_SOURCES = \
 noinst_DATA = $(BUILT_SOURCES)
 
 acdatadir = $(datadir)/aclocal
-acdata_DATA = conf-macros/so@gui@.m4
+acdata_DATA = cfg/m4/so@gui@.m4
 
 doxygen-doc:
 	@sim_ac_doxygen_exe@ build/soxt.doxygen

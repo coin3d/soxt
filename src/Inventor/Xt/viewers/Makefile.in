@@ -171,7 +171,7 @@ libSoXtViewersinc_HEADERS = \
 	$(top_srcdir)/src/Inventor/@Gui@/viewers/So@Gui@CollisionViewer.h
 
 subdir = src/Inventor/Xt/viewers
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../../../config.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(noinst_LTLIBRARIES)
@@ -206,7 +206,7 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDF
 DIST_SOURCES =  $(libSoXtViewers_la_SOURCES)
 HEADERS =  $(libSoXtViewersinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/So@Gui@CollisionViewer.Plo \
 $(DEPDIR)/So@Gui@ConstrainedViewer.Plo \
 $(DEPDIR)/So@Gui@ExaminerViewer.Plo $(DEPDIR)/So@Gui@FlyViewer.Plo \

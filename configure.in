@@ -1,7 +1,8 @@
 # **************************************************************************
 # SoXt/configure.in
 
-AC_INIT(src/Inventor/Xt/SoXt.h) # any typical file for source archive
+AC_INIT(src/Inventor/Xt/SoXt.h)
+AC_CONFIG_AUX_DIR(cfg)
 
 # **************************************************************************
 # Apply changes to the CVS repository structure...
@@ -79,10 +80,14 @@ AC_SUBST(LT_AGE)
 
 VERSION=$SOXT_VERSION
 
-AC_DEFINE_UNQUOTED(SOXT_MAJOR_VERSION, $SOXT_MAJOR_VERSION)
-AC_DEFINE_UNQUOTED(SOXT_MINOR_VERSION, $SOXT_MINOR_VERSION)
-AC_DEFINE_UNQUOTED(SOXT_MICRO_VERSION, $SOXT_MICRO_VERSION)
-AC_DEFINE_UNQUOTED(SOXT_VERSION, "$SOXT_VERSION")
+AC_DEFINE_UNQUOTED(SOXT_MAJOR_VERSION, $SOXT_MAJOR_VERSION,
+  [SoXt major version])
+AC_DEFINE_UNQUOTED(SOXT_MINOR_VERSION, $SOXT_MINOR_VERSION,
+  [SoXt minor version])
+AC_DEFINE_UNQUOTED(SOXT_MICRO_VERSION, $SOXT_MICRO_VERSION,
+  [SoXt micro version])
+AC_DEFINE_UNQUOTED(SOXT_VERSION, "$SOXT_VERSION",
+  [Version string for SoXt])
 
 # **************************************************************************
 
@@ -240,7 +245,13 @@ AM_CONDITIONAL(BUILD_IV_EXAMPLES, $sim_ac_want_ivexamples)
 # **************************************************************************
 # Variable substitutions for using libSoXt in the generic code.
 
-. ${srcdir}/libconfigvars.sh
+GUI=XT
+Gui=Xt
+gui=xt
+
+WIDGET="Widget"
+EVENT="XAnyEvent *"
+COMPONENTHEADER=""
 
 AC_SUBST(GUI)
 AC_SUBST(Gui)
