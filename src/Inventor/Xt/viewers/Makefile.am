@@ -39,7 +39,9 @@ libSoXtViewers_la_SOURCES = \
 	SoXtFullViewer.cpp \
 	SoXtFullViewer.h \
 	SoXtExaminerViewer.cpp \
-	SoXtExaminerViewer.h
+	SoXtExaminerViewer.h \
+	SoXtPlaneViewer.cpp \
+	SoXtPlaneViewer.h
 
 ############################################################################
 ##
@@ -86,7 +88,8 @@ libSoXtViewersincdir = $(includedir)/Inventor/Xt/viewers
 libSoXtViewersinc_HEADERS = \
 	$(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.h \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h \
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtPlaneViewer.h
 
 install-libSoXtViewersincHEADERS: $(libSoXtViewersinc_HEADERS)
 	@$(NORMAL_INSTALL)

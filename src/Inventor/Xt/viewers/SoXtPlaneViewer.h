@@ -23,6 +23,7 @@
 #define SOXT_PLANEVIEWER_H
 
 class SbPlaneProjector;
+class SoAnyPlaneViewer;
 
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
 
@@ -34,7 +35,7 @@ class SoXtPlaneViewer : public SoXtFullViewer {
 
 public:
   SoXtPlaneViewer(
-    Widget * parent,
+    Widget parent,
     const char * const name = NULL,
     SbBool buildInsideParent = TRUE,
     SoXtFullViewer::BuildFlag flag = BUILD_ALL,
@@ -46,21 +47,19 @@ public:
   virtual void setCursorEnabled( SbBool enable );
 
 protected:
-  SoQtPlaneViewer(
-    QWidget * parent,
+  SoXtPlaneViewer(
+    Widget parent,
     const char * const name,
     SbBool buildInsideParent,
-    SoQtFullViewer::BuildFlag flag,
-    SoQtViewer::Type type,
+    SoXtFullViewer::BuildFlag flag,
+    SoXtViewer::Type type,
     SbBool buildNow );
-
-  QWidget * buildWidget( QWidget * parent );
 
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
 
-  virtual void processEvent( QEvent * event );
+  virtual void processEvent( XAnyEvent * event );
   virtual void setSeekMode( SbBool enable );
   virtual void actualRedraw(void);
 
@@ -69,19 +68,36 @@ protected:
   virtual void rightWheelMotion( float value );
 
   virtual void createPrefSheet(void);
-
-  virtual void createViewerButtons( QWidget * parent, SbPList * buttons );
+  virtual void createViewerButtons( Widget parent, SbPList * buttonlist );
   virtual void openViewerHelpCard(void);
-  virtual void computeSeekFinalOrientation(void);
 
 private:
   void constructor( SbBool build );
 
+  struct {
+    Widget x, y, z, camera;
+  } buttons;
 
+  struct {
+    Pixmap ortho, ortho_ins;
+    Pixmap perspective, perspective_ins;
+  } pixmaps;
 
+  Widget prefshell, prefsheet, * prefparts;
+  int numprefparts;
+
+  SOXT_WIDGET_CALLBACK( xbutton );
+  SOXT_WIDGET_CALLBACK( ybutton );
+  SOXT_WIDGET_CALLBACK( zbutton );
+  SOXT_WIDGET_CALLBACK( camerabutton );
+
+  void zoom( const float difference );
+
+private:
+  SoAnyPlaneViewer * const common;
 
 }; // class SoXtPlaneViewer
 
 // *************************************************************************
 
-#endif // SOXT_PLANEVIEWER_H
+#endif // ! SOXT_PLANEVIEWER_H

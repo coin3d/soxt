@@ -130,7 +130,9 @@ libSoXtViewers_la_SOURCES = \
 	SoXtFullViewer.cpp \
 	SoXtFullViewer.h \
 	SoXtExaminerViewer.cpp \
-	SoXtExaminerViewer.h
+	SoXtExaminerViewer.h \
+	SoXtPlaneViewer.cpp \
+	SoXtPlaneViewer.h
 
 
 ############################################################################
@@ -140,7 +142,8 @@ libSoXtViewersincdir = $(includedir)/Inventor/Xt/viewers
 libSoXtViewersinc_HEADERS = \
 	$(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.h \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h \
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtPlaneViewer.h
 
 subdir = src/Inventor/Xt/viewers
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -160,7 +163,7 @@ libSoXtViewers_la_LDFLAGS =
 libSoXtViewers_la_LIBADD = 
 am_libSoXtViewers_la_OBJECTS =  SoXtViewer.lo SoAnyFullViewer.lo \
 SoAnyExaminerViewer.lo SoAnyPlaneViewer.lo SoXtViewerExtra.lo \
-SoXtFullViewer.lo SoXtExaminerViewer.lo
+SoXtFullViewer.lo SoXtExaminerViewer.lo SoXtPlaneViewer.lo
 libSoXtViewers_la_OBJECTS =  $(am_libSoXtViewers_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -185,7 +188,8 @@ depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAnyExaminerViewer.Plo \
 $(DEPDIR)/SoAnyFullViewer.Plo $(DEPDIR)/SoAnyPlaneViewer.Plo \
 $(DEPDIR)/SoXtExaminerViewer.Plo $(DEPDIR)/SoXtFullViewer.Plo \
-$(DEPDIR)/SoXtViewer.Plo $(DEPDIR)/SoXtViewerExtra.Plo
+$(DEPDIR)/SoXtPlaneViewer.Plo $(DEPDIR)/SoXtViewer.Plo \
+$(DEPDIR)/SoXtViewerExtra.Plo
 SOURCES = $(libSoXtViewers_la_SOURCES)
 OBJECTS = $(am_libSoXtViewers_la_OBJECTS)
 
@@ -286,6 +290,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoAnyPlaneViewer.Plo
 @AMDEP@include $(DEPDIR)/SoXtExaminerViewer.Plo
 @AMDEP@include $(DEPDIR)/SoXtFullViewer.Plo
+@AMDEP@include $(DEPDIR)/SoXtPlaneViewer.Plo
 @AMDEP@include $(DEPDIR)/SoXtViewer.Plo
 @AMDEP@include $(DEPDIR)/SoXtViewerExtra.Plo
 
