@@ -28,6 +28,10 @@ static const char rcsid[] =
 
 #include <Xm/PushB.h>
 
+#if HAVE_CONFIG_H
+#include <config.h> // for HAVE_LIBXPM
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
