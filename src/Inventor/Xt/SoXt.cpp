@@ -44,6 +44,16 @@
 
 // *************************************************************************
 
+#if SOXT_DEBUG
+// Flip to '1' for getting debugging information from the process
+// which sets up the X11 visual and colormap we're using.
+#define SOXT_SELECTBESTVISUAL_DEBUG 0
+#else
+#define SOXT_SELECTBESTVISUAL_DEBUG 0
+#endif
+
+// *************************************************************************
+
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -213,7 +223,27 @@ SoXt::internal_init(int & argc, char ** argv,
 
   XtAppContext tempcontext; // SoXtP::xtappcontext is set later
 
-  Display * display = NULL;
+  Display * display = XOpenDisplay(NULL);
+  if (display == NULL) {
+    SoDebugError::postInfo("SoXt::internal_init", "Failed to open display.");
+    // FIXME: invoke the fatal error handler. 20011220 mortene.
+    exit(-1);
+  }
+
+  // This is _extremely_ useful for debugging X errors: activate this
+  // code (set the SOXT_XSYNC environment variable on your system to
+  // "1"), then rerun the application code in a debugger with a
+  // breakpoint set at SoXtP::X11Errorhandler(). Now you can backtrace
+  // to the exact source location of the failing X request.
+  if (SoXtP::SOXT_XSYNC == ENVVAR_NOT_INITED) {
+    const char * env = SoAny::si()->getenv("SOXT_XSYNC");
+    SoXtP::SOXT_XSYNC = env ? atoi(env) : 0;
+    if (SoXtP::SOXT_XSYNC) {
+      SoDebugError::postInfo("SoXt::internal_init", "Turning on X synchronization.");
+      XSynchronize(display, True);
+    }
+  }
+
   int depth = 0;
   Visual * visual = NULL;
   Colormap colormap = 0;
@@ -232,6 +262,8 @@ SoXt::internal_init(int & argc, char ** argv,
   }
   else {
     SoDebugError::postInfo("SoXt::internal_init", "default toplevel! (error)");
+    // FIXME: if we get here, a segfault comes up later for me on
+    // embla.trh.sim.no, at least. 20020117 mortene.
     toplevel = XtVaOpenApplication(&tempcontext, SoXtP::appclass, NULL, 0,
                                    &argc, argv,
                                    SoXtP::fallbackresources, topLevelShellWidgetClass,
@@ -624,15 +656,14 @@ SoXt::createSimpleErrorDialog(Widget parent, const char * title,
   Arg args[10];
   int argc = 0;
 
-  Display * dpy = SoXt::getDisplay();
+  if (! title) title = "";
+  if (! string1) string1 = "";
+
   Visual * vis;
   Colormap cmap;
   int depth;
 
-  if (! title) title = "";
-  if (! string1) string1 = "";
-
-  SoXt::selectBestVisual(dpy, vis, cmap, depth);
+  SoXt::selectBestVisual(SoXt::getDisplay(), vis, cmap, depth);
 
   // The XtVaCreatePopupShell() call will exit the application on a
   // NULL parent pointer.
@@ -1037,52 +1068,40 @@ debug_dumpvisualinfo(Display * d, Visual * v)
 
   This function is not part of the original SGI InventorXt API.
 */
-
 void
-SoXt::selectBestVisual(Display * & dpy, Visual * & visual,
+SoXt::selectBestVisual(Display * dpy, Visual * & visual,
                        Colormap & colormap, int & depth)
 {
-  if (dpy == NULL) {
-     dpy = XOpenDisplay(NULL);
-     if (dpy == NULL) {
-       SoDebugError::postInfo("SoXt::selectBestVisual",
-                              "Failed to open display.");
-       // FIXME: invoke the fatal error handler. 20011220 mortene.
-       exit(-1);
-     }
-  }
+  assert(dpy != NULL);
 
-  // This is _extremely_ useful for debugging X errors: activate this
-  // code (set the SOXT_XSYNC environment variable on your system to
-  // "1"), then rerun the application code in a debugger with a
-  // breakpoint set at SoXtP::X11Errorhandler(). Now you can backtrace
-  // to the exact source location of the failing X request.
-  if (SoXtP::SOXT_XSYNC == ENVVAR_NOT_INITED) {
-    const char * env = SoAny::si()->getenv("SOXT_XSYNC");
-    SoXtP::SOXT_XSYNC = env ? atoi(env) : 0;
-    if (SoXtP::SOXT_XSYNC) {
+#if SOXT_SELECTBESTVISUAL_DEBUG // debug
+  { // Dump all visuals available on the X server.
+    static SbBool first = TRUE;
+    if (first) {
+      first = FALSE;
+      int num;
+      XVisualInfo templ;
+      XVisualInfo * all = XGetVisualInfo(dpy, VisualNoMask, &templ, &num);
       SoDebugError::postInfo("SoXt::selectBestVisual",
-                             "Turning on X synchronization.");
-      XSynchronize(dpy, True);
+                             "%d available visual%s, dumping:",
+                             num, num == 1 ? "" : "s");
+      for (int i=0; i < num; i++) { debug_dumpvisualinfo(&all[i]); }
     }
   }
+#endif // debug
 
   int snum = XDefaultScreen(dpy);
 
   if (XDefaultDepth(dpy, snum) >= 16) { // me like...
     visual = XDefaultVisual(dpy, snum);
-#if SOXT_DEBUG && 0 // debug
+#if SOXT_SELECTBESTVISUAL_DEBUG // debug
+    SoDebugError::postInfo("SoXt::selectBestVisual", "using default visual:");
     debug_dumpvisualinfo(dpy, visual);
 #endif // debug
     depth = XDefaultDepth(dpy, snum);
     colormap = XDefaultColormap(dpy, snum);
     return;
   }
-
-#if SOXT_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoXt::selectBestVisual",
-                         "we're beyond the default visual");
-#endif // debug
 
   static struct {
     int depth;
@@ -1104,12 +1123,11 @@ SoXt::selectBestVisual(Display * & dpy, Visual * & visual,
   XVisualInfo vinfo;
   for (int i = 0; pri[i].depth != 0; i++) {
     if (XMatchVisualInfo(dpy, snum, pri[i].depth, pri[i].vclass, &vinfo)) {
-#if SOXT_DEBUG && 0
-      SoDebugError::postInfo("SoXt::selectBestVisual",
-                             "visual: depth=%d, class=%s", vinfo.depth,
-                             debug_visualclassname(vinfo.c_class));
-#endif // SOXT_DEBUG
       visual = vinfo.visual;
+#if SOXT_SELECTBESTVISUAL_DEBUG // debug
+      SoDebugError::postInfo("SoXt::selectBestVisual", "found visual to use:");
+      debug_dumpvisualinfo(&vinfo);
+#endif // debug
       depth = vinfo.depth;
 
       int numcmaps;
