@@ -27,7 +27,7 @@
 #include <Inventor/Xt/widgets/SoXtThumbWheelP.h>
 
 /*
-  TODO:
+  FIXME :
   - use a virtual Colormap instead of creating graphics the way it is
   hardcoded now.
   - share a cache of pixmaps instead of having pixmaps generated for
@@ -345,7 +345,9 @@ abgr2pixel(uint32_t abgr)
   const uint32_t abgrreduced = abgr & 0x00fcfcfc;
   for (int i = cached - 1; i > 0; i--) {
     if (cache[i] == abgrreduced) {
-      //      SoDebugError::postInfo("", "lifted from special-purpose cache");
+#if 0 // debug
+      SoDebugError::postInfo("abgr2pixel", "lifted from special-purpose cache");
+#endif // debug
       return (fallback = cache[i+PIXEL_CACHE_SIZE]);
     }
   }
@@ -383,23 +385,11 @@ abgr2pixel(uint32_t abgr)
   return fallback;
 }
 
-/*!
-  \internal
-*/
-
-static
-void
-init_pixmaps(
-             SoXtThumbWheelWidget widget)
+static void
+init_pixmaps(SoXtThumbWheelWidget widget)
 {
   assert(widget != NULL);
-  if (widget->thumbwheel.pixmaps != NULL) {
-#if SOXT_DEBUG
-    SoDebugError::postInfo("SoXtThumbWheel:init_pixmaps",
-                           "pixmaps already initialized");
-#endif // SOXT_DEBUG
-    return;
-  }
+  assert(widget->thumbwheel.pixmaps == NULL && "pixmaps already initialized");
   assert(widget->thumbwheel.thumbwheel != NULL);
 
   SoAnyThumbWheel * const wheel =
@@ -409,9 +399,10 @@ init_pixmaps(
   widget->thumbwheel.pixmaps = new Pixmap [ widget->thumbwheel.numpixmaps ];
 
   Widget shell = (Widget) widget;
-  while (! XtIsShell(shell) && shell != (Widget) NULL)
+  while (!XtIsShell(shell)) {
     shell = XtParent(shell);
-  assert(shell != (Widget) NULL);
+    assert(shell != (Widget) NULL);
+  }
 
   Display * dpy = XtDisplay(shell);
   Screen * screen = XtScreen(shell);
@@ -426,6 +417,11 @@ init_pixmaps(
                 XmNdepth, &depth,
                 NULL);
   assert(visual != (Visual *) NULL && colormap != 0);
+
+#if 0 // debug
+  SoDebugError::postInfo("init_pixmaps", "depth == %d", depth);
+#endif // debug
+
 
   rgb_dpy = dpy;
   rgb_colormap = colormap;
@@ -915,11 +911,7 @@ WheelDown(Widget, XEvent *, String *, Cardinal *)
 void
 SoXtThumbWheelSetValue(Widget w, float value)
 {
-  if (! XtIsSoXtThumbWheel(w)) {
-    SoDebugError::postWarning("SoXtThumbWheelSetValue",
-                              "not a thumbwheel widget");
-    return;
-  }
+  assert(XtIsSoXtThumbWheel(w) && "not a thumbwheel widget");
   SoXtThumbWheelWidget wheel = (SoXtThumbWheelWidget) w;
   wheel->thumbwheel.value = value;
 
@@ -947,11 +939,7 @@ SoXtThumbWheelSetValue(Widget w, float value)
 float
 SoXtThumbWheelGetValue(Widget w)
 {
-  if (! XtIsSoXtThumbWheel(w)) {
-    SoDebugError::postWarning("SoXtThumbWheelGetValue",
-                              "not a thumbwheel widget");
-    return 0.0f;
-  }
+  assert(XtIsSoXtThumbWheel(w) && "not a thumbwheel widget");
   SoXtThumbWheelWidget wheel = (SoXtThumbWheelWidget) w;
   return wheel->thumbwheel.value;
 }
