@@ -32,6 +32,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
+#include <assert.h>
 #include <stdlib.h>
 
 #include <X11/Intrinsic.h>
