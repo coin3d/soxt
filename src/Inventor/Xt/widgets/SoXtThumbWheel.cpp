@@ -300,19 +300,19 @@ dirty_pixmaps(SoXtThumbWheelWidget widget)
   \internal
 */
 
-static uint32_t r_mask, g_mask, b_mask;
+static unsigned long r_mask, g_mask, b_mask;
 static int r_shift, g_shift, b_shift;
 
-static uint32_t
-twiddlebits(uint32_t abgr)
+static unsigned long
+twiddlebits(unsigned long abgr)
 {
-  uint32_t target = 0;
+  unsigned long target = 0;
   if (r_shift >= 0) target |= ((abgr & 0x000000ff) << r_shift) & r_mask;
-  else                target |= ((abgr & 0x000000ff) >> (0-r_shift)) & r_mask;
+  else              target |= ((abgr & 0x000000ff) >> (0-r_shift)) & r_mask;
   if (b_shift >= 0) target |= ((abgr & 0x0000ff00) << g_shift) & g_mask;
-  else                target |= ((abgr & 0x0000ff00) >> (0-g_shift)) & g_mask;
+  else              target |= ((abgr & 0x0000ff00) >> (0-g_shift)) & g_mask;
   if (b_shift >= 0) target |= ((abgr & 0x00ff0000) << b_shift) & b_mask;
-  else                target |= ((abgr & 0x00ff0000) >> (0-b_shift)) & b_mask;
+  else              target |= ((abgr & 0x00ff0000) >> (0-b_shift)) & b_mask;
   return target;
 }
 
@@ -324,12 +324,13 @@ static enum _rgb_target_mode {
   CUSTOM,
   UNKNOWN
 } rgb_target_mode = UNKNOWN;
+
 static Display * rgb_dpy = NULL;
 static Colormap rgb_colormap = 0;
 
-#define PIXEL_CACHE_SIZE 32
+#define PIXEL_CACHE_SIZE 256
 
-static uint32_t
+static unsigned long
 abgr2pixel(uint32_t abgr)
 {
   switch (rgb_target_mode) {
@@ -337,51 +338,72 @@ abgr2pixel(uint32_t abgr)
   default:       break;
   }
  
-  static uint32_t fallback = 0;
-  static uint32_t prevabgr = 0xffffffff;
+  static unsigned long fallback = BlackPixel(rgb_dpy, DefaultScreen(rgb_dpy));
+  static unsigned long prevabgr = 0;
 
-  if (abgr == prevabgr)
+  static unsigned long cache[PIXEL_CACHE_SIZE * 2];
+  static int cached = 0;
+
+  if ((cached > 0) && (abgr == prevabgr))
     return fallback;
   prevabgr = abgr;
 
-  static uint32_t cache[PIXEL_CACHE_SIZE * 2];
-  static int cached = 0;
   // try some caching and approximation stuff here...
-  const uint32_t abgrreduced = abgr & 0x00fcfcfc;
-  for (int i = cached - 1; i > 0; i--) {
+  const unsigned long abgrreduced = abgr & 0x00fcfcfc;
+  for (int i = 0; i < cached; i++ ) {
     if (cache[i] == abgrreduced) {
-#if 0 // debug
-      SoDebugError::postInfo("abgr2pixel", "lifted from special-purpose cache");
-#endif // debug
+      // SoDebugError::postInfo("abgr2pixel", "lifted from special-purpose cache");
       return (fallback = cache[i+PIXEL_CACHE_SIZE]);
     }
   }
 
   // lookup pixel
-  static XColor cdata, ign;
-  cdata.red   = (unsigned short) ((abgr << 8) & 0xff00);
-  cdata.green = (unsigned short) ((abgr    ) & 0xff00);
-  cdata.blue  = (unsigned short) ((abgr >> 8) & 0xff00);
-  if (XAllocColor(rgb_dpy, rgb_colormap, &cdata)) {
+  static XColor cdata, edata;
+  cdata.red   = (unsigned short) ((abgr << 8) & 0x0000ff00);
+  cdata.green = (unsigned short) ((abgr     ) & 0x0000ff00);
+  cdata.blue  = (unsigned short) ((abgr >> 8) & 0x0000ff00);
+  // duplicate bit patterns in lower bits
+  cdata.red   = (cdata.red   | (cdata.red   >> 8));
+  cdata.green = (cdata.green | (cdata.green >> 8));
+  cdata.blue  = (cdata.blue  | (cdata.blue  >> 8));
+label:
+  if ( XAllocColor(rgb_dpy, rgb_colormap, &cdata) ) {
     fallback = cdata.pixel;
   } else {
     static char colorname[16];
     sprintf(colorname, "rgb:%02x/%02x/%02x",
             cdata.red >> 8, cdata.green >> 8, cdata.blue >> 8);
-    if (XLookupColor(rgb_dpy, rgb_colormap, colorname, &cdata, &ign)) {
-      if (XAllocColor(rgb_dpy, rgb_colormap, &cdata)) {
+    if (XLookupColor(rgb_dpy, rgb_colormap, colorname, &cdata, &edata)) {
+      if (XAllocColor(rgb_dpy, rgb_colormap, &edata)) {
+        fallback = edata.pixel;
+      }
+      else if (XAllocColor(rgb_dpy, rgb_colormap, &cdata)) {
         fallback = cdata.pixel;
-      } else if (XAllocColor(rgb_dpy, rgb_colormap, &ign)) {
-        fallback = ign.pixel;
-      } else {
-        return (fallback = 0);
+      }
+      else {
+        // try successive darker colors until we get a match,
+        // or end up with black
+        if ( cdata.red > 0 || cdata.green > 0 || cdata.blue > 0 ) {
+          cdata.red >>= 8;
+          if ( cdata.red > 0 ) cdata.red -= 1;
+          cdata.red = cdata.red | (cdata.red << 8);
+          cdata.green >>= 8;
+          if ( cdata.green > 0 ) cdata.green -= 1;
+          cdata.green = cdata.green | (cdata.green << 8);
+          cdata.blue >>= 8;
+          if ( cdata.blue > 0 ) cdata.blue -= 1;
+          cdata.blue = cdata.blue | (cdata.blue << 8);
+          goto label;
+        }
+        fallback = BlackPixel(rgb_dpy, DefaultScreen(rgb_dpy));
+        return fallback;
       }
     }
   }
   if (cached == PIXEL_CACHE_SIZE) {
     cached--;
-    memmove(&cache[1], &cache[0],
-            (sizeof(uint32_t) * PIXEL_CACHE_SIZE * 2) - 1);
+    memmove(&cache[0], &cache[1],
+            (sizeof(unsigned long) * (PIXEL_CACHE_SIZE * 2 - 1)));
   }
   cache[cached + PIXEL_CACHE_SIZE] = fallback;
   cache[cached] = abgrreduced;
@@ -438,9 +460,9 @@ init_pixmaps(SoXtThumbWheelWidget widget)
   rgb_dpy = dpy;
   rgb_colormap = colormap;
 
-  if (visual->red_mask   != 0x00000000 &&
-      visual->green_mask != 0x00000000 &&
-      visual->blue_mask  != 0x00000000) {
+  if ( (visual->red_mask   != 0x00000000) &&
+       (visual->green_mask != 0x00000000) &&
+       (visual->blue_mask  != 0x00000000) ) {
     // analyze masks for custom rotate+mask converter
 
     // SGI fix - the 8th bit seems to have some special meaning
@@ -568,7 +590,8 @@ init_pixmaps(SoXtThumbWheelWidget widget)
       break;
     } // switch (widget->thumbweel.orientation)
 
-    if (widget->core.depth > 8) {
+    // core.depth has apparently nothing to say for some reason...
+    // if (widget->core.depth >= 8) {
       // lets do this the hard way and waste some resources :(
       XColor cdata, ign;
       if (widget->thumbwheel.orientation == XmHORIZONTAL) {
@@ -587,7 +610,7 @@ init_pixmaps(SoXtThumbWheelWidget widget)
           }
         }
       }
-    }
+    // }
 
     GC temp = XCreateGC(dpy, drawable, 0, NULL);
     XPutImage(dpy, widget->thumbwheel.pixmaps[frame], temp, img, 0, 0, 0, 0,
