@@ -60,8 +60,6 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXtMaterialSliderSet.h>
 #include <Inventor/Xt/SoXtTransformSliderSet.h>
 #include <Inventor/Xt/SoXtMaterialList.h>
-#include <Inventor/Xt/SoXtMaterialEditor.h>
-#include <Inventor/Xt/SoXtPrintDialog.h>
 #include <Inventor/Xt/SoXtCursor.h>
 
 #include <X11/Xlib.h>
@@ -160,8 +158,6 @@ SoXtComponent::initClasses(
   SoXtMaterialSliderSet::initClass();
   SoXtTransformSliderSet::initClass();
   SoXtMaterialList::initClass();
-  SoXtMaterialEditor::initClass();
-  SoXtPrintDialog::initClass();
 } // initClasses()
 
 // *************************************************************************
