@@ -277,25 +277,3 @@ SoXtExaminerViewer::setCamera(SoCamera * camera)
 }
 
 // *************************************************************************
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtExaminerViewer::setAnimationEnabled(const SbBool enable)
-{
-  PRIVATE(this)->setGenericAnimationEnabled(enable);
-}
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtExaminerViewer::setFeedbackSize(const int size)
-{
-  PRIVATE(this)->setGenericFeedbackSize(size);
-}
-
-// *************************************************************************
