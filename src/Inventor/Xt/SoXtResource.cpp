@@ -77,7 +77,7 @@ SoXtResource::SoXtResource(
 
   SoXtComponent * component = SoXtComponent::getComponent( widget );
   if ( component != NULL ) {
-    Widget cwidget = component->getWidget();
+    Widget cwidget = component->getBaseWidget();
     if ( cwidget != NULL )
       stop = XtParent( cwidget );
   }
@@ -183,12 +183,8 @@ SoXtResource::DumpInternals(
     if ( ! found )                                                             \
       found = XrmGetResource( database, rname,                                 \
                 rclass, &formatstr, &value ) ? TRUE : FALSE;                   \
-    if ( ! found ) {                                                           \
-      this->DumpInternals();                                                   \
-      SoDebugError::postInfo( "getResource",                                   \
-        "resource \"%s\" (%s) not found", rname, rclass );                     \
+    if ( ! found )                                                             \
       return FALSE;                                                            \
-    }                                                                          \
   } while ( FALSE )
 
 // *************************************************************************
