@@ -48,7 +48,7 @@ public:
   static void show( Widget widget );
   static void hide( Widget widget );
 
-  static XmString encodeString( char * string );
+  static XmString encodeString( const char * const string );
   static char * decodeString( XmString xstring );
 
   static void setWidgetSize( Widget widget, const SbVec2s size );

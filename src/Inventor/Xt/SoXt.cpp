@@ -153,7 +153,11 @@ void
 SoXt::hide( // static
   Widget widget )
 {
-  XtUnrealizeWidget( widget );
+  if ( XtIsTopLevelShell( widget ) ) {
+    XtUnrealizeWidget( widget );
+  } else {
+    XtUnmanageChild( widget );
+  }
 } // hide()
 
 // *************************************************************************
@@ -162,12 +166,13 @@ SoXt::hide( // static
   Create and return a localized string from \a string.
 
   The caller is responsible for freeing the returned XmString.
- */
+*/
+
 XmString
 SoXt::encodeString( // static
-  char * string )
+  const char * const string )
 {
-  return XmStringCreateLocalized(string);
+  return XmStringCreateLocalized( (char *) string );
 } // encodeString()
 
 /*!
@@ -177,6 +182,7 @@ SoXt::encodeString( // static
   The caller is responsible for freeing the returned character string
   with XtFree() to avoid memory leaks.
 */
+
 char *
 SoXt::decodeString( // static
   XmString xstring )
@@ -195,7 +201,9 @@ SoXt::setWidgetSize( // static
   const SbVec2s size )
 {
   XtVaSetValues( widget,
-    XtNwidth, (Dimension) size[0], XtNheight, (Dimension) size[1], NULL);
+    XtNwidth, (Dimension) size[0],
+    XtNheight, (Dimension) size[1],
+    NULL );
 } // setWidgetSize()
 
 SbVec2s
