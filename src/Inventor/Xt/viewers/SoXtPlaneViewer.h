@@ -37,7 +37,7 @@ public:
   SoXtPlaneViewer(
     Widget parent,
     const char * const name = NULL,
-    SbBool buildInsideParent = TRUE,
+    SbBool embed = TRUE,
     SoXtFullViewer::BuildFlag flag = BUILD_ALL,
     SoXtViewer::Type type = BROWSER );
   ~SoXtPlaneViewer( void );
@@ -50,7 +50,7 @@ protected:
   SoXtPlaneViewer(
     Widget parent,
     const char * const name,
-    SbBool buildInsideParent,
+    SbBool embed,
     SoXtFullViewer::BuildFlag flag,
     SoXtViewer::Type type,
     SbBool buildNow );

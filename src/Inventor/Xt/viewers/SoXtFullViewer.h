@@ -69,8 +69,13 @@ public:
   virtual void hide(void);
 
 protected:
-  SoXtFullViewer( Widget parent, const char * name, SbBool inParent,
-      BuildFlag flag, Type type, SbBool build );
+  SoXtFullViewer(
+    Widget parent,
+    const char * name,
+    SbBool embed,
+    BuildFlag flag,
+    Type type,
+    SbBool build );
   ~SoXtFullViewer(void);
 
   Widget buildWidget( Widget parent );

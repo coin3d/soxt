@@ -93,11 +93,11 @@ enum DefaultViewerButtons {
 SoXtFullViewer::SoXtFullViewer( // protected
   Widget parent,
   const char * name,
-  SbBool inParent,
+  SbBool embed,
   BuildFlag flags,
   Type type,
   SbBool build )
-: inherited( parent, name, inParent, type, FALSE )
+: inherited( parent, name ? name : getDefaultWidgetName(), embed, type, FALSE )
 , popupTitle( NULL )
 , common( new SoAnyFullViewer( this ) )
 {
@@ -138,14 +138,14 @@ SoXtFullViewer::SoXtFullViewer( // protected
   pixmaps.seek = 0;
 
   if ( build != FALSE ) {
-    Widget widget = this->buildWidget( parent );
-    XtVaSetValues( widget,
+    Widget viewer = this->buildWidget( this->getParentWidget() );
+    XtVaSetValues( viewer,
       XmNleftAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_FORM,
       XmNrightAttachment, XmATTACH_FORM,
       XmNbottomAttachment, XmATTACH_FORM,
       NULL );
-    this->setBaseWidget( widget );
+    this->setBaseWidget( viewer );
   }
 
 } // SoXtFullViewer()
@@ -364,46 +364,12 @@ Widget
 SoXtFullViewer::buildWidget( // protected
   Widget parent )
 {
-  Display * dpy = XtDisplay( parent );
-  Screen * screen = XtScreen( parent );
-  Visual * visual = DefaultVisual( dpy, DefaultScreen(dpy) );
-  int depth = DefaultDepthOfScreen( screen );
-  if ( depth < 16 ) {
-    SoDebugError::postInfo( "SoXtFullViewer::buildWidget",
-      "depth = %d - trying to get better visual", depth );
-    XVisualInfo * visInfo = new XVisualInfo;
-    assert( visInfo != NULL );
-    // FIXME - fix screen param (0)
-    if ( XMatchVisualInfo( dpy, DefaultScreen(dpy), 24, TrueColor, visInfo ) ||
-        XMatchVisualInfo( dpy, DefaultScreen(dpy), 24, PseudoColor, visInfo ) ||
-        XMatchVisualInfo( dpy, DefaultScreen(dpy), 24, StaticColor, visInfo ) ||
-        XMatchVisualInfo( dpy, DefaultScreen(dpy), 24, DirectColor, visInfo ) ||
-        XMatchVisualInfo( dpy, DefaultScreen(dpy), 16, TrueColor, visInfo ) ||
-        XMatchVisualInfo( dpy, DefaultScreen(dpy), 16, PseudoColor, visInfo ) ||
-        XMatchVisualInfo( dpy, DefaultScreen(dpy), 16, StaticColor, visInfo ) ||
-        XMatchVisualInfo( dpy, DefaultScreen(dpy), 16, DirectColor, visInfo ) )
-    {
-//      visual = visInfo->visual;
-//      depth = 24;
-//      this->setNormalVisual( visInfo );
-      SoDebugError::postInfo( "SoXtFullViewer::buildWidget",
-        "found alternative visual" );
-    } else {
-      SoDebugError::postInfo( "SoXtFullViewer::buildWidget",
-        "no such luck" );
-    }
-  }
+  int depth = 0;
+  XtVaGetValues( parent, XmNdepth, &depth, NULL );
 
-  if ( this->getNormalVisual() != NULL ) {
-    this->viewerbase = XtVaCreateManagedWidget( this->getClassName(),
-      xmFormWidgetClass, parent,
-      XtNvisual, this->getNormalVisual()->visual,
-      NULL );
-  } else {
-    this->viewerbase = XtVaCreateManagedWidget( this->getClassName(),
-      xmFormWidgetClass, parent,
-      NULL );
-  }
+  this->viewerbase = XtVaCreateManagedWidget( this->getWidgetName(),
+    xmFormWidgetClass, parent,
+    NULL );
   this->registerWidget( this->viewerbase );
 
   char * titleString = NULL;
@@ -467,6 +433,8 @@ SoXtFullViewer::buildDecoration( // virtual
     XmNbottomAttachment, XmATTACH_FORM,
     XmNbottomOffset, 30,
     NULL );
+//  XtRealizeWidget( this->decorform[LEFTDECORATION] );
+//  XtManageChild( this->decorform[LEFTDECORATION] );
 
   this->decorform[RIGHTDECORATION]  = this->buildRightTrim( parent );
   XtVaSetValues( this->decorform[RIGHTDECORATION],
@@ -477,6 +445,8 @@ SoXtFullViewer::buildDecoration( // virtual
     XmNbottomAttachment, XmATTACH_FORM,
     XmNbottomOffset, 30,
     NULL );
+//  XtRealizeWidget( this->decorform[RIGHTDECORATION] );
+//  XtManageChild( this->decorform[RIGHTDECORATION] );
 
   this->decorform[BOTTOMDECORATION] = this->buildBottomTrim( parent );
   XtVaSetValues( this->decorform[BOTTOMDECORATION],
@@ -486,6 +456,8 @@ SoXtFullViewer::buildDecoration( // virtual
     XmNrightAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
     NULL );
+//  XtRealizeWidget( this->decorform[BOTTOMDECORATION] );
+//  XtManageChild( this->decorform[BOTTOMDECORATION] );
 } // buildDecorations()
 
 // *************************************************************************
@@ -503,14 +475,14 @@ SoXtFullViewer::buildLeftTrim( // virtual
       NULL );
 
   // build application buttons
-/*
+#if 0
   this->appButtonsForm = this->buildAppButtonsForm( trim );
   XtVaSetValues( this->appButtonsForm,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_FORM,
     NULL );
-*/
+#endif
 
   // add left thumb wheel
   this->wheels[LEFTDECORATION] = XtVaCreateManagedWidget( "LeftWheel",
@@ -654,7 +626,9 @@ SoXtFullViewer::buildBottomTrim( // virtual
   this->wheellabels[RIGHTDECORATION] =
     XtVaCreateManagedWidget( "RightWheelLabel",
     xmLabelWidgetClass, trim,
-    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_NONE,
+    XmNtopAttachment, XmATTACH_OPPOSITE_FORM,
+    XmNtopOffset, -30,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_FORM,
     XmNrightOffset, 5,
@@ -871,6 +845,25 @@ SoXtFullViewer::buildViewerButtons(
 
 // *************************************************************************
 
+/*!
+  \internal
+*/
+
+static const char *
+_xpmErrorString(
+  int error )
+{
+  switch ( error ) {
+  case XpmSuccess:      return "success";
+  case XpmColorError:   return "color error";
+  case XpmOpenFailed:   return "open failed";
+  case XpmFileInvalid:  return "file invalid";
+  case XpmNoMemory:     return "no memory";
+  case XpmColorFailed:  return "color failed";
+  default:              return "<unknown>";
+  } // switch ( error )
+} // _xpmStringError()
+
 /*
   \internal
   Does nothing if libXpm use hasn't been enabled.
@@ -878,54 +871,79 @@ SoXtFullViewer::buildViewerButtons(
 
 Pixmap
 SoXtFullViewer::createPixmapFromXpmData(
-  Widget button,
+  Widget widget,
   char ** xpm )
 {
+  Pixmap pixels = 0;
 #if HAVE_LIBXPM
-  Pixel bg;
-  XtVaGetValues( button, XmNbackground, &bg, NULL );
-  Display * dpy = XtDisplay( button );
-  XImage * image, * stencil;
-  int error = XpmCreateImageFromData( dpy, xpm, &image, &stencil, NULL );
+
+  Widget shell = widget;
+  while ( ! XtIsShell( shell ) && shell != (Widget) NULL )
+    shell = XtParent(shell);
+  assert( shell != (Widget) NULL );
+  Display * dpy = XtDisplay( shell );
+
+  XpmAttributes attrs;
+  attrs.visual = NULL;
+  attrs.colormap = 0;
+  attrs.depth = 0;
+
+  XtVaGetValues( shell,
+    XmNcolormap, &attrs.colormap,
+    XmNdepth,    &attrs.depth,
+    XmNvisual,   &attrs.visual,
+    NULL );
+
+  attrs.valuemask = XpmVisual | XpmColormap | XpmDepth;
+
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXtFullViewer::createPixmapFromXpmData",
+    "visualinfo: %p, %d, %d", attrs.visual, attrs.colormap, attrs.depth );
+#endif // SOXT_DEBUG
+
+  Drawable draw = RootWindow( dpy, DefaultScreen(dpy) );
+  Pixmap stencil = 0;
+  int error = XpmCreatePixmapFromData( dpy, draw, xpm,
+                &pixels, &stencil, &attrs );
+
   if ( error != XpmSuccess ) {
 #if SOXT_DEBUG
-    // FIXME - is there a better way to do the following?
-    // FIXME - if not, then the following should be made into a method
-    //         so it can be used in
-    //         SoXtFullViewer::createInsensitivePixmapFromXpmData()
-    char *errmsg =  error == XpmColorError ? "color error"
-                    : error == XpmOpenFailed ? "open failed"
-                    : error == XpmFileInvalid ? "file invalid"
-                    : error == XpmNoMemory ? "no memory"
-                    : error == XpmColorFailed ? "color failed"
-                    : "unknown";
     SoDebugError::postInfo( "SoXtFullViewer::createPixmapFromXpmData",
-      "XpmCreateImageFromData failed: %s", errmsg );
+      "XpmCreateImageFromData failed: %s", _xpmErrorString( error ) );
 #endif // SOXT_DEBUG
     return 0;
   }
-  if (stencil) {
-    for ( int x = 0; x < image->width; x++ ) {
-      for ( int y = 0; y < image->height; y++ ) {
-        Pixel pixel = XGetPixel( stencil, x, y );
+
+  if ( stencil ) {
+    Pixel bg;
+    XtVaGetValues( widget, XmNbackground, &bg, NULL );
+
+    XImage * pixmap = XGetImage( dpy, pixels, 0, 0, attrs.width, attrs.height,
+      0xffffffff, ZPixmap );
+    XImage * mask = XGetImage( dpy, stencil, 0, 0, attrs.width, attrs.height,
+      0xffffffff, ZPixmap );
+    assert( pixmap != NULL && mask != NULL );
+
+    for ( unsigned int x = 0; x < attrs.width; x++ ) {
+      for ( unsigned int y = 0; y < attrs.height; y++ ) {
+        Pixel pixel = XGetPixel( mask, x, y );
         if ( pixel == 0 ) // background must be set in image
-          XPutPixel( image, x, y, bg );
+          XPutPixel( pixmap, x, y, bg );
       }
     }
+
+    GC temp = XCreateGC( dpy, pixels, 0, NULL );
+    XPutImage( dpy, pixels, temp, pixmap,
+      0, 0, 0, 0, attrs.width, attrs.height );
+    XFreeGC( dpy, temp );
+
+    XDestroyImage( pixmap );
+    XDestroyImage( mask );
   }
-  const int width = 24, height = 24;
-  Drawable draw = RootWindow( dpy, DefaultScreen(dpy) );
-  Pixmap retval = XCreatePixmap( dpy, draw, width, height, image->depth );
-  GC gc = XCreateGC( dpy, draw, 0, NULL );
-  XPutImage( dpy, retval, gc, image, 0, 0, 0, 0, width, height );
-  XFreeGC( dpy, gc );
-  XDestroyImage( image );
-  if (stencil) XDestroyImage( stencil );
-  return retval;
-#else // ! HAVE_LIBXPM
-  return (Pixmap) 0;
-#endif // ! HAVE_LIBXPM
-} // ButtonPixmap()
+
+#endif // HAVE_LIBXPM
+  return pixels;
+} // createPixmapFromXpmData()
 
 /*!
   \internal
@@ -934,44 +952,75 @@ SoXtFullViewer::createPixmapFromXpmData(
 
 Pixmap
 SoXtFullViewer::createInsensitivePixmapFromXpmData(
-  Widget button,
+  Widget widget,
   char ** xpm )
 {
+  Pixmap pixels = 0;
+
 #if HAVE_LIBXPM
-  Pixel bg;
-  XtVaGetValues( button, XmNbackground, &bg, NULL );
-  Display * dpy = SoXt::getDisplay();
-  XImage * image, * stencil;
-  int error = XpmCreateImageFromData( dpy, xpm, &image, &stencil, NULL );
+  Widget shell = widget;
+  while ( ! XtIsShell( shell ) && widget != (Widget) NULL )
+    shell = XtParent( shell );
+  assert( shell != (Widget) NULL );
+
+  Display * dpy = XtDisplay( shell );
+
+  XpmAttributes attrs;
+  attrs.visual = NULL;
+  attrs.colormap = 0;
+  attrs.depth = 0;
+
+  XtVaGetValues( shell,
+    XmNcolormap, &attrs.colormap,
+    XmNdepth,    &attrs.depth,
+    XmNvisual,   &attrs.visual,
+    NULL );
+
+  attrs.valuemask = XpmVisual | XpmColormap | XpmDepth;
+
+  Drawable draw = RootWindow( dpy, DefaultScreen(dpy) );
+  Pixmap stencil = 0;
+  int error = XpmCreatePixmapFromData( dpy, draw, xpm,
+     &pixels, &stencil, &attrs );
+
   if ( error != XpmSuccess ) {
 #if SOXT_DEBUG
     SoDebugError::postInfo(
       "SoXtFullViewer::createInsensitivePixmapFromXpmData",
-      "XpmCreateImageFromData failed" );
+      "XpmCreatePixmapFromData() failed: %s", _xpmErrorString( error ) );
 #endif // SOXT_DEBUG
-    return 0;
+    return (Pixmap) 0;
   }
-  if (stencil) {
-    for ( int x = 0; x < image->width; x++ ) {
-      for ( int y = 0; y < image->height; y++ ) {
-        Pixel pixel = XGetPixel( stencil, x, y );
+
+  if ( stencil ) {
+    Pixel bg;
+    XtVaGetValues( widget, XmNbackground, &bg, NULL );
+
+    XImage * pixmap = XGetImage( dpy, pixels, 0, 0, attrs.width, attrs.height,
+      0xffffffff, ZPixmap );
+    XImage * mask = XGetImage( dpy, stencil, 0, 0, attrs.width, attrs.height,
+      0xffffffff, ZPixmap );
+    assert( pixmap != NULL && mask != NULL );
+
+    for ( unsigned int x = 0; x < attrs.width; x++ ) {
+      for ( unsigned int y = 0; y < attrs.height; y++ ) {
+        Pixel pixel = XGetPixel( mask, x, y );
         if ( (pixel == 0) || (((x+y) & 1) == 1) )
-          XPutPixel( image, x, y, bg );
+          XPutPixel( pixmap, x, y, bg );
       }
     }
+
+    GC temp = XCreateGC( dpy, pixels, 0, NULL );
+    XPutImage( dpy, pixels, temp, pixmap,
+      0, 0, 0, 0, attrs.width, attrs.height );
+    XFreeGC( dpy, temp );
+
+    XDestroyImage( pixmap );
+    XDestroyImage( mask );
   }
-  const int width = 24, height = 24;
-  Drawable draw = RootWindow( dpy, DefaultScreen(dpy) );
-  Pixmap retval = XCreatePixmap( dpy, draw, width, height, image->depth );
-  GC gc = XCreateGC( dpy, draw, 0, NULL );
-  XPutImage( dpy, retval, gc, image, 0, 0, 0, 0, width, height );
-  XFreeGC( dpy, gc );
-  XDestroyImage( image );
-  if (stencil) XDestroyImage( stencil );
-  return retval;
-#else // ! HAVE_LIBXPM
-  return (Pixmap) 0;
-#endif // ! HAVE_LIBXPM
+
+#endif // HAVE_LIBXPM
+  return pixels;
 } // createInsensitivePixmapFromXpmData()
 
 /*!
@@ -1088,12 +1137,16 @@ SoXtFullViewer::createViewerButtons(
     Pixmap pixmap, pixmap_ins;
     switch ( viewerbutton ) {
     case INTERACT_BUTTON:
-      pixmap = pixmap_ins = pixmaps.pick =
+      pixmap = pixmaps.pick =
         createPixmapFromXpmData( button, pick_xpm );
+      pixmap_ins = pixmaps.pick_ins =
+        createInsensitivePixmapFromXpmData( button, pick_xpm );
       break;
     case EXAMINE_BUTTON:
-      pixmap = pixmap_ins = pixmaps.view =
+      pixmap = pixmaps.view =
         createPixmapFromXpmData( button, view_xpm );
+      pixmap_ins = pixmaps.view_ins =
+        createInsensitivePixmapFromXpmData( button, view_xpm );
       break;
     case HELP_BUTTON:
       pixmap = pixmap_ins = pixmaps.help =
@@ -1498,16 +1551,41 @@ SoXtFullViewer::setRightWheelString(
   const char * const string )
 {
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXtFullViewer::setRightWheelString",
-    "setting right wheel label" );
+  SoDebugError::postInfo( "SoXtFullViewer::setRightWheelString", "[enter]" );
 #endif // SOXT_DEBUG
-  this->wheelstrings[RIGHTDECORATION] = string;
+
+#if 0 // re-create widget strategy
+  if ( this->wheellabels[RIGHTDECORATION] != (Widget) NULL )
+    XtDestroyWidget( this->wheellabels[RIGHTDECORATION] );
+
+  this->wheellabels[RIGHTDECORATION] =
+    XtVaCreateManagedWidget( "RightWheelLabel",
+      xmLabelWidgetClass, this->decorform[BOTTOMDECORATION],
+      XmNtopAttachment, XmATTACH_OPPOSITE_FORM,
+      XmNtopOffset, -30,
+      XmNrightAttachment, XmATTACH_FORM,
+      XmNrightOffset, 5,
+      XmNbottomAttachment, XmATTACH_FORM,
+      XtVaTypedArg,
+        XmNlabelString, XmRString,
+        string, strlen(string) + 1,
+      NULL );
+#else // re-configure label string strategy
+//  XtUnmanageChild( this->wheellabels[RIGHTDECORATION] );
+  // why does Motif spin on edge synchronization here?  twice?
   if ( this->wheellabels[RIGHTDECORATION] != NULL )
     XtVaSetValues( this->wheellabels[RIGHTDECORATION],
       XtVaTypedArg,
         XmNlabelString, XmRString,
         string, strlen(string) + 1,
       NULL );
+//  XtManageChild( this->wheellabels[RIGHTDECORATION] );
+#endif
+
+  this->wheelstrings[RIGHTDECORATION] = string;
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXtFullViewer::setRightWheelString", "[exit]" );
+#endif // SOXT_DEBUG
 } // setRightWheelString()
 
 /*!

@@ -52,10 +52,10 @@ static const char rcsid[] =
 SoXtPlaneViewer::SoXtPlaneViewer(
   Widget parent,
   const char * const name,
-  SbBool inParent,
+  SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type )
-: inherited( parent, name, inParent, flag, type, FALSE )
+: inherited( parent, name ? name : getDefaultWidgetName(), embed, flag, type, FALSE )
 , common( new SoAnyPlaneViewer( this ) )
 {
   this->constructor( TRUE );
@@ -68,11 +68,11 @@ SoXtPlaneViewer::SoXtPlaneViewer(
 SoXtPlaneViewer::SoXtPlaneViewer( // protected
   Widget parent,
   const char * const name,
-  SbBool inParent,
+  SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type,
   SbBool build )
-: inherited( parent, name, inParent, flag, type, FALSE )
+: inherited( parent, name ? name : getDefaultWidgetName(), embed, flag, type, FALSE )
 , common( new SoAnyPlaneViewer( this ) )
 {
   this->constructor( build );
@@ -96,13 +96,13 @@ SoXtPlaneViewer::constructor(
 
   if ( build ) {
     Widget viewer = this->buildWidget( this->getParentWidget() );
+    this->setBaseWidget( viewer );
     XtVaSetValues( viewer,
       XmNleftAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_FORM,
       XmNrightAttachment, XmATTACH_FORM,
       XmNbottomAttachment, XmATTACH_FORM,
       NULL );
-    this->setBaseWidget( viewer );
 
     SoXtResource rsc( this->getRightWheelLabelWidget() );
     char * dollyString = NULL;

@@ -63,9 +63,12 @@ public:
   SbBool isDrawToFrontBufferEnable(void) const;
 
 protected:
-  SoXtGLWidget( Widget parent = NULL, const char * name = NULL,
-      SbBool buildInsideParent = TRUE, int glModes = SO_GLX_RGB,
-      SbBool buildNow = TRUE );
+  SoXtGLWidget(
+    Widget parent = NULL,
+    const char * name = NULL,
+    SbBool embed = TRUE,
+    int glModes = SO_GLX_RGB,
+    SbBool build = TRUE );
   virtual ~SoXtGLWidget(void);
   virtual void redraw(void) = 0;
   virtual void redrawOverlay(void);
@@ -96,7 +99,9 @@ protected:
 
   unsigned long transparentPixel;
 
+  SbBool border;
   int borderwidth;
+
   Widget glxWidget;
   Widget glxManager;
   GLXContext normalContext;

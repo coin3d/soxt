@@ -43,7 +43,7 @@ protected:
   SoXtConstrainedViewer(
     Widget parent,
     const char * const name,
-    SbBool inParent,
+    SbBool embed,
     SoXtFullViewer::BuildFlag flag,
     SoXtViewer::Type type,
     SbBool build );

@@ -35,10 +35,12 @@ class SoXtExaminerViewer : public SoXtFullViewer {
   friend class SoAnyExaminerViewer;
 
 public:
-  SoXtExaminerViewer( Widget parent = (Widget) NULL,
-      const char * name = NULL, SbBool inParent = TRUE,
-      SoXtFullViewer::BuildFlag flags = BUILD_ALL,
-      SoXtViewer::Type type = BROWSER );
+  SoXtExaminerViewer(
+    Widget parent = (Widget) NULL,
+    const char * name = NULL,
+    SbBool embed = TRUE,
+    SoXtFullViewer::BuildFlag flags = BUILD_ALL,
+    SoXtViewer::Type type = BROWSER );
   ~SoXtExaminerViewer(void);
 
   virtual void setViewing( SbBool enable );
@@ -56,9 +58,13 @@ public:
   int getFeedbackSize(void) const;
 
 protected:
-  SoXtExaminerViewer( Widget parent, const char * name,
-      SbBool inParent, SoXtFullViewer::BuildFlag flags,
-      SoXtViewer::Type type, SbBool build );
+  SoXtExaminerViewer(
+    Widget parent,
+    const char * name,
+    SbBool embed,
+    SoXtFullViewer::BuildFlag flags,
+    SoXtViewer::Type type,
+    SbBool build );
 
   virtual void actualRedraw( void );
 

@@ -37,11 +37,11 @@ static const char rcsid[] =
 SoXtConstrainedViewer::SoXtConstrainedViewer( // protected
   Widget parent,
   const char * const name,
-  SbBool inParent,
+  SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type,
   SbBool build )
-: inherited( parent, name, inParent, flag, type, FALSE )
+: inherited( parent, name, embed, flag, type, FALSE )
 , common( new SoAnyConstrainedViewer( this ) )
 {
   this->upDirection.setValue( 0, 1, 0 );

@@ -34,7 +34,7 @@ public:
   SoXtFlyViewer(
     Widget parent = NULL,
     const char * const name = NULL,
-    SbBool inParent = TRUE,
+    SbBool embed = TRUE,
     SoXtFullViewer::BuildFlag flags = BUILD_ALL,
     SoXtViewer::Type type = BROWSER );
   ~SoXtFlyViewer(void);
@@ -49,7 +49,7 @@ protected:
   SoXtFlyViewer(
     Widget parent,
     const char * const name,
-    SbBool inParent,
+    SbBool embed,
     SoXtFullViewer::BuildFlag flag,
     SoXtViewer::Type type,
     SbBool build );

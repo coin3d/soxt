@@ -34,7 +34,7 @@ public:
   SoXtWalkViewer(
     Widget parent = NULL,
     const char * const name = NULL,
-    SbBool inParent = TRUE,
+    SbBool embed = TRUE,
     SoXtFullViewer::BuildFlag flag = BUILD_ALL,
     SoXtViewer::Type type = BROWSER );
   ~SoXtWalkViewer(void);
@@ -48,7 +48,7 @@ protected:
   SoXtWalkViewer(
     Widget parent,
     const char * const name,
-    SbBool inParent,
+    SbBool embed,
     SoXtFullViewer::BuildFlag flag,
     SoXtViewer::Type type,
     SbBool buildNow );

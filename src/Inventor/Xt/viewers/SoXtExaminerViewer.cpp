@@ -70,10 +70,10 @@ static const char rcsid[] =
 SoXtExaminerViewer::SoXtExaminerViewer(
   Widget parent,
   const char * name,
-  SbBool inParent,
+  SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type )
-: inherited( parent, name, inParent, flag, type, FALSE )
+: inherited( parent, name ? name : getDefaultWidgetName(), embed, flag, type, FALSE )
 , common( new SoAnyExaminerViewer( this ) )
 {
   this->constructor( TRUE );
@@ -86,11 +86,11 @@ SoXtExaminerViewer::SoXtExaminerViewer(
 SoXtExaminerViewer::SoXtExaminerViewer( // protected
   Widget parent,
   const char * name,
-  SbBool inParent,
+  SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type,
   SbBool build )
-: inherited( parent, name, inParent, flag, type, FALSE )
+: inherited( parent, name ? name : getDefaultWidgetName(), embed, flag, type, FALSE )
 , common( new SoAnyExaminerViewer( this ) )
 {
   this->constructor( build );
@@ -114,18 +114,18 @@ SoXtExaminerViewer::constructor( // private
   this->spindetecttimerId = 0;
   this->spindetecttimerActive = FALSE;
 
-  this->setClassName( this->getDefaultWidgetName() );
+  this->setClassName( this->getWidgetName() );
   this->camerabutton = (Widget) NULL;
 
   if ( build ) {
     Widget viewer = this->buildWidget( this->getParentWidget() );
+    this->setBaseWidget( viewer );
     XtVaSetValues( viewer,
       XmNleftAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_FORM,
       XmNrightAttachment, XmATTACH_FORM,
       XmNbottomAttachment, XmATTACH_FORM,
       NULL );
-    this->setBaseWidget( viewer );
 
     char * dollyString = NULL;
     SoXtResource rsc( this->getRightWheelLabelWidget() );
@@ -133,8 +133,7 @@ SoXtExaminerViewer::constructor( // private
          dollyString != NULL )
       this->setRightWheelString( dollyString );
   }
-
-  this->mapped = FALSE;
+  this->mapped = FALSE; // ?
 } // constructor()
 
 /*!
@@ -709,6 +708,9 @@ void
 SoXtExaminerViewer::setCamera( // virtual
   SoCamera * camera )
 {
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXtExaminerViewer::setCamera", "[enter]" );
+#endif // SOXT_DEBUG
   Pixmap pixmap, pixmap_ins;
   if ( camera == NULL ) {
     // find better pixmaps for this...
@@ -738,8 +740,17 @@ SoXtExaminerViewer::setCamera( // virtual
     pixmap_ins = this->camerapixmaps.ortho_ins;
   }
 
-  XtUnmanageChild( this->camerabutton );
 #if HAVE_LIBXPM
+  SbBool extra = FALSE;
+  if ( XtIsRealized( this->camerabutton ) ) {
+    extra = TRUE;
+  }
+  extra = FALSE;
+
+  if ( extra ) {
+    XtUnmapWidget( this->camerabutton );
+    XtUnrealizeWidget( this->camerabutton );
+  }
   if ( pixmap ) {
     XtVaSetValues( this->camerabutton,
       XmNlabelType, XmPIXMAP,
@@ -748,13 +759,21 @@ SoXtExaminerViewer::setCamera( // virtual
       XmNlabelInsensitivePixmap, pixmap_ins,
       XmNselectInsensitivePixmap, pixmap_ins,
       NULL );
+    XtVaSetValues( this->camerabutton,
+      XmNwidth, 30,
+      XmNheight, 30,
+      NULL );
+  }
+  if ( extra ) {
+    XtRealizeWidget( this->camerabutton );
+    XtMapWidget( this->camerabutton );
   }
 #endif // HAVE_LIBXPM
-  XtVaSetValues( this->camerabutton,
-    XmNwidth, 30, XmNheight, 30, NULL );
-  XtManageChild( this->camerabutton );
 
   inherited::setCamera( camera );
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXtExaminerViewer::setCamera", "[exit]" );
+#endif // SOXT_DEBUG
 } // setCamera()
 
 // *************************************************************************

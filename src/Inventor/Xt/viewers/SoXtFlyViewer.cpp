@@ -40,10 +40,10 @@ static const char rcsid[] =
 SoXtFlyViewer::SoXtFlyViewer( // public
   Widget parent,
   const char * const name,
-  SbBool inParent,
+  SbBool embed,
   SoXtFullViewer::BuildFlag flags,
   SoXtViewer::Type type )
-: inherited( parent, name, inParent, flags, type, FALSE )
+: inherited( parent, name ? name : getDefaultWidgetName(), embed, flags, type, FALSE )
 , common( new SoAnyFlyViewer( this ) )
 {
   this->constructor( TRUE );
@@ -56,11 +56,11 @@ SoXtFlyViewer::SoXtFlyViewer( // public
 SoXtFlyViewer::SoXtFlyViewer( // protected
   Widget parent,
   const char * const name,
-  SbBool inParent,
+  SbBool embed,
   SoXtFullViewer::BuildFlag flags,
   SoXtViewer::Type type,
   SbBool build )
-: inherited( parent, name, inParent, flags, type, FALSE )
+: inherited( parent, name ? name : getDefaultWidgetName(), embed, flags, type, FALSE )
 , common( new SoAnyFlyViewer( this ) )
 {
   this->constructor( build );
@@ -83,13 +83,13 @@ SoXtFlyViewer::constructor( // private
 
   if ( build ) {
     Widget viewer = inherited::buildWidget( this->getParentWidget() );
+    this->setBaseWidget( viewer );
     XtVaSetValues( viewer,
       XmNleftAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_FORM,
       XmNrightAttachment, XmATTACH_FORM,
       XmNbottomAttachment, XmATTACH_FORM,
       NULL );
-    this->setBaseWidget( viewer );
     // extra resources
   }
 } // constructor()

@@ -44,10 +44,10 @@ static const char rcsid[] =
 SoXtWalkViewer::SoXtWalkViewer(
   Widget parent,
   const char * const name,
-  SbBool inParent,
+  SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type )
-: inherited( parent, name, inParent, flag, type, FALSE )
+: inherited( parent, name ? name : getDefaultWidgetName(), embed, flag, type, FALSE )
 , common( new SoAnyWalkViewer( this ) )
 {
   this->constructor( TRUE );
@@ -59,11 +59,11 @@ SoXtWalkViewer::SoXtWalkViewer(
 SoXtWalkViewer::SoXtWalkViewer( // protected
   Widget parent,
   const char * const name,
-  SbBool inParent,
+  SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type,
   SbBool build )
-: inherited( parent, name, inParent, flag, type, FALSE )
+: inherited( parent, name ? name : getDefaultWidgetName(), embed, flag, type, FALSE )
 , common( new SoAnyWalkViewer( this ) )
 {
   this->constructor( build );
@@ -87,14 +87,13 @@ SoXtWalkViewer::constructor(
   this->setClassName( this->getDefaultWidgetName() );
   if ( build ) {
     Widget viewer = this->buildWidget( this->getParentWidget() );
+    this->setBaseWidget( viewer );
     XtVaSetValues( viewer,
       XmNleftAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_FORM,
       XmNrightAttachment, XmATTACH_FORM,
       XmNbottomAttachment, XmATTACH_FORM,
       NULL );
-    this->setBaseWidget( viewer );
-
     // resources
   }
 } // constructor()
