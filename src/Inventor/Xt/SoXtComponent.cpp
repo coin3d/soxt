@@ -67,6 +67,7 @@ static const char rcsid[] =
 #include <X11/Xlib.h>
 #include <X11/Intrinsic.h>
 #include <X11/IntrinsicP.h>
+#include <X11/cursorfont.h>
 #ifdef HAVE_LIBXMU
 #include <X11/Xmu/Editres.h>
 #endif // HAVE_LIBXMU
@@ -95,6 +96,9 @@ public:
   }
 
 
+  static Cursor getNativeCursor(Display * d,
+                                const SoXtCursor::CustomCursor * cc);
+
   Widget parent;
   Widget widget;
   char * widgetname;
@@ -115,10 +119,12 @@ public:
 
 private:
   const SoXtComponent * owner;
+  static SbDict * cursordict;
 };
 
 SbPList * SoXtComponentP::widgets = NULL;
 SbPList * SoXtComponentP::components = NULL;
+SbDict * SoXtComponentP::cursordict = NULL;
 
 #define PRIVATE(o) (o->pimpl)
 
@@ -1192,6 +1198,31 @@ SoXtComponent::isFullScreen(void) const
   return PRIVATE(this)->fullscreen;
 }
 
+// Converts from the common generic cursor format to a X11 Cursor
+// instance.
+Cursor
+SoXtComponentP::getNativeCursor(Display * d,
+                                const SoXtCursor::CustomCursor * cc)
+{
+  if (SoXtComponentP::cursordict == NULL) { // first call, initialize
+    SoXtComponentP::cursordict = new SbDict; // FIXME: mem leak. 20011121 mortene.
+  }
+
+  void * qc;
+  SbBool b = SoXtComponentP::cursordict->find((unsigned long)cc, qc);
+  if (b) { return (Cursor)qc; }
+
+  // FIXME: translate from bitmap to native format. 20011127 mortene.
+
+  // FIXME: currently a memory leak here. 20011121 mortene.
+  Cursor c = XCreateFontCursor(d, XC_hand2);
+  // FIXME: use a better dict class -- the void* cast is ugly.
+  // 20011127 mortene.
+  assert(sizeof(Cursor) <= sizeof(void*));
+  SoXtComponentP::cursordict->enter((unsigned long)cc, (void *)c);
+  return c;
+}
+
 /*!
   Sets the cursor for this component.
 */
@@ -1207,7 +1238,49 @@ SoXtComponent::setComponentCursor(const SoXtCursor & cursor)
 void
 SoXtComponent::setWidgetCursor(Widget w, const SoXtCursor & cursor)
 {
-  SOXT_STUB();
+  Display * d = SoXt::getDisplay();
+
+  if (cursor.getShape() == SoXtCursor::CUSTOM_BITMAP) {
+    const SoXtCursor::CustomCursor * cc = &cursor.getCustomCursor();
+    XDefineCursor(d, XtWindow(w), SoXtComponentP::getNativeCursor(d, cc));
+  }
+  else {
+    Cursor c;
+    switch (cursor.getShape()) {
+    case SoXtCursor::DEFAULT:
+      XUndefineCursor(d, XtWindow(w));
+      break;
+
+    case SoXtCursor::BUSY:
+      // FIXME: plug memory leak. 20011127 mortene.
+      c = XCreateFontCursor(d, XC_clock);
+      XDefineCursor(d, XtWindow(w), c);
+      break;
+
+    case SoXtCursor::BLANK:
+      // FIXME: implement. 20011127 mortene.
+      SOXT_STUB();
+      break;
+
+    case SoXtCursor::CROSSHAIR:
+      // FIXME: plug memory leak. 20011127 mortene.
+      c = XCreateFontCursor(d, XC_crosshair);
+      XDefineCursor(d, XtWindow(w), c);
+      break;
+
+    case SoXtCursor::UPARROW:
+      // FIXME: plug memory leak. 20011127 mortene.
+      c = XCreateFontCursor(d, XC_based_arrow_up);
+      // FIXME: perhaps this one is better?:  20011127 mortene.
+//        Cursor c = XCreateFontCursor(d, XC_sb_up_arrow);
+      XDefineCursor(d, XtWindow(w), c);
+      break;
+
+    default:
+      assert(FALSE && "unsupported cursor shape type");
+      break;
+    }
+  }
 }
 
 // *************************************************************************
