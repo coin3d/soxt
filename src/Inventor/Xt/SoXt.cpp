@@ -1212,19 +1212,6 @@ SoXt::selectBestVisual(// static
 
 // *************************************************************************
 
-// Documented in SoWin.cpp, along with doc for the callback function
-// typedef and the enums.
-//
-// FIXME: find a way to collect the documentation of the public API
-// for all common So[Win|Qt|Gtk|Xt|Mac] classes. 20011014 mortene.
-SoXt::FatalErrorCB *
-SoXt::setFatalErrorHandler(SoXt::FatalErrorCB * cb, void * userdata)
-{
-  return SoAny::si()->setFatalErrorHandler(cb, userdata);
-}
-
-// *************************************************************************
-
 /*!
   \var SoXtP::fallbackresources
 
