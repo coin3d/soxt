@@ -116,7 +116,7 @@ SoXtPopupMenu::~SoXtPopupMenu( // virtual
 
 int
 SoXtPopupMenu::newMenu(
-  char * name,
+  const char * name,
   int menuid )
 {
   int id = menuid;
@@ -144,7 +144,7 @@ SoXtPopupMenu::newMenu(
 
 int
 SoXtPopupMenu::getMenu(
-  char * name )
+  const char * name )
 {
   const int numMenus = this->menus->getLength();
   int i;
@@ -160,7 +160,7 @@ SoXtPopupMenu::getMenu(
 void
 SoXtPopupMenu::setMenuTitle(
   int menuid,
-  char * title )
+  const char * title )
 {
   MenuRecord * rec = this->getMenuRecord( menuid );
   if ( rec == NULL ) {
@@ -177,7 +177,7 @@ SoXtPopupMenu::setMenuTitle(
 /*!
 */
 
-char *
+const char *
 SoXtPopupMenu::getMenuTitle(
   int menuid )
 {
@@ -194,7 +194,7 @@ SoXtPopupMenu::getMenuTitle(
 
 int
 SoXtPopupMenu::newMenuItem(
-  char * name,
+  const char * name,
   int itemid )
 {
   int id = itemid;
@@ -221,7 +221,7 @@ SoXtPopupMenu::newMenuItem(
 
 int
 SoXtPopupMenu::getMenuItem(
-  char * name )
+  const char * name )
 {
   const int numItems = this->items->getLength();
   int i;
@@ -237,7 +237,7 @@ SoXtPopupMenu::getMenuItem(
 void
 SoXtPopupMenu::setMenuItemTitle(
   int itemid,
-  char * title )
+  const char * title )
 {
   ItemRecord * rec = this->getItemRecord( itemid );
   if ( rec == NULL )
@@ -251,7 +251,7 @@ SoXtPopupMenu::setMenuItemTitle(
 /*!
 */
 
-char *
+const char *
 SoXtPopupMenu::getMenuItemTitle(
   int itemid )
 {
@@ -804,7 +804,7 @@ SoXtPopupMenu::getItemRecord(
 
 MenuRecord *
 SoXtPopupMenu::createMenuRecord(
-  char * name )
+  const char * name )
 {
   MenuRecord * rec = new MenuRecord;
   rec->menuid = -1;
@@ -821,7 +821,7 @@ SoXtPopupMenu::createMenuRecord(
 
 ItemRecord *
 SoXtPopupMenu::createItemRecord(
-  char * name )
+  const char * name )
 {
   ItemRecord * rec = new ItemRecord;
   rec->itemid = -1;
