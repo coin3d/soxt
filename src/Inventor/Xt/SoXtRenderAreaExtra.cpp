@@ -53,7 +53,8 @@ SoXtRenderArea::processEvent( // virtual, protected
   if ( this->devices.extra )
     for ( int i = 0; i < this->devices.extra->getLength() &&
                      sceneEvent == NULL; i++ )
-      ((SoXtDevice *)(*this->devices.extra)[i])->translateEvent( event );
+      sceneEvent =
+        ((SoXtDevice *)(*this->devices.extra)[i])->translateEvent( event );
 
   if ( ! sceneEvent && this->devices.mouse )
     sceneEvent = this->devices.mouse->translateEvent( event );
