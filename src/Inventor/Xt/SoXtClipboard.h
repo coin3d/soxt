@@ -23,6 +23,7 @@
 #define SOXT_CLIPBOARD_H
 
 #include <sys/types.h>
+#include <stdint.h>
 
 #include <X11/Xatom.h>
 #include <X11/Intrinsic.h>
