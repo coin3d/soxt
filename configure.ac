@@ -60,6 +60,8 @@ AM_CONFIG_HEADER([src/config.h])
 AM_DISABLE_STATIC
 AM_MAINTAINER_MODE
 
+SIM_AC_SETUP_MKS
+
 # case "$host_os" in
 #   irix*)
 #     if test x"${AR+set}" != x"set"; then
