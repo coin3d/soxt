@@ -20,10 +20,12 @@ libSoXtWidgetsinc_HEADERS = \
 ############################################################################
 
 ThumbWheel.lo: $(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp
-	source='$^' object='$@' libtool=yes \
+	source='$(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp' \
+	object='$@' libtool=yes \
 	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
 	$(CXXDEPMODE) $(depcomp) \
-	$(LTCXXCOMPILE) -c -o $@ $^
+	$(LTCXXCOMPILE) -c -o $@ \
+	$(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp
 	
 ############################################################################
 

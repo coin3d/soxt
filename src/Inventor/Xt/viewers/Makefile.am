@@ -35,16 +35,20 @@ SoXtViewer.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.cpp.in
 ############################################################################
 
 SoAnyFullViewer.lo: $(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp
-	source='$^' object='$@' libtool=yes \
+	source='$(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp' \
+	object='$@' libtool=yes \
 	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
 	$(CXXDEPMODE) $(depcomp) \
-	$(LTCXXCOMPILE) -c -o $@ $^
+	$(LTCXXCOMPILE) -c -o $@ \
+	$(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp
 
 SoAnyExaminerViewer.lo: $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp
-	source='$^' object='$@' libtool=yes \
+	source='$(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp' \
+	object='$@' libtool=yes \
 	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
 	$(CXXDEPMODE) $(depcomp) \
-	$(LTCXXCOMPILE) -c -o $@ $^
+	$(LTCXXCOMPILE) -c -o $@ \
+	$(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp
 
 ############################################################################
 
