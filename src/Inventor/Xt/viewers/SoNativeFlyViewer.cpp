@@ -54,3 +54,24 @@ SoXtFlyViewerP::updateCursorRepresentation()
 //      break;
 //    }
 } // setCursorRepresentation()
+
+
+// FIXME: this code is "left over" after we migrated to a common
+// code-base in SoGuiFlyViewer.cpp.in. Fix up and re-enable. 20011209 mortene.
+
+//  void
+//  SoXtFlyViewer::createPrefSheet(// virtual, protected
+//    void)
+//  {
+//    if (! this->prefshell) {
+//      this->prefparts = new Widget [ 16 ];
+//      this->createPrefSheetShellAndForm(this->prefshell, this->prefsheet);
+//      this->createDefaultPrefSheetParts(this->prefparts, this->numprefparts,
+//        this->prefsheet);
+//      this->prefparts[this->numprefparts] =
+//        this->createFramedSpeedPrefSheetGuts(this->prefsheet);
+//      if (this->prefparts[this->numprefparts] != NULL) this->numprefparts++;
+//    }
+//    this->layoutPartsAndMapPrefSheet(this->prefparts, this->numprefparts,
+//      this->prefsheet, this->prefshell);
+//  } // createPrefSheet()
