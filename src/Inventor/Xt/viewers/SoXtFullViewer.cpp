@@ -104,6 +104,9 @@ SoXtFullViewer::SoXtFullViewer( // protected
     this->wheellabels[i] = NULL;
   }
 
+  this->seekdistance = 50.0f;
+  this->seekdistaspercentage = TRUE;
+
   this->zoomrange = SbVec2f( 1.0f, 140.0f );
 
   this->popupEnabled = (flags & SoXtFullViewer::BUILD_POPUP) ? TRUE : FALSE;
@@ -115,6 +118,7 @@ SoXtFullViewer::SoXtFullViewer( // protected
   this->setSize( SbVec2s( 500, 390 ) );
   this->setClassName( "SoXtFullViewer" );
 
+  this->prefshell = NULL;
   this->prefmenu = NULL;
 
   pixmaps.pick = 0;
@@ -320,8 +324,8 @@ SoXtFullViewer::buildWidget( // protected
   while ( shell && ! XtIsWMShell( shell ) )
     shell = XtParent( shell );
   if ( shell ) {
-    int existing = 0;
-    XtVaGetValues( shell, XmNminHeight, &existing, NULL );
+    int existing = 0, current = 0;
+    XtVaGetValues( shell, XmNminHeight, &existing, XmNheight, &current, NULL );
     Dimension minheight =
       30 + 90 + 30 * this->viewerButtonsList->getLength() + 8;
     if ( existing > minheight ) minheight = existing;
@@ -329,6 +333,10 @@ SoXtFullViewer::buildWidget( // protected
       XmNminWidth, 300,
       XmNminHeight, minheight,
       NULL );
+    if ( current < minheight )
+      XtVaSetValues( shell,
+        XmNheight, minheight,
+        NULL );
   }
   return this->viewerbase;
 } // buildWidget()
@@ -646,18 +654,36 @@ SoXtFullViewer::setCamera( // virtual
 {
   inherited::setCamera( camera );
 
-#if 0
-  if ( this->prefwindow ) {
-    this->setZoomSliderPosition( this->getCameraZoom() );
-    this->setZoomFieldString( this->getCameraZoom() );
+  if ( this->prefshell != NULL ) {
+//    this->setZoomSliderPosition( this->getCameraZoom() );
+//    this->setZoomFieldString( this->getCameraZoom() );
 
-    SbBool enable = camera ? TRUE : FALSE;
-    this->zoomslider->setEnabled( enable );
-    this->zoomfield->setEnabled( enable );
-    this->zoomrangefrom->setEnabled( enable );
-    this->zoomrangeto->setEnabled( enable );
+    Boolean enable = False;
+    if ( camera ) {
+      SoType camtype = camera->getTypeId();
+      if ( camtype.isDerivedFrom( SoPerspectiveCamera::getClassTypeId() ) )
+        enable = True;
+    }
+    XtVaSetValues( this->zoomfrom,
+      XmNsensitive, enable,
+      XmNeditable, enable,
+      XmNcursorPositionVisible, enable,
+      NULL );
+    XtVaSetValues( this->zoomslider,
+      XmNsensitive, enable,
+      XmNeditable, enable,
+      NULL );
+    XtVaSetValues( this->zoomto,
+      XmNsensitive, enable,
+      XmNeditable, enable,
+      XmNcursorPositionVisible, enable,
+      NULL );
+    XtVaSetValues( this->zoomvalue,
+      XmNsensitive, enable,
+      XmNeditable, enable,
+      XmNcursorPositionVisible, enable,
+      NULL );
   }
-#endif // 0
 } // setCamera()
 
 /*!
@@ -1415,18 +1441,19 @@ SoXtFullViewer::createDefaultPrefSheetParts( // protected
   assert( widgets != NULL );
   num = 0;
 
-  if ( (widgets[num] = this->createFramedSeekPrefSheetGuts( form )) ) num++;
-  if ( (widgets[num] = this->createFramedZoomPrefSheetGuts( form ) )) num++;
-  if ( (widgets[num] = this->createFramedClippingPrefSheetGuts( form )) ) num++;
-  if ( (widgets[num] = this->createFramedStereoPrefSheetGuts( form )) ) num++;
-
-//  if ( (widgets[num] = this->createSeekPrefSheetGuts( form )) ) num++;
-//  if ( (widgets[num] = this->createSeekDistPrefSheetGuts( form )) ) num++;
-//  if ( (widgets[num] = this->createZoomPrefSheetGuts( form ) )) num++;
-//  if ( (widgets[num] = this->createClippingPrefSheetGuts( form )) ) num++;
-//  if ( (widgets[num] = this->createStereoPrefSheetGuts( form )) ) num++;
-
-  if ( (widgets[num] = this->createSpeedPrefSheetGuts( form )) ) num++;
+  if ( (widgets[num] = this->createFramedSeekPrefSheetGuts( form )) )
+    num++;
+  if ( (widgets[num] = this->createFramedSeekDistPrefSheetGuts( form )) )
+    num++;
+  if ( (widgets[num] = this->createFramedZoomPrefSheetGuts( form ) ))
+    num++;
+  if ( (widgets[num] = this->createFramedClippingPrefSheetGuts( form )) )
+    num++;
+  if ( (widgets[num] = this->createFramedStereoPrefSheetGuts( form )) )
+    num++;
+  // speed settings is for walk + fly viewers
+  if ( (widgets[num] = this->createFramedSpeedPrefSheetGuts( form )) )
+    num++;
 } // createDefaultPrefSheetParts()
 
 /*!
@@ -1480,6 +1507,7 @@ SoXtFullViewer::createFramedSeekPrefSheetGuts( // protected
   Widget frame = XtVaCreateManagedWidget( "seekframe",
     xmFrameWidgetClass, parent,
     NULL );
+
   XmString labelstring;
   labelstring = SoXt::encodeString( "Seek Settings" );
   XtVaCreateManagedWidget( "title",
@@ -1494,21 +1522,44 @@ SoXtFullViewer::createFramedSeekPrefSheetGuts( // protected
     xmFormWidgetClass, frame,
     NULL );
 
-  Widget seek1 = this->createSeekPrefSheetGuts( form );
-  XtVaSetValues( seek1,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNchildHorizontalAlignment, XmALIGNMENT_CENTER,
-    NULL );
-
-  Widget seek2 = this->createSeekDistPrefSheetGuts( form );
-  XtVaSetValues( seek2,
-    XmNtopAttachment, XmATTACH_WIDGET,
-    XmNtopWidget, seek1,
-    XmNbottomAttachment, XmATTACH_FORM,
-    NULL );
+  this->createSeekPrefSheetGuts( form );
 
   return frame;
-} // createSeekCombinedPrefSheetGuts()
+} // createFramedSeekPrefSheetGuts()
+
+/*!
+  This method is a wrapper for the createSeekDistPrefSheetGuts() method,
+  to wrap a frame around the widgets.
+*/
+
+Widget
+SoXtFullViewer::createFramedSeekDistPrefSheetGuts( // protected
+  Widget parent )
+{
+  Widget frame = XtVaCreateManagedWidget( "seekdistframe",
+    xmFrameWidgetClass, parent,
+    NULL );
+  XmString labelstring;
+  labelstring = SoXt::encodeString( "Seek Distance Settings" );
+  XtVaCreateManagedWidget( "seekdisttitle",
+    xmLabelGadgetClass, frame,
+    XmNchildType, XmFRAME_TITLE_CHILD,
+    XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  Widget form = XtVaCreateManagedWidget( "form",
+    xmFormWidgetClass, frame,
+    NULL );
+
+  this->createSeekDistPrefSheetGuts( form );
+
+  return frame;
+} // createFramedSeekDistPrefSheetGuts()
+
+/*!
+*/
 
 Widget
 SoXtFullViewer::createFramedZoomPrefSheetGuts( // protected
@@ -1556,6 +1607,11 @@ SoXtFullViewer::createFramedClippingPrefSheetGuts(
   return frame;
 } // createFramedClippingPrefSheetGuts()
 
+// *************************************************************************
+
+/*!
+*/
+
 Widget
 SoXtFullViewer::createFramedStereoPrefSheetGuts(
   Widget parent )
@@ -1575,6 +1631,29 @@ SoXtFullViewer::createFramedStereoPrefSheetGuts(
 
   return frame;
 } // createFramedStereoPrefSheetGuts()
+
+/*!
+*/
+
+Widget
+SoXtFullViewer::createFramedSpeedPrefSheetGuts(
+  Widget parent )
+{
+  Widget frame = XtVaCreateManagedWidget( "speedframe",
+    xmFrameWidgetClass, parent, NULL );
+
+  XmString labelstring = SoXt::encodeString( "Speed Settings" );
+  Widget label = XtVaCreateManagedWidget( "speedframelabel",
+    xmLabelGadgetClass, frame,
+    XmNchildType, XmFRAME_TITLE_CHILD,
+    XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
+    XmNlabelString, labelstring,
+    NULL );
+
+  this->createSpeedPrefSheetGuts( frame );
+
+  return frame;
+} // createFramedSpeedPrefSheetGuts()
 
 // *************************************************************************
 
@@ -1810,10 +1889,24 @@ SoXtFullViewer::createZoomPrefSheetGuts( // protected
     XmNwidth, 50,
     NULL );
 
+  SoCamera * const camera = this->getCamera();
+  Boolean enable = False;
+  if ( camera ) {
+    SoType camtype = camera->getTypeId();
+    if ( camtype.isDerivedFrom( SoPerspectiveCamera::getClassTypeId() ) )
+      enable = True;
+  }
+
   char buf[16];
   sprintf( buf, "%.1f", this->zoomrange[0] );
   XmTextSetString( this->zoomfrom, buf );
   XmTextSetCursorPosition( this->zoomfrom, strlen(buf) );
+
+  XtVaSetValues( this->zoomfrom,
+    XmNsensitive, enable,
+    XmNeditable, enable,
+    XmNcursorPositionVisible, enable,
+    NULL );
 
   XtAddCallback( this->zoomfrom, XmNactivateCallback,
     SoXtFullViewer::zoomfromchangedCB, (XtPointer) this );
@@ -1830,6 +1923,12 @@ SoXtFullViewer::createZoomPrefSheetGuts( // protected
   sprintf( buf, "%.1f", this->getCameraZoom() );
   XmTextSetString( this->zoomvalue, buf );
   XmTextSetCursorPosition( this->zoomvalue, strlen(buf) );
+
+  XtVaSetValues( this->zoomvalue,
+    XmNsensitive, enable,
+    XmNeditable, enable,
+    XmNcursorPositionVisible, enable,
+    NULL );
 
   XtAddCallback( this->zoomvalue, XmNactivateCallback,
     SoXtFullViewer::zoomvaluechangedCB, (XtPointer) this );
@@ -1858,6 +1957,12 @@ SoXtFullViewer::createZoomPrefSheetGuts( // protected
   sprintf( buf, "%.1f", this->zoomrange[1] );
   XmTextSetString( this->zoomto, buf );
   XmTextSetCursorPosition( this->zoomto, strlen(buf) );
+
+  XtVaSetValues( this->zoomto,
+    XmNsensitive, enable,
+    XmNeditable, enable,
+    XmNcursorPositionVisible, enable,
+    NULL );
 
   XtAddCallback( this->zoomto, XmNactivateCallback,
     SoXtFullViewer::zoomtochangedCB, (XtPointer) this );
@@ -1888,6 +1993,11 @@ SoXtFullViewer::createZoomPrefSheetGuts( // protected
     int scaledval = (int) (sqrt(normalized) * 1000.0f);
     XmScaleSetValue( this->zoomslider, scaledval );
   }
+
+  XtVaSetValues( this->zoomslider,
+    XmNsensitive, enable,
+    XmNeditable, enable,
+    NULL );
 
   XtAddCallback( this->zoomslider, XmNvalueChangedCallback,
     SoXtFullViewer::zoomsliderchangedCB, (XtPointer) this );
@@ -2060,6 +2170,8 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
   return form;
 } // createClippingPrefSheetGuts()
 
+// *************************************************************************
+
 /*!
 */
 
@@ -2086,6 +2198,8 @@ SoXtFullViewer::createStereoPrefSheetGuts( // protected
   return form;
 } // createStereoPrefSheetGuts()
 
+// *************************************************************************
+
 /*!
 */
 
@@ -2093,10 +2207,12 @@ Widget
 SoXtFullViewer::createSpeedPrefSheetGuts( // protected
   Widget parent )
 {
+  Widget form = XtVaCreateManagedWidget( "speedform",
+    xmFormWidgetClass, parent, NULL );
 #if SOXT_DEBUG
   SOXT_STUB();
 #endif // SOXT_DEBUG
-  return (Widget) NULL;
+  return form;
 } // createSpeedPrefSheetGuts()
 
 // *************************************************************************
@@ -2794,8 +2910,8 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   zoomfromchanged )
 {
   float value = atof( XmTextGetString( this->zoomfrom ) );
-  if ( value < 0.1f )
-    value = 0.1f;
+  if ( value < 0.001f )
+    value = 0.001f;
   else if ( value > this->zoomrange[1] )
     value = this->zoomrange[1];
   this->zoomrange[0] = value;
@@ -2837,6 +2953,21 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   SoXtFullViewer,
   zoomsliderchanged )
 {
+  Boolean editable = True;
+  XtVaGetValues( this->zoomslider, XmNsensitive, &editable, NULL );
+  if ( ! editable ) {
+    float value = (float) atof( XmTextGetString( this->zoomvalue ) );
+    if ( this->zoomrange[0] == this->zoomrange[1] ) {
+      XmScaleSetValue( this->zoomslider, 0 );
+    } else {
+      float normalized = (value - this->zoomrange[0]) /
+        (this->zoomrange[1] - this->zoomrange[0]);
+      int scaledval = (int) (sqrt(normalized) * 1000.0f);
+      XmScaleSetValue( this->zoomslider, scaledval );
+    }
+    return;
+  }
+
   int intval = 0;
   XmScaleGetValue( this->zoomslider, &intval );
 

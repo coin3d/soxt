@@ -156,9 +156,11 @@ protected: // preference sheet routines
   Widget createSpeedPrefSheetGuts( Widget parent );
 
   Widget createFramedSeekPrefSheetGuts( Widget parent );
+  Widget createFramedSeekDistPrefSheetGuts( Widget parent );
   Widget createFramedZoomPrefSheetGuts( Widget parent );
   Widget createFramedClippingPrefSheetGuts( Widget parent );
   Widget createFramedStereoPrefSheetGuts( Widget parent );
+  Widget createFramedSpeedPrefSheetGuts( Widget parent );
 
   SOXT_WIDGET_CALLBACK( prefSheetDestroy );
   SOXT_WIDGET_CALLBACK( seekPrefSheetField );
@@ -218,17 +220,17 @@ private:
   void selectedPrefs(void);
   void interactbuttonClicked( Boolean set );
   void examinebuttonClicked( Boolean set );
+  void helpbuttonClicked(void);
+  void homebuttonClicked(void);
+  void sethomebuttonClicked(void);
+  void viewallbuttonClicked(void);
+  void seekbuttonClicked(void);
   SOXT_WIDGET_CALLBACK( interactbutton );
   SOXT_WIDGET_CALLBACK( examinebutton );
-  void helpbuttonClicked(void);
   static void helpbuttonCB( Widget, XtPointer, XtPointer );
-  void homebuttonClicked(void);
   static void homebuttonCB( Widget, XtPointer, XtPointer );
-  void sethomebuttonClicked(void);
   static void sethomebuttonCB( Widget, XtPointer, XtPointer );
-  void viewallbuttonClicked(void);
   static void viewallbuttonCB( Widget, XtPointer, XtPointer );
-  void seekbuttonClicked(void);
   static void seekbuttonCB( Widget, XtPointer, XtPointer );
   void copyviewSelected(void);
   void pasteviewSelected(void);
