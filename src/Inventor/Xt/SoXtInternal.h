@@ -31,6 +31,9 @@
 
 class SoXtInternal {
 public:
+  static void selectBestVisual(Display * dpy, Visual * & visual,
+                               Colormap & cmap, int & depth);
+
   static Pixmap createPixmapFromXpm(Widget button, const char ** xpm,
                                     SbBool ghost = FALSE);
 

@@ -162,7 +162,7 @@ SoXtComponent::SoXtComponent(const Widget parent,
         XmNdepth, &depth,
         NULL);
     } else {
-      SoXt::selectBestVisual(dpy, visual, colormap, depth);
+      SoXtInternal::selectBestVisual(dpy, visual, colormap, depth);
     }
     assert(dpy != NULL);
 
