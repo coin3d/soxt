@@ -216,6 +216,8 @@ SoGui_src_Inventor_Gui_nodes_BuiltFiles = \
   $(top_builddir)/src/Inventor/@Gui@/nodes/Translation.cpp \
   $(top_builddir)/src/Inventor/@Gui@/nodes/SoGuiFrame.h \
   $(top_builddir)/src/Inventor/@Gui@/nodes/Frame.cpp \
+  $(top_builddir)/src/Inventor/@Gui@/nodes/SoGuiClickCounter.h \
+  $(top_builddir)/src/Inventor/@Gui@/nodes/ClickCounter.cpp \
   $(top_builddir)/src/Inventor/@Gui@/nodes/SoGuiSlider1.h \
   $(top_builddir)/src/Inventor/@Gui@/nodes/Slider1.cpp
 
@@ -389,6 +391,8 @@ SoGuiCommonDistFiles = \
   src/Inventor/@Gui@/common/nodes/Translation.cpp.in \
   src/Inventor/@Gui@/common/nodes/Frame.h.in \
   src/Inventor/@Gui@/common/nodes/Frame.cpp.in \
+  src/Inventor/@Gui@/common/nodes/ClickCounter.h.in \
+  src/Inventor/@Gui@/common/nodes/ClickCounter.cpp.in \
   src/Inventor/@Gui@/common/nodes/Slider1.h.in \
   src/Inventor/@Gui@/common/nodes/Slider1.cpp.in \
   src/Inventor/@Gui@/common/viewers/SoGuiConstrainedViewer.cpp.in \
@@ -459,17 +463,17 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 libSoGuiNodes_la_LDFLAGS =
 libSoGuiNodes_la_LIBADD =
 nodist_libSoGuiNodes_la_OBJECTS = Nodes.lo ViewportFix.lo Pane.lo \
-	Position.lo Translation.lo Frame.lo Slider1.lo
+	Position.lo Translation.lo Frame.lo ClickCounter.lo Slider1.lo
 libSoGuiNodes_la_OBJECTS = $(nodist_libSoGuiNodes_la_OBJECTS)
 
 DEFS = @DEFS@
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/Frame.Plo $(DEPDIR)/Nodes.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/Pane.Plo $(DEPDIR)/Position.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/Slider1.Plo $(DEPDIR)/Translation.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/ViewportFix.Plo
+@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/ClickCounter.Plo $(DEPDIR)/Frame.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Nodes.Plo $(DEPDIR)/Pane.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Position.Plo $(DEPDIR)/Slider1.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Translation.Plo $(DEPDIR)/ViewportFix.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -521,6 +525,8 @@ Pane.lo: $(top_builddir)/src/Inventor/@Gui@/nodes/Pane.cpp
 Position.lo: $(top_builddir)/src/Inventor/@Gui@/nodes/Position.cpp
 Translation.lo: $(top_builddir)/src/Inventor/@Gui@/nodes/Translation.cpp
 Frame.lo: $(top_builddir)/src/Inventor/@Gui@/nodes/Frame.cpp
+ClickCounter.lo: \
+	$(top_builddir)/src/Inventor/@Gui@/nodes/ClickCounter.cpp
 Slider1.lo: $(top_builddir)/src/Inventor/@Gui@/nodes/Slider1.cpp
 libSoGuiNodes.la: $(libSoGuiNodes_la_OBJECTS) $(libSoGuiNodes_la_DEPENDENCIES) 
 	$(CXXLINK)  $(libSoGuiNodes_la_LDFLAGS) $(libSoGuiNodes_la_OBJECTS) $(libSoGuiNodes_la_LIBADD) $(LIBS)
@@ -531,6 +537,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ClickCounter.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Frame.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Nodes.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Pane.Plo@am__quote@
@@ -667,6 +674,24 @@ Frame.lo: $(top_builddir)/src/Inventor/@Gui@/nodes/Frame.cpp
 @AMDEP_TRUE@	depfile='$(DEPDIR)/Frame.Plo' tmpdepfile='$(DEPDIR)/Frame.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Frame.lo `test -f $(top_builddir)/src/Inventor/@Gui@/nodes/Frame.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/nodes/Frame.cpp
+
+ClickCounter.o: $(top_builddir)/src/Inventor/@Gui@/nodes/ClickCounter.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/ClickCounter.cpp' object='ClickCounter.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/ClickCounter.Po' tmpdepfile='$(DEPDIR)/ClickCounter.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ClickCounter.o `test -f $(top_builddir)/src/Inventor/@Gui@/nodes/ClickCounter.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/nodes/ClickCounter.cpp
+
+ClickCounter.obj: $(top_builddir)/src/Inventor/@Gui@/nodes/ClickCounter.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/ClickCounter.cpp' object='ClickCounter.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/ClickCounter.Po' tmpdepfile='$(DEPDIR)/ClickCounter.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ClickCounter.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/nodes/ClickCounter.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/nodes/ClickCounter.cpp ) | xargs cygpath -w`
+
+ClickCounter.lo: $(top_builddir)/src/Inventor/@Gui@/nodes/ClickCounter.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/ClickCounter.cpp' object='ClickCounter.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/ClickCounter.Plo' tmpdepfile='$(DEPDIR)/ClickCounter.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ClickCounter.lo `test -f $(top_builddir)/src/Inventor/@Gui@/nodes/ClickCounter.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/nodes/ClickCounter.cpp
 
 Slider1.o: $(top_builddir)/src/Inventor/@Gui@/nodes/Slider1.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/Slider1.cpp' object='Slider1.o' libtool=no @AMDEPBACKSLASH@
@@ -1001,6 +1026,12 @@ $(top_builddir)/src/Inventor/@Gui@/nodes/SoGuiFrame.h: $(top_srcdir)/src/Invento
 
 $(top_builddir)/src/Inventor/@Gui@/nodes/Frame.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/nodes/Frame.cpp.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/nodes/Frame.cpp:src/Inventor/@Gui@/common/nodes/Frame.cpp.in )
+
+$(top_builddir)/src/Inventor/@Gui@/nodes/SoGuiClickCounter.h: $(top_srcdir)/src/Inventor/@Gui@/common/nodes/ClickCounter.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/nodes/SoGuiClickCounter.h:src/Inventor/@Gui@/common/nodes/ClickCounter.h.in )
+
+$(top_builddir)/src/Inventor/@Gui@/nodes/ClickCounter.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/nodes/ClickCounter.cpp.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/nodes/ClickCounter.cpp:src/Inventor/@Gui@/common/nodes/ClickCounter.cpp.in )
 
 $(top_builddir)/src/Inventor/@Gui@/nodes/SoGuiSlider1.h: $(top_srcdir)/src/Inventor/@Gui@/common/nodes/Slider1.h.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/nodes/SoGuiSlider1.h:src/Inventor/@Gui@/common/nodes/Slider1.h.in )
