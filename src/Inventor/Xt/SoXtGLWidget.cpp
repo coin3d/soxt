@@ -442,6 +442,8 @@ SoXtGLWidget::isDrawToFrontBufferEnable(void) const
 void 
 SoXtGLWidget::setAccumulationBuffer(const SbBool enable)
 {
+  // FIXME: not implemented yet. 20020503 mortene.
+  SOXT_STUB();
 }
 
 /*!
@@ -460,6 +462,8 @@ SoXtGLWidget::getAccumulationBuffer(void) const
 void 
 SoXtGLWidget::setStencilBuffer(const SbBool enable)
 {
+  // FIXME: not implemented yet. 20020503 mortene.
+  SOXT_STUB();
 }
 
 /*!
