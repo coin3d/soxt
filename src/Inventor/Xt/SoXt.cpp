@@ -21,6 +21,7 @@ static const char rcsid[] =
   "$Id$";
 
 #include <X11/StringDefs.h>
+#include <X11/Xmu/Editres.h>
 #include <Xm/Xm.h>
 
 #include <Inventor/SoDB.h>
@@ -87,6 +88,10 @@ SoXt::init( // static
   SoDB::getSensorManager()->setChangedCallback( SoXt::sensorQueueChanged, NULL);
 
   XtAppSetFallbackResources( SoXt::getAppContext(), SoXt::fallback_resources );
+
+  XtAddEventHandler( toplevel, (EventMask) 0, True,
+    (void (*)(Widget, void *, XEvent *, Boolean *)) _XEditResCheckMessages,
+    NULL );
 } // init()
 
 // *************************************************************************
@@ -461,31 +466,61 @@ SoXt::sensorQueueChanged( // static, private
 String
 SoXt::fallback_resources[] =
 {
-#define COMPONENT "*SoXtGLWidget*"
-  COMPONENT     "background:"				"white", // not used
-#undef COMPONENT
+#define _COMPONENT "*SoXtGLWidget*"
+  _COMPONENT     "background:"				"white", // not used
+#undef _COMPONENT
 
-#define COMPONENT "*SoXtRenderArea*"
-  COMPONENT     "border:"				"false",
-  COMPONENT     "borderThickness:"			"2",
-  COMPONENT     "background:"				"black",
-#undef COMPONENT
+#define _COMPONENT "*SoXtRenderArea*"
+  _COMPONENT     "border:"				"false",
+  _COMPONENT     "borderThickness:"			"2",
+  _COMPONENT     "background:"				"black",
+#undef _COMPONENT
 
-#define COMPONENT "*SoXtExaminerViewer*"
-  COMPONENT	"title:"				"Examiner Viewer",
-  COMPONENT	"LeftWheelLabel.labelString:"		"Rot Y",
-  COMPONENT	"BottomWheelLabel.labelString:"		"Rot X",
-  COMPONENT	"RightWheelLabel.dollyString:"		"Dolly",
-  COMPONENT	"RightWheelLabel.zoomString:"		"Zoom",
-#undef COMPONENT
+#define _COMPONENT "*SoXtExaminerViewer*"
+  _COMPONENT	"title:"				"Examiner Viewer",
+  _COMPONENT	"LeftWheelLabel.labelString:"		"Rot Y",
+  _COMPONENT	"BottomWheelLabel.labelString:"		"Rot X",
+  _COMPONENT	"RightWheelLabel.dollyString:"		"Dolly",
+  _COMPONENT	"RightWheelLabel.zoomString:"		"Zoom",
+#undef _COMPONENT
 
-#define COMPONENT "*SoXtPlaneViewer*"
-  COMPONENT	"title:"				"Plane Viewer",
-  COMPONENT	"LeftWheelLabel.labelString:"		"Trans Y",
-  COMPONENT	"BottomWheelLabel.labelString:"		"Trans X",
-  COMPONENT	"RightWheelLabel.dollyString:"		"Dolly",
-  COMPONENT	"RightWheelLabel.zoomString:"		"Zoom",
-#undef COMPONENT
+#define _COMPONENT "*SoXtPlaneViewer*"
+  _COMPONENT	"title:"				"Plane Viewer",
+  _COMPONENT	"LeftWheelLabel.labelString:"		"Trans Y",
+  _COMPONENT	"BottomWheelLabel.labelString:"		"Trans X",
+  _COMPONENT	"RightWheelLabel.dollyString:"		"Dolly",
+  _COMPONENT	"RightWheelLabel.zoomString:"		"Zoom",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtWalkViewer*"
+  _COMPONENT	"title:"				"Walk Viewer",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtFlyViewer*"
+  _COMPONENT	"title:"				"Fly Viewer",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtDirectionalLightEditor*"
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtMaterialEditor*"
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtLightSliderSet*"
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtMaterialSliderSet*"
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtTransformSliderSet*"
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtMaterialList*"
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtPrintDialog*"
+  _COMPONENT	"title:"				"Print",
+#undef _COMPONENT
 
   NULL
 }; // fallback_resources
