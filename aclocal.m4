@@ -2562,6 +2562,19 @@ fi
 ])
 
 # Usage:
+#  SIM_AC_ISO8601_DATE(variable)
+#
+# Description:
+#   This macro sets the given variable to a strings representing
+#   the current date in the ISO8601-compliant format YYYYMMDD.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN(SIM_AC_ISO8601_DATE, [
+  eval "$1=\"`date +%Y%m%d`\""
+])
+
+# Usage:
 #   SIM_EXPAND_DIR_VARS
 #
 # Description:

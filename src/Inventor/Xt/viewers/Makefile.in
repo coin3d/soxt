@@ -104,6 +104,7 @@ sim_ac_conf_cmd = @sim_ac_conf_cmd@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 soxt_build_dir = @soxt_build_dir@
+soxt_configure_date = @soxt_configure_date@
 soxt_src_dir = @soxt_src_dir@
 uGUI = @uGUI@
 

@@ -343,6 +343,12 @@ if test x"$want_html" != xno -o x"$want_man" != xno; then
 fi
 
 # **************************************************************************
+# For the soqt.spec RPM specification file.
+
+SIM_AC_ISO8601_DATE(soxt_configure_date)
+AC_SUBST(soxt_configure_date)
+
+# **************************************************************************
 # Configure the submodule with the examples.
 
 # soxt-config
@@ -369,6 +375,7 @@ AC_OUTPUT([
 	src/Inventor/Xt/devices/Makefile
 	src/Inventor/Xt/widgets/Makefile
 	src/Inventor/Xt/viewers/Makefile
+	build/soxt.spec
 	build/soxt.doxygen
 ], [
 	chmod a+x soxt-config
