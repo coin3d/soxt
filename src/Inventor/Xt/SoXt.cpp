@@ -389,6 +389,16 @@ SoXt::mainLoop(void)
 #endif // SOXT_DEBUG
     exit = XtAppGetExitFlag(context);
   }
+
+  SoXt::done();
+}
+
+// documented in common/SoGuiCommon.cpp.in
+void
+SoXt::done(void)
+{
+  // FIXME: should clean up all resources stlil dangling
+  // about. 20020624 mortene.
 }
 
 /*!
