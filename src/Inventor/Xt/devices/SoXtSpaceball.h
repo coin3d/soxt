@@ -32,7 +32,7 @@ class SOXT_DLL_EXPORT SoXtSpaceball : public SoXtDevice {
   typedef SoXtDevice inherited;
 
 public:
-  enum SpaceballEvents {
+  enum Mask {
     MOTION_EVENT  = 0x01,  MOTION = MOTION_EVENT,
     PRESS_EVENT   = 0x02,  PRESS = PRESS_EVENT,
     RELEASE_EVENT = 0x04,  RELEASE = RELEASE_EVENT,
