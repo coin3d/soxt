@@ -117,19 +117,7 @@ protected:
 private:
   void constructor( const SbBool build );
 
-  enum ViewerMode {
-    IDLE,
-    INTERACT,
-    EXAMINE,
-    DRAGGING,
-    WAITING_FOR_SEEK,
-    ZOOMING,
-    WAITING_FOR_PAN,
-    PANNING
-  } mode;
-
-  void setCursorRepresentation(const ViewerMode mode);
-  void setMode( const ViewerMode mode );
+  void setCursorRepresentation( int mode );
   void setModeFromState( const unsigned int state );
 
   Widget camerabutton;

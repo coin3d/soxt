@@ -149,8 +149,6 @@ SoXtExaminerViewer::constructor( // private
   this->prefparts = NULL;
   this->numprefparts = 0;
 
-  this->mode = EXAMINE;
-
   this->setClassName( this->getWidgetName() );
   this->camerabutton = (Widget) NULL;
 
@@ -411,7 +409,9 @@ void
 SoXtExaminerViewer::setViewing( // virtual
   SbBool enable )
 {
-  this->setMode( enable ? EXAMINE : INTERACT );
+  this->common->setMode( enable ?
+                         SoAnyExaminerViewer::EXAMINE :
+                         SoAnyExaminerViewer::INTERACT );
   inherited::setViewing( enable );
 } // setViewing()
 
@@ -424,7 +424,7 @@ SoXtExaminerViewer::setViewing( // virtual
 */
 
 void
-SoXtExaminerViewer::setCursorRepresentation(const ViewerMode mode)
+SoXtExaminerViewer::setCursorRepresentation( int mode )
 {
   // FIXME: the cursor handling is just a hack at the moment, but the
   // design layout matches that of SoQtExaminerViewer and is looking
@@ -446,17 +446,17 @@ SoXtExaminerViewer::setCursorRepresentation(const ViewerMode mode)
   Display * display = this->getDisplay();
 
   switch ( mode ) {
-  case EXAMINE:
-  case DRAGGING:
+  case SoAnyExaminerViewer::EXAMINE:
+  case SoAnyExaminerViewer::DRAGGING:
     this->cursor = XCreateFontCursor( display, XC_hand2 );
     XDefineCursor( display, XtWindow( this->glxWidget ), this->cursor );
     break;
 
-  case INTERACT:
-  case ZOOMING:
-  case WAITING_FOR_SEEK:
-  case WAITING_FOR_PAN:
-  case PANNING:
+  case SoAnyExaminerViewer::INTERACT:
+  case SoAnyExaminerViewer::ZOOMING:
+  case SoAnyExaminerViewer::WAITING_FOR_SEEK:
+  case SoAnyExaminerViewer::WAITING_FOR_PAN:
+  case SoAnyExaminerViewer::PANNING:
     XUndefineCursor( display, XtWindow( this->glxWidget ) );
     break;
 
@@ -487,33 +487,33 @@ SoXtExaminerViewer::setModeFromState(
     "state = %08x", state );
 #endif // SOXT_DEBUG
 
-  ViewerMode mode = EXAMINE;
+  SoAnyExaminerViewer::ViewerMode mode = SoAnyExaminerViewer::EXAMINE;
 
   const unsigned int maskedstate =
     state & (Button1Mask | Button2Mask | ControlMask);
 
   switch ( maskedstate ) {
   case 0:
-    mode = EXAMINE;
+    mode = SoAnyExaminerViewer::EXAMINE;
     break;
 
   case Button1Mask:
-    mode = DRAGGING;
+    mode = SoAnyExaminerViewer::DRAGGING;
     break;
 
   case Button2Mask:
   case (Button1Mask | ControlMask):
-    mode = PANNING;
+    mode = SoAnyExaminerViewer::PANNING;
     break;
 
   case ControlMask:
-    mode = WAITING_FOR_PAN;
+    mode = SoAnyExaminerViewer::WAITING_FOR_PAN;
     break;
 
   case (Button2Mask | ControlMask):
   case (Button1Mask | Button2Mask):
   case (Button1Mask | Button2Mask | ControlMask):
-    mode = ZOOMING;
+    mode = SoAnyExaminerViewer::ZOOMING;
     break;
 
   default:
@@ -521,46 +521,8 @@ SoXtExaminerViewer::setModeFromState(
     break;
   }
 
-  this->setMode( mode );
+  this->common->setMode( mode );
 } // setModeFromState()
-
-/*!
-  \internal
-*/
-
-void
-SoXtExaminerViewer::setMode(
-  const ViewerMode mode )
-{
-  switch ( mode ) {
-
-  case INTERACT:
-    if ( this->isAnimating() )
-      this->stopAnimating();
-    while ( this->getInteractiveCount() )
-      this->interactiveCountDec();
-    break;
-
-  case DRAGGING:
-    common->spinprojector->project( common->lastmouseposition );
-    break;
-
-  case PANNING:
-    do {
-      SoCamera * camera = this->getCamera();
-      SbViewVolume volume = camera->getViewVolume( this->getGLAspectRatio() );
-      common->panningplane = volume.getPlane( camera->focalDistance.getValue() );
-    } while ( FALSE );
-    break;
-
-  default:
-    break;
-
-  } // switch ( mode )
-
-  this->mode = mode;
-  this->setCursorRepresentation( mode );
-} // setMode()
 
 // *************************************************************************
 
@@ -727,7 +689,9 @@ SoXtExaminerViewer::setSeekMode(
   if ( common->isAnimating() )
     common->stopAnimating();
   inherited::setSeekMode( enable );
-  this->setMode( enable ? WAITING_FOR_SEEK : EXAMINE );
+  this->common->setMode( enable ?
+                         SoAnyExaminerViewer::WAITING_FOR_SEEK :
+                         SoAnyExaminerViewer::EXAMINE );
 } // setSeekMode()
 
 // *************************************************************************
@@ -1257,7 +1221,6 @@ SoXtExaminerViewer::rotaxesoverlaytoggledCB( // static
 
 /*!
   Invoked when first mapped.
-  Just makes sure the cursor gets set for the GL area.
 */
 
 void
@@ -1270,7 +1233,6 @@ SoXtExaminerViewer::afterRealizeHook( // virtual, protected
 #endif // SOXT_DEBUG
   inherited::afterRealizeHook();
   this->mapped = TRUE;
-//  this->setCursorRepresentation( this->mode );
 } // afterRealizeHook()
 
 // *************************************************************************
