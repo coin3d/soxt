@@ -117,7 +117,11 @@ protected:
 
 private:
   void constructor( SbBool mouseInput, SbBool keyboardInput );
+  SbBool clear;
 
+  SoSceneManager * manager;
+
+  static void renderCB( void * user, SoSceneManager * manager );
 }; // class SoXtRenderArea
 
 // *************************************************************************

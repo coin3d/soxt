@@ -96,10 +96,21 @@ protected:
   int borderwidth;
   Widget glxWidget;
   Widget glxManager;
+  GLXContext normalContext;
+  GLXContext overlayContext;
 
   SbBool doubleBuffer;
 
-  Colormap getShareableColormap( Display *, XVisualInfo * );
+protected:
+  int glLockLevel;
+
+  void glInit(void);
+  void glLock(void);
+  void glUnlock(void);
+  void glSwapBuffers(void);
+  void glReshape( int width, int height );
+  static void glWidgetEventHandler( Widget widget, XtPointer data,
+      XEvent * event, Boolean * dispatch );
 
 }; // class SoXtGLWidget
 
