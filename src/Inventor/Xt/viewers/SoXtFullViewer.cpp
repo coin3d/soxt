@@ -122,6 +122,7 @@ SoXtFullViewer::SoXtFullViewer( // protected
     this->wheelstrings[i] += axisindicator[i - FIRSTDECORATION];
     this->decorform[i] = NULL;
     this->wheellabels[i] = NULL;
+    this->wheelvalues[i] = 0;
   }
 
   this->seekdistance = 50.0f;
@@ -134,8 +135,6 @@ SoXtFullViewer::SoXtFullViewer( // protected
 
   this->appButtonsList = new SbPList;
   this->viewerButtonWidgets = new SbPList;
-
-  this->setSize( SbVec2s( 500, 390 ) );
 
   this->prefshell = NULL;
   this->prefmenu = NULL;
@@ -158,15 +157,9 @@ SoXtFullViewer::SoXtFullViewer( // protected
   if ( build != FALSE ) {
     this->setClassName( "SoXtFullViewer" );
     Widget viewer = this->buildWidget( this->getParentWidget() );
-    XtVaSetValues( viewer,
-      XmNleftAttachment, XmATTACH_FORM,
-      XmNtopAttachment, XmATTACH_FORM,
-      XmNrightAttachment, XmATTACH_FORM,
-      XmNbottomAttachment, XmATTACH_FORM,
-      NULL );
     this->setBaseWidget( viewer );
+    this->setSize( SbVec2s( 500, 390 ) );
   }
-
 } // SoXtFullViewer()
 
 /*!
@@ -392,13 +385,24 @@ SoXtFullViewer::buildWidget( // protected
 
   this->buildDecoration( this->viewerbase );
   
-  if ( this->isTopLevelShell() && this->decorations != FALSE ) {
+  if ( ( this->isTopLevelShell() ||
+         XtIsShell(XtParent(this->getBaseWidget())) ) &&
+       this->decorations != FALSE ) {
     Widget shell = this->getShellWidget();
     Dimension minheight =
       30 + 90 + 30 * this->viewerButtonWidgets->getLength() + 8;
+    Dimension width, height;
+    XtVaGetValues( shell,
+      XmNwidth, &width,
+      XmNheight, &height,
+      NULL );
+    width = SoXtMax( width, (Dimension) 300 );
+    height = SoXtMax( height, minheight );
     XtVaSetValues( shell,
       XmNminWidth, 300,
       XmNminHeight, minheight,
+      XmNwidth, width,
+      XmNheight, height,
       NULL );
   }
   return this->viewerbase;
