@@ -572,7 +572,7 @@ SoXtExaminerViewer::actualRedraw(// virtual
   SoDebugError::postInfo("SoXtDebugError::actualRedraw()", "[invoked]");
 #endif // SOXT_DEBUG
 
-  this->actualRedraw();               // spinanimation preparation
+  this->actualGenericRedraw();               // spinanimation preparation
   inherited::actualRedraw();            // actual scene rendering
   if (this->isFeedbackVisible())    // extra dingbats
     this->drawAxisCross();
