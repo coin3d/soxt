@@ -1725,15 +1725,35 @@ SoXtFullViewer::createPrefSheetShellAndForm(  // protected
   if ( ! this->prefstring )
     this->setPrefSheetString( "Xt Viewer Preferences" );
 
+  Widget pshell = this->getBaseWidget();
+  while ( pshell && ! XtIsShell(pshell) )
+    pshell = XtParent(pshell);
+  assert( pshell != NULL );
+
+  Visual * visual = NULL;
+  int depth = 0;
+  Colormap colormap = 0;
+
+  XtVaGetValues( pshell,
+    XmNvisual, &visual,
+    XmNdepth, &depth,
+    XmNcolormap, &colormap,
+    NULL );
+
   shell = XtVaAppCreateShell( NULL, "SoXt",
     topLevelShellWidgetClass, SoXt::getDisplay(),
-    XtNtitle, this->prefstring,
+    XmNvisual, visual,
+    XmNdepth, depth,
+    XmNcolormap, colormap,
+    XmNtitle, this->prefstring,
     NULL );
+
   XtAddCallback( shell, XmNdestroyCallback,
     prefSheetDestroyCB, (XtPointer) this );
   this->prefshell = shell;
 
   form = XtVaCreateWidget( "form", xmFormWidgetClass, shell, NULL );
+
   this->prefsheet = form;
 } // createPrefSheetShellAndForm()
 
@@ -1755,6 +1775,7 @@ SoXtFullViewer::createDefaultPrefSheetParts( // protected
     num++;
   if ( (widgets[num] = this->createFramedZoomPrefSheetGuts( form ) ))
     num++;
+// FIXME: this barfs on 8-bit displays...
   if ( (widgets[num] = this->createFramedClippingPrefSheetGuts( form )) )
     num++;
   if ( (widgets[num] = this->createFramedStereoPrefSheetGuts( form )) )
@@ -1909,6 +1930,7 @@ SoXtFullViewer::createFramedClippingPrefSheetGuts(
     NULL );
 
   this->createClippingPrefSheetGuts( frame );
+
   return frame;
 } // createFramedClippingPrefSheetGuts()
 
@@ -2332,6 +2354,7 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
   Widget form = XtVaCreateManagedWidget( "clippingprefs",
     xmFormWidgetClass, parent, NULL );
 
+#if 0
   this->autocliptoggle = XtVaCreateManagedWidget( "autocliptoggle",
     xmToggleButtonWidgetClass, form,
     XmNleftAttachment, XmATTACH_FORM,
@@ -2373,6 +2396,7 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
   XtAddCallback( this->farvalue, XmNlosingFocusCallback,
     SoXtFullViewer::farvaluechangedCB, (XtPointer) this );
 
+/*
   this->farwheel = XtVaCreateManagedWidget( "farwheel",
     soxtThumbWheelWidgetClass, form,
     XmNleftAttachment, XmATTACH_OPPOSITE_WIDGET,
@@ -2411,6 +2435,7 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
       XmNlabelString, XmRString,
       "Far plane:", strlen( "Far plane:" ) + 1,
     NULL );
+*/
 
   float neardistance = 0.001f;
   if ( camera != NULL )
@@ -2438,6 +2463,7 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
   XtAddCallback( this->nearvalue, XmNlosingFocusCallback,
     SoXtFullViewer::nearvaluechangedCB, (XtPointer) this );
 
+/*
   this->nearwheel = XtVaCreateManagedWidget( "nearwheel",
     soxtThumbWheelWidgetClass, form,
     XmNleftAttachment, XmATTACH_OPPOSITE_WIDGET,
@@ -2474,6 +2500,8 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
       XmNlabelString, XmRString,
       "Near plane:", strlen( "Near plane:" ) + 1,
     NULL );
+*/
+#endif
 
   return form;
 } // createClippingPrefSheetGuts()

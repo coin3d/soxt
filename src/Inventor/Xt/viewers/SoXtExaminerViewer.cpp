@@ -1007,6 +1007,8 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
   Widget form = XtVaCreateManagedWidget( "rotaxisguts",
     xmFormWidgetClass, parent, NULL );
 
+#if 0
+
   this->rotpointaxestoggle = XtVaCreateManagedWidget( "rotpointaxestoggle",
     xmToggleButtonWidgetClass, form,
     XmNtopAttachment, XmATTACH_FORM,
@@ -1104,6 +1106,8 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
       XmNlabelString, XmRString,
       "axes size", strlen( "axes size" ) + 1,
     NULL );
+
+#endif
 
   return form;
 } // createRotAxisPrefSheetGuts()
