@@ -200,6 +200,10 @@ SoXtMouse::makeLocationEvent( // private
   this->locationEvent->setAltDown(
     (event->state & Mod1Mask) ? TRUE : FALSE );
 
+  SbTime stamp;
+  stamp.setMsecValue( event->time );
+  this->locationEvent->setTime( stamp );
+
   return this->locationEvent;
 } // makeLocationEvent()
 
@@ -250,6 +254,10 @@ SoXtMouse::makeButtonEvent( // private
     (event->state & ControlMask) ? TRUE : FALSE );
   this->buttonEvent->setAltDown(
     (event->state & Mod1Mask) ? TRUE : FALSE );
+
+  SbTime stamp;
+  stamp.setMsecValue( event->time );
+  this->locationEvent->setTime( stamp );
 
   return this->buttonEvent;
 } // makeButtonEvent()
