@@ -53,6 +53,7 @@ static const char rcsid[] =
 #include <Inventor/SbPList.h>
 #include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/sensors/SoSensorManager.h>
+#include <Inventor/SbTime.h>
 
 #include <soxtdefs.h>
 
