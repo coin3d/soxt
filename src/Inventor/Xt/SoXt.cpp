@@ -28,7 +28,9 @@ static const char rcsid[] =
 #include <X11/StringDefs.h>
 #include <X11/Xmu/Editres.h>
 #include <X11/Xmu/StdCmap.h>
+#include <X11/Xmu/Atoms.h>
 #include <Xm/Xm.h>
+#include <Xm/Protocols.h>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SoDB.h>
@@ -58,6 +60,9 @@ SbPList *     SoXt::eventHandlers = NULL;
 
 char *        SoXt::appName = NULL;
 char *        SoXt::appClass = NULL;
+
+static Atom   WM_PROTOCOLS = 0;
+static Atom   WM_DELETE_WINDOW = 0;
 
 // *************************************************************************
 
@@ -148,10 +153,39 @@ SoXt::init( // static
       NULL );
   }
 
-
   SoXt::init( toplevel );
   return toplevel;
 } // init()
+
+/*!
+*/
+
+static
+void
+wm_close_handler(
+  Widget widget,
+  XtPointer user,
+  XEvent * e,
+  Boolean * dispatch )
+{
+  if ( e->type == ClientMessage ) {
+    XClientMessageEvent * event = (XClientMessageEvent *) e;
+    if ( WM_PROTOCOLS == None ) {
+      WM_PROTOCOLS = XInternAtom( SoXt::getDisplay(), "WM_PROTOCOLS", True );
+      if ( WM_PROTOCOLS == None ) WM_PROTOCOLS = (Atom) -1;
+    }
+    if ( WM_DELETE_WINDOW == None ) {
+      WM_DELETE_WINDOW = XInternAtom( SoXt::getDisplay(),
+        "WM_DELETE_WINDOW", True );
+      if ( WM_DELETE_WINDOW == None ) WM_DELETE_WINDOW = (Atom) -1;
+    }
+    if ( event->message_type == WM_PROTOCOLS &&
+         event->data.l[0] == WM_DELETE_WINDOW ) {
+      XtAppSetExitFlag( SoXt::getAppContext() );
+      *dispatch = False;
+    }
+  }
+} // exit_handler()
 
 /*!
 */
@@ -177,8 +211,12 @@ SoXt::init( // static
 
   XtAppSetFallbackResources( SoXt::getAppContext(), SoXt::fallback_resources );
 
+  XtAddEventHandler( toplevel, (EventMask) 0, True, wm_close_handler, NULL );
+
+#if SOXT_DEBUG
   XtEventHandler editres_hook = (XtEventHandler) _XEditResCheckMessages;
   XtAddEventHandler( toplevel, (EventMask) 0, True, editres_hook, NULL );
+#endif // SOXT_DEBUG
 } // init()
 
 // *************************************************************************
@@ -249,9 +287,6 @@ SoXt::mainLoop( // static
 #endif // SOXT_DEBUG
     exit = XtAppGetExitFlag( context );
   }
-#if SOXT_DEBUG
-  SoDebugError::postInfo( "SoXt::mainLoop", "[exit]" );
-#endif // SOXT_DEBUG
 } // mainLoop()
 
 /*!
@@ -471,6 +506,8 @@ SoXt::createSimpleErrorDialog( // static
   SOXT_STUB();
 } // createSimpleErrorDialog()
 
+// *************************************************************************
+
 /*!
 */
 
@@ -481,10 +518,9 @@ SoXt::getPopupArgs( // static
   ArgList args,
   int * n )
 {
+  
   SOXT_STUB();
 } // getPopupArgs()
-
-// *************************************************************************
 
 /*!
 */
@@ -807,7 +843,11 @@ SoXt::selectBestVisual( // static
 {
   if ( dpy == NULL )
      dpy = XOpenDisplay( NULL );
-  assert( dpy != NULL );
+  if ( dpy == NULL ) {
+    SoDebugError::postInfo( "SoXt::selectBestVisual",
+      "Failed to open display." );
+    exit( -1 );
+  }
 
   int snum = XDefaultScreen( dpy );
 
@@ -843,7 +883,7 @@ SoXt::selectBestVisual( // static
   XVisualInfo vinfo;
   for ( int i = 0; pri[i].depth != 0; i++ ) {
     if ( XMatchVisualInfo( dpy, snum, pri[i].depth, pri[i].vclass, &vinfo ) ) {
-#if SOXT_DEBUG
+#if SOXT_DEBUG && 0
       SoDebugError::postInfo( "SoXt::selectBestVisual",
         "visual: depth=%d, class=%s", vinfo.depth,
         _visualClassName( vinfo.c_class ) );
