@@ -229,53 +229,6 @@ SoXtExaminerViewer::rightWheelMotion(float value)
 
 // *************************************************************************
 
-/*!
-  FIXME: write doc
-*/
-
-const char *
-SoXtExaminerViewer::getDefaultWidgetName(void) const
-{
-  static const char defaultWidgetName[] = "SoXtExaminerViewer";
-  return defaultWidgetName;
-}
-
-/*!
-  FIXME: write doc
-*/
-
-const char *
-SoXtExaminerViewer::getDefaultTitle(void) const
-{
-  static const char defaultTitle[] = "Examiner Viewer";
-  return defaultTitle;
-}
-
-/*!
-  FIXME: write doc
-*/
-
-const char *
-SoXtExaminerViewer::getDefaultIconTitle(void) const
-{
-  static const char defaultIconTitle[] = "Examiner Viewer";
-  return defaultIconTitle;
-}
-
-// *************************************************************************
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtExaminerViewer::openViewerHelpCard(void)
-{
-  this->openHelpCard("SoXtExaminerViewer.help");
-}
-
-// *************************************************************************
-
 // Documented in superclass.  This method overridden from parent class
 // to make sure the mouse pointer cursor is updated.
 void
@@ -473,28 +426,6 @@ SoXtExaminerViewer::setCamera(SoCamera * camera)
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtExaminerViewer::setCamera", "[exit]");
 #endif // SOXT_DEBUG
-}
-
-// *************************************************************************
-
-/*!
-  This method is overloaded to draw the point-of-rotation axis cross on each
-  redraw, if the user has configured it that way.
-*/
-
-void
-SoXtExaminerViewer::actualRedraw(void)
-{
-#if SOXT_DEBUG && 0
-  SoDebugError::postInfo("SoXtDebugError::actualRedraw()", "[invoked]");
-#endif // SOXT_DEBUG
-
-  this->actualGenericRedraw();               // spinanimation preparation
-  inherited::actualRedraw();            // actual scene rendering
-  if (this->isFeedbackVisible())    // extra dingbats
-    this->drawAxisCross();
-  if (this->isAnimating())          // animation
-    this->scheduleRedraw();
 }
 
 // *************************************************************************

@@ -1487,21 +1487,6 @@ SoXtFullViewer::setRightWheelString(const char * const string)
 // *************************************************************************
 
 /*!
-  Default implementation does nothing.
-*/
-
-void
-SoXtFullViewer::openViewerHelpCard(void)
-{
-#if SOXT_DEBUG
-  SoDebugError::postInfo("SoXtFullViewer::openViewerHelpCard",
-                         "should be overloaded");
-#endif // SOXT_DEBUG
-}
-
-// *************************************************************************
-
-/*!
   Not implemented.
 */
 

@@ -340,17 +340,6 @@ SoXtPlaneViewer::createViewerButtons(Widget parent,
 // *************************************************************************
 
 /*!
-  FIXME: write doc
-*/
-void
-SoXtPlaneViewer::openViewerHelpCard(void)
-{
-  this->openHelpCard("SoXtPlaneViewer.help");
-}
-
-// *************************************************************************
-
-/*!
   This method creates the preferences sheet widgets for the Plane Viewer
   prefereences window.
 */
