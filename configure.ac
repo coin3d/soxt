@@ -455,6 +455,26 @@ SIM_AC_UNIQIFY_LIST(LIBS, $LIBS)
 # script -- not just from the Makefile -- as the data/configure script
 # depends on it. (data/configure is temporarily disabled, BTW, but anyway..)
 
+AC_CONFIG_FILES([
+        soxt-$CONFIG.cfg:src/Inventor/Xt/common/sogui.cfg.in
+        Makefile
+        src/Makefile
+        src/Inventor/Makefile
+        src/Inventor/Xt/Makefile
+        src/Inventor/Xt/devices/Makefile
+        src/Inventor/Xt/editors/Makefile
+        src/Inventor/Xt/engines/Makefile
+        src/Inventor/Xt/nodes/Makefile
+        src/Inventor/Xt/viewers/Makefile
+        src/Inventor/Xt/widgets/Makefile
+        man/Makefile
+        man/man1/Makefile
+        man/man3/Makefile
+        html/Makefile
+        test-code/Makefile
+        build/soxt.spec
+])
+
 # MKS will have "\c" as $ECHO_C, but that string in the config.status
 # substitution command will cause config.status to hang because it is
 # somehow translated to "&c".  We therefore blank it here, and restore
@@ -465,25 +485,7 @@ case $build in
 *-mks ) ECHO_C="" ;;
 esac
 
-AC_OUTPUT([
-	soxt-$CONFIG.cfg:src/Inventor/Xt/common/sogui.cfg.in
-	Makefile
-	src/Makefile
-	src/Inventor/Makefile
-	src/Inventor/Xt/Makefile
-	src/Inventor/Xt/devices/Makefile
-	src/Inventor/Xt/editors/Makefile
-	src/Inventor/Xt/engines/Makefile
-	src/Inventor/Xt/nodes/Makefile
-	src/Inventor/Xt/viewers/Makefile
-	src/Inventor/Xt/widgets/Makefile
-	man/Makefile
-	man/man1/Makefile
-	man/man3/Makefile
-	html/Makefile
-	test-code/Makefile
-	build/soxt.spec
-])
+AC_OUTPUT
 
 ECHO_C=$sim_ac_ECHO_C
 
