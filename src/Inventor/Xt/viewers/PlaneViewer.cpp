@@ -282,10 +282,8 @@ SoXtPlaneViewer::setCamera(SoCamera * camera)
 
 // *************************************************************************
 
-/*!
-  Overloads to add the x, y, z, and camera-toggle buttons to the list of
-  viewer buttons.
-*/
+// Documented in superclass. Overridden to add the x, y, z, and
+// camera-toggle buttons to the list of viewer buttons.
 void
 SoXtPlaneViewer::createViewerButtons(Widget parent,
                                      SbPList * buttonlist)

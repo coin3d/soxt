@@ -104,40 +104,37 @@ SOXT_OBJECT_SOURCE(SoXtExaminerViewer);
   Public constructor.
 */
 
-SoXtExaminerViewer::SoXtExaminerViewer(
-  Widget parent,
-  const char * name,
-  SbBool embed,
-  SoXtFullViewer::BuildFlag flag,
-  SoXtViewer::Type type)
-: inherited(parent, name, embed, flag, type, FALSE)
+SoXtExaminerViewer::SoXtExaminerViewer(Widget parent,
+                                       const char * name,
+                                       SbBool embed,
+                                       SoXtFullViewer::BuildFlag flag,
+                                       SoXtViewer::Type type)
+  : inherited(parent, name, embed, flag, type, FALSE)
 {
   this->constructor(TRUE);
-} // SoXtExaminerViewer()
+}
 
 /*!
   Protected constructor for derived viewers.
 */
 
-SoXtExaminerViewer::SoXtExaminerViewer(// protected
-  Widget parent,
-  const char * name,
-  SbBool embed,
-  SoXtFullViewer::BuildFlag flag,
-  SoXtViewer::Type type,
-  SbBool build)
-: inherited(parent, name, embed, flag, type, FALSE)
+SoXtExaminerViewer::SoXtExaminerViewer(Widget parent,
+                                       const char * name,
+                                       SbBool embed,
+                                       SoXtFullViewer::BuildFlag flag,
+                                       SoXtViewer::Type type,
+                                       SbBool build)
+  : inherited(parent, name, embed, flag, type, FALSE)
 {
   this->constructor(build);
-} // SoXtExaminerViewer()
+}
 
 /*!
   Common constructor code.
 */
 
 void
-SoXtExaminerViewer::constructor(// private
-  const SbBool build)
+SoXtExaminerViewer::constructor(const SbBool build)
 {
   this->genericConstructor();
 
@@ -159,7 +156,7 @@ SoXtExaminerViewer::constructor(// private
          dollyString != NULL)
       this->setRightWheelString(dollyString);
   }
-} // constructor()
+}
 
 /*!
   The destructor.
@@ -169,7 +166,7 @@ SoXtExaminerViewer::~SoXtExaminerViewer()
 {
   this->genericDestructor();
   delete [] this->prefparts;
-} // ~SoXtExaminerViewer()
+}
 
 // *************************************************************************
 
@@ -178,62 +175,57 @@ SoXtExaminerViewer::~SoXtExaminerViewer()
 */
 
 void
-SoXtExaminerViewer::leftWheelStart(// virtual, protected
-  void)
+SoXtExaminerViewer::leftWheelStart(void)
 {
   if (this->isAnimating())
     this->stopAnimating();
   inherited::leftWheelStart();
-} // leftWheelStart()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtExaminerViewer::leftWheelMotion(// virtual, protected
-  float value)
+SoXtExaminerViewer::leftWheelMotion(float value)
 {
   inherited::leftWheelMotion(
     this->rotXWheelMotion(value, this->getLeftWheelValue()));
-} // leftWheelMotion()
+}
 
 /*!
   Stops the model from spin-animating.
 */
 
 void
-SoXtExaminerViewer::bottomWheelStart(// virtual, protected
-  void)
+SoXtExaminerViewer::bottomWheelStart(void)
 {
   if (this->isAnimating())
     this->stopAnimating();
   inherited::bottomWheelStart();
-} // bottomWheelStart()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtExaminerViewer::bottomWheelMotion(// virtual, protected
-  float value)
+SoXtExaminerViewer::bottomWheelMotion(float value)
 {
   inherited::bottomWheelMotion(
     this->rotYWheelMotion(value, this->getBottomWheelValue()));
-} // bottomWheelMotion()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtExaminerViewer::rightWheelMotion(// virtual, protected
-  float value)
+SoXtExaminerViewer::rightWheelMotion(float value)
 {
   this->zoom(this->getRightWheelValue() - value);
   inherited::rightWheelMotion(value);
-} // rightWheelMotion()
+}
 
 // *************************************************************************
 
@@ -242,36 +234,33 @@ SoXtExaminerViewer::rightWheelMotion(// virtual, protected
 */
 
 const char *
-SoXtExaminerViewer::getDefaultWidgetName(
-  void) const
+SoXtExaminerViewer::getDefaultWidgetName(void) const
 {
   static const char defaultWidgetName[] = "SoXtExaminerViewer";
   return defaultWidgetName;
-} // getDefaultWidgetName()
+}
 
 /*!
   FIXME: write doc
 */
 
 const char *
-SoXtExaminerViewer::getDefaultTitle(
-  void) const
+SoXtExaminerViewer::getDefaultTitle(void) const
 {
   static const char defaultTitle[] = "Examiner Viewer";
   return defaultTitle;
-} // getDefaultTitle()
+}
 
 /*!
   FIXME: write doc
 */
 
 const char *
-SoXtExaminerViewer::getDefaultIconTitle(
-  void) const
+SoXtExaminerViewer::getDefaultIconTitle(void) const
 {
   static const char defaultIconTitle[] = "Examiner Viewer";
   return defaultIconTitle;
-} // getDefaultIconTitle()
+}
 
 // *************************************************************************
 
@@ -283,7 +272,7 @@ void
 SoXtExaminerViewer::openViewerHelpCard(void)
 {
   this->openHelpCard("SoXtExaminerViewer.help");
-} // openViewerHelpCard()
+}
 
 // *************************************************************************
 
@@ -359,14 +348,9 @@ SoXtExaminerViewer::setCursorRepresentation(int mode)
 
 // *************************************************************************
 
-/*!
-  FIXME: write doc
-*/
-
+// Documented in superclass.
 void
-SoXtExaminerViewer::createViewerButtons(// virtual
-  Widget parent,
-  SbPList * buttonlist)
+SoXtExaminerViewer::createViewerButtons(Widget parent, SbPList * buttonlist)
 {
   assert(this->camerabutton == (Widget) NULL);
 
@@ -392,7 +376,7 @@ SoXtExaminerViewer::createViewerButtons(// virtual
     SoXtInternal::createPixmapFromXpm(this->camerabutton, perspective_xpm, TRUE);
 #endif // HAVE_LIBXPM
 
-} // createViewerButtons()
+}
 
 // *************************************************************************
 
@@ -401,11 +385,10 @@ SoXtExaminerViewer::createViewerButtons(// virtual
 */
 
 void
-SoXtExaminerViewer::camerabuttonClicked(
-  void)
+SoXtExaminerViewer::camerabuttonClicked(void)
 {
   this->toggleCameraType();
-} // camerabuttonClicked()
+}
 
 // *************************************************************************
 
@@ -414,14 +397,13 @@ SoXtExaminerViewer::camerabuttonClicked(
 */
 
 void
-SoXtExaminerViewer::camerabuttonCB(// static
-  Widget w,
-  XtPointer client_data,
-  XtPointer call_data)
+SoXtExaminerViewer::camerabuttonCB(Widget w,
+                                   XtPointer client_data,
+                                   XtPointer call_data)
 {
   SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) client_data;
   viewer->camerabuttonClicked();
-} // camerabuttonCB()
+}
 
 // *************************************************************************
 
@@ -491,7 +473,7 @@ SoXtExaminerViewer::setCamera(SoCamera * camera)
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtExaminerViewer::setCamera", "[exit]");
 #endif // SOXT_DEBUG
-} // setCamera()
+}
 
 // *************************************************************************
 
@@ -501,8 +483,7 @@ SoXtExaminerViewer::setCamera(SoCamera * camera)
 */
 
 void
-SoXtExaminerViewer::actualRedraw(// virtual
-  void)
+SoXtExaminerViewer::actualRedraw(void)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtDebugError::actualRedraw()", "[invoked]");
@@ -514,7 +495,7 @@ SoXtExaminerViewer::actualRedraw(// virtual
     this->drawAxisCross();
   if (this->isAnimating())          // animation
     this->scheduleRedraw();
-} // actualRedraw()
+}
 
 // *************************************************************************
 
@@ -523,8 +504,7 @@ SoXtExaminerViewer::actualRedraw(// virtual
 */
 
 void
-SoXtExaminerViewer::setAnimationEnabled(
-  const SbBool enable)
+SoXtExaminerViewer::setAnimationEnabled(const SbBool enable)
 {
   this->setGenericAnimationEnabled(enable);
   if (this->spinanimtoggle) {
@@ -537,15 +517,14 @@ SoXtExaminerViewer::setAnimationEnabled(
         XmNset, enable ? True : False,
         NULL);
   }
-} // setAnimationEnabled()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtExaminerViewer::setFeedbackSize(
-  const int size)
+SoXtExaminerViewer::setFeedbackSize(const int size)
 {
   if (this->axessizefield) {
     char buf[8];
@@ -554,7 +533,7 @@ SoXtExaminerViewer::setFeedbackSize(
     XmTextSetCursorPosition(this->axessizefield, (long) strlen(buf));
   }
   this->setGenericFeedbackSize(size);
-} // setFeedbackSize()
+}
 
 // *************************************************************************
 
@@ -563,8 +542,7 @@ SoXtExaminerViewer::setFeedbackSize(
 */
 
 void
-SoXtExaminerViewer::createPrefSheet(// protected, virtual
-  void)
+SoXtExaminerViewer::createPrefSheet(void)
 {
   if (! this->prefshell) {
 #if SOXT_DEBUG && 0
@@ -591,7 +569,7 @@ SoXtExaminerViewer::createPrefSheet(// protected, virtual
   }
   this->layoutPartsAndMapPrefSheet(this->prefparts, this->numprefparts,
     this->prefsheet, this->prefshell);
-} // createPrefSheet()
+}
 
 // *************************************************************************
 
@@ -600,8 +578,7 @@ SoXtExaminerViewer::createPrefSheet(// protected, virtual
 */
 
 Widget
-SoXtExaminerViewer::createFramedSpinAnimPrefSheetGuts(
-  Widget parent)
+SoXtExaminerViewer::createFramedSpinAnimPrefSheetGuts(Widget parent)
 {
   Widget frame = XtVaCreateManagedWidget("spinanimframe",
     xmFrameWidgetClass, parent, NULL);
@@ -618,15 +595,14 @@ SoXtExaminerViewer::createFramedSpinAnimPrefSheetGuts(
   this->createSpinAnimPrefSheetGuts(frame);
 
   return frame;
-} // createFramedSpinAnimPrefSheetGuts()
+}
 
 /*!
   FIXME: write doc
 */
 
 Widget
-SoXtExaminerViewer::createSpinAnimPrefSheetGuts(
-  Widget parent)
+SoXtExaminerViewer::createSpinAnimPrefSheetGuts(Widget parent)
 {
   //  [] enable spin animation
   Widget form = XtVaCreateManagedWidget("spinanimguts",
@@ -648,36 +624,34 @@ SoXtExaminerViewer::createSpinAnimPrefSheetGuts(
                 SoXtExaminerViewer::spinanimtoggledCB, (XtPointer) this);
 
   return form;
-} // createSpinAnimPrefSheetGuts()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtExaminerViewer::spinanimtoggled(
-  void)
+SoXtExaminerViewer::spinanimtoggled(void)
 {
   Boolean enable = False;
   XtVaGetValues(this->spinanimtoggle, XmNset, &enable, NULL);
   this->setAnimationEnabled(enable ? TRUE : FALSE);
   if (! enable && this->isAnimating())
     this->stopAnimating();
-} // spinanimtoggled()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtExaminerViewer::spinanimtoggledCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtExaminerViewer::spinanimtoggledCB(Widget,
+                                      XtPointer closure,
+                                      XtPointer)
 {
   SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
   viewer->spinanimtoggled();
-} // spinanimtoggledCB()
+}
 
 // *************************************************************************
 
@@ -687,8 +661,7 @@ SoXtExaminerViewer::spinanimtoggledCB(// static
 */
 
 Widget
-SoXtExaminerViewer::createFramedRotAxisPrefSheetGuts(
-  Widget parent)
+SoXtExaminerViewer::createFramedRotAxisPrefSheetGuts(Widget parent)
 {
   Widget frame = XtVaCreateManagedWidget("rotaxisframe",
     xmFrameWidgetClass, parent, NULL);
@@ -705,15 +678,14 @@ SoXtExaminerViewer::createFramedRotAxisPrefSheetGuts(
   this->createRotAxisPrefSheetGuts(frame);
 
   return frame;
-} // createFramedRotAxisPrefSheetGuts()
+}
 
 /*!
   FIXME: write doc
 */
 
 Widget
-SoXtExaminerViewer::createRotAxisPrefSheetGuts(
-  Widget parent)
+SoXtExaminerViewer::createRotAxisPrefSheetGuts(Widget parent)
 {
   //  [] display point of rotation
   //  axes size   |||||||||||||||||||||||||  |NN| pixels
@@ -824,15 +796,14 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
 #endif // 0
 
   return form;
-} // createRotAxisPrefSheetGuts()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtExaminerViewer::rotpointtoggled(
-  void)
+SoXtExaminerViewer::rotpointtoggled(void)
 {
   Boolean enable = False;
   XtVaGetValues(this->rotpointaxestoggle, XmNset, &enable, NULL);
@@ -847,29 +818,27 @@ SoXtExaminerViewer::rotpointtoggled(
     NULL);
 
   this->setFeedbackVisibility(enable ? TRUE : FALSE);
-} // rotpointtoggled()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtExaminerViewer::rotpointtoggledCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtExaminerViewer::rotpointtoggledCB(Widget,
+                                      XtPointer closure,
+                                      XtPointer)
 {
   SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
   viewer->rotpointtoggled();
-} // rotpointtoggledCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtExaminerViewer::axeswheelmoved(
-  int ticks)
+SoXtExaminerViewer::axeswheelmoved(int ticks)
 {
   int size = this->getFeedbackSize() + ticks;
   if (size < 3)
@@ -877,30 +846,28 @@ SoXtExaminerViewer::axeswheelmoved(
   else if (size > 200)
     size = 200;
   this->setFeedbackSize(size);
-} // axeswheelmoved()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtExaminerViewer::axeswheelmovedCB(
-  Widget,
-  XtPointer closure,
-  XtPointer call_data)
+SoXtExaminerViewer::axeswheelmovedCB(Widget,
+                                     XtPointer closure,
+                                     XtPointer call_data)
 {
   SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
   SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
   viewer->axeswheelmoved(data->ticks);
-} // axeswheelmovedCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtExaminerViewer::axesfieldchanged(
-  void)
+SoXtExaminerViewer::axesfieldchanged(void)
 {
   int size = atoi(XmTextGetString(this->axessizefield));
   if (size < 3)
@@ -908,21 +875,20 @@ SoXtExaminerViewer::axesfieldchanged(
   else if (size > 200)
     size = 200;
   this->setFeedbackSize(size);
-} // axesfieldchanged()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtExaminerViewer::axesfieldchangedCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtExaminerViewer::axesfieldchangedCB(Widget,
+                                       XtPointer closure,
+                                       XtPointer)
 {
   SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
   viewer->axesfieldchanged();
-} // axesfieldchangedCB()
+}
 
 /*!
   This callback should toggle wether the point of rotation should be embedded
@@ -930,35 +896,32 @@ SoXtExaminerViewer::axesfieldchangedCB(
 */
 
 void
-SoXtExaminerViewer::rotaxesoverlaytoggled(
-  void)
+SoXtExaminerViewer::rotaxesoverlaytoggled(void)
 {
 #if SOXT_DEBUG
   SOXT_STUB_ONCE();
 #endif // SOXT_DEBUG
   XtVaSetValues(this->rotaxesoverlaytoggle, XmNset, True, NULL);
-} // rotpointoverlaytoggled()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtExaminerViewer::rotaxesoverlaytoggledCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtExaminerViewer::rotaxesoverlaytoggledCB(Widget,
+                                            XtPointer closure,
+                                            XtPointer)
 {
   SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
   viewer->rotaxesoverlaytoggled();
-} // rotaxesoverlaytoggledCB()
+}
 
 /*!
   Invoked when first mapped.
 */
 void
-SoXtExaminerViewer::afterRealizeHook(// virtual, protected
-  void)
+SoXtExaminerViewer::afterRealizeHook(void)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtExaminerViewer::afterRealizeHook",
@@ -966,7 +929,7 @@ SoXtExaminerViewer::afterRealizeHook(// virtual, protected
 #endif // SOXT_DEBUG
   inherited::afterRealizeHook();
   this->setCursorRepresentation(this->currentmode);
-} // afterRealizeHook()
+}
 
 // *************************************************************************
 

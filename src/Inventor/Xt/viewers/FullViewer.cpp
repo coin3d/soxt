@@ -223,13 +223,12 @@ enum DefaultViewerButtons {
   Constructor.
 */
 
-SoXtFullViewer::SoXtFullViewer(// protected
-  Widget parent,
-  const char * name,
-  SbBool embed,
-  BuildFlag flags,
-  Type type,
-  SbBool build)
+SoXtFullViewer::SoXtFullViewer(Widget parent,
+                               const char * name,
+                               SbBool embed,
+                               BuildFlag flags,
+                               Type type,
+                               SbBool build)
   : inherited(parent, name, embed, type, FALSE),
     popupTitle(NULL)
 {
@@ -293,7 +292,7 @@ SoXtFullViewer::SoXtFullViewer(// protected
     this->setBaseWidget(viewer);
     this->fitSize(SbVec2s(500, 300));
   }
-} // SoXtFullViewer()
+}
 
 /*!
   The destructor.
@@ -303,7 +302,7 @@ SoXtFullViewer::~SoXtFullViewer()
 {
   delete this->appButtonsList;
   delete this->viewerButtonWidgets;
-} // ~SoXtFullViewer()
+}
 
 // *************************************************************************
 
@@ -350,18 +349,17 @@ SoXtFullViewer::setDecoration(const SbBool enable)
                     NULL);
     }
   }
-} // setDecoration()
+}
 
 /*!
   This method returns whether the decorations are shown or not.
 */
 
 SbBool
-SoXtFullViewer::isDecoration(
-  void) const
+SoXtFullViewer::isDecoration(void) const
 {
   return this->decorations;
-} // isDecoration()
+}
 
 // *************************************************************************
 
@@ -370,22 +368,20 @@ SoXtFullViewer::isDecoration(
 */
 
 void
-SoXtFullViewer::setPopupMenuEnabled(
-  const SbBool enable)
+SoXtFullViewer::setPopupMenuEnabled(const SbBool enable)
 {
   this->popupEnabled = enable;
-} // setPopupMenuEnabled()
+}
 
 /*!
   This method returns whether the popup menu is enabled or not.
 */
 
 SbBool
-SoXtFullViewer::isPopupMenuEnabled(
-  void) const
+SoXtFullViewer::isPopupMenuEnabled(void) const
 {
   return this->popupEnabled;
-} // isPopupMenuEnabled()
+}
 
 
 // *************************************************************************
@@ -397,11 +393,10 @@ SoXtFullViewer::isPopupMenuEnabled(
 */
 
 Widget
-SoXtFullViewer::getAppPushButtonParent(
-  void) const
+SoXtFullViewer::getAppPushButtonParent(void) const
 {
   return this->appButtonsForm;
-} // getAppPushButtonParent()
+}
 
 /*!
   Not implemented.
@@ -411,33 +406,30 @@ SoXtFullViewer::getAppPushButtonParent(
 */
 
 void
-SoXtFullViewer::addAppPushButton(
-  Widget button)
+SoXtFullViewer::addAppPushButton(Widget button)
 {
   this->appButtonsList->append(button);
   this->layoutAppPushButtons(this->getAppPushButtonParent());
-} // addAppPushButton()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::insertAppPushButton(
-  Widget button,
-  int idx)
+SoXtFullViewer::insertAppPushButton(Widget button,
+                                    int idx)
 {
   this->appButtonsList->insert(button, idx);
   this->layoutAppPushButtons(this->getAppPushButtonParent());
-} // insertAppPushButton()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::removeAppPushButton(
-  Widget button)
+SoXtFullViewer::removeAppPushButton(Widget button)
 {
   int idx = this->appButtonsList->find(button);
   if (idx == -1) {
@@ -449,40 +441,37 @@ SoXtFullViewer::removeAppPushButton(
   }
   this->appButtonsList->remove(idx);
   this->layoutAppPushButtons(this->getAppPushButtonParent());
-} // removeAppPushButton()
+}
 
 /*!
   FIXME: write doc
 */
 
 int
-SoXtFullViewer::findAppPushButton(
-  Widget button) const
+SoXtFullViewer::findAppPushButton(Widget button) const
 {
   return this->appButtonsList->find(button);
-} // findAppPushButton()
+}
 
 /*!
   FIXME: write doc
 */
 
 int
-SoXtFullViewer::lengthAppPushButton(
-  void) const
+SoXtFullViewer::lengthAppPushButton(void) const
 {
   return this->appButtonsList->getLength();
-} // lengthAppPushButton()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::layoutAppPushButtons(
-  Widget parent)
+SoXtFullViewer::layoutAppPushButtons(Widget parent)
 {
   SOXT_STUB();
-} // layoutAppPushButtons()
+}
 
 // *************************************************************************
 
@@ -494,7 +483,7 @@ Widget
 SoXtFullViewer::getRenderAreaWidget(void) const
 {
   return this->canvas;
-} // getRenderAreaWidget()
+}
 
 // *************************************************************************
 
@@ -551,7 +540,7 @@ SoXtFullViewer::buildWidget(Widget parent)
     }
   }
   return this->viewerbase;
-} // buildWidget()
+}
 
 // *************************************************************************
 
@@ -560,8 +549,7 @@ SoXtFullViewer::buildWidget(Widget parent)
 */
 
 void
-SoXtFullViewer::buildDecoration(// virtual
-  Widget parent)
+SoXtFullViewer::buildDecoration(Widget parent)
 {
   this->leftDecoration = this->buildLeftTrim(parent);
   XtVaSetValues(this->leftDecoration,
@@ -591,7 +579,7 @@ SoXtFullViewer::buildDecoration(// virtual
     XmNrightAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
     NULL);
-} // buildDecorations()
+}
 
 // *************************************************************************
 
@@ -603,8 +591,7 @@ SoXtFullViewer::buildDecoration(// virtual
 */
 
 Widget
-SoXtFullViewer::buildLeftTrim(// virtual
-  Widget parent)
+SoXtFullViewer::buildLeftTrim(Widget parent)
 {
   Widget trim = XtVaCreateManagedWidget("LeftTrim",
       xmFormWidgetClass, parent,
@@ -645,7 +632,7 @@ SoXtFullViewer::buildLeftTrim(// virtual
     XmNvalueChangedCallback, SoXtFullViewer::leftWheelMotionCB, this);
 
   return trim;
-} // buildLeftTrim()
+}
 
 // *************************************************************************
 
@@ -657,8 +644,7 @@ SoXtFullViewer::buildLeftTrim(// virtual
 */
 
 Widget
-SoXtFullViewer::buildRightTrim(// virtual
-  Widget parent)
+SoXtFullViewer::buildRightTrim(Widget parent)
 {
   Widget trim = XtVaCreateManagedWidget("RightTrim",
     xmFormWidgetClass, parent,
@@ -699,7 +685,7 @@ SoXtFullViewer::buildRightTrim(// virtual
     XmNvalueChangedCallback, SoXtFullViewer::rightWheelMotionCB, this);
 
   return trim;
-} // buildRightTrim()
+}
 
 // *************************************************************************
 
@@ -711,8 +697,7 @@ SoXtFullViewer::buildRightTrim(// virtual
 */
 
 Widget
-SoXtFullViewer::buildBottomTrim(// virtual
-  Widget parent)
+SoXtFullViewer::buildBottomTrim(Widget parent)
 {
   Widget trim = XtVaCreateManagedWidget("BottomTrim",
     xmFormWidgetClass, parent,
@@ -782,7 +767,7 @@ SoXtFullViewer::buildBottomTrim(// virtual
     NULL);
 
   return trim;
-} // buildBottomTrim()
+}
 
 // *************************************************************************
 
@@ -855,20 +840,19 @@ SoXtFullViewer::setCamera(SoCamera * camera)
       XmNcursorPositionVisible, enable,
       NULL);
   }
-} // setCamera()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::hide(// virtual
-  void)
+SoXtFullViewer::hide(void)
 {
   inherited::hide();
 //  if (this->prefwindow)
 //    SoXt::hide(this->prefwindow);
-} // hide()
+}
 
 // *************************************************************************
 
@@ -930,14 +914,11 @@ SoXtFullViewer::buildViewerButtons(Widget parent)
 
   XtManageChild(buttons);
   return buttons;
-} // buildViewerButtons()
+}
 
 // *************************************************************************
 
-/*!
-  FIXME: write doc
-*/
-
+// Documented in common/viewers/SoGuiFullViewer.cpp.in.
 void
 SoXtFullViewer::createViewerButtons(Widget parent,
                                     SbPList * buttonlist)
@@ -984,7 +965,7 @@ SoXtFullViewer::createViewerButtons(Widget parent,
     default:
       assert(0);
       break;
-    } // switch (viewerbutton)
+    }
     Widget button;
     if (viewerbutton == EXAMINE_BUTTON || viewerbutton == INTERACT_BUTTON) {
       button = XtVaCreateManagedWidget(label,
@@ -1028,7 +1009,7 @@ SoXtFullViewer::createViewerButtons(Widget parent,
     default:
       assert(0 && "impossible");
       break;
-    } // switch (viewerbutton)
+    }
 #if HAVE_LIBXPM
     Pixmap pixmap, pixmap_ins;
     switch (viewerbutton) {
@@ -1069,7 +1050,7 @@ SoXtFullViewer::createViewerButtons(Widget parent,
     default:
       assert(0 && "impossible");
       break;
-    } // switch (viewerbutton)
+    }
     if (pixmap && pixmap_ins) {
       XtVaSetValues(button,
                     XmNlabelType, XmPIXMAP,
@@ -1093,43 +1074,40 @@ SoXtFullViewer::createViewerButtons(Widget parent,
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtFullViewer::createViewerButtons", "[exit]");
 #endif // SOXT_DEBUG
-} // createViewerButtons()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::buildPopupMenu(
-  void)
+SoXtFullViewer::buildPopupMenu(void)
 {
   if (this->prefmenu == NULL)
     this->prefmenu = this->setupStandardPopupMenu();
-} // buildPopupMenu()
+}
 
 /*!
   FIXME: write doc
 */
 
 Widget
-SoXtFullViewer::buildFunctionsSubmenu(
-  Widget popup)
+SoXtFullViewer::buildFunctionsSubmenu(Widget popup)
 {
   SOXT_STUB();
   return (Widget) NULL;
-} // buildFunctionsSubmenu()
+}
 
 /*!
   FIXME: write doc
 */
 
 Widget
-SoXtFullViewer::buildDrawStyleSubmenu(
-  Widget popup)
+SoXtFullViewer::buildDrawStyleSubmenu(Widget popup)
 {
   SOXT_STUB();
   return (Widget) NULL;
-} // buildDrawStyleSubmenu()
+}
 
 /*!
   FIXME: write doc
@@ -1152,7 +1130,7 @@ SoXtFullViewer::openPopupMenu(const SbVec2s position)
 
   this->prepareMenu(this->prefmenu);
   this->prefmenu->popUp(this->getGLWidget(), x, y);
-} // openPopupMenu()
+}
 
 // *************************************************************************
 
@@ -1161,99 +1139,91 @@ SoXtFullViewer::openPopupMenu(const SbVec2s position)
 */
 
 void
-SoXtFullViewer::leftWheelStart(// virtual
-  void)
+SoXtFullViewer::leftWheelStart(void)
 {
   this->interactiveCountInc();
-} // leftWheelStart()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::leftWheelStartCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::leftWheelStartCB(Widget,
+                                 XtPointer closure,
+                                 XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->leftWheelStart();
-} // leftWheelStartCB()
+}
 
 /*!
   This method is invoked when the left thumb wheel is moved.
 */
 
 void
-SoXtFullViewer::leftWheelMotion(// virtual
-  float value)
+SoXtFullViewer::leftWheelMotion(float value)
 {
   this->leftWheelVal = value;
-} // leftWheelMotion()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::leftWheelMotionCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer call_data)
+SoXtFullViewer::leftWheelMotionCB(Widget,
+                                  XtPointer closure,
+                                  XtPointer call_data)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
   viewer->leftWheelMotion(data->current);
-} // leftWheelMotionCB()
+}
 
 /*!
   This method is invoked when the left thumb wheel is released.
 */
 
 void
-SoXtFullViewer::leftWheelFinish(// virtual
-  void)
+SoXtFullViewer::leftWheelFinish(void)
 {
   this->interactiveCountDec();
-} // leftWheelFinished()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::leftWheelFinishCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::leftWheelFinishCB(Widget,
+                                  XtPointer closure,
+                                  XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->leftWheelFinish();
-} // leftWheelFinishCB()
+}
 
 /*!
   This method returns the value for the left thumb wheel.
 */
 
 float
-SoXtFullViewer::getLeftWheelValue(
-  void) const
+SoXtFullViewer::getLeftWheelValue(void) const
 {
   return this->leftWheelVal;
-} // getLeftWheelValue()
+}
 
 /*!
   This method sets the value for the left thumb wheel.
 */
 
 void
-SoXtFullViewer::setLeftWheelValue(
-  const float value)
+SoXtFullViewer::setLeftWheelValue(const float value)
 {
   this->leftWheelVal = value;
   SoXtThumbWheelSetValue(this->leftWheel, value);
-} // setLeftWheelValue()
+}
 
 // *************************************************************************
 
@@ -1262,99 +1232,91 @@ SoXtFullViewer::setLeftWheelValue(
 */
 
 void
-SoXtFullViewer::bottomWheelStart(// virtual
-  void)
+SoXtFullViewer::bottomWheelStart(void)
 {
   this->interactiveCountInc();
-} // bottomWheelStart()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::bottomWheelStartCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::bottomWheelStartCB(Widget,
+                                   XtPointer closure,
+                                   XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->bottomWheelStart();
-} // bottomWheelStart()
+}
 
 /*!
   This method is invoked when the bottom thumb wheel is moved.
 */
 
 void
-SoXtFullViewer::bottomWheelMotion(// virtual
-  float value)
+SoXtFullViewer::bottomWheelMotion(float value)
 {
   this->bottomWheelVal = value;
-} // bottomWheelMode()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::bottomWheelMotionCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer call_data)
+SoXtFullViewer::bottomWheelMotionCB(Widget,
+                                    XtPointer closure,
+                                    XtPointer call_data)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
   viewer->bottomWheelMotion(data->current);
-} // bottomWheelStart()
+}
 
 /*!
   This method is invoked when the bottom thumb wheel is released
 */
 
 void
-SoXtFullViewer::bottomWheelFinish(// virtual
-  void)
+SoXtFullViewer::bottomWheelFinish(void)
 {
   this->interactiveCountDec();
-} // bottomWheelFinish()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::bottomWheelFinishCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::bottomWheelFinishCB(Widget,
+                                    XtPointer closure,
+                                    XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->bottomWheelFinish();
-} // bottomWheelStart()
+}
 
 /*!
   This method returns the value for the bottom thumb wheel.
 */
 
 float
-SoXtFullViewer::getBottomWheelValue(
-  void) const
+SoXtFullViewer::getBottomWheelValue(void) const
 {
   return this->bottomWheelVal;
-} // getBottomWheelValue()
+}
 
 /*!
   This method sets the value of the bottom thumb wheel.
 */
 
 void
-SoXtFullViewer::setBottomWheelValue(
-  const float value)
+SoXtFullViewer::setBottomWheelValue(const float value)
 {
   this->bottomWheelVal = value;
   SoXtThumbWheelSetValue(this->bottomWheel, value);
-} // setBottomWheelValue()
+}
 
 // *************************************************************************
 
@@ -1363,99 +1325,91 @@ SoXtFullViewer::setBottomWheelValue(
 */
 
 void
-SoXtFullViewer::rightWheelStart(// virtual
-  void)
+SoXtFullViewer::rightWheelStart(void)
 {
   this->interactiveCountInc();
-} // rightWheelStart()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::rightWheelStartCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::rightWheelStartCB(Widget,
+                                  XtPointer closure,
+                                  XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->rightWheelStart();
-} // rightWheelStartCB()
+}
 
 /*!
   This method is invoked when the right thumb wheel is moved.
 */
 
 void
-SoXtFullViewer::rightWheelMotion(// virtual
-  float value)
+SoXtFullViewer::rightWheelMotion(float value)
 {
   this->rightWheelVal = value;
-} // rightWheelMotion()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::rightWheelMotionCB(
-  Widget,
-  XtPointer closure,
-  XtPointer call_data)
+SoXtFullViewer::rightWheelMotionCB(Widget,
+                                   XtPointer closure,
+                                   XtPointer call_data)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
   viewer->rightWheelMotion(data->current);
-} // rightWheelMotionCB()
+}
 
 /*!
   This method is invoked when the right thumb wheel is released.
 */
 
 void
-SoXtFullViewer::rightWheelFinish(// virtual
-  void)
+SoXtFullViewer::rightWheelFinish(void)
 {
   this->interactiveCountDec();
-} // rightWheelFinish()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::rightWheelFinishCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::rightWheelFinishCB(Widget,
+                                   XtPointer closure,
+                                   XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->rightWheelFinish();
-} // rightWheelFinishCB()
+}
 
 /*!
   This method returns the value of the right thumb wheel.
 */
 
 float
-SoXtFullViewer::getRightWheelValue(
-  void) const
+SoXtFullViewer::getRightWheelValue(void) const
 {
   return this->rightWheelVal;
-} // getRightWheelValue()
+}
 
 /*!
   This method sets the value of the right thumb wheel.
 */
 
 void
-SoXtFullViewer::setRightWheelValue(
-  const float value)
+SoXtFullViewer::setRightWheelValue(const float value)
 {
   this->rightWheelVal = value;
   SoXtThumbWheelSetValue(this->rightWheel, value);
-} // setRightWheelValue()
+}
 
 // *************************************************************************
 
@@ -1465,12 +1419,11 @@ SoXtFullViewer::setRightWheelValue(
 */
 
 void
-SoXtFullViewer::setLeftWheelString(
-  const char * const string)
+SoXtFullViewer::setLeftWheelString(const char * const string)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtFullViewer::setLeftWheelString",
-    "setting left wheel label");
+                         "setting left wheel label");
 #endif // SOXT_DEBUG
   delete [] this->leftWheelStr;
   this->leftWheelStr = strcpy(new char [strlen(string)+1], string);
@@ -1480,7 +1433,7 @@ SoXtFullViewer::setLeftWheelString(
         XmNlabelString, XmRString,
         this->leftWheelStr, strlen(this->leftWheelStr) + 1,
       NULL);
-} // setLeftWheelString()
+}
 
 /*!
   This method sets the label text that is displayed to the left og the
@@ -1488,12 +1441,11 @@ SoXtFullViewer::setLeftWheelString(
 */
 
 void
-SoXtFullViewer::setBottomWheelString(
-  const char * const string)
+SoXtFullViewer::setBottomWheelString(const char * const string)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtFullViewer::setBottomWheelString",
-    "setting bottom wheel label");
+                         "setting bottom wheel label");
 #endif // SOXT_DEBUG
   delete [] this->bottomWheelStr;
   this->bottomWheelStr = strcpy(new char [strlen(string)+1], string);
@@ -1503,7 +1455,7 @@ SoXtFullViewer::setBottomWheelString(
         XmNlabelString, XmRString,
         this->bottomWheelStr, strlen(this->bottomWheelStr) + 1,
       NULL);
-} // setBottomWheelString()
+}
 
 /*!
   This method sets the label text that is displayed under the right decoration
@@ -1511,8 +1463,7 @@ SoXtFullViewer::setBottomWheelString(
 */
 
 void
-SoXtFullViewer::setRightWheelString(
-  const char * const string)
+SoXtFullViewer::setRightWheelString(const char * const string)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtFullViewer::setRightWheelString", "[enter]");
@@ -1531,7 +1482,7 @@ SoXtFullViewer::setRightWheelString(
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtFullViewer::setRightWheelString", "[exit]");
 #endif // SOXT_DEBUG
-} // setRightWheelString()
+}
 
 // *************************************************************************
 
@@ -1540,14 +1491,13 @@ SoXtFullViewer::setRightWheelString(
 */
 
 void
-SoXtFullViewer::openViewerHelpCard(// virtual
-  void)
+SoXtFullViewer::openViewerHelpCard(void)
 {
 #if SOXT_DEBUG
   SoDebugError::postInfo("SoXtFullViewer::openViewerHelpCard",
-    "should be overloaded");
+                         "should be overloaded");
 #endif // SOXT_DEBUG
-} // openViewerHelpCard()
+}
 
 // *************************************************************************
 
@@ -1556,16 +1506,15 @@ SoXtFullViewer::openViewerHelpCard(// virtual
 */
 
 Widget
-SoXtFullViewer::buildAppButtonsForm(
-  Widget parent)
+SoXtFullViewer::buildAppButtonsForm(Widget parent)
 {
   Widget form = XtVaCreateManagedWidget("appbuttons",
-    xmFormWidgetClass, parent,
-    NULL);
+                                        xmFormWidgetClass, parent,
+                                        NULL);
 
   SOXT_STUB();
   return form;
-} // buildAppButtonsForm()
+}
 
 // *************************************************************************
 
@@ -1575,8 +1524,7 @@ SoXtFullViewer::buildAppButtonsForm(
 */
 
 void
-SoXtFullViewer::showDecorationWidgets(
-  SbBool enable)
+SoXtFullViewer::showDecorationWidgets(SbBool enable)
 {
   if (! this->canvas) return;
   assert(this->leftDecoration != (Widget) NULL);
@@ -1609,7 +1557,7 @@ SoXtFullViewer::showDecorationWidgets(
       XmNbottomOffset, 0,
       NULL);
   }
-} // showDecorationWidgets()
+}
 
 // *************************************************************************
 
@@ -1618,8 +1566,7 @@ SoXtFullViewer::showDecorationWidgets(
 */
 
 void
-SoXtFullViewer::setPrefSheetString(// protected
-  const char * name)
+SoXtFullViewer::setPrefSheetString(const char * name)
 {
   if (this->prefstring)
     delete [] this->prefstring;
@@ -1629,7 +1576,7 @@ SoXtFullViewer::setPrefSheetString(// protected
 
   if (this->prefshell)
     XtVaSetValues(this->prefshell, XtNtitle, this->prefstring, NULL);
-} // setPrefSheetString()
+}
 
 /*!
   This is a hook for constructing the preferences window in the derived
@@ -1650,22 +1597,20 @@ SoXtFullViewer::setPrefSheetString(// protected
 */
 
 void
-SoXtFullViewer::createPrefSheet(// protected, virtual
-  void)
+SoXtFullViewer::createPrefSheet(void)
 {
 /*¡
   Method could be made abstract.?
 */
-} // createPrefSheet()
+}
 
 /*!
   This method creates the preferences sheet shell.
 */
 
 void
-SoXtFullViewer::createPrefSheetShellAndForm( // protected
-  Widget & shell,
-  Widget & form)
+SoXtFullViewer::createPrefSheetShellAndForm(Widget & shell,
+                                            Widget & form)
 {
   assert(this->prefshell == NULL);
 
@@ -1702,17 +1647,16 @@ SoXtFullViewer::createPrefSheetShellAndForm( // protected
   form = XtVaCreateWidget("form", xmFormWidgetClass, shell, NULL);
 
   this->prefsheet = form;
-} // createPrefSheetShellAndForm()
+}
 
 /*!
   This method creates all the preference sheel parts.
 */
 
 void
-SoXtFullViewer::createDefaultPrefSheetParts(// protected
-  Widget * widgets,
-  int & num,
-  Widget form)
+SoXtFullViewer::createDefaultPrefSheetParts(Widget * widgets,
+                                            int & num,
+                                            Widget form)
 {
   assert(widgets != NULL);
   num = 0;
@@ -1730,18 +1674,17 @@ SoXtFullViewer::createDefaultPrefSheetParts(// protected
     num++;
   // NOTE: SpeedPrefs is set up on SoXtFullViewer level, but is only used
   // by WalkViewer and FlyViewer, so it is not included as default...
-} // createDefaultPrefSheetParts()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::layoutPartsAndMapPrefSheet(// protected
-  Widget * widgets,
-  int num,
-  Widget form,
-  Widget shell)
+SoXtFullViewer::layoutPartsAndMapPrefSheet(Widget * widgets,
+                                           int num,
+                                           Widget form,
+                                           Widget shell)
 {
   assert(widgets != NULL);
   for (int i = 0; i < num; i++) {
@@ -1767,7 +1710,7 @@ SoXtFullViewer::layoutPartsAndMapPrefSheet(// protected
   }
   XtManageChild(form);
   XtPopup(shell, XtGrabNone);
-} // layoutPartsAndMapPrefSheet()
+}
  
 // *************************************************************************
 
@@ -1778,8 +1721,7 @@ SoXtFullViewer::layoutPartsAndMapPrefSheet(// protected
 */
 
 Widget
-SoXtFullViewer::createFramedSeekPrefSheetGuts(// protected
-  Widget parent)
+SoXtFullViewer::createFramedSeekPrefSheetGuts(Widget parent)
 {
   Widget frame = XtVaCreateManagedWidget("seekframe",
     xmFrameWidgetClass, parent,
@@ -1801,7 +1743,7 @@ SoXtFullViewer::createFramedSeekPrefSheetGuts(// protected
   this->createSeekPrefSheetGuts(form);
 
   return frame;
-} // createFramedSeekPrefSheetGuts()
+}
 
 /*!
   This method is a wrapper for the createSeekDistPrefSheetGuts() method,
@@ -1809,8 +1751,7 @@ SoXtFullViewer::createFramedSeekPrefSheetGuts(// protected
 */
 
 Widget
-SoXtFullViewer::createFramedSeekDistPrefSheetGuts(// protected
-  Widget parent)
+SoXtFullViewer::createFramedSeekDistPrefSheetGuts(Widget parent)
 {
   Widget frame = XtVaCreateManagedWidget("seekdistframe",
     xmFrameWidgetClass, parent,
@@ -1831,15 +1772,14 @@ SoXtFullViewer::createFramedSeekDistPrefSheetGuts(// protected
   this->createSeekDistPrefSheetGuts(form);
 
   return frame;
-} // createFramedSeekDistPrefSheetGuts()
+}
 
 /*!
   FIXME: write doc
 */
 
 Widget
-SoXtFullViewer::createFramedZoomPrefSheetGuts(// protected
-  Widget parent)
+SoXtFullViewer::createFramedZoomPrefSheetGuts(Widget parent)
 {
   Widget frame = XtVaCreateManagedWidget("zoomframe",
     xmFrameWidgetClass, parent,
@@ -1857,15 +1797,14 @@ SoXtFullViewer::createFramedZoomPrefSheetGuts(// protected
   this->createZoomPrefSheetGuts(frame);
 
   return frame;
-} // createFramedZoomPrefSheetGuts()
+}
 
 /*!
   FIXME: write doc
 */
 
 Widget
-SoXtFullViewer::createFramedClippingPrefSheetGuts(
-  Widget parent)
+SoXtFullViewer::createFramedClippingPrefSheetGuts(Widget parent)
 {
   Widget frame = XtVaCreateManagedWidget("clippingframe",
     xmFrameWidgetClass, parent,
@@ -1883,7 +1822,7 @@ SoXtFullViewer::createFramedClippingPrefSheetGuts(
   this->createClippingPrefSheetGuts(frame);
 
   return frame;
-} // createFramedClippingPrefSheetGuts()
+}
 
 // *************************************************************************
 
@@ -1892,8 +1831,7 @@ SoXtFullViewer::createFramedClippingPrefSheetGuts(
 */
 
 Widget
-SoXtFullViewer::createFramedStereoPrefSheetGuts(
-  Widget parent)
+SoXtFullViewer::createFramedStereoPrefSheetGuts(Widget parent)
 {
   Widget frame = XtVaCreateManagedWidget("stereoframe",
     xmFrameWidgetClass, parent, NULL);
@@ -1910,15 +1848,14 @@ SoXtFullViewer::createFramedStereoPrefSheetGuts(
   this->createStereoPrefSheetGuts(frame);
 
   return frame;
-} // createFramedStereoPrefSheetGuts()
+}
 
 /*!
   FIXME: write doc
 */
 
 Widget
-SoXtFullViewer::createFramedSpeedPrefSheetGuts(
-  Widget parent)
+SoXtFullViewer::createFramedSpeedPrefSheetGuts(Widget parent)
 {
   Widget frame = XtVaCreateManagedWidget("speedframe",
     xmFrameWidgetClass, parent, NULL);
@@ -1935,7 +1872,7 @@ SoXtFullViewer::createFramedSpeedPrefSheetGuts(
   this->createSpeedPrefSheetGuts(frame);
 
   return frame;
-} // createFramedSpeedPrefSheetGuts()
+}
 
 // *************************************************************************
 
@@ -1944,8 +1881,7 @@ SoXtFullViewer::createFramedSpeedPrefSheetGuts(
 */
 
 Widget
-SoXtFullViewer::createSeekPrefSheetGuts(// protected
-  Widget parent)
+SoXtFullViewer::createSeekPrefSheetGuts(Widget parent)
 {
   //  Seek animation time  |NNN|  seconds
   //  Seek to:   <> point   <> object
@@ -2043,7 +1979,7 @@ SoXtFullViewer::createSeekPrefSheetGuts(// protected
     SoXtFullViewer::objecttoggledCB, (XtPointer) this);
 
   return form;
-} // createSeekPrefSheetGuts()
+}
 
 // *************************************************************************
 
@@ -2052,8 +1988,7 @@ SoXtFullViewer::createSeekPrefSheetGuts(// protected
 */
 
 Widget
-SoXtFullViewer::createSeekDistPrefSheetGuts(// protected
-  Widget parent)
+SoXtFullViewer::createSeekDistPrefSheetGuts(Widget parent)
 {
   //   Seek distance:   |||||||||||||   |NN.NNN|
   //      <> percentage   <> absolute
@@ -2149,7 +2084,7 @@ SoXtFullViewer::createSeekDistPrefSheetGuts(// protected
     SoXtFullViewer::absolutetoggledCB, (XtPointer) this);
 
   return form;
-} // createSeekDistPrefSheetGuts()
+}
 
 // *************************************************************************
 
@@ -2159,8 +2094,7 @@ SoXtFullViewer::createSeekDistPrefSheetGuts(// protected
 */
 
 Widget
-SoXtFullViewer::createZoomPrefSheetGuts(// protected
-  Widget parent)
+SoXtFullViewer::createZoomPrefSheetGuts(Widget parent)
 {
   //  Camera zoom  |          ||||        |     |NN.NN|
   //  Zoom slider ranges from:  |N.N|  to |N.N|
@@ -2292,7 +2226,7 @@ SoXtFullViewer::createZoomPrefSheetGuts(// protected
     SoXtFullViewer::zoomsliderchangedCB, (XtPointer) this);
 
   return form;
-} // createZoomPrefSheetGuts()
+}
 
 // *************************************************************************
 
@@ -2303,8 +2237,7 @@ SoXtFullViewer::createZoomPrefSheetGuts(// protected
 */
 
 Widget
-SoXtFullViewer::createClippingPrefSheetGuts(// protected
-  Widget parent)
+SoXtFullViewer::createClippingPrefSheetGuts(Widget parent)
 {
   Widget form = XtVaCreateManagedWidget("clippingprefs",
     xmFormWidgetClass, parent, NULL);
@@ -2459,7 +2392,7 @@ SoXtFullViewer::createClippingPrefSheetGuts(// protected
 #endif
 
   return form;
-} // createClippingPrefSheetGuts()
+}
 
 // *************************************************************************
 
@@ -2468,8 +2401,7 @@ SoXtFullViewer::createClippingPrefSheetGuts(// protected
 */
 
 Widget
-SoXtFullViewer::createStereoPrefSheetGuts(// protected
-  Widget parent)
+SoXtFullViewer::createStereoPrefSheetGuts(Widget parent)
 {
   Widget form = XtVaCreateManagedWidget("stereoguts",
     xmFormWidgetClass, parent, NULL);
@@ -2488,7 +2420,7 @@ SoXtFullViewer::createStereoPrefSheetGuts(// protected
     SoXtFullViewer::stereotoggledCB, (XtPointer) this);
 
   return form;
-} // createStereoPrefSheetGuts()
+}
 
 // *************************************************************************
 
@@ -2497,8 +2429,7 @@ SoXtFullViewer::createStereoPrefSheetGuts(// protected
 */
 
 Widget
-SoXtFullViewer::createSpeedPrefSheetGuts(// protected
-  Widget parent)
+SoXtFullViewer::createSpeedPrefSheetGuts(Widget parent)
 {
   Widget form = XtVaCreateManagedWidget("speedform",
     xmFormWidgetClass, parent, NULL);
@@ -2540,7 +2471,7 @@ SoXtFullViewer::createSpeedPrefSheetGuts(// protected
     SoXtFullViewer::speedDecCB, (XtPointer) this);
 
   return form;
-} // createSpeedPrefSheetGuts()
+}
 
 // *************************************************************************
 // preferences sheet hooks:
@@ -2552,27 +2483,25 @@ SoXtFullViewer::createSpeedPrefSheetGuts(// protected
 */
 
 void
-SoXtFullViewer::prefSheetDestroy(
-  void)
+SoXtFullViewer::prefSheetDestroy(void)
 {
   XtUnrealizeWidget(this->prefshell);
   this->prefshell = NULL;
   this->prefsheet = NULL;
-} // prefSheetDestroy()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::prefSheetDestroyCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::prefSheetDestroyCB(Widget,
+                                   XtPointer closure,
+                                   XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->prefSheetDestroy();
-} // prefSheetDestroyCB()
+}
 
 /*!
   \internal
@@ -2580,11 +2509,10 @@ SoXtFullViewer::prefSheetDestroyCB(// static
 */
 
 void
-SoXtFullViewer::seekPrefSheetField(
-  void)
+SoXtFullViewer::seekPrefSheetField(void)
 {
   SOXT_STUB();
-} // seekPrefSheetField()
+}
 
 /*!
   \internal
@@ -2592,14 +2520,13 @@ SoXtFullViewer::seekPrefSheetField(
 */
 
 void
-SoXtFullViewer::seekPrefSheetFieldCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::seekPrefSheetFieldCB(Widget,
+                                     XtPointer closure,
+                                     XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->seekPrefSheetField();
-} // seekPrefSheetFieldCB()
+}
 
 /*!
   \internal
@@ -2609,25 +2536,23 @@ SoXtFullViewer::seekPrefSheetFieldCB(
 */
 
 void
-SoXtFullViewer::seekPrefSheetToggle1(
-  void)
+SoXtFullViewer::seekPrefSheetToggle1(void)
 {
   SOXT_STUB();
-} // seekPrefSheetToggle1CB()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::seekPrefSheetToggle1CB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::seekPrefSheetToggle1CB(Widget,
+                                       XtPointer closure,
+                                       XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->seekPrefSheetToggle1();
-} // seekPrefSheetToggle1CB()
+}
 
 /*!
   \internal
@@ -2636,33 +2561,30 @@ SoXtFullViewer::seekPrefSheetToggle1CB(// static
 */
 
 void
-SoXtFullViewer::seekPrefSheetToggle2(
-  void)
+SoXtFullViewer::seekPrefSheetToggle2(void)
 {
   SOXT_STUB();
-} // seekPrefSheetToggle2CB()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::seekPrefSheetToggle2CB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::seekPrefSheetToggle2CB(Widget,
+                                       XtPointer closure,
+                                       XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->seekPrefSheetToggle2();
-} // seekPrefSheetToggle2CB()
+}
 
 /*!
   \internal
 */
 
 void
-SoXtFullViewer::autocliptoggled(
-  void)
+SoXtFullViewer::autocliptoggled(void)
 {
   Boolean enable = False;
   XtVaGetValues(this->autocliptoggle, XmNset, &enable, NULL);
@@ -2699,29 +2621,27 @@ SoXtFullViewer::autocliptoggled(
     camera->nearDistance = nearval;
     camera->farDistance = farval;
   }
-} // autocliptoggled()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::autocliptoggledCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::autocliptoggledCB(Widget,
+                                  XtPointer closure,
+                                  XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->autocliptoggled();
-} // autocliptoggledCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::nearwheelvaluechanged(
-  void)
+SoXtFullViewer::nearwheelvaluechanged(void)
 {
   assert(this->nearwheel != NULL && this->farwheel != NULL);
 
@@ -2752,29 +2672,27 @@ SoXtFullViewer::nearwheelvaluechanged(
 
   // FIXME: cut off at 0.0? And against far clipping value? 990223 mortene.
   cam->nearDistance = val;
-} // nearwheelvaluechanged()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::nearwheelvaluechangedCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::nearwheelvaluechangedCB(Widget,
+                                        XtPointer closure,
+                                        XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->nearwheelvaluechanged();
-} // nearwheelvaluechangedCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::farwheelvaluechanged(
-  void)
+SoXtFullViewer::farwheelvaluechanged(void)
 {
   assert(this->nearwheel != NULL && this->farwheel != NULL);
 
@@ -2801,29 +2719,27 @@ SoXtFullViewer::farwheelvaluechanged(
   }
 
   cam->farDistance = val;
-} // farwheelvaluechanged()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::farwheelvaluechangedCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::farwheelvaluechangedCB(Widget,
+                                       XtPointer closure,
+                                       XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->farwheelvaluechanged();
-} // farwheelvaluechangedCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::nearvaluechanged(
-  void)
+SoXtFullViewer::nearvaluechanged(void)
 {
   float val = atof(XmTextGetString(this->nearvalue));
   float farval = SoXtThumbWheelGetValue(this->farwheel);
@@ -2844,29 +2760,27 @@ SoXtFullViewer::nearvaluechanged(
     return;
   }
   camera->nearDistance = val;
-} // nearvaluechanged()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::nearvaluechangedCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::nearvaluechangedCB(Widget,
+                                   XtPointer closure,
+                                   XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->nearvaluechanged();
-} // nearvaluechangedCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::farvaluechanged(
-  void)
+SoXtFullViewer::farvaluechanged(void)
 {
   float nearval = SoXtThumbWheelGetValue(this->nearwheel);
   float val = atof(XmTextGetString(this->farvalue));
@@ -2887,7 +2801,7 @@ SoXtFullViewer::farvaluechanged(
     return;
   }
   camera->farDistance = val;
-} // farvaluechanged()
+}
 
 /*!
   \internal
@@ -2895,14 +2809,13 @@ SoXtFullViewer::farvaluechanged(
 */
 
 void
-SoXtFullViewer::farvaluechangedCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::farvaluechangedCB(Widget,
+                                  XtPointer closure,
+                                  XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->farvaluechanged();
-} // farvaluechangedCB()
+}
 
 // *************************************************************************
   
@@ -2911,41 +2824,37 @@ SoXtFullViewer::farvaluechangedCB(
 */
 
 void
-SoXtFullViewer::selectedViewing(
-  void)
+SoXtFullViewer::selectedViewing(void)
 {
   this->setViewing(this->isViewing() ? FALSE : TRUE);
-} // selectedViewing()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::selectedDecoration(
-  void)
+SoXtFullViewer::selectedDecoration(void)
 {
   this->setDecoration(this->isDecoration() ? FALSE : TRUE);
-} // selectedDecoration();
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::selectedHeadlight(
-  void)
+SoXtFullViewer::selectedHeadlight(void)
 {
   SOXT_STUB();
-} // selectedHeadlight();
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::selectedPrefs(
-  void)
+SoXtFullViewer::selectedPrefs(void)
 {
   if (! this->prefshell)
     this->createPrefSheet();
@@ -2953,220 +2862,204 @@ SoXtFullViewer::selectedPrefs(
   else
     FIXME: de-iconify prefshell and push to front
 */
-} // selectedPrefs()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::interactbuttonClicked(
-  Boolean set)
+SoXtFullViewer::interactbuttonClicked(Boolean set)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtFullViewer::interactbuttonClicked",
-    "%s", set ? "Set" : "Unset");
+                         "%s", set ? "Set" : "Unset");
 #endif // SOXT_DEBUG
   if (this->isViewing() && set)
     this->setViewing(FALSE);
   else if (! this->isViewing() && ! set)
     this->setViewing(TRUE);
-} // interactbuttonClicked()
+}
 
 /*!
   staitc callback
 */
 
 void
-SoXtFullViewer::interactbuttonCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::interactbuttonCB(Widget,
+                                 XtPointer closure,
+                                 XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->interactbuttonClicked(TRUE);
-} // interactbuttonCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::examinebuttonClicked(
-  Boolean set)
+SoXtFullViewer::examinebuttonClicked(Boolean set)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtFullViewer::examinebuttonClicked",
-    "%s", set ? "Set" : "Unset");
+                         "%s", set ? "Set" : "Unset");
 #endif // SOXT_DEBUG
   if (this->isViewing() && ! set)
     this->setViewing(FALSE);
   else if (! this->isViewing() && set)
     this->setViewing(TRUE);
-} // examinebuttonClicked();
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::examinebuttonCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::examinebuttonCB(Widget,
+                                XtPointer closure,
+                                XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->examinebuttonClicked(TRUE);
-} // examinebuttonCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::helpbuttonClicked(
-  void)
+SoXtFullViewer::helpbuttonClicked(void)
 {
   this->openViewerHelpCard();
-} // helpbuttonClicked()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::helpbuttonCB(
-  Widget,
-  XtPointer client_data,
-  XtPointer)
+SoXtFullViewer::helpbuttonCB(Widget,
+                             XtPointer client_data,
+                             XtPointer)
 {
   ((SoXtFullViewer *) client_data)->helpbuttonClicked();
-} // helpbuttonCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::homebuttonClicked(
-  void)
+SoXtFullViewer::homebuttonClicked(void)
 {
   this->resetToHomePosition();
-} // homebuttonClicked()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::homebuttonCB(
-  Widget,
-  XtPointer client_data,
-  XtPointer)
+SoXtFullViewer::homebuttonCB(Widget,
+                             XtPointer client_data,
+                             XtPointer)
 {
   ((SoXtFullViewer *) client_data)->homebuttonClicked();
-} // homebuttonCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::sethomebuttonClicked(
-  void)
+SoXtFullViewer::sethomebuttonClicked(void)
 {
   this->saveHomePosition();
-} // sethomebuttonClicked()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::sethomebuttonCB(
-  Widget,
-  XtPointer client_data,
-  XtPointer)
+SoXtFullViewer::sethomebuttonCB(Widget,
+                                XtPointer client_data,
+                                XtPointer)
 {
   ((SoXtFullViewer *) client_data)->sethomebuttonClicked();
-} // sethomebuttonCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::viewallbuttonClicked(
-  void)
+SoXtFullViewer::viewallbuttonClicked(void)
 {
   this->viewAll();
-} // viewallbuttonClicked()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::viewallbuttonCB(
-  Widget,
-  XtPointer client_data,
-  XtPointer)
+SoXtFullViewer::viewallbuttonCB(Widget,
+                                XtPointer client_data,
+                                XtPointer)
 {
   ((SoXtFullViewer *) client_data)->viewallbuttonClicked();
-} // viewallbuttonCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::seekbuttonClicked(
-  void)
+SoXtFullViewer::seekbuttonClicked(void)
 {
   if (! this->isViewing()) {
 #if SOXT_DEBUG
     SoDebugError::postInfo("SoXtFullViewer::seekbuttonClicked",
-      "seek button should not be enabled in interaction mode!");
+                           "seek button should not be enabled in interaction mode!");
 #endif // SOXT_DEBUG
     return;
   }
   this->setSeekMode(this->isSeekMode() ? FALSE : TRUE);
-} // seekbuttonClicked()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::seekbuttonCB(
-  Widget,
-  XtPointer client_data,
-  XtPointer)
+SoXtFullViewer::seekbuttonCB(Widget,
+                             XtPointer client_data,
+                             XtPointer)
 {
   ((SoXtFullViewer *) client_data)->seekbuttonClicked();
-} // seekbuttonCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::copyviewSelected(
-  void)
+SoXtFullViewer::copyviewSelected(void)
 {
   this->copyView(SbTime::getTimeOfDay());
-} // copyviewSelected()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::pasteviewSelected(
-  void)
+SoXtFullViewer::pasteviewSelected(void)
 {
   this->pasteView(SbTime::getTimeOfDay());
-} // pasteviewSelected()
+}
 
 // *************************************************************************
 
@@ -3175,50 +3068,46 @@ SoXtFullViewer::pasteviewSelected(
 */
 
 void
-SoXtFullViewer::increaseInteractiveCount(
-  void)
+SoXtFullViewer::increaseInteractiveCount(void)
 {
   this->interactiveCountInc();
-} // increaseInteractiveCount()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::increaseInteractiveCountCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::increaseInteractiveCountCB(Widget,
+                                           XtPointer closure,
+                                           XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->increaseInteractiveCount();
-} // increaseInteractiveCountCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::decreaseInteractiveCount(
-  void)
+SoXtFullViewer::decreaseInteractiveCount(void)
 {
   this->interactiveCountDec();
-} // decreaseInteractiveCount()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::decreaseInteractiveCountCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::decreaseInteractiveCountCB(Widget,
+                                           XtPointer closure,
+                                           XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->decreaseInteractiveCount();
-} // decreaseInteractiveCountCB()
+}
 
 // *************************************************************************
 
@@ -3227,8 +3116,7 @@ SoXtFullViewer::decreaseInteractiveCountCB(
 */
 
 void
-SoXtFullViewer::seektimechanged(
-  void)
+SoXtFullViewer::seektimechanged(void)
 {
   float newtime = (float) atof(XmTextGetString(this->seektimefield));
   this->setSeekTime(newtime);
@@ -3236,85 +3124,79 @@ SoXtFullViewer::seektimechanged(
   sprintf(buf, "%g", newtime);
   XmTextSetString(this->seektimefield, buf);
   XmTextSetCursorPosition(this->seektimefield, (long) strlen(buf));
-} // seektimechanged()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::seektimechangedCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::seektimechangedCB(Widget,
+                                  XtPointer closure,
+                                  XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->seektimechanged();
-} // seektimechangedCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::pointtoggled(
-  void)
+SoXtFullViewer::pointtoggled(void)
 {
   XtVaSetValues(this->pointtoggle, XmNset, True, NULL);
   XtVaSetValues(this->objecttoggle, XmNset, False, NULL);
   if (! this->isDetailSeek())
     this->setDetailSeek(TRUE);
-} // pointtoggled()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::pointtoggledCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::pointtoggledCB(Widget,
+                               XtPointer closure,
+                               XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->pointtoggled();
-} // pointtoggledCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::objecttoggled(
-  void)
+SoXtFullViewer::objecttoggled(void)
 {
   XtVaSetValues(this->pointtoggle, XmNset, False, NULL);
   XtVaSetValues(this->objecttoggle, XmNset, True, NULL);
   if (this->isDetailSeek())
     this->setDetailSeek(FALSE);
-} // objecttoggled()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::objecttoggledCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::objecttoggledCB(Widget,
+                                XtPointer closure,
+                                XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->objecttoggled();
-} // objecttoggledCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::seekdistancechanged(
-  void)
+SoXtFullViewer::seekdistancechanged(void)
 {
   float newdist = (float) atof(XmTextGetString(this->seekdistancefield));
   if (newdist < 0.0f)
@@ -3324,75 +3206,70 @@ SoXtFullViewer::seekdistancechanged(
   sprintf(buf, "%g", newdist);
   XmTextSetString(this->seekdistancefield, buf);
   XmTextSetCursorPosition(this->seekdistancefield, (long) strlen(buf));
-} // seekdistancechanged()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::seekdistancechangedCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::seekdistancechangedCB(Widget,
+                                      XtPointer closure,
+                                      XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->seekdistancechanged();
-} // seekdistancechangedCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::percenttoggled(
-  void)
+SoXtFullViewer::percenttoggled(void)
 {
   XtVaSetValues(this->percenttoggle, XmNset, True, NULL);
   XtVaSetValues(this->absolutetoggle, XmNset, False, NULL);
   this->seekdistaspercentage = TRUE;
-} // percenttoggled()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::percenttoggledCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::percenttoggledCB(Widget,
+                                 XtPointer closure,
+                                 XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->percenttoggled();
-} // percenttoggledCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::absolutetoggled(
-  void)
+SoXtFullViewer::absolutetoggled(void)
 {
   XtVaSetValues(this->percenttoggle, XmNset, False, NULL);
   XtVaSetValues(this->absolutetoggle, XmNset, True, NULL);
   this->seekdistaspercentage = FALSE;
-} // absolutetoggled()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::absolutetoggledCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::absolutetoggledCB(Widget,
+                                  XtPointer closure,
+                                  XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->absolutetoggled();
-} // absolutetoggledCB()
+}
 
 // *************************************************************************
 
@@ -3401,8 +3278,7 @@ SoXtFullViewer::absolutetoggledCB(// static
 */
 
 void
-SoXtFullViewer::stereotoggled(
-  void)
+SoXtFullViewer::stereotoggled(void)
 {
   Boolean enable = False;
   XtVaGetValues(this->stereotoggle, XmNset, &enable, NULL);
@@ -3410,21 +3286,20 @@ SoXtFullViewer::stereotoggled(
   XtVaSetValues(this->stereotoggle,
     XmNset, this->isStereoViewing() ? True : False,
     NULL);
-} // stereotoggled()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::stereotoggledCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::stereotoggledCB(Widget,
+                                XtPointer closure,
+                                XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->stereotoggled();
-} // stereotoggledCB()
+}
 
 // *************************************************************************
 
@@ -3435,8 +3310,7 @@ SoXtFullViewer::stereotoggledCB(// static
 */
 
 float
-SoXtFullViewer::getCameraZoom(
-  void)
+SoXtFullViewer::getCameraZoom(void)
 {
   SoCamera * const camera = this->getCamera();
   if (! camera) {
@@ -3458,7 +3332,7 @@ SoXtFullViewer::getCameraZoom(
 
   SoPerspectiveCamera * const pCamera = (SoPerspectiveCamera *) camera;
   return pCamera->heightAngle.getValue() * 180 / M_PI;
-} // getCameraZoom()
+}
 
 /*!
   This method sets the camera zoom value (given the scene graph camera is a
@@ -3467,8 +3341,7 @@ SoXtFullViewer::getCameraZoom(
 */
 
 void
-SoXtFullViewer::setCameraZoom(
-  float zoom)
+SoXtFullViewer::setCameraZoom(float zoom)
 {
   SoCamera * const camera = this->getCamera();
   if (camera == NULL) {
@@ -3490,7 +3363,7 @@ SoXtFullViewer::setCameraZoom(
 
   SoPerspectiveCamera * const pCamera = (SoPerspectiveCamera *) camera;
   pCamera->heightAngle = zoom * M_PI / 180.0f;
-} // setCameraZoom()
+}
 
 // *************************************************************************
 
@@ -3499,8 +3372,7 @@ SoXtFullViewer::setCameraZoom(
 */
 
 void
-SoXtFullViewer::zoomfromchanged(
-  void)
+SoXtFullViewer::zoomfromchanged(void)
 {
   float value = atof(XmTextGetString(this->zoomfrom));
   if (value < 0.001f)
@@ -3537,29 +3409,27 @@ SoXtFullViewer::zoomfromchanged(
     int scaledval = (int) (sqrt(normalized) * 1000.0f);
     XmScaleSetValue(this->zoomslider, scaledval);
   }
-} // zoomfromchanged()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::zoomfromchangedCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::zoomfromchangedCB(Widget,
+                                  XtPointer closure,
+                                  XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->zoomfromchanged();
-} // zoomfromchangedCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::zoomsliderchanged(
-  void)
+SoXtFullViewer::zoomsliderchanged(void)
 {
   Boolean editable = True;
   XtVaGetValues(this->zoomslider, XmNsensitive, &editable, NULL);
@@ -3591,29 +3461,27 @@ SoXtFullViewer::zoomsliderchanged(
     XmTextSetCursorPosition(this->zoomvalue, (long) strlen(buf));
     this->setCameraZoom(realval);
   }
-} // zoomsliderchanged()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::zoomsliderchangedCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::zoomsliderchangedCB(Widget,
+                                    XtPointer closure,
+                                    XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->zoomsliderchanged();
-} // zoomsliderchangedCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::zoomtochanged(
-  void)
+SoXtFullViewer::zoomtochanged(void)
 {
   float value = atof(XmTextGetString(this->zoomto));
   if (value > 180.0f)
@@ -3652,28 +3520,26 @@ SoXtFullViewer::zoomtochanged(
     int scaledval = (int) (sqrt(normalized) * 1000.0f);
     XmScaleSetValue(this->zoomslider, scaledval);
   }
-} // zoomtochanged()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::zoomtochangedCB(// static
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::zoomtochangedCB(Widget,
+                                XtPointer closure,
+                                XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->zoomtochanged();
-} // zoomtochangedCB()
+}
 
 /*!
 */
 
 void
-SoXtFullViewer::zoomvaluechanged(
-  void)
+SoXtFullViewer::zoomvaluechanged(void)
 {
   float value = atof(XmTextGetString(this->zoomvalue));
   if (value < this->zoomrange[0])
@@ -3696,21 +3562,20 @@ SoXtFullViewer::zoomvaluechanged(
   }
 
   this->setCameraZoom(value);
-} // zoomvaluechanged()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::zoomvaluechangedCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::zoomvaluechangedCB(Widget,
+                                   XtPointer closure,
+                                   XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->zoomvaluechanged();
-} // zoomvaluechangedCB()
+}
 
 // *************************************************************************
 
@@ -3719,50 +3584,46 @@ SoXtFullViewer::zoomvaluechangedCB(
 */
 
 void
-SoXtFullViewer::speedInc(
-  void)
+SoXtFullViewer::speedInc(void)
 {
   SOXT_STUB_ONCE();
-} // speedInc()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::speedIncCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::speedIncCB(Widget,
+                           XtPointer closure,
+                           XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->speedInc();
-} // speedIncCB()
+}
 
 /*!
   FIXME: write doc
 */
 
 void
-SoXtFullViewer::speedDec(
-  void)
+SoXtFullViewer::speedDec(void)
 {
   SOXT_STUB_ONCE();
-} // speedDec()
+}
 
 /*!
   static callback
 */
 
 void
-SoXtFullViewer::speedDecCB(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+SoXtFullViewer::speedDecCB(Widget,
+                           XtPointer closure,
+                           XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->speedDec();
-} // speedDecCB()
+}
 
 // *************************************************************************
 
@@ -3776,6 +3637,6 @@ SoXtFullViewer::sizeChanged(const SbVec2s & size)
     newsize[1] = size[1] - 30;
   }
   inherited::sizeChanged(newsize);
-} // sizeChanged()
+}
 
 // *************************************************************************
