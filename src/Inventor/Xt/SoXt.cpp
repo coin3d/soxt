@@ -256,25 +256,11 @@ SoXt::init(int & argc, char ** argv,
 
 // internal
 static void
-wm_close_handler(Widget widget, XtPointer user, XEvent * e, Boolean * dispatch)
+wm_close_handler(Widget widget, XtPointer user, XtPointer calldata)
 {
-  if (e->type == ClientMessage) {
-    XClientMessageEvent * event = (XClientMessageEvent *) e;
-    if (WM_PROTOCOLS == None) {
-      WM_PROTOCOLS = XInternAtom(SoXt::getDisplay(), "WM_PROTOCOLS", True);
-      if (WM_PROTOCOLS == None) WM_PROTOCOLS = (Atom) -1;
-    }
-    if (WM_DELETE_WINDOW == None) {
-      WM_DELETE_WINDOW = XInternAtom(SoXt::getDisplay(),
-                                     "WM_DELETE_WINDOW", True);
-      if (WM_DELETE_WINDOW == None) { WM_DELETE_WINDOW = (Atom) -1; }
-    }
-    if (event->message_type == WM_PROTOCOLS &&
-        (unsigned) event->data.l[0] == WM_DELETE_WINDOW) {
-      XtAppSetExitFlag(SoXt::getAppContext());
-      *dispatch = False;
-    }
-  }
+  exit(0);
+  // FIXME: when we do a proper cleanup, we can exit the mainLoop this way instead...
+  // XtAppSetExitFlag(SoXt::getAppContext());
 }
 
 // FIXME: this code could probably be shared with SoQt.cpp, which also
@@ -339,7 +325,8 @@ SoXt::init(Widget toplevel)
 
   XtAppSetFallbackResources(SoXt::getAppContext(), SoXtP::fallbackresources);
 
-  XtAddEventHandler(toplevel, (EventMask) 0, True, wm_close_handler, NULL);
+  Atom WM_DELETE_WINDOW = XmInternAtom(SoXt::getDisplay(), "WM_DELETE_WINDOW", False);
+  XmAddWMProtocolCallback(toplevel, WM_DELETE_WINDOW, wm_close_handler, NULL);
 
   // FIXME: why the HAVE_LIBXMU wrapper? 20020117 mortene.
 #ifdef HAVE_LIBXMU
@@ -503,11 +490,19 @@ SoXt::getTopLevelWidget(void)
 /*!
   This function realizes the given \a widget.
 */
+
 void
 SoXt::show(Widget const widget)
 {
-  if (XtIsTopLevelShell(widget)) {
-    XtRealizeWidget(widget);
+  if ( !widget ) return;
+  if ( XtIsShell(widget) ) {
+    if ( XtWindow(widget) ) {
+      XMapRaised(XtDisplay(widget), XtWindow(widget));
+    }
+    else {
+      XtRealizeWidget(widget);
+      XMapWindow(XtDisplay(widget), XtWindow(widget));
+    }
   }
   else {
     XtManageChild(widget);
@@ -517,15 +512,28 @@ SoXt::show(Widget const widget)
 /*!
   This function hides the given \a widget.
 */
+
 void
 SoXt::hide(Widget const widget)
 {
-  if (XtIsTopLevelShell(widget)) {
-    XtUnrealizeWidget(widget);
+  if ( !widget ) return;
+
+  // temporarily disable redraws until unmaps has been processed
+  SbTime delaysensortimeout(SoDB::getDelaySensorTimeout());
+  SoDB::setDelaySensorTimeout(0.0);
+
+  if ( XtIsShell(widget) ) {
+    if ( XtWindow(widget) ) {
+      XUnmapWindow(XtDisplay(widget), XtWindow(widget));
+    }
   }
   else {
     XtUnmanageChild(widget);
   }
+
+  XSync(XtDisplay(widget), False);
+
+  SoDB::setDelaySensorTimeout(delaysensortimeout);
 }
 
 // *************************************************************************
@@ -566,16 +574,9 @@ SoXt::decodeString(XmString xstring)
 void
 SoXt::setWidgetSize(Widget const widget, const SbVec2s size)
 {
-  if (! widget) {
-#if SOXT_DEBUG
-    SoDebugError::postInfo("SoXt::setWidgetSize", "called with no widget");
-#endif // SOXT_DEBUG
-    return;
+  if ( widget ) {
+    XtVaSetValues(widget, XmNwidth, size[0], XmNheight, size[1], NULL);
   }
-  XtVaSetValues(widget,
-                XmNwidth, size[0],
-                XmNheight, size[1],
-                NULL);
 }
 
 /*!
@@ -584,17 +585,10 @@ SoXt::setWidgetSize(Widget const widget, const SbVec2s size)
 SbVec2s
 SoXt::getWidgetSize(Widget const widget)
 {
-  if (! widget) {
-#if SOXT_DEBUG
-    SoDebugError::postInfo("SoXt::getWidgetSize", "called with no widget");
-#endif // SOXT_DEBUG
-    return SbVec2s(0, 0);
+  Dimension width = 0, height = 0;
+  if ( widget ) {
+    XtVaGetValues(widget, XtNwidth, &width, XtNheight, &height, NULL);
   }
-  Dimension width, height;
-  XtVaGetValues(widget,
-                XtNwidth, &width,
-                XtNheight, &height,
-                NULL);
   return SbVec2s(width, height);
 }
 

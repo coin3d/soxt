@@ -39,7 +39,14 @@ public:
   ~SoXtComponentP();
 
   static Cursor getNativeCursor(Display * d, const SoXtCursor::CustomCursor * cc);
-  static void wmDeleteWindow(Widget w, XtPointer client, XtPointer call);
+
+  static void wmDeleteWindowCB(Widget w, XtPointer user, XtPointer call);
+  static void widgetDestroyedCB(Widget w, XtPointer user, XtPointer call);
+
+  static void structureNotifyOnWidgetCB(Widget w, XtPointer user, XEvent * e, Boolean *);
+  static void structureNotifyOnShellCB(Widget w, XtPointer user, XEvent * e, Boolean *);
+
+  void checkVisibilityChange(void);
 
   Widget parent;
   Widget widget;
@@ -49,13 +56,17 @@ public:
   char * icontitle;
 
   SbBool embedded;
-  SbBool destroyed;
+
+  SbBool widgetmappedstatus;
+  SbBool shellmappedstatus;
 
   SbVec2s size;
 
   SbPList * closecbs;
   SbPList * visibilitycbs;
-  SbBool visibilitystate, fullscreen;
+  SbBool visibilitystate;
+    
+  SbBool fullscreen;
 
 private:
   static SbDict * cursordict;

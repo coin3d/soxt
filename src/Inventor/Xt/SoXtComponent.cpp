@@ -85,10 +85,11 @@ SoXtComponentP::SoXtComponentP(SoXtComponent * o)
   this->size = SbVec2s(-1, -1);
   this->closecbs = NULL;
   this->visibilitycbs = NULL;
-  this->visibilitystate = FALSE;
   this->fullscreen = FALSE;
   this->embedded = FALSE;
-  this->destroyed = FALSE;
+  this->widgetmappedstatus = FALSE;
+  this->shellmappedstatus = FALSE;
+  this->visibilitystate = FALSE;
 }
 
 SoXtComponentP::~SoXtComponentP()
@@ -96,15 +97,20 @@ SoXtComponentP::~SoXtComponentP()
 }
 
 void
-SoXtComponentP::wmDeleteWindow(Widget w, XtPointer client_data, XtPointer call_data)
+SoXtComponentP::wmDeleteWindowCB(Widget widget, XtPointer closure, XtPointer call_data)
 {
-  SoXtComponentP * component = (SoXtComponentP *) client_data;
-  component->visibilitystate = FALSE;
-  component->destroyed = TRUE;
-  component->widget = NULL;
-  component->parent = NULL;
-  // FIXME: call close callbacks
-  // FIXME: window manager has destroyed widgets - be robust about it
+  // WM_DELETE_WINDOW
+  assert(closure);
+  SoXtComponentP * thisp = (SoXtComponentP *) closure;
+  PUBLIC(thisp)->windowCloseAction();
+}
+
+void
+SoXtComponentP::widgetDestroyedCB(Widget widget, XtPointer closure, XtPointer call_data)
+{
+  assert(closure);
+  SoXtComponentP * thisp = (SoXtComponentP *) closure;
+  thisp->widget = NULL;
 }
 
 SbDict * SoXtComponentP::cursordict = NULL;
@@ -213,24 +219,23 @@ SoXtComponent::SoXtComponent(const Widget parent,
   if (parent && XtIsShell(parent))
     PRIVATE(this)->embedded = FALSE;
 
-  if (PRIVATE(this)->parent && XtIsShell(PRIVATE(this)->parent)) {
-    XtInsertEventHandler(PRIVATE(this)->parent,
-      (EventMask) (0x1ffffff | StructureNotifyMask | VisibilityChangeMask),
-      False,
-      SoXtComponent::event_handler, (XtPointer) this, XtListTail);
-
+  if ( PRIVATE(this)->parent && XtIsShell(PRIVATE(this)->parent) ) {
     // register callback for window manager window destruction
-    Atom WM_DELETE_WINDOW = XmInternAtom(SoXt::getDisplay(),
-                                         "WM_DELETE_WINDOW", False);
-    XmAddWMProtocolCallback(PRIVATE(this)->parent, WM_DELETE_WINDOW,
-                            SoXtComponentP::wmDeleteWindow, PRIVATE(this));
+    if ( PRIVATE(this)->parent != SoXt::getTopLevelWidget() ) {
+      // toplevel has its own handler for this
+      XtVaSetValues(PRIVATE(this)->parent, XmNdeleteResponse, XmDO_NOTHING, NULL);
+      Atom WM_DELETE_WINDOW = XmInternAtom(SoXt::getDisplay(),
+                                           "WM_DELETE_WINDOW", False);
+      XmAddWMProtocolCallback(PRIVATE(this)->parent, WM_DELETE_WINDOW,
+                              SoXtComponentP::wmDeleteWindowCB, PRIVATE(this));
+    }
   }
 }
 
 // documented in common/SoGuiComponentCommon.cpp.in.
 SoXtComponent::~SoXtComponent()
 {
-  if (PRIVATE(this)->widget) {
+  if ( PRIVATE(this)->widget ) {
     this->unregisterWidget(PRIVATE(this)->widget);
   }
 
@@ -267,53 +272,41 @@ SoXtComponent::~SoXtComponent()
 void
 SoXtComponent::show(void)
 {
-  if ( PRIVATE(this)->destroyed ) return;
-#if SOXT_DEBUG && 0
-  SoDebugError::postInfo("SoXtComponent::show", "[enter]");
-#endif // SOXT_DEBUG
-
-  Widget shell = this->getShellWidget();
-  if (shell) {
-    XtRealizeWidget(shell);
-    if (this->firstRealize == TRUE) {
-      this->afterRealizeHook();
-      this->firstRealize = FALSE;
-    }
-    XtMapWidget(shell);
-  } else {
-    XtManageChild(this->getBaseWidget());
+  SoXt::show(this->getBaseWidget());
+  if ( !PRIVATE(this)->embedded ) {
+    SoXt::show(this->getShellWidget());
   }
-#if SOXT_DEBUG && 0
-  SoDebugError::postInfo("SoXtComponent::show", "[exit]");
-#endif // SOXT_DEBUG
 }
 
 // documented in common/SoGuiComponentCommon.cpp.in.
 void
 SoXtComponent::hide(void)
 {
-  if ( PRIVATE(this)->destroyed ) return;
-#if SOXT_DEBUG && 0
-  SoDebugError::postInfo("SoXtComponent::hide", "[enter]");
-#endif // SOXT_DEBUG
-  Widget shell = this->getShellWidget();
-  if (shell) {
-    XtUnmapWidget(shell);
-    XtUnrealizeWidget(shell);
-  } else {
-    XtUnmanageChild(this->getBaseWidget());
+  if ( !PRIVATE(this)->embedded ) {
+    Widget widget = this->getParentWidget();
+    if ( XtWindow(widget) ) {
+      // remember window position
+      Dimension x = 0, y = 0;
+      XtVaGetValues(widget, XmNx, &x, XmNy, &y, NULL);
+      XSizeHints hints;
+      hints.x = x;
+      hints.y = y;
+      hints.flags = USPosition;
+      XSetWMNormalHints(XtDisplay(widget), XtWindow(widget), &hints);
+    }
+    SoXt::hide(widget);
   }
-#if SOXT_DEBUG && 0
-  SoDebugError::postInfo("SoXtComponent::hide", "[exit]");
-#endif // SOXT_DEBUG
-  // not updated by events when done manually for some reason
-  PRIVATE(this)->visibilitystate = FALSE;
+  else {
+    SoXt::hide(this->getBaseWidget());
+  }
+
 }
 
 // documented in common/SoGuiComponentCommon.cpp.in.
 SbBool
 SoXtComponent::isVisible(void)
 {
+  PRIVATE(this)->checkVisibilityChange();
   return PRIVATE(this)->visibilitystate;
 }
 
@@ -353,29 +346,25 @@ SoXtComponent::getParentWidget(void) const
 void
 SoXtComponent::setSize(const SbVec2s size)
 {
+  if ( PRIVATE(this)->embedded ) {
+    SoXt::setWidgetSize(this->getBaseWidget(), size);
+  }
+  else {
+    SoXt::setWidgetSize(this->getShellWidget(), size);
+  }
   PRIVATE(this)->size = size;
-  Widget widget = this->getShellWidget();
-  if (!widget) { widget = this->getBaseWidget(); }
-  if (!widget) { return; }
-
-  int argc = 0;
-  Arg args[2];
-  if (size[0] != -1) {
-    XtSetArg(args[argc], XmNwidth, size[0]);
-    argc++;
-  }
-  if (size[1] != -1) {
-    XtSetArg(args[argc], XmNheight, size[1]);
-    argc++;
-  }
-  XtSetValues(widget, args, argc);
-  this->sizeChanged(size);
 }
 
 // documented in common/SoGuiComponentCommon.cpp.in.
 SbVec2s
 SoXtComponent::getSize(void) const
 {
+  if ( PRIVATE(this)->embedded ) {
+    PRIVATE(this)->size = SoXt::getWidgetSize(this->getShellWidget());
+  }
+  else {
+    PRIVATE(this)->size = SoXt::getWidgetSize(this->getBaseWidget());
+  }
   return PRIVATE(this)->size;
 }
 
@@ -417,16 +406,11 @@ SoXtComponent::sizeChanged(const SbVec2s & size)
 /*!
   This method returns the display the component is sent to.
 */
+
 Display *
 SoXtComponent::getDisplay(void)
 {
-#if SOXT_DEBUG
-  if (! this->getBaseWidget())
-    SoDebugError::postInfo("SoXtComponent::getDisplay",
-      "component has no base widget");
-#endif // SOXT_DEBUG
-  return this->getBaseWidget() ?
-    XtDisplay(this->getBaseWidget()) : (Display *) NULL;
+  return this->getBaseWidget() ? XtDisplay(this->getBaseWidget()) : (Display *) NULL;
 }
 
 // *************************************************************************
@@ -603,34 +587,27 @@ SoXtComponent::getClassName(void) const
 /*!
   This method sets the base widget of the component.
 */
-void         // protected
+
+void
 SoXtComponent::setBaseWidget(Widget widget)
 {
-  const EventMask events = StructureNotifyMask | VisibilityChangeMask;
-
-  if (PRIVATE(this)->widget) {
-    this->unregisterWidget(PRIVATE(this)->widget);
-    // FIXME: remove event handler
+  if ( PRIVATE(this)->widget ) {
+    // FIXME: remove event handlers?
   }
 
   PRIVATE(this)->widget = widget;
-  this->registerWidget(PRIVATE(this)->widget);
 
-  // really resize widget?  after all, size has been touched...
-  if (PRIVATE(this)->size[0] != -1)
-    XtVaSetValues(PRIVATE(this)->widget, XtNwidth, PRIVATE(this)->size[0], NULL);
-  if (PRIVATE(this)->size[1] != -1)
-    XtVaSetValues(PRIVATE(this)->widget, XtNheight, PRIVATE(this)->size[1], NULL);
+  XtAddCallback(PRIVATE(this)->widget, XmNdestroyCallback,
+                SoXtComponentP::widgetDestroyedCB, (XtPointer) PRIVATE(this));
 
-  XtInsertEventHandler(PRIVATE(this)->widget, events, False,
-    SoXtComponent::event_handler, (XtPointer) this, XtListTail);
+  XtAddEventHandler(PRIVATE(this)->widget, StructureNotifyMask, False,
+                    SoXtComponentP::structureNotifyOnWidgetCB, (XtPointer) PRIVATE(this));
 
-/*
-  if ( PRIVATE(this)->parent && XtIsShell(PRIVATE(this)->parent) ) {
-    Atom WM_DELETE_WINDOW = XmInternAtom(SoXt::getDisplay(), "WM_DELETE_WINDOW", False);
-    XmAddWMProtocolCallback(PRIVATE(this)->parent, WM_DELETE_WINDOW, SoXtComponentP::wmDeleteWindow, PRIVATE(this));
+  Widget shell = SoXt::getShellWidget(PRIVATE(this)->widget);
+  if ( shell && (shell != PRIVATE(this)->widget) ) {
+    XtAddEventHandler(shell, StructureNotifyMask, False,
+                      SoXtComponentP::structureNotifyOnShellCB, (XtPointer) PRIVATE(this));
   }
-*/ 
 }
 
 /*!
@@ -659,12 +636,7 @@ void
 SoXtComponent::windowCloseAction(// virtual, protected
   void)
 {
-  // SoDebugError::postInfo("SoXtComponent::windowCloseAction", "called");
-  if (this->getShellWidget() == SoXt::getTopLevelWidget()) {
-    XtAppSetExitFlag(SoXt::getAppContext());
-  } else {
-    this->hide();
-  }
+  this->hide();
 }
 
 // Documented in common/SoGuiComponentCommon.cpp.in.
@@ -674,13 +646,12 @@ SoXtComponent::afterRealizeHook(void)
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtComponent::afterRealizeHook", "invoked");
 #endif // SOXT_DEBUG
-  if (this->isTopLevelShell()) {
 
+  if ( this->isTopLevelShell() ) {
     XtVaSetValues(this->getShellWidget(),
                   XmNtitle, this->getTitle(),
                   XmNiconName, this->getIconTitle(),
                   NULL);
-
     if (PRIVATE(this)->size[0] > 0) {
       XtVaSetValues(this->getShellWidget(),
                     XmNwidth, PRIVATE(this)->size[0],
@@ -770,180 +741,118 @@ SoXtComponent::invokeVisibilityChangeCallbacks(// protected
 
 // *************************************************************************
 
-/*!
-  FIXME: write doc
-*/
-Boolean      // protected, virtual
-SoXtComponent::sysEventHandler(Widget widget, XEvent * event)
-{
-  if (widget == PRIVATE(this)->widget) { // base widget
-#if SOXT_DEBUG && 0
-    SoDebugError::postInfo("SoXtComponent::sysEventHandler",
-                           "base widget event (%d)", event->type);
-#endif // SOXT_DEBUG
-    if ( event->type == ConfigureNotify ) {
-      XConfigureEvent * conf = (XConfigureEvent *) event;
-      if (PRIVATE(this)->size != SbVec2s(conf->width, conf->height)) {
-        PRIVATE(this)->size = SbVec2s(conf->width, conf->height);
-        this->sizeChanged(PRIVATE(this)->size);
-      }
-    }
-    else if ( event->type == UnmapNotify || event->type == DestroyNotify ) {
-      if (PRIVATE(this)->visibilitystate != FALSE) {
-        PRIVATE(this)->visibilitystate = FALSE;
-        this->invokeVisibilityChangeCallbacks(PRIVATE(this)->visibilitystate);
-      }
-    }
-    else if ( event->type == MapNotify ) {
-      Dimension width = 0, height = 0;
-      XtVaGetValues(this->getBaseWidget(),
-        XmNwidth, &width,
-        XmNheight, &height,
-        NULL);
-      PRIVATE(this)->size = SbVec2s(width, height);
-      this->sizeChanged(PRIVATE(this)->size);
-    }
-    else if ( event->type == VisibilityNotify ) {
-      XVisibilityEvent * visibility = (XVisibilityEvent *) event;
-      SbBool newvisibility = TRUE;
-      if (visibility->state == VisibilityFullyObscured)
-        newvisibility = FALSE;
-      if ( PRIVATE(this)->visibilitystate != newvisibility ) {
-        PRIVATE(this)->visibilitystate = newvisibility;
-        this->invokeVisibilityChangeCallbacks(PRIVATE(this)->visibilitystate);
-      }
-    }
-  } else if (this->isTopLevelShell() && widget == this->getShellWidget()) {
-#if SOXT_DEBUG && 0
-    SoDebugError::postInfo("SoXtComponent::sysEventHandler",
-                           "shell widget event (%d)", event->type);
-#endif // SOXT_DEBUG
+static const char * EventNames[] = {
+  "[Xlib protocol]",
+  "[Xlib protocol]",
+  "KeyPress",
+  "KeyRelease",
+  "ButtonPress",
+  "ButtonRelease",
+  "MotionNotify",
+  "EnterNotify",
+  "LeaveNotify",
+  "FocusIn",
+  "FocusOut",
+  "KeymapNotify",
+  "Expose",
+  "GraphicsExpose",
+  "NoExpose",
+  "VisibilityNotify",
+  "CreateNotify",
+  "DestroyNotify",
+  "UnmapNotify",
+  "MapNotify",
+  "MapRequest",
+  "ReparentNotify",
+  "ConfigureNotify",
+  "ConfigureRequest",
+  "GravityNotify",
+  "ResizeRequest",
+  "CirculateNotify",
+  "CirculateRequest",
+  "PropertyNotify",
+  "SelectionClear",
+  "SelectionRequest",
+  "SelectionNotify",
+  "ColormapNotify",
+  "ClientMessage",
+  "MappingNotify",
+  NULL
+};
 
-    if ( event->type == UnmapNotify || event->type == DestroyNotify ) {
-      if (PRIVATE(this)->visibilitystate != FALSE) {
-        PRIVATE(this)->visibilitystate = FALSE;
-        this->invokeVisibilityChangeCallbacks(PRIVATE(this)->visibilitystate);
-      }
-    }
-    else if ( event->type == VisibilityNotify ) {
-      XVisibilityEvent * visibility = (XVisibilityEvent *) event;
-      SbBool newvisibility = TRUE;
-      if (visibility->state == VisibilityFullyObscured)
-        newvisibility = FALSE;
-
-    }
-    else if ( event->type == ConfigureNotify ) {
-      XConfigureEvent * conf = (XConfigureEvent *) event;
-      if (PRIVATE(this)->size != SbVec2s(conf->width, conf->height)) {
-        PRIVATE(this)->size = SbVec2s(conf->width, conf->height);
-        XtVaSetValues(this->getBaseWidget(),
-          XmNwidth, PRIVATE(this)->size[0],
-          XmNheight, PRIVATE(this)->size[1],
-          NULL);
-        this->sizeChanged(PRIVATE(this)->size);
-      }
-    }
-  } else {
-#if SOXT_DEBUG && 0
-    SoDebugError::postInfo("SoXtComponent::sysEventHandler",
-                           "[removing] event handler for unknown widget");
-#endif // SOXT_DEBUG
-  }
-  return True;
-}
-
-/*!
-  This static callback invokes SoXtComponent::sysEventHandler.
-
-  \sa sysEventHandler
-*/
 void
-SoXtComponent::event_handler(Widget widget,
-                             XtPointer closure,
-                             XEvent * event,
-                             Boolean * dispatch)
+SoXtComponentP::structureNotifyOnWidgetCB(Widget widget, XtPointer closure, XEvent * event, Boolean * dispatch)
 {
-  assert(closure != NULL);
-  SoXtComponent * component = (SoXtComponent *) closure;
-  *dispatch = component->sysEventHandler(widget, event);
-}
-
-/*!
-  Toggle full screen mode for this component, if possible.
-
-  Returns \c FALSE if operation failed.  This might happen if the
-  toolkit doesn't support attempts at making the component cover the
-  complete screen or if the component is not a toplevel window.
-*/
-SbBool
-SoXtComponent::setFullScreen(const SbBool enable)
-{
-  if ( enable == PRIVATE(this)->fullscreen )
-    return TRUE;
-
-  if ( this->getParentWidget() == this->getShellWidget() ) {
-    Widget shell = this->getShellWidget();
-    if ( enable ) {
-      Display * display = SoXt::getDisplay(); // XGetDisplay(NULL);
-
-      Dimension width = DisplayWidth(display, DefaultScreen(display));
-      Dimension height = DisplayHeight(display, DefaultScreen(display));
-
-      XtWidgetGeometry request, reply;
-      request.x = 0;
-      request.y = 0;
-      request.width = width;
-      request.height = height;
-      request.border_width = 0;
-      request.stack_mode = 0;
-      request.sibling = 0;
-      request.request_mode = CWX | CWY | CWWidth | CWHeight | CWBorderWidth | XtCWQueryOnly;
-      reply.x = 0;
-      reply.y = 0;
-      reply.width = 0;
-      reply.height = 0;
-      reply.border_width = 0;
-      reply.stack_mode = 0;
-      reply.sibling = 0;
-      reply.request_mode = CWX | CWY | CWWidth | CWHeight | CWBorderWidth | XtCWQueryOnly;
-      XtGeometryResult res = XtMakeGeometryRequest(shell, &request, &reply);
-      // if ( res != XtGeometryYes ) {
-      //   fprintf(stderr, "res = %d\n", res);
-      //   fprintf(stderr, "reply: %dx%d+%d+%d:%d\n", reply.width, reply.height, reply.x, reply.y, reply.border_width);
-      // } else {
-      //   fprintf(stderr, "reply: %dx%d+%d+%d:%d\n", reply.width, reply.height, reply.x, reply.y, reply.border_width);
-      // }
-      PRIVATE(this)->fullscreen = TRUE;
-
-      // resize to fit screen, remove window border
-      XtConfigureWidget(shell, 0, 0, width, height, 0);
-
-      // tell wm to leave window alone (makes sub-widgets not resize when enabled)
-      // XSetWindowAttributes attr;
-      // attr.override_redirect = true;
-      // XChangeWindowAttributes(display, window, CWOverrideRedirect, &attr);
-
-    } else {
-      // need to save size
-      SOXT_STUB();
-      return FALSE;
-      // PRIVATE(this)->fullscreen = FALSE;
+  assert(closure);
+  SoXtComponentP * thisp = (SoXtComponentP *) closure;
+  switch ( event->type ) {
+  case MapNotify:
+    if ( PUBLIC(thisp)->firstRealize ) {
+      PUBLIC(thisp)->afterRealizeHook();
+      PUBLIC(thisp)->firstRealize = FALSE;
     }
-    return TRUE;
-  } else {
-    SoDebugError::postWarning("SoXtComponent::setFullScreen", "parent widget is not shell");
-    return FALSE;
+    thisp->widgetmappedstatus = TRUE;
+    thisp->checkVisibilityChange();
+    break;
+  case UnmapNotify:
+    thisp->widgetmappedstatus = FALSE;
+    thisp->checkVisibilityChange();
+    break;
+  case ConfigureNotify:
+    // do anything with these?
+    break;
+  default:
+#if SOXT_DEBUG
+    SoDebugError::postInfo("SoXtComponentP::structureNotifyOnWidgetCB", "got %s", EventNames[event->type]);
+#endif // SOXT_DEBUG
+    break;
   }
 }
 
-/*!
-  Returns if this widget/component is in full screen mode.
-*/
-SbBool
-SoXtComponent::isFullScreen(void) const
+void
+SoXtComponentP::structureNotifyOnShellCB(Widget widget, XtPointer closure, XEvent * event, Boolean * dispatch)
 {
-  return PRIVATE(this)->fullscreen;
+  assert(closure);
+  SoXtComponentP * thisp = (SoXtComponentP *) closure;
+  switch ( event->type ) {
+  case MapNotify:
+    thisp->shellmappedstatus = TRUE;
+    thisp->checkVisibilityChange();
+    break;
+  case UnmapNotify:
+    thisp->shellmappedstatus = FALSE;
+    thisp->checkVisibilityChange();
+    break;
+  case ConfigureNotify:
+    // do anything with these?
+    break;
+  case ReparentNotify:
+    // do anything with these?
+    break;
+  default:
+#if SOXT_DEBUG
+    SoDebugError::postInfo("SoXtComponentP::structureNotifyOnShellCB", "got %s", EventNames[event->type]);
+#endif // SOXT_DEBUG
+    break;
+  }
 }
+
+void
+SoXtComponentP::checkVisibilityChange(void)
+{
+  SbBool prev = this->visibilitystate;
+  this->visibilitystate = TRUE;
+  if ( !this->widget ) this->visibilitystate = FALSE;
+  else if ( !this->widgetmappedstatus ) this->visibilitystate = FALSE;
+  else if ( !this->shellmappedstatus ) this->visibilitystate = FALSE;
+  else if ( !XtWindow(this->widget) ) this->visibilitystate = FALSE;
+  if ( prev != this->visibilitystate ) {
+    PUBLIC(this)->invokeVisibilityChangeCallbacks(this->visibilitystate);
+  }
+}
+
+
+// *************************************************************************
 
 // Converts from the common generic cursor format to a X11 Cursor
 // instance.
@@ -1029,3 +938,81 @@ SoXtComponent::setWidgetCursor(Widget w, const SoXtCursor & cursor)
 }
 
 // *************************************************************************
+
+/*!
+  Toggle full screen mode for this component, if possible.
+
+  Returns \c FALSE if operation failed.  This might happen if the
+  toolkit doesn't support attempts at making the component cover the
+  complete screen or if the component is not a toplevel window.
+*/
+
+SbBool
+SoXtComponent::setFullScreen(const SbBool enable)
+{
+  if ( enable == PRIVATE(this)->fullscreen )
+    return TRUE;
+
+  if ( this->getParentWidget() == this->getShellWidget() ) {
+    Widget shell = this->getShellWidget();
+    if ( enable ) {
+      Display * display = SoXt::getDisplay(); // XGetDisplay(NULL);
+
+      Dimension width = DisplayWidth(display, DefaultScreen(display));
+      Dimension height = DisplayHeight(display, DefaultScreen(display));
+
+      XtWidgetGeometry request, reply;
+      request.x = 0;
+      request.y = 0;
+      request.width = width;
+      request.height = height;
+      request.border_width = 0;
+      request.stack_mode = 0;
+      request.sibling = 0;
+      request.request_mode = CWX | CWY | CWWidth | CWHeight | CWBorderWidth | XtCWQueryOnly;
+      reply.x = 0;
+      reply.y = 0;
+      reply.width = 0;
+      reply.height = 0;
+      reply.border_width = 0;
+      reply.stack_mode = 0;
+      reply.sibling = 0;
+      reply.request_mode = CWX | CWY | CWWidth | CWHeight | CWBorderWidth | XtCWQueryOnly;
+      XtGeometryResult res = XtMakeGeometryRequest(shell, &request, &reply);
+      // if ( res != XtGeometryYes ) {
+      //   fprintf(stderr, "res = %d\n", res);
+      //   fprintf(stderr, "reply: %dx%d+%d+%d:%d\n", reply.width, reply.height, reply.x, reply.y, reply.border_width);
+      // } else {
+      //   fprintf(stderr, "reply: %dx%d+%d+%d:%d\n", reply.width, reply.height, reply.x, reply.y, reply.border_width);
+      // }
+      PRIVATE(this)->fullscreen = TRUE;
+
+      // resize to fit screen, remove window border
+      XtConfigureWidget(shell, 0, 0, width, height, 0);
+
+      // tell wm to leave window alone (makes sub-widgets not resize when enabled)
+      // XSetWindowAttributes attr;
+      // attr.override_redirect = true;
+      // XChangeWindowAttributes(display, window, CWOverrideRedirect, &attr);
+
+    } else {
+      // need to save size
+      SOXT_STUB();
+      return FALSE;
+      // PRIVATE(this)->fullscreen = FALSE;
+    }
+    return TRUE;
+  } else {
+    SoDebugError::postWarning("SoXtComponent::setFullScreen", "parent widget is not shell");
+    return FALSE;
+  }
+}
+
+/*!
+  Returns if this widget/component is in full screen mode.
+*/
+SbBool
+SoXtComponent::isFullScreen(void) const
+{
+  return PRIVATE(this)->fullscreen;
+}
