@@ -30,23 +30,30 @@ extern "C" {
 
 /* ********************************************************************** */
 
-struct SoXtThumbWheelCallbackData {
-  float current;
-  float previous;
-  int ticks;
-};
-
 extern WidgetClass soxtThumbWheelWidgetClass;
 
 typedef struct _SoXtThumbWheelRec *       SoXtThumbWheelWidget;
 typedef struct _SoXtThumbWheelClassRec *  SoXtThumbWheelWidgetClass;
 
-#ifndef XtIsSoXtThumbWheel
-#define XtIsSoXtThumbWheel(w) XtIsSubclass(w, soxtThumbWheelWidgetClass)
-#endif /* ! SoXtIsThumbWheel */
+typedef struct _SoXtThumbWheelCallbackData {
+  int reason;
+  XEvent * event;
+  float current;
+  float previous;
+  int ticks;
+} SoXtThumbWheelCallbackData;
+
+/* Callback reasons */
+#define SoXtCR_ARM      0x01
+#define SoXtCR_DISARM   0x02
+#define SoXtCR_MOVE     0x03
 
 void SoXtThumbWheelSetValue( Widget w, float value );
 float SoXtThumbWheelGetValue( Widget w );
+
+#ifndef XtIsSoXtThumbWheel
+#define XtIsSoXtThumbWheel(w) XtIsSubclass(w, soxtThumbWheelWidgetClass)
+#endif /* ! SoXtIsThumbWheel */
 
 /* ********************************************************************** */
 

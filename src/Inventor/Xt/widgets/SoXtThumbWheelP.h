@@ -75,8 +75,8 @@ typedef struct _SoXtThumbWheelRec {
   SoXtThumbWheelPart  thumbwheel;
 } SoXtThumbWheelRec;
 
-#define XmNrefresh "refresh"
-#define XmCRefresh "refresh"
+#define SoXtNrefresh "refresh"
+#define SoXtCRefresh "refresh"
 
 /* ********************************************************************** */
 

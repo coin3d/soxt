@@ -34,6 +34,8 @@ static const char rcsid[] =
   TODO:
     - use a virtual Colormap instead of creating graphics the way it is
       hardcoded now.
+    - share a cache of pixmaps instead of having pixmaps generated for
+      each thumbwheel
 */
 
 // *************************************************************************
@@ -57,25 +59,22 @@ resources[] = {
 //    sizeof(Pixel), offset(foreground),
 //    XmRCallProc, (XtPointer) _XmSelectColorDefault
 //  },
-  {
-    XmNrefresh, XmCRefresh, XmRBoolean,
-    sizeof(Boolean), offset(refresh),
-    XmRImmediate, (XtPointer) False
-  },
   // insensitiveForeground
   // shadowThickness
   // highlightThickness
   {
+    SoXtNrefresh, SoXtCRefresh, XmRBoolean,
+    sizeof(Boolean), offset(refresh),
+    XmRImmediate, (XtPointer) False
+  }, {
     XmNarmCallback, XmCCallback, XmRCallback,
     sizeof(XtCallbackList), offset(arm_callback),
     XmRPointer, (XtPointer) NULL
-  },
-  {
+  }, {
     XmNdisarmCallback, XmCCallback, XmRCallback,
     sizeof(XtCallbackList), offset(disarm_callback),
     XmRPointer, (XtPointer) NULL
-  },
-  {
+  }, {
     XmNvalueChangedCallback, XmCCallback, XmRCallback,
     sizeof(XtCallbackList), offset(valuechanged_callback),
     XmRPointer, (XtPointer) NULL
@@ -124,9 +123,8 @@ static void destroy( Widget );
 static void resize( Widget );
 static void expose( Widget, XExposeEvent *, Region );
 static XtGeometryResult query_geometry(
-                          Widget, XtWidgetGeometry *, XtWidgetGeometry * );
+         Widget, XtWidgetGeometry *, XtWidgetGeometry * );
 static Boolean set_values( Widget, Widget, Widget, ArgList, Cardinal * );
-
 static void realize( Widget, XtValueMask *, XSetWindowAttributes * );
 
 // *************************************************************************
@@ -168,8 +166,8 @@ SoXtThumbWheelClassRec soxtThumbWheelClassRec = {
     (XtPointer) NULL,                      // extension
   },
   { // primitive part <Xm/PrimitiveP.h>
-    (XtWidgetProc) NULL, // _XtInherit,             // border_highlight
-    (XtWidgetProc) NULL, // _XtInherit,             // border_unhighlight
+    (XtWidgetProc) NULL, // _XtInherit,    // border_highlight
+    (XtWidgetProc) NULL, // _XtInherit,    // border_unhighlight
     (String) XtInheritTranslations,        // translations
     (XtActionProc) NULL,                   // arm_and_activate_proc
     (XmSyntheticResource *) NULL,          // Synthetic Resources
@@ -261,6 +259,9 @@ create_thumbwheel(
   wheel->SetWheelRangeBoundaryHandling( SoAnyThumbWheel::ACCUMULATE );
   return wheel;
 } // create_thumbwheel()
+
+/*!
+*/
 
 static
 Boolean
@@ -741,6 +742,9 @@ Disarm(
   XtCallCallbackList( w, widget->thumbwheel.disarm_callback,
     (XtPointer) &data );
 } // Disarm()
+
+/*!
+*/
 
 void
 Roll(
