@@ -66,12 +66,14 @@ AMTAR = @AMTAR@
 AS = @AS@
 AWK = @AWK@
 CC = @CC@
+COMPONENTHEADER = @COMPONENTHEADER@
 COMPONENTLIBS = @COMPONENTLIBS@
 CPP = @CPP@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
+EVENT = @EVENT@
 GUI = @GUI@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -93,7 +95,9 @@ SOXT_VERSION = @SOXT_VERSION@
 VERSION = @VERSION@
 WIDGET = @WIDGET@
 install_sh = @install_sh@
+lGUI = @lGUI@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
+uGUI = @uGUI@
 
 
 SUBDIRS = src/Inventor/Xt examples
@@ -104,7 +108,7 @@ CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES = 
 DIST_SOURCES = 
 DIST_COMMON =  README ./stamp-h.in AUTHORS COPYING ChangeLog INSTALL \
-Makefile.am Makefile.in NEWS aclocal.m4 config.guess config.h.in \
+Makefile.am Makefile.in NEWS TODO aclocal.m4 config.guess config.h.in \
 config.sub configure configure.in depcomp install-sh ltconfig ltmain.sh \
 missing mkinstalldirs
 

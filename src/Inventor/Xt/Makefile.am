@@ -1,6 +1,6 @@
 ############################################################################
 
-SUBDIRS = devices viewers widgets
+SUBDIRS = common devices viewers
 
 ############################################################################
 
@@ -15,11 +15,14 @@ libSoXt_la_SOURCES = \
 	SoXtComponent.cpp \
 	SoXtGLWidget.h \
 	SoXtGLWidget.cpp \
-	SoXtRenderArea.h \
-	SoXtRenderArea.cpp
+	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.h \
+	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.cpp \
+	SoXtRenderAreaExtra.cpp
 
 libSoXt_la_LIBADD = \
-	devices/libSoXtDevices.la
+	common/libSoCommon.la \
+	devices/libSoXtDevices.la \
+	viewers/libSoXtViewers.la
 
 libSoXtincdir = $(includedir)/Inventor/Xt
 
@@ -27,7 +30,7 @@ libSoXtinc_HEADERS = \
 	SoXt.h \
 	SoXtComponent.h \
 	SoXtGLWidget.h \
-	SoXtRenderArea.h
+	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.h
 
 ############################################################################
 

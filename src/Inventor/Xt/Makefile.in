@@ -66,12 +66,14 @@ AMTAR = @AMTAR@
 AS = @AS@
 AWK = @AWK@
 CC = @CC@
+COMPONENTHEADER = @COMPONENTHEADER@
 COMPONENTLIBS = @COMPONENTLIBS@
 CPP = @CPP@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
+EVENT = @EVENT@
 GUI = @GUI@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -93,12 +95,14 @@ SOXT_VERSION = @SOXT_VERSION@
 VERSION = @VERSION@
 WIDGET = @WIDGET@
 install_sh = @install_sh@
+lGUI = @lGUI@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
+uGUI = @uGUI@
 
 ############################################################################
 
 
-SUBDIRS = devices viewers widgets
+SUBDIRS = common devices viewers
 
 ############################################################################
 
@@ -113,12 +117,15 @@ libSoXt_la_SOURCES = \
 	SoXtComponent.cpp \
 	SoXtGLWidget.h \
 	SoXtGLWidget.cpp \
-	SoXtRenderArea.h \
-	SoXtRenderArea.cpp
+	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.h \
+	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.cpp \
+	SoXtRenderAreaExtra.cpp
 
 
 libSoXt_la_LIBADD = \
-	devices/libSoXtDevices.la
+	common/libSoCommon.la \
+	devices/libSoXtDevices.la \
+	viewers/libSoXtViewers.la
 
 
 libSoXtincdir = $(includedir)/Inventor/Xt
@@ -127,12 +134,12 @@ libSoXtinc_HEADERS = \
 	SoXt.h \
 	SoXtComponent.h \
 	SoXtGLWidget.h \
-	SoXtRenderArea.h
+	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.h
 
 subdir = src/Inventor/Xt
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../../config.h
-CONFIG_CLEAN_FILES = 
+CONFIG_CLEAN_FILES =  SoXtRenderArea.h SoXtRenderArea.cpp
 LTLIBRARIES =  $(lib_LTLIBRARIES)
 
 
@@ -145,9 +152,10 @@ X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libSoXt_la_LDFLAGS = 
-libSoXt_la_DEPENDENCIES =  devices/libSoXtDevices.la
+libSoXt_la_DEPENDENCIES =  common/libSoCommon.la \
+devices/libSoXtDevices.la viewers/libSoXtViewers.la
 am_libSoXt_la_OBJECTS =  SoXt.lo SoXtComponent.lo SoXtGLWidget.lo \
-SoXtRenderArea.lo
+SoXtRenderArea.lo SoXtRenderAreaExtra.lo
 libSoXt_la_OBJECTS =  $(am_libSoXt_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -162,7 +170,9 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDF
 DIST_SOURCES =  $(libSoXt_la_SOURCES)
 HEADERS =  $(libSoXtinc_HEADERS)
 
-DIST_COMMON =  $(libSoXtinc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON =  $(libSoXtinc_HEADERS) Makefile.am Makefile.in \
+$(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.cpp.in \
+$(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.h.in
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -170,7 +180,8 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 GZIP_ENV = --best
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoXt.Plo $(DEPDIR)/SoXtComponent.Plo \
-$(DEPDIR)/SoXtGLWidget.Plo $(DEPDIR)/SoXtRenderArea.Plo
+$(DEPDIR)/SoXtGLWidget.Plo $(DEPDIR)/SoXtRenderArea.Plo \
+$(DEPDIR)/SoXtRenderAreaExtra.Plo
 SOURCES = $(libSoXt_la_SOURCES)
 OBJECTS = $(am_libSoXt_la_OBJECTS)
 
@@ -184,6 +195,10 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
+SoXtRenderArea.h: $(top_builddir)/config.status $(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.h.in
+	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+SoXtRenderArea.cpp: $(top_builddir)/config.status $(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.cpp.in
+	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 mostlyclean-libLTLIBRARIES:
 
@@ -230,6 +245,7 @@ clean-libtool:
 distclean-libtool:
 
 maintainer-clean-libtool:
+SoXtRenderArea.lo: $(top_builddir)/src/Inventor/Xt/SoXtRenderArea.cpp
 
 libSoXt.la: $(libSoXt_la_OBJECTS) $(libSoXt_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libSoXt_la_LDFLAGS) $(libSoXt_la_OBJECTS) $(libSoXt_la_LIBADD) $(LIBS)
@@ -328,6 +344,7 @@ maintainer-clean-tags:
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
 distdir: $(DISTFILES)
+	$(mkinstalldirs) $(distdir)/$(top_builddir)/src/Inventor/Xt
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -352,6 +369,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoXtComponent.Plo
 @AMDEP@include $(DEPDIR)/SoXtGLWidget.Plo
 @AMDEP@include $(DEPDIR)/SoXtRenderArea.Plo
+@AMDEP@include $(DEPDIR)/SoXtRenderAreaExtra.Plo
 
 mostlyclean-depend:
 
