@@ -51,6 +51,7 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXtObject.h>
 #include <Inventor/Xt/devices/SoXtDevice.h>
 #include <Inventor/Xt/SoXtComponent.h>
+#include <Inventor/Xt/SoAny.h>
 
 #include <X11/Intrinsic.h>
 #include <X11/StringDefs.h>
@@ -1200,6 +1201,19 @@ SoXt::selectBestVisual(// static
   SoDebugError::postInfo("SoXt::selectBestVisual", "yikes!");
 #endif // SOXT_DEBUG
 } // selectBestVisual()
+
+// *************************************************************************
+
+// Documented in SoWin.cpp, along with doc for the callback function
+// typedef and the enums.
+//
+// FIXME: find a way to collect the documentation of the public API
+// for all common So[Win|Qt|Gtk|Xt|Mac] classes. 20011014 mortene.
+SoXt::FatalErrorCB *
+SoXt::setFatalErrorHandler(SoXt::FatalErrorCB * cb, void * userdata)
+{
+  return SoAny::si()->setFatalErrorHandler(cb, userdata);
+}
 
 // *************************************************************************
 
