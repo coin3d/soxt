@@ -22,11 +22,7 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-#include <Inventor/errors/SoDebugError.h>
-
-#include <soxtdefs.h>
-
-#include <Inventor/Xt/SoXtSliderSetBase.h>
+// *************************************************************************
 
 /*!
   \class SoXtSliderSetBase Inventor/Xt/SoXtSliderSetBase.h
@@ -35,7 +31,16 @@ static const char rcsid[] =
 
 // *************************************************************************
 
+#include <Inventor/errors/SoDebugError.h>
+
+#include <soxtdefs.h>
+
+#include <Inventor/Xt/SoXtSliderSetBase.h>
+
+// *************************************************************************
+
 /*!
+  Constructor.
 */
 
 SoXtSliderSetBase::SoXtSliderSetBase( // protected
@@ -49,6 +54,7 @@ SoXtSliderSetBase::SoXtSliderSetBase( // protected
 } // SoXtSliderSetBase()
 
 /*!
+  Destructor.
 */
 
 SoXtSliderSetBase::~SoXtSliderSetBase( // protected
@@ -82,6 +88,9 @@ SoXtSliderSetBase::getNode(
 } // getNode()
 
 /*!
+  This method returns the layout size.
+
+  Not implemented.
 */
 
 void
@@ -93,6 +102,7 @@ SoXtSliderSetBase::getLayoutSize( // virtual
 }
 
 /*!
+  This method shows the component.
 */
 
 void
