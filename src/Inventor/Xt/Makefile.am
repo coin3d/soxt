@@ -69,21 +69,6 @@ libSoXt_la_LDFLAGS = \
 ############################################################################
 ##
 
-SoXt.cpp: SoXtBasic.h
-SoXtClipboard.cpp: SoXtBasic.h
-SoXtComponent.cpp: SoXtBasic.h
-SoXtDirectionalLightEditor.cpp: SoXtBasic.h
-SoXtGLWidget.cpp: SoXtBasic.h
-SoXtLightSliderSet.cpp: SoXtBasic.h
-SoXtMaterialEditor.cpp: SoXtBasic.h
-SoXtMaterialList.cpp: SoXtBasic.h
-SoXtMaterialSliderSet.cpp: SoXtBasic.h
-SoXtPrintDialog.cpp: SoXtBasic.h
-SoXtResource.cpp: SoXtBasic.h
-SoXtSliderSet.cpp: SoXtBasic.h
-SoXtSliderSetBase.cpp: SoXtBasic.h
-SoXtTransformSliderSet.cpp: SoXtBasic.h
-
 So@Gui@Basic.h: $(srcdir)/common/SoGuiBasic.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
