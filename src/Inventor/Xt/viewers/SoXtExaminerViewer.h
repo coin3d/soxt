@@ -30,7 +30,7 @@ class SoAnyExaminerViewer;
 
 // *************************************************************************
 
-class SOXT_DLL_EXPORT SoXtExaminerViewer : public SoXtFullViewer {
+class SOXT_DLL_API SoXtExaminerViewer : public SoXtFullViewer {
   SOXT_OBJECT_HEADER(SoXtExaminerViewer, SoXtFullViewer);
   friend class SoAnyExaminerViewer;
 

@@ -26,7 +26,7 @@
 
 // *************************************************************************
 
-class SOXT_DLL_EXPORT SoXtMaterialSliderSet : public SoXtSliderSet {
+class SOXT_DLL_API SoXtMaterialSliderSet : public SoXtSliderSet {
   SOXT_OBJECT_HEADER(SoXtMaterialSliderSet, SoXtSliderSet);
 
 public:

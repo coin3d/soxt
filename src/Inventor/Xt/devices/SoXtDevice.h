@@ -35,7 +35,7 @@ class SbPList;
 
 typedef XtEventHandler SoXtEventHandlerPtr;
 
-class SOXT_DLL_EXPORT SoXtDevice : public SoXtObject {
+class SOXT_DLL_API SoXtDevice : public SoXtObject {
   SOXT_OBJECT_ABSTRACT_HEADER(SoXtDevice, SoXtObject);
 
 public:

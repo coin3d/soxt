@@ -32,7 +32,7 @@
 
 // *************************************************************************
 
-class SOXT_DLL_EXPORT SoXtResource {
+class SOXT_DLL_API SoXtResource {
 public:
   SoXtResource( const Widget widget );
   ~SoXtResource(void);

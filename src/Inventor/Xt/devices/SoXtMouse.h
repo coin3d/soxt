@@ -31,7 +31,7 @@ class SoMouseButtonEvent;
 
 // *************************************************************************
 
-class SOXT_DLL_EXPORT SoXtMouse : public SoXtDevice {
+class SOXT_DLL_API SoXtMouse : public SoXtDevice {
   SOXT_OBJECT_HEADER(SoXtMouse, SoXtDevice);
 
 public:

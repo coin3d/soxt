@@ -28,7 +28,7 @@ class SoNode;
 
 // *************************************************************************
 
-class SOXT_DLL_EXPORT SoXtTransformSliderSet : public SoXtSliderSet {
+class SOXT_DLL_API SoXtTransformSliderSet : public SoXtSliderSet {
   SOXT_OBJECT_HEADER(SoXtTransformSliderSet, SoXtSliderSet);
 
 public:

@@ -28,7 +28,7 @@ class SoAnyFlyViewer;
 
 // *************************************************************************
 
-class SOXT_DLL_EXPORT SoXtFlyViewer : public SoXtConstrainedViewer {
+class SOXT_DLL_API SoXtFlyViewer : public SoXtConstrainedViewer {
   SOXT_OBJECT_HEADER(SoXtFlyViewer, SoXtConstrainedViewer);
   friend class SoAnyFlyViewer;
 

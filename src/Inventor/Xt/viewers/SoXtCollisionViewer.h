@@ -34,7 +34,7 @@ class SoXtCollisionViewer;
 typedef void SoXtCollisionViewerCB(
   void * userdata, SoXtCollisionViewer * viewer );
 
-class SOXT_DLL_EXPORT SoXtCollisionViewer {
+class SOXT_DLL_API SoXtCollisionViewer {
 public:
   SoXtCollisionViewer( SoXtViewer * const viewer );
   ~SoXtCollisionViewer(void);

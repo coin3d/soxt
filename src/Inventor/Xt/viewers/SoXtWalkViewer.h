@@ -28,7 +28,7 @@ class SoAnyWalkViewer;
 
 // *************************************************************************
 
-class SOXT_DLL_EXPORT SoXtWalkViewer : public SoXtConstrainedViewer {
+class SOXT_DLL_API SoXtWalkViewer : public SoXtConstrainedViewer {
   SOXT_OBJECT_HEADER(SoXtWalkViewer, SoXtConstrainedViewer);
   friend class SoAnyWalkViewer;
 

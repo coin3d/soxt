@@ -28,7 +28,7 @@ class SoAnyConstrainedViewer;
 
 // *************************************************************************
 
-class SOXT_DLL_EXPORT SoXtConstrainedViewer : public SoXtFullViewer {
+class SOXT_DLL_API SoXtConstrainedViewer : public SoXtFullViewer {
   SOXT_OBJECT_ABSTRACT_HEADER(SoXtConstrainedViewer, SoXtFullViewer);
   friend class SoAnyConstrainedViewer;
 

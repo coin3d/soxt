@@ -34,7 +34,7 @@ class SbPList;
 
 // *************************************************************************
 
-class SOXT_DLL_EXPORT SoXt {
+class SOXT_DLL_API SoXt {
 public:
   static void getVersionInfo( int * const major = NULL,
       int * const minor = NULL, int * const micro = NULL );

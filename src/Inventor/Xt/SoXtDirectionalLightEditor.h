@@ -43,7 +43,7 @@ class _SoXtColorSlider;
 typedef void SoXtDirectionalLightEditorCB(
   void * user, const SoDirectionalLight * light );
 
-class SOXT_DLL_EXPORT SoXtDirectionalLightEditor : public SoXtComponent {
+class SOXT_DLL_API SoXtDirectionalLightEditor : public SoXtComponent {
   SOXT_OBJECT_HEADER(SoXtDirectionalLightEditor, SoXtComponent);
 
 public:

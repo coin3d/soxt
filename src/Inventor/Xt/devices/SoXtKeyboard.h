@@ -30,7 +30,7 @@ class SoKeyboardEvent;
 
 // *************************************************************************
 
-class SOXT_DLL_EXPORT SoXtKeyboard : public SoXtDevice {
+class SOXT_DLL_API SoXtKeyboard : public SoXtDevice {
   SOXT_OBJECT_HEADER(SoXtKeyboard, SoXtDevice);
 
 public:

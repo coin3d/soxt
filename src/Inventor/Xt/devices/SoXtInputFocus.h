@@ -26,7 +26,7 @@
 
 // *************************************************************************
 
-class SOXT_DLL_EXPORT SoXtInputFocus : public SoXtDevice {
+class SOXT_DLL_API SoXtInputFocus : public SoXtDevice {
   SOXT_OBJECT_HEADER(SoXtInputFocus, SoXtDevice);
 
 public:

@@ -30,7 +30,7 @@ struct SoXtViewerButton;
 
 // *************************************************************************
 
-class SOXT_DLL_EXPORT SoXtPlaneViewer : public SoXtFullViewer {
+class SOXT_DLL_API SoXtPlaneViewer : public SoXtFullViewer {
   SOXT_OBJECT_HEADER(SoXtPlaneViewer, SoXtFullViewer);
   friend class SoAnyPlaneViewer;
 

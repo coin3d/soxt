@@ -30,7 +30,7 @@
 
 // *************************************************************************
 
-class SOXT_DLL_EXPORT SoXtSpaceball : public SoXtDevice {
+class SOXT_DLL_API SoXtSpaceball : public SoXtDevice {
   SOXT_OBJECT_HEADER(SoXtSpaceball, SoXtDevice);
 
 public:

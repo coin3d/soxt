@@ -37,7 +37,7 @@ class SoXtComponent;
 typedef void SoXtComponentCB( void * closure, SoXtComponent * component );
 typedef void SoXtComponentVisibilityCB( void * closure, SbBool enable );
 
-class SOXT_DLL_EXPORT SoXtComponent : public SoXtObject {
+class SOXT_DLL_API SoXtComponent : public SoXtObject {
   SOXT_OBJECT_ABSTRACT_HEADER(SoXtComponent, SoXtObject);
 
 public:

@@ -34,7 +34,7 @@ class SoSpaceballButtonEvent;
 
 // *************************************************************************
 
-class SOXT_DLL_EXPORT SoXtLinuxJoystick : public SoXtDevice {
+class SOXT_DLL_API SoXtLinuxJoystick : public SoXtDevice {
   SOXT_OBJECT_HEADER(SoXtLinuxJoystick, SoXtDevice);
 
 public:

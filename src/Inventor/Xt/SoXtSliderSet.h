@@ -29,7 +29,7 @@ struct SoXtSliderSetClosure;
 
 // *************************************************************************
 
-class SOXT_DLL_EXPORT SoXtSliderSet : public SoXtSliderSetBase {
+class SOXT_DLL_API SoXtSliderSet : public SoXtSliderSetBase {
   SOXT_OBJECT_ABSTRACT_HEADER(SoXtSliderSet, SoXtSliderSetBase);
 
 public:

@@ -47,7 +47,7 @@ typedef void SoXtClipboardImportCB(
 
 #define _XA_CLIPBOARD_ ((Atom) 0)
 
-class SOXT_DLL_EXPORT SoXtClipboard {
+class SOXT_DLL_API SoXtClipboard {
 public:
   SoXtClipboard( Widget widget, Atom selection = _XA_CLIPBOARD_ );
   ~SoXtClipboard(void);
