@@ -54,6 +54,25 @@ priority the item has.
 
     Reported by Mark Anderson
 
+    Update 20030408 larsa
+
+    I can reproduce a problem that seems to be the same one on Linux by
+    explicitly selecting a Visual in the DirectColor class.  Run
+    "glxinfo -t" to find one, and set the environment variable
+    SOXT_SELECT_VISUAL to the XVisualID of the visual you want to force
+    SoXt into selecting.
+
+    I am suspecting that DirectColor visuals are selected - probably it
+    is the class of the default Visual.  I also suspect that TrueColor
+    visuals would be available for the same depth since DirectColor
+    visuals are more advanced than TrueColor, so there should be no
+    reason to not support it if the hardware supports DirectColor.  I
+    have therefore rewritten the Visual selection strategy to prefer a
+    TrueColor visual before anything else.  The DirectColor visuals are
+    still not handled correctly, but the case should hopefully occur on
+    less systems.  To fix the real problem, use of
+    XSetWMColormapWindows() will probably be required.
+
 ========================================================================
 
 005 Porting Coin/SoXt to work with NuTCracker from MKS.  NuTCracker
