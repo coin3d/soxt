@@ -3971,10 +3971,17 @@ else
   BUILD_TESTS_FALSE=
 fi
 
-
 sim_ac_ivexamples_available=no
-if test -f ${srcdir}/ivexamples/configure.in; then
-  sim_ac_ivexamples_available=yes
+if test x"${with_ivexamples+set}" = x"set"; then
+  echo $ac_n "checking for ivexamples directory... $ac_c" 1>&6
+echo "configure:3978: checking for ivexamples directory" 1>&5
+  if test -f ${srcdir}/ivexamples/configure.in; then
+    echo "$ac_t""found" 1>&6
+    sim_ac_ivexamples_available=yes
+  else
+    echo "$ac_t""not found" 1>&6
+    { echo "configure: error: can't honour '--with-ivexamples' when ivexamples/ doesn't exist" 1>&2; exit 1; }
+  fi
 fi
 
 

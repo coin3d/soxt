@@ -183,10 +183,17 @@ dnl ************************************************************************
 dnl * --with-test-code is a silent option
 AM_CONDITIONAL(BUILD_TESTS, test "x${with_test_code+set}" = "xset")
 
-
+dnl * --with-ivexamples is a silent option
 sim_ac_ivexamples_available=no
-if test -f ${srcdir}/ivexamples/configure.in; then
-  sim_ac_ivexamples_available=yes
+if test x"${with_ivexamples+set}" = x"set"; then
+  AC_MSG_CHECKING([for ivexamples directory])
+  if test -f ${srcdir}/ivexamples/configure.in; then
+    AC_MSG_RESULT([found])
+    sim_ac_ivexamples_available=yes
+  else
+    AC_MSG_RESULT([not found])
+    AC_MSG_ERROR([can't honour '--with-ivexamples' when ivexamples/ doesn't exist])
+  fi
 fi
 
 AM_CONDITIONAL(BUILD_EXAMPLES, true)
