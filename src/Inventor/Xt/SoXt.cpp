@@ -30,6 +30,7 @@ static const char rcsid[] =
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/sensors/SoSensorManager.h>
 
+#include <common/soguidefs.h> // SOGUI_STUB()
 #include <Inventor/Xt/SoXt.h>
 
 // *************************************************************************
@@ -101,14 +102,14 @@ SoXt::nextEvent( // static
   XtAppContext context,
   XEvent * event )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // nextEvent()
 
 Boolean
 SoXt::dispatchEvent( // static
   XEvent * event )
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return False;
 } // dispatchEvent()
 
@@ -162,14 +163,14 @@ XmString
 SoXt::encodeString( // static
   char * string )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // encodeString()
 
 char *
 SoXt::decodeString( // static
   XmString xstring )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // decodeString()
 */
 
@@ -201,7 +202,7 @@ SoXt::getShellWidget( // static
 {
   if ( XtIsTopLevelShell( SoXt::mainWidget ) )
     return SoXt::mainWidget;
-  COIN_STUB();
+  SOGUI_STUB();
   return (Widget) NULL;
 } // getShellWidget()
 
@@ -214,7 +215,7 @@ SoXt::createSimpleErrorDialog( // static
   char * string1,
   char * string2 )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // createSimpleErrorDialog()
 
 void
@@ -224,7 +225,7 @@ SoXt::getPopupArgs( // static
   ArgList args,
   int * n )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // getPopupArgs()
 
 // *************************************************************************
@@ -234,7 +235,7 @@ SoXt::registerColormapLoad( // static
   Widget widget,
   Widget shell )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // registerColormapLoad()
 
 void
@@ -242,7 +243,7 @@ SoXt::addColormapToShell( // static
   Widget widget,
   Widget shell )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // addColormapToShell()
 
 void
@@ -250,7 +251,7 @@ SoXt::removeColormapFromShell( // static
   Widget widget,
   Widget shell )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // removeColormapFromShell()
 
 // *************************************************************************
@@ -262,7 +263,7 @@ SoXt::addExtensionEventHandler( // static
   XtEventHandler proc,
   XtPointer clientData )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // addExtensionEventHandler()
 
 void
@@ -272,14 +273,14 @@ SoXt::removeExtensionEventHandler( // static
   XtEventHandler proc,
   XtPointer clientData )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // removeExtensionEventHandler()
 
 Widget
 SoXt::getwidget( // static
   unsigned int what )
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return (Widget) NULL;
 } // getwidget()
 
@@ -292,7 +293,7 @@ SoXt::getExtensionEventHandler( // static
   XtEventHandler & proc,
   XtPointer & clientData )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // getExtensionEventHandler()
 
 // *************************************************************************

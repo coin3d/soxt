@@ -30,6 +30,7 @@ static const char rcsid[] =
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 
+#include <common/soguidefs.h> // SOGUI_STUB()
 #include <Inventor/Xt/devices/SoXtMouse.h>
 
 /*
@@ -71,7 +72,7 @@ SoXtMouse::enable( // virtual
   XtPointer data,
   Window window )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // enable()
 
 /*!
@@ -83,7 +84,7 @@ SoXtMouse::disable( // virtual
   XtEventHandler func,
   XtPointer data )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // disable()
 
 // *************************************************************************
@@ -120,7 +121,7 @@ SoXtMouse::translateEvent( // virtual
   case LeaveNotify:
     // should we make location-events for these?
     do {
-      COIN_STUB();
+      SOGUI_STUB();
     } while ( FALSE );
     break;
 

@@ -42,8 +42,8 @@
 #include <Inventor/misc/SoBasic.h>
 #include <Inventor/SbViewportRegion.h>
 
+#include <common/soguidefs.h> // SOGUI_STUB()
 #include <Inventor/Xt/SoXt.h>
-
 #include <Inventor/Xt/SoXtGLWidget.h>
 
 static const int SOXT_BORDER_WIDTH = 2;
@@ -107,7 +107,7 @@ Window
 SoXtGLWidget::getOverlayWindow(
   void )
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return (Window) NULL;
 } // getOverlayWindow()
 
@@ -136,7 +136,7 @@ Widget
 SoXtGLWidget::getOverlayWidget(
   void )
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return (Widget) NULL;
 } // getOverlayWidget()
 
@@ -144,14 +144,14 @@ void
 SoXtGLWidget::setNormalVisual( // virtual
   XVisualInfo * visual )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // setNormalVisual()
 
 XVisualInfo *
 SoXtGLWidget::getNormalVisual(
   void )
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return (XVisualInfo *) NULL;
 } // setNormalVisual()
 
@@ -159,14 +159,14 @@ void
 SoXtGLWidget::setOverlayVisual( // virtual
   XVisualInfo * visual )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // setOverlayVisual()
 
 XVisualInfo *
 SoXtGLWidget::getOverlayVisual(
   void )
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return (XVisualInfo *) NULL;
 } // getOverlayVisual()
 
@@ -210,14 +210,14 @@ void
 SoXtGLWidget::setDrawToFrontBufferEnable(
   SbBool enable )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // setDrawToFrontBufferEnable()
 
 SbBool
 SoXtGLWidget::isDrawToFrontBufferEnable(
   void ) const
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return FALSE;
 } // isDrawToFrontBufferEnable()
 
@@ -225,7 +225,7 @@ void
 SoXtGLWidget::redrawOverlay( // virtual, protected
   void )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // redrawOverlay()
 
 void
@@ -278,14 +278,14 @@ void
 SoXtGLWidget::initGraphic( // virtual, protected
   void )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // initGraphic()
 
 void
 SoXtGLWidget::initOverlayGraphic( // virtual, protected
   void )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // initOverlayGraphic()
 
 void
@@ -299,7 +299,7 @@ void
 SoXtGLWidget::widgetChanged( // virtual, protected
   Widget widget )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // widgetChanged()
 
 // *************************************************************************
@@ -369,21 +369,21 @@ SoXtGLWidget::eventHandler( // static, protected
   XAnyEvent * event,
   Boolean * flag )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // eventHandler()
 
 void
 SoXtGLWidget::setStereoBuffer( // protected
   SbBool enable )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // setStereoBuffer()
 
 SbBool
 SoXtGLWidget::isStereoBuffer( // protected
   void )
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return FALSE;
 } // isStereoBuffer()
 
@@ -391,7 +391,7 @@ SbBool
 SoXtGLWidget::isRGBMode( // protected
   void )
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return TRUE;
 } // isRGBMode()
 
@@ -399,7 +399,7 @@ int
 SoXtGLWidget::getDisplayListShareGroup( // protected
   GLXContext context )
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return 0;
 } // getDisplayListShareGroup()
 
@@ -565,7 +565,7 @@ SoXtGLWidget::glFlushBuffer(
 {
   assert( this->glxWidget != (Widget) NULL );
   assert( this->glLockLevel > 0 );
-  COIN_STUB();
+  SOGUI_STUB();
 } // glFlushBuffer()
 
 // *************************************************************************

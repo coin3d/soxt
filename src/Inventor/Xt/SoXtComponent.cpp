@@ -26,8 +26,8 @@ static const char rcsid[] =
 
 #include <Inventor/misc/SoBasic.h>
 
+#include <common/soguidefs.h> // SOGUI_STUB()
 #include <Inventor/Xt/SoXt.h>
-
 #include <Inventor/Xt/SoXtComponent.h>
 
 // *************************************************************************
@@ -91,7 +91,7 @@ SbBool
 SoXtComponent::isVisible(
   void )
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return TRUE;
 } // isVisible()
 
@@ -113,7 +113,7 @@ SbBool
 SoXtComponent::isTopLevelShell(
   void ) const
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return FALSE;
 } // isTopLevelShell()
 
@@ -121,7 +121,7 @@ Widget
 SoXtComponent::getShellWidget(
   void ) const
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return (Widget) NULL;
 } // getShellWidget()
 
@@ -198,14 +198,14 @@ SoXtComponent::setWindowCloseCallback(
   SoXtComponentCB * func,
   void * data )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 }
 
 SoXtComponent *
 SoXtComponent::getComponent( // static
   Widget widget )
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return NULL;
 } // getComponent()
 
@@ -249,14 +249,14 @@ void
 SoXtComponent::windowCloseAction( // virtual, protected
   void )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // windowCloseAction()
 
 void
 SoXtComponent::afterRealizeHook( // virtual, protected
   void )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // afterRealizeHook()
 
 const char *
@@ -287,14 +287,14 @@ void
 SoXtComponent::registerWidget( // protected
   Widget widget )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // registerWidget()
 
 void
 SoXtComponent::unregisterWidget( // protected
   Widget widget )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // unregisterWidget()
 
 void
@@ -302,7 +302,7 @@ SoXtComponent::addVisibilityChangeCallback( // protected
   SoXtComponentVisibilityCB * func,
   void * user )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // addVisibilityChangeCallback()
 
 void
@@ -310,21 +310,21 @@ SoXtComponent::removeVisibilityChangeCallback( // protected
   SoXtComponentVisibilityCB * func,
   void * user )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // removeVisibilityChangeCallback()
 
 void
 SoXtComponent::openHelpCard( // protected
   const char * name )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // openHelpCard()
 
 char *
 SoXtComponent::getlabel( // static, protected
   unsigned int what )
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return "(null)";
 } // getlabel()
 

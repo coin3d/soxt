@@ -24,6 +24,7 @@ static const char rcsid[] =
 
 #include <Inventor/misc/SoBasic.h>
 
+#include <common/soguidefs.h> // SOGUI_STUB()
 #include <Inventor/Xt/devices/SoXtSpaceball.h>
 
 // *************************************************************************
@@ -65,7 +66,7 @@ SoXtSpaceball::enable( // virtual
   XtPointer data,
   Window window )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // enable()
 
 /*!
@@ -77,7 +78,7 @@ SoXtSpaceball::disable( // virtual
   XtEventHandler func,
   XtPointer data )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // disable()
 
 /*!
@@ -92,7 +93,7 @@ SoXtSpaceball::translateEvent( // virtual
   // events we should handle:
   case ClientMessage: // ???
     do {
-      COIN_STUB();
+      SOGUI_STUB();
     } while ( FALSE );
     // return SoEvent * here
     break;
@@ -153,7 +154,7 @@ SbBool
 SoXtSpaceball::exists( // static
   Display * display )
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return FALSE;
 } // exists()
 
@@ -164,7 +165,7 @@ void
 SoXtSpaceball::setFocusToWindow(
   SbBool flag )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // setFocusToWindow()
 
 /*!
@@ -174,7 +175,7 @@ SbBool
 SoXtSpaceball::isFocusToWindow(
   void ) const
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return FALSE;
 } // isFocusToWindow()
 

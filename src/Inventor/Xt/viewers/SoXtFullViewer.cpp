@@ -40,6 +40,7 @@ static const char rcsid[] =
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
 #endif // SOXT_THUMBWHEELTEST
 
+#include <common/soguidefs.h> // SOGUI_STUB()
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
 
 enum DefaultViewerButtons {
@@ -259,7 +260,7 @@ SoXtFullViewer::setViewing( // virtual
   SbBool enable )
 {
   inherited::setViewing( enable );
-  COIN_STUB();
+  SOGUI_STUB();
 }
 
 void
@@ -278,14 +279,14 @@ SoXtFullViewer::setDrawStyle( // virtual
   SoXtViewer::DrawType type,
   SoXtViewer::DrawStyle style )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // setDrawStyle()
 
 void
 SoXtFullViewer::setBufferingType( // virtual
   SoXtViewer::BufferType type )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // setBufferingType()
 
 void
@@ -312,7 +313,7 @@ void
 SoXtFullViewer::hide( // virtual
   void )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // hide()
 
 // *************************************************************************
@@ -322,7 +323,7 @@ SoXtFullViewer::eventFilter( // virtual
   Widget obj,
   XAnyEvent * event )
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return FALSE;
 } // eventFilter()
 
@@ -386,14 +387,14 @@ void
 SoXtFullViewer::buildPopupMenu(
   void )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // buildPopupMenu()
 
 Widget
 SoXtFullViewer::makeSubPreferences(
   Widget parent )
 {
-  COIN_STUB();
+  SOGUI_STUB();
   return (Widget) NULL;
 } // makeSubPreferences()
 
@@ -401,62 +402,62 @@ void
 SoXtFullViewer::leftWheelStart(
   void )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // leftWheelStart()
 
 void
 SoXtFullViewer::leftWheelMotion(
   float )
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // leftWheelMotion()
 
 void
 SoXtFullViewer::leftWheelFinish(void)
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // leftWheelFinished()
 
 void
 SoXtFullViewer::bottomWheelStart(void)
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // bottomWheelStart()
 
 void
 SoXtFullViewer::bottomWheelMotion(float)
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // bottomWheelMode()
 
 void
 SoXtFullViewer::bottomWheelFinish(void)
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // bottomWheelFinish()
 
 void
 SoXtFullViewer::rightWheelStart(void)
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // rightWheelStart()
 
 void
 SoXtFullViewer::rightWheelMotion(float)
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // rightWheelMotion()
 
 void
 SoXtFullViewer::rightWheelFinish(void)
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // rightWheelFinish()
 
 void
 SoXtFullViewer::openViewerHelpCard(void)
 {
-  COIN_STUB();
+  SOGUI_STUB();
 } // openViewerHelpCard()
 
 // *************************************************************************
