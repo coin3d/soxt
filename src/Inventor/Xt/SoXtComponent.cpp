@@ -1234,29 +1234,32 @@ SoXtComponent::setComponentCursor(const SoXtCursor & cursor)
 void
 SoXtComponent::setWidgetCursor(Widget w, const SoXtCursor & cursor)
 {
+  Window win = XtWindow(w);
+  if (win == NULL) { return; } // widget probably not realized yet
+
   Display * d = SoXt::getDisplay();
 
   if (cursor.getShape() == SoXtCursor::CUSTOM_BITMAP) {
     const SoXtCursor::CustomCursor * cc = &cursor.getCustomCursor();
-    XDefineCursor(d, XtWindow(w), SoXtComponentP::getNativeCursor(d, cc));
+    XDefineCursor(d, win, SoXtComponentP::getNativeCursor(d, cc));
   }
   else {
     Cursor c;
     switch (cursor.getShape()) {
     case SoXtCursor::DEFAULT:
-      XUndefineCursor(d, XtWindow(w));
+      XUndefineCursor(d, win);
       break;
 
     case SoXtCursor::BUSY:
       // FIXME: plug memory leak. 20011127 mortene.
       c = XCreateFontCursor(d, XC_clock);
-      XDefineCursor(d, XtWindow(w), c);
+      XDefineCursor(d, win, c);
       break;
 
     case SoXtCursor::CROSSHAIR:
       // FIXME: plug memory leak. 20011127 mortene.
       c = XCreateFontCursor(d, XC_crosshair);
-      XDefineCursor(d, XtWindow(w), c);
+      XDefineCursor(d, win, c);
       break;
 
     case SoXtCursor::UPARROW:
@@ -1264,7 +1267,7 @@ SoXtComponent::setWidgetCursor(Widget w, const SoXtCursor & cursor)
       c = XCreateFontCursor(d, XC_based_arrow_up);
       // FIXME: perhaps this one is better?:  20011127 mortene.
 //        Cursor c = XCreateFontCursor(d, XC_sb_up_arrow);
-      XDefineCursor(d, XtWindow(w), c);
+      XDefineCursor(d, win, c);
       break;
 
     default:
