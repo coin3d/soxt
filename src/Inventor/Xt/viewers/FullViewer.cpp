@@ -49,6 +49,7 @@
 #include <Inventor/Xt/widgets/SoXtPopupMenu.h>
 
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
+#include <Inventor/Xt/viewers/SoXtFullViewerP.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -72,6 +73,10 @@
   \brief The SoXtFullViewer class adds GUI decorations to the viewer component.
   \ingroup components viewers
 */
+
+// *************************************************************************
+
+#define PRIVATE(o) (o->pimpl)
 
 // *************************************************************************
 
@@ -232,6 +237,8 @@ SoXtFullViewer::SoXtFullViewer(Widget parent,
   : inherited(parent, name, embed, type, FALSE),
     popupTitle(NULL)
 {
+  PRIVATE(this) = new SoXtFullViewerP(this);
+
   // initialization of protected members
   this->leftWheel = NULL;
   this->leftWheelStr = strcpy(new char [sizeof("Motion X")+1], "Motion X");
@@ -302,6 +309,8 @@ SoXtFullViewer::~SoXtFullViewer()
 {
   delete this->appButtonsList;
   delete this->viewerButtonWidgets;
+
+  delete PRIVATE(this);
 }
 
 // *************************************************************************
@@ -1084,7 +1093,7 @@ void
 SoXtFullViewer::buildPopupMenu(void)
 {
   if (this->prefmenu == NULL)
-    this->prefmenu = this->setupStandardPopupMenu();
+    this->prefmenu = PRIVATE(this)->setupStandardPopupMenu();
 }
 
 /*!
@@ -1128,7 +1137,7 @@ SoXtFullViewer::openPopupMenu(const SbVec2s position)
   int x = position[0] + 2;
   int y = this->getGLSize()[1] - position[1] + 2;
 
-  this->prepareMenu(this->prefmenu);
+  PRIVATE(this)->prepareMenu(this->prefmenu);
   this->prefmenu->popUp(this->getGLWidget(), x, y);
 }
 
@@ -3449,6 +3458,17 @@ SoXtFullViewer::sizeChanged(const SbVec2s & size)
     newsize[1] = size[1] - 30;
   }
   inherited::sizeChanged(newsize);
+}
+
+// *************************************************************************
+
+SoXtFullViewerP::SoXtFullViewerP(SoXtFullViewer * publ)
+  : SoGuiFullViewerP(publ)
+{
+}
+
+SoXtFullViewerP::~SoXtFullViewerP()
+{
 }
 
 // *************************************************************************
