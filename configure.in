@@ -209,7 +209,6 @@ AC_OUTPUT([
 	Makefile
 	soxt-config
 	src/Inventor/Xt/Makefile
-	src/Inventor/Xt/common/Makefile
 	src/Inventor/Xt/devices/Makefile
 	src/Inventor/Xt/viewers/Makefile
 	src/Inventor/Xt/widgets/Makefile

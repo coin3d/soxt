@@ -7,6 +7,8 @@ noinst_LTLIBRARIES = libSoXtWidgets.la
 libSoXtWidgets_la_SOURCES = \
 	SoXtThumbWheel.cpp \
 	SoXtThumbWheelP.h \
+	$(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp \
+	$(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.h \
 	SoXtThumbWheel.h
 
 libSoXtWidgetsincdir = $(includedir)/Inventor/Xt/widgets
@@ -15,6 +17,14 @@ libSoXtWidgetsinc_HEADERS = \
 	SoXtThumbWheelP.h \
 	SoXtThumbWheel.h
 
+############################################################################
+
+ThumbWheel.lo: $(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp
+	source='$^' object='$@' libtool=yes \
+	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
+	$(CXXDEPMODE) $(depcomp) \
+	$(LTCXXCOMPILE) -c -o $@ $^
+	
 ############################################################################
 
 install-libSoXtWidgetsincHEADERS: $(libSoXtWidgetsinc_HEADERS)

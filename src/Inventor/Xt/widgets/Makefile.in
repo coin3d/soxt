@@ -107,6 +107,8 @@ noinst_LTLIBRARIES = libSoXtWidgets.la
 libSoXtWidgets_la_SOURCES = \
 	SoXtThumbWheel.cpp \
 	SoXtThumbWheelP.h \
+	$(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp \
+	$(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.h \
 	SoXtThumbWheel.h
 
 
@@ -132,7 +134,7 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libSoXtWidgets_la_LDFLAGS = 
 libSoXtWidgets_la_LIBADD = 
-am_libSoXtWidgets_la_OBJECTS =  SoXtThumbWheel.lo
+am_libSoXtWidgets_la_OBJECTS =  SoXtThumbWheel.lo ThumbWheel.lo
 libSoXtWidgets_la_OBJECTS =  $(am_libSoXtWidgets_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -154,7 +156,8 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
 GZIP_ENV = --best
 depcomp = $(SHELL) $(top_srcdir)/depcomp
-DEP_FILES =  @AMDEP@ $(DEPDIR)/SoXtThumbWheel.Plo
+DEP_FILES =  @AMDEP@ $(DEPDIR)/SoXtThumbWheel.Plo \
+$(DEPDIR)/ThumbWheel.Plo
 SOURCES = $(libSoXtWidgets_la_SOURCES)
 OBJECTS = $(am_libSoXtWidgets_la_OBJECTS)
 
@@ -197,6 +200,7 @@ clean-libtool:
 distclean-libtool:
 
 maintainer-clean-libtool:
+ThumbWheel.lo: $(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp
 
 libSoXtWidgets.la: $(libSoXtWidgets_la_OBJECTS) $(libSoXtWidgets_la_DEPENDENCIES)
 	$(CXXLINK)  $(libSoXtWidgets_la_LDFLAGS) $(libSoXtWidgets_la_OBJECTS) $(libSoXtWidgets_la_LIBADD) $(LIBS)
@@ -249,6 +253,7 @@ distdir: $(DISTFILES)
 	done
 
 @AMDEP@include $(DEPDIR)/SoXtThumbWheel.Plo
+@AMDEP@include $(DEPDIR)/ThumbWheel.Plo
 
 mostlyclean-depend:
 
@@ -352,6 +357,14 @@ all-redirect all-am all install-strip installdirs mostlyclean-generic \
 distclean-generic clean-generic maintainer-clean-generic clean \
 mostlyclean distclean maintainer-clean
 
+
+############################################################################
+
+ThumbWheel.lo: $(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp
+	source='$^' object='$@' libtool=yes \
+	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
+	$(CXXDEPMODE) $(depcomp) \
+	$(LTCXXCOMPILE) -c -o $@ $^
 
 ############################################################################
 

@@ -101,7 +101,7 @@ uGUI = @uGUI@
 ############################################################################
 
 
-SUBDIRS = common devices viewers widgets
+SUBDIRS = devices viewers widgets
 
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 
@@ -120,7 +120,6 @@ libSoXt_la_SOURCES = \
 
 
 libSoXt_la_LIBADD = \
-	common/libSoCommon.la \
 	devices/libSoXtDevices.la \
 	viewers/libSoXtViewers.la \
 	widgets/libSoXtWidgets.la
@@ -150,9 +149,8 @@ X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libSoXt_la_LDFLAGS = 
-libSoXt_la_DEPENDENCIES =  common/libSoCommon.la \
-devices/libSoXtDevices.la viewers/libSoXtViewers.la \
-widgets/libSoXtWidgets.la
+libSoXt_la_DEPENDENCIES =  devices/libSoXtDevices.la \
+viewers/libSoXtViewers.la widgets/libSoXtWidgets.la
 am_libSoXt_la_OBJECTS =  SoXt.lo SoXtComponent.lo SoXtGLWidget.lo \
 SoXtRenderArea.lo SoXtRenderAreaExtra.lo
 libSoXt_la_OBJECTS =  $(am_libSoXt_la_OBJECTS)

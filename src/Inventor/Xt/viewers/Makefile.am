@@ -8,8 +8,12 @@ libSoXtViewers_la_SOURCES = \
 	$(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.cpp \
 	$(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtViewerExtra.cpp \
+	$(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp \
+	$(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.cpp \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.h \
+	$(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp \
+	$(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h
 
@@ -27,6 +31,20 @@ SoXtViewer.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.h.in
 
 SoXtViewer.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.cpp.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/viewers/SoXtViewer.cpp )
+
+############################################################################
+
+SoAnyFullViewer.lo: $(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp
+	source='$^' object='$@' libtool=yes \
+	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
+	$(CXXDEPMODE) $(depcomp) \
+	$(LTCXXCOMPILE) -c -o $@ $^
+
+SoAnyExaminerViewer.lo: $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp
+	source='$^' object='$@' libtool=yes \
+	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
+	$(CXXDEPMODE) $(depcomp) \
+	$(LTCXXCOMPILE) -c -o $@ $^
 
 ############################################################################
 

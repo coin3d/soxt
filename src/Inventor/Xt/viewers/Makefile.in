@@ -108,8 +108,12 @@ libSoXtViewers_la_SOURCES = \
 	$(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.cpp \
 	$(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtViewerExtra.cpp \
+	$(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp \
+	$(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.cpp \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.h \
+	$(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp \
+	$(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h
 
@@ -138,7 +142,8 @@ X_PRE_LIBS = @X_PRE_LIBS@
 libSoXtViewers_la_LDFLAGS = 
 libSoXtViewers_la_LIBADD = 
 am_libSoXtViewers_la_OBJECTS =  SoXtViewer.lo SoXtViewerExtra.lo \
-SoXtFullViewer.lo SoXtExaminerViewer.lo
+SoAnyFullViewer.lo SoXtFullViewer.lo SoAnyExaminerViewer.lo \
+SoXtExaminerViewer.lo
 libSoXtViewers_la_OBJECTS =  $(am_libSoXtViewers_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -160,7 +165,8 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
 GZIP_ENV = --best
 depcomp = $(SHELL) $(top_srcdir)/depcomp
-DEP_FILES =  @AMDEP@ $(DEPDIR)/SoXtExaminerViewer.Plo \
+DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAnyExaminerViewer.Plo \
+$(DEPDIR)/SoAnyFullViewer.Plo $(DEPDIR)/SoXtExaminerViewer.Plo \
 $(DEPDIR)/SoXtFullViewer.Plo $(DEPDIR)/SoXtViewer.Plo \
 $(DEPDIR)/SoXtViewerExtra.Plo
 SOURCES = $(libSoXtViewers_la_SOURCES)
@@ -208,8 +214,12 @@ maintainer-clean-libtool:
 SoXtViewer.lo: $(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.cpp
 SoXtViewerExtra.lo: \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtViewerExtra.cpp
+SoAnyFullViewer.lo: \
+	$(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp
 SoXtFullViewer.lo: \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.cpp
+SoAnyExaminerViewer.lo: \
+	$(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp
 SoXtExaminerViewer.lo: \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp
 
@@ -265,6 +275,8 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 
+@AMDEP@include $(DEPDIR)/SoAnyExaminerViewer.Plo
+@AMDEP@include $(DEPDIR)/SoAnyFullViewer.Plo
 @AMDEP@include $(DEPDIR)/SoXtExaminerViewer.Plo
 @AMDEP@include $(DEPDIR)/SoXtFullViewer.Plo
 @AMDEP@include $(DEPDIR)/SoXtViewer.Plo
@@ -380,6 +392,20 @@ SoXtViewer.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.h.in
 
 SoXtViewer.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.cpp.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/viewers/SoXtViewer.cpp )
+
+############################################################################
+
+SoAnyFullViewer.lo: $(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp
+	source='$^' object='$@' libtool=yes \
+	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
+	$(CXXDEPMODE) $(depcomp) \
+	$(LTCXXCOMPILE) -c -o $@ $^
+
+SoAnyExaminerViewer.lo: $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp
+	source='$^' object='$@' libtool=yes \
+	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
+	$(CXXDEPMODE) $(depcomp) \
+	$(LTCXXCOMPILE) -c -o $@ $^
 
 ############################################################################
 

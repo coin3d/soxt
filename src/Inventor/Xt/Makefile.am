@@ -1,6 +1,6 @@
 ############################################################################
 
-SUBDIRS = common devices viewers widgets
+SUBDIRS = devices viewers widgets
 
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 
@@ -18,7 +18,6 @@ libSoXt_la_SOURCES = \
 	SoXtRenderAreaExtra.cpp
 
 libSoXt_la_LIBADD = \
-	common/libSoCommon.la \
 	devices/libSoXtDevices.la \
 	viewers/libSoXtViewers.la \
 	widgets/libSoXtWidgets.la
