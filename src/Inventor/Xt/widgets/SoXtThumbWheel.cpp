@@ -314,6 +314,7 @@ dirty_pixmaps(
   \internal
 */
 
+/*
 static
 inline
 unsigned long
@@ -326,6 +327,7 @@ from32to16bit(
   the16bitcolor |= (the32bitcolor >>  8) & 0xf800;
   return the16bitcolor;
 } // to16bit()
+*/
 
 /*!
   \internal
@@ -384,17 +386,16 @@ init_pixmaps(
   const int t = widget->primitive.shadow_thickness;
 
   Drawable drawable = XtWindow( widget );
-  if ( ! drawable ) {
+  if ( ! drawable )
     drawable = DefaultRootWindow( dpy );
-  }
-  assert( drawable );
+  assert( drawable != 0 );
 
   unsigned long * const rgbdata = new unsigned long [ diameter * thickness ];
   assert( rgbdata != NULL );
   wheel->SetGraphicsByteOrder( SoAnyThumbWheel::RGBA );
 
   int frame = 0;
-  for ( frame = 0; frame < widget->thumbwheel.numpixmaps; frame++ ) {
+  for ( frame = widget->thumbwheel.numpixmaps - 1; frame > 0; frame-- ) {
     widget->thumbwheel.pixmaps[frame] =
       XCreatePixmap( dpy, drawable, width, height, depth );
     assert( widget->thumbwheel.pixmaps[frame] );
@@ -480,45 +481,91 @@ init_pixmaps(
       break;
     } // switch ( widget->thumbweel.orientation )
 
-    // lets do this the hard way and waste some resources :(
-    XColor cdata, ign;
-    char colorname[16];
-    unsigned long prevrgb = 0;
-    unsigned long prev = black;
-    if ( widget->thumbwheel.orientation == XmHORIZONTAL ) {
-      for ( x = 0; x < wheelwidth; x++ ) {
-        for ( y = 0; y < wheelheight; y++ ) {
-          if ( rgbdata[(y*wheelwidth)+x] != prevrgb ) {
-            cdata.red   = ((rgbdata[(y*wheelwidth)+x] >>  8) & 0xff) |
-                          ((rgbdata[(y*wheelwidth)+x] >>  0) & 0xff00);
-            cdata.green = ((rgbdata[(y*wheelwidth)+x] >> 16) & 0xff) |
-                          ((rgbdata[(y*wheelwidth)+x] >>  8) & 0xff00);
-            cdata.blue  = ((rgbdata[(y*wheelwidth)+x] >> 24) & 0xff) |
-                          ((rgbdata[(y*wheelwidth)+x] >> 16) & 0xff00);
-            if ( XAllocColor( dpy, colormap, &cdata ) ) {
-              prevrgb = rgbdata[(y*wheelwidth)+x];
-              prev = cdata.pixel;
-            }
-          }
-          XPutPixel( img, x + lpadding, y + tpadding, prev );
-        }
-      }
-    } else {
-      for ( y = 0; y < wheelheight; y++ ) {
+    if ( widget->core.depth > 8 ) {
+      // lets do this the hard way and waste some resources :(
+      XColor cdata, ign;
+      char colorname[16];
+      unsigned long prevrgb = 0;
+      unsigned long prev = black;
+      if ( widget->thumbwheel.orientation == XmHORIZONTAL ) {
         for ( x = 0; x < wheelwidth; x++ ) {
-          if ( rgbdata[(y*wheelwidth)+x] != prevrgb ) {
-            cdata.red   = (rgbdata[(y*wheelwidth)+x] >>  8) & 0xff;
-            cdata.green = (rgbdata[(y*wheelwidth)+x] >> 16) & 0xff;
-            cdata.blue  = (rgbdata[(y*wheelwidth)+x] >> 24) & 0xff;
-            sprintf( colorname, "rgb:%02x/%02x/%02x",
-              cdata.red, cdata.green, cdata.blue );
-            if ( XLookupColor( dpy, colormap, colorname, &cdata, &ign ) &&
-                 XAllocColor( dpy, colormap, &cdata ) ) {
-              prevrgb = rgbdata[(y*wheelwidth)+x];
-              prev = cdata.pixel;
+          for ( y = 0; y < wheelheight; y++ ) {
+            if ( rgbdata[(y*wheelwidth)+x] != prevrgb ) {
+              cdata.red   = ((rgbdata[(y*wheelwidth)+x] >>  8) & 0xff) |
+                            ((rgbdata[(y*wheelwidth)+x] >>  0) & 0xff00);
+              cdata.green = ((rgbdata[(y*wheelwidth)+x] >> 16) & 0xff) |
+                            ((rgbdata[(y*wheelwidth)+x] >>  8) & 0xff00);
+              cdata.blue  = ((rgbdata[(y*wheelwidth)+x] >> 24) & 0xff) |
+                            ((rgbdata[(y*wheelwidth)+x] >> 16) & 0xff00);
+              if ( XAllocColor( dpy, colormap, &cdata ) ) {
+                prev = cdata.pixel;
+                prevrgb = rgbdata[(y*wheelwidth)+x];
+              } else {
+                char colorname[16];
+//                SoDebugError::postInfo( "", "the hard way" );
+                sprintf( colorname, "rgb:%02x/%02x/%02x", cdata.red >> 8,
+                  cdata.green >> 8, cdata.blue >> 8 );
+                if ( XLookupColor( dpy, colormap, colorname, &cdata, &ign ) ) {
+                  if ( XAllocColor( dpy, colormap, &cdata ) ) {
+                    prev = cdata.pixel;
+                    prevrgb = rgbdata[(y*wheelwidth)+x];
+//                    SoDebugError::postInfo( "", "success for %s", colorname );
+                  } else if ( XAllocColor( dpy, colormap, &ign ) ) {
+                    prev = ign.pixel;
+                    prevrgb = rgbdata[(y*wheelwidth)+x];
+//                    SoDebugError::postInfo( "", "ok for %s", colorname );
+//                  } else {
+//                    SoDebugError::postInfo( "", "lookup failed for %s", colorname );
+                  }
+//                } else {
+//                  SoDebugError::postInfo( "", "lookup failed for %s", colorname );
+                }
+              }
+//            } else {
+//              SoDebugError::postInfo( "", "cached." );
             }
+            XPutPixel( img, x + lpadding, y + tpadding, prev );
           }
-          XPutPixel( img, x + lpadding, y + tpadding, prev );
+        }
+      } else {
+        for ( y = 0; y < wheelheight; y++ ) {
+          for ( x = 0; x < wheelwidth; x++ ) {
+            if ( rgbdata[(y*wheelwidth)+x] != prevrgb ) {
+              cdata.red   = ((rgbdata[(y*wheelwidth)+x] >>  8) & 0xff) |
+                            ((rgbdata[(y*wheelwidth)+x] >>  0) & 0xff00);
+              cdata.green = ((rgbdata[(y*wheelwidth)+x] >> 16) & 0xff) |
+                            ((rgbdata[(y*wheelwidth)+x] >>  8) & 0xff00);
+              cdata.blue  = ((rgbdata[(y*wheelwidth)+x] >> 24) & 0xff) |
+                            ((rgbdata[(y*wheelwidth)+x] >> 16) & 0xff00);
+              if ( XAllocColor( dpy, colormap, &cdata ) ) {
+                prevrgb = rgbdata[(y*wheelwidth)+x];
+                prev = cdata.pixel;
+              } else {
+                char colorname[16];
+//                SoDebugError::postInfo( "", "the hard way" );
+                sprintf( colorname, "rgb:%02x/%02x/%02x", cdata.red >> 8,
+                  cdata.green >> 8, cdata.blue >> 8 );
+                if ( XLookupColor( dpy, colormap, colorname, &cdata, &ign ) ) {
+                  if ( XAllocColor( dpy, colormap, &cdata ) ) {
+//                    SoDebugError::postInfo( "", "success for %s", colorname );
+                    prev = cdata.pixel;
+                    prevrgb = rgbdata[(y*wheelwidth)+x];
+                  } else if ( XAllocColor( dpy, colormap, &ign ) ) {
+//                    SoDebugError::postInfo( "", "ok for %s", colorname );
+                    prev = ign.pixel;
+                    prevrgb = rgbdata[(y*wheelwidth)+x];
+//                  } else {
+//                    SoDebugError::postInfo( "", "lookup failed for %s", colorname );
+                  }
+//                } else {
+//                  SoDebugError::postInfo( "", "lookup failed for %s", colorname );
+                }
+              }
+//            } else {
+//              SoDebugError::postInfo( "", "cached.\n" );
+            }
+            XPutPixel( img, x + lpadding, y + tpadding, prev );
+          }
         }
       }
     }
