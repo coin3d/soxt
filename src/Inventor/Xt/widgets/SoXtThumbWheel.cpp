@@ -486,13 +486,13 @@ init_pixmaps(
       for ( x = 0; x < wheelwidth; x++ ) {
         for ( y = 0; y < wheelheight; y++ ) {
           if ( rgbdata[(y*wheelwidth)+x] != prevrgb ) {
-            cdata.red   = (rgbdata[(y*wheelwidth)+x] >>  8) & 0xff;
-            cdata.green = (rgbdata[(y*wheelwidth)+x] >> 16) & 0xff;
-            cdata.blue  = (rgbdata[(y*wheelwidth)+x] >> 24) & 0xff;
-            sprintf( colorname, "rgb:%02x/%02x/%02x",
-              cdata.red, cdata.green, cdata.blue );
-            if ( XLookupColor( dpy, colormap, colorname, &cdata, &ign ) &&
-                 XAllocColor( dpy, colormap, &cdata ) ) {
+            cdata.red   = ((rgbdata[(y*wheelwidth)+x] >>  8) & 0xff) |
+                          ((rgbdata[(y*wheelwidth)+x] >>  0) & 0xff00);
+            cdata.green = ((rgbdata[(y*wheelwidth)+x] >> 16) & 0xff) |
+                          ((rgbdata[(y*wheelwidth)+x] >>  8) & 0xff00);
+            cdata.blue  = ((rgbdata[(y*wheelwidth)+x] >> 24) & 0xff) |
+                          ((rgbdata[(y*wheelwidth)+x] >> 16) & 0xff00);
+            if ( XAllocColor( dpy, colormap, &cdata ) ) {
               prevrgb = rgbdata[(y*wheelwidth)+x];
               prev = cdata.pixel;
             }
