@@ -25,10 +25,11 @@
 #include <Inventor/Xt/SoXtComponent.h>
 
 class SoMaterial;
+class SoAnyMaterialList;
+
+typedef void SoXtMaterialListCB( void * closure, const SoMaterial * material );
 
 // *************************************************************************
-
-typedef void SoXtMaterialListCB( void * user, const SoMaterial * material );
 
 class SOXT_DLL_EXPORT SoXtMaterialList : public SoXtComponent {
   typedef SoXtComponent inherited;
@@ -37,22 +38,22 @@ public:
   SoXtMaterialList(
     Widget parent = NULL,
     const char * const name = NULL,
-    SbBool inParent = TRUE,
+    SbBool embed = TRUE,
     const char * const dir = NULL );
   ~SoXtMaterialList(void);
 
   void addCallback(
     SoXtMaterialListCB * const callback,
-    void * const userdata = NULL );
+    void * const closure = NULL );
   void removeCallback(
     SoXtMaterialListCB * const callback,
-    void * const userdata = NULL );
+    void * const closure = NULL );
 
 protected:
   SoXtMaterialList(
     Widget parent,
     const char * const name,
-    SbBool inParent,
+    SbBool embed,
     const char * const dir,
     SbBool build );
 
@@ -64,7 +65,17 @@ protected:
   Widget buildPulldownMenu( Widget parent );
 
 private:
-  void constructor( SbBool build );
+  void constructor( const char * const dir, const SbBool build );
+
+  void selectionCallback( int i );
+  static void selection_cb( Widget, XtPointer, XtPointer );
+
+  void paletteMenuCallback( Widget );
+  static void palette_menu_cb( Widget, XtPointer, XtPointer );
+
+  Widget listwidget;
+
+  SoAnyMaterialList * common;
 
 }; // public SoXtMaterialList
 
