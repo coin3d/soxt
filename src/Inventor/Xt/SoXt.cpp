@@ -82,8 +82,8 @@ static const char rcsid[] =
   functionality.  In other words, hope for the best but expect the
   worst.
 
-  The corresponding documentation for Coin is
-  located at http://www.coin3d.org/coin-docs/
+  The corresponding documentation for Coin is located at
+  http://doc.coin3d.org/Coin/
 */
 
 // *************************************************************************
