@@ -39,6 +39,7 @@ public:
   ~SoXtComponentP();
 
   static Cursor getNativeCursor(Display * d, const SoXtCursor::CustomCursor * cc);
+  static void wmDeleteWindow(Widget w, XtPointer client, XtPointer call);
 
   Widget parent;
   Widget widget;
@@ -48,6 +49,7 @@ public:
   char * icontitle;
 
   SbBool embedded;
+  SbBool destroyed;
 
   SbVec2s size;
 

@@ -63,6 +63,7 @@
 #include <Xm/Xm.h>
 #include <Xm/Form.h>
 #include <Xm/MessageB.h>
+#include <Xm/Protocols.h>
 
 #include <assert.h>
 #include <string.h>
@@ -74,7 +75,9 @@
 SoXtComponentP::SoXtComponentP(SoXtComponent * o)
   : SoGuiComponentP(o)
 {
-  this->widget= NULL;
+
+  this->parent = NULL;
+  this->widget = NULL;
   this->widgetname = NULL;
   this->widgetclass = NULL;
   this->title = NULL;
@@ -84,10 +87,24 @@ SoXtComponentP::SoXtComponentP(SoXtComponent * o)
   this->visibilitycbs = NULL;
   this->visibilitystate = FALSE;
   this->fullscreen = FALSE;
+  this->embedded = FALSE;
+  this->destroyed = FALSE;
 }
 
 SoXtComponentP::~SoXtComponentP()
 {
+}
+
+void
+SoXtComponentP::wmDeleteWindow(Widget w, XtPointer client_data, XtPointer call_data)
+{
+  SoXtComponentP * component = (SoXtComponentP *) client_data;
+  component->visibilitystate = FALSE;
+  component->destroyed = TRUE;
+  component->widget = NULL;
+  component->parent = NULL;
+  // FIXME: call close callbacks
+  // FIXME: window manager has destroyed widgets - be robust about it
 }
 
 SbDict * SoXtComponentP::cursordict = NULL;
@@ -133,6 +150,7 @@ struct SoXtComponentVisibilityCallbackInfo {
 */
 
 // *************************************************************************
+
 
 // documented in common/SoGuiComponentCommon.cpp.in.
 SoXtComponent::SoXtComponent(const Widget parent,
@@ -195,9 +213,18 @@ SoXtComponent::SoXtComponent(const Widget parent,
   if (parent && XtIsShell(parent))
     PRIVATE(this)->embedded = FALSE;
 
-  if (XtIsShell(PRIVATE(this)->parent))
-    XtInsertEventHandler(PRIVATE(this)->parent, (EventMask) StructureNotifyMask, False,
+  if (PRIVATE(this)->parent && XtIsShell(PRIVATE(this)->parent)) {
+    XtInsertEventHandler(PRIVATE(this)->parent,
+      (EventMask) (0x1ffffff | StructureNotifyMask | VisibilityChangeMask),
+      False,
       SoXtComponent::event_handler, (XtPointer) this, XtListTail);
+
+    // register callback for window manager window destruction
+    Atom WM_DELETE_WINDOW = XmInternAtom(SoXt::getDisplay(),
+                                         "WM_DELETE_WINDOW", False);
+    XmAddWMProtocolCallback(PRIVATE(this)->parent, WM_DELETE_WINDOW,
+                            SoXtComponentP::wmDeleteWindow, PRIVATE(this));
+  }
 }
 
 // documented in common/SoGuiComponentCommon.cpp.in.
@@ -240,6 +267,7 @@ SoXtComponent::~SoXtComponent()
 void
 SoXtComponent::show(void)
 {
+  if ( PRIVATE(this)->destroyed ) return;
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtComponent::show", "[enter]");
 #endif // SOXT_DEBUG
@@ -264,6 +292,7 @@ SoXtComponent::show(void)
 void
 SoXtComponent::hide(void)
 {
+  if ( PRIVATE(this)->destroyed ) return;
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtComponent::hide", "[enter]");
 #endif // SOXT_DEBUG
@@ -277,6 +306,8 @@ SoXtComponent::hide(void)
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtComponent::hide", "[exit]");
 #endif // SOXT_DEBUG
+  // not updated by events when done manually for some reason
+  PRIVATE(this)->visibilitystate = FALSE;
 }
 
 // documented in common/SoGuiComponentCommon.cpp.in.
@@ -531,8 +562,7 @@ SoXtComponent::removeWindowCloseCallback(
 */
 
 void
-SoXtComponent::invokeWindowCloseCallbacks(// protected
-  void) const
+SoXtComponent::invokeWindowCloseCallbacks(void) const
 {
   // FIXME: close callbacks never actually invoked from anywhere?
   // 20020503 mortene.
@@ -555,8 +585,7 @@ SoXtComponent::invokeWindowCloseCallbacks(// protected
 */
 
 const char *
-SoXtComponent::getWidgetName(
-  void) const
+SoXtComponent::getWidgetName(void) const
 {
   return PRIVATE(this)->widgetname ? PRIVATE(this)->widgetname : this->getDefaultWidgetName();
 }
@@ -566,8 +595,7 @@ SoXtComponent::getWidgetName(
 */
 
 const char *
-SoXtComponent::getClassName(
-  void) const
+SoXtComponent::getClassName(void) const
 {
   return PRIVATE(this)->widgetclass;
 }
@@ -579,10 +607,6 @@ void         // protected
 SoXtComponent::setBaseWidget(Widget widget)
 {
   const EventMask events = StructureNotifyMask | VisibilityChangeMask;
-
-//  ExposureMask | VisibilityChangeMask | ResizeRedirectMask |
-//    FocusChangeMask;
-//    EnterWindowMask | LeaveWindowMask |
 
   if (PRIVATE(this)->widget) {
     this->unregisterWidget(PRIVATE(this)->widget);
@@ -597,10 +621,16 @@ SoXtComponent::setBaseWidget(Widget widget)
     XtVaSetValues(PRIVATE(this)->widget, XtNwidth, PRIVATE(this)->size[0], NULL);
   if (PRIVATE(this)->size[1] != -1)
     XtVaSetValues(PRIVATE(this)->widget, XtNheight, PRIVATE(this)->size[1], NULL);
-  // register widget?
 
   XtInsertEventHandler(PRIVATE(this)->widget, events, False,
     SoXtComponent::event_handler, (XtPointer) this, XtListTail);
+
+/*
+  if ( PRIVATE(this)->parent && XtIsShell(PRIVATE(this)->parent) ) {
+    Atom WM_DELETE_WINDOW = XmInternAtom(SoXt::getDisplay(), "WM_DELETE_WINDOW", False);
+    XmAddWMProtocolCallback(PRIVATE(this)->parent, WM_DELETE_WINDOW, SoXtComponentP::wmDeleteWindow, PRIVATE(this));
+  }
+*/ 
 }
 
 /*!
@@ -629,6 +659,7 @@ void
 SoXtComponent::windowCloseAction(// virtual, protected
   void)
 {
+  // SoDebugError::postInfo("SoXtComponent::windowCloseAction", "called");
   if (this->getShellWidget() == SoXt::getTopLevelWidget()) {
     XtAppSetExitFlag(SoXt::getAppContext());
   } else {
@@ -793,6 +824,13 @@ SoXtComponent::sysEventHandler(Widget widget, XEvent * event)
         PRIVATE(this)->visibilitystate = FALSE;
         this->invokeVisibilityChangeCallbacks(PRIVATE(this)->visibilitystate);
       }
+    }
+    else if ( event->type == VisibilityNotify ) {
+      XVisibilityEvent * visibility = (XVisibilityEvent *) event;
+      SbBool newvisibility = TRUE;
+      if (visibility->state == VisibilityFullyObscured)
+        newvisibility = FALSE;
+
     }
     else if ( event->type == ConfigureNotify ) {
       XConfigureEvent * conf = (XConfigureEvent *) event;
