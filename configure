@@ -4971,6 +4971,9 @@ fi
 
 if $sim_ac_coin_avail; then
 
+    CPPFLAGS="$CPPFLAGS $sim_ac_coin_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_coin_ldflags"
+    LIBS="$sim_ac_coin_libs $LIBS"
     SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_coin_cppflags"
     SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_coin_ldflags"
     SOXT_EXTRA_LIBS="$sim_ac_coin_libs $SOXT_EXTRA_LIBS"
@@ -4984,13 +4987,13 @@ fi
 # Check for the availability of this node (it is used in the hidden
 # line rendering), which is not part of older Inventor implementations.
 
-echo "configure:4495: checking for the SoPolygonOffset node" >&5
+echo "configure:4498: checking for the SoPolygonOffset node" >&5
 echo $ECHO_N "checking for the SoPolygonOffset node... $ECHO_C" >&6
 if test "${sim_cv_sopolygonoffset+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 4501 "configure"
+#line 4504 "configure"
 #include "confdefs.h"
 #ifdef __cplusplus
 extern "C" void exit (int);
@@ -5004,7 +5007,7 @@ SoPolygonOffset * p = new SoPolygonOffset;
   return 0;
 }
 EOF
-if { (eval echo configure:4515: \"$ac_link\") >&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:4518: \"$ac_link\") >&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   sim_cv_sopolygonoffset=yes
 else
   echo "configure: failed program was:" >&5
@@ -5013,7 +5016,7 @@ else
 fi
 rm -f conftest*
 fi
-echo "configure:4524: result: $sim_cv_sopolygonoffset" >&5
+echo "configure:4527: result: $sim_cv_sopolygonoffset" >&5
 echo "${ECHO_T}$sim_cv_sopolygonoffset" >&6
 
 if test x"$sim_cv_sopolygonoffset" = xyes; then
@@ -5051,13 +5054,13 @@ if test x"$with_motif" != xno; then
   LDFLAGS="$sim_ac_motif_ldflags $LDFLAGS"
   LIBS="$sim_ac_motif_libs $LIBS"
 
-  echo "configure:4552: checking for a Motif development environment" >&5
+  echo "configure:4555: checking for a Motif development environment" >&5
 echo $ECHO_N "checking for a Motif development environment... $ECHO_C" >&6
 if test "${sim_cv_lib_motif_avail+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 4558 "configure"
+#line 4561 "configure"
 #include "confdefs.h"
 #ifdef __cplusplus
 extern "C" void exit (int);
@@ -5071,7 +5074,7 @@ XmUpdateDisplay(0L);
   return 0;
 }
 EOF
-if { (eval echo configure:4572: \"$ac_link\") >&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:4575: \"$ac_link\") >&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   sim_cv_lib_motif_avail=yes
 else
   echo "configure: failed program was:" >&5
@@ -5080,7 +5083,7 @@ else
 fi
 rm -f conftest*
 fi
-echo "configure:4581: result: $sim_cv_lib_motif_avail" >&5
+echo "configure:4584: result: $sim_cv_lib_motif_avail" >&5
 echo "${ECHO_T}$sim_cv_lib_motif_avail" >&6
 
   if test x"$sim_cv_lib_motif_avail" = xyes; then
@@ -5098,13 +5101,13 @@ echo "${ECHO_T}$sim_cv_lib_motif_avail" >&6
   fi
 fi
 
-echo "configure:4595: checking Linux Joystick device driver" >&5
+echo "configure:4598: checking Linux Joystick device driver" >&5
 echo $ECHO_N "checking Linux Joystick device driver... $ECHO_C" >&6
 if test "${sim_cv_joystick_linux+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 4601 "configure"
+#line 4604 "configure"
 #include "confdefs.h"
 #ifdef __cplusplus
 extern "C" void exit (int);
@@ -5112,7 +5115,7 @@ extern "C" void exit (int);
 #include <linux/joystick.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:4609: \"$ac_try\") >&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:4612: \"$ac_try\") >&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   sim_cv_joystick_linux=true
@@ -5124,7 +5127,7 @@ else
 fi
 rm -f conftest*
 fi
-echo "configure:4621: result: $sim_cv_joystick_linux" >&5
+echo "configure:4624: result: $sim_cv_joystick_linux" >&5
 echo "${ECHO_T}$sim_cv_joystick_linux" >&6
 
 sim_ac_joystick_linux_avail=$sim_cv_joystick_linux
@@ -5136,12 +5139,12 @@ if test "${with_linux_joystick_device+set}" = set; then
 else
   : ${sim_cv_joystick_linux_device=/dev/js0}
 fi
-  echo "configure:4632: checking Linux Joystick device handle" >&5
+  echo "configure:4635: checking Linux Joystick device handle" >&5
 echo $ECHO_N "checking Linux Joystick device handle... $ECHO_C" >&6
 if test "${sim_cv_joystick_linux_device+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 fi
-echo "configure:4637: result: $sim_cv_joystick_linux_device" >&5
+echo "configure:4640: result: $sim_cv_joystick_linux_device" >&5
 echo "${ECHO_T}$sim_cv_joystick_linux_device" >&6
   sim_ac_joystick_linux_device=$sim_cv_joystick_linux_device
 
@@ -5182,14 +5185,14 @@ fi # test "x${with_test_code+set}" = "xset")
 # --with-ivexamples is a silent option
 sim_ac_want_ivexamples=false
 if test x"${with_ivexamples+set}" = x"set"; then
-  echo "configure:4669: checking for ivexamples directory" >&5
+  echo "configure:4672: checking for ivexamples directory" >&5
 echo $ECHO_N "checking for ivexamples directory... $ECHO_C" >&6
   if test -f ${srcdir}/ivexamples/configure.in; then
-    echo "configure:4672: result: found" >&5
+    echo "configure:4675: result: found" >&5
 echo "${ECHO_T}found" >&6
     sim_ac_want_ivexamples=true
   else
-    echo "configure:4676: result: not found" >&5
+    echo "configure:4679: result: not found" >&5
 echo "${ECHO_T}not found" >&6
     { echo "configure: error: can't use '--with-ivexamples' when ivexamples/ doesn't exist" >&2; exit 1; }
   fi
@@ -5198,14 +5201,14 @@ fi
 # --with-devcode is a silent option
 sim_ac_want_devcode=false
 if test x"${with_devcode+set}" = x"set"; then
-  echo "configure:4684: checking for devcode directory" >&5
+  echo "configure:4687: checking for devcode directory" >&5
 echo $ECHO_N "checking for devcode directory... $ECHO_C" >&6
   if test -f ${srcdir}/devcode/configure.in; then
-    echo "configure:4687: result: found" >&5
+    echo "configure:4690: result: found" >&5
 echo "${ECHO_T}found" >&6
     sim_ac_want_devcode=true
   else
-    echo "configure:4691: result: not found" >&5
+    echo "configure:4694: result: not found" >&5
 echo "${ECHO_T}not found" >&6
     { echo "configure: error: can't use '--with-devcode' when devcode/ doesn't exist" >&2; exit 1; }
   fi
@@ -5316,7 +5319,7 @@ if test x"$with_doxygen" != xno; then
 
   # Extract the first word of "doxygen", so it can be a program name with args.
 set dummy doxygen; ac_word=$2
-echo "configure:4782: checking for $ac_word" >&5
+echo "configure:4785: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_path_sim_ac_doxygen_exe+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -5343,10 +5346,10 @@ esac
 fi
 sim_ac_doxygen_exe=$ac_cv_path_sim_ac_doxygen_exe
 if test -n "$sim_ac_doxygen_exe"; then
-  echo "configure:4808: result: $sim_ac_doxygen_exe" >&5
+  echo "configure:4811: result: $sim_ac_doxygen_exe" >&5
 echo "${ECHO_T}$sim_ac_doxygen_exe" >&6
 else
-  echo "configure:4811: result: no" >&5
+  echo "configure:4814: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
 
@@ -5365,7 +5368,7 @@ fi
 
   # Extract the first word of "perl", so it can be a program name with args.
 set dummy perl; ac_word=$2
-echo "configure:4826: checking for $ac_word" >&5
+echo "configure:4829: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_path_sim_ac_perl_exe+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -5392,10 +5395,10 @@ esac
 fi
 sim_ac_perl_exe=$ac_cv_path_sim_ac_perl_exe
 if test -n "$sim_ac_perl_exe"; then
-  echo "configure:4852: result: $sim_ac_perl_exe" >&5
+  echo "configure:4855: result: $sim_ac_perl_exe" >&5
 echo "${ECHO_T}$sim_ac_perl_exe" >&6
 else
-  echo "configure:4855: result: no" >&5
+  echo "configure:4858: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
 

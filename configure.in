@@ -161,6 +161,9 @@ if test x"${with_inventor+set}" = x"set"; then
 else
   # check for Coin library and its dependencies
   SIM_AC_HAVE_COIN_IFELSE([
+    CPPFLAGS="$CPPFLAGS $sim_ac_coin_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_coin_ldflags"
+    LIBS="$sim_ac_coin_libs $LIBS"
     SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_coin_cppflags"
     SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_coin_ldflags"
     SOXT_EXTRA_LIBS="$sim_ac_coin_libs $SOXT_EXTRA_LIBS"
