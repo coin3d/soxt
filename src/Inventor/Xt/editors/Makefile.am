@@ -33,6 +33,7 @@ SoXtEditorsincdir = $(includedir)/Inventor/@Gui@/editors
 SoXtEditorsinc_HEADERS =
 
 nodist_SoXtEditorsinc_HEADERS = \
-	So@Gui@ColorEditor.h
+	So@Gui@ColorEditor.h \
+	So@Gui@MaterialEditor.h
 
 ############################################################################
