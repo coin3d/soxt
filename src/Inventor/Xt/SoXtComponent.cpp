@@ -1197,7 +1197,7 @@ SoXtComponent::isFullScreen(void) const
   Sets the cursor for this component.
 */
 void 
-SoXtComponent::setCursor(const SoXtCursor & cursor)
+SoXtComponent::setComponentCursor(const SoXtCursor & cursor)
 {
   PRIVATE(this)->cursor = cursor;
   SOXT_STUB();
@@ -1207,7 +1207,7 @@ SoXtComponent::setCursor(const SoXtCursor & cursor)
   Returns the current cursor for this component.
 */
 const SoXtCursor &
-SoXtComponent::getCursor(void) const
+SoXtComponent::getComponentCursor(void) const
 {
   return PRIVATE(this)->cursor;
 }
