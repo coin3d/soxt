@@ -1233,6 +1233,9 @@ SoXtExaminerViewer::afterRealizeHook( // virtual, protected
 #endif // SOXT_DEBUG
   inherited::afterRealizeHook();
   this->mapped = TRUE;
+  // Note setCursorRepresentation() checks the value of this->mapped
+  // before taking any action.
+  this->setCursorRepresentation( this->common->currentmode );
 } // afterRealizeHook()
 
 // *************************************************************************
