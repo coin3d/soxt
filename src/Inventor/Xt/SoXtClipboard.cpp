@@ -17,10 +17,13 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <soxtdefs.h>
+
 #include <Inventor/Xt/SoXtClipboard.h>
 
 // *************************************************************************
@@ -173,3 +176,8 @@ SoXtClipboard::readData( // static, protected
 } // readData()
 
 // *************************************************************************
+
+#if SOXT_DEBUG
+static const char * getSoXtClipboardRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
+

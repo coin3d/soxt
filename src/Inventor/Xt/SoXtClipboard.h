@@ -26,7 +26,6 @@
 #include <X11/Intrinsic.h>
 
 #include <Inventor/SbBasic.h>
-#include <Inventor/SbLinear.h> // Coin fix
 #include <Inventor/Xt/SoXtBasic.h>
 
 class SbDict;
