@@ -48,6 +48,16 @@ static const char rcsid[] =
 SbPList * SoXtComponent::widgets = NULL;
 SbPList * SoXtComponent::components = NULL;
 
+struct SoXtWindowCloseCallbackInfo {
+  SoXtComponentCB * callback;
+  void * closure;
+};
+
+struct SoXtComponentVisibilityCallbackInfo {
+  SoXtComponentVisibilityCB * callback;
+  void * closure;
+};
+
 // *************************************************************************
 
 /*!
@@ -163,14 +173,21 @@ SoXtComponent::~SoXtComponent( // virtual
   delete [] this->iconTitle;
   if ( this->close_callbacks != NULL ) {
     const int num = this->close_callbacks->getLength();
-    for ( int i = 0; i < num; i++ )
-      delete (*this->close_callbacks)[i];
+    for ( int i = 0; i < num; i++ ) {
+      SoXtWindowCloseCallbackInfo * info =
+        (SoXtWindowCloseCallbackInfo *) (*this->close_callbacks)[i];
+      delete info;
+    }
     delete this->close_callbacks;
   }
   if ( this->visibility_callbacks != NULL ) {
     const int num = this->visibility_callbacks->getLength();
-    for ( int i = 0; i < num; i++ )
-      delete (*this->visibility_callbacks)[i];
+    for ( int i = 0; i < num; i++ ) {
+      SoXtComponentVisibilityCallbackInfo * info =
+        (SoXtComponentVisibilityCallbackInfo *)
+          (*this->visibility_callbacks)[i];
+      delete info;
+    }
     delete this->visibility_callbacks;
   }
 } // ~SoXtComponent()
@@ -448,11 +465,6 @@ SoXtComponent::getIconTitle(
 
 // *************************************************************************
 
-struct SoXtWindowCloseCallbackInfo {
-  SoXtComponentCB * callback;
-  void * closure;
-};
-
 /*!
   This method adds window close callbacks to the Component window.
 */
@@ -722,11 +734,6 @@ SoXtComponent::unregisterWidget( // protected
 } // unregisterWidget()
 
 // *************************************************************************
-
-struct SoXtComponentVisibilityCallbackInfo {
-  SoXtComponentVisibilityCB * callback;
-  void * closure;
-};
 
 /*!
 */
