@@ -70,8 +70,6 @@ SoXtFullViewer::buildWidget( // protected
   this->buildDecoration( this->viewerbase );
   
   this->canvas = inherited::buildWidget( this->viewerbase );
-  XtManageChild( this->canvas );
-  SoDebugError::postInfo( "buildWidget", "canvas = %p", (void *) canvas );
 
   XtVaSetValues( this->canvas,
       XmNtopAttachment, XmATTACH_FORM,
@@ -84,6 +82,7 @@ SoXtFullViewer::buildWidget( // protected
       NULL );
   this->setBorder( FALSE );
 
+  XtManageChild( this->canvas );
   this->setBaseWidget( this->viewerbase );
   return this->viewerbase;
 } // buildWidget()
