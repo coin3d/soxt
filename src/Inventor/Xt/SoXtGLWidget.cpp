@@ -342,14 +342,14 @@ SoXtGLWidget::getOverlayVisual(
 
 // FIXME: make doc in SoQtGLWidget valid for this also. 20011116 mortene.
 void
-SoXtGLWidget::setOverlayPlanes(const SbBool onoff)
+SoXtGLWidget::setOverlayRender(const SbBool onoff)
 {
   SOWIN_STUB();
 }
 
 // FIXME: make doc in SoQtGLWidget valid for this also. 20011116 mortene.
 SbBool
-SoXtGLWidget::isOverlayPlanes(void) const
+SoXtGLWidget::isOverlayRender(void) const
 {
   SOWIN_STUB();
   return FALSE;
