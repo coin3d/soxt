@@ -25,7 +25,7 @@
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #include <Inventor/SbBasic.h>
-#include <Inventor/SbVec2s.h>
+#include <Inventor/SbLinear.h>
 
 // *************************************************************************
 
