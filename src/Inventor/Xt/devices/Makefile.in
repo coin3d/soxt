@@ -10,8 +10,11 @@
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
 
+SHELL = @SHELL@
+
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
+VPATH = @srcdir@
 prefix = @prefix@
 exec_prefix = @exec_prefix@
 
@@ -105,10 +108,23 @@ noinst_LTLIBRARIES = libSoXtDevices.la
 
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 LIBS = 
-VPATH = .:@srcdir@
-SHELL = /bin/sh
 
 BUILT_SOURCES = 
+@HAVE_JOYSTICK_LINUX_TRUE@libSoXtDevicesLinuxJoystickHeaders = @HAVE_JOYSTICK_LINUX_TRUE@\
+@HAVE_JOYSTICK_LINUX_TRUE@	SoXtLinuxJoystick.h
+@HAVE_JOYSTICK_LINUX_FALSE@libSoXtDevicesLinuxJoystickHeaders = 
+@HAVE_JOYSTICK_LINUX_TRUE@libSoXtDevicesLinuxJoystickSources = @HAVE_JOYSTICK_LINUX_TRUE@\
+@HAVE_JOYSTICK_LINUX_TRUE@	SoXtLinuxJoystick.cpp \
+@HAVE_JOYSTICK_LINUX_TRUE@	$(libSoXtDevicesLinuxJoystickHeaders)
+@HAVE_JOYSTICK_LINUX_FALSE@libSoXtDevicesLinuxJoystickSources = 
+
+libSoXtDevicesConditionalSources = \
+	$(libSoXtDevicesLinuxJoystickSources)
+
+
+libSoXtDevicesConditionalHeaders = \
+	$(libSoXtDevicesLinuxJoystickHeaders)
+
 
 ############################################################################
 
@@ -124,7 +140,14 @@ libSoXtDevices_la_SOURCES = \
 	SoXtMouse.h \
 	SoXtMouse.cpp \
 	SoXtSpaceball.h \
-	SoXtSpaceball.cpp
+	SoXtSpaceball.cpp \
+	$(libSoXtDevicesConditionalSources)
+
+
+# all the sources that are conditional
+EXTRA_libSoXtDevices_la_SOURCES = \
+	SoXtLinuxJoystick.h \
+	SoXtLinuxJoystick.cpp
 
 
 ############################################################################
@@ -136,7 +159,8 @@ libSoXtDevicesinc_HEADERS = \
 	SoXtInputFocus.h \
 	SoXtKeyboard.h \
 	SoXtMouse.h \
-	SoXtSpaceball.h
+	SoXtSpaceball.h \
+	$(libSoXtDevicesConditionalHeaders)
 
 subdir = src/Inventor/Xt/devices
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -154,8 +178,13 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libSoXtDevices_la_LDFLAGS = 
 libSoXtDevices_la_LIBADD = 
-am_libSoXtDevices_la_OBJECTS =  SoXtDevice.lo SoXtInputFocus.lo \
-SoXtKeyboard.lo SoXtMouse.lo SoXtSpaceball.lo
+@HAVE_JOYSTICK_LINUX_FALSE@am_libSoXtDevices_la_OBJECTS =  SoXtDevice.lo \
+@HAVE_JOYSTICK_LINUX_FALSE@SoXtInputFocus.lo SoXtKeyboard.lo \
+@HAVE_JOYSTICK_LINUX_FALSE@SoXtMouse.lo SoXtSpaceball.lo
+@HAVE_JOYSTICK_LINUX_TRUE@am_libSoXtDevices_la_OBJECTS =  SoXtDevice.lo \
+@HAVE_JOYSTICK_LINUX_TRUE@SoXtInputFocus.lo SoXtKeyboard.lo \
+@HAVE_JOYSTICK_LINUX_TRUE@SoXtMouse.lo SoXtSpaceball.lo \
+@HAVE_JOYSTICK_LINUX_TRUE@SoXtLinuxJoystick.lo
 libSoXtDevices_la_OBJECTS =  $(am_libSoXtDevices_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -167,20 +196,22 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES =  $(libSoXtDevices_la_SOURCES)
+DIST_SOURCES =  $(libSoXtDevices_la_SOURCES) \
+$(EXTRA_libSoXtDevices_la_SOURCES)
 HEADERS =  $(libSoXtDevicesinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoXtDevice.Plo \
 $(DEPDIR)/SoXtInputFocus.Plo $(DEPDIR)/SoXtKeyboard.Plo \
-$(DEPDIR)/SoXtMouse.Plo $(DEPDIR)/SoXtSpaceball.Plo
+$(DEPDIR)/SoXtLinuxJoystick.Plo $(DEPDIR)/SoXtMouse.Plo \
+$(DEPDIR)/SoXtSpaceball.Plo
 DIST_COMMON =  $(libSoXtDevicesinc_HEADERS) Makefile.am Makefile.in
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
 GZIP_ENV = --best
-SOURCES = $(libSoXtDevices_la_SOURCES)
+SOURCES = $(libSoXtDevices_la_SOURCES) $(EXTRA_libSoXtDevices_la_SOURCES)
 OBJECTS = $(am_libSoXtDevices_la_OBJECTS)
 
 all: all-redirect
@@ -262,6 +293,7 @@ maintainer-clean-tags:
 @AMDEP@include $(DEPDIR)/SoXtDevice.Plo
 @AMDEP@include $(DEPDIR)/SoXtInputFocus.Plo
 @AMDEP@include $(DEPDIR)/SoXtKeyboard.Plo
+@AMDEP@include $(DEPDIR)/SoXtLinuxJoystick.Plo
 @AMDEP@include $(DEPDIR)/SoXtMouse.Plo
 @AMDEP@include $(DEPDIR)/SoXtSpaceball.Plo
 
@@ -397,6 +429,7 @@ SoXtInputFocus.cpp: ../SoXtBasic.h
 SoXtKeyboard.cpp: ../SoXtBasic.h
 SoXtMouse.cpp: ../SoXtBasic.h
 SoXtSpaceball.cpp: ../SoXtBasic.h
+SoXtJoystick.cpp: ../SoXtBasic.h
 
 ../SoXtBasic.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiBasic.h.in
 	( cd $(top_builddir); $(MAKE) built-sources )
