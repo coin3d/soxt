@@ -132,18 +132,6 @@ SOXT_OBJECT_ABSTRACT_SOURCE(SoXtGLWidget);
   Whether double buffering is used or not.
 */
 
-/*!
-  \fn void SoXtGLWidget::setStereoBuffer(SbBool flag)
-  
-  Sets whether OpenGL stereo buffers (quad buffer stereo) should be used.
-*/
-
-/*!
-  \fn SbBool SoXtGLWidget::isStereoBuffer(void) const
-
-  Returns whether OpenGL stereo buffers are being used.
-*/
-
 
 // *************************************************************************
 
@@ -151,12 +139,11 @@ SOXT_OBJECT_ABSTRACT_SOURCE(SoXtGLWidget);
   The constructor.
 */
 
-SoXtGLWidget::SoXtGLWidget(// protected
-  Widget const parent,
-  const char * const name,
-  const SbBool embed,
-  const int glModes,
-  const SbBool build)
+SoXtGLWidget::SoXtGLWidget(Widget const parent,
+                           const char * const name,
+                           const SbBool embed,
+                           const int glModes,
+                           const SbBool build)
   : inherited(parent, name, embed),
     waitForExpose(TRUE), drawToFrontBuffer(FALSE)
 {
@@ -166,11 +153,11 @@ SoXtGLWidget::SoXtGLWidget(// protected
     Widget glarea = this->buildWidget(this->getParentWidget());
     this->setBaseWidget(glarea);
     XtVaSetValues(glarea,
-      XmNleftAttachment, XmATTACH_FORM,
-      XmNtopAttachment, XmATTACH_FORM,
-      XmNrightAttachment, XmATTACH_FORM,
-      XmNbottomAttachment, XmATTACH_FORM,
-      NULL);
+                  XmNleftAttachment, XmATTACH_FORM,
+                  XmNtopAttachment, XmATTACH_FORM,
+                  XmNrightAttachment, XmATTACH_FORM,
+                  XmNbottomAttachment, XmATTACH_FORM,
+                  NULL);
   }
 }
 
@@ -196,8 +183,7 @@ SoXtGLWidget::~SoXtGLWidget()
 */
 
 unsigned long
-SoXtGLWidget::getOverlayTransparentPixel(
-  void)
+SoXtGLWidget::getOverlayTransparentPixel(void)
 {
   return PRIVATE(this)->transparentpixel;
 }
@@ -207,8 +193,7 @@ SoXtGLWidget::getOverlayTransparentPixel(
 */
 
 int
-SoXtGLWidget::getOverlayColorMapSize(
-  void)
+SoXtGLWidget::getOverlayColorMapSize(void)
 {
   return PRIVATE(this)->overlaycolormapsize;
 }
@@ -218,8 +203,7 @@ SoXtGLWidget::getOverlayColorMapSize(
 */
 
 int
-SoXtGLWidget::getColorMapSize(
-  void)
+SoXtGLWidget::getColorMapSize(void)
 {
   return PRIVATE(this)->normalcolormapsize;
 }
@@ -257,8 +241,7 @@ SoXtGLWidget::getNormalContext(void)
 */
 
 GLXContext
-SoXtGLWidget::getOverlayContext(
-  void)
+SoXtGLWidget::getOverlayContext(void)
 {
   return PRIVATE(this)->overlaycontext;
 }
@@ -288,8 +271,7 @@ SoXtGLWidget::getOverlayWidget(void) const
 */
 
 void
-SoXtGLWidget::setNormalVisual(// virtual
-  XVisualInfo * visual)
+SoXtGLWidget::setNormalVisual(XVisualInfo * visual)
 {
   PRIVATE(this)->normalvisual = visual;
 }
@@ -299,8 +281,7 @@ SoXtGLWidget::setNormalVisual(// virtual
 */
 
 XVisualInfo *
-SoXtGLWidget::getNormalVisual(
-  void)
+SoXtGLWidget::getNormalVisual(void)
 {
   return PRIVATE(this)->normalvisual;
 }
@@ -310,8 +291,7 @@ SoXtGLWidget::getNormalVisual(
 */
 
 void
-SoXtGLWidget::setOverlayVisual(// virtual
-  XVisualInfo * visual)
+SoXtGLWidget::setOverlayVisual(XVisualInfo * visual)
 {
   PRIVATE(this)->overlayvisual = visual;
 }
@@ -321,8 +301,7 @@ SoXtGLWidget::setOverlayVisual(// virtual
 */
 
 XVisualInfo *
-SoXtGLWidget::getOverlayVisual(
-  void)
+SoXtGLWidget::getOverlayVisual(void)
 {
   return PRIVATE(this)->overlayvisual;
 }
@@ -371,18 +350,18 @@ SoXtGLWidget::setBorder(const SbBool enable)
   if (PRIVATE(this)->glxwidget != (Widget) NULL) {
     if (PRIVATE(this)->border == FALSE)
       XtVaSetValues(PRIVATE(this)->glxwidget,
-        XmNleftOffset, 0,
-        XmNtopOffset, 0,
-        XmNrightOffset, 0,
-        XmNbottomOffset, 0,
-        NULL);
+                    XmNleftOffset, 0,
+                    XmNtopOffset, 0,
+                    XmNrightOffset, 0,
+                    XmNbottomOffset, 0,
+                    NULL);
     else
       XtVaSetValues(PRIVATE(this)->glxwidget,
-        XmNleftOffset, PRIVATE(this)->borderwidth,
-        XmNtopOffset, PRIVATE(this)->borderwidth,
-        XmNrightOffset, PRIVATE(this)->borderwidth,
-        XmNbottomOffset, PRIVATE(this)->borderwidth,
-        NULL);
+                    XmNleftOffset, PRIVATE(this)->borderwidth,
+                    XmNtopOffset, PRIVATE(this)->borderwidth,
+                    XmNrightOffset, PRIVATE(this)->borderwidth,
+                    XmNbottomOffset, PRIVATE(this)->borderwidth,
+                    NULL);
   }
 }
 
@@ -483,8 +462,7 @@ SoXtGLWidget::isQuadBufferStereo(void) const
 */
 
 void
-SoXtGLWidget::redrawOverlay(// virtual, protected
-  void)
+SoXtGLWidget::redrawOverlay(void)
 {
   SOXT_STUB();
 }
@@ -498,8 +476,7 @@ SoXtGLWidget::redrawOverlay(// virtual, protected
   events to the scenegraph.
 */
 void
-SoXtGLWidget::processEvent(// virtual, protected
-  XAnyEvent * event)
+SoXtGLWidget::processEvent(XAnyEvent * event)
 {
   switch (event->type) {
   case MapNotify:
@@ -518,7 +495,7 @@ SoXtGLWidget::processEvent(// virtual, protected
     if (PRIVATE(this)->glxwidget != (Widget) NULL) {
       Dimension width, height;
       XtVaGetValues(PRIVATE(this)->glxwidget,
-          XmNwidth, &width, XmNheight, &height, NULL);
+                    XmNwidth, &width, XmNheight, &height, NULL);
       PRIVATE(this)->glsize = SbVec2s(width, height);
     }
     break;
@@ -532,8 +509,7 @@ SoXtGLWidget::processEvent(// virtual, protected
 */
 
 void
-SoXtGLWidget::initGraphic(// virtual, protected
-  void)
+SoXtGLWidget::initGraphic(void)
 {
   assert(PRIVATE(this)->glxwidget != (Widget) NULL);
 
@@ -579,8 +555,7 @@ SoXtGLWidgetP::initNormalContext(void)
 */
 
 void
-SoXtGLWidget::initOverlayGraphic(// virtual, protected
-  void)
+SoXtGLWidget::initOverlayGraphic(void)
 {
   // should be empty
 }
@@ -621,8 +596,8 @@ SoXtGLWidget::hasNormalGLArea(void) const
 void    // virtual, protected
 SoXtGLWidget::sizeChanged(const SbVec2s & size)
 {
-//  SoDebugError::postInfo("SoXtGLWidget::sizeChanged", "[invoked (%d, %d)]",
-//    size[0], size[1]);
+  //  SoDebugError::postInfo("SoXtGLWidget::sizeChanged", "[invoked (%d, %d)]",
+  //    size[0], size[1]);
   if (this->isBorder()) {
     PRIVATE(this)->glsize[0] = size[0] - 2 * PRIVATE(this)->borderwidth;
     PRIVATE(this)->glsize[1] = size[1] - 2 * PRIVATE(this)->borderwidth;
@@ -654,17 +629,16 @@ SoXtGLWidget::widgetChanged(Widget widget)
 */
 
 void
-SoXtGLWidget::setGLSize(// protected
-  const SbVec2s size)
+SoXtGLWidget::setGLSize(const SbVec2s size)
 {
   PRIVATE(this)->glsize = size;
   if (PRIVATE(this)->glxwidget != (Widget) NULL) {
     Dimension width = size[0];
     Dimension height = size[1];
     XtVaSetValues(PRIVATE(this)->glxwidget,
-      XmNwidth, width,
-      XmNheight, height,
-      NULL);
+                  XmNwidth, width,
+                  XmNheight, height,
+                  NULL);
   }
 }
 
@@ -698,8 +672,7 @@ SoXtGLWidget::getGLSize(void) const
 */
 
 float
-SoXtGLWidget::getGLAspectRatio(
-  void) const
+SoXtGLWidget::getGLAspectRatio(void) const
 {
   assert(PRIVATE(this)->glxwidget != (Widget) NULL);
   Dimension width, height;
@@ -714,8 +687,7 @@ SoXtGLWidget::getGLAspectRatio(
 */
 
 SbBool
-SoXtGLWidget::isRGBMode(// protected
-  void)
+SoXtGLWidget::isRGBMode(void)
 {
   return TRUE;
 }
@@ -726,8 +698,7 @@ SoXtGLWidget::isRGBMode(// protected
 */
 
 int
-SoXtGLWidget::getDisplayListShareGroup(// protected
-  GLXContext context)
+SoXtGLWidget::getDisplayListShareGroup(GLXContext context)
 {
   SOXT_STUB();
   return 0;
@@ -742,11 +713,10 @@ SoXtGLWidget::getDisplayListShareGroup(// protected
 */
 
 void
-SoXtGLWidget::eventHandler(// static, protected
-  Widget widget,
-  void * closure,
-  XEvent * event,
-  Boolean * dispatch)
+SoXtGLWidgetP::eventHandler(Widget widget,
+                            void * closure,
+                            XEvent * event,
+                            Boolean * dispatch)
 {
   assert(closure != NULL);
   SoXtGLWidget * component = (SoXtGLWidget *) closure;
@@ -830,22 +800,22 @@ SoXtGLWidget::buildWidget(Widget parent)
 
   if (PRIVATE(this)->normalvisual == NULL) {
     SoDebugError::post("SoXtGLWidget::buildWidget",
-      "could not get satisfactory visual for GLX");
+                       "could not get satisfactory visual for GLX");
     XtAppError(SoXt::getAppContext(), "SoXtGLWidget::buildWidget()");
   }
 
   PRIVATE(this)->doublebuffer = ((trynum-1) & 0x02) ? FALSE : TRUE;
 
   if ((PRIVATE(this)->normalvisual->c_class != TrueColor) &&
-       (PRIVATE(this)->normalvisual->c_class != PseudoColor)) {
+      (PRIVATE(this)->normalvisual->c_class != PseudoColor)) {
     SoDebugError::post("SoXtGLWidget::buildWidget",
-        "Visual hasn't the necessary color capabilities");
+                       "Visual hasn't the necessary color capabilities");
     XtAppError(SoXt::getAppContext(), "SoXtGLWidget::buildWidget()");
   }
 
 #ifndef HAVE_LIBXMU
   SoDebugError::post("SoXtGLWidget::buildWidget",
-    "SoXt does not support detecting best visual/colormap without the Xmu library (yet)");
+                     "SoXt does not support detecting best visual/colormap without the Xmu library (yet)");
   exit(1);
 #else // HAVE_LIBXMU
 
@@ -854,33 +824,33 @@ SoXtGLWidget::buildWidget(Widget parent)
   int nmaps = 0;
 
   if (XmuLookupStandardColormap(
-         display, PRIVATE(this)->normalvisual->screen, PRIVATE(this)->normalvisual->visualid,
-         PRIVATE(this)->normalvisual->depth, XA_RGB_DEFAULT_MAP, False, True) &&
-       XGetRGBColormaps(display,
-         RootWindow(display, PRIVATE(this)->normalvisual->screen), &cmaps, &nmaps,
-         XA_RGB_DEFAULT_MAP))
-  {
-    SbBool found = FALSE;
-    for (int i = 0; i < nmaps && ! found; i++) {
-      if (cmaps[i].visualid == PRIVATE(this)->normalvisual->visualid) {
+                                display, PRIVATE(this)->normalvisual->screen, PRIVATE(this)->normalvisual->visualid,
+                                PRIVATE(this)->normalvisual->depth, XA_RGB_DEFAULT_MAP, False, True) &&
+      XGetRGBColormaps(display,
+                       RootWindow(display, PRIVATE(this)->normalvisual->screen), &cmaps, &nmaps,
+                       XA_RGB_DEFAULT_MAP))
+    {
+      SbBool found = FALSE;
+      for (int i = 0; i < nmaps && ! found; i++) {
+        if (cmaps[i].visualid == PRIVATE(this)->normalvisual->visualid) {
 #if SOXT_DEBUG && 0
-        SoDebugError::postInfo("SoXtGLWidget::buildWidget",
-          "got shared color map");
+          SoDebugError::postInfo("SoXtGLWidget::buildWidget",
+                                 "got shared color map");
 #endif // SOXT_DEBUG
-        colors = cmaps[i].colormap;
-        XFree(cmaps);
-        found = TRUE;
+          colors = cmaps[i].colormap;
+          XFree(cmaps);
+          found = TRUE;
+        }
       }
-    }
-    if (! found)
+      if (! found)
+        colors = XCreateColormap(display,
+                                 RootWindow(display, PRIVATE(this)->normalvisual->screen),
+                                 PRIVATE(this)->normalvisual->visual, AllocNone);
+    } else {
       colors = XCreateColormap(display,
-                   RootWindow(display, PRIVATE(this)->normalvisual->screen),
-                   PRIVATE(this)->normalvisual->visual, AllocNone);
-  } else {
-    colors = XCreateColormap(display,
-                 RootWindow(display, PRIVATE(this)->normalvisual->screen),
-                 PRIVATE(this)->normalvisual->visual, AllocNone);
-  }
+                               RootWindow(display, PRIVATE(this)->normalvisual->screen),
+                               PRIVATE(this)->normalvisual->visual, AllocNone);
+    }
   
   PRIVATE(this)->glxwidget =
     XtVaCreateManagedWidget("SoXtGLWidget",
@@ -901,11 +871,11 @@ SoXtGLWidget::buildWidget(Widget parent)
   // (void (*)(_WidgetRec *, SoXtGLWidget *, XAnyEvent *, char *))
   // ..so we need to cast to avoid a compiler warning or error.
   XtAddEventHandler(PRIVATE(this)->glxwidget,
-      ExposureMask | StructureNotifyMask | ButtonPressMask |
-      ButtonReleaseMask | PointerMotionMask | KeyPressMask | KeyReleaseMask,
-      False,
-      (void (*)(_WidgetRec *, void *, _XEvent *, char *))
-        SoXtGLWidget::eventHandler, this);
+                    ExposureMask | StructureNotifyMask | ButtonPressMask |
+                    ButtonReleaseMask | PointerMotionMask | KeyPressMask | KeyReleaseMask,
+                    False,
+                    (void (*)(_WidgetRec *, void *, _XEvent *, char *))
+                    SoXtGLWidgetP::eventHandler, this);
 
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtGLWidget::buildWidget", "[exit]");
@@ -919,8 +889,7 @@ SoXtGLWidget::buildWidget(Widget parent)
 */
 
 Widget
-SoXtGLWidget::getGlxMgrWidget(// protected
-  void)
+SoXtGLWidget::getGlxMgrWidget(void)
 {
   return PRIVATE(this)->glxmanager;
 }
@@ -990,8 +959,7 @@ SoXtGLWidget::glUnlockOverlay(void)
 */
 
 void
-SoXtGLWidget::glSwapBuffers(
-  void)
+SoXtGLWidget::glSwapBuffers(void)
 {
   assert(PRIVATE(this)->doublebuffer != FALSE);
 #if SOXT_DEBUG && 0
@@ -1001,12 +969,11 @@ SoXtGLWidget::glSwapBuffers(
 }
 
 /*!
-  This methid flushes the GL context.
+  This method flushes the GL context.
 */
 
 void
-SoXtGLWidget::glFlushBuffer(
-  void)
+SoXtGLWidget::glFlushBuffer(void)
 {
   assert(PRIVATE(this)->glxwidget != (Widget) NULL);
   // nothing to do...

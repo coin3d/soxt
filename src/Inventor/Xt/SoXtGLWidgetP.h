@@ -38,6 +38,7 @@ public:
   ~SoXtGLWidgetP();
 
   void initNormalContext(void);
+  static void eventHandler(Widget, void *, XEvent *, Boolean *);
 
   SbVec2s glsize; // cached GL widget size
 
