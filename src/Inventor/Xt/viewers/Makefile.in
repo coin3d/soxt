@@ -108,7 +108,9 @@ BUILT_SOURCES = \
 	SoXtViewer.h \
 	SoXtViewer.cpp \
 	SoAnyFullViewer.h \
-	SoAnyFullViewer.cpp
+	SoAnyFullViewer.cpp \
+	SoAnyExaminerViewer.h \
+	SoAnyExaminerViewer.cpp
 
 
 libSoXtViewers_la_SOURCES = \
@@ -116,8 +118,6 @@ libSoXtViewers_la_SOURCES = \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtViewerExtra.cpp \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.cpp \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.h \
-	$(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp \
-	$(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h
 
@@ -146,7 +146,7 @@ X_PRE_LIBS = @X_PRE_LIBS@
 libSoXtViewers_la_LDFLAGS = 
 libSoXtViewers_la_LIBADD = 
 am_libSoXtViewers_la_OBJECTS =  SoXtViewer.lo SoAnyFullViewer.lo \
-SoXtViewerExtra.lo SoXtFullViewer.lo SoAnyExaminerViewer.lo \
+SoAnyExaminerViewer.lo SoXtViewerExtra.lo SoXtFullViewer.lo \
 SoXtExaminerViewer.lo
 libSoXtViewers_la_OBJECTS =  $(am_libSoXtViewers_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -219,8 +219,6 @@ SoXtViewerExtra.lo: \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtViewerExtra.cpp
 SoXtFullViewer.lo: \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.cpp
-SoAnyExaminerViewer.lo: \
-	$(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp
 SoXtExaminerViewer.lo: \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp
 
@@ -299,12 +297,6 @@ maintainer-clean-depend:
 @AMDEP@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(CXXCOMPILE) -c -o $@ $<
-
-.cpp.lo:
-@AMDEP@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
-@AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(LTCXXCOMPILE) -c -o $@ $<
 
 info-am:
 info: info-am
@@ -415,21 +407,17 @@ SoAnyExaminerViewer.cpp: \
 
 ############################################################################
 
-SoAnyFullViewer.lo: $(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp
-	source='$(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp' \
-	object='$@' libtool=yes \
+.cpp.lo:
+	@( source='$<'; \
+	for dir in $(libSoXtDevicesVPATH); do \
+	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
+	done; \
+	eval "$(CXXDEPMODE)"; \
+	: ${depmod=none}; \
+	source="$$source" \
+	object='$@' libtool=no \
 	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
-	$(CXXDEPMODE) $(depcomp) \
-	$(LTCXXCOMPILE) -c -o $@ \
-	$(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp
-
-SoAnyExaminerViewer.lo: $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp
-	source='$(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp' \
-	object='$@' libtool=yes \
-	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
-	$(CXXDEPMODE) $(depcomp) \
-	$(LTCXXCOMPILE) -c -o $@ \
-	$(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp
+	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
 
 ############################################################################
 

@@ -12,7 +12,8 @@ else
 EXAMPLEDIR =
 endif
 
-SUBDIRS = src/Inventor/Xt $(TESTDIR) $(EXAMPLEDIR)
+SUBDIRS = . src/Inventor/Xt $(TESTDIR) $(EXAMPLEDIR)
+SUFFIXES = .h .cpp .in .lo .o
 
 bin_SCRIPTS = soxt-config
 
