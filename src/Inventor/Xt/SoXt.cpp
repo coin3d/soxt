@@ -120,6 +120,10 @@ public:
   static void delaySensorCB(XtPointer, XtIntervalId *);
   static Boolean idleSensorCB(XtPointer);
 
+  static int NO_X11_ERRORHANDLER;
+  static const char * SOXT_NO_X11_ERRORHANDLER;
+
+  static void setUpErrorHandler(void);
 };
 
 Display * SoXtP::display = NULL;
@@ -136,6 +140,8 @@ SbPList * SoXtP::eventhandlers = NULL;
 #define ENVVAR_NOT_INITED INT_MAX
 int SoXtP::SOXT_XSYNC = ENVVAR_NOT_INITED;
 XErrorHandler SoXtP::previous_handler = NULL;
+int SoXtP::NO_X11_ERRORHANDLER = ENVVAR_NOT_INITED;
+const char * SoXtP::SOXT_NO_X11_ERRORHANDLER = "SOXT_NO_X11_ERRORHANDLER";
 
 static Atom WM_PROTOCOLS = 0;
 static Atom WM_DELETE_WINDOW = 0;
@@ -197,10 +203,6 @@ SoXt::init(int & argc, char ** argv,
   SoNodeKit::init();
   SoInteraction::init();
 
-  assert(SoXtP::previous_handler == NULL && "call SoXt::init() only once!");
-  // Intervene upon X11 errors.
-  SoXtP::previous_handler = XSetErrorHandler((XErrorHandler)SoXtP::X11Errorhandler);
-
   // FIXME: as far as I can see, no SoXt::init() method in InventorXt
   // matches the signature of this constructor. So we should probably
   // mark this as SoXt/Coin-only (but look over InventorXt again).
@@ -215,24 +217,9 @@ SoXt::init(int & argc, char ** argv,
 
   Display * display = XOpenDisplay(NULL);
   if (display == NULL) {
-    // FIXME: SoDebugError::initClass() not yet invoked! 20021021 mortene.
     SoDebugError::postInfo("SoXt::init", "Failed to open display.");
     // FIXME: invoke the fatal error handler. 20011220 mortene.
     exit(-1);
-  }
-
-  // This is _extremely_ useful for debugging X errors: activate this
-  // code (set the SOXT_XSYNC environment variable on your system to
-  // "1"), then rerun the application code in a debugger with a
-  // breakpoint set at SoXtP::X11Errorhandler(). Now you can backtrace
-  // to the exact source location of the failing X request.
-  if (SoXtP::SOXT_XSYNC == ENVVAR_NOT_INITED) {
-    const char * env = SoAny::getenv("SOXT_XSYNC");
-    SoXtP::SOXT_XSYNC = env ? atoi(env) : 0;
-    if (SoXtP::SOXT_XSYNC) {
-      SoDebugError::postInfo("SoXt::init", "Turning on X synchronization.");
-      XSynchronize(display, True);
-    }
   }
 
   int depth = 0;
@@ -290,7 +277,40 @@ wm_close_handler(Widget widget, XtPointer user, XEvent * e, Boolean * dispatch)
   }
 }
 
-// init()-method documented in common/SoGuiCommon.cpp.in.
+// FIXME: this code could probably be shared with SoQt.cpp, which also
+// sets up an X11 error handler. 20030912 mortene.
+void
+SoXtP::setUpErrorHandler(void)
+{
+  assert(SoXtP::NO_X11_ERRORHANDLER == ENVVAR_NOT_INITED);
+  const char * env = SoAny::si()->getenv(SoXtP::SOXT_NO_X11_ERRORHANDLER);
+  SoXtP::NO_X11_ERRORHANDLER = env ? atoi(env) : 0;
+      
+  if (! SoXtP::NO_X11_ERRORHANDLER) {
+    // Intervene upon X11 errors.
+    SoXtP::previous_handler = XSetErrorHandler((XErrorHandler)SoXtP::X11Errorhandler);
+  }
+
+  // This is _extremely_ useful for debugging X errors: activate this
+  // code (set the SOXT_XSYNC environment variable on your system to
+  // "1"), then rerun the application code in a debugger with a
+  // breakpoint set at SoXtP::X11Errorhandler(). Now you can backtrace
+  // to the exact source location of the failing X request.
+
+  assert(SoXtP::SOXT_XSYNC == ENVVAR_NOT_INITED);
+  env = SoAny::getenv("SOXT_XSYNC");
+  SoXtP::SOXT_XSYNC = env ? atoi(env) : 0;
+
+  if (SoXtP::SOXT_XSYNC) {
+    SoDebugError::postInfo("SoXt::init", "Turning on X synchronization.");
+    XSynchronize(display, True);
+  }
+}
+
+// Documented in common/SoGuiCommon.cpp.in.
+//
+// This is the "deepest" / innermost init() function, i.e. it is
+// always invoked by the other init()s.
 void
 SoXt::init(Widget toplevel)
 {
@@ -300,10 +320,7 @@ SoXt::init(Widget toplevel)
   SoNodeKit::init();
   SoInteraction::init();
 
-  // Intervene upon X11 errors.
-  if (SoXtP::previous_handler == NULL) {
-    SoXtP::previous_handler = XSetErrorHandler((XErrorHandler)SoXtP::X11Errorhandler);
-  }
+  SoXtP::setUpErrorHandler();
 
 #if SOXT_DEBUG
   setbuf(stdout, NULL);
