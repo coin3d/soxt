@@ -37,6 +37,7 @@ DISTCLEANFILES = \
 	$(SoGui_BuiltMetaFiles)
 
 EXTRA_DIST = \
+	LICENSE.GPL \
 	so@gui@.m4 \
 	bootstrap \
 	build/so@gui@.spec.in \
