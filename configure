@@ -11586,7 +11586,7 @@ fi;
 if test x"$with_opengl" != xno; then
 
   if test x"$with_opengl" != xyes && test x"$with_opengl" != x""; then
-    sim_ac_ogl_ldflags=-I$with_opengl/lib
+    sim_ac_ogl_ldflags=-L$with_opengl/lib
     # $sim_ac_ogl_cppflags is set up in the SIM_AC_CHECK_HEADER_GL
     # invocation further below.
   else
@@ -11594,7 +11594,7 @@ if test x"$with_opengl" != xno; then
     # at this location.
     sim_ac_gl_hpux=/opt/graphics/OpenGL
     if test -d $sim_ac_gl_hpux; then
-      sim_ac_ogl_ldflags=-I$sim_ac_gl_hpux/lib
+      sim_ac_ogl_ldflags=-L$sim_ac_gl_hpux/lib
     fi
   fi
 
@@ -11692,9 +11692,10 @@ echo "$as_me:$LINENO: checking how to include gl.h" >&5
 echo $ECHO_N "checking how to include gl.h... $ECHO_C" >&6
 if test x"$with_opengl" != x"no"; then
   sim_ac_gl_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_gl_cppflags=
+
   if test x"$with_opengl" != xyes && test x"$with_opengl" != x""; then
     sim_ac_gl_cppflags="-I${with_opengl}/include"
-    CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
   else
     # On HP-UX platforms, OpenGL headers and libraries are usually installed
     # at this location.
@@ -11703,6 +11704,9 @@ if test x"$with_opengl" != x"no"; then
       sim_ac_gl_cppflags=-I$sim_ac_gl_hpux/include
     fi
   fi
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
+
 
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
@@ -12098,10 +12102,21 @@ echo "$as_me:$LINENO: checking how to include glu.h" >&5
 echo $ECHO_N "checking how to include glu.h... $ECHO_C" >&6
 if test x"$with_opengl" != x"no"; then
   sim_ac_glu_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_glu_cppflags=
+
   if test x"$with_opengl" != xyes && test x"$with_opengl" != x""; then
     sim_ac_glu_cppflags="-I${with_opengl}/include"
-    CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
+  else
+    # On HP-UX platforms, OpenGL headers and libraries are usually installed
+    # at this location.
+    sim_ac_gl_hpux=/opt/graphics/OpenGL
+    if test -d $sim_ac_gl_hpux; then
+      sim_ac_glu_cppflags=-I$sim_ac_gl_hpux/include
+    fi
   fi
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
+
 
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
@@ -12193,102 +12208,7 @@ fi
 
 
 
-  sim_ac_gl_hpux=/opt/graphics/OpenGL
-  if test x$sim_ac_glu_header_avail = xfalse && test -d $sim_ac_gl_hpux; then
-    sim_ac_glu_cppflags=-I$sim_ac_gl_hpux/include
-    CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
 
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-#include <GL/glu.h>
-_ACEOF
-if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
-  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
-  ac_status=$?
-  egrep -v '^ *\+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null; then
-  if test -s conftest.err; then
-    ac_cpp_err=$ac_cxx_preproc_warn_flag
-  else
-    ac_cpp_err=
-  fi
-else
-  ac_cpp_err=yes
-fi
-if test -z "$ac_cpp_err"; then
-  ac_cv_header_GL_glu_h=yes
-else
-  echo "$as_me: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  ac_cv_header_GL_glu_h=no
-fi
-rm -f conftest.err conftest.$ac_ext
-if test $ac_cv_header_GL_glu_h = yes; then
-
-      sim_ac_glu_header_avail=true
-      sim_ac_glu_header=GL/glu.h
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_GL_GLU_H 1
-_ACEOF
-
-
-else
-
-
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-#include <OpenGL/glu.h>
-_ACEOF
-if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
-  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
-  ac_status=$?
-  egrep -v '^ *\+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null; then
-  if test -s conftest.err; then
-    ac_cpp_err=$ac_cxx_preproc_warn_flag
-  else
-    ac_cpp_err=
-  fi
-else
-  ac_cpp_err=yes
-fi
-if test -z "$ac_cpp_err"; then
-  ac_cv_header_OpenGL_glu_h=yes
-else
-  echo "$as_me: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  ac_cv_header_OpenGL_glu_h=no
-fi
-rm -f conftest.err conftest.$ac_ext
-if test $ac_cv_header_OpenGL_glu_h = yes; then
-
-        sim_ac_glu_header_avail=true
-        sim_ac_glu_header=OpenGL/glu.h
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_OPENGL_GLU_H 1
-_ACEOF
-
-
-fi
-
-
-
-
-fi
-
-
-
-  fi
   CPPFLAGS="$sim_ac_glu_save_CPPFLAGS"
   if $sim_ac_glu_header_avail; then
     if test x"$sim_ac_glu_cppflags" = x""; then
@@ -12842,9 +12762,10 @@ echo "$as_me:$LINENO: checking how to include gl.h" >&5
 echo $ECHO_N "checking how to include gl.h... $ECHO_C" >&6
 if test x"$with_opengl" != x"no"; then
   sim_ac_gl_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_gl_cppflags=
+
   if test x"$with_opengl" != xyes && test x"$with_opengl" != x""; then
     sim_ac_gl_cppflags="-I${with_opengl}/include"
-    CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
   else
     # On HP-UX platforms, OpenGL headers and libraries are usually installed
     # at this location.
@@ -12853,6 +12774,9 @@ if test x"$with_opengl" != x"no"; then
       sim_ac_gl_cppflags=-I$sim_ac_gl_hpux/include
     fi
   fi
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
+
 
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
