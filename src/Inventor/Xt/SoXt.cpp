@@ -239,7 +239,7 @@ SoXt::init(int & argc, char ** argv,
   // breakpoint set at SoXtP::X11Errorhandler(). Now you can backtrace
   // to the exact source location of the failing X request.
   if (SoXtP::SOXT_XSYNC == ENVVAR_NOT_INITED) {
-    const char * env = SoAny::si()->getenv("SOXT_XSYNC");
+    const char * env = SoAny::getenv("SOXT_XSYNC");
     SoXtP::SOXT_XSYNC = env ? atoi(env) : 0;
     if (SoXtP::SOXT_XSYNC) {
       SoDebugError::postInfo("SoXt::init", "Turning on X synchronization.");
@@ -257,7 +257,7 @@ SoXt::init(int & argc, char ** argv,
   if ( visual ) {
     toplevel = XtVaOpenApplication(&tempcontext, SoXtP::appclass, NULL, 0,
                                    &argc, argv,
-                                   SoXtP::fallbackresources, topLevelShellWidgetClass,
+                                   SoXtP::fallbackresources, applicationShellWidgetClass,
                                    XmNvisual, visual,
                                    XmNdepth, depth,
                                    XmNcolormap, colormap,
@@ -269,7 +269,7 @@ SoXt::init(int & argc, char ** argv,
     // embla.trh.sim.no, at least. 20020117 mortene.
     toplevel = XtVaOpenApplication(&tempcontext, SoXtP::appclass, NULL, 0,
                                    &argc, argv,
-                                   SoXtP::fallbackresources, topLevelShellWidgetClass,
+                                   SoXtP::fallbackresources, applicationShellWidgetClass,
                                    NULL);
   }
   if ( appname ) {
@@ -1087,7 +1087,7 @@ SoXt::selectBestVisual(Display * dpy, Visual * & visual,
   assert(dpy != NULL);
 
   unsigned int wantedid = 0;
-  const char * env = getenv("SOXT_SELECT_VISUAL");
+  const char * env = SoAny::getenv("SOXT_SELECT_VISUAL");
   if ( env ) {
     wantedid = atoi(env);
 #if SOXT_SELECTBESTVISUAL_DEBUG // debug
@@ -1251,7 +1251,7 @@ SoXt::selectBestVisual(Display * dpy, Visual * & visual, Colormap & colormap, in
 {
   assert(dpy != NULL);
   unsigned int wanted = 0;
-  const char * env = getenv("SOXT_SELECT_VISUAL");
+  const char * env = SoAny::getenv("SOXT_SELECT_VISUAL");
   // run "glxinfo -t" to get a list of visuals and their ids...
   if ( env ) {
     wanted = atoi(env);
