@@ -1142,7 +1142,7 @@ fi
 
 
 # Usage:
-#   SIM_COMPILE_DEBUG( ACTION-IF-DEBUG, ACTION-IF-NOT-DEBUG )
+#   SIM_AC_COMPILE_DEBUG([ACTION-IF-DEBUG[, ACTION-IF-NOT-DEBUG]])
 #
 # Description:
 #   Let the user decide if compilation should be done in "debug mode".
@@ -1155,9 +1155,6 @@ fi
 #   macro arguments following the well-known ACTION-IF / ACTION-IF-NOT
 #   concept.
 #
-#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
-#   in the configure.in script.
-#
 # Authors:
 #   Morten Eriksen, <mortene@sim.no>
 #   Lars J. Aas, <larsa@sim.no>
@@ -1167,28 +1164,25 @@ fi
 #   default-value.
 #
 
-AC_DEFUN([SIM_COMPILE_DEBUG], [
-AC_PREREQ([2.13])
-
+AC_DEFUN([SIM_AC_COMPILE_DEBUG], [
 AC_ARG_ENABLE(
   [debug],
   AC_HELP_STRING([--enable-debug], [compile in debug mode [[default=yes]]]),
   [case "${enableval}" in
-    yes) enable_debug=yes ;;
-    no)  enable_debug=no ;;
+    yes) enable_debug=true ;;
+    no)  enable_debug=false ;;
+    true | false) enable_debug=${enableval} ;;
     *) AC_MSG_ERROR(bad value "${enableval}" for --enable-debug) ;;
   esac],
-  [enable_debug=yes])
+  [enable_debug=true])
 
-if test x"$enable_debug" = x"yes"; then
+if $enable_debug; then
   ifelse([$1], , :, [$1])
 else
-  CFLAGS="$CFLAGS -DNDEBUG"
-  CXXFLAGS="$CXXFLAGS -DNDEBUG"
+  CPPFLAGS="$CPPFLAGS -DNDEBUG"
   $2
 fi
 ])
-
 
 # Usage:
 #   SIM_COMPILER_WARNINGS
@@ -1460,17 +1454,22 @@ fi
 # as we can get false positives and/or false negatives when running under
 # Cygwin, using the Microsoft Visual C++ compiler (the configure script will
 # pick the GCC preprocessor).
-AC_DEFUN([SIM_AC_CHECK_HEADER],
-[AC_VAR_PUSHDEF([ac_Header], [ac_cv_header_$1])dnl
-AC_ARG_VAR([CPPFLAGS], [C/C++ preprocessor flags, e.g. -I<include dir> if you ha
-ve headers in a nonstandard directory <include dir>])
-AC_CACHE_CHECK([for $1], ac_Header,
-[AC_TRY_COMPILE([#include <$1>
-], [],
-AC_VAR_SET(ac_Header, yes), AC_VAR_SET(ac_Header, no))])
-AC_SHELL_IFELSE([test AC_VAR_GET(ac_Header) = yes],
-                [$2], [$3])dnl
-AC_VAR_POPDEF([ac_Header])dnl
+
+AC_DEFUN([SIM_AC_CHECK_HEADER], [
+AC_VAR_PUSHDEF([ac_Header], [ac_cv_header_$1])
+AC_ARG_VAR([CPPFLAGS], [C/C++ preprocessor flags, e.g. -I<include dir> if you have headers in a nonstandard directory <include dir>])
+AC_CACHE_CHECK(
+  [for $1],
+  ac_Header,
+  [AC_TRY_COMPILE([#include <$1>],
+  [],
+  [AC_VAR_SET(ac_Header, yes)],
+  [AC_VAR_SET(ac_Header, no)])])
+AS_IFELSE(
+  [test AC_VAR_GET(ac_Header) = yes],
+  [$2],
+  [$3])
+AC_VAR_POPDEF([ac_Header])
 ])# SIM_AC_CHECK_HEADER
 
 
@@ -1480,14 +1479,15 @@ AC_VAR_POPDEF([ac_Header])dnl
 AC_DEFUN([SIM_AC_CHECK_HEADERS],
 [for ac_header in $1
 do
-SIM_AC_CHECK_HEADER($ac_header,
-                    [AC_DEFINE_UNQUOTED(AC_TR_CPP(HAVE_$ac_header)) $2],
-                    [$3])dnl
+SIM_AC_CHECK_HEADER(
+  [$ac_header],
+  [AC_DEFINE_UNQUOTED(AC_TR_CPP(HAVE_$ac_header)) $2],
+  [$3])
 done
 ])# SIM_AC_CHECK_HEADERS
 
 # Usage:
-#  SIM_CHECK_X11([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#  SIM_AC_CHECK_X11([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 #  Try to find the X11 development system. If it is found, these
 #  shell variables are set:
@@ -1503,11 +1503,10 @@ done
 #
 # Author: Morten Eriksen, <mortene@sim.no>.
 
-AC_DEFUN([SIM_CHECK_X11], [
+AC_DEFUN([SIM_AC_CHECK_X11], [
+AC_REQUIRE([AC_PATH_XTRA])
 
 sim_ac_x11_avail=no
-
-AC_PATH_XTRA
 
 if test x"$no_x" != xyes; then
   #  *** DEBUG ***
@@ -1557,7 +1556,7 @@ fi
 ])
 
 # Usage:
-#  SIM_CHECK_X11SHMEM([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#  SIM_AC_CHECK_X11SHMEM([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 #  Try to find the X11 shared memory extension. If it is found, this
 #  shell variable is set:
@@ -1576,8 +1575,7 @@ fi
 #      Cygwin installation)
 #
 
-AC_DEFUN([SIM_CHECK_X11SHMEM], [
-AC_PREREQ([2.14.1])
+AC_DEFUN([SIM_AC_CHECK_X11SHMEM], [
 
 sim_ac_x11shmem_avail=no
 sim_ac_x11shmem_libs="-lXext"
@@ -1603,7 +1601,7 @@ fi
 ])
 
 # Usage:
-#  SIM_CHECK_X11MU([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#  SIM_AC_CHECK_X11MU([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 #  Try to find the X11 miscellaneous utilities extension. If it is
 #  found, this shell variable is set:
@@ -1621,8 +1619,7 @@ fi
 #      Cygwin installation)
 #
 
-AC_DEFUN([SIM_CHECK_X11MU], [
-AC_PREREQ([2.14.1])
+AC_DEFUN([SIM_AC_CHECK_X11MU], [
 
 sim_ac_x11mu_avail=no
 sim_ac_x11mu_libs="-lXmu"
@@ -1649,7 +1646,7 @@ fi
 ])
 
 # Usage:
-#  SIM_CHECK_X11XID([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#  SIM_AC_CHECK_X11XID([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 #  Try to find the X11 extension device library. Sets this
 #  shell variable:
@@ -1667,8 +1664,7 @@ fi
 #      Cygwin installation)
 #
 
-AC_DEFUN([SIM_CHECK_X11XID], [
-AC_PREREQ([2.14.1])
+AC_DEFUN([SIM_AC_CHECK_X11XID], [
 
 sim_ac_x11xid_avail=no
 sim_ac_x11xid_libs="-lXi"
@@ -1693,7 +1689,7 @@ fi
 ])
 
 # Usage:
-#  SIM_CHECK_X_INTRINSIC([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#  SIM_AC_CHECK_X_INTRINSIC([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 #  Try to find the Xt intrinsic library. Sets this shell variable:
 #
@@ -1706,8 +1702,7 @@ fi
 # Author: Morten Eriksen, <mortene@sim.no>.
 #
 
-AC_DEFUN([SIM_CHECK_X_INTRINSIC], [
-AC_PREREQ([2.14.1])
+AC_DEFUN([SIM_AC_CHECK_X_INTRINSIC], [
 
 sim_ac_xt_avail=no
 sim_ac_xt_libs="-lXt"
@@ -1732,7 +1727,7 @@ fi
 ])
 
 # Usage:
-#   SIM_CHECK_LIBXPM( [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND] )
+#   SIM_AC_CHECK_LIBXPM( [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND] )
 #
 # Description:
 #   This macro checks for libXpm.
@@ -1745,8 +1740,7 @@ fi
 #   Lars J. Aas <larsa@sim.no>
 #
 
-AC_DEFUN([SIM_CHECK_LIBXPM], [
-AC_PREREQ([2.14.1])
+AC_DEFUN([SIM_AC_CHECK_LIBXPM], [
 
 sim_ac_xpm_avail=no
 sim_ac_xpm_libs="-lXpm"
@@ -1999,7 +1993,7 @@ glPointSize(1.0f);
     SIM_AC_CHECK_PTHREAD([
       sim_ac_gl_cppflags="$sim_ac_gl_cppflags $sim_ac_pthread_cppflags"
       sim_ac_gl_ldflags="$sim_ac_gl_ldflags $sim_ac_pthread_ldflags"],
-      AC_MSG_WARN(couldn't compile or link with pthread library))
+      [AC_MSG_WARN([couldn't compile or link with pthread library])])
 
     if test "x$sim_ac_pthread_avail" = "xyes"; then
       AC_CACHE_CHECK(
@@ -2211,6 +2205,29 @@ else
 fi
 ])
 
+# **************************************************************************
+# SIM_AC_HAVE_GLX_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Check whether GLX is on the system.
+
+AC_DEFUN([SIM_AC_HAVE_GLX_IFELSE], [
+AC_CACHE_CHECK(
+  [whether GLX is on the system],
+  sim_cv_have_glx,
+  AC_TRY_LINK(
+    [#include <GL/glx.h>],
+    [(void)glXChooseVisual(0L, 0, 0L);],
+    [sim_cv_have_glx=true],
+    [sim_cv_have_glx=false]))
+
+if ${sim_cv_have_glx=false}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_GLX_IFELSE()
+
+
 # Usage:
 #  SIM_AC_CHECK_PTHREAD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
@@ -2276,94 +2293,6 @@ fi
 
 
 # Usage:
-#  SIM_CHECK_INVENTOR([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-#
-#  Try to find the Open Inventor development system. If it is found, these
-#  shell variables are set:
-#
-#    $sim_ac_oiv_cppflags (extra flags the compiler needs for Inventor)
-#    $sim_ac_oiv_ldflags  (extra flags the linker needs for Inventor)
-#    $sim_ac_oiv_libs     (link libraries the linker needs for Inventor)
-#
-#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
-#  In addition, the variable $sim_ac_oiv_avail is set to "yes" if
-#  the Open Inventor development system is found.
-#
-# Author: Morten Eriksen, <mortene@sim.no>.
-#
-
-AC_DEFUN([SIM_CHECK_INVENTOR], [
-AC_ARG_WITH([inventor],
-  AC_HELP_STRING([--with-inventor], [use another Inventor than Coin [default=no]])
-AC_HELP_STRING([--with-inventor=PATH], [specify where the Inventor implementation resides]),
-  [],
-  [with_inventor=yes])
-
-sim_ac_oiv_avail=no
-
-if test x"$with_inventor" != xno; then
-  if test x"$with_inventor" != xyes; then
-    sim_ac_oiv_cppflags="-I${with_inventor}/include"
-    sim_ac_oiv_ldflags="-L${with_inventor}/lib"
-  else
-    AC_MSG_CHECKING(value of the OIVHOME environment variable)
-    if test x"$OIVHOME" = x; then
-      AC_MSG_RESULT([empty])
-      AC_MSG_WARN([OIVHOME environment variable not set -- this might be an indication of a problem])
-    else
-      AC_MSG_RESULT([$OIVHOME])
-      sim_ac_oiv_cppflags="-I$OIVHOME/include"
-      sim_ac_oiv_ldflags="-L$OIVHOME/lib"
-    fi
-  fi
-
-  if test x"$sim_ac_linking_style" = xmswin; then
-    cat <<EOF > conftest.c
-#include <Inventor/SbBasic.h>
-PeekInventorVersion: TGS_VERSION
-EOF
-    iv_version=`$CXX -E conftest.c 2>/dev/null | grep "^PeekInventorVersion" | sed 's/.* //g'`
-    if test x"$iv_version" = xTGS_VERSION; then
-      AC_MSG_ERROR([SbBasic.h does not define TGS_VERSION.  Maybe it's a Coin file?])
-    fi
-    iv_version=`echo $iv_version | sed 's/.$//'`
-    rm -f conftest.c
-    sim_ac_oiv_libs="inv${iv_version}.lib"
-    sim_ac_oiv_enter="#include <SoWinEnterScope.h>"
-    sim_ac_oiv_leave="#include <SoWinLeaveScope.h>"
-  else
-    sim_ac_oiv_libs="-lInventor"
-  fi
-
-  sim_ac_save_cppflags=$CPPFLAGS
-  sim_ac_save_ldflags=$LDFLAGS
-  sim_ac_save_libs=$LIBS
-
-  CPPFLAGS="$sim_ac_oiv_cppflags $CPPFLAGS"
-  LDFLAGS="$sim_ac_oiv_ldflags $LDFLAGS"
-  LIBS="$sim_ac_oiv_libs $LIBS"
-
-  AC_CACHE_CHECK([for Open Inventor developer kit],
-    sim_cv_lib_oiv_avail,
-    [AC_TRY_LINK([$sim_ac_oiv_enter
-                  #include <Inventor/SoDB.h>],
-                 [SoDB::init();],
-                 [sim_cv_lib_oiv_avail=yes],
-                 [sim_cv_lib_oiv_avail=no])])
-
-  if test x"$sim_cv_lib_oiv_avail" = xyes; then
-    sim_ac_oiv_avail=yes
-    $1
-  else
-    CPPFLAGS=$sim_ac_save_cppflags
-    LDFLAGS=$sim_ac_save_ldflags
-    LIBS=$sim_ac_save_libs
-    $2
-  fi
-fi
-])
-
-# Usage:
 #  SIM_CHECK_OIV_XT([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 #  Try to compile and link against the Xt GUI glue library for
@@ -2414,7 +2343,8 @@ AC_HELP_STRING([--with-inventor=PATH], [specify where Open Inventor resides]),
   [case "$withval" in
   no)  sim_ac_want_inventor=false ;;
   yes) sim_ac_want_inventor=true
-       test -n "$OIVHOME" && sim_ac_inventor_path="$OIVHOME" ;;
+       test -n "$OIVHOME" &&
+         SIM_AC_DEBACKSLASH(sim_ac_inventor_path, "$OIVHOME") ;;
   *)   sim_ac_want_inventor=true; sim_ac_inventor_path="$withval" ;;
   esac])
 ]) # SIM_AC_WITH_INVENTOR
@@ -2439,19 +2369,19 @@ if $sim_ac_want_inventor; then
   AC_CACHE_CHECK(
     [if linking with libimage is possible],
     sim_cv_have_inventor_image,
-    [AC_LANG_PUSH(C)
+    [
     CPPFLAGS="$sim_ac_inventor_image_cppflags $CPPFLAGS"
     LDFLAGS="$sim_ac_inventor_image_ldflags $LDFLAGS"
     LIBS="$sim_ac_inventor_image_libs $LIBS"
     AC_TRY_LINK(
       [],
-      [img_read();],
+      [],
       [sim_cv_have_inventor_image=true],
       [sim_cv_have_inventor_image=false])
     CPPFLAGS="$sim_ac_inventor_image_save_CPPFLAGS"
     LDFLAGS="$sim_ac_inventor_image_save_LDFLAGS"
     LIBS="$sim_ac_inventor_image_save_LIBS"
-    AC_LANG_POP])
+    ])
 
   if $sim_cv_have_inventor_image; then
     ifelse([$1], , :, [$1])
@@ -2464,65 +2394,73 @@ fi
 ]) # SIM_AC_HAVE_INVENTOR_IMAGE_IFELSE
 
 # **************************************************************************
-# SIM_AC_HAVE_INVENTOR_IFELSE
+# SIM_AC_HAVE_INVENTOR_IFELSE( [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND] ] )
+#
+# Defines $sim_ac_inventor_cppflags, $sim_ac_inventor_ldflags and
+# $sim_ac_inventor_libs.
 
 AC_DEFUN([SIM_AC_HAVE_INVENTOR_IFELSE], [
 AC_REQUIRE([SIM_AC_WITH_INVENTOR])
 
 if $sim_ac_want_inventor; then
-  sim_ac_inventor_save_CPPFLAGS="$CPPFLAGS";
-  sim_ac_inventor_save_LDFLAGS="$LDFLAGS";
-  sim_ac_inventor_save_LIBS="$LIBS";
+  sim_ac_save_CPPFLAGS="$CPPFLAGS";
+  sim_ac_save_LDFLAGS="$LDFLAGS";
+  sim_ac_save_LIBS="$LIBS";
 
   SIM_AC_HAVE_INVENTOR_IMAGE_IFELSE([
     sim_ac_inventor_cppflags="$sim_ac_inventor_image_cppflags"
     sim_ac_inventor_ldflags="$sim_ac_inventor_image_ldflags"
-    sim_ac_inventor_libs="-lInventor $sim_ac_inventor_image_libs"
   ], [
     if test s${sim_ac_inventor_path+et} = set; then
       sim_ac_inventor_cppflags="-I${sim_ac_inventor_path}/include"
       sim_ac_inventor_ldflags="-L${sim_ac_inventor_path}/lib"
     fi
-    sim_ac_inventor_libs="-lInventor"
+    sim_ac_inventor_image_libs=
   ])
 
-# temporarily disabled
-#  if test x"$sim_ac_linking_style" = xmswin; then
-#    cat <<EOF > conftest.c
+  # Let's at least test for "libInventor".
+  sim_ac_inventor_chk_libs="-lInventor"
+
+  # See if we can get the TGS_VERSION number for including a
+  # check for inv{ver}.lib.
+    cat <<EOF > conftest.c
 #include <Inventor/SbBasic.h>
-#PeekInventorVersion: TGS_VERSION
-#EOF
-#    iv_version=`$CXX -E conftest.c 2>/dev/null | grep "^PeekInventorVersion" | sed 's/.* //g'`
-#    if test x"$iv_version" = xTGS_VERSION; then
-#      AC_MSG_ERROR([SbBasic.h does not define TGS_VERSION.  Maybe it's a Coin file?])
-#    fi
-#    iv_version=`echo $iv_version | sed 's/.$//'`
-#    rm -f conftest.c
-#    sim_ac_inventor_libs="inv${iv_version}.lib"
-#    sim_ac_inventor_enter="#include <SoWinEnterScope.h>"
-#    sim_ac_inventor_leave="#include <SoWinLeaveScope.h>"
-#  else
-#    sim_ac_inventor_libs="-lInventor"
-#  fi
+PeekInventorVersion: TGS_VERSION
+EOF
+  tgs_version=`$CPP $sim_ac_inventor_cppflags $CPPFLAGS conftest.c 2>/dev/null | egrep "^PeekInventorVersion" | sed 's/.* //g'`
+  rm -f conftest.c
+  if test x"$tgs_version" != xTGS_VERSION; then
+    tgs_version=`echo $tgs_version | cut -c-3`
+    sim_ac_inventor_chk_libs="$sim_ac_inventor_chk_libs -linv${tgs_version}"
+  fi
 
-  AC_CACHE_CHECK([for Open Inventor developer kit],
-    sim_cv_have_inventor,
-    [CPPFLAGS="$CPPFLAGS $sim_ac_inventor_cppflags"
-    LDFLAGS="$LDFLAGS $sim_ac_inventor_ldflags"
-    LIBS="$sim_ac_inventor_libs $LIBS"
-    AC_TRY_LINK([$sim_ac_inventor_enter
-                 #include <Inventor/SoDB.h>],
-                 [SoDB::init();],
-                 [sim_cv_have_inventor=true],
-                 [sim_cv_have_inventor=false])
-    CPPFLAGS="$sim_ac_inventor_save_CPPFLAGS"
-    LDFLAGS="$sim_ac_inventor_save_LDFLAGS"
-    LIBS="$sim_ac_inventor_save_LIBS"])
+  AC_MSG_CHECKING([for Open Inventor library])
+  sim_ac_inventor_libs=UNRESOLVED
 
-  if $sim_cv_have_inventor; then
-    ifelse([$1], , :, [$1])
+  for sim_ac_iv_cppflags_loop in "" "-DWIN32"; do
+    for sim_ac_iv_libcheck in $sim_ac_inventor_chk_libs; do
+      if test "x$sim_ac_inventor_libs" = "xUNRESOLVED"; then
+        CPPFLAGS="$sim_ac_iv_cppflags_loop $sim_ac_inventor_cppflags $sim_ac_save_CPPFLAGS"
+        LDFLAGS="$sim_ac_inventor_ldflags $sim_ac_save_LDFLAGS"
+        LIBS="$sim_ac_iv_libcheck $sim_ac_inventor_image_libs $sim_ac_save_LIBS"
+        AC_TRY_LINK([#include <Inventor/SoDB.h>],
+                    [SoDB::init();],
+                    [sim_ac_inventor_libs="$sim_ac_iv_libcheck $sim_ac_inventor_image_libs"
+                     sim_ac_inventor_cppflags="$sim_ac_iv_cppflags_loop $sim_ac_inventor_cppflags"])
+      fi
+    done
+  done
+
+  CPPFLAGS="$sim_ac_save_CPPFLAGS"
+  LDFLAGS="$sim_ac_save_LDFLAGS"
+  LIBS="$sim_ac_save_LIBS"
+
+  if test "x$sim_ac_inventor_libs" != "xUNRESOLVED"; then
+    AC_MSG_RESULT($sim_ac_inventor_cppflags $sim_ac_inventor_ldflags $sim_ac_inventor_libs)
+    $1
   else
-    ifelse([$2], , :, [$2])
+    AC_MSG_RESULT([unavailable])
+    $2
   fi
 else
   ifelse([$2], , :, [$2])
@@ -2595,6 +2533,61 @@ else
   ifelse([$2], , :, [$2])
 fi
 ]) # SIM_AC_HAVE_SOMOUSEBUTTONEVENT_BUTTONS()
+
+# **************************************************************************
+# SIM_AC_HAVE_INVENTOR_FEATURE(MESSAGE, HEADERS, BODY, DEFINE
+#                              [, ACTION-IF-FOUND[, ACTION-IF-NOT-FOUND]])
+#
+# Authors:
+#   Morten Eriksen <mortene@sim.no>
+
+AC_DEFUN([SIM_AC_HAVE_INVENTOR_FEATURE],
+[m4_do([pushdef([cache_variable], sim_cv_have_oiv_[]AC_TOLOWER([$4]))],
+       [pushdef([DEFINE_VARIABLE], AC_TOUPPER([$4]))])
+AC_CACHE_CHECK(
+  [$1],
+  cache_variable,
+  [AC_TRY_LINK(
+    [$2],
+    [$3],
+    cache_variable=true,
+    cache_variable=false)])
+
+if $cache_variable; then
+  AC_DEFINE(DEFINE_VARIABLE, 1, [Define to enable use of Inventor feature])
+  $5
+else
+  ifelse([$6], , :, [$6])
+fi
+m4_do([popdef([cache_variable])],
+      [popdef([DEFINE_VARIABLE])])
+]) # SIM_AC_HAVE_INVENTOR_FEATURE
+
+# Convenience macros SIM_AC_DEBACKSLASH and SIM_AC_DOBACKSLASH for
+# converting to and from MSWin/MS-DOS style paths.
+#
+# Example use:
+#
+#     SIM_AC_DEBACKSLASH(my_ac_reversed, "C:\\mydir\\bin")
+#
+# will give a shell variable $my_ac_reversed with the value "C:/mydir/bin").
+# Vice versa for SIM_AC_DOBACKSLASH.
+#
+# Author: Marius Bugge Monsen <mariusbu@sim.no>
+#         Lars Jørgen Aas <larsa@sim.no>
+#         Morten Eriksen <mortene@sim.no>
+
+AC_DEFUN([SIM_AC_DEBACKSLASH], [
+eval "$1=\"`echo $2 | sed -e 's%\\\\%\\/%g'`\""
+])
+
+AC_DEFUN([SIM_AC_DOBACKSLASH], [
+eval "$1=\"`echo $2 | sed -e 's%\\/%\\\\%g'`\""
+])
+
+AC_DEFUN([SIM_AC_DODOUBLEBACKSLASH], [
+eval "$1=\"`echo $2 | sed -e 's%\\/%\\\\\\\\\\\\\\\\%g'`\""
+])
 
 
 # Usage:
@@ -2673,11 +2666,13 @@ if $sim_ac_coin_desired; then
       CPPFLAGS="$CPPFLAGS $sim_ac_coin_cppflags"
       LDFLAGS="$LDFLAGS $sim_ac_coin_ldflags"
       LIBS="$sim_ac_coin_libs $LIBS"
+      AC_LANG_PUSH(C++)
       AC_TRY_LINK(
         [#include <Inventor/SoDB.h>],
         [SoDB::init();],
         [sim_cv_coin_avail=true],
         [sim_cv_coin_avail=false])
+      AC_LANG_POP
       CPPFLAGS=$sim_ac_save_cppflags
       LDFLAGS=$sim_ac_save_ldflags
       LIBS=$sim_ac_save_libs

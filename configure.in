@@ -95,24 +95,24 @@ SIM_AC_CHECK_DL([
   SOXT_EXTRA_LIBS="$sim_ac_dl_libs $SOXT_EXTRA_LIBS"
 ])
 
-SIM_CHECK_X11([
+SIM_AC_CHECK_X11([
   SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_x11_cppflags"
   SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_x11_ldflags"
   SOXT_EXTRA_LIBS="$sim_ac_x11_libs $SOXT_EXTRA_LIBS"
 ])
 
 if test x"$sim_ac_x11_avail" = xyes; then
-  SIM_CHECK_LIBXPM([
+  SIM_AC_CHECK_LIBXPM([
     SOXT_EXTRA_LIBS="$sim_ac_xpm_libs $SOXT_EXTRA_LIBS"
     AC_DEFINE(HAVE_LIBXPM, 1, [Define this to use libXpm])
   ])
-  SIM_CHECK_X11SHMEM([
+  SIM_AC_CHECK_X11SHMEM([
     SOXT_EXTRA_LIBS="$sim_ac_x11shmem_libs $SOXT_EXTRA_LIBS"
   ])
-  SIM_CHECK_X11MU([
+  SIM_AC_CHECK_X11MU([
     SOXT_EXTRA_LIBS="$sim_ac_x11mu_libs $SOXT_EXTRA_LIBS"
   ])
-  SIM_CHECK_X11XID([
+  SIM_AC_CHECK_X11XID([
     SOXT_EXTRA_LIBS="$sim_ac_x11mu_libs $SOXT_EXTRA_LIBS"
   ])
   # Open Group Motif depends on the Xp printing library (at least
@@ -120,7 +120,7 @@ if test x"$sim_ac_x11_avail" = xyes; then
   SIM_AC_CHECK_X11_XP([
     SOXT_EXTRA_LIBS="$sim_ac_xp_libs $SOXT_EXTRA_LIBS"
   ])
-  SIM_CHECK_X_INTRINSIC([
+  SIM_AC_CHECK_X_INTRINSIC([
     SOXT_EXTRA_LIBS="$sim_ac_xt_libs $SOXT_EXTRA_LIBS"
   ])
 else
@@ -141,7 +141,7 @@ if test "${with_inventor+set}" = set; then
   ], [AC_MSG_ERROR(needs the OpenGL utility library)])
 
   # check for SGI or TGS Open Inventor
-  SIM_CHECK_INVENTOR([
+  SIM_AC_HAVE_INVENTOR_IFELSE([
     CPPFLAGS="$CPPFLAGS $sim_ac_oiv_cppflags"
     LDFLAGS="$LDFLAGS $sim_ac_oiv_ldflags"
     LIBS="$sim_ac_oiv_libs $LIBS"
