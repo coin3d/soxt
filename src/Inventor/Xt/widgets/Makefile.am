@@ -25,8 +25,8 @@ libSoXtWidgets_la_SOURCES = \
 	SoXtGLArea.h \
 	SoXtGLAreaP.h \
 	SoXtGLArea.cpp \
-	SoXtPopupMenu.h \
-	SoXtPopupMenu.cpp \
+	XtNativePopupMenu.h \
+	XtNativePopupMenu.cpp \
 	SoXtThumbWheel.h \
 	SoXtThumbWheelP.h \
 	SoXtThumbWheel.cpp \

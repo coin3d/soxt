@@ -19,8 +19,8 @@
 
 // $Id$
 
-#ifndef SOXT_POPUPMENU_H
-#define SOXT_POPUPMENU_H
+#ifndef SOXT_XTNATIVEPOPUPMENU_H
+#define SOXT_XTNATIVEPOPUPMENU_H
 
 #include <X11/Intrinsic.h>
 
@@ -34,12 +34,12 @@
 struct MenuRecord;
 struct ItemRecord;
 
-class SoXtPopupMenu : public SoAnyPopupMenu {
+class XtNativePopupMenu : public SoAnyPopupMenu {
   typedef SoAnyPopupMenu inherited;
 
 public:
-  SoXtPopupMenu(void);
-  virtual ~SoXtPopupMenu(void);
+  XtNativePopupMenu(void);
+  virtual ~XtNativePopupMenu(void);
 
   virtual int newMenu(const char * name, int menuid = -1);
   virtual int getMenu(const char * name);
@@ -82,8 +82,8 @@ private:
   Widget popup;
   SbBool dirty;
 
-}; // class SoXtPopupMenu
+}; // class XtNativePopupMenu
 
 // *************************************************************************
 
-#endif // ! SOXT_POPUPMENU_H
+#endif // ! SOXT_XTNATIVEPOPUPMENU_H

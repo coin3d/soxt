@@ -36,7 +36,7 @@ static const char rcsid[] =
 #include <Inventor/errors/SoDebugError.h>
 
 #include <soxtdefs.h>
-#include <Inventor/Xt/widgets/SoXtPopupMenu.h>
+#include <Inventor/Xt/widgets/XtNativePopupMenu.h>
 
 // *************************************************************************
 
@@ -66,23 +66,23 @@ struct ItemRecord {
 // *************************************************************************
 
 /*!
-  \class SoXtPopupMenu Inventor/Qt/widgets/SoXtPopupMenu.h
-  \brief The SoXtPopupMenu class implements a common interface for popup
+  \class XtNativePopupMenu Inventor/Qt/widgets/XtNativePopupMenu.h
+  \brief The XtNativePopupMenu class implements a common interface for popup
   menu management for all the Coin GUI toolkit libraries.
 */
 
 // *************************************************************************
 
-SoXtPopupMenu::SoXtPopupMenu(
+XtNativePopupMenu::XtNativePopupMenu(
   void)
 {
   this->menus = new SbPList;
   this->items = new SbPList;
   this->dirty = TRUE;
   this->popup = (Widget) NULL;
-} // SoXtPopupMenu()
+} // XtNativePopupMenu()
 
-SoXtPopupMenu::~SoXtPopupMenu(// virtual
+XtNativePopupMenu::~XtNativePopupMenu(// virtual
   void)
 {
   const int numMenus = this->menus->getLength();
@@ -107,7 +107,7 @@ SoXtPopupMenu::~SoXtPopupMenu(// virtual
 
   // delete root popup menu
 //  delete popup;
-} // ~SoXtPopupMenu()
+} // ~XtNativePopupMenu()
 
 // *************************************************************************
 
@@ -115,7 +115,7 @@ SoXtPopupMenu::~SoXtPopupMenu(// virtual
 */
 
 int
-SoXtPopupMenu::newMenu(
+XtNativePopupMenu::newMenu(
   const char * name,
   int menuid)
 {
@@ -126,7 +126,7 @@ SoXtPopupMenu::newMenu(
   } else {
     if (this->getMenuRecord(id) != NULL) {
 #if SOXT_DEBUG
-      SoDebugError::postInfo("SoXtPopupMenu::NewMenu",
+      SoDebugError::postInfo("XtNativePopupMenu::NewMenu",
         "requested menuid already taken");
 #endif // SOXT_DEBUG
       return -1;
@@ -143,7 +143,7 @@ SoXtPopupMenu::newMenu(
 */
 
 int
-SoXtPopupMenu::getMenu(
+XtNativePopupMenu::getMenu(
   const char * name)
 {
   const int numMenus = this->menus->getLength();
@@ -158,13 +158,13 @@ SoXtPopupMenu::getMenu(
 */
 
 void
-SoXtPopupMenu::setMenuTitle(
+XtNativePopupMenu::setMenuTitle(
   int menuid,
   const char * title)
 {
   MenuRecord * rec = this->getMenuRecord(menuid);
   if (rec == NULL) {
-    SoDebugError::postWarning("SoXtPopupMenu::SetMenuTitle",
+    SoDebugError::postWarning("XtNativePopupMenu::SetMenuTitle",
       "no such menu (%d.title = \"%s\")", menuid, title);
     return;
   }
@@ -178,7 +178,7 @@ SoXtPopupMenu::setMenuTitle(
 */
 
 const char *
-SoXtPopupMenu::getMenuTitle(
+XtNativePopupMenu::getMenuTitle(
   int menuid)
 {
   MenuRecord * rec = this->getMenuRecord(menuid);
@@ -193,7 +193,7 @@ SoXtPopupMenu::getMenuTitle(
 */
 
 int
-SoXtPopupMenu::newMenuItem(
+XtNativePopupMenu::newMenuItem(
   const char * name,
   int itemid)
 {
@@ -204,7 +204,7 @@ SoXtPopupMenu::newMenuItem(
   } else {
     if (this->getItemRecord(itemid) != NULL) {
 #if SOXT_DEBUG
-      SoDebugError::postInfo("SoXtPopupMenu::NewMenuItem",
+      SoDebugError::postInfo("XtNativePopupMenu::NewMenuItem",
         "requested itemid already taken");
 #endif // SOXT_DEBUG
       return -1;
@@ -220,7 +220,7 @@ SoXtPopupMenu::newMenuItem(
 */
 
 int
-SoXtPopupMenu::getMenuItem(
+XtNativePopupMenu::getMenuItem(
   const char * name)
 {
   const int numItems = this->items->getLength();
@@ -235,7 +235,7 @@ SoXtPopupMenu::getMenuItem(
 */
 
 void
-SoXtPopupMenu::setMenuItemTitle(
+XtNativePopupMenu::setMenuItemTitle(
   int itemid,
   const char * title)
 {
@@ -252,7 +252,7 @@ SoXtPopupMenu::setMenuItemTitle(
 */
 
 const char *
-SoXtPopupMenu::getMenuItemTitle(
+XtNativePopupMenu::getMenuItemTitle(
   int itemid)
 {
   ItemRecord * rec = this->getItemRecord(itemid);
@@ -264,14 +264,14 @@ SoXtPopupMenu::getMenuItemTitle(
 */
 
 void
-SoXtPopupMenu::setMenuItemEnabled(// virtual
+XtNativePopupMenu::setMenuItemEnabled(// virtual
   int itemid,
   SbBool enabled)
 {
   ItemRecord * rec = this->getItemRecord(itemid);
   if (rec == NULL) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo("SoXtPopupMenu::SetMenuItemEnabled",
+    SoDebugError::postInfo("XtNativePopupMenu::SetMenuItemEnabled",
       "no such menu item");
 #endif // SOXT_DEBUG
     return;
@@ -288,7 +288,7 @@ SoXtPopupMenu::setMenuItemEnabled(// virtual
 */
 
 SbBool
-SoXtPopupMenu::getMenuItemEnabled(
+XtNativePopupMenu::getMenuItemEnabled(
   int itemid)
 {
   ItemRecord * rec = this->getItemRecord(itemid);
@@ -301,7 +301,7 @@ SoXtPopupMenu::getMenuItemEnabled(
 */
 
 void
-SoXtPopupMenu::_setMenuItemMarked(// virtual
+XtNativePopupMenu::_setMenuItemMarked(// virtual
   int itemid,
   SbBool marked)
 {
@@ -324,7 +324,7 @@ SoXtPopupMenu::_setMenuItemMarked(// virtual
 */
 
 SbBool
-SoXtPopupMenu::getMenuItemMarked(
+XtNativePopupMenu::getMenuItemMarked(
   int itemid)
 {
   ItemRecord * rec = this->getItemRecord(itemid);
@@ -339,7 +339,7 @@ SoXtPopupMenu::getMenuItemMarked(
 */
 
 void
-SoXtPopupMenu::addMenu(
+XtNativePopupMenu::addMenu(
   int menuid,
   int submenuid,
   int pos)
@@ -348,7 +348,7 @@ SoXtPopupMenu::addMenu(
   MenuRecord * sub = this->getMenuRecord(submenuid);
   if (super == NULL || sub == NULL) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo("SoXtPopupMenu::AddMenu",
+    SoDebugError::postInfo("XtNativePopupMenu::AddMenu",
       "no such menu (super = 0x%08x, sub = 0x%08x)", super, sub);
 #endif // SOXT_DEBUG
     return;
@@ -401,7 +401,7 @@ SoXtPopupMenu::addMenu(
 */
 
 void
-SoXtPopupMenu::addMenuItem(
+XtNativePopupMenu::addMenuItem(
   int menuid,
   int itemid,
   int pos)
@@ -410,7 +410,7 @@ SoXtPopupMenu::addMenuItem(
   ItemRecord * item = this->getItemRecord(itemid);
   if (menu == NULL || item == NULL) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo("SoXtPopupMenu::AddMenuItem",
+    SoDebugError::postInfo("XtNativePopupMenu::AddMenuItem",
       "no such item (menu = 0x%08x, item = 0x%08x)", menu, item);
 #endif // SOXT_DEBUG
     return;
@@ -460,13 +460,13 @@ SoXtPopupMenu::addMenuItem(
 } // addMenuItem()
 
 void
-SoXtPopupMenu::addSeparator(
+XtNativePopupMenu::addSeparator(
   int menuid,
   int pos)
 {
   MenuRecord * menu = this->getMenuRecord(menuid);
   if (menu == NULL) {
-    SoDebugError::postWarning("SoXtPopupMenu::AddSeparator",
+    SoDebugError::postWarning("XtNativePopupMenu::AddSeparator",
       "no such menu (%d)", menuid);
     return;
   }
@@ -525,25 +525,25 @@ SoXtPopupMenu::addSeparator(
 */
 
 void
-SoXtPopupMenu::removeMenu(
+XtNativePopupMenu::removeMenu(
   int menuid)
 {
   MenuRecord * rec = this->getMenuRecord(menuid);
   if (rec == NULL) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo("SoXtPopupMenu::RemoveMenu", "no such menu");
+    SoDebugError::postInfo("XtNativePopupMenu::RemoveMenu", "no such menu");
 #endif // SOXT_DEBUG
     return;
   }
   if (rec->menuid == 0) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo("SoXtPopupMenu::RemoveMenu", "can't remove root");
+    SoDebugError::postInfo("XtNativePopupMenu::RemoveMenu", "can't remove root");
 #endif // SOXT_DEBUG
     return;
   }
 //  if (rec->parent == NULL) {
 //#if SOXT_DEBUG
-//    SoDebugError::postInfo("SoXtPopupMenu::RemoveMenu", "menu not attached");
+//    SoDebugError::postInfo("XtNativePopupMenu::RemoveMenu", "menu not attached");
 //#endif // SOXT_DEBUG
 //    return;
 //  }
@@ -559,19 +559,19 @@ SoXtPopupMenu::removeMenu(
 */
 
 void
-SoXtPopupMenu::removeMenuItem(
+XtNativePopupMenu::removeMenuItem(
   int itemid)
 {
   ItemRecord * rec = this->getItemRecord(itemid);
   if (rec == NULL) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo("SoXtPopupMenu::RemoveMenu", "no such item");
+    SoDebugError::postInfo("XtNativePopupMenu::RemoveMenu", "no such item");
 #endif // SOXT_DEBUG
     return;
   }
 //  if (rec->parent == NULL) {
 //#if SOXT_DEBUG
-//    SoDebugError::postInfo("SoXtPopupMenu::RemoveMenu", "item not attached");
+//    SoDebugError::postInfo("XtNativePopupMenu::RemoveMenu", "item not attached");
 //#endif // SOXT_DEBUG
 //    return;
 //  }
@@ -589,7 +589,7 @@ SoXtPopupMenu::removeMenuItem(
 */
 
 void
-SoXtPopupMenu::popUp(
+XtNativePopupMenu::popUp(
   Widget inside,
   int x,
   int y)
@@ -597,7 +597,7 @@ SoXtPopupMenu::popUp(
   MenuRecord * root = this->getMenuRecord(0);
   if (root == NULL) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo("SoXtPopupMenu::PopUp", "no root menu");
+    SoDebugError::postInfo("XtNativePopupMenu::PopUp", "no root menu");
 #endif // SOXT_DEBUG
     return;
   }
@@ -628,11 +628,11 @@ SoXtPopupMenu::popUp(
   XButtonEvent pos;
   pos.x_root = x - x_off + 2;
   pos.y_root = y - y_off + 2;
-//  SoDebugError::postInfo("SoXtPopupMenu::PopUp", "PopUp() at (%3d, %3d) - (%3d, %3d)",
+//  SoDebugError::postInfo("XtNativePopupMenu::PopUp", "PopUp() at (%3d, %3d) - (%3d, %3d)",
 //    x, y, x_off, y_off);
   XmMenuPosition(this->popup, &pos);
   XtManageChild(this->popup);
-//  SoDebugError::postInfo("SoXtPopupMenu::PopUp", "menu popped up");
+//  SoDebugError::postInfo("XtNativePopupMenu::PopUp", "menu popped up");
 } // popUp()
 
 // *************************************************************************
@@ -641,7 +641,7 @@ SoXtPopupMenu::popUp(
 */
 
 Widget
-SoXtPopupMenu::traverseBuild(
+XtNativePopupMenu::traverseBuild(
   Widget parent,
   MenuRecord * menu,
   int indent)
@@ -711,7 +711,7 @@ SoXtPopupMenu::traverseBuild(
                 item->title, strlen(item->title)+1,
               NULL);
             XtAddCallback(item->item, XmNvalueChangedCallback,
-                SoXtPopupMenu::itemSelectionCallback, this);
+                XtNativePopupMenu::itemSelectionCallback, this);
             XmToggleButtonSetState(item->item,
               (item->flags & ITEM_MARKED) ? True : False,
               False);
@@ -731,7 +731,7 @@ SoXtPopupMenu::traverseBuild(
 */
 
 Widget
-SoXtPopupMenu::build(
+XtNativePopupMenu::build(
   Widget parent)
 {
   MenuRecord * root = this->getMenuRecord(0);
@@ -771,7 +771,7 @@ SoXtPopupMenu::build(
 */
 
 MenuRecord *
-SoXtPopupMenu::getMenuRecord(
+XtNativePopupMenu::getMenuRecord(
   int menuid)
 {
   const int numMenus = this->menus->getLength();
@@ -786,7 +786,7 @@ SoXtPopupMenu::getMenuRecord(
 */
 
 ItemRecord *
-SoXtPopupMenu::getItemRecord(
+XtNativePopupMenu::getItemRecord(
   int itemid)
 {
   const int numItems = this->items->getLength();
@@ -803,7 +803,7 @@ SoXtPopupMenu::getItemRecord(
 */
 
 MenuRecord *
-SoXtPopupMenu::createMenuRecord(
+XtNativePopupMenu::createMenuRecord(
   const char * name)
 {
   MenuRecord * rec = new MenuRecord;
@@ -820,7 +820,7 @@ SoXtPopupMenu::createMenuRecord(
 */
 
 ItemRecord *
-SoXtPopupMenu::createItemRecord(
+XtNativePopupMenu::createItemRecord(
   const char * name)
 {
   ItemRecord * rec = new ItemRecord;
@@ -840,7 +840,7 @@ SoXtPopupMenu::createItemRecord(
 */
 
 void
-SoXtPopupMenu::itemSelection(// private
+XtNativePopupMenu::itemSelection(// private
   Widget w,
   XtPointer call)
 {
@@ -876,19 +876,19 @@ SoXtPopupMenu::itemSelection(// private
 */
 
 void
-SoXtPopupMenu::itemSelectionCallback(// private, static
+XtNativePopupMenu::itemSelectionCallback(// private, static
   Widget w,
   XtPointer client_data,
   XtPointer call_data)
 {
   assert(client_data != NULL);
-  SoXtPopupMenu * popup = (SoXtPopupMenu *) client_data;
+  XtNativePopupMenu * popup = (XtNativePopupMenu *) client_data;
   popup->itemSelection(w, call_data);
 } // itemSelectionCallback()
 
 // *************************************************************************
 
 #if SOXT_DEBUG
-static const char * getSoXtPopupMenuRCSId(void) { return rcsid; }
+static const char * getXtNativePopupMenuRCSId(void) { return rcsid; }
 #endif // SOXT_DEBUG
 

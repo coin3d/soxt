@@ -101,7 +101,9 @@ OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
+SOGUI_EXTRA_CFLAGS = @SOGUI_EXTRA_CFLAGS@
 SOGUI_EXTRA_CPPFLAGS = @SOGUI_EXTRA_CPPFLAGS@
+SOGUI_EXTRA_CXXFLAGS = @SOGUI_EXTRA_CXXFLAGS@
 SOGUI_EXTRA_LDFLAGS = @SOGUI_EXTRA_LDFLAGS@
 SOGUI_EXTRA_LIBS = @SOGUI_EXTRA_LIBS@
 SOXT_BINARY_AGE = @SOXT_BINARY_AGE@
@@ -311,12 +313,6 @@ SoGuiCommonDistFiles = \
   src/Inventor/@Gui@/common/SoGuiGLWidgetCommon.cpp.in \
   src/Inventor/@Gui@/common/SoGuiRenderArea.h.in \
   src/Inventor/@Gui@/common/SoGuiRenderArea.cpp.in \
-  src/Inventor/@Gui@/common/SoGuiViewer.h.in \
-  src/Inventor/@Gui@/common/SoGuiViewer.cpp.in \
-  src/Inventor/@Gui@/common/SoGuiConstrainedViewer.h.in \
-  src/Inventor/@Gui@/common/SoGuiConstrainedViewer.cpp.in \
-  src/Inventor/@Gui@/common/SoGuiFlyViewer.h.in \
-  src/Inventor/@Gui@/common/SoGuiFlyViewer.cpp.in \
   src/Inventor/@Gui@/common/SoGuiMaterialList.h.in \
   src/Inventor/@Gui@/common/SoAny.h.in \
   src/Inventor/@Gui@/common/SoAny.cpp.in \
@@ -397,8 +393,8 @@ libSoXtWidgets_la_SOURCES = \
 	SoXtGLArea.h \
 	SoXtGLAreaP.h \
 	SoXtGLArea.cpp \
-	SoXtPopupMenu.h \
-	SoXtPopupMenu.cpp \
+	XtNativePopupMenu.h \
+	XtNativePopupMenu.cpp \
 	SoXtThumbWheel.h \
 	SoXtThumbWheelP.h \
 	SoXtThumbWheel.cpp \
@@ -429,7 +425,7 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 
 libSoXtWidgets_la_LDFLAGS =
 libSoXtWidgets_la_LIBADD =
-am_libSoXtWidgets_la_OBJECTS = SoXtGLArea.lo SoXtPopupMenu.lo \
+am_libSoXtWidgets_la_OBJECTS = SoXtGLArea.lo XtNativePopupMenu.lo \
 	SoXtThumbWheel.lo SoXtSlider.lo
 @BUILD_METAFILES_TRUE@nodist_libSoXtWidgets_la_OBJECTS = \
 @BUILD_METAFILES_TRUE@	SoAnyThumbWheel.lo SoAnyPopupMenu.lo \
@@ -451,10 +447,9 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/@meta_prefix@So@Gui@ThumbWheel.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoAnyPopupMenu.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoAnyThumbWheel.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoXtGLArea.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoXtPopupMenu.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoXtSlider.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoXtThumbWheel.Plo
+@AMDEP_TRUE@	$(DEPDIR)/SoXtGLArea.Plo $(DEPDIR)/SoXtSlider.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoXtThumbWheel.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/XtNativePopupMenu.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -527,9 +522,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAnyPopupMenu.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAnyThumbWheel.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtGLArea.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtPopupMenu.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtSlider.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtThumbWheel.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/XtNativePopupMenu.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf $(DEPDIR)

@@ -37,7 +37,7 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtResource.h>
 #include <Inventor/Xt/viewers/SoAnyPlaneViewer.h>
-#include <Inventor/Xt/widgets/SoXtPopupMenu.h>
+#include <Inventor/Xt/widgets/XtNativePopupMenu.h>
 
 #include <Inventor/Xt/viewers/SoXtPlaneViewer.h>
 
