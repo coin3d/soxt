@@ -4129,11 +4129,8 @@ SbBool
 SoXtFullViewer::processSoEvent( // virtual, protected
   const SoEvent * const event )
 {
-  if ( common->processSoEvent(event) )
-    return TRUE;
-  if ( inherited::processSoEvent(event) )
-    return TRUE;
-  return FALSE;
+  if ( common->processSoEvent(event) ) return TRUE;
+  return inherited::processSoEvent(event);
 } // processSoEvent()
 
 // *************************************************************************
