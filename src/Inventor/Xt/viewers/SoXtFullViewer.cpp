@@ -332,8 +332,6 @@ SoXtFullViewer::setDecoration(
   if ( (this->decorations != enable) && (this->viewerbase != (Widget) NULL) )
     this->showDecorationWidgets( enable );
   this->decorations = enable;
-  if ( this->prefmenu )
-    this->prefmenu->setMenuItemMarked( DECORATION_ITEM, enable );
 
   if ( this->isTopLevelShell() || XtIsShell(XtParent(this->getBaseWidget())) ) {
     Widget shell = this->getShellWidget();
@@ -830,11 +828,6 @@ SoXtFullViewer::setViewing( // virtual
 
   inherited::setViewing( enable );
 
-  if ( this->prefmenu ) {
-    this->prefmenu->setMenuItemMarked( EXAMINING_ITEM, enable );
-    this->prefmenu->setMenuItemEnabled( SEEK_ITEM, enable );
-  }
-
   if ( this->viewerbuttons.pick != 0 ) {
     XtSetSensitive( this->viewerbuttons.pick, enable ? True : False );
     XtVaSetValues( this->viewerbuttons.pick,
@@ -853,61 +846,6 @@ SoXtFullViewer::setViewing( // virtual
     XtSetSensitive( this->viewerbuttons.seek, enable ? True : False );
   }
 } // setViewing()
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtFullViewer::setHeadlight( // virtual
-  SbBool enable )
-{
-  inherited::setHeadlight( enable );
-  if ( this->prefmenu )
-    this->prefmenu->setMenuItemMarked( HEADLIGHT_ITEM, enable );
-} // setHeadlight()
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtFullViewer::setDrawStyle( // virtual
-  SoXtViewer::DrawType type,
-  SoXtViewer::DrawStyle style )
-{
-  inherited::setDrawStyle( type, style );
-  if ( this->prefmenu )
-    common->setDrawStyleMenuActivation( type, style );
-} // setDrawStyle()
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtFullViewer::setBufferingType( // virtual
-  SoXtViewer::BufferType type )
-{
-  inherited::setBufferingType( type );
-
-  if ( this->prefmenu ) {
-    switch ( type ) {
-    case SoXtViewer::BUFFER_SINGLE:
-      this->prefmenu->setMenuItemMarked( SINGLE_BUFFER_ITEM, TRUE );
-      break;
-    case SoXtViewer::BUFFER_DOUBLE:
-      this->prefmenu->setMenuItemMarked( DOUBLE_BUFFER_ITEM, TRUE );
-      break;
-    case SoXtViewer::BUFFER_INTERACTIVE:
-      this->prefmenu->setMenuItemMarked( INTERACTIVE_BUFFER_ITEM, TRUE );
-      break;
-    default:
-      assert( 0 && "unsupported buffer type" );
-      break;
-    } // switch ( type )
-  }
-} // setBufferingType()
 
 /*!
   FIXME: write doc
@@ -1382,17 +1320,6 @@ SoXtFullViewer::buildPopupMenu(
 {
   if ( this->prefmenu == NULL )
     this->prefmenu = common->setupStandardPopupMenu();
-
-  this->setDrawStyle(
-    SoXtViewer::STILL, this->getDrawStyle( SoXtViewer::STILL ) );
-  this->setDrawStyle(
-    SoXtViewer::INTERACTIVE, this->getDrawStyle( SoXtViewer::INTERACTIVE ) );
-  this->setBufferingType( this->getBufferingType() );
-
-  this->prefmenu->setMenuItemMarked( EXAMINING_ITEM, this->isViewing() );
-  this->prefmenu->setMenuItemMarked( DECORATION_ITEM, this->decorations );
-  this->prefmenu->setMenuItemMarked( HEADLIGHT_ITEM, this->isHeadlight() );
-  this->prefmenu->setMenuItemEnabled( SEEK_ITEM, this->isViewing() );
 } // buildPopupMenu()
 
 /*!
@@ -1446,6 +1373,8 @@ SoXtFullViewer::openPopupMenu(
   XtVaGetValues( this->getShellWidget(), XmNx, &xt, XmNy, &yt, NULL );
   x += xt + position[0] + 2;
   y += yt + this->getGLSize()[1] - position[1] + 2;
+
+  this->common->prepareMenu( this->prefmenu );
   this->prefmenu->popUp( this->getGLWidget(), x, y );
 } // openPopupMenu()
 
@@ -4141,4 +4070,3 @@ SoXtFullViewer::processSoEvent( // virtual, protected
 #if SOXT_DEBUG
 static const char * getSoXtFullViewerRCSId(void) { return rcsid; }
 #endif // SOXT_DEBUG
-

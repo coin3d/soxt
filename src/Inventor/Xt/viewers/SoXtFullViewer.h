@@ -57,10 +57,6 @@ public:
   Widget getRenderAreaWidget(void) const;
 
   virtual void setViewing( SbBool enable );
-  virtual void setHeadlight( SbBool enable );
-  virtual void setDrawStyle( SoXtViewer::DrawType type,
-                             SoXtViewer::DrawStyle style );
-  virtual void setBufferingType( SoXtViewer::BufferType type );
   virtual void setCamera( SoCamera * camera );
   virtual void hide(void);
 
