@@ -178,21 +178,33 @@ protected: // preference sheet routines
   SOXT_WIDGET_CALLBACK( seekPrefSheetToggle1 );
   SOXT_WIDGET_CALLBACK( seekPrefSheetToggle2 );
 
+protected:
   char * prefstring;
   Widget prefshell;
   Widget prefsheet;
 
-  // protected for compatibility
+protected:
   SbPList * viewerButtonWidgets;
+  
+  Widget rightWheel;
+  char * rightWheelStr;
+  float  rightWheelVal;
+  Widget rightWheelLabel;
+
+  Widget bottomWheel;
+  char * bottomWheelStr;
+  float  bottomWheelVal;
+  Widget bottomWheelLabel;
+
+  Widget leftWheel;
+  char * leftWheelStr;
+  float  leftWheelVal;
+  Widget leftWheelLabel;
 
 private:
   SbBool decorations;
 
   Widget viewerbase, canvas;
-  float wheelvalues[NUMDECORATIONS];
-  SbString wheelstrings[NUMDECORATIONS];
-  Widget wheels[NUMDECORATIONS];
-  Widget wheellabels[NUMDECORATIONS];
   Widget decorform[NUMDECORATIONS];
 
   Widget mainlayout;

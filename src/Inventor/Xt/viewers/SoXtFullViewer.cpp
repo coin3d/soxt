@@ -113,17 +113,25 @@ SoXtFullViewer::SoXtFullViewer( // protected
 , popupTitle( NULL )
 , common( new SoAnyFullViewer( this ) )
 {
+  // initialization of protected members
+  this->leftWheel = NULL;
+  this->leftWheelStr = strcpy( new char [sizeof("Motion X")+1], "Motion X" );
+  this->leftWheelVal = 0.0f;
+  this->leftWheelLabel = NULL;
+
+  this->bottomWheel = NULL;
+  this->bottomWheelStr = strcpy( new char [sizeof("Motion Y")+1], "Motion Y" );
+  this->bottomWheelVal = 0.0f;
+  this->bottomWheelLabel = NULL;
+
+  this->rightWheel = NULL;
+  this->rightWheelStr = strcpy( new char [sizeof("Motion Z")+1], "Motion Z" );
+  this->rightWheelVal = 0.0f;
+  this->rightWheelLabel = NULL;
+
+  // initialization of private members
   this->viewerbase = NULL;
   this->canvas = NULL;
-
-  char axisindicator[] = { 'Y', 'X', 'Z' };
-  for ( int i = FIRSTDECORATION; i <= LASTDECORATION; i++) {
-    this->wheelstrings[i] = "Motion ";
-    this->wheelstrings[i] += axisindicator[i - FIRSTDECORATION];
-    this->decorform[i] = NULL;
-    this->wheellabels[i] = NULL;
-    this->wheelvalues[i] = 0;
-  }
 
   this->seekdistance = 50.0f;
   this->seekdistaspercentage = TRUE;
@@ -478,7 +486,7 @@ SoXtFullViewer::buildLeftTrim( // virtual
 #endif
 
   // add left thumb wheel
-  this->wheels[LEFTDECORATION] = XtVaCreateManagedWidget( "LeftWheel",
+  this->leftWheel = XtVaCreateManagedWidget( "LeftWheel",
     soxtThumbWheelWidgetClass, trim,
     XmNleftAttachment, XmATTACH_FORM,
     XmNleftOffset, 2,
@@ -494,11 +502,11 @@ SoXtFullViewer::buildLeftTrim( // virtual
     XmNtraversalOn, False,
     NULL );
 
-  XtAddCallback( this->wheels[LEFTDECORATION],
+  XtAddCallback( this->leftWheel,
     XmNarmCallback, SoXtFullViewer::leftWheelStartCB, this );
-  XtAddCallback( this->wheels[LEFTDECORATION],
+  XtAddCallback( this->leftWheel,
     XmNdisarmCallback, SoXtFullViewer::leftWheelFinishCB, this );
-  XtAddCallback( this->wheels[LEFTDECORATION],
+  XtAddCallback( this->leftWheel,
     XmNvalueChangedCallback, SoXtFullViewer::leftWheelMotionCB, this );
 
   return trim;
@@ -529,7 +537,7 @@ SoXtFullViewer::buildRightTrim( // virtual
     NULL );
 
   // add right thumb wheel
-  this->wheels[RIGHTDECORATION] = XtVaCreateManagedWidget( "RightWheel",
+  this->rightWheel = XtVaCreateManagedWidget( "RightWheel",
     soxtThumbWheelWidgetClass, trim,
     XmNleftAttachment, XmATTACH_FORM,
     XmNleftOffset, 2,
@@ -545,11 +553,11 @@ SoXtFullViewer::buildRightTrim( // virtual
     XmNtraversalOn, False,
     NULL );
 
-  XtAddCallback( this->wheels[RIGHTDECORATION],
+  XtAddCallback( this->rightWheel,
     XmNarmCallback, SoXtFullViewer::rightWheelStartCB, this );
-  XtAddCallback( this->wheels[RIGHTDECORATION],
+  XtAddCallback( this->rightWheel,
     XmNdisarmCallback, SoXtFullViewer::rightWheelFinishCB, this );
-  XtAddCallback( this->wheels[RIGHTDECORATION],
+  XtAddCallback( this->rightWheel,
     XmNvalueChangedCallback, SoXtFullViewer::rightWheelMotionCB, this );
 
   return trim;
@@ -569,25 +577,31 @@ SoXtFullViewer::buildBottomTrim( // virtual
     xmFormWidgetClass, parent,
     NULL );
 
-  this->wheellabels[LEFTDECORATION] = XtVaCreateManagedWidget( "LeftWheelLabel",
+  this->leftWheelLabel = XtVaCreateManagedWidget( "LeftWheelLabel",
     xmLabelWidgetClass, trim,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNleftOffset, 5,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      this->leftWheelStr, strlen(this->leftWheelStr)+1,
     NULL );
 
-  this->wheellabels[BOTTOMDECORATION] = XtVaCreateManagedWidget( "BottomWheelLabel",
+  this->bottomWheelLabel = XtVaCreateManagedWidget( "BottomWheelLabel",
     xmLabelWidgetClass, trim,
     XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, this->wheellabels[LEFTDECORATION],
+    XmNleftWidget, this->leftWheelLabel,
     XmNtopAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNleftOffset, 5,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      this->bottomWheelStr, strlen(this->bottomWheelStr)+1,
     NULL );
 
   // add bottom thumb wheel
-  this->wheels[BOTTOMDECORATION] = XtVaCreateManagedWidget( "BottomWheel",
+  this->bottomWheel = XtVaCreateManagedWidget( "BottomWheel",
     soxtThumbWheelWidgetClass, trim,
     XmNorientation, XmHORIZONTAL,
     XmNshadowType, XmSHADOW_OUT,
@@ -595,7 +609,7 @@ SoXtFullViewer::buildBottomTrim( // virtual
     XmNshadowThickness, 2,
     XmNtraversalOn, False,
     XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, this->wheellabels[BOTTOMDECORATION],
+    XmNleftWidget, this->bottomWheelLabel,
     XmNleftOffset, 2,
     XmNtopAttachment, XmATTACH_FORM,
     XmNtopOffset, 2,
@@ -604,24 +618,26 @@ SoXtFullViewer::buildBottomTrim( // virtual
     XmNwidth, 90,
     NULL );
 
-  XtAddCallback( this->wheels[BOTTOMDECORATION],
+  XtAddCallback( this->bottomWheel,
     XmNarmCallback, SoXtFullViewer::bottomWheelStartCB, this );
-  XtAddCallback( this->wheels[BOTTOMDECORATION],
+  XtAddCallback( this->bottomWheel,
     XmNdisarmCallback, SoXtFullViewer::bottomWheelFinishCB, this );
-  XtAddCallback( this->wheels[BOTTOMDECORATION],
+  XtAddCallback( this->bottomWheel,
     XmNvalueChangedCallback, SoXtFullViewer::bottomWheelMotionCB, this );
 
-  this->wheellabels[RIGHTDECORATION] =
-    XtVaCreateManagedWidget( "RightWheelLabel",
+  this->rightWheelLabel = XtVaCreateManagedWidget( "RightWheelLabel",
     xmLabelWidgetClass, trim,
     XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, this->wheels[BOTTOMDECORATION],
+    XmNleftWidget, this->bottomWheel,
     XmNalignment, XmALIGNMENT_END,
     XmNtopAttachment, XmATTACH_OPPOSITE_FORM,
     XmNtopOffset, -30,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_FORM,
     XmNrightOffset, 5,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      this->rightWheelStr, strlen(this->rightWheelStr)+1,
     NULL );
 
   return trim;
@@ -1230,7 +1246,7 @@ void
 SoXtFullViewer::leftWheelMotion( // virtual
   float value )
 {
-  this->wheelvalues[LEFTDECORATION] = value;
+  this->leftWheelVal = value;
 } // leftWheelMotion()
 
 /*!
@@ -1271,7 +1287,7 @@ float
 SoXtFullViewer::getLeftWheelValue(
   void ) const
 {
-  return this->wheelvalues[LEFTDECORATION];
+  return this->leftWheelVal;
 } // getLeftWheelValue()
 
 /*!
@@ -1281,8 +1297,8 @@ void
 SoXtFullViewer::setLeftWheelValue(
   const float value )
 {
-  this->wheelvalues[LEFTDECORATION] = value;
-  SoXtThumbWheelSetValue( this->wheels[LEFTDECORATION], value );
+  this->leftWheelVal = value;
+  SoXtThumbWheelSetValue( this->leftWheel, value );
 } // setLeftWheelValue()
 
 // *************************************************************************
@@ -1314,7 +1330,7 @@ void
 SoXtFullViewer::bottomWheelMotion( // virtual
   float value )
 {
-  this->wheelvalues[BOTTOMDECORATION] = value;
+  this->bottomWheelVal = value;
 } // bottomWheelMode()
 
 /*!
@@ -1355,7 +1371,7 @@ float
 SoXtFullViewer::getBottomWheelValue(
   void ) const
 {
-  return this->wheelvalues[BOTTOMDECORATION];
+  return this->bottomWheelVal;
 } // getBottomWheelValue()
 
 /*!
@@ -1365,8 +1381,8 @@ void
 SoXtFullViewer::setBottomWheelValue(
   const float value )
 {
-  this->wheelvalues[BOTTOMDECORATION] = value;
-  SoXtThumbWheelSetValue( this->wheels[BOTTOMDECORATION], value );
+  this->bottomWheelVal = value;
+  SoXtThumbWheelSetValue( this->bottomWheel, value );
 } // setBottomWheelValue()
 
 // *************************************************************************
@@ -1398,7 +1414,7 @@ void
 SoXtFullViewer::rightWheelMotion( // virtual
   float value )
 {
-  this->wheelvalues[RIGHTDECORATION] = value;
+  this->rightWheelVal = value;
 } // rightWheelMotion()
 
 /*!
@@ -1439,7 +1455,7 @@ float
 SoXtFullViewer::getRightWheelValue(
   void ) const
 {
-  return this->wheelvalues[RIGHTDECORATION];
+  return this->rightWheelVal;
 } // getRightWheelValue()
 
 /*!
@@ -1449,8 +1465,8 @@ void
 SoXtFullViewer::setRightWheelValue(
   const float value )
 {
-  this->wheelvalues[RIGHTDECORATION] = value;
-  SoXtThumbWheelSetValue( this->wheels[RIGHTDECORATION], value );
+  this->rightWheelVal = value;
+  SoXtThumbWheelSetValue( this->rightWheel, value );
 } // setRightWheelValue()
 
 // *************************************************************************
@@ -1468,12 +1484,13 @@ SoXtFullViewer::setLeftWheelString(
   SoDebugError::postInfo( "SoXtFullViewer::setLeftWheelString",
     "setting left wheel label" );
 #endif // SOXT_DEBUG
-  this->wheelstrings[LEFTDECORATION] = string;
-  if ( this->wheellabels[LEFTDECORATION] != NULL )
-    XtVaSetValues( this->wheellabels[LEFTDECORATION],
+  delete [] this->leftWheelStr;
+  this->leftWheelStr = strcpy( new char [strlen(string)+1], string );
+  if ( this->leftWheelLabel != NULL )
+    XtVaSetValues( this->leftWheelLabel,
       XtVaTypedArg,
         XmNlabelString, XmRString,
-        string, strlen(string) + 1,
+        this->leftWheelStr, strlen(this->leftWheelStr) + 1,
       NULL );
 } // setLeftWheelString()
 
@@ -1484,7 +1501,7 @@ Widget
 SoXtFullViewer::getLeftWheelLabelWidget( // protected
   void ) const
 {
-  return this->wheellabels[LEFTDECORATION];
+  return this->leftWheelLabel;
 } // getLeftWheelLabelWidget()
 
 /*!
@@ -1500,12 +1517,13 @@ SoXtFullViewer::setBottomWheelString(
   SoDebugError::postInfo( "SoXtFullViewer::setBottomWheelString",
     "setting bottom wheel label" );
 #endif // SOXT_DEBUG
-  this->wheelstrings[BOTTOMDECORATION] = string;
-  if ( this->wheellabels[BOTTOMDECORATION] != NULL )
-    XtVaSetValues( this->wheellabels[BOTTOMDECORATION],
+  delete [] this->bottomWheelStr;
+  this->bottomWheelStr = strcpy( new char [strlen(string)+1], string );
+  if ( this->bottomWheelLabel != NULL )
+    XtVaSetValues( this->bottomWheelLabel,
       XtVaTypedArg,
         XmNlabelString, XmRString,
-        string, strlen(string) + 1,
+        this->bottomWheelStr, strlen(this->bottomWheelStr) + 1,
       NULL );
 } // setBottomWheelString()
 
@@ -1516,7 +1534,7 @@ Widget
 SoXtFullViewer::getBottomWheelLabelWidget( // protected
   void ) const
 {
-  return this->wheellabels[BOTTOMDECORATION];
+  return this->bottomWheelLabel;
 } // getBottomWheelLabelWidget()
 
 /*!
@@ -1532,12 +1550,14 @@ SoXtFullViewer::setRightWheelString(
   SoDebugError::postInfo( "SoXtFullViewer::setRightWheelString", "[enter]" );
 #endif // SOXT_DEBUG
 
-  this->wheelstrings[RIGHTDECORATION] = string;
-  if ( this->wheellabels[RIGHTDECORATION] != NULL )
-    XtVaSetValues( this->wheellabels[RIGHTDECORATION],
+  delete [] this->rightWheelStr;
+  this->rightWheelStr = strcpy( new char [strlen(string)+1], string );
+
+  if ( this->rightWheelLabel != NULL )
+    XtVaSetValues( this->rightWheelLabel,
       XtVaTypedArg,
         XmNlabelString, XmRString,
-        string, strlen(string) + 1,
+        this->rightWheelStr, strlen(this->rightWheelStr) + 1,
       NULL );
 
 #if SOXT_DEBUG && 0
@@ -1552,7 +1572,7 @@ Widget
 SoXtFullViewer::getRightWheelLabelWidget( // protected
   void ) const
 {
-  return this->wheellabels[RIGHTDECORATION];
+  return this->rightWheelLabel;
 } // getRightWheelLabelWidget()
 
 // *************************************************************************
@@ -3401,8 +3421,17 @@ Widget
 SoXtFullViewer::getThumbWheel(
   int num )
 {
-  assert( num >= FIRSTDECORATION && num <= LASTDECORATION );
-  return this->wheels[num];
+  switch ( num ) {
+  case LEFTDECORATION: return this->leftWheel;
+  case BOTTOMDECORATION: return this->bottomWheel;
+  case RIGHTDECORATION: return this->rightWheel;
+  default:
+#if SOXT_DEBUG
+    SoDebugError::post( "SoXtFullViewer::getThumbWheel",
+      "invalid thumbwheel" );
+#endif // SOXT_DEBUG
+  }
+  return (Widget) NULL;
 } // getThumbWheel()
 
 // *************************************************************************
