@@ -6,6 +6,7 @@
 
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtColorEditor.h>
+#include <Inventor/Xt/nodes/SoGuiColorEditor.h>
 #include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
 
 static SoMaterial * material;
@@ -26,11 +27,9 @@ main(int argc, char ** argv)
   SoXtExaminerViewer * viewer = new SoXtExaminerViewer(w);
   SoSeparator * root;
   viewer->setSceneGraph(root = makescene());
-  SoXtColorEditor * editor = new SoXtColorEditor;
-  editor->attach(&(material->diffuseColor));
   viewer->show();
-  editor->show();
 
+  // we want ColorEditor in scene
   SoSeparator * editorscene = new SoSeparator;
   SoTranslation * trans = new SoTranslation;
   trans->translation.setValue(SbVec3f(2.0f, 0.0f, 0.0f));
@@ -42,8 +41,19 @@ main(int argc, char ** argv)
   editorscene->addChild(trans);
   editorscene->addChild(rot);
   editorscene->addChild(mat);
-  editorscene->addChild(editor->getSceneGraph());
+  SoGuiColorEditor * inscene = new SoGuiColorEditor;
+  inscene->wysiwyg.setValue(TRUE);
+  inscene->color.connectFrom(&(material->diffuseColor));
+  inscene->color.getValue(); // update field
+  material->diffuseColor.connectFrom(&(inscene->color));
+  editorscene->addChild(inscene);
   root->insertChild(editorscene, 0);
+
+#if 0
+  SoXtColorEditor * editor = new SoXtColorEditor;
+  editor->attach(&(material->diffuseColor));
+  editor->show();
+#endif
 
   SoXt::show(w);
   SoXt::mainLoop();
