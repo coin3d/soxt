@@ -126,9 +126,6 @@ private:
     Pixmap nocam, nocam_ins;
   } camerapixmaps;
 
-  Cursor cursor;
-  SbBool mapped;
-
   Widget * prefparts;
   int numprefparts;
 

@@ -25,7 +25,6 @@ static const char rcsid[] =
 #include <string.h>
 #include <stdlib.h> // atoi()
 
-#include <X11/cursorfont.h>
 #include <X11/keysym.h>
 
 #include <Xm/Form.h>
@@ -48,6 +47,7 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXtResource.h>
+#include <Inventor/Xt/SoXtCursor.h>
 #include <Inventor/Xt/viewers/SoAnyExaminerViewer.h>
 #include <Inventor/Xt/widgets/SoXtPopupMenu.h>
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
@@ -164,7 +164,6 @@ SoXtExaminerViewer::constructor(// private
          dollyString != NULL)
       this->setRightWheelString(dollyString);
   }
-  this->mapped = FALSE; // ?
 } // constructor()
 
 /*!
@@ -355,51 +354,45 @@ SoXtExaminerViewer::setViewing(// virtual
 void
 SoXtExaminerViewer::setCursorRepresentation(int mode)
 {
-  // FIXME: the cursor handling is just a hack at the moment, but the
-  // design layout matches that of SoQtExaminerViewer and is looking
-  // ok. What needs to be done is: use pixmaps for the cursor graphics
-  // (same gfx as for the other GUI glue libraries), and remember to
-  // set up / change the cursor gfx whenever needed (we need to
-  // overload setCursorEnabled(), for instance). 20000426 mortene.
+  // FIXME: remember to set up / change the cursor gfx whenever needed
+  // (we need to overload setCursorEnabled(), for instance). 20000426 mortene.
 
 
-  // Don't try to actually set cursor before window has been mapped.
-  if (! this->mapped) return;
+  // FIXME: with the new So@Gui@Cursor class, this has actually become
+  // a possibly generic method for all So* toolkits. Move to common
+  // code. 20011125 mortene.
 
-  if (! this->isCursorEnabled()) {
-    // FIXME: set blank bitmap for cursor (or disable it through X11
-    // call?). 20000426 mortene.
+  if (!this->isCursorEnabled()) {
+    this->setComponentCursor(SoXtCursor(SoXtCursor::BLANK));
     return;
   }
 
-  Display * display = this->getDisplay();
-
   switch (mode) {
+  case SoAnyExaminerViewer::INTERACT:
+    this->setComponentCursor(SoXtCursor(SoXtCursor::DEFAULT));
+    break;
+
   case SoAnyExaminerViewer::EXAMINE:
   case SoAnyExaminerViewer::DRAGGING:
-    this->cursor = XCreateFontCursor(display, XC_hand2);
-    XDefineCursor(display, XtWindow(this->getGLWidget()), this->cursor);
+    this->setComponentCursor(SoXtCursor::getRotateCursor());
     break;
 
-  case SoAnyExaminerViewer::INTERACT:
   case SoAnyExaminerViewer::ZOOMING:
+    this->setComponentCursor(SoXtCursor::getZoomCursor());
+    break;
+
   case SoAnyExaminerViewer::WAITING_FOR_SEEK:
+    this->setComponentCursor(SoXtCursor(SoXtCursor::CROSSHAIR));
+    break;
+
   case SoAnyExaminerViewer::WAITING_FOR_PAN:
   case SoAnyExaminerViewer::PANNING:
-    XUndefineCursor(display, XtWindow(this->getGLWidget()));
+    this->setComponentCursor(SoXtCursor::getPanCursor());
     break;
 
-  default: SOXT_STUB(); break;
+  default: assert(0); break;
   }
-
-#if 0
-  Colormap cmap(DefaultColormap(display, DefaultScreen(display)));
-  XColor redcol, whitecol, unused;
-  XAllocNamedColor(display, cmap, "red", &redcol, &unused);
-  XAllocNamedColor(display, cmap, "white",  &whitecol, &unused);
-  XRecolorCursor(display, this->cursor, &redcol, &whitecol);
-#endif
-} // setCursorRepresentation()
+}
 
 // *************************************************************************
 
@@ -1099,19 +1092,15 @@ SoXtExaminerViewer::rotaxesoverlaytoggledCB(// static
 /*!
   Invoked when first mapped.
 */
-
 void
 SoXtExaminerViewer::afterRealizeHook(// virtual, protected
   void)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtExaminerViewer::afterRealizeHook",
-    "[invoked]");
+                         "[invoked]");
 #endif // SOXT_DEBUG
   inherited::afterRealizeHook();
-  this->mapped = TRUE;
-  // Note setCursorRepresentation() checks the value of this->mapped
-  // before taking any action.
   this->setCursorRepresentation(this->common->currentmode);
 } // afterRealizeHook()
 
@@ -1120,4 +1109,3 @@ SoXtExaminerViewer::afterRealizeHook(// virtual, protected
 #if SOXT_DEBUG
 static const char * getSoXtExaminerViewerRCSId(void) { return rcsid; }
 #endif // SOXT_DEBUG
-
