@@ -56,6 +56,8 @@ BUILD_WITH_MSVC=false  # no support for building under MSWin (yet?)
 # skipped.  We are of course not cross-compiling, so we correct the variable 
 # afterwards.  2003-06-25 larsa
 
+SIM_AC_SETUP_MKS
+
 case $build in
 *-mks ) cross_compiling=yes ;;
 esac
@@ -76,8 +78,6 @@ AM_CONFIG_HEADER([src/config.h])
 
 AM_DISABLE_STATIC
 AM_MAINTAINER_MODE
-
-SIM_AC_SETUP_MKS
 
 # case "$host_os" in
 #   irix*)
