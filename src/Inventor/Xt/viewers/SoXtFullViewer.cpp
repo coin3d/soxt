@@ -199,52 +199,32 @@ SoXtFullViewer::setDecoration(
   if ( this->prefmenu )
     this->prefmenu->SetMenuItemMarked( DECORATION_ITEM, enable );
 
-  Widget shell = this->baseWidget();
-  while ( shell != NULL && ! XtIsWMShell( shell ) )
-    shell = XtParent( shell );
-
-#if 0
-  if ( shell ) {
-    Dimension curminwidth, curwidth, curminheight, curheight;
-    int minwidth = SOXT_VIEWER_MIN_WIDTH;
-    int minheight = SOXT_VIEWER_MIN_HEIGHT_BASE +
+  if ( this->isTopLevelShell() || XtIsShell(XtParent(this->getBaseWidget())) ) {
+    Widget shell = this->getShellWidget();
+    Dimension minwidth = SOXT_VIEWER_MIN_WIDTH;
+    Dimension minheight = SOXT_VIEWER_MIN_HEIGHT_BASE +
        30 * this->viewerButtonWidgets->getLength();
-    XtVaGetValues( shell,
-      XmNminHeight, &curminheight,
-      XmNheight, &curheight,
-      XmNminWidth, &curminwidth,
-      XmNwidth, &curwidth,
-      NULL );
-
     if ( enable ) {
-      if ( curminwidth == 0 ) {
-        XtVaSetValues( shell, XmNminWidth, minwidth, NULL );
-        if ( curwidth < minwidth ) {
-          XtVaSetValues( shell, XmNwidth, minwidth, NULL );
-        }
-      }
-      if ( curminheight == 0 ) {
-        XtVaSetValues( shell, XmNminHeight, minheight, NULL );
-        if ( curheight < minheight ) {
-          XtVaSetValues( shell, XmNheight, minheight, NULL );
-        }
-      }
+      Dimension width, height;
+      XtVaGetValues( shell, 
+        XmNwidth, &width,
+        XmNheight, &height,
+        NULL );
+      width = SoXtMax( width, minwidth );
+      height = SoXtMax( height, minheight );
+      XtVaSetValues( shell,
+        XmNminWidth, minwidth,
+        XmNminHeight, minheight,
+        XmNwidth, width,
+        XmNheight, height,
+        NULL );
     } else {
-      if ( curminwidth == minwidth ) {
-// why the crash bang boom?
-//        XtVaSetValues( shell,
-//          XmNminWidth, 100,
-//          NULL );
-      }
-      if ( curminheight == minheight ) {
-// why the crash bang boom?
-//        XtVaSetValues( shell,
-//          XmNminHeight, 100,
-//          NULL );
-      }
+      XtVaSetValues( shell,
+        XmNminWidth, 0,
+        XmNminHeight, 0,
+        NULL );
     }
   }
-#endif // 0
 } // setDecoration()
 
 /*!
@@ -412,26 +392,14 @@ SoXtFullViewer::buildWidget( // protected
 
   this->buildDecoration( this->viewerbase );
   
-  Widget shell = this->viewerbase;
-  while ( shell && ! XtIsWMShell( shell ) )
-    shell = XtParent( shell );
-  if ( shell && this->decorations != FALSE ) {
-    int existing = 0, current = 0;
-    XtVaGetValues( shell,
-      XmNminHeight, &existing,
-      XmNheight, &current,
-      NULL );
+  if ( this->isTopLevelShell() && this->decorations != FALSE ) {
+    Widget shell = this->getShellWidget();
     Dimension minheight =
       30 + 90 + 30 * this->viewerButtonWidgets->getLength() + 8;
-    if ( existing > minheight ) minheight = existing;
     XtVaSetValues( shell,
       XmNminWidth, 300,
       XmNminHeight, minheight,
       NULL );
-    if ( current < minheight )
-      XtVaSetValues( shell,
-        XmNheight, minheight,
-        NULL );
   }
   return this->viewerbase;
 } // buildWidget()
