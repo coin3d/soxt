@@ -51,6 +51,7 @@
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
 
 #include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
+#include <Inventor/Xt/viewers/SoXtExaminerViewerP.h>
 
 #if HAVE_CONFIG_H
 #include <config.h> // for HAVE_LIBXPM
@@ -60,6 +61,19 @@
 #include <Inventor/Xt/common/pixmaps/ortho.xpm>
 #include <Inventor/Xt/common/pixmaps/perspective.xpm>
 #endif // HAVE_LIBXPM
+
+// *************************************************************************
+
+// SoXtExaminerViewerP "private implementation" class.
+
+SoXtExaminerViewerP::SoXtExaminerViewerP(SoXtExaminerViewer * publ)
+  : SoGuiExaminerViewerP(publ)
+{
+}
+
+SoXtExaminerViewerP::~SoXtExaminerViewerP()
+{
+}
 
 // *************************************************************************
 
@@ -106,6 +120,7 @@ SoXtExaminerViewer::SoXtExaminerViewer(Widget parent,
                                        SoXtViewer::Type type)
   : inherited(parent, name, embed, flag, type, FALSE)
 {
+  PRIVATE(this) = new SoXtExaminerViewerP(this);
   this->constructor(TRUE);
 }
 
@@ -121,6 +136,7 @@ SoXtExaminerViewer::SoXtExaminerViewer(Widget parent,
                                        SbBool build)
   : inherited(parent, name, embed, flag, type, FALSE)
 {
+  PRIVATE(this) = new SoXtExaminerViewerP(this);
   this->constructor(build);
 }
 
@@ -131,7 +147,7 @@ SoXtExaminerViewer::SoXtExaminerViewer(Widget parent,
 void
 SoXtExaminerViewer::constructor(const SbBool build)
 {
-  this->genericConstructor();
+  PRIVATE(this)->genericConstructor();
 
 //  this->prefshell = this->prefsheet = (Widget) NULL;
   this->prefparts = NULL;
@@ -159,8 +175,9 @@ SoXtExaminerViewer::constructor(const SbBool build)
 
 SoXtExaminerViewer::~SoXtExaminerViewer()
 {
-  this->genericDestructor();
+  PRIVATE(this)->genericDestructor();
   delete [] this->prefparts;
+  delete PRIVATE(this);
 }
 
 // *************************************************************************
@@ -301,7 +318,7 @@ SoXtExaminerViewer::setCamera(SoCamera * camera)
 void
 SoXtExaminerViewer::setAnimationEnabled(const SbBool enable)
 {
-  this->setGenericAnimationEnabled(enable);
+  PRIVATE(this)->setGenericAnimationEnabled(enable);
   if (this->spinanimtoggle) {
     Boolean enabled = False;
     XtVaGetValues(this->spinanimtoggle,
@@ -327,7 +344,7 @@ SoXtExaminerViewer::setFeedbackSize(const int size)
     XmTextSetString(this->axessizefield, buf);
     XmTextSetCursorPosition(this->axessizefield, (long) strlen(buf));
   }
-  this->setGenericFeedbackSize(size);
+  PRIVATE(this)->setGenericFeedbackSize(size);
 }
 
 // *************************************************************************
