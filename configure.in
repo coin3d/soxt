@@ -58,6 +58,8 @@ AC_DEFINE_UNQUOTED(SOXT_VERSION, "$SOXT_VERSION",
 
 AC_CANONICAL_SYSTEM
 
+BUILD_WITH_MSVC=false  # no support for building under MSWin (yet?)
+
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_CXX
@@ -236,11 +238,6 @@ else
     CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
     SOGUI_EXTRA_CPPFLAGS="$SOGUI_EXTRA_CPPFLAGS $sim_ac_gl_cppflags"
   ], [AC_MSG_ERROR([could not detect a gl.h header file])])
-
-  SIM_AC_CHECK_HEADER_GLU([
-    CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
-    SOGUI_EXTRA_CPPFLAGS="$SOGUI_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
-  ], [AC_MSG_ERROR([could not detect a glu.h header file])])
 
   # check for Coin library and its dependencies
   SIM_AC_HAVE_COIN_IFELSE([
