@@ -1,0 +1,274 @@
+ItemRecord::create	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^ItemRecord::create($/
+MenuRecord::create	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^MenuRecord::create($/
+SoAnyExaminerViewer::rotXWheelMotion	src/Inventor/Xt/common/SoAnyExaminerViewer.cpp	/^SoAnyExaminerViewer::rotXWheelMotion($/
+SoAnyExaminerViewer::rotYWheelMotion	src/Inventor/Xt/common/SoAnyExaminerViewer.cpp	/^SoAnyExaminerViewer::rotYWheelMotion($/
+SoAnyFullViewer::buildStandardPopupMenu	src/Inventor/Xt/common/SoAnyFullViewer.cpp	/^SoAnyFullViewer::buildStandardPopupMenu($/
+SoAnyPlaneViewer::rotZ	src/Inventor/Xt/common/SoAnyPlaneViewer.cpp	/^SoAnyPlaneViewer::rotZ( \/\/ static$/
+SoAnyPlaneViewer::transXWheelMotion	src/Inventor/Xt/common/SoAnyPlaneViewer.cpp	/^SoAnyPlaneViewer::transXWheelMotion( \/\/ static$/
+SoAnyPlaneViewer::transYWheelMotion	src/Inventor/Xt/common/SoAnyPlaneViewer.cpp	/^SoAnyPlaneViewer::transYWheelMotion( \/\/ static$/
+SoAnyPlaneViewer::viewPlaneX	src/Inventor/Xt/common/SoAnyPlaneViewer.cpp	/^SoAnyPlaneViewer::viewPlaneX( \/\/ static$/
+SoAnyPlaneViewer::viewPlaneY	src/Inventor/Xt/common/SoAnyPlaneViewer.cpp	/^SoAnyPlaneViewer::viewPlaneY( \/\/ static$/
+SoAnyPlaneViewer::viewPlaneZ	src/Inventor/Xt/common/SoAnyPlaneViewer.cpp	/^SoAnyPlaneViewer::viewPlaneZ( \/\/ static$/
+SoXt::addColormapToShell	src/Inventor/Xt/SoXt.cpp	/^SoXt::addColormapToShell( \/\/ static$/
+SoXt::addExtensionEventHandler	src/Inventor/Xt/SoXt.cpp	/^SoXt::addExtensionEventHandler( \/\/ static$/
+SoXt::createSimpleErrorDialog	src/Inventor/Xt/SoXt.cpp	/^SoXt::createSimpleErrorDialog( \/\/ static$/
+SoXt::decodeString	src/Inventor/Xt/SoXt.cpp	/^SoXt::decodeString( \/\/ static$/
+SoXt::delaySensorCB	src/Inventor/Xt/SoXt.cpp	/^SoXt::delaySensorCB( \/\/ static, private$/
+SoXt::dispatchEvent	src/Inventor/Xt/SoXt.cpp	/^SoXt::dispatchEvent( \/\/ static$/
+SoXt::encodeString	src/Inventor/Xt/SoXt.cpp	/^SoXt::encodeString( \/\/ static$/
+SoXt::getAppContext	src/Inventor/Xt/SoXt.cpp	/^SoXt::getAppContext( \/\/ static$/
+SoXt::getDisplay	src/Inventor/Xt/SoXt.cpp	/^SoXt::getDisplay( \/\/ static$/
+SoXt::getExtensionEventHandler	src/Inventor/Xt/SoXt.cpp	/^SoXt::getExtensionEventHandler( \/\/ static$/
+SoXt::getPopupArgs	src/Inventor/Xt/SoXt.cpp	/^SoXt::getPopupArgs( \/\/ static$/
+SoXt::getShellWidget	src/Inventor/Xt/SoXt.cpp	/^SoXt::getShellWidget( \/\/ static$/
+SoXt::getTopLevelWidget	src/Inventor/Xt/SoXt.cpp	/^SoXt::getTopLevelWidget( \/\/ static$/
+SoXt::getWidgetSize	src/Inventor/Xt/SoXt.cpp	/^SoXt::getWidgetSize( \/\/ static$/
+SoXt::getwidget	src/Inventor/Xt/SoXt.cpp	/^SoXt::getwidget( \/\/ static$/
+SoXt::hide	src/Inventor/Xt/SoXt.cpp	/^SoXt::hide( \/\/ static$/
+SoXt::idleSensorCB	src/Inventor/Xt/SoXt.cpp	/^SoXt::idleSensorCB( \/\/ static, private$/
+SoXt::init	src/Inventor/Xt/SoXt.cpp	/^SoXt::init( \/\/ static$/
+SoXt::mainLoop	src/Inventor/Xt/SoXt.cpp	/^SoXt::mainLoop( \/\/ static$/
+SoXt::nextEvent	src/Inventor/Xt/SoXt.cpp	/^SoXt::nextEvent( \/\/ static$/
+SoXt::registerColormapLoad	src/Inventor/Xt/SoXt.cpp	/^SoXt::registerColormapLoad( \/\/ static$/
+SoXt::removeColormapFromShell	src/Inventor/Xt/SoXt.cpp	/^SoXt::removeColormapFromShell( \/\/ static$/
+SoXt::removeExtensionEventHandler	src/Inventor/Xt/SoXt.cpp	/^SoXt::removeExtensionEventHandler( \/\/ static$/
+SoXt::sensorQueueChanged	src/Inventor/Xt/SoXt.cpp	/^SoXt::sensorQueueChanged( \/\/ static, private$/
+SoXt::setWidgetSize	src/Inventor/Xt/SoXt.cpp	/^SoXt::setWidgetSize( \/\/ static$/
+SoXt::show	src/Inventor/Xt/SoXt.cpp	/^SoXt::show( \/\/ static$/
+SoXt::timerSensorCB	src/Inventor/Xt/SoXt.cpp	/^SoXt::timerSensorCB( \/\/ static, private$/
+SoXtComponent::SoXtComponent	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::SoXtComponent( \/\/ protected$/
+SoXtComponent::addVisibilityChangeCallback	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::addVisibilityChangeCallback( \/\/ pro/
+SoXtComponent::afterRealizeHook	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::afterRealizeHook( \/\/ virtual, prote/
+SoXtComponent::baseWidget	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::baseWidget($/
+SoXtComponent::getClassName	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::getClassName($/
+SoXtComponent::getComponent	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::getComponent( \/\/ static$/
+SoXtComponent::getDefaultIconTitle	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::getDefaultIconTitle( \/\/ virtual, pr/
+SoXtComponent::getDefaultTitle	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::getDefaultTitle( \/\/ virtual, protec/
+SoXtComponent::getDefaultWidgetName	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::getDefaultWidgetName( \/\/ virtual, p/
+SoXtComponent::getDisplay	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::getDisplay($/
+SoXtComponent::getIconTitle	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::getIconTitle($/
+SoXtComponent::getParentWidget	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::getParentWidget($/
+SoXtComponent::getShellWidget	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::getShellWidget($/
+SoXtComponent::getSize	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::getSize($/
+SoXtComponent::getTitle	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::getTitle($/
+SoXtComponent::getWidget	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::getWidget($/
+SoXtComponent::getWidgetName	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::getWidgetName($/
+SoXtComponent::getlabel	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::getlabel( \/\/ static, protected$/
+SoXtComponent::hide	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::hide( \/\/ virtual$/
+SoXtComponent::isTopLevelShell	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::isTopLevelShell($/
+SoXtComponent::isVisible	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::isVisible($/
+SoXtComponent::openHelpCard	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::openHelpCard( \/\/ protected$/
+SoXtComponent::registerWidget	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::registerWidget( \/\/ protected$/
+SoXtComponent::removeVisibilityChangeCallback	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::removeVisibilityChangeCallback( \/\/ /
+SoXtComponent::setBaseWidget	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::setBaseWidget( \/\/ protected$/
+SoXtComponent::setClassName	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::setClassName( \/\/ protected$/
+SoXtComponent::setIconTitle	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::setIconTitle($/
+SoXtComponent::setSize	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::setSize($/
+SoXtComponent::setTitle	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::setTitle($/
+SoXtComponent::setWindowCloseCallback	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::setWindowCloseCallback($/
+SoXtComponent::show	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::show( \/\/ virtual$/
+SoXtComponent::unregisterWidget	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::unregisterWidget( \/\/ protected$/
+SoXtComponent::windowCloseAction	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::windowCloseAction( \/\/ virtual, prot/
+SoXtComponent::~SoXtComponent	src/Inventor/Xt/SoXtComponent.cpp	/^SoXtComponent::~SoXtComponent( \/\/ virtual$/
+SoXtDevice::SoXtDevice	src/Inventor/Xt/devices/SoXtDevice.cpp	/^SoXtDevice::SoXtDevice($/
+SoXtDevice::getWindowSize	src/Inventor/Xt/devices/SoXtDevice.cpp	/^SoXtDevice::getWindowSize($/
+SoXtDevice::setEventPosition	src/Inventor/Xt/devices/SoXtDevice.cpp	/^SoXtDevice::setEventPosition($/
+SoXtDevice::setWindowSize	src/Inventor/Xt/devices/SoXtDevice.cpp	/^SoXtDevice::setWindowSize($/
+SoXtExaminerViewer::SoXtExaminerViewer	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::SoXtExaminerViewer($/
+SoXtExaminerViewer::bottomWheelMotion	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::bottomWheelMotion( \/\/ virtual,/
+SoXtExaminerViewer::constructor	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::constructor( \/\/ private$/
+SoXtExaminerViewer::getDefaultIconTitle	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::getDefaultIconTitle($/
+SoXtExaminerViewer::getDefaultTitle	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::getDefaultTitle($/
+SoXtExaminerViewer::getDefaultWidgetName	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::getDefaultWidgetName($/
+SoXtExaminerViewer::isAnimating	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::isAnimating($/
+SoXtExaminerViewer::isAnimationEnabled	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::isAnimationEnabled($/
+SoXtExaminerViewer::leftWheelMotion	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::leftWheelMotion( \/\/ virtual, p/
+SoXtExaminerViewer::openViewerHelpCard	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::openViewerHelpCard($/
+SoXtExaminerViewer::pan	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::pan($/
+SoXtExaminerViewer::processEvent	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::processEvent($/
+SoXtExaminerViewer::reorientCamera	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::reorientCamera($/
+SoXtExaminerViewer::rightWheelMotion	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::rightWheelMotion( \/\/ virtual, /
+SoXtExaminerViewer::setAnimationEnabled	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::setAnimationEnabled($/
+SoXtExaminerViewer::setMode	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::setMode($/
+SoXtExaminerViewer::setModeFromState	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::setModeFromState($/
+SoXtExaminerViewer::spin	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::spin($/
+SoXtExaminerViewer::spindetecttimerCB	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::spindetecttimerCB( \/\/ static$/
+SoXtExaminerViewer::stopAnimating	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::stopAnimating($/
+SoXtExaminerViewer::timertriggerCB	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::timertriggerCB( \/\/ static$/
+SoXtExaminerViewer::timertriggerCallback	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::timertriggerCallback($/
+SoXtExaminerViewer::zoom	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::zoom($/
+SoXtExaminerViewer::zoomByCursor	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::zoomByCursor($/
+SoXtExaminerViewer::~SoXtExaminerViewer	src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp	/^SoXtExaminerViewer::~SoXtExaminerViewer($/
+SoXtFullViewer::SoXtFullViewer	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::SoXtFullViewer( \/\/ protected$/
+SoXtFullViewer::addAppPushButton	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::addAppPushButton($/
+SoXtFullViewer::bottomWheelFinish	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::bottomWheelFinish( \/\/ virtual$/
+SoXtFullViewer::bottomWheelMotion	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::bottomWheelMotion( \/\/ virtual$/
+SoXtFullViewer::bottomWheelStart	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::bottomWheelStart( \/\/ virtual$/
+SoXtFullViewer::buildAppButtonsForm	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::buildAppButtonsForm($/
+SoXtFullViewer::buildBottomTrim	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::buildBottomTrim( \/\/ virtual$/
+SoXtFullViewer::buildDecoration	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::buildDecoration( \/\/ virtual$/
+SoXtFullViewer::buildLeftTrim	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::buildLeftTrim( \/\/ virtual$/
+SoXtFullViewer::buildPopupMenu	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::buildPopupMenu($/
+SoXtFullViewer::buildRightTrim	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::buildRightTrim( \/\/ virtual$/
+SoXtFullViewer::buildViewerButtons	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::buildViewerButtons($/
+SoXtFullViewer::buildWidget	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::buildWidget( \/\/ protected$/
+SoXtFullViewer::createViewerButtons	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::createViewerButtons($/
+SoXtFullViewer::eventFilter	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::eventFilter( \/\/ virtual$/
+SoXtFullViewer::findAppPushButton	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::findAppPushButton($/
+SoXtFullViewer::getAppPushButtonParent	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::getAppPushButtonParent($/
+SoXtFullViewer::getBottomWheelValue	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::getBottomWheelValue($/
+SoXtFullViewer::getLeftWheelValue	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::getLeftWheelValue($/
+SoXtFullViewer::getRenderAreaWidget	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::getRenderAreaWidget($/
+SoXtFullViewer::getRightWheelValue	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::getRightWheelValue($/
+SoXtFullViewer::hide	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::hide( \/\/ virtual$/
+SoXtFullViewer::insertAppPushButton	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::insertAppPushButton($/
+SoXtFullViewer::isDecoration	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::isDecoration($/
+SoXtFullViewer::isPopupMenuEnabled	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::isPopupMenuEnabled($/
+SoXtFullViewer::layoutAppPushButtons	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::layoutAppPushButtons($/
+SoXtFullViewer::leftWheelFinish	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::leftWheelFinish( \/\/ virtual$/
+SoXtFullViewer::leftWheelMotion	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::leftWheelMotion( \/\/ virtual$/
+SoXtFullViewer::leftWheelStart	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::leftWheelStart( \/\/ virtual$/
+SoXtFullViewer::lengthAppPushButton	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::lengthAppPushButton($/
+SoXtFullViewer::makeSubPreferences	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::makeSubPreferences($/
+SoXtFullViewer::openViewerHelpCard	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::openViewerHelpCard( \/\/ virtual$/
+SoXtFullViewer::removeAppPushButton	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::removeAppPushButton($/
+SoXtFullViewer::rightWheelFinish	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::rightWheelFinish( \/\/ virtual$/
+SoXtFullViewer::rightWheelMotion	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::rightWheelMotion( \/\/ virtual$/
+SoXtFullViewer::rightWheelStart	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::rightWheelStart( \/\/ virtual$/
+SoXtFullViewer::setBufferingType	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::setBufferingType( \/\/ virtual$/
+SoXtFullViewer::setCamera	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::setCamera( \/\/ virtual$/
+SoXtFullViewer::setDecoration	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::setDecoration($/
+SoXtFullViewer::setDrawStyle	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::setDrawStyle( \/\/ virtual$/
+SoXtFullViewer::setHeadlight	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::setHeadlight( \/\/ virtual$/
+SoXtFullViewer::setPopupMenuEnabled	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::setPopupMenuEnabled($/
+SoXtFullViewer::setViewing	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::setViewing( \/\/ virtual$/
+SoXtFullViewer::showDecorationWidgets	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::showDecorationWidgets($/
+SoXtFullViewer::~SoXtFullViewer	src/Inventor/Xt/viewers/SoXtFullViewer.cpp	/^SoXtFullViewer::~SoXtFullViewer( \/\/ protected$/
+SoXtGLWidget::SoXtGLWidget	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::SoXtGLWidget( \/\/ protected$/
+SoXtGLWidget::buildWidget	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::buildWidget( \/\/ protected$/
+SoXtGLWidget::eventHandler	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::eventHandler( \/\/ static, protected$/
+SoXtGLWidget::getColorMapSize	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getColorMapSize($/
+SoXtGLWidget::getDisplayListShareGroup	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getDisplayListShareGroup( \/\/ protect/
+SoXtGLWidget::getGLAspectRatio	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getGLAspectRatio($/
+SoXtGLWidget::getGLSize	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getGLSize( \/\/ protected$/
+SoXtGLWidget::getGLWidget	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getGLWidget( \/\/ protected$/
+SoXtGLWidget::getGlxMgrWidget	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getGlxMgrWidget( \/\/ protected$/
+SoXtGLWidget::getGlxSize	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getGlxSize( \/\/ protected$/
+SoXtGLWidget::getNormalContext	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getNormalContext($/
+SoXtGLWidget::getNormalVisual	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getNormalVisual($/
+SoXtGLWidget::getNormalWidget	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getNormalWidget($/
+SoXtGLWidget::getNormalWindow	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getNormalWindow($/
+SoXtGLWidget::getOverlayColorMapSize	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getOverlayColorMapSize($/
+SoXtGLWidget::getOverlayContext	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getOverlayContext($/
+SoXtGLWidget::getOverlayTransparentPixel	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getOverlayTransparentPixel($/
+SoXtGLWidget::getOverlayVisual	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getOverlayVisual($/
+SoXtGLWidget::getOverlayWidget	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getOverlayWidget($/
+SoXtGLWidget::getOverlayWindow	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::getOverlayWindow($/
+SoXtGLWidget::glFlushBuffer	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::glFlushBuffer($/
+SoXtGLWidget::glInit	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::glInit( \/\/ virtual$/
+SoXtGLWidget::glLock	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::glLock($/
+SoXtGLWidget::glRender	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::glRender( \/\/ virtual$/
+SoXtGLWidget::glReshape	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::glReshape( \/\/ virtual$/
+SoXtGLWidget::glSwapBuffers	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::glSwapBuffers($/
+SoXtGLWidget::glUnlock	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::glUnlock($/
+SoXtGLWidget::initGraphic	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::initGraphic( \/\/ virtual, protected$/
+SoXtGLWidget::initOverlayGraphic	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::initOverlayGraphic( \/\/ virtual, prot/
+SoXtGLWidget::isBorder	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::isBorder($/
+SoXtGLWidget::isDoubleBuffer	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::isDoubleBuffer($/
+SoXtGLWidget::isDrawToFrontBufferEnable	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::isDrawToFrontBufferEnable($/
+SoXtGLWidget::isRGBMode	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::isRGBMode( \/\/ protected$/
+SoXtGLWidget::isStereoBuffer	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::isStereoBuffer( \/\/ protected$/
+SoXtGLWidget::processEvent	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::processEvent( \/\/ virtual, protected$/
+SoXtGLWidget::redrawOverlay	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::redrawOverlay( \/\/ virtual, protected/
+SoXtGLWidget::setBorder	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::setBorder($/
+SoXtGLWidget::setDoubleBuffer	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::setDoubleBuffer( \/\/ virtual$/
+SoXtGLWidget::setDrawToFrontBufferEnable	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::setDrawToFrontBufferEnable($/
+SoXtGLWidget::setGLSize	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::setGLSize( \/\/ protected$/
+SoXtGLWidget::setGlxSize	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::setGlxSize( \/\/ protected$/
+SoXtGLWidget::setNormalVisual	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::setNormalVisual( \/\/ virtual$/
+SoXtGLWidget::setOverlayVisual	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::setOverlayVisual( \/\/ virtual$/
+SoXtGLWidget::setStereoBuffer	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::setStereoBuffer( \/\/ protected$/
+SoXtGLWidget::sizeChanged	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::sizeChanged( \/\/ virtual, protected$/
+SoXtGLWidget::widgetChanged	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::widgetChanged( \/\/ virtual, protected/
+SoXtGLWidget::~SoXtGLWidget	src/Inventor/Xt/SoXtGLWidget.cpp	/^SoXtGLWidget::~SoXtGLWidget( \/\/ virtual, protected/
+SoXtInputFocus::SoXtInputFocus	src/Inventor/Xt/devices/SoXtInputFocus.cpp	/^SoXtInputFocus::SoXtInputFocus($/
+SoXtInputFocus::disable	src/Inventor/Xt/devices/SoXtInputFocus.cpp	/^SoXtInputFocus::disable( \/\/ virtual$/
+SoXtInputFocus::enable	src/Inventor/Xt/devices/SoXtInputFocus.cpp	/^SoXtInputFocus::enable( \/\/ virtual$/
+SoXtInputFocus::translateEvent	src/Inventor/Xt/devices/SoXtInputFocus.cpp	/^SoXtInputFocus::translateEvent( \/\/ virtual$/
+SoXtInputFocus::~SoXtInputFocus	src/Inventor/Xt/devices/SoXtInputFocus.cpp	/^SoXtInputFocus::~SoXtInputFocus($/
+SoXtKeyboard::SoXtKeyboard	src/Inventor/Xt/devices/SoXtKeyboard.cpp	/^SoXtKeyboard::SoXtKeyboard($/
+SoXtKeyboard::disable	src/Inventor/Xt/devices/SoXtKeyboard.cpp	/^SoXtKeyboard::disable( \/\/ virtual$/
+SoXtKeyboard::enable	src/Inventor/Xt/devices/SoXtKeyboard.cpp	/^SoXtKeyboard::enable( \/\/ virtual$/
+SoXtKeyboard::makeKeyboardEvent	src/Inventor/Xt/devices/SoXtKeyboard.cpp	/^SoXtKeyboard::makeKeyboardEvent( \/\/ private$/
+SoXtKeyboard::translateEvent	src/Inventor/Xt/devices/SoXtKeyboard.cpp	/^SoXtKeyboard::translateEvent( \/\/ virtual$/
+SoXtKeyboard::~SoXtKeyboard	src/Inventor/Xt/devices/SoXtKeyboard.cpp	/^SoXtKeyboard::~SoXtKeyboard($/
+SoXtMouse::SoXtMouse	src/Inventor/Xt/devices/SoXtMouse.cpp	/^SoXtMouse::SoXtMouse($/
+SoXtMouse::disable	src/Inventor/Xt/devices/SoXtMouse.cpp	/^SoXtMouse::disable( \/\/ virtual$/
+SoXtMouse::enable	src/Inventor/Xt/devices/SoXtMouse.cpp	/^SoXtMouse::enable( \/\/ virtual$/
+SoXtMouse::makeButtonEvent	src/Inventor/Xt/devices/SoXtMouse.cpp	/^SoXtMouse::makeButtonEvent( \/\/ private$/
+SoXtMouse::makeLocationEvent	src/Inventor/Xt/devices/SoXtMouse.cpp	/^SoXtMouse::makeLocationEvent( \/\/ private$/
+SoXtMouse::translateEvent	src/Inventor/Xt/devices/SoXtMouse.cpp	/^SoXtMouse::translateEvent( \/\/ virtual$/
+SoXtMouse::~SoXtMouse	src/Inventor/Xt/devices/SoXtMouse.cpp	/^SoXtMouse::~SoXtMouse($/
+SoXtPopupMenu::AddMenu	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::AddMenu($/
+SoXtPopupMenu::AddMenuItem	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::AddMenuItem($/
+SoXtPopupMenu::AddSeparator	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::AddSeparator($/
+SoXtPopupMenu::GetMenu	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::GetMenu($/
+SoXtPopupMenu::GetMenuItem	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::GetMenuItem($/
+SoXtPopupMenu::GetMenuItemEnabled	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::GetMenuItemEnabled($/
+SoXtPopupMenu::GetMenuItemMarked	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::GetMenuItemMarked($/
+SoXtPopupMenu::GetMenuItemTitle	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::GetMenuItemTitle($/
+SoXtPopupMenu::GetMenuTitle	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::GetMenuTitle($/
+SoXtPopupMenu::NewMenu	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::NewMenu($/
+SoXtPopupMenu::NewMenuItem	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::NewMenuItem($/
+SoXtPopupMenu::PopUp	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::PopUp($/
+SoXtPopupMenu::RemoveMenu	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::RemoveMenu($/
+SoXtPopupMenu::RemoveMenuItem	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::RemoveMenuItem($/
+SoXtPopupMenu::SetMenuItemEnabled	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::SetMenuItemEnabled($/
+SoXtPopupMenu::SetMenuItemMarked	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::SetMenuItemMarked($/
+SoXtPopupMenu::SetMenuItemTitle	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::SetMenuItemTitle($/
+SoXtPopupMenu::SetMenuTitle	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::SetMenuTitle($/
+SoXtPopupMenu::SoXtPopupMenu	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::SoXtPopupMenu($/
+SoXtPopupMenu::getItemRecord	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::getItemRecord($/
+SoXtPopupMenu::getMenuRecord	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::getMenuRecord($/
+SoXtPopupMenu::~SoXtPopupMenu	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::~SoXtPopupMenu($/
+SoXtRenderArea::processEvent	src/Inventor/Xt/SoXtRenderAreaExtra.cpp	/^SoXtRenderArea::processEvent( \/\/ virtual, protecte/
+SoXtSpaceball::SoXtSpaceball	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^SoXtSpaceball::SoXtSpaceball($/
+SoXtSpaceball::disable	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^SoXtSpaceball::disable( \/\/ virtual$/
+SoXtSpaceball::enable	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^SoXtSpaceball::enable( \/\/ virtual$/
+SoXtSpaceball::exists	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^SoXtSpaceball::exists( \/\/ static$/
+SoXtSpaceball::getRotationScaleFactor	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^SoXtSpaceball::getRotationScaleFactor($/
+SoXtSpaceball::getTranslationScaleFactor	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^SoXtSpaceball::getTranslationScaleFactor($/
+SoXtSpaceball::isFocusToWindow	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^SoXtSpaceball::isFocusToWindow($/
+SoXtSpaceball::setFocusToWindow	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^SoXtSpaceball::setFocusToWindow($/
+SoXtSpaceball::setRotationScaleFactor	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^SoXtSpaceball::setRotationScaleFactor($/
+SoXtSpaceball::setTranslationScaleFactor	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^SoXtSpaceball::setTranslationScaleFactor($/
+SoXtSpaceball::translateEvent	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^SoXtSpaceball::translateEvent( \/\/ virtual$/
+SoXtSpaceball::~SoXtSpaceball	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^SoXtSpaceball::~SoXtSpaceball($/
+ThumbWheel::BitmapsRequired	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::BitmapsRequired($/
+ThumbWheel::CalculateValue	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::CalculateValue($/
+ThumbWheel::DrawBitmap	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::DrawBitmap($/
+ThumbWheel::DrawDisabledWheel	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::DrawDisabledWheel( \/\/ private$/
+ThumbWheel::DrawEnabledWheel	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::DrawEnabledWheel($/
+ThumbWheel::GetBitmapForValue	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::GetBitmapForValue($/
+ThumbWheel::GetColor	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::GetColor($/
+ThumbWheel::GetColorFactors	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::GetColorFactors($/
+ThumbWheel::GetGraphicsByteOrder	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::GetGraphicsByteOrder($/
+ThumbWheel::GetWheelMotionMethod	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::GetWheelMotionMethod($/
+ThumbWheel::GetWheelRangeBoundaryHandling	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::GetWheelRangeBoundaryHandling($/
+ThumbWheel::GetWheelSize	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::GetWheelSize($/
+ThumbWheel::SetColor	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::SetColor($/
+ThumbWheel::SetColorFactors	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::SetColorFactors($/
+ThumbWheel::SetGraphicsByteOrder	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::SetGraphicsByteOrder($/
+ThumbWheel::SetWheelMotionMethod	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::SetWheelMotionMethod($/
+ThumbWheel::SetWheelRangeBoundaryHandling	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::SetWheelRangeBoundaryHandling($/
+ThumbWheel::SetWheelSize	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::SetWheelSize($/
+ThumbWheel::ThumbWheel	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::ThumbWheel($/
+ThumbWheel::Validate	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::Validate( \/\/ private$/
+ThumbWheel::~ThumbWheel	src/Inventor/Xt/common/ThumbWheel.cpp	/^ThumbWheel::~ThumbWheel($/
+getSoXtDeviceRCSId	src/Inventor/Xt/devices/SoXtDevice.cpp	/^getSoXtDeviceRCSId(void)$/
+getSoXtInputFocusRCSId	src/Inventor/Xt/devices/SoXtInputFocus.cpp	/^getSoXtInputFocusRCSId(void)$/
+getSoXtKeyboardRCSId	src/Inventor/Xt/devices/SoXtKeyboard.cpp	/^getSoXtKeyboardRCSId(void)$/
+getSoXtMouseRCSId	src/Inventor/Xt/devices/SoXtMouse.cpp	/^getSoXtMouseRCSId(void)$/
+getSoXtSpaceballRCSId	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^getSoXtSpaceballRCSId(void)$/
+int8clamp	src/Inventor/Xt/common/ThumbWheel.cpp	/^int8clamp( float f ) {$/
+swapWord	src/Inventor/Xt/common/ThumbWheel.cpp	/^swapWord($/
