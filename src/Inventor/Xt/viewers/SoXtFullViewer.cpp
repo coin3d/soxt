@@ -71,6 +71,7 @@ SoXtFullViewer::SoXtFullViewer( // protected
   Type type,
   SbBool build )
 : inherited( parent, name, inParent, type, FALSE )
+, SoAnyFullViewer( this )
 {
   this->viewerbase = NULL;
   this->canvas = NULL;
@@ -94,7 +95,7 @@ SoXtFullViewer::SoXtFullViewer( // protected
   this->setSize( SbVec2s( 500, 390 ) );
   this->setClassName( "SoXtFullViewer" );
 
-  this->prefmenu = SoAnyFullViewer::buildStandardPopupMenu();
+  this->prefmenu = setupStandardPopupMenu();
 
   if ( build != FALSE )
     this->buildWidget( parent );
@@ -616,6 +617,9 @@ void
 SoXtFullViewer::buildPopupMenu(
   void )
 {
+  if ( this->prefmenu == NULL ) {
+    this->prefmenu = setupStandardPopupMenu();
+  }
   SOXT_STUB();
 } // buildPopupMenu()
 
@@ -839,5 +843,92 @@ SoXtFullViewer::processEvent(
   } // switch ( event->type )
   inherited::processEvent( event );
 } // processEvent()
+
+// *************************************************************************
+
+void
+SoXtFullViewer::selectedViewing(
+  void )
+{
+  SOXT_STUB();
+}
+
+void
+SoXtFullViewer::selectedDecoration(
+  void )
+{
+  SOXT_STUB();
+}
+
+void
+SoXtFullViewer::selectedHeadlight(
+  void )
+{
+  SOXT_STUB();
+}
+
+void
+SoXtFullViewer::selectedPrefs(
+  void )
+{
+  SOXT_STUB();
+}
+
+void
+SoXtFullViewer::helpbuttonClicked(
+  void )
+{
+  SOXT_STUB();
+}
+
+void
+SoXtFullViewer::homebuttonClicked(
+  void )
+{
+  SOXT_STUB();
+}
+
+void
+SoXtFullViewer::sethomebuttonClicked(
+  void )
+{
+  SOXT_STUB();
+}
+
+void
+SoXtFullViewer::viewallbuttonClicked(
+  void )
+{
+  SOXT_STUB();
+}
+
+void
+SoXtFullViewer::seekbuttonClicked(
+  void )
+{
+  SOXT_STUB();
+}
+
+void
+SoXtFullViewer::copyviewSelected(
+  void )
+{
+  SOXT_STUB();
+}
+
+void
+SoXtFullViewer::pasteviewSelected(
+  void )
+{
+  SOXT_STUB();
+}
+
+void
+SoXtFullViewer::drawstyleActivated(
+  int item )
+{
+  SOXT_STUB();
+}
+
 
 // *************************************************************************

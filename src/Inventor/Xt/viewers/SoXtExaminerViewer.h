@@ -23,15 +23,19 @@
 #define SOXT_EXAMINERVIEWER_H
 
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
+#include <Inventor/Xt/viewers/SoAnyExaminerViewer.h>
 
-class SbSphereSheetProjector;
 class SbRotation;
 class SoTimerSensor;
 
 // *************************************************************************
 
-class SoXtExaminerViewer : public SoXtFullViewer {
+class SoXtExaminerViewer :
+  public SoXtFullViewer,
+  public SoAnyExaminerViewer
+{
   typedef SoXtFullViewer inherited;
+  friend class SoAnyExaminerViewer;
 
 public:
   SoXtExaminerViewer( Widget parent = (Widget) NULL,
@@ -51,30 +55,15 @@ protected:
   virtual void bottomWheelMotion( float value );
   virtual void rightWheelMotion( float value );
 
-  void zoom( float diffvalue );
-
   void openViewerHelpCard(void);
 
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
 
-  void setAnimationEnabled( SbBool enable );
-  SbBool isAnimationEnabled(void) const;
-  SbBool isAnimating(void) const;
-  void stopAnimating(void);
-
   XtIntervalId spindetecttimerId;
   SbBool spindetecttimerActive;
   static void spindetecttimerCB( XtPointer user, XtIntervalId * id );
-
-  SbBool animatingallowed, spinanimating;
-  SbRotation spinincrement;
-  int spinsamplecounter;
-  SoTimerSensor * timertrigger;
-
-  static void timertriggerCB( void * user, SoSensor * sensor );
-  void timertriggerCallback( SoSensor * sensor );
 
 private:
   void constructor( SbBool build );
@@ -90,18 +79,8 @@ private:
     PANNING
   } mode;
 
-  void reorientCamera( const SbRotation & rotation );
-  void spin( const SbVec2f & mousepos );
-  void pan( const SbVec2f & mousepos );
-  void zoomByCursor( const SbVec2f & mousepos );
-
   void setMode( const ViewerMode mode );
   void setModeFromState( const unsigned int state );
-
-  SbSphereSheetProjector * projector;
-  SbVec2f lastmouseposition;
-  SbVec2f spinsaveposition;
-  SbPlane panningplane;
 
 }; // class SoXtExaminerViewer
 

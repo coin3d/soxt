@@ -42,6 +42,7 @@ SoXtExaminerViewer::SoXtExaminerViewer(
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type )
 : inherited( parent, name, inParent, flag, type, FALSE )
+, SoAnyExaminerViewer( this )
 {
   this->constructor( TRUE );
 } // SoXtExaminerViewer()
@@ -54,6 +55,7 @@ SoXtExaminerViewer::SoXtExaminerViewer( // protected
   SoXtViewer::Type type,
   SbBool build )
 : inherited( parent, name, inParent, flag, type, FALSE )
+, SoAnyExaminerViewer( this )
 {
   this->constructor( build );
 } // SoXtExaminerViewer()
@@ -63,23 +65,10 @@ SoXtExaminerViewer::constructor( // private
   SbBool build )
 {
 // don't uncomment this until constructor sends FALSE to FullViewer class
-
-  this->projector = new SbSphereSheetProjector;
-  SbViewVolume volume;
-  volume.ortho( -1, 1, -1, 1, -1, 1 );
-  this->projector->setViewVolume( volume );
-
   this->mode = EXAMINE;
 
-  this->animatingallowed = TRUE;
-  this->spinanimating = FALSE;
   this->spindetecttimerId = 0;
   this->spindetecttimerActive = FALSE;
-  this->spinsamplecounter = 0;
-  this->spinincrement = SbRotation::identity();
-  this->timertrigger =
-    new SoTimerSensor( SoXtExaminerViewer::timertriggerCB, this );
-  this->timertrigger->setInterval( 1.0f/30.0f );
 
   this->setClassName( "SoXtExaminerViewer" );
 
@@ -104,6 +93,8 @@ void
 SoXtExaminerViewer::processEvent(
   XAnyEvent * event )
 {
+  if ( this->processCommonEvents(event) ) return;
+
   SbVec2s canvassize = this->getGLSize();
   SbVec2s mousepos( 0, 0 );
   switch ( event->type ) {
@@ -131,7 +122,7 @@ SoXtExaminerViewer::processEvent(
 
   case ButtonPress:
     this->lastmouseposition = norm_mousepos;
-    this->spinsaveposition = norm_mousepos;
+    this->lastspinposition = norm_mousepos;
     if ( ((XButtonEvent *) event)->button == Button3 )
       break;
 
@@ -174,13 +165,13 @@ SoXtExaminerViewer::processEvent(
       break;
 
     if ( this->mode == DRAGGING &&
-         this->animatingallowed &&
+         this->isAnimationEnabled() &&
          this->spindetecttimerActive ) {
       XtRemoveTimeOut( this->spindetecttimerId );
       this->spindetecttimerId = 0;
       this->spindetecttimerActive = FALSE;
       this->spinanimating = TRUE;
-      this->timertrigger->schedule();
+      this->spintimertrigger->schedule();
       this->interactiveCountInc();
     }
 
@@ -292,36 +283,6 @@ SoXtExaminerViewer::rightWheelMotion( // virtual, protected
 
 // *************************************************************************
 
-void
-SoXtExaminerViewer::zoom(
-  float diffvalue )
-{
-  SoCamera * camera = this->getCamera();
-  assert( camera != NULL );
-  SoType type = camera->getTypeId();
-
-  // This will be in the range of <0, ->>.
-  float multiplicator = exp(diffvalue);
-
-  if ( type.isDerivedFrom( SoOrthographicCamera::getClassTypeId() ) ) {
-    SoOrthographicCamera * ortho = (SoOrthographicCamera *) camera;
-    ortho->height = ortho->height.getValue() * multiplicator;
-  } else if ( type.isDerivedFrom( SoPerspectiveCamera::getClassTypeId()) ) {
-    float oldfocaldist = camera->focalDistance.getValue();
-    camera->focalDistance = oldfocaldist * multiplicator;
-
-    SbVec3f direction;
-    camera->orientation.getValue().multVec( SbVec3f( 0, 0, -1 ), direction );
-    camera->position =
-      camera->position.getValue() +
-      (camera->focalDistance.getValue() - oldfocaldist) * -direction;
-  } else {
-    assert( 0 );
-  }
-} // zoom()
-
-// *************************************************************************
-
 /*!
 */
 
@@ -366,151 +327,6 @@ SoXtExaminerViewer::openViewerHelpCard(
 {
   this->openHelpCard( "SoXtExaminerViewer.help" );
 } // openViewerHelpCard()
-
-// *************************************************************************
-
-/*!
-*/
-
-void
-SoXtExaminerViewer::setAnimationEnabled(
-  SbBool enable )
-{
-#if SOXT_DEBUG
-  if ( this->animatingallowed == enable )
-    SoDebugError::postInfo( "SoXtExaminerViewer::setAnimationEnabled",
-      "current state and argument the same" );
-#endif // SOXT_DEBUG
-  if ( ! enable && this->isAnimating() )
-    this->stopAnimating();
-  this->animatingallowed = enable;
-} // setAnimationEnabled()
-
-/*!
-*/
-
-SbBool
-SoXtExaminerViewer::isAnimationEnabled(
-  void ) const
-{
-  return this->animatingallowed;
-} // isAnimationEnabled()
-
-/*!
-*/
-
-SbBool
-SoXtExaminerViewer::isAnimating(
-  void ) const
-{
-  return this->spinanimating;
-} // isAnimating()
-
-/*!
-*/
-
-void
-SoXtExaminerViewer::stopAnimating(
-  void )
-{
-  if ( this->spinanimating ) {
-    this->timertrigger->unschedule();
-    this->interactiveCountDec();
-    this->spinanimating = FALSE;
-  }
-#if SOXT_DEBUG
-  else {
-    SoDebugError::postWarning( "SoQtExaminerViewer::stopAnimating",
-                               "not animating" );
-  }
-#endif // SOXT_DEBUG
-} // stopAnimating()
-
-// *************************************************************************
-
-void
-SoXtExaminerViewer::timertriggerCallback(
-  SoSensor * sensor )
-{
-#if 0 // debug
-  SoDebugError::postInfo("SoXtExaminerViewer::timertriggeredCB",
-                         "spin samples: %d", this->spinsamplecounter);
-#endif // debug
-
-  if ( this->spinsamplecounter < 2 ) {
-    // FIXME: won't the first check here always equal TRUE? 990501
-    // mortene.
-    if ( this->isAnimating() )
-      this->stopAnimating();
-#if 0 // check hypothesis from above FIXME statement.
-    else
-      this->timertrigger->unschedule();
-#else
-    else
-      assert(0);
-#endif
-    return;
-  }
-
-  this->reorientCamera( this->spinincrement );
-} // timertrigger()
-
-void
-SoXtExaminerViewer::timertriggerCB( // static
-  void * user,
-  SoSensor * sensor )
-{
-  assert( user != NULL );
-  ((SoXtExaminerViewer *)user)->timertriggerCallback( sensor );
-} // timertriggerCB()
-
-// *************************************************************************
-
-void
-SoXtExaminerViewer::reorientCamera(
-  const SbRotation & rotation )
-{
-  SoCamera * camera = this->getCamera();
-  assert( camera != NULL );
-
-  SbVec3f direction;
-  camera->orientation.getValue().multVec( SbVec3f( 0, 0, -1 ), direction );
-  SbVec3f focalpoint = camera->position.getValue() +
-      camera->focalDistance.getValue() * direction;
-
-  camera->orientation = rotation * camera->orientation.getValue();
-  camera->orientation.getValue().multVec( SbVec3f( 0, 0, -1 ), direction );
-  camera->position = focalpoint - camera->focalDistance.getValue() * direction;
-} // reorientCamera()
-
-void
-SoXtExaminerViewer::spin(
-  const SbVec2f & mousepos )
-{
-  assert( this->projector != NULL );
-  if ( mousepos == spinsaveposition )
-    return;
-  spinsaveposition = mousepos;
-
-  SbRotation rotation;
-  this->projector->projectAndGetRotation( mousepos, rotation );
-  rotation.invert();
-  this->reorientCamera( rotation );
-
-  SbVec3f dummy_axis, newaxis;
-  float acc_angle, newangle;
-  this->spinincrement.getValue( dummy_axis, acc_angle );
-  acc_angle *= this->spinsamplecounter; // weight
-  rotation.getValue( newaxis, newangle );
-  acc_angle += newangle;
-
-  this->spinsamplecounter++;
-  acc_angle /= this->spinsamplecounter;
-
-  this->spinincrement.setValue( newaxis, acc_angle );
-  if ( this->spinsamplecounter > 3 )
-    this->spinsamplecounter = 3;
-} // spin()
 
 // *************************************************************************
 
@@ -569,7 +385,7 @@ SoXtExaminerViewer::setMode(
     break;
 
   case DRAGGING:
-    this->projector->project( this->lastmouseposition );
+    this->spinprojector->project( this->lastmouseposition );
     break;
 
   case PANNING:
@@ -598,37 +414,9 @@ SoXtExaminerViewer::spindetecttimerCB( // static
   SoXtExaminerViewer * that = (SoXtExaminerViewer *) user;
   that->spindetecttimerId = 0;
   that->spindetecttimerActive = FALSE;
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXtExaminerViewer::spindetecttimerCB",
+    "called - but doin' squat" );
+#endif // SOXT_DEBUG
 } // spindetecttimerCB()
-
-// *************************************************************************
-
-void
-SoXtExaminerViewer::pan(
-  const SbVec2f & mousepos )
-{
-  SoCamera * cam = this->getCamera();
-  assert(cam);
-
-  // Find projection points for the last and current mouse
-  // coordinates.
-  SbViewVolume vv = cam->getViewVolume(this->getGLAspectRatio());
-  SbLine line;
-  vv.projectPointToLine(mousepos, line);
-  SbVec3f current_planept;
-  this->panningplane.intersect(line, current_planept);
-  vv.projectPointToLine(this->lastmouseposition, line);
-  SbVec3f old_planept;
-  this->panningplane.intersect(line, old_planept);
-
-  // Reposition camera according to the vector difference between the
-  // projected points.
-  cam->position = cam->position.getValue() - (current_planept - old_planept);
-} // pan()
-
-void
-SoXtExaminerViewer::zoomByCursor(
-  const SbVec2f & mousepos )
-{
-  this->zoom( (mousepos[1] - this->lastmouseposition[1]) * 20.0f );
-} // zoomByCursor()
 

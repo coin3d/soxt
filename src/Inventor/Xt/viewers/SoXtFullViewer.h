@@ -22,14 +22,19 @@
 #ifndef SOXT_FULLVIEWER_H
 #define SOXT_FULLVIEWER_H
 
+#include <Inventor/Xt/viewers/SoAnyFullViewer.h>
 #include <Inventor/Xt/viewers/SoXtViewer.h>
 
 class SoAnyPopupMenu;
 
 // *************************************************************************
 
-class SoXtFullViewer : public SoXtViewer {
+class SoXtFullViewer :
+  public SoXtViewer,
+  public SoAnyFullViewer
+{
   typedef SoXtViewer inherited;
+  friend class SoAnyFullViewer;
 
 public:
   enum BuildFlag {
@@ -150,6 +155,20 @@ private:
   SbPList * viewerButtonsList;
 
   SbVec2f zoomrange;
+
+private:
+  void selectedViewing(void);
+  void selectedDecoration(void);
+  void selectedHeadlight(void);
+  void selectedPrefs(void);
+  void helpbuttonClicked(void);
+  void homebuttonClicked(void);
+  void sethomebuttonClicked(void);
+  void viewallbuttonClicked(void);
+  void seekbuttonClicked(void);
+  void copyviewSelected(void);
+  void pasteviewSelected(void);
+  void drawstyleActivated( int );
 
 }; // class SoXtFullViewer
 
