@@ -11319,7 +11319,11 @@ fi
 
 sim_ac_x11mu_avail=no
 sim_ac_x11mu_libs="-lXmu"
+
 sim_ac_save_libs=$LIBS
+sim_ac_save_cppflags=$CPPFLAGS
+sim_ac_save_ldflags=$LDFLAGS
+
 LIBS="$sim_ac_x11mu_libs $LIBS"
 
 echo "$as_me:$LINENO: checking whether the X11 miscellaneous utilities is available" >&5
@@ -11372,6 +11376,66 @@ echo "${ECHO_T}$sim_cv_lib_x11mu_avail" >&6
 
 if test x"$sim_cv_lib_x11mu_avail" = xyes; then
   sim_ac_x11mu_avail=yes
+else
+  # On HP-UX, Xmu might be located under /usr/contrib/X11R6/
+  if test -d /usr/controb/X11R6; then
+    CPPFLAGS="-I/usr/contrib/X11R6/include $CPPFLAGS"
+    LDFLAGS="-L/usr/contrib/X11R6/lib $LDFLAGS"
+    echo "$as_me:$LINENO: checking whether the X11 miscellaneous utilities is available" >&5
+echo $ECHO_N "checking whether the X11 miscellaneous utilities is available... $ECHO_C" >&6
+if test "${sim_cv_lib_x11mu_contrib_avail+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+#include <X11/Xlib.h>
+                    #include <X11/Xmu/Xmu.h>
+                    #include <X11/Xmu/StdCmap.h>
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+(void)XmuAllStandardColormaps(0L);
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_cv_lib_x11mu_contrib_avail=yes
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+sim_cv_lib_x11mu_contrib_avail=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+fi
+echo "$as_me:$LINENO: result: $sim_cv_lib_x11mu_contrib_avail" >&5
+echo "${ECHO_T}$sim_cv_lib_x11mu_contrib_avail" >&6
+    if test x"$sim_cv_lib_x11mu_contrib_avail" = xyes; then
+      sim_ac_x11mu_avail=yes
+    fi
+  fi
+fi
+
+if test x"$sim_ac_x11mu_avail" = xyes; then
+  :
 
 
 cat >>confdefs.h <<\_ACEOF
@@ -11382,6 +11446,8 @@ _ACEOF
 
 else
   LIBS=$sim_ac_save_libs
+  CPPFLAGS=$sim_ac_save_cppflags
+  LDFLAGS=$sim_ac_save_ldflags
 
 fi
 

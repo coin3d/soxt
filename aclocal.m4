@@ -5334,19 +5334,24 @@ fi
 #  The LIBS flag will also be modified accordingly. In addition, the
 #  variable $sim_ac_x11mu_avail is set to "yes" if the X11 miscellaneous
 #  utilities extension is found.
+#  CPPFLAGS and LDFLAGS might also be modified, if library is found in a
+#  non-standard location.
 #
 # Author: Morten Eriksen, <mortene@sim.no>.
 #
 # TODO:
 #    * [mortene:20000122] make sure this work on MSWin (with
 #      Cygwin installation)
-#
 
 AC_DEFUN([SIM_AC_CHECK_X11MU], [
 
 sim_ac_x11mu_avail=no
 sim_ac_x11mu_libs="-lXmu"
+
 sim_ac_save_libs=$LIBS
+sim_ac_save_cppflags=$CPPFLAGS
+sim_ac_save_ldflags=$LDFLAGS
+
 LIBS="$sim_ac_x11mu_libs $LIBS"
 
 AC_CACHE_CHECK(
@@ -5361,9 +5366,33 @@ AC_CACHE_CHECK(
 
 if test x"$sim_cv_lib_x11mu_avail" = xyes; then
   sim_ac_x11mu_avail=yes
+else
+  # On HP-UX, Xmu might be located under /usr/contrib/X11R6/
+  if test -d /usr/controb/X11R6; then
+    CPPFLAGS="-I/usr/contrib/X11R6/include $CPPFLAGS"
+    LDFLAGS="-L/usr/contrib/X11R6/lib $LDFLAGS"
+    AC_CACHE_CHECK(
+      [whether the X11 miscellaneous utilities is available],
+      sim_cv_lib_x11mu_contrib_avail,
+      [AC_TRY_LINK([#include <X11/Xlib.h>
+                    #include <X11/Xmu/Xmu.h>
+                    #include <X11/Xmu/StdCmap.h>],
+                   [(void)XmuAllStandardColormaps(0L);],
+                   [sim_cv_lib_x11mu_contrib_avail=yes],
+                   [sim_cv_lib_x11mu_contrib_avail=no])])
+    if test x"$sim_cv_lib_x11mu_contrib_avail" = xyes; then
+      sim_ac_x11mu_avail=yes
+    fi
+  fi
+fi
+
+if test x"$sim_ac_x11mu_avail" = xyes; then
+  :
   $1
 else
   LIBS=$sim_ac_save_libs
+  CPPFLAGS=$sim_ac_save_cppflags
+  LDFLAGS=$sim_ac_save_ldflags
   $2
 fi
 ])
