@@ -17,13 +17,7 @@
  *
  **************************************************************************/
 
-// *************************************************************************
-
-/*!
-  \class SoXtGLWidget Inventor/Xt/SoXtGLWidget.h
-  \brief The SoXtGLWidget class manages GL contexts.
-  \ingroup components
-*/
+// Class documentation in common/SoGuiGLWidgetCommon.cpp.in.
 
 // *************************************************************************
 
@@ -97,12 +91,6 @@ SOXT_OBJECT_ABSTRACT_SOURCE(SoXtGLWidget);
 // *************************************************************************
 
 /*!
-  \fn void SoXtGLWidget::redraw(void) = 0
-
-  This method is invokedwhen the GL buffer needs to be redrawn.
-*/
-
-/*!
   \var Visual * SoXtGLWidget::normalVisual
 
   Visual for normal graphics.
@@ -115,18 +103,6 @@ SOXT_OBJECT_ABSTRACT_SOURCE(SoXtGLWidget);
 */
 
 /*!
-  \var SbBool SoXtGLWidget::waitForExpose
-
-  Flag telling whether to wait for expose or not..
-*/
-
-/*!
-  \var SbBool SoXtGLWidget::drawToFrontBuffer
-
-  Whether drawing should happen to the front buffer or not.
-*/
-
-/*!
   \var SbBool SoXtGLWidget::doubleBuffer
 
   Whether double buffering is used or not.
@@ -135,10 +111,7 @@ SOXT_OBJECT_ABSTRACT_SOURCE(SoXtGLWidget);
 
 // *************************************************************************
 
-/*!
-  The constructor.
-*/
-
+// Documented in common/SoGuiGLWidgetCommon.cpp.in.
 SoXtGLWidget::SoXtGLWidget(Widget const parent,
                            const char * const name,
                            const SbBool embed,
@@ -161,10 +134,7 @@ SoXtGLWidget::SoXtGLWidget(Widget const parent,
   }
 }
 
-/*!
-  The destructor.
-*/
-
+// Documented in common/SoGuiGLWidgetCommon.cpp.in.
 SoXtGLWidget::~SoXtGLWidget()
 {
   this->unregisterWidget(PRIVATE(this)->glxmanager);
@@ -320,10 +290,7 @@ SoXtGLWidget::isDoubleBuffer(void) const
   return PRIVATE(this)->doublebuffer;
 }
 
-/*!
-  This method sets whether the GL area should be framed by a border or not.
-*/
-
+// Documented in common/SoGuiGLWidgetCommon.cpp.in.
 void
 SoXtGLWidget::setBorder(const SbBool enable)
 {
@@ -346,10 +313,7 @@ SoXtGLWidget::setBorder(const SbBool enable)
   }
 }
 
-/*!
-  This method returns whether the GL area is framed by a border or not.
-*/
-
+// Documented in common/SoGuiGLWidgetCommon.cpp.in.
 SbBool
 SoXtGLWidget::isBorder(void) const
 {
