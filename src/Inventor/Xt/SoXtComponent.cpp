@@ -230,6 +230,11 @@ SoXtComponent::SoXtComponent(const Widget parent,
                               SoXtComponentP::wmDeleteWindowCB, PRIVATE(this));
     }
   }
+
+  Widget shell = SoXt::getShellWidget(PRIVATE(this)->widget);
+  if ( shell ) {
+    PRIVATE(this)->shellmappedstatus = XtIsRealized(shell);
+  }
 }
 
 // documented in common/SoGuiComponentCommon.cpp.in.
@@ -607,7 +612,9 @@ SoXtComponent::setBaseWidget(Widget widget)
   if ( shell && (shell != PRIVATE(this)->widget) ) {
     XtAddEventHandler(shell, StructureNotifyMask, False,
                       SoXtComponentP::structureNotifyOnShellCB, (XtPointer) PRIVATE(this));
+    PRIVATE(this)->shellmappedstatus = XtIsRealized(shell);
   }
+
 }
 
 /*!
