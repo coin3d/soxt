@@ -31,11 +31,12 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/viewers/SoAnyPlaneViewer.h>
+#include <Inventor/Xt/widgets/SoXtPopupMenu.h>
+
+#include <Inventor/Xt/viewers/SoXtPlaneViewer.h>
 
 #include <Inventor/Xt/common/pixmaps/ortho.xpm>
 #include <Inventor/Xt/common/pixmaps/perspective.xpm>
-
-#include <Inventor/Xt/viewers/SoXtPlaneViewer.h>
 
 // *************************************************************************
 
@@ -79,6 +80,8 @@ void
 SoXtPlaneViewer::constructor(
   SbBool build )
 {
+  this->mode = IDLE_MODE;
+
   this->prefshell = this->prefsheet = (Widget) NULL;
   this->prefparts = NULL;
   this->numprefparts = 0;
@@ -302,6 +305,128 @@ void
 SoXtPlaneViewer::processEvent(
   XAnyEvent * event )
 {
+  if ( SoXtViewer::processCommonEvents( event ) )
+    return;
+
+/*
+  if ( ! this->mapped ) {
+    this->mapped = TRUE; // Must be set before setCursorRepresentation() call.
+    this->setCursorRepresentation( this->mode );
+  }
+*/
+
+  SbVec2s canvassize( this->getGLSize() );
+  SbVec2s mousepos( -1, -1 );
+
+  switch ( event->type ) {
+  case ButtonPress:
+  case ButtonRelease:
+    mousepos[0] = ((XButtonEvent *)event)->x;
+    mousepos[1] = canvassize[1] - ((XButtonEvent *)event)->y;
+    break;
+  case MotionNotify:
+    mousepos[0] = ((XPointerMovedEvent *)event)->x;
+    mousepos[1] = canvassize[1] - ((XPointerMovedEvent *)event)->y;
+    break;
+  default:
+    break;
+  }
+
+  SbVec2f mousepos_normalized;
+  mousepos_normalized[0] = (float) mousepos[0] / (float) canvassize[0];
+  mousepos_normalized[1] = (float) mousepos[1] / (float) canvassize[1];
+
+  switch ( event->type ) {
+  case ButtonPress:
+    switch ( ((XButtonEvent *) event)->button ) {
+    case 1:
+      if ( this->mode == IDLE_MODE ) {
+        this->interactiveCountInc();
+        this->mode = DOLLY_MODE;
+      } else if ( this->mode == SEEK_WAIT_MODE ) {
+        this->interactiveCountInc();
+        this->seekToPoint( mousepos );
+      }
+      break;
+
+    case 2:
+      if ( this->mode == IDLE_MODE ) {
+        this->interactiveCountInc();
+        this->mode = TRANSLATE_MODE;
+      } else if ( this->mode == ROTZ_WAIT_MODE ) {
+        this->mode = ROTZ_MODE;
+      }
+      break;
+
+    case 3:
+      if ( this->isPopupMenuEnabled() ) {
+        int x = ((XButtonEvent *) event)->x_root;
+        int y = ((XButtonEvent *) event)->y_root;
+        if ( ! this->prefmenu )
+          this->buildPopupMenu();
+        this->prefmenu->PopUp( this->getGLWidget(), x, y );
+        return;
+      }
+      break;
+
+    case 4:
+      this->zoom( 0.1f );
+      return;
+
+    case 5:
+      this->zoom( -0.1f );
+      return;
+
+    default:
+      break;
+    } // switch ( button )
+
+    break;
+
+  case ButtonRelease:
+    switch ( ((XButtonEvent *) event)->button ) {
+    case 1:
+    case 2:
+      if ( this->mode != IDLE_MODE && this->mode != ROTZ_MODE ) {
+        this->interactiveCountDec();
+        this->mode = IDLE_MODE;
+      }
+      break;
+
+    default:
+      break;
+    } // switch ( ((XButtonEvent *) event)->button )
+    break;
+
+  case MotionNotify:
+    switch ( this->mode ) {
+    case DOLLY_MODE:
+      if ( mousepos_normalized[1] != this->prevMousePosition[1] ) {
+        float value = this->getRightWheelValue() +
+          (this->prevMousePosition[1] - mousepos_normalized[1]) * 10.0f;
+        this->rightWheelMotion( value );
+        this->setRightWheelValue( value );
+      }
+      break;
+
+    default:
+      break;
+    } // switch ( this->mode )
+    break;
+
+  case KeyPress:
+    break;
+
+  case KeyRelease:
+    break;
+
+  default:
+    break;
+
+  } // switch ( event->type )
+
+  this->prevMousePosition = mousepos_normalized;
+
   inherited::processEvent( event );
 } // processEvent()
 
@@ -313,6 +438,7 @@ SoXtPlaneViewer::setSeekMode(
   SbBool enable )
 {
   SOXT_STUB_ONCE();
+  inherited::setSeekMode( enable );
 } // setSeekMode()
 
 /*!

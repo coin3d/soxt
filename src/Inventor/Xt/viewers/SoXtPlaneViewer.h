@@ -55,6 +55,21 @@ protected:
     SoXtViewer::Type type,
     SbBool buildNow );
 
+  enum PlaneViewerMode {
+    IDLE_MODE,
+
+    DOLLY_MODE,
+    TRANSLATE_MODE,
+
+    ROTZ_WAIT_MODE,
+    ROTZ_MODE,
+
+    SEEK_WAIT_MODE,
+    SEEK_MODE
+  } mode;
+
+
+
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
@@ -92,6 +107,8 @@ private:
   SOXT_WIDGET_CALLBACK( camerabutton );
 
   void zoom( const float difference );
+
+  SbVec2f prevMousePosition;
 
 private:
   SoAnyPlaneViewer * const common;
