@@ -34,7 +34,7 @@
 #endif // HAVE_LIBXPM
 
 #ifdef HAVE_LIBXMU
-#include <X11/Xmu.h>
+#include <X11/Xmu/Xmu.h>
 #include <X11/Xmu/StdCmap.h>
 #endif // HAVE_LIBXMU
 
