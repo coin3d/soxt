@@ -727,7 +727,11 @@ SoXtGLWidget::eventHandler(// static, protected
   *dispatch = False;
 } // event_handler()
 
-static void
+// NOTE: the strategy applied here for iterating through OpenGL canvas
+// settings is exactly the same as the one applied in Coin's
+// src/misc/SoOffscreenRenderer.cpp. So if you make any fixes or other
+// improvements here, migrate your changes.
+static int
 buildGLAttrs(int * attrs, int trynum)
 {
   int pos = 0;
@@ -749,7 +753,8 @@ buildGLAttrs(int * attrs, int trynum)
     attrs[pos++] = GLX_BLUE_SIZE;
     attrs[pos++] = 4;
   }
-  attrs[pos] = None;
+  attrs[pos++] = None;
+  return pos;
 }
 
 /*!
@@ -787,10 +792,12 @@ SoXtGLWidget::buildWidget(Widget parent)
 
   Display * const display = SoXt::getDisplay();
   int trynum = 0;
-  int attrs[32];
+  const int ARRAYSIZE = 32;
+  int attrs[ARRAYSIZE];
   int screen = DefaultScreen(display);
   while (PRIVATE(this)->normalvisual == NULL && trynum < 8) {
-    buildGLAttrs(attrs, trynum);
+    int arraysize = buildGLAttrs(attrs, trynum);
+    assert(arraysize < ARRAYSIZE);
     PRIVATE(this)->normalvisual = glXChooseVisual(display, screen, attrs);
     trynum++;
   }
