@@ -462,7 +462,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS SOXT_MAJOR_VERSION SOXT_MINOR_VERSION SOXT_MICRO_VERSION SOXT_VERSION SOXT_INTERFACE_AGE SOXT_BINARY_AGE LT_RELEASE LT_CURRENT LT_REVISION LT_AGE build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT sim_ac_mks_make EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB F77 FFLAGS ac_ct_F77 LIBTOOL SOGUI_EXTRA_CPPFLAGS SOGUI_EXTRA_CFLAGS SOGUI_EXTRA_CXXFLAGS SOGUI_EXTRA_LDFLAGS SOGUI_EXTRA_LIBS BUILD_LIBRARY_TRUE BUILD_LIBRARY_FALSE CONFIG SUFFIX htmldir SOGUI_DOC_HTML SOGUI_DOC_MAN sogui_build_dir sogui_src_dir sogui_html_dir sogui_man_dir BUILD_MANPAGES_TRUE BUILD_MANPAGES_FALSE BUILD_HTMLPAGES_TRUE BUILD_HTMLPAGES_FALSE sim_ac_doxygen_exe sim_ac_perl_exe path_tag BUILD_METAFILES_TRUE BUILD_METAFILES_FALSE meta_prefix DSUFFIX X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS USE_LIBXPM_TRUE USE_LIBXPM_FALSE sim_ac_coin_configcmd HAVE_JOYSTICK_LINUX_TRUE HAVE_JOYSTICK_LINUX_FALSE BUILD_DEVCODE_TRUE BUILD_DEVCODE_FALSE COIN_COMPILER GUI Gui gui WIDGET EVENT COMPONENTHEADER soxt_configure_date LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS SOXT_MAJOR_VERSION SOXT_MINOR_VERSION SOXT_MICRO_VERSION SOXT_VERSION SOXT_INTERFACE_AGE SOXT_BINARY_AGE LT_RELEASE LT_CURRENT LT_REVISION LT_AGE build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os sim_ac_mks_make CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB F77 FFLAGS ac_ct_F77 LIBTOOL SOGUI_EXTRA_CPPFLAGS SOGUI_EXTRA_CFLAGS SOGUI_EXTRA_CXXFLAGS SOGUI_EXTRA_LDFLAGS SOGUI_EXTRA_LIBS BUILD_LIBRARY_TRUE BUILD_LIBRARY_FALSE CONFIG SUFFIX htmldir SOGUI_DOC_HTML SOGUI_DOC_MAN sogui_build_dir sogui_src_dir sogui_html_dir sogui_man_dir BUILD_MANPAGES_TRUE BUILD_MANPAGES_FALSE BUILD_HTMLPAGES_TRUE BUILD_HTMLPAGES_FALSE sim_ac_doxygen_exe sim_ac_perl_exe path_tag BUILD_METAFILES_TRUE BUILD_METAFILES_FALSE meta_prefix DSUFFIX X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS USE_LIBXPM_TRUE USE_LIBXPM_FALSE sim_ac_coin_configcmd HAVE_JOYSTICK_LINUX_TRUE HAVE_JOYSTICK_LINUX_FALSE BUILD_DEVCODE_TRUE BUILD_DEVCODE_FALSE COIN_COMPILER GUI Gui gui WIDGET EVENT COMPONENTHEADER soxt_configure_date LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -1674,6 +1674,57 @@ BUILD_WITH_MSVC=false  # no support for building under MSWin (yet?)
 # By setting the $cross_compiling variable to yes in advance, this test is
 # skipped.  We are of course not cross-compiling, so we correct the variable
 # afterwards.  2003-06-25 larsa
+
+
+case $build in
+*-mks )
+  AR=ar
+  # Extract the first word of "gmake", so it can be a program name with args.
+set dummy gmake; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_sim_ac_mks_make+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $sim_ac_mks_make in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_sim_ac_mks_make="$sim_ac_mks_make" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_sim_ac_mks_make="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  test -z "$ac_cv_path_sim_ac_mks_make" && ac_cv_path_sim_ac_mks_make="make"
+  ;;
+esac
+fi
+sim_ac_mks_make=$ac_cv_path_sim_ac_mks_make
+
+if test -n "$sim_ac_mks_make"; then
+  echo "$as_me:$LINENO: result: $sim_ac_mks_make" >&5
+echo "${ECHO_T}$sim_ac_mks_make" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+  MAKE="$sim_ac_mks_make"
+  SET_MAKE="MAKE=\"$sim_ac_mks_make\""
+  export AR MAKE
+  ;;
+esac
+
 
 case $build in
 *-mks ) cross_compiling=yes ;;
@@ -4007,57 +4058,6 @@ fi
 
   MAINT=$MAINTAINER_MODE_TRUE
 
-
-
-
-case $build in
-*-mks )
-  AR=ar
-  # Extract the first word of "gmake", so it can be a program name with args.
-set dummy gmake; ac_word=$2
-echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
-if test "${ac_cv_path_sim_ac_mks_make+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $sim_ac_mks_make in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_sim_ac_mks_make="$sim_ac_mks_make" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_path_sim_ac_mks_make="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-
-  test -z "$ac_cv_path_sim_ac_mks_make" && ac_cv_path_sim_ac_mks_make="make"
-  ;;
-esac
-fi
-sim_ac_mks_make=$ac_cv_path_sim_ac_mks_make
-
-if test -n "$sim_ac_mks_make"; then
-  echo "$as_me:$LINENO: result: $sim_ac_mks_make" >&5
-echo "${ECHO_T}$sim_ac_mks_make" >&6
-else
-  echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-fi
-
-  MAKE="$sim_ac_mks_make"
-  SET_MAKE="MAKE=\"$sim_ac_mks_make\""
-  export AR MAKE
-  ;;
-esac
 
 
 # case "$host_os" in
@@ -19844,8 +19844,6 @@ rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 # It is on purpose that we avoid caching, as this macro could be
 # run twice from the same configure-script: once for the C compiler,
 # once for the C++ compiler.
-echo "$as_me:$LINENO: checking if mathlib linkage is ready" >&5
-echo $ECHO_N "checking if mathlib linkage is ready... $ECHO_C" >&6
 
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
@@ -19901,9 +19899,6 @@ sim_ac_mathlib_ready=false
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 
-echo "$as_me:$LINENO: result: $sim_ac_mathlib_ready" >&5
-echo "${ECHO_T}$sim_ac_mathlib_ready" >&6
-
 if ${sim_ac_mathlib_ready}; then
   :
 else
@@ -19925,7 +19920,12 @@ for sim_ac_math_chk in "" -lm -lmw; do
   if test x"$sim_ac_mathlib_test" = xUNDEFINED; then
     sim_ac_store_libs=$LIBS
     LIBS="$sim_ac_store_libs $sim_ac_math_chk"
-    cat >conftest.$ac_ext <<_ACEOF
+
+# It is on purpose that we avoid caching, as this macro could be
+# run twice from the same configure-script: once for the C compiler,
+# once for the C++ compiler.
+
+cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
 _ACEOF
@@ -19933,26 +19933,27 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 #include <math.h>
-                #include <stdlib.h>
-                #include <stdio.h>
+    #include <stdlib.h>
+    #include <stdio.h>
 int
 main ()
 {
 char s[16];
-                 /*
-                    SGI IRIX MIPSpro compilers may "fold" math
-                    functions with constant arguments already
-                    at compile time.
-                     It is also theoretically possible to do this
-                    for atof(), so to be _absolutely_ sure the
-                    math functions aren't replaced by constants at
-                    compile time, we get the arguments from a guaranteed
-                    non-constant source (stdin).
-                 */
-                fmod(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin)));
-                pow(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin)));
-                exp(atof(fgets(s,15,stdin)));
-                sin(atof(fgets(s,15,stdin)))
+    /*
+    SGI IRIX MIPSpro compilers may "fold" math
+    functions with constant arguments already
+    at compile time.
+
+    It is also theoretically possible to do this
+    for atof(), so to be _absolutely_ sure the
+    math functions aren't replaced by constants at
+    compile time, we get the arguments from a guaranteed
+    non-constant source (stdin).
+    */
+    printf("> %g\n",fmod(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin))));
+    printf("> %g\n",pow(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin))));
+    printf("> %g\n",exp(atof(fgets(s,15,stdin))));
+    printf("> %g\n",sin(atof(fgets(s,15,stdin))))
   ;
   return 0;
 }
@@ -19969,25 +19970,39 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_ac_mathlib_test=$sim_ac_math_chk
+  sim_ac_mathlib_ready=true
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
+sim_ac_mathlib_ready=false
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+
+if ${sim_ac_mathlib_ready}; then
+  sim_ac_mathlib_test=$sim_ac_math_chk
+else
+  :
+fi
+
     LIBS=$sim_ac_store_libs
   fi
 done
 
-echo "$as_me:$LINENO: result: $sim_ac_mathlib_test" >&5
-echo "${ECHO_T}$sim_ac_mathlib_test" >&6
-
 if test x"$sim_ac_mathlib_test" != xUNDEFINED; then
-  sim_ac_libm=$sim_ac_mathlib_test
-  LIBS="$sim_ac_libm $LIBS"
+  if test x"$sim_ac_mathlib_test" != x""; then
+    sim_ac_libm=$sim_ac_mathlib_test
+    LIBS="$sim_ac_libm $LIBS"
+    echo "$as_me:$LINENO: result: $sim_ac_mathlib_test" >&5
+echo "${ECHO_T}$sim_ac_mathlib_test" >&6
+  else
+    echo "$as_me:$LINENO: result: no explicit linkage necessary" >&5
+echo "${ECHO_T}no explicit linkage necessary" >&6
+  fi
   SOGUI_EXTRA_LIBS="$SOGUI_EXTRA_LIBS $sim_ac_libm"
 else
+  echo "$as_me:$LINENO: result: failed!" >&5
+echo "${ECHO_T}failed!" >&6
   { { echo "$as_me:$LINENO: error: could not find a way to use math library" >&5
 echo "$as_me: error: could not find a way to use math library" >&2;}
    { (exit 1); exit 1; }; }
@@ -23468,7 +23483,7 @@ fi;
 
 case $build in
 *-mks ) sim_ac_pathsep=";" ;;
-* )     sim_ac_pathsep=":" ;;
+* )     sim_ac_pathsep="${PATH_SEPARATOR}" ;;
 esac
 
 if $sim_ac_coin_desired; then
@@ -25200,6 +25215,7 @@ s,@target@,$target,;t t
 s,@target_cpu@,$target_cpu,;t t
 s,@target_vendor@,$target_vendor,;t t
 s,@target_os@,$target_os,;t t
+s,@sim_ac_mks_make@,$sim_ac_mks_make,;t t
 s,@CC@,$CC,;t t
 s,@CFLAGS@,$CFLAGS,;t t
 s,@LDFLAGS@,$LDFLAGS,;t t
@@ -25246,7 +25262,6 @@ s,@am__fastdepCXX_FALSE@,$am__fastdepCXX_FALSE,;t t
 s,@MAINTAINER_MODE_TRUE@,$MAINTAINER_MODE_TRUE,;t t
 s,@MAINTAINER_MODE_FALSE@,$MAINTAINER_MODE_FALSE,;t t
 s,@MAINT@,$MAINT,;t t
-s,@sim_ac_mks_make@,$sim_ac_mks_make,;t t
 s,@EGREP@,$EGREP,;t t
 s,@LN_S@,$LN_S,;t t
 s,@ECHO@,$ECHO,;t t
