@@ -127,7 +127,9 @@ libSoXt_la_SOURCES = \
 	SoXtComponent.cpp \
 	SoXtGLWidget.h \
 	SoXtGLWidget.cpp \
-	SoXtRenderAreaExtra.cpp
+	SoXtRenderAreaExtra.cpp \
+	SoXtResource.h \
+	SoXtResource.cpp
 
 
 libSoXt_la_LIBADD = \
@@ -165,7 +167,7 @@ libSoXt_la_LDFLAGS =
 libSoXt_la_DEPENDENCIES =  devices/libSoXtDevices.la \
 viewers/libSoXtViewers.la widgets/libSoXtWidgets.la
 am_libSoXt_la_OBJECTS =  SoXtRenderArea.lo SoXt.lo SoXtComponent.lo \
-SoXtGLWidget.lo SoXtRenderAreaExtra.lo
+SoXtGLWidget.lo SoXtRenderAreaExtra.lo SoXtResource.lo
 libSoXt_la_OBJECTS =  $(am_libSoXt_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -189,7 +191,7 @@ GZIP_ENV = --best
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoXt.Plo $(DEPDIR)/SoXtComponent.Plo \
 $(DEPDIR)/SoXtGLWidget.Plo $(DEPDIR)/SoXtRenderArea.Plo \
-$(DEPDIR)/SoXtRenderAreaExtra.Plo
+$(DEPDIR)/SoXtRenderAreaExtra.Plo $(DEPDIR)/SoXtResource.Plo
 SOURCES = $(libSoXt_la_SOURCES)
 OBJECTS = $(am_libSoXt_la_OBJECTS)
 
@@ -373,6 +375,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoXtGLWidget.Plo
 @AMDEP@include $(DEPDIR)/SoXtRenderArea.Plo
 @AMDEP@include $(DEPDIR)/SoXtRenderAreaExtra.Plo
+@AMDEP@include $(DEPDIR)/SoXtResource.Plo
 
 mostlyclean-depend:
 

@@ -38,7 +38,9 @@ libSoXt_la_SOURCES = \
 	SoXtComponent.cpp \
 	SoXtGLWidget.h \
 	SoXtGLWidget.cpp \
-	SoXtRenderAreaExtra.cpp
+	SoXtRenderAreaExtra.cpp \
+	SoXtResource.h \
+	SoXtResource.cpp
 
 libSoXt_la_LIBADD = \
 	devices/libSoXtDevices.la \
