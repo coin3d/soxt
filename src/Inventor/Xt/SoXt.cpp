@@ -158,6 +158,11 @@ SoXt::hide( // static
 
 // *************************************************************************
 
+/*!
+  Create and return a localized string from \a string.
+
+  The caller is responsible for freeing the returned XmString.
+ */
 XmString
 SoXt::encodeString( // static
   char * string )
@@ -165,12 +170,21 @@ SoXt::encodeString( // static
   return XmStringCreateLocalized(string);
 } // encodeString()
 
+/*!
+  Decode a left-to-right localized string into a simple character
+  array, and return its memory pointer.
+
+  The caller is responsible for freeing the returned character string
+  with XtFree() to avoid memory leaks.
+*/
 char *
 SoXt::decodeString( // static
   XmString xstring )
 {
-  SOGUI_STUB();
-  return 0;
+  char * str;
+  /* set str to point to the text */
+  XmStringGetLtoR(xstring, XmSTRING_DEFAULT_CHARSET, &str);
+  return str;
 } // decodeString()
 
 // *************************************************************************
