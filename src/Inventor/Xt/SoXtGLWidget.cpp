@@ -925,4 +925,22 @@ SoXtGLWidget::glFlushBuffer(void)
   glFlush();
 }
 
+// Return a flag indicating whether or not OpenGL rendering is
+// happening directly from the CPU(s) to the GPU(s), ie on a local
+// display.
+SbBool
+SoXtGLWidgetP::isDirectRendering(void)
+{
+  PUBLIC(this)->glLockNormal();
+  GLXContext ctx = glXGetCurrentContext();
+  if (!ctx) {
+    SoDebugError::postWarning("SoXtGLWidgetP::isDirectRendering",
+                              "Could not get hold of current context.");
+    return TRUE;
+  }
+  Bool isdirect = glXIsDirect(SoXt::getDisplay(), ctx);
+  PUBLIC(this)->glUnlockNormal();
+  return isdirect ? TRUE : FALSE;
+}
+
 // *************************************************************************

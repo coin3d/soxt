@@ -58,6 +58,9 @@ public:
   GLXContext overlaycontext;
   XVisualInfo * overlayvisual;
   SbBool doublebuffer;
+
+protected:
+  virtual SbBool isDirectRendering(void);
 };
 
 // ************************************************************************
