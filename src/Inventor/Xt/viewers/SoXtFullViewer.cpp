@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #if HAVE_CONFIG_H
 #include "config.h"
@@ -96,8 +98,8 @@ SoXtFullViewer::SoXtFullViewer( // protected
   Type type,
   SbBool build )
 : inherited( parent, name, inParent, type, FALSE )
-, common( new SoAnyFullViewer( this ) )
 , popupTitle( NULL )
+, common( new SoAnyFullViewer( this ) )
 {
   this->viewerbase = NULL;
   this->canvas = NULL;
@@ -498,14 +500,6 @@ SoXtFullViewer::buildLeftTrim( // virtual
 {
   Widget trim = XtVaCreateManagedWidget( "LeftTrim",
       xmFormWidgetClass, parent,
-/*
-      XmNleftAttachment, XmATTACH_FORM,
-      XmNtopAttachment, XmATTACH_FORM,
-      XmNbottomAttachment, XmATTACH_FORM,
-      XmNbottomOffset, 30,
-      XmNrightAttachment, XmATTACH_OPPOSITE_FORM,
-      XmNrightOffset, -30,
-*/
       NULL );
 
   // build application buttons
@@ -518,7 +512,7 @@ SoXtFullViewer::buildLeftTrim( // virtual
     NULL );
 */
 
-  // add right thumb wheel
+  // add left thumb wheel
   this->wheels[LEFTDECORATION] = XtVaCreateManagedWidget( "LeftWheel",
     soxtThumbWheelWidgetClass, trim,
     XmNleftAttachment, XmATTACH_FORM,
@@ -545,6 +539,8 @@ SoXtFullViewer::buildLeftTrim( // virtual
   return trim;
 } // buildLeftTrim()
 
+// *************************************************************************
+
 /*!
   This method creates the right decoration form.
 */
@@ -554,18 +550,16 @@ SoXtFullViewer::buildRightTrim( // virtual
   Widget parent )
 {
   Widget trim = XtVaCreateManagedWidget( "RightTrim",
-      xmFormWidgetClass, parent,
-/*
-      XmNtopAttachment, XmATTACH_FORM,
-      XmNrightAttachment, XmATTACH_FORM,
-      XmNbottomAttachment, XmATTACH_FORM,
-      XmNbottomOffset, 30,
-      XmNleftAttachment, XmATTACH_OPPOSITE_FORM,
-      XmNleftOffset, -30,
-*/
-      NULL );
+    xmFormWidgetClass, parent,
+    NULL );
 
-  this->buildViewerButtons( trim );
+  Widget buttonsform = this->buildViewerButtons( trim );
+
+  XtVaSetValues( buttonsform,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    NULL );
 
   // add right thumb wheel
   this->wheels[RIGHTDECORATION] = XtVaCreateManagedWidget( "RightWheel",
@@ -594,6 +588,8 @@ SoXtFullViewer::buildRightTrim( // virtual
   return trim;
 } // buildRightTrim()
 
+// *************************************************************************
+
 /*!
   This method created the bottom decoration form.
 */
@@ -603,19 +599,16 @@ SoXtFullViewer::buildBottomTrim( // virtual
   Widget parent )
 {
   Widget trim = XtVaCreateManagedWidget( "BottomTrim",
-      xmFormWidgetClass, parent,
+    xmFormWidgetClass, parent,
 /*
-      XmNleftAttachment, XmATTACH_FORM,
-      XmNrightAttachment, XmATTACH_FORM,
-      XmNbottomAttachment, XmATTACH_FORM,
-      XmNtopAttachment, XmATTACH_OPPOSITE_FORM,
-      XmNtopOffset, -30,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNtopAttachment, XmATTACH_OPPOSITE_FORM,
+    XmNtopOffset, -30,
 */
-      NULL );
+    NULL );
 
-  const char * string;
-
-  string = this->wheelstrings[LEFTDECORATION].getString();
   this->wheellabels[LEFTDECORATION] = XtVaCreateManagedWidget( "LeftWheelLabel",
     xmLabelWidgetClass, trim,
     XmNleftAttachment, XmATTACH_FORM,
@@ -838,19 +831,11 @@ Widget
 SoXtFullViewer::buildViewerButtons(
   Widget parent )
 {
-//  Widget form = XtVaCreateManagedWidget( "ViewerButtons",
-//      xmFormWidgetClass, parent, NULL );
+  Widget form = XtVaCreateManagedWidget( "ViewerButtons",
+    xmFormWidgetClass, parent,
+    NULL );
 
-  this->createViewerButtons( parent, this->viewerButtonsList );
-
-//  XtVaSetValues( form,
-//    XmNx, 0, XmNy, 0,
-//    XmNleftAttachment, XmATTACH_POSITION,
-//    XmNtopAttachment, XmATTACH_POSITION,
-//    XmNwidth, 30,
-//    XmNheight, buttons * 30,
-//    XmNfractionBase, buttons,
-//    NULL );
+  this->createViewerButtons( form, this->viewerButtonsList );
 
   const int buttons = this->viewerButtonsList->getLength();
   for ( int i = 0; i < buttons; i++ ) {
@@ -867,29 +852,21 @@ SoXtFullViewer::buildViewerButtons(
       NULL );
   }
 
-/*
-  XtUnmanageChild( this->viewerbuttons.pick );
   XtSetSensitive( this->viewerbuttons.pick, this->isViewing() ? True : False );
   XtVaSetValues( this->viewerbuttons.pick,
     XmNset, this->isViewing() ? False : True,
     XmNwidth, 30,
     XmNheight, 30,
     NULL );
-  XtManageChild( this->viewerbuttons.pick );
-*/
 
-/*
-  XtUnmanageChild( this->viewerbuttons.view );
   XtSetSensitive( this->viewerbuttons.view, this->isViewing() ? False : True );
   XtVaSetValues( this->viewerbuttons.view,
                  XmNset, this->isViewing() ? True : False,
                  XmNwidth, 30,
                  XmNheight, 30,
                  NULL );
-  XtManageChild( this->viewerbuttons.view );
-*/
 
-  return parent;
+  return form;
 } // buildViewerButtons()
 
 // *************************************************************************
@@ -904,10 +881,6 @@ SoXtFullViewer::createPixmapFromXpmData(
   Widget button,
   char ** xpm )
 {
-#if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXtFullViewer::createPixmapFromXpmData",
-    "[enter]" );
-#endif // SOXT_DEBUG
 #if HAVE_LIBXPM
   Pixel bg;
   XtVaGetValues( button, XmNbackground, &bg, NULL );
@@ -1543,7 +1516,10 @@ void
 SoXtFullViewer::openViewerHelpCard( // virtual
   void )
 {
-  SOXT_STUB();
+#if SOXT_DEBUG
+  SoDebugError::postInfo( "SoXtFullViewer::openViewerHelpCard",
+    "no help card for base viewer class" );
+#endif // SOXT_DEBUG
 } // openViewerHelpCard()
 
 // *************************************************************************
@@ -3372,5 +3348,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 
 // *************************************************************************
 
+#if SOXT_DEBUG
 static const char * getSoXtFullViewerRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
 
