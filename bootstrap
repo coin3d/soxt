@@ -50,8 +50,10 @@ PROJECT=SoXt
 GUI=Xt
 MACRODIR=cfg/m4
 
-SUBPROJECTS="$MACRODIR data"
-SUBPROJECTNAMES="SoXtMacros SoXtData"
+# SUBPROJECTS="$MACRODIR data"
+# SUBPROJECTNAMES="SoXtMacros SoXtData"
+SUBPROJECTS="$MACRODIR"
+SUBPROJECTNAMES="SoXtMacros"
 : ${AUTOMAKE_ADD=}
 
 echo "Checking the installed configuration tools..."
