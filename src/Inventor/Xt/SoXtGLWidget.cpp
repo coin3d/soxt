@@ -90,6 +90,11 @@ SoXtGLWidgetP::SoXtGLWidgetP(SoXtGLWidget * w)
 
 SoXtGLWidgetP::~SoXtGLWidgetP()
 {
+  if ( this->normalvisual ) {
+    XFree(this->normalvisual);
+  }
+  // FIXME: if this is correct, overlayvisual should also be freed I guess
+  // 20040901 larsa
 }
 
 // *************************************************************************
