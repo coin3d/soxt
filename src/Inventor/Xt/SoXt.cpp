@@ -1105,23 +1105,28 @@ SoXt::selectBestVisual(// static
 {
   if (dpy == NULL) {
      dpy = XOpenDisplay(NULL);
-#if SOXT_DEBUG && 0
-     // This is _extremely_ useful for debugging X errors: activate
-     // this code (flip the "0" above to "1"), recompile libSoXt, then
-     // run the application code in a debugger with a breakpoint set
-     // at _XError. Now you can backtrace to the exact source location
-     // of the failing X request.
-     if (dpy) {
+     if (dpy == NULL) {
        SoDebugError::postInfo("SoXt::selectBestVisual",
-         "Turning on X synchronization.");
-       XSynchronize(dpy, True);
+                              "Failed to open display.");
+       // FIXME: invoke the fatal error handler. 20011220 mortene.
+       exit(-1);
      }
-#endif // SOXT_DEBUG
   }
-  if (dpy == NULL) {
-    SoDebugError::postInfo("SoXt::selectBestVisual",
-      "Failed to open display.");
-    exit(-1);
+
+  // This is _extremely_ useful for debugging X errors: activate this
+  // code (set the SOXT_XSYNC environment variable on your system to
+  // "1"), then rerun the application code in a debugger with a
+  // breakpoint set at _XError. Now you can backtrace to the exact
+  // source location of the failing X request.
+  static int SOXT_XSYNC = -1;
+  if (SOXT_XSYNC == -1) {
+    const char * env = SoAny::si()->getenv("SOXT_XSYNC");
+    SOXT_XSYNC = env ? atoi(env) : 0;
+    if (SOXT_XSYNC) {
+      SoDebugError::postInfo("SoXt::selectBestVisual",
+                             "Turning on X synchronization.");
+      XSynchronize(dpy, True);
+    }
   }
 
   int snum = XDefaultScreen(dpy);
