@@ -49,11 +49,10 @@ acdata_DATA = so@gui@.m4
 cfgdatadir = $(datadir)/Coin/conf
 cfgdata_DATA = so@gui@-@CONFIG@.cfg
 
-# now fixed by configure, because of data/configure dependency
-# so@gui@-@CONFIG@.cfg: Makefile config.status $(srcdir)/src/Inventor/@Gui@/common/sogui.cfg.in
-# 	@$(SHELL) config.status --file=$@:$(srcdir)/src/Inventor/@Gui@/common/sogui.cfg.in
-
 dist_bin_SCRIPTS = so@gui@-config
+
+so@gui@-config: Makefile config.status $(srcdir)/src/Inventor/@Gui@/common/sogui-config.in
+	@$(SHELL) config.status --file=$@:src/Inventor/@Gui@/common/sogui-config.in
 
 all-local: built-sources
 

@@ -86,7 +86,7 @@ AM_MAINTAINER_MODE
 
 AC_PROG_LIBTOOL
 
-# These are used for constructing the soqt-config file.
+# These are used for constructing the soxt-config file.
 SOGUI_EXTRA_CPPFLAGS=$CPPFLAGS
 SOGUI_EXTRA_LDFLAGS=$LDFLAGS
 SOGUI_EXTRA_LIBS=$LIBS
@@ -316,7 +316,7 @@ AM_CONDITIONAL(BUILD_DEVCODE, $sim_ac_want_devcode)
 
 COIN_COMPILER="$CXX"
 if $BUILD_WITH_MSVC; then
-  # don't use wrapmsvc from source hierarchy when later using soqt-config.
+  # don't use wrapmsvc from source hierarchy when later using soxt-config.
   COIN_COMPILER="wrapmsvc"
 fi
 AC_SUBST(COIN_COMPILER)

@@ -173,10 +173,6 @@ acdata_DATA = so@gui@.m4
 cfgdatadir = $(datadir)/Coin/conf
 cfgdata_DATA = so@gui@-@CONFIG@.cfg
 
-
-# now fixed by configure, because of data/configure dependency
-# so@gui@-@CONFIG@.cfg: Makefile config.status $(srcdir)/src/Inventor/@Gui@/common/sogui.cfg.in
-# 	@$(SHELL) config.status --file=$@:$(srcdir)/src/Inventor/@Gui@/common/sogui.cfg.in
 dist_bin_SCRIPTS = so@gui@-config
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -556,6 +552,9 @@ uninstall-info: uninstall-info-recursive
 	uninstall-cfgdataDATA uninstall-dist_binSCRIPTS \
 	uninstall-info-am uninstall-info-recursive uninstall-recursive
 
+
+so@gui@-config: Makefile config.status $(srcdir)/src/Inventor/@Gui@/common/sogui-config.in
+	@$(SHELL) config.status --file=$@:src/Inventor/@Gui@/common/sogui-config.in
 
 all-local: built-sources
 
