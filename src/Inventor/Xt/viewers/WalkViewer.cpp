@@ -28,6 +28,7 @@
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
 #include <Inventor/Xt/widgets/SoXtPopupMenu.h>
 #include <Inventor/Xt/viewers/SoXtWalkViewer.h>
+#include <Inventor/Xt/viewers/SoGuiWalkViewerP.h>
 
 // *************************************************************************
 
@@ -44,6 +45,21 @@
 
 SOXT_OBJECT_SOURCE(SoXtWalkViewer);
 
+// ************************************************************************
+
+class SoXtWalkViewerP : public SoGuiWalkViewerP {
+public:
+  SoXtWalkViewerP(SoXtWalkViewer * o)
+    : SoGuiWalkViewerP(o)
+  {
+  }
+
+  void constructor(void);
+};
+
+#define PRIVATE(ptr) ptr->pimpl
+#define PUBLIC(ptr) ptr->pub
+
 // *************************************************************************
 
 /*!
@@ -56,6 +72,7 @@ SoXtWalkViewer::SoXtWalkViewer(Widget parent,
                                SoXtViewer::Type type)
   : inherited(parent, name, embed, flag, type, FALSE)
 {
+  PRIVATE(this) = new SoXtWalkViewerP(this);
   this->constructor(TRUE);
 }
 
@@ -70,6 +87,7 @@ SoXtWalkViewer::SoXtWalkViewer(Widget parent,
                                SbBool build)
   : inherited(parent, name, embed, flag, type, FALSE)
 {
+  PRIVATE(this) = new SoXtWalkViewerP(this);
   this->constructor(build);
 }
 
@@ -100,6 +118,7 @@ SoXtWalkViewer::constructor(SbBool build)
 */
 SoXtWalkViewer::~SoXtWalkViewer()
 {
+  delete PRIVATE(this);
 }
 
 // *************************************************************************
@@ -198,7 +217,7 @@ SoXtWalkViewer::actualRedraw(void)
 void
 SoXtWalkViewer::rightWheelMotion(float value)
 {
-  this->dollyCamera(value - this->getRightWheelValue());
+  PRIVATE(this)->dollyCamera(value - this->getRightWheelValue());
   inherited::rightWheelMotion(value);
 }
 
@@ -285,7 +304,7 @@ SoXtWalkViewer::leftWheel2Start(void)
 void
 SoXtWalkViewer::leftWheel2Motion(float value)
 {
-  this->elevateCamera(value - this->getLeftWheel2Value());
+  PRIVATE(this)->elevateCamera(value - this->getLeftWheel2Value());
   this->heightvalue = value;
 }
 
