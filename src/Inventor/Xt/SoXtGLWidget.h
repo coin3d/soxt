@@ -130,7 +130,6 @@ protected:
   static void eventHandler( Widget, void *, XEvent *, Boolean * );
 
 protected:
-  void initNormalContext(void);
 
   void glLockNormal(void);
   void glUnlockNormal(void);
@@ -143,6 +142,7 @@ protected:
   virtual SbBool glScheduleRedraw(void);
 
 private:
+  void initNormalContext(void);
   SbVec2s glSize; // cached GL widget size
 
 }; // class SoXtGLWidget

@@ -163,6 +163,19 @@ SOXT_OBJECT_ABSTRACT_SOURCE(SoXtGLWidget);
   Whether double buffering is used or not.
 */
 
+/*!
+  \fn void SoXtGLWidget::setStereoBuffer(SbBool flag)
+  
+  Sets whether OpenGL stereo buffers (quad buffer stereo) should be used.
+*/
+
+/*!
+  \fn SbBool SoXtGLWidget::isStereoBuffer(void) const
+
+  Returns whether OpenGL stereo buffers are being used.
+*/
+
+
 // *************************************************************************
 
 /*!
@@ -524,6 +537,8 @@ SoXtGLWidget::initGraphic( // virtual, protected
   glUnlockNormal();
 } // initGraphic()
 
+
+// private method that initializes the normal GL context  
 void 
 SoXtGLWidget::initNormalContext(void)
 {
