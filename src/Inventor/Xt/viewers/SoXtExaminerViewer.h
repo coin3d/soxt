@@ -41,7 +41,7 @@ public:
       SoXtViewer::Type type = BROWSER );
   ~SoXtExaminerViewer(void);
 
-  virtual void setViewing( const SbBool enable );
+  virtual void setViewing( SbBool enable );
 
   void setAnimationEnabled( const SbBool enable );
   SbBool isAnimationEnabled(void) const;
