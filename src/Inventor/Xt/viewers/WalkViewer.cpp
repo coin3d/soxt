@@ -32,7 +32,6 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
 #include <Inventor/Xt/widgets/SoXtPopupMenu.h>
-#include <Inventor/Xt/viewers/SoAnyWalkViewer.h>
 #include <Inventor/Xt/viewers/SoXtWalkViewer.h>
 
 // *************************************************************************
