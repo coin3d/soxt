@@ -337,10 +337,7 @@ fi
 
 AC_DEFUN([AM_AUX_DIR_EXPAND], [
 # expand $ac_aux_dir to an absolute path
-if test "${CDPATH+set}" = set; then
-  CDPATH=${ZSH_VERSION+.}:   # as recommended in autoconf.texi
-fi
-am_aux_dir=`cd $ac_aux_dir && pwd`
+am_aux_dir=`CDPATH=:; cd $ac_aux_dir && pwd`
 ])
 
 # AM_PROG_INSTALL_SH
@@ -4505,109 +4502,6 @@ fi
 ])
 
 # Usage:
-#   SIM_CHECK_EXCEPTION_HANDLING
-#
-# Description:
-#   Let the user decide if C++ exception handling should be compiled
-#   in. The compiled libraries/executables will use a lot less space
-#   if they have exception handling support.
-#
-#   Note: this macro must be placed after AC_PROG_CXX in the
-#   configure.in script.
-#
-#   Author: Morten Eriksen, <mortene@sim.no>.
-#
-# TODO:
-#   * [mortene:19991114] make this work with compilers other than gcc/g++
-#
-
-AC_DEFUN([SIM_EXCEPTION_HANDLING], [
-AC_PREREQ([2.13])
-AC_ARG_ENABLE(
-  [exceptions],
-  AC_HELP_STRING([--enable-exceptions],
-                 [(g++ only) compile with exceptions [[default=no]]]),
-  [case "${enableval}" in
-    yes) enable_exceptions=yes ;;
-    no)  enable_exceptions=no ;;
-    *) AC_MSG_ERROR(bad value "${enableval}" for --enable-exceptions) ;;
-  esac],
-  [enable_exceptions=no])
-
-if test x"$enable_exceptions" = x"no"; then
-  if test "x$GXX" = "xyes"; then
-    unset _exception_flag
-    dnl This is for GCC >= 2.8
-    SIM_AC_CXX_COMPILER_OPTION([-fno-exceptions], [_exception_flag=-fno-exceptions])
-    if test x"${_exception_flag+set}" != x"set"; then
-      dnl For GCC versions < 2.8
-      SIM_AC_CXX_COMPILER_OPTION([-fno-handle-exceptions],
-                                 [_exception_flag=-fno-handle-exceptions])
-    fi
-    if test x"${_exception_flag+set}" != x"set"; then
-      AC_MSG_WARN([couldn't find a valid option for avoiding exception handling])
-    else
-      CXXFLAGS="$CXXFLAGS $_exception_flag"
-    fi
-  fi
-else
-  if test x"$GXX" != x"yes"; then
-    AC_MSG_WARN([--enable-exceptions only has effect when using GNU g++])
-  fi
-fi
-])
-
-
-#   Use this file to store miscellaneous macros related to checking
-#   compiler features.
-
-# Usage:
-#   SIM_AC_CC_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
-#   SIM_AC_CXX_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
-#
-# Description:
-#
-#   Check whether the current C or C++ compiler can handle a
-#   particular command-line option.
-#
-#
-# Author: Morten Eriksen, <mortene@sim.no>.
-#
-#   * [mortene:19991218] improve macros by catching and analyzing
-#     stderr (at least to see if there was any output there)?
-#
-
-AC_DEFUN([SIM_AC_COMPILER_OPTION], [
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS $1"
-AC_TRY_COMPILE([], [], [sim_ac_accept_result=yes], [sim_ac_accept_result=no])
-AC_MSG_RESULT([$sim_ac_accept_result])
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in $2 or $3.
-if test $sim_ac_accept_result = yes; then
-  ifelse($2, , :, $2)
-else
-  ifelse($3, , :, $3)
-fi
-])
-
-AC_DEFUN([SIM_AC_CC_COMPILER_OPTION], [
-AC_LANG_SAVE
-AC_LANG_C
-AC_MSG_CHECKING([whether $CC accepts $1])
-SIM_AC_COMPILER_OPTION($1, $2, $3)
-AC_LANG_RESTORE
-])
-
-AC_DEFUN([SIM_AC_CXX_COMPILER_OPTION], [
-AC_LANG_SAVE
-AC_LANG_CPLUSPLUS
-AC_MSG_CHECKING([whether $CXX accepts $1])
-SIM_AC_COMPILER_OPTION($1, $2, $3)
-AC_LANG_RESTORE
-])
-
-# Usage:
 #   SIM_AC_CHECK_VAR_FUNCTIONNAME
 #
 # Side-Effects:
@@ -4664,49 +4558,6 @@ fi
 if test x"$sim_cv_var_functionname" = x"__FUNCTION__"; then
   AC_DEFINE([HAVE_VAR___FUNCTION__], 1,
     [Define this to true if the __FUNCTION__ variable contains the current function name])
-fi
-])
-
-
-# Usage:
-#   SIM_PROFILING_SUPPORT
-#
-# Description:
-#   Let the user decide if profiling code should be compiled
-#   in. The compiled libraries/executables will use a lot less space
-#   if they don't contain profiling code information, and they will also
-#   execute faster.
-#
-#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
-#   in the configure.in script.
-#
-# Author: Morten Eriksen, <mortene@sim.no>.
-#
-# TODO:
-#   * [mortene:19991114] make this work with compilers other than gcc/g++
-#
-
-AC_DEFUN([SIM_PROFILING_SUPPORT], [
-AC_PREREQ([2.13])
-AC_ARG_ENABLE(
-  [profile],
-  AC_HELP_STRING([--enable-profile],
-                 [(GCC only) turn on inclusion of profiling code [[default=no]]]),
-  [case "${enableval}" in
-    yes) enable_profile=yes ;;
-    no)  enable_profile=no ;;
-    *) AC_MSG_ERROR(bad value "${enableval}" for --enable-profile) ;;
-  esac],
-  [enable_profile=no])
-
-if test x"$enable_profile" = x"yes"; then
-  if test x"$GXX" = x"yes" || test x"$GCC" = x"yes"; then
-    CFLAGS="$CFLAGS -pg"
-    CXXFLAGS="$CXXFLAGS -pg"
-    LDFLAGS="$LDFLAGS -pg"
-  else
-    AC_MSG_WARN([--enable-profile only has effect when using GNU gcc or g++])
-  fi
 fi
 ])
 
@@ -4787,100 +4638,6 @@ if $sim_ac_enable_optimization; then
 else
   CFLAGS="`echo $CFLAGS | sed 's/-O[[0-9]]*[[ ]]*//'`"
   CXXFLAGS="`echo $CXXFLAGS | sed 's/-O[[0-9]]*[[ ]]*//'`"
-fi
-])
-
-# Usage:
-#   SIM_COMPILER_WARNINGS
-#
-# Description:
-#   Take care of making a sensible selection of warning messages
-#   to turn on or off.
-# 
-#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
-#   in the configure.in script.
-# 
-# Author: Morten Eriksen, <mortene@sim.no>.
-# 
-# TODO:
-#   * [mortene:19991114] find out how to get GCC's
-#     -Werror-implicit-function-declaration option to work as expected
-#
-#   * [larsa:20010504] rename to SIM_AC_COMPILER_WARNINGS and clean up
-#     the macro
-
-AC_DEFUN([SIM_COMPILER_WARNINGS], [
-AC_ARG_ENABLE(
-  [warnings],
-  AC_HELP_STRING([--enable-warnings],
-                 [turn on warnings when compiling [[default=yes]]]),
-  [case "${enableval}" in
-    yes) enable_warnings=yes ;;
-    no)  enable_warnings=no ;;
-    *) AC_MSG_ERROR([bad value "$enableval" for --enable-warnings]) ;;
-  esac],
-  [enable_warnings=yes])
-
-if test x"$enable_warnings" = x"yes"; then
-  if test x"$GCC" = x"yes"; then
-    SIM_AC_CC_COMPILER_OPTION([-W -Wall -Wno-unused],
-                              [CFLAGS="$CFLAGS -W -Wall -Wno-unused"])
-    SIM_AC_CC_COMPILER_OPTION([-Wno-multichar],
-                              [CFLAGS="$CFLAGS -Wno-multichar"])
-  fi
-
-  if test x"$GXX" = x"yes"; then
-    SIM_AC_CXX_COMPILER_OPTION([-W -Wall -Wno-unused],
-                               [CXXFLAGS="$CXXFLAGS -W -Wall -Wno-unused"])
-    SIM_AC_CXX_COMPILER_OPTION([-Wno-multichar],
-                               [CXXFLAGS="$CXXFLAGS -Wno-multichar"])
-  fi
-
-  case $host in
-  *-*-irix*) 
-    ### Turn on all warnings ######################################
-    if test x"$CC" = xcc || test x"$CC" = xCC; then
-      SIM_AC_CC_COMPILER_OPTION([-fullwarn], [CFLAGS="$CFLAGS -fullwarn"])
-    fi
-    if test x"$CXX" = xCC; then
-      SIM_AC_CXX_COMPILER_OPTION([-fullwarn], [CXXFLAGS="$CXXFLAGS -fullwarn"])
-    fi
-
-    ### Turn off specific (bogus) warnings ########################
-
-    ### SGI MipsPro v?.?? (our compiler on IRIX 6.2) ##############
-    ##
-    ## 3115: ``type qualifiers are meaningless in this declaration''.
-    ## 3262: unused variables.
-    ##
-    ### SGI MipsPro v7.30 #########################################
-    ##
-    ## 1174: "The function was declared but never referenced."
-    ## 1209: "The controlling expression is constant." (kill warning on
-    ##       if (0), assert(FALSE), etc).
-    ## 1355: Kill warnings on extra semicolons (which happens with some
-    ##       of the Coin macros).
-    ## 1375: Non-virtual destructors in base classes.
-    ## 3201: Unused argument to a function.
-    ## 1110: "Statement is not reachable" (the Lex/Flex generated code in
-    ##       Coin/src/engines has lots of shitty code which needs this).
-    ## 1506: Implicit conversion from "unsigned long" to "long".
-    ##       SbTime.h in SGI/TGS Inventor does this, so we need to kill
-    ##       this warning to avoid all the output clutter when compiling
-    ##       the SoQt, SoGtk or SoXt libraries on IRIX with SGI MIPSPro CC.
-
-    sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,1110,1506"
-
-    if test x"$CC" = xcc || test x"$CC" = xCC; then
-      SIM_AC_CC_COMPILER_OPTION([$sim_ac_bogus_warnings],
-                                [CFLAGS="$CFLAGS $sim_ac_bogus_warnings"])
-    fi
-    if test x"$CXX" = xCC; then
-      SIM_AC_CXX_COMPILER_OPTION([$sim_ac_bogus_warnings],
-                                 [CXXFLAGS="$CXXFLAGS $sim_ac_bogus_warnings"])
-    fi
-  ;;
-  esac
 fi
 ])
 
@@ -5666,6 +5423,67 @@ fi
 ])# SIM_AC_CHECK_HEADER_GLU
 
 # **************************************************************************
+# SIM_AC_CHECK_HEADER_GLEXT([IF-FOUND], [IF-NOT-FOUND])
+#
+# This macro detects how to include the GLEXT header file, and gives you the
+# necessary CPPFLAGS in $sim_ac_glext_cppflags, and also sets the config.h
+# defines HAVE_GL_GLEXT_H or HAVE_OPENGL_GLEXT_H if one of them is found.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_GLEXT],
+[sim_ac_glext_header_avail=false
+AC_MSG_CHECKING([how to include glext.h])
+if test x"$with_opengl" != x"no"; then
+  sim_ac_glext_save_CPPFLAGS=$CPPFLAGS
+  if test x"$with_opengl" != xyes && test x"$with_opengl" != x""; then
+    sim_ac_glext_cppflags="-I${with_opengl}/include"
+    CPPFLAGS="$CPPFLAGS $sim_ac_glext_cppflags"
+  fi
+  SIM_AC_CHECK_HEADER_SILENT([GL/glext.h], [
+    sim_ac_glext_header_avail=true
+    sim_ac_glext_header=GL/glext.h
+    AC_DEFINE([HAVE_GL_GLEXT_H], 1, [define if the GLEXT header should be included as GL/glext.h])
+  ], [
+    SIM_AC_CHECK_HEADER_SILENT([OpenGL/gl.h], [
+      sim_ac_glext_header_avail=true
+      sim_ac_glext_header=OpenGL/glext.h
+      AC_DEFINE([HAVE_OPENGL_GLEXT_H], 1, [define if the GLEXT header should be included as OpenGL/glext.h])
+    ])
+  ])
+  sim_ac_gl_hpux=/opt/graphics/OpenGL
+  if test x$sim_ac_glext_header_avail = xfalse && test -d $sim_ac_gl_hpux; then
+    sim_ac_glext_cppflags=-I$sim_ac_gl_hpux/include
+    CPPFLAGS="$CPPFLAGS $sim_ac_glext_cppflags"
+    SIM_AC_CHECK_HEADER_SILENT([GL/glext.h], [
+      sim_ac_glext_header_avail=true
+      sim_ac_glext_header=GL/glext.h
+      AC_DEFINE([HAVE_GL_GLEXT_H], 1, [define if the GLEXT header should be included as GL/glext.h])
+    ], [
+      SIM_AC_CHECK_HEADER_SILENT([OpenGL/glext.h], [
+        sim_ac_glext_header_avail=true
+        sim_ac_glext_header=OpenGL/glext.h
+        AC_DEFINE([HAVE_OPENGL_GLEXT_H], 1, [define if the GLEXT header should be included as OpenGL/glext.h])
+      ])
+    ])
+  fi
+  CPPFLAGS="$sim_ac_glext_save_CPPFLAGS"
+  if $sim_ac_glext_header_avail; then
+    if test x"$sim_ac_glext_cppflags" = x""; then
+      AC_MSG_RESULT([@%:@include <$sim_ac_glext_header>])
+    else
+      AC_MSG_RESULT([$sim_ac_glext_cppflags, @%:@include <$sim_ac_glext_header>])
+    fi
+    $1
+  else
+    AC_MSG_RESULT([not found])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+])# SIM_AC_CHECK_HEADER_GLEXT
+
+# **************************************************************************
 
 AC_DEFUN(SIM_AC_CHECK_OPENGL, [
 
@@ -5716,14 +5534,14 @@ if test x"$with_opengl" != xno; then
     sim_ac_gl_ldflags="-Wl,-framework,OpenGL"
   fi
 
-  SIM_AC_CHECK_HEADER_GL(, [AC_MSG_ERROR([could not find gl.h])])
-
   sim_ac_save_cppflags=$CPPFLAGS
   sim_ac_save_ldflags=$LDFLAGS
   sim_ac_save_libs=$LIBS
 
   CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
   LDFLAGS="$LDFLAGS $sim_ac_gl_ldflags"
+
+  SIM_AC_CHECK_HEADER_GL(, [AC_MSG_ERROR([could not find gl.h])])
 
   AC_CACHE_CHECK(
     [whether OpenGL library is available],
@@ -5866,7 +5684,6 @@ glEnd();
     [sim_cv_glu_ready=true],
     [sim_cv_glu_ready=false])])
 
-CPPFLAGS=$sim_ac_glu_save_CPPFLAGS
 if $sim_cv_glu_ready; then
   ifelse([$1], , :, [$1])
 else
@@ -5885,7 +5702,7 @@ fi
 #    $sim_ac_glu_libs     (link libraries the linker needs for GLU)
 #
 #  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
-#  In addition, the variable $sim_ac_gly_avail is set to "yes" if GLU
+#  In addition, the variable $sim_ac_glu_avail is set to "yes" if GLU
 #  is found.
 #
 #
@@ -6208,6 +6025,55 @@ else
 fi
 ]) # SIM_AC_HAVE_AGL_IFELSE()
 
+
+#   Use this file to store miscellaneous macros related to checking
+#   compiler features.
+
+# Usage:
+#   SIM_AC_CC_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
+#   SIM_AC_CXX_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
+#
+# Description:
+#
+#   Check whether the current C or C++ compiler can handle a
+#   particular command-line option.
+#
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+#   * [mortene:19991218] improve macros by catching and analyzing
+#     stderr (at least to see if there was any output there)?
+#
+
+AC_DEFUN([SIM_AC_COMPILER_OPTION], [
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS $1"
+AC_TRY_COMPILE([], [], [sim_ac_accept_result=yes], [sim_ac_accept_result=no])
+AC_MSG_RESULT([$sim_ac_accept_result])
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in $2 or $3.
+if test $sim_ac_accept_result = yes; then
+  ifelse($2, , :, $2)
+else
+  ifelse($3, , :, $3)
+fi
+])
+
+AC_DEFUN([SIM_AC_CC_COMPILER_OPTION], [
+AC_LANG_SAVE
+AC_LANG_C
+AC_MSG_CHECKING([whether $CC accepts $1])
+SIM_AC_COMPILER_OPTION($1, $2, $3)
+AC_LANG_RESTORE
+])
+
+AC_DEFUN([SIM_AC_CXX_COMPILER_OPTION], [
+AC_LANG_SAVE
+AC_LANG_CPLUSPLUS
+AC_MSG_CHECKING([whether $CXX accepts $1])
+SIM_AC_COMPILER_OPTION($1, $2, $3)
+AC_LANG_RESTORE
+])
 
 # Usage:
 #  SIM_AC_CHECK_PTHREAD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
