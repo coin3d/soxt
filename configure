@@ -4061,7 +4061,7 @@ else
 #include <X11/Intrinsic.h>
         extern WidgetClass glwMDrawingAreaWidgetClass;
 int main() {
-Widget glxManager;
+Widget glxManager = NULL;
         Widget glxWidget = XtVaCreateManagedWidget("GLWidget",
           glwMDrawingAreaWidgetClass, glxManager, NULL);
 ; return 0; }
@@ -4085,7 +4085,7 @@ rm -f conftest*
 #include <X11/Intrinsic.h>
         extern WidgetClass glwDrawingAreaWidgetClass;
 int main() {
-Widget glxManager;
+Widget glxManager = NULL;
         Widget glxWidget = XtVaCreateManagedWidget("GLWidget",
           glwDrawingAreaWidgetClass, glxManager, NULL);
 ; return 0; }

@@ -1997,7 +1997,7 @@ AC_CACHE_CHECK(
       AC_TRY_LINK(
         [#include <X11/Intrinsic.h>
         extern WidgetClass glwMDrawingAreaWidgetClass;],
-        [Widget glxManager;
+        [Widget glxManager = NULL;
         Widget glxWidget = XtVaCreateManagedWidget("GLWidget",
           glwMDrawingAreaWidgetClass, glxManager, NULL);],
         [sim_cv_motif_glwidget="glwMDrawingAreaWidgetClass GLwMDrawA.h $lib"],
@@ -2008,7 +2008,7 @@ AC_CACHE_CHECK(
       AC_TRY_LINK(
         [#include <X11/Intrinsic.h>
         extern WidgetClass glwDrawingAreaWidgetClass;],
-        [Widget glxManager;
+        [Widget glxManager = NULL;
         Widget glxWidget = XtVaCreateManagedWidget("GLWidget",
           glwDrawingAreaWidgetClass, glxManager, NULL);],
         [sim_cv_motif_glwidget="glwDrawingAreaWidgetClass GLwDrawA.h $lib"],
