@@ -17,21 +17,27 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
+#include <X11/Intrinsic.h>
 #include <X11/StringDefs.h>
 #include <X11/Xmu/Editres.h>
+#include <X11/Xmu/StdCmap.h>
 #include <Xm/Xm.h>
 
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/misc/SoBasic.h>
+#include <Inventor/SbPList.h>
 #include <Inventor/nodekits/SoNodeKit.h>
-#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/sensors/SoSensorManager.h>
 
 #include <Inventor/Xt/SoXtBasic.h>
+
 #include <Inventor/Xt/SoXt.h>
 
 // *************************************************************************
@@ -46,37 +52,117 @@ XtIntervalId  SoXt::delaySensorId = 0;
 SbBool        SoXt::delaySensorActive = FALSE;
 XtIntervalId  SoXt::idleSensorId = 0;
 SbBool        SoXt::idleSensorActive = FALSE;
+SbPList *     SoXt::eventHandlers = NULL;
+
+char *        SoXt::appName = NULL;
+char *        SoXt::appClass = NULL;
 
 // *************************************************************************
+
+/*!
+  This method will fill in the integers pointed to by the arguments with the
+  corresponding part of the version id.  NULL pointers are ignored.
+
+  This method is not part of the original SoXt API from SGI.
+*/
+
+void
+SoXt::getVersionInfo( // static
+  int * const major,
+  int * const minor,
+  int * const micro )
+{
+  if ( major ) *major = SOXT_MAJOR_VERSION;
+  if ( minor ) *minor = SOXT_MINOR_VERSION;
+  if ( micro ) *micro = SOXT_MICRO_VERSION;
+} // getVersionInfo()
+
+/*!
+  This method returns a string containing the version id of the library.
+
+  This method is not part of the original SoXt API from SGI.
+*/
+
+const char *
+SoXt::getVersionString( // static
+  void )
+{
+  return SOXT_VERSION;
+} // getVersionString()
+
+// *************************************************************************
+
+/*!
+*/
 
 Widget
 SoXt::init( // static
   const char * const appName,
-  const char * const className )
+  const char * const appClass )
 {
   int argc = 1;
   char * argv[] = { (char *) appName, NULL };
-  return SoXt::init( argc, argv, appName, className );
+  return SoXt::init( argc, argv, appName, appClass );
 } // init()
+
+/*!
+*/
 
 Widget
 SoXt::init( // static
   int & argc,
   char ** argv,
   const char * const appName,
-  const char * const className )
+  const char * const appClass )
 {
-  XtAppContext context;
-  Widget toplevel = XtAppInitialize( &context, className,
-    NULL, 0, &argc, argv, SoXt::fallback_resources, NULL, 0 );
+  if ( appName )
+    SoXt::appName = strcpy( new char [strlen(appName) + 1], appName );
+  if ( appClass )
+    SoXt::appClass = strcpy( new char [strlen(appClass) + 1], appClass );
+
+  XtAppContext tempcontext; // SoXt::xtAppContext is set later
+
+  Display * display = NULL;
+  int depth = 0;
+  Visual * visual = NULL;
+  Colormap colormap = 0;
+
+  SoXt::selectBestVisual( display, visual, colormap, depth );
+
+  Widget toplevel = (Widget) NULL;
+  if ( visual ) {
+    toplevel = XtVaOpenApplication(
+      &tempcontext, SoXt::appClass, NULL, 0, &argc, argv,
+      SoXt::fallback_resources, topLevelShellWidgetClass,
+      XmNvisual, visual,
+      XmNdepth, depth,
+      XmNcolormap, colormap,
+      NULL );
+  } else {
+    SoDebugError::postInfo( "SoXt::init", "default toplevel! (error)" );
+    toplevel = XtVaOpenApplication(
+      &tempcontext, SoXt::appClass, NULL, 0, &argc, argv,
+      SoXt::fallback_resources, topLevelShellWidgetClass,
+      NULL );
+  }
+
+
   SoXt::init( toplevel );
   return toplevel;
 } // init()
+
+/*!
+*/
 
 void
 SoXt::init( // static
   Widget toplevel )
 {
+#if SOXT_DEBUG
+  setbuf( stdout, NULL );
+  setbuf( stderr, NULL );
+#endif // SOXT_DEBUG
+
   SoXt::mainWidget = toplevel;
   SoXt::display = XtDisplay( toplevel );
   SoXt::xtAppContext = XtWidgetToApplicationContext( toplevel );
@@ -89,37 +175,126 @@ SoXt::init( // static
 
   XtAppSetFallbackResources( SoXt::getAppContext(), SoXt::fallback_resources );
 
-  XtAddEventHandler( toplevel, (EventMask) 0, True,
-    (void (*)(Widget, void *, XEvent *, Boolean *)) _XEditResCheckMessages,
-    NULL );
+  XtEventHandler editres_hook = (XtEventHandler) _XEditResCheckMessages;
+  XtAddEventHandler( toplevel, (EventMask) 0, True, editres_hook, NULL );
 } // init()
 
 // *************************************************************************
+
+/*
+  Internal function for translating type code to event name.
+*/
+
+static const char *
+_eventName(
+  const int type )
+{
+  static const char * names[LASTEvent];
+  static int first = 1;
+  if ( first ) {
+    for ( int i = 0; i < LASTEvent; i++ )
+      names[i] = "<not set>";
+    names[KeyPress]          = "KeyPress";
+    names[KeyRelease]        = "KeyRelease";
+    names[ButtonPress]       = "ButtonPress";
+    names[ButtonRelease]     = "ButtonRelease";
+    names[MotionNotify]      = "MotionNotify";
+    names[EnterNotify]       = "EnterNotify";
+    names[LeaveNotify]       = "LeaveNotify";
+    names[FocusIn]           = "FocusIn";
+    names[FocusOut]          = "FocusOut";
+    names[KeymapNotify]      = "KeymapNotify";
+    names[Expose]            = "Expose";
+    names[GraphicsExpose]    = "GraphicsExpose";
+    names[NoExpose]          = "NoExpose";
+    names[VisibilityNotify]  = "VisibilityNotify";
+    names[DestroyNotify]     = "DestroyNotify";
+    names[CreateNotify]      = "CreateNotify";
+    first = 0;
+  }
+  if ( type >= 0 && type < LASTEvent )
+    return names[type];
+  return "<unknown>";
+} // _eventName()
+
+/*!
+  This function should be used instead of XtAppMainLoop().  The current
+  implementation is no different, but in the future we will add support
+  for input device extensions in this event dispatch loop.
+
+  If you need your own event dispatching loop, base your code on this one,
+  and use SoXt::dispatchEvent() when appropriate.
+*/
 
 void
 SoXt::mainLoop( // static
   void )
 {
-  XtAppMainLoop( SoXt::xtAppContext );
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXt::mainLoop", "[enter]" );
+#endif // SOXT_DEBUG
+  XEvent event;
+  XtAppContext context = SoXt::getAppContext();
+  Boolean exit = XtAppGetExitFlag( context );
+  while ( ! exit ) {
+    SoXt::nextEvent( context, &event );
+    Boolean dispatched = SoXt::dispatchEvent( &event );
+#if SOXT_DEBUG && 0
+    if ( ! dispatched ) {
+      SoDebugError::postInfo( "SoXt::mainLoop", "no event handler (%2d : %s)",
+        event.type, _eventName( event.type ) );
+    }
+#endif // SOXT_DEBUG
+    exit = XtAppGetExitFlag( context );
+  }
+#if SOXT_DEBUG
+  SoDebugError::postInfo( "SoXt::mainLoop", "[exit]" );
+#endif // SOXT_DEBUG
 } // mainLoop()
+
+/*!
+  This method calls XtAppNextEvent() to fill in the event structure with
+  the next event for the given context.
+*/
 
 void
 SoXt::nextEvent( // static
   XtAppContext context,
   XEvent * event )
 {
-  SOXT_STUB();
+  XtAppNextEvent( context, event );
 } // nextEvent()
+
+/*!
+  This method dispatches the event by calling XtDispatchEvent().  Special
+  handling of extension input devices will be handled in this method in
+  the future.
+*/
 
 Boolean
 SoXt::dispatchEvent( // static
   XEvent * event )
 {
-  SOXT_STUB();
-  return False;
+  Boolean dispatched = XtDispatchEvent( event );
+  if ( ! dispatched ) {
+    XtEventHandler handler;
+    XtPointer data;
+    Widget widget;
+    SoXt::getExtensionEventHandler( event, widget, handler, data );
+    if ( handler ) {
+      Boolean dispatch = False;
+      (*handler)( widget, data, event, &dispatch );
+      if ( dispatch == False )
+        dispatched = True;
+    }
+  }
+  return dispatched;
 } // dispatchEvent()
 
 // *************************************************************************
+
+/*!
+*/
 
 XtAppContext
 SoXt::getAppContext( // static
@@ -128,12 +303,18 @@ SoXt::getAppContext( // static
   return SoXt::xtAppContext;
 } // getAppContext()
 
+/*!
+*/
+
 Display *
 SoXt::getDisplay( // static
   void )
 {
   return SoXt::display;
 } // getDisplay()
+
+/*!
+*/
 
 Widget
 SoXt::getTopLevelWidget( // static
@@ -143,6 +324,31 @@ SoXt::getTopLevelWidget( // static
 } // getTopLevelWidget()
 
 // *************************************************************************
+
+/*!
+*/
+
+const char *
+SoXt::getAppName( // static
+  void )
+{
+  return SoXt::appName;
+} // getAppName()
+
+/*!
+*/
+
+const char *
+SoXt::getAppClass( // static
+  void )
+{
+  return SoXt::appClass;
+} // getAppClass()
+
+// *************************************************************************
+
+/*!
+*/
 
 void
 SoXt::show( // static
@@ -154,6 +360,9 @@ SoXt::show( // static
     XtManageChild( widget );
   }
 } // show()
+
+/*!
+*/
 
 void
 SoXt::hide( // static
@@ -195,11 +404,14 @@ SoXt::decodeString( // static
 {
   char * str;
   /* set str to point to the text */
-  XmStringGetLtoR(xstring, XmSTRING_DEFAULT_CHARSET, &str);
+  XmStringGetLtoR( xstring, XmSTRING_DEFAULT_CHARSET, &str );
   return str;
 } // decodeString()
 
 // *************************************************************************
+
+/*!
+*/
 
 void
 SoXt::setWidgetSize( // static
@@ -212,6 +424,9 @@ SoXt::setWidgetSize( // static
     NULL );
 } // setWidgetSize()
 
+/*!
+*/
+
 SbVec2s
 SoXt::getWidgetSize( // static
   Widget widget )
@@ -223,6 +438,9 @@ SoXt::getWidgetSize( // static
 
 // *************************************************************************
 
+/*!
+*/
+
 Widget
 SoXt::getShellWidget( // static
   Widget widget )
@@ -233,11 +451,13 @@ SoXt::getShellWidget( // static
       return p;
     p = XtParent(p);
   }
-  SOXT_STUB();
   return (Widget) NULL;
 } // getShellWidget()
 
 // *************************************************************************
+
+/*!
+*/
 
 void
 SoXt::createSimpleErrorDialog( // static
@@ -248,6 +468,9 @@ SoXt::createSimpleErrorDialog( // static
 {
   SOXT_STUB();
 } // createSimpleErrorDialog()
+
+/*!
+*/
 
 void
 SoXt::getPopupArgs( // static
@@ -261,6 +484,9 @@ SoXt::getPopupArgs( // static
 
 // *************************************************************************
 
+/*!
+*/
+
 void
 SoXt::registerColormapLoad( // static
   Widget widget,
@@ -269,6 +495,9 @@ SoXt::registerColormapLoad( // static
   SOXT_STUB();
 } // registerColormapLoad()
 
+/*!
+*/
+
 void
 SoXt::addColormapToShell( // static
   Widget widget,
@@ -276,6 +505,9 @@ SoXt::addColormapToShell( // static
 {
   SOXT_STUB();
 } // addColormapToShell()
+
+/*!
+*/
 
 void
 SoXt::removeColormapFromShell( // static
@@ -287,25 +519,110 @@ SoXt::removeColormapFromShell( // static
 
 // *************************************************************************
 
+typedef struct _EventHandlerInfo {
+  int type;
+  Widget widget;
+  XtEventHandler handler;
+  XtPointer data;
+} EventHandlerInfo;
+
+/*!
+*/
+
 void
 SoXt::addExtensionEventHandler( // static
   Widget widget,
-  int extensionEventType,
+  int type,
   XtEventHandler proc,
-  XtPointer clientData )
+  XtPointer data )
 {
-  SOXT_STUB();
+  EventHandlerInfo * info = new EventHandlerInfo;
+  info->type = type;
+  info->widget = widget;
+  info->handler = proc;
+  info->data = data;
+
+  if ( SoXt::eventHandlers == NULL )
+    SoXt::eventHandlers = new SbPList;
+
+#if SOXT_DEBUG
+  const int handlers = SoXt::eventHandlers->getLength();
+  for ( int i = 0; i < handlers; i++ ) {
+    EventHandlerInfo * query = (EventHandlerInfo *) (*SoXt::eventHandlers)[i];
+    if ( query->type == type )
+      SoDebugError::postWarning( "SoXt::addExtensionEventHandler",
+        "handler of type %d already exists, shadowing the new handler" );
+  }
+#endif // SOXT_DEBUG
+
+  SoXt::eventHandlers->append( (void *) info );
 } // addExtensionEventHandler()
+
+/*!
+*/
 
 void
 SoXt::removeExtensionEventHandler( // static
   Widget widget,
-  int extensionEventType,
+  int type,
   XtEventHandler proc,
-  XtPointer clientData )
+  XtPointer data )
 {
-  SOXT_STUB();
+  if ( SoXt::eventHandlers == NULL ) {
+#if SOXT_DEBUG
+    SoDebugError::postInfo( "SoXt::removeExtensionEventHandler",
+      "no extension event handlers registered." );
+#endif // SOXT_DEBUG
+    return;
+  }
+  int handlers = SoXt::eventHandlers->getLength();
+  for ( int i = 0; i < handlers; i++ ) {
+    EventHandlerInfo * info = (EventHandlerInfo *) (*SoXt::eventHandlers)[i];
+    if ( info->widget == widget && info->type == type &&
+         info->handler == proc && info->data == data ) {
+      SoXt::eventHandlers->remove(i);
+      delete info;
+      return;
+    }
+  }
+#if SOXT_DEBUG
+  SoDebugError::postInfo( "SoXt::removeExtensionEventHandler",
+    "no such extension event handler registered." );
+#endif // SOXT_DEBUG
 } // removeExtensionEventHandler()
+
+/*!
+*/
+
+void
+SoXt::getExtensionEventHandler( // static, protected
+  XEvent * event,
+  Widget & widget,
+  XtEventHandler & proc,
+  XtPointer & data )
+{
+  proc = (XtEventHandler) NULL;
+  data = (XtPointer) NULL;
+  widget = (Widget) NULL;
+
+  if ( SoXt::eventHandlers == NULL )
+    return;
+
+  const int handlers = SoXt::eventHandlers->getLength();
+  for ( int i = 0; i < handlers; i++ ) {
+    EventHandlerInfo * info = (EventHandlerInfo *) (*SoXt::eventHandlers)[i];
+    if ( info->type == event->type ) {
+      widget = info->widget;
+      proc = info->handler;
+      data = info->data;
+    }
+  }
+} // getExtensionEventHandler()
+
+// *************************************************************************
+
+/*!
+*/
 
 Widget
 SoXt::getwidget( // static
@@ -314,18 +631,6 @@ SoXt::getwidget( // static
   SOXT_STUB();
   return (Widget) NULL;
 } // getwidget()
-
-// *************************************************************************
-
-void
-SoXt::getExtensionEventHandler( // static
-  XEvent * event,
-  Widget & widget,
-  XtEventHandler & proc,
-  XtPointer & clientData )
-{
-  SOXT_STUB();
-} // getExtensionEventHandler()
 
 // *************************************************************************
 
@@ -457,6 +762,131 @@ SoXt::sensorQueueChanged( // static, private
 // *************************************************************************
 
 /*!
+  \internal
+*/
+
+static const char *
+_visualClassName(
+  const int vclass )
+{
+  switch ( vclass ) {
+  case StaticGray:   return "StaticGray";
+  case GrayScale:    return "GrayScale";
+  case StaticColor:  return "StaticColor";
+  case PseudoColor:  return "PseudoColor";
+  case TrueColor:    return "TrueColor";
+  case DirectColor:  return "DirectColor";
+  default:           return "<unknown>";
+  }
+} // _visualClassName()
+
+/*!
+  This function tries to find the best visual type, depth, and colormap
+  combination for the display.  The display argument may be given, or set
+  to NULL - then the default display will be used and returned.
+
+  When SoXt doesn't get it's graphics displayed correctly, this routine may
+  be the root of the problem.  Let's hope it solves more problems than it
+  introduces...
+
+  Misc Links:
+
+  "Beyond the Default Visual", by John Cwikla
+    http://www.motifzone.com/tmd/articles/DefaultVisual/DefaultVisual.html
+
+*/
+
+void
+SoXt::selectBestVisual( // static
+  Display *& dpy,
+  Visual *& visual,
+  Colormap & colormap,
+  int & depth )
+{
+  if ( dpy == NULL )
+     dpy = XOpenDisplay( NULL );
+  assert( dpy != NULL );
+
+  int snum = XDefaultScreen( dpy );
+
+  if ( XDefaultDepth( dpy, snum ) >= 24 ) { // me like...
+    depth = XDefaultDepth( dpy, snum );
+    visual = XDefaultVisual( dpy, snum );
+    colormap = XDefaultColormap( dpy, snum );
+    return;
+  }
+
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXt::selectBestVisual",
+    "we're beyond the default visual" );
+#endif // SOXT_DEBUG
+
+  static struct {
+    int depth;
+    int vclass;
+  } pri[] = { // how things are prioritized
+    { 24, DirectColor },
+    { 24, TrueColor },
+    { 24, PseudoColor },
+    { 16, DirectColor },
+    { 16, TrueColor },
+    { 16, PseudoColor },
+    { 12, DirectColor },
+    { 12, TrueColor },
+    { 12, PseudoColor },
+    { 8, PseudoColor },
+    { 0, 0 }
+  };
+
+  XVisualInfo vinfo;
+  for ( int i = 0; pri[i].depth != 0; i++ ) {
+    if ( XMatchVisualInfo( dpy, snum, pri[i].depth, pri[i].vclass, &vinfo ) ) {
+#if SOXT_DEBUG
+      SoDebugError::postInfo( "SoXt::selectBestVisual",
+        "visual: depth=%d, class=%s", vinfo.depth,
+        _visualClassName( vinfo.c_class ) );
+#endif // SOXT_DEBUG
+      visual = vinfo.visual;
+      depth = vinfo.depth;
+
+      int numcmaps;
+      XStandardColormap * stdcolormaps = NULL;
+
+      if ( XmuLookupStandardColormap( dpy, vinfo.screen, vinfo.visualid,
+             vinfo.depth, XA_RGB_DEFAULT_MAP, False, True )
+        && XGetRGBColormaps( dpy, RootWindow( dpy, vinfo.screen ),
+             &stdcolormaps, &numcmaps, XA_RGB_DEFAULT_MAP ) ) {
+        SbBool found = FALSE;
+        for ( i = 0; i < numcmaps && ! found; i++ ) {
+          if ( stdcolormaps[i].visualid == vinfo.visualid ) {
+            colormap = stdcolormaps[i].colormap;
+            found = TRUE;
+          }
+        }
+        if ( ! found ) {
+          SoDebugError::postInfo( "SoXt::selectBestVisual",
+            "standard RGB colormaps did not work with visual - creating own colormap" );
+          colormap = XCreateColormap(
+            dpy, RootWindow( dpy, vinfo.screen ), vinfo.visual, AllocNone );
+        }
+      } else {
+        SoDebugError::postInfo( "SoXt::selectBestVisual",
+          "no standard RGB colormaps - creating own colormap" );
+        colormap = XCreateColormap(
+          dpy, RootWindow( dpy, vinfo.screen ), vinfo.visual, AllocNone );
+      }
+      XtFree( (char *) stdcolormaps );
+      return;
+    }
+  }
+#if SOXT_DEBUG
+  SoDebugError::postInfo( "SoXt::selectBestVisual", "yikes!" );
+#endif // SOXT_DEBUG
+} // selectBestVisual()
+
+// *************************************************************************
+
+/*!
   \var SoXt::fallback_resources
 
   This is an array of X resources.
@@ -466,63 +896,148 @@ SoXt::sensorQueueChanged( // static, private
 String
 SoXt::fallback_resources[] =
 {
-#define _COMPONENT "*SoXtGLWidget*"
-  _COMPONENT     "background:"				"white", // not used
+#define _COMPONENT "*SoXtGLWidget"
+  _COMPONENT     ".background:"				"white", // not used
 #undef _COMPONENT
 
-#define _COMPONENT "*SoXtRenderArea*"
-  _COMPONENT     "border:"				"false",
-  _COMPONENT     "borderThickness:"			"2",
-  _COMPONENT     "background:"				"black",
+#define _COMPONENT "*SoXtRenderArea"
+  _COMPONENT     ".border:"				"false",
+  _COMPONENT     ".borderThickness:"			"2",
+  _COMPONENT     ".background:"				"black",
 #undef _COMPONENT
 
-#define _COMPONENT "*SoXtExaminerViewer*"
-  _COMPONENT	"title:"				"Examiner Viewer",
-  _COMPONENT	"LeftWheelLabel.labelString:"		"Rot Y",
-  _COMPONENT	"BottomWheelLabel.labelString:"		"Rot X",
-  _COMPONENT	"RightWheelLabel.dollyString:"		"Dolly",
-  _COMPONENT	"RightWheelLabel.zoomString:"		"Zoom",
+#define _COMPONENT "*SoXtExaminerViewer"
+  _COMPONENT	".title:"				"Examiner Viewer",
+  _COMPONENT	"*LeftWheelLabel.labelString:"		"Rot Y",
+  _COMPONENT	"*BottomWheelLabel.labelString:"	"Rot X",
+  _COMPONENT	"*RightWheelLabel.dollyString:"		"Dolly",
+  _COMPONENT	"*RightWheelLabel.zoomString:"		"Zoom",
 #undef _COMPONENT
 
-#define _COMPONENT "*SoXtPlaneViewer*"
-  _COMPONENT	"title:"				"Plane Viewer",
-  _COMPONENT	"LeftWheelLabel.labelString:"		"Trans Y",
-  _COMPONENT	"BottomWheelLabel.labelString:"		"Trans X",
-  _COMPONENT	"RightWheelLabel.dollyString:"		"Dolly",
-  _COMPONENT	"RightWheelLabel.zoomString:"		"Zoom",
+#define _COMPONENT "*SoXtPlaneViewer"
+  _COMPONENT	".title:"				"Plane Viewer",
+  _COMPONENT	"*LeftWheelLabel.labelString:"		"Trans Y",
+  _COMPONENT	"*BottomWheelLabel.labelString:"	"Trans X",
+  _COMPONENT	"*RightWheelLabel.dollyString:"		"Dolly",
+  _COMPONENT	"*RightWheelLabel.zoomString:"		"Zoom",
 #undef _COMPONENT
 
-#define _COMPONENT "*SoXtWalkViewer*"
-  _COMPONENT	"title:"				"Walk Viewer",
+#define _COMPONENT "*SoXtWalkViewer"
+  _COMPONENT	".title:"				"Walk Viewer",
 #undef _COMPONENT
 
-#define _COMPONENT "*SoXtFlyViewer*"
-  _COMPONENT	"title:"				"Fly Viewer",
+#define _COMPONENT "*SoXtFlyViewer"
+  _COMPONENT	".title:"				"Fly Viewer",
+  _COMPONENT	".LeftWheelLabel:"			"Tilt",
+  _COMPONENT	".BottomWheelLabel:"			"Rotate",
+  _COMPONENT	".RotateWheelLabel:"			"Dolly",
 #undef _COMPONENT
 
-#define _COMPONENT "*SoXtDirectionalLightEditor*"
+#define _COMPONENT "*SoXtDirectionalLightEditor"
 #undef _COMPONENT
 
-#define _COMPONENT "*SoXtMaterialEditor*"
+#define _COMPONENT "*SoXtMaterialEditor"
 #undef _COMPONENT
 
-#define _COMPONENT "*SoXtLightSliderSet*"
+#define _COMPONENT "*SoXtLightSliderSet"
+  _COMPONENT	".title:"				"Light Slider Set",
+  _COMPONENT	".module1:"				"LightIntensity",
+  _COMPONENT	".module2:"				"LightColor",
 #undef _COMPONENT
 
-#define _COMPONENT "*SoXtMaterialSliderSet*"
+#define _COMPONENT "*SoXtMaterialSliderSet"
+  _COMPONENT	".title:"				"Material Slider Set",
+  _COMPONENT	".module1:"				"AmbientColor",
+  _COMPONENT	".module2:"				"DiffuseColor",
+  _COMPONENT	".module3:"				"SpecularColor",
+  _COMPONENT	".module4:"				"EmissiveColor",
+  _COMPONENT	".module5:"				"Shininess",
+  _COMPONENT	".module6:"				"Transparency",
 #undef _COMPONENT
 
-#define _COMPONENT "*SoXtTransformSliderSet*"
+#define _COMPONENT "*SoXtTransformSliderSet"
+  _COMPONENT	".title:"				"Transform Slider Set",
+  _COMPONENT	".module1:"				"Translate",
+  _COMPONENT	".module2:"				"Scale",
+  _COMPONENT	".module3:"				"Rotate",
+  _COMPONENT	".module4:"				"Center",
 #undef _COMPONENT
 
-#define _COMPONENT "*SoXtMaterialList*"
+#define _COMPONENT "*SoXtMaterialList"
 #undef _COMPONENT
 
-#define _COMPONENT "*SoXtPrintDialog*"
-  _COMPONENT	"title:"				"Print",
+#define _COMPONENT "*SoXtPrintDialog"
+  _COMPONENT	"*title:"				"Print",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtAmbientColorSliderModule"
+  _COMPONENT	".title:"				"AMBIENT COLOR",
+  _COMPONENT	".slider1Title:"			"Red",
+  _COMPONENT	".slider1Field:"			"ambientColor[0]",
+  _COMPONENT	".slider2Title:"			"Green",
+  _COMPONENT	".slider2Field:"			"ambientColor[1]",
+  _COMPONENT	".slider3Title:"			"Blue",
+  _COMPONENT	".slider3Field:"			"ambientColor[2]",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtCenterSliderModule"
+  _COMPONENT	".title:"				"CENTER",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtDiffuseColorSliderModule"
+  _COMPONENT	".title:"				"DIFFUSE COLOR",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtEmissiveColorSliderModule"
+  _COMPONENT	".title:"				"EMISSIVE COLOR",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtLightColorSliderModule"
+  _COMPONENT	".title:"				"COLOR",
+  _COMPONENT	".slider1Title:"			"Red",
+  _COMPONENT	".slider1Field:"			"color[0]",
+  _COMPONENT	".slider2Title:"			"Red",
+  _COMPONENT	".slider2Field:"			"color[1]",
+  _COMPONENT	".slider3Title:"			"Red",
+  _COMPONENT	".slider3Field:"			"color[2]",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtLightIntensitySliderModule"
+  _COMPONENT	".title:"				"INTENSITY",
+  _COMPONENT	".slider1Title:"			"Intensity",
+  _COMPONENT	".slider1Field:"			"intensity",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtRotateSliderModule"
+  _COMPONENT	".title:"				"ROTATION",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtScaleSliderModule"
+  _COMPONENT	".title:"				"SCALE",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtShininessSliderModule"
+  _COMPONENT	".title:"				"SHININESS",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtSpecularColorSliderModule"
+  _COMPONENT	".title:"				"SPECULAR COLOR",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtTranslateSliderModule"
+  _COMPONENT	".title:"				"TRANSLATE",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtTransparencySliderModule"
+  _COMPONENT	".title:"				"TRANSPARENCY",
 #undef _COMPONENT
 
   NULL
 }; // fallback_resources
 
 // *************************************************************************
+
+#if SOXT_DEBUG
+static const char * getSoXtRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
+

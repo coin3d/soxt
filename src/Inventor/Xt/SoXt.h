@@ -24,13 +24,19 @@
 
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
+
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbLinear.h>
+
+class SbPList;
 
 // *************************************************************************
 
 class SoXt {
 public:
+  static void getVersionInfo( int * const major = NULL,
+      int * const minor = NULL, int * const micro = NULL );
+  static const char * getVersionString(void);
 
   static Widget init( const char * const appName,
       const char * const className = "SoXt" );
@@ -41,6 +47,7 @@ public:
   static void mainLoop(void);
   static void nextEvent( XtAppContext, XEvent * );
   static Boolean dispatchEvent( XEvent * event );
+
   static XtAppContext getAppContext(void);
   static Display * getDisplay(void);
   static Widget getTopLevelWidget(void);
@@ -67,18 +74,25 @@ public:
 
 public:
   static void addExtensionEventHandler( Widget widget,
-                  int extensionEventType, XtEventHandler proc,
+                  int eventType, XtEventHandler proc,
                   XtPointer clientData );
   static void removeExtensionEventHandler( Widget widget,
-                  int extensionEventType, XtEventHandler proc,
+                  int eventType, XtEventHandler proc,
                   XtPointer clientData );
+
   static Widget getwidget( unsigned int what );
+
+  static const char * getAppName(void);
+  static const char * getAppClass(void);
 
 protected:
   static void getExtensionEventHandler( XEvent * event, Widget & widget,
                   XtEventHandler & proc, XtPointer & clientData );
 
 private:
+  static void selectBestVisual(
+    Display *& dpy, Visual *& visual, Colormap & cmap, int & depth );
+
   static Display * display;
   static XtAppContext xtAppContext;
   static Widget mainWidget;
@@ -96,6 +110,11 @@ private:
   static SbBool idleSensorActive;
 
   static void sensorQueueChanged( void * user );
+
+  static char * appName;
+  static char * appClass;
+
+  static SbPList * eventHandlers;
 
   static String fallback_resources[];
 
