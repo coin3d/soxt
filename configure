@@ -8638,7 +8638,7 @@ echo "${ECHO_T}$sim_cv_lib_math" >&6
 if test x"$sim_cv_lib_math" != xUNDEFINED; then
   sim_ac_libm=$sim_cv_lib_math
   LIBS="$sim_ac_libm $LIBS"
-  SOGUI_EXTRA_LIBS="SOGUI_EXTRA_LIBS $sim_ac_libm"
+  SOGUI_EXTRA_LIBS="$SOGUI_EXTRA_LIBS $sim_ac_libm"
 else
   { { echo "$as_me:8643: error: could not find a way to use math library" >&5
 echo "$as_me: error: could not find a way to use math library" >&2;}

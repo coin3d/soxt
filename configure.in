@@ -230,7 +230,7 @@ SIM_COMPILER_WARNINGS
 # **************************************************************************
 
 SIM_AC_MATHLIB_READY_IFELSE(,[
-  SIM_AC_CHECK_MATHLIB(SOGUI_EXTRA_LIBS="SOGUI_EXTRA_LIBS $sim_ac_libm",
+  SIM_AC_CHECK_MATHLIB(SOGUI_EXTRA_LIBS="$SOGUI_EXTRA_LIBS $sim_ac_libm",
                        AC_MSG_ERROR(could not find a way to use math library))
 ])
 
