@@ -371,10 +371,14 @@ SoXtComponent::setSize(
 
   int argc = 0;
   Arg args[2];
-  if ( size[0] != -1 )
-    XtSetArg( args[argc++], XmNwidth, size[0] );
-  if ( size[1] != -1 )
-    XtSetArg( args[argc++], XmNheight, size[1] );
+  if ( size[0] != -1 ) {
+    XtSetArg( args[argc], XmNwidth, size[0] );
+    argc++;
+  }
+  if ( size[1] != -1 ) {
+    XtSetArg( args[argc], XmNheight, size[1] );
+    argc++;
+  }
   XtSetValues( widget, args, argc );
 } // setSize()
 
