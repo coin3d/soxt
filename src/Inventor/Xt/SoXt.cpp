@@ -22,6 +22,8 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+#include <assert.h>
+
 #include <X11/Intrinsic.h>
 #include <X11/StringDefs.h>
 #include <X11/Xmu/Editres.h>

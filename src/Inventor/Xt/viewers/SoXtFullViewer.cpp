@@ -29,6 +29,7 @@ static const char rcsid[] =
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include <X11/IntrinsicP.h>
 
@@ -69,6 +70,10 @@ static const char rcsid[] =
 #include <Inventor/Xt/viewers/SoAnyFullViewer.h>
 
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
+
+#ifndef M_PI
+#define M_PI 3.1415926535f
+#endif // ! M_PI
 
 enum DefaultViewerButtons {
   INTERACT_BUTTON = 0,

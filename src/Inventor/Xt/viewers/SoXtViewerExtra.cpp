@@ -22,6 +22,8 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+#include <assert.h>
+
 #include <X11/keysym.h>
 
 #include <Inventor/errors/SoDebugError.h>
