@@ -39,7 +39,15 @@ EXTRA_DIST = \
 	build/so@gui@.spec.in \
 	cfg/soxt.m4 \
 	docs/announcement-1_1_0.txt \
-	$(SoGuiCommonDistFiles)
+	$(SoGuiCommonDistFiles) \
+	test-code/Makefile.am \
+	test-code/Makefile.in \
+	test-code/button.cpp \
+	test-code/coloreditor.cpp \
+	test-code/examinerviewer.cpp \
+	test-code/initalfullscreen.cpp \
+	test-code/initialpos.c \
+	test-code/materialeditor.cpp
 
 if BUILD_LIBRARY
 

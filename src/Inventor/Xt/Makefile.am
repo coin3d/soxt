@@ -18,6 +18,11 @@ DISTCLEANFILES = \
 	$(SoGui_src_Inventor_Gui_BuiltFiles) \
 	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
 
+EXTRA_DIST = \
+	SoXtInternal.h \
+	SoXtComponentP.h \
+	SoXtGLWidgetP.h
+
 ############################################################################
 
 lib_LTLIBRARIES = libSoXt.la
