@@ -1,5 +1,7 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
 
+#undef HAVE_SOPOLYGONOFFSET
+
 /* Define this to use OpenGL widget from <GL/GLwDrawA.h> */
 #undef HAVE_GL_GLWDRAWA_H
 

@@ -136,6 +136,12 @@ SIM_CHECK_COIN([
   default searchprefix
 ])
 
+
+dnl Check for the availability of this node (it is used in the hidden
+dnl line rendering), which is not part of older Inventor implementations.
+SIM_HAVE_SOPOLYGONOFFSET
+
+
 SIM_CHECK_MOTIF([
   SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_motif_cppflags"
   SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_motif_ldflags"
