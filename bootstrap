@@ -3,11 +3,10 @@
 # Regenerate all files which are constructed by the autoconf, automake
 # and libtool tool-chain. Note: only developers should need to use this
 # script.
-
+#
 # Authors:
 #   Morten Eriksen <mortene@sim.no>
 #   Lars J. Aas <larsa@sim.no>
-#   Ralph Levien (original autogen.sh picked up from Gnome source archive).
 
 wd=`echo $0 | sed 's,[^\\/]*$,,g'`
 me=`echo $0 | sed 's,.*/,,g'`
@@ -18,8 +17,33 @@ if test ! -f ./$me; then
   exit 1
 fi
 
-AUTOCONF_VER=2.49b   # Autoconf from CVS
-AUTOMAKE_VER=1.4a    # CVS development version
+verbose=false # | verbose=true
+
+for arg in $@; do
+  case "$arg" in
+  -v | --verbose)
+    verbose=true
+    ;;
+  --clean)
+    ( $verbose && set -x;
+      rm -f aclocal.m4 config.h.in configure stamp-h*
+      rm -f cfg/{config.guess,config.sub,depcomp,install-sh,ltconfig,ltmain.sh,missing,mkinstalldirs}
+      find . -name Makefile.in -print | xargs rm -f
+    )
+    exit 0
+    ;;
+  --add)
+    AUTOMAKE_ADD="--copy --add-missing"
+    ;;
+  *)
+    echo >&2 "$me: error: don't understand argument \"$arg\""
+    DIE=true
+    ;;
+  esac
+done
+
+AUTOCONF_VER=2.49[bc]   # Autoconf from CVS
+AUTOMAKE_VER=1.4a       # CVS development version
 LIBTOOL_VER=1.3.5
 
 PROJECT=SoXt
@@ -28,15 +52,7 @@ MACRODIR=cfg/m4
 
 SUBPROJECTS="$MACRODIR data"
 SUBPROJECTNAMES="SoXtMacros SoXtData"
-AUTOMAKE_ADD=
-
-if test "$1" = "--clean"; then
-  rm -f config.h.in configure stamp-h*
-  find . -name Makefile.in -print | xargs rm
-  exit 0
-elif test "$1" = "--add"; then
-  AUTOMAKE_ADD=""
-fi
+: ${AUTOMAKE_ADD=}
 
 echo "Checking the installed configuration tools..."
 
@@ -109,20 +125,25 @@ ${DIE=false} && echo "" && echo >&2 "$me: error: aborting because of errors..." 
 
 # generate aux/aclocal.m4
 echo "Running aclocal..."
-aclocal -I $MACRODIR
+( $verbose && set -x;
+  aclocal -I $MACRODIR
+)
 
 # generate config.h.in
 echo "Running autoheader..."
-( autoheader 3>&1 1>&2 2>&3 | grep -v 'is unchanged$' ) 3>&1 1>&2 2>&3
+( ( $verbose && set -x;
+  autoheader
+) 3>&1 1>&2 2>&3 | grep -v 'is unchanged$' ) 3>&1 1>&2 2>&3
 
 # generate Makefile.in templates
 echo "Running automake..."
-( automake $AUTOMAKE_ADD 3>&1 1>&2 2>&3 | \
-  grep -v 'directory should not' ) 3>&1 1>&2 2>&3
+( ( $verbose && set -x;
+  automake $AUTOMAKE_ADD
+) 3>&1 1>&2 2>&3 | egrep -v 'directory should not| installing ' ) 3>&1 1>&2 2>&3
 
 # generate configure
 echo "Running autoconf..."
-autoconf
-
-echo "Done."
+( $verbose && set -x;
+  autoconf
+)
 

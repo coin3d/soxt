@@ -55,13 +55,9 @@ AC_DEFINE_UNQUOTED(SOXT_VERSION, "$SOXT_VERSION",
 
 # **************************************************************************
 
-AC_PROG_CC
-AC_PROG_CPP
-AC_PROG_CXX
-AC_PROG_CXXCPP
-AC_LANG_CPLUSPLUS
-
 AC_CANONICAL_SYSTEM
+
+AC_PROG_CC
 
 AM_INIT_AUTOMAKE(libSoXt, $SOXT_VERSION)
 AM_CONFIG_HEADER(config.h)
@@ -105,6 +101,9 @@ if test x"$sim_ac_x11_avail" = xyes; then
   SIM_AC_CHECK_LIBXPM([
     SOXT_EXTRA_LIBS="$sim_ac_xpm_libs $SOXT_EXTRA_LIBS"
     AC_DEFINE(HAVE_LIBXPM, 1, [Define this to use libXpm])
+    sim_ac_xpm_status="Yes"
+  ], [
+    sim_ac_xpm_status="No"
   ])
   SIM_AC_CHECK_X11SHMEM([
     SOXT_EXTRA_LIBS="$sim_ac_x11shmem_libs $SOXT_EXTRA_LIBS"
@@ -126,6 +125,9 @@ if test x"$sim_ac_x11_avail" = xyes; then
 else
   AC_MSG_ERROR(need to able to compile and link against X11 libraries)
 fi
+
+AC_PROG_CXX
+AC_LANG_CPLUSPLUS
 
 if test "${with_inventor+set}" = set; then
   SIM_AC_CHECK_OPENGL([
@@ -338,18 +340,17 @@ AC_OUTPUT([
 	chmod a+x soxt-config
 ])
 
-if test -d ${srcdir}/examples; then
-  cat <<EOF
+sim_ac_sogui_static_defaults=No
+$sim_ac_static_defaults && sim_ac_sogui_static_defaults=Yes
 
-  ATTENTION:  You can remove the 'examples' directory from So$Gui.  It has
-  been obsoleted by the stand-alone module 'SoGuiExamples'.
-EOF
-fi
-
-cat <<EOF
-
-Now, run 'make install' to build and install So$Gui.
-
-EOF
+echo ""
+echo "So$Gui configuration:"
+echo "  Open Inventor Brand:  $sim_ac_brand_inventor"
+echo "  Xpm Library:          $sim_ac_xpm_status"
+echo "  Static Materials:     $sim_ac_sogui_static_defaults"
+echo "  Install Prefix:       $prefix"
+echo ""
+echo "Now, run 'make install' to build and install So$Gui."
+echo ""
 
 # **************************************************************************
