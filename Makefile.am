@@ -40,8 +40,10 @@ EXTRA_DIST = \
 	cfg/soxt.m4 \
 	docs/ChangeLog.v1.1.0 \
 	docs/ChangeLog.v1.2.0 \
+	docs/ChangeLog.v1.2.1 \
 	docs/announcement-1_1_0.txt \
 	docs/announcement-1_2_0.txt \
+	docs/announcement-1_2_1.txt \
 	$(SoGuiCommonDistFiles) \
 	test-code/Makefile.am \
 	test-code/Makefile.in \
