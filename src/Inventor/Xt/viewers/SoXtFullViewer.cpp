@@ -811,49 +811,42 @@ SoXtFullViewer::buildBottomTrim(// virtual
 
 // *************************************************************************
 
-/*!
-  This method sets whether the viewer should be in view mode or interaction
-  mode.
-*/
-
+// Documented in superclass.
 void
-SoXtFullViewer::setViewing(// virtual
-  SbBool enable)
+SoXtFullViewer::setViewing(SbBool enable)
 {
+  if ((this->isViewing() && enable) || (!this->isViewing() && !enable)) {
 #if SOXT_DEBUG
-  if (this->isViewing() == enable)
     SoDebugError::postWarning("SoXtFullViewer::setViewing",
-      "current state already that of argument");
+                              "current state already %s", enable ? "TRUE" : "FALSE");
 #endif // SOXT_DEBUG
+    return;
+  }
 
   inherited::setViewing(enable);
 
   if (this->viewerbuttons.pick != 0) {
     XtSetSensitive(this->viewerbuttons.pick, enable ? True : False);
     XtVaSetValues(this->viewerbuttons.pick,
-      XmNset, enable ? False : True,
-      NULL);
+                  XmNset, enable ? False : True,
+                  NULL);
   }
 
   if (this->viewerbuttons.view != 0) {
     XtSetSensitive(this->viewerbuttons.view, enable ? False : True);
     XtVaSetValues(this->viewerbuttons.view,
-      XmNset, enable ? True : False,
-      NULL);
+                  XmNset, enable ? True : False,
+                  NULL);
   }
 
   if (this->viewerbuttons.seek != 0) {
     XtSetSensitive(this->viewerbuttons.seek, enable ? True : False);
   }
-} // setViewing()
+}
 
-/*!
-  FIXME: write doc
-*/
-
+// Documented in superclass.
 void
-SoXtFullViewer::setCamera(// virtual
-  SoCamera * camera)
+SoXtFullViewer::setCamera(SoCamera * camera)
 {
   inherited::setCamera(camera);
 
@@ -909,30 +902,29 @@ SoXtFullViewer::hide(// virtual
 */
 
 Widget
-SoXtFullViewer::buildViewerButtons(
-  Widget parent)
+SoXtFullViewer::buildViewerButtons(Widget parent)
 {
   Widget buttons = XtVaCreateWidget("ViewerButtons",
-    xmRowColumnWidgetClass, parent,
-    XmNrowColumnType, XmWORK_AREA,
-    XmNpacking, XmPACK_COLUMN,
-    XmNnumColumns, 1,
-    XmNspacing, 0,
-    XmNmarginWidth, 0,
-    XmNmarginHeight, 0,
-    NULL);
+                                    xmRowColumnWidgetClass, parent,
+                                    XmNrowColumnType, XmWORK_AREA,
+                                    XmNpacking, XmPACK_COLUMN,
+                                    XmNnumColumns, 1,
+                                    XmNspacing, 0,
+                                    XmNmarginWidth, 0,
+                                    XmNmarginHeight, 0,
+                                    NULL);
 
   this->createViewerButtons(buttons, this->viewerButtonWidgets);
 
   XtSetSensitive(this->viewerbuttons.pick, this->isViewing() ? True : False);
   XtVaSetValues(this->viewerbuttons.pick,
-    XmNset, this->isViewing() ? False : True,
-    NULL);
+                XmNset, this->isViewing() ? False : True,
+                NULL);
 
   XtSetSensitive(this->viewerbuttons.view, this->isViewing() ? False : True);
   XtVaSetValues(this->viewerbuttons.view,
-                 XmNset, this->isViewing() ? True : False,
-                 NULL);
+                XmNset, this->isViewing() ? True : False,
+                NULL);
 
   const int numbuttons = this->viewerButtonWidgets->getLength();
   for (int i = 0; i < numbuttons; i++) {
@@ -1152,18 +1144,16 @@ SoXtFullViewer::createInsensitivePixmapFromXpmData(
 */
 
 void
-SoXtFullViewer::createViewerButtons(
-  Widget parent,
-  SbPList * buttonlist)
+SoXtFullViewer::createViewerButtons(Widget parent,
+                                    SbPList * buttonlist)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtFullViewer::createViewerButtons", "[enter]");
 #endif // SOXT_DEBUG
 
   int viewerbutton;
-  for (viewerbutton = FIRST_BUTTON;
-        viewerbutton <= LAST_BUTTON;
-        viewerbutton++) {
+  for (viewerbutton = FIRST_BUTTON; viewerbutton <= LAST_BUTTON; viewerbutton++) {
+
     XtCallbackProc proc = NULL;
     char label[2];
     label[1] = '\0';
@@ -1203,9 +1193,9 @@ SoXtFullViewer::createViewerButtons(
     Widget button;
     if (viewerbutton == EXAMINE_BUTTON || viewerbutton == INTERACT_BUTTON) {
       button = XtVaCreateManagedWidget(label,
-        xmToggleButtonWidgetClass, parent,
-        XmNindicatorOn, False,
-        NULL);
+                                       xmToggleButtonWidgetClass, parent,
+                                       XmNindicatorOn, False,
+                                       NULL);
       if (viewerbutton == EXAMINE_BUTTON) {
         XtVaSetValues(button, XmNset, this->isViewing() ? True : False, NULL);
       }
@@ -1214,8 +1204,8 @@ SoXtFullViewer::createViewerButtons(
       }
     } else {
       button = XtVaCreateManagedWidget(label,
-        xmPushButtonWidgetClass, parent,
-        NULL);
+                                       xmPushButtonWidgetClass, parent,
+                                       NULL);
     }
 
     switch (viewerbutton) {
