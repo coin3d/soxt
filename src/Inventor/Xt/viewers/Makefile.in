@@ -121,11 +121,11 @@ libSoXtViewersVPATH = . $(srcdir)
 
 libSoXtViewers_la_SOURCES = \
 	$(BUILT_SOURCES) \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtViewerExtra.cpp \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.cpp \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.h \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h
+	SoXtViewerExtra.cpp \
+	SoXtFullViewer.cpp \
+	SoXtFullViewer.h \
+	SoXtExaminerViewer.cpp \
+	SoXtExaminerViewer.h
 
 
 ############################################################################
@@ -223,12 +223,6 @@ clean-libtool:
 distclean-libtool:
 
 maintainer-clean-libtool:
-SoXtViewerExtra.lo: \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtViewerExtra.cpp
-SoXtFullViewer.lo: \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.cpp
-SoXtExaminerViewer.lo: \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp
 
 libSoXtViewers.la: $(libSoXtViewers_la_OBJECTS) $(libSoXtViewers_la_DEPENDENCIES)
 	$(CXXLINK)  $(libSoXtViewers_la_LDFLAGS) $(libSoXtViewers_la_OBJECTS) $(libSoXtViewers_la_LIBADD) $(LIBS)

@@ -33,11 +33,11 @@ libSoXtViewersVPATH = . $(srcdir)
 
 libSoXtViewers_la_SOURCES = \
 	$(BUILT_SOURCES) \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtViewerExtra.cpp \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.cpp \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.h \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h
+	SoXtViewerExtra.cpp \
+	SoXtFullViewer.cpp \
+	SoXtFullViewer.h \
+	SoXtExaminerViewer.cpp \
+	SoXtExaminerViewer.h
 
 ############################################################################
 ##

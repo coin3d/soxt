@@ -1,23 +1,42 @@
 ############################################################################
 
+lib_LTLIBRARIES = libSoXt.la
+
 SUBDIRS = devices widgets viewers
 
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
-
-lib_LTLIBRARIES = libSoXt.la
+VPATH = .:@srcdir@
+SHELL = /bin/sh
 
 BUILT_SOURCES = \
 	SoXtRenderArea.h \
 	SoXtRenderArea.cpp
 
+############################################################################
+##
+
+libSoXtVPATH = . $(srcdir)
+
+.cpp.lo:
+	@( source='$<'; \
+	for dir in $(libSoXtVPATH); do \
+	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
+	done; \
+	eval "$(CXXDEPMODE)"; \
+	: ${depmode=none}; \
+	source="$$source" \
+	object='$@' libtool=no \
+	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
+	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
+
 libSoXt_la_SOURCES = \
+	$(BUILT_SOURCES) \
 	SoXt.h \
 	SoXt.cpp \
 	SoXtComponent.h \
 	SoXtComponent.cpp \
 	SoXtGLWidget.h \
 	SoXtGLWidget.cpp \
-	$(BUILT_SOURCES) \
 	SoXtRenderAreaExtra.cpp
 
 libSoXt_la_LIBADD = \
@@ -25,15 +44,8 @@ libSoXt_la_LIBADD = \
 	viewers/libSoXtViewers.la \
 	widgets/libSoXtWidgets.la
 
-libSoXtincdir = $(includedir)/Inventor/Xt
-
-libSoXtinc_HEADERS = \
-	SoXt.h \
-	SoXtComponent.h \
-	SoXtGLWidget.h \
-	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.h
-
 ############################################################################
+##
 
 SoXtRenderArea.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.h.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtRenderArea.h )
@@ -42,6 +54,15 @@ SoXtRenderArea.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.cpp.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtRenderArea.cpp )
 
 ############################################################################
+##
+
+libSoXtincdir = $(includedir)/Inventor/Xt
+
+libSoXtinc_HEADERS = \
+	SoXt.h \
+	SoXtComponent.h \
+	SoXtGLWidget.h \
+	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.h
 
 install-libSoXtincHEADERS: $(libSoXtinc_HEADERS)
 	@$(NORMAL_INSTALL)

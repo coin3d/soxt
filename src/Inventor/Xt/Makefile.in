@@ -10,11 +10,8 @@
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
 
-SHELL = @SHELL@
-
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
-VPATH = @srcdir@
 prefix = @prefix@
 exec_prefix = @exec_prefix@
 
@@ -101,25 +98,31 @@ uGUI = @uGUI@
 ############################################################################
 
 
+lib_LTLIBRARIES = libSoXt.la
+
 SUBDIRS = devices widgets viewers
 
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
-
-lib_LTLIBRARIES = libSoXt.la
+VPATH = .:@srcdir@
+SHELL = /bin/sh
 
 BUILT_SOURCES = \
 	SoXtRenderArea.h \
 	SoXtRenderArea.cpp
 
 
+############################################################################
+
+libSoXtVPATH = . $(srcdir)
+
 libSoXt_la_SOURCES = \
+	$(BUILT_SOURCES) \
 	SoXt.h \
 	SoXt.cpp \
 	SoXtComponent.h \
 	SoXtComponent.cpp \
 	SoXtGLWidget.h \
 	SoXtGLWidget.cpp \
-	$(BUILT_SOURCES) \
 	SoXtRenderAreaExtra.cpp
 
 
@@ -128,6 +131,8 @@ libSoXt_la_LIBADD = \
 	viewers/libSoXtViewers.la \
 	widgets/libSoXtWidgets.la
 
+
+############################################################################
 
 libSoXtincdir = $(includedir)/Inventor/Xt
 
@@ -155,8 +160,8 @@ X_PRE_LIBS = @X_PRE_LIBS@
 libSoXt_la_LDFLAGS = 
 libSoXt_la_DEPENDENCIES =  devices/libSoXtDevices.la \
 viewers/libSoXtViewers.la widgets/libSoXtWidgets.la
-am_libSoXt_la_OBJECTS =  SoXt.lo SoXtComponent.lo SoXtGLWidget.lo \
-SoXtRenderArea.lo SoXtRenderAreaExtra.lo
+am_libSoXt_la_OBJECTS =  SoXtRenderArea.lo SoXt.lo SoXtComponent.lo \
+SoXtGLWidget.lo SoXtRenderAreaExtra.lo
 libSoXt_la_OBJECTS =  $(am_libSoXt_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -382,12 +387,6 @@ maintainer-clean-depend:
 @AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(CXXCOMPILE) -c -o $@ $<
 
-.cpp.lo:
-@AMDEP@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
-@AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(LTCXXCOMPILE) -c -o $@ $<
-
 info-am:
 info: info-recursive
 dvi-am:
@@ -476,6 +475,18 @@ mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
 
+.cpp.lo:
+	@( source='$<'; \
+	for dir in $(libSoXtVPATH); do \
+	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
+	done; \
+	eval "$(CXXDEPMODE)"; \
+	: ${depmode=none}; \
+	source="$$source" \
+	object='$@' libtool=no \
+	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
+	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
+
 ############################################################################
 
 SoXtRenderArea.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.h.in
@@ -483,8 +494,6 @@ SoXtRenderArea.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.h.in
 
 SoXtRenderArea.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.cpp.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtRenderArea.cpp )
-
-############################################################################
 
 install-libSoXtincHEADERS: $(libSoXtinc_HEADERS)
 	@$(NORMAL_INSTALL)
