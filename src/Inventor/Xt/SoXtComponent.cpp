@@ -834,11 +834,64 @@ SoXtComponent::event_handler(Widget widget,
   complete screen or if the component is not a toplevel window.
 */
 SbBool
-SoXtComponent::setFullScreen(const SbBool onoff)
+SoXtComponent::setFullScreen(const SbBool enable)
 {
-  if (onoff == PRIVATE(this)->fullscreen) { return TRUE; }
-  SOXT_STUB();
-  return FALSE;
+  if ( enable == PRIVATE(this)->fullscreen )
+    return TRUE;
+
+  if ( this->getParentWidget() == this->getShellWidget() ) {
+    Widget shell = this->getShellWidget();
+    Window window = XtWindow(shell);
+    if ( enable ) {
+      // tell wm to leave window alone
+      Display * display = SoXt::getDisplay(); // XGetDisplay(NULL);
+      XSetWindowAttributes attr;
+      attr.override_redirect = true;
+      // XChangeWindowAttributes(display, window, CWOverrideRedirect, &attr);
+
+      // remove window border
+      // XSetWindowBorderWidth(display, window, 0);
+
+      // resize to fit screen
+      Dimension width = DisplayWidth(display, DefaultScreen(display));
+      Dimension height = DisplayHeight(display, DefaultScreen(display));
+
+      XtWidgetGeometry request, reply;
+      request.x = 0;
+      request.y = 0;
+      request.width = width;
+      request.height = height;
+      request.border_width = 0;
+      request.stack_mode = Above;
+      request.sibling = 0;
+      request.request_mode = 0;
+      reply.x = 1;
+      reply.y = 1;
+      reply.width = 0;
+      reply.height = 0;
+      reply.border_width = 1;
+      reply.stack_mode = 0;
+      reply.sibling = 0;
+      reply.request_mode = 0;
+      XtGeometryResult res = XtMakeGeometryRequest(shell, &request, &reply);
+      if ( res != XtGeometryYes )
+        fprintf(stderr, "res = %d\n", res);
+      else {
+	fprintf(stderr, "reply: %dx%d+%d+%d:%d\n", reply.width, reply.height, reply.x, reply.y, reply.border_width);
+      }
+      PRIVATE(this)->fullscreen = TRUE;
+
+      // XMoveResizeWindow(display, window, 0, 0, width, height);
+      // XtConfigureWidget(shell, 0, 0, width, height, 0);
+    } else {
+      SOXT_STUB();
+      return FALSE;
+    }
+    return TRUE;
+  } else {
+    SoDebugError::postWarning("SoXtComponent::setFullScreen", "parent widget is not shell");
+    return FALSE;
+  }
 }
 
 /*!
