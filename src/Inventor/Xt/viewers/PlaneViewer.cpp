@@ -67,6 +67,8 @@ static const char ** z_xpm = NULL;
 
 // ************************************************************************
 
+#ifndef DOXYGEN_SKIP_THIS
+
 struct SoXtViewerButton {
   const char * keyword;
   const char * label;
@@ -181,6 +183,8 @@ SoXtPlaneViewerP::findButton(Widget widget) const
   }
   return -1;
 }
+
+#endif // DOXYGEN_SKIP_THIS
 
 // ************************************************************************
 

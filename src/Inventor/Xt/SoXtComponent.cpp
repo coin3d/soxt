@@ -77,10 +77,10 @@
 
 // The private data and code for the SoXtComponent.
 
+#ifndef DOXYGEN_SKIP_THIS
 SoXtComponentP::SoXtComponentP(SoXtComponent * o)
   : SoGuiComponentP(o)
 {
-
   this->parent = NULL;
   this->widget = NULL;
   this->widgetname = NULL;
@@ -119,6 +119,7 @@ SoXtComponentP::widgetDestroyedCB(Widget widget, XtPointer closure, XtPointer ca
 }
 
 SbDict * SoXtComponentP::cursordict = NULL;
+#endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
 
@@ -793,6 +794,7 @@ static const char * EventNames[] = {
   NULL
 };
 
+#ifndef DOXYGEN_SKIP_THIS
 void
 SoXtComponentP::structureNotifyOnWidgetCB(Widget widget, XtPointer closure, XEvent * event, Boolean * dispatch)
 {
@@ -932,6 +934,7 @@ SoXtComponentP::getNativeCursor(Display * d,
   SoXtComponentP::cursordict->enter((unsigned long)cc, (void *)c);
   return c;
 }
+#endif // DOXYGEN_SKIP_THIS
 
 /*!
   Sets the cursor for this component.

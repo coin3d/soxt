@@ -1042,6 +1042,7 @@ SoXtFullViewer::openPopupMenu(const SbVec2s position)
 
 // *************************************************************************
 
+#ifndef DOXYGEN_SKIP_THIS
 void
 SoXtFullViewerP::leftWheelStartCB(Widget, XtPointer closure, XtPointer)
 {
@@ -1107,6 +1108,7 @@ SoXtFullViewerP::rightWheelFinishCB(Widget, XtPointer closure, XtPointer)
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->rightWheelFinish();
 }
+#endif DOXYGEN_SKIP_THIS
 
 // *************************************************************************
 
@@ -1183,6 +1185,7 @@ SoXtFullViewer::setRightWheelString(const char * const string)
 
 // *************************************************************************
 
+#ifndef DOXYGEN_SKIP_THIS
 void
 SoXtFullViewerP::resetAppPushButtons(void)
 {
@@ -1384,6 +1387,7 @@ SoXtFullViewerP::speedDecCB(Widget, XtPointer closure, XtPointer)
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   SOXT_STUB_ONCE();
 }
+#endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
 
@@ -1401,6 +1405,7 @@ SoXtFullViewer::sizeChanged(const SbVec2s & size)
 
 // *************************************************************************
 
+#ifndef DOXYGEN_SKIP_THIS
 SoXtFullViewerP::SoXtFullViewerP(SoXtFullViewer * publ)
   : SoGuiFullViewerP(publ)
 {
@@ -1422,6 +1427,7 @@ SoXtFullViewerP::setThumbWheelValue(void * wheel, float val)
 {
   SoXtThumbWheelSetValue((Widget)wheel, val);
 }
+#endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
 

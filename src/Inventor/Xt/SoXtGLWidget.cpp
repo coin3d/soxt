@@ -68,6 +68,7 @@
 
 // The private data and code for the SoXtGLWidget.
 
+#ifndef DOXYGEN_SKIP_THIS
 SoXtGLWidgetP::SoXtGLWidgetP(SoXtGLWidget * w)
   : SoGuiGLWidgetP(w)
 {
@@ -96,31 +97,11 @@ SoXtGLWidgetP::~SoXtGLWidgetP()
   // FIXME: if this is correct, overlayvisual should also be freed I guess
   // 20040901 larsa
 }
+#endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
 
 SOXT_OBJECT_ABSTRACT_SOURCE(SoXtGLWidget);
-
-// *************************************************************************
-
-/*!
-  \var Visual * SoXtGLWidget::normalVisual
-
-  Visual for normal graphics.
-*/
-
-/*!
-  \var Visual * SoXtGLWidget::overlayVisual
-
-  Visual for overlay graphics.
-*/
-
-/*!
-  \var SbBool SoXtGLWidget::doubleBuffer
-
-  Whether double buffering is used or not.
-*/
-
 
 // *************************************************************************
 
@@ -191,11 +172,23 @@ SoXtGLWidget::getColorMapSize(void)
   return PRIVATE(this)->normalcolormapsize;
 }
 
+/*!
+  Returns the GL context for normal rendering.
+
+  \sa getOverlayContext
+*/
+
 GLXContext
 SoXtGLWidget::getNormalContext(void)
 {
   return PRIVATE(this)->normalcontext;
 }
+
+/*!
+  Returns the GL context for overlay rendering.
+
+  \sa getNormalContext
+*/
 
 GLXContext
 SoXtGLWidget::getOverlayContext(void)
@@ -527,6 +520,7 @@ SoXtGLWidget::initGraphic(void)
 }
 
 
+#ifndef DOXYGEN_SKIP_THIS
 // private method that initializes the normal GL context  
 void 
 SoXtGLWidgetP::initNormalContext(void)
@@ -553,6 +547,7 @@ SoXtGLWidgetP::initNormalContext(void)
     SoAny::si()->registerGLContext((void *)PUBLIC(this), (void *)display, (void *)screen);
   }
 }
+#endif // DOXYGEN_SKIP_THIS
 
 
 /*!
@@ -994,6 +989,7 @@ SoXtGLWidget::glFlushBuffer(void)
   glFlush();
 }
 
+#ifndef DOXYGEN_SKIP_THIS
 // Return a flag indicating whether or not OpenGL rendering is
 // happening directly from the CPU(s) to the GPU(s), ie on a local
 // display.
@@ -1027,6 +1023,7 @@ SoXtGLWidgetP::exposeCB(Widget widget, XtPointer closure, XtPointer call_data)
     thisp->firstexpose = FALSE;
   }
 }
+#endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
 

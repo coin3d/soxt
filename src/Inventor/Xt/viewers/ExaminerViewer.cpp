@@ -73,6 +73,7 @@
 
 // SoXtExaminerViewerP "private implementation" class.
 
+#ifndef DOXYGEN_SKIP_THIS
 SoXtExaminerViewerP::SoXtExaminerViewerP(SoXtExaminerViewer * publ)
   : SoGuiExaminerViewerP(publ)
 {
@@ -81,6 +82,7 @@ SoXtExaminerViewerP::SoXtExaminerViewerP(SoXtExaminerViewer * publ)
 SoXtExaminerViewerP::~SoXtExaminerViewerP()
 {
 }
+#endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
 
@@ -119,9 +121,8 @@ SoXtExaminerViewer::SoXtExaminerViewer(Widget parent,
   PRIVATE(this)->constructor(build);
 }
 
-/*!
-  Common constructor code.
-*/
+#ifndef DOXYGEN_SKIP_THIS
+// Common constructor code.
 
 void
 SoXtExaminerViewerP::constructor(const SbBool build)
@@ -143,6 +144,7 @@ SoXtExaminerViewerP::constructor(const SbBool build)
       PUBLIC(this)->setRightWheelString(dollyString);
   }
 }
+#endif // DOXYGEN_SKIP_THIS
 
 /*!
   The destructor.
@@ -188,10 +190,7 @@ SoXtExaminerViewer::createViewerButtons(Widget parent, SbPList * buttonlist)
 
 // *************************************************************************
 
-/*!
-  FIXME: write doc
-*/
-
+#ifndef DOXYGEN_SKIP_THIS
 void
 SoXtExaminerViewerP::camerabuttonClicked(void)
 {
@@ -199,10 +198,6 @@ SoXtExaminerViewerP::camerabuttonClicked(void)
 }
 
 // *************************************************************************
-
-/*!
-  FIXME: write doc
-*/
 
 void
 SoXtExaminerViewerP::camerabuttonCB(Widget w,
@@ -212,6 +207,7 @@ SoXtExaminerViewerP::camerabuttonCB(Widget w,
   SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) client_data;
   PRIVATE(viewer)->camerabuttonClicked();
 }
+#endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
 

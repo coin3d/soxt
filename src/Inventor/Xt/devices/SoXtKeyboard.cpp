@@ -61,7 +61,7 @@ SoXtKeyboard::~SoXtKeyboard()
 
 // Doc in superclass.
 void
-SoXtKeyboard::enable(Widget widget, SoXtEventHandler * handler, XtPointer closure)
+SoXtKeyboard::enable(Widget widget, SoXtEventHandler * handler, void * closure)
 {
   // FIXME: should explicitly convert eventmask to bitmask with X11/Xt
   // bitflag values, just in case either our or X11's enum values
@@ -72,7 +72,7 @@ SoXtKeyboard::enable(Widget widget, SoXtEventHandler * handler, XtPointer closur
 
 // Doc in superclass.
 void
-SoXtKeyboard::disable(Widget widget, SoXtEventHandler * handler, XtPointer closure)
+SoXtKeyboard::disable(Widget widget, SoXtEventHandler * handler, void * closure)
 {
   // FIXME: should explicitly convert eventmask to bitmask with X11/Xt
   // bitflag values, just in case either our or X11's enum values

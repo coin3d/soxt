@@ -59,7 +59,7 @@ SoXtSpaceball::~SoXtSpaceball()
 void
 SoXtSpaceball::enable(Widget, // widget,
                       SoXtEventHandler *, // func,
-                      XtPointer)
+                      void *)
 {
   SOXT_STUB();
 }
@@ -68,7 +68,7 @@ SoXtSpaceball::enable(Widget, // widget,
 void
 SoXtSpaceball::disable(Widget, // widget,
                        SoXtEventHandler *, // func,
-                       XtPointer) // data)
+                       void *) // data)
 {
   SOXT_STUB();
 }

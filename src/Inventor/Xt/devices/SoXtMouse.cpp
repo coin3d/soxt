@@ -136,6 +136,7 @@ SoXtMouse::translateEvent(XAnyEvent * event)
 
 // *************************************************************************
 
+#ifndef DOXYGEN_SKIP_THIS
 // This method translates from X motion events to Open Inventor
 // SoLocation2Event events.
 SoLocation2Event *
@@ -201,6 +202,7 @@ SoXtMouseP::makeButtonEvent(XButtonEvent * event, SoButtonEvent::State state)
 
   return this->buttonevent;
 }
+#endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
 
