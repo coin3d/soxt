@@ -430,6 +430,10 @@ SoXtGLWidget::processEvent(XAnyEvent * event)
     break;
 
   case Expose:
+    if ( !PRIVATE(this)->normalcontext ) {
+      PRIVATE(this)->initNormalContext();
+      this->initGraphic();
+    }
     this->waitForExpose = FALSE; // Gets flipped from TRUE on first expose.
     if (!this->glScheduleRedraw()) {
       this->redraw();
