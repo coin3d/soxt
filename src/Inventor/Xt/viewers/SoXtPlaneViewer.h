@@ -24,6 +24,7 @@
 
 class SbPlaneProjector;
 class SoAnyPlaneViewer;
+struct SoXtViewerButton;
 
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
 
@@ -55,21 +56,6 @@ protected:
     SoXtViewer::Type type,
     SbBool buildNow );
 
-  enum PlaneViewerMode {
-    IDLE_MODE,
-
-    DOLLY_MODE,
-    TRANSLATE_MODE,
-
-    ROTZ_WAIT_MODE,
-    ROTZ_MODE,
-
-    SEEK_WAIT_MODE,
-    SEEK_MODE
-  } mode;
-
-
-
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
@@ -90,32 +76,20 @@ protected:
 private:
   void constructor( SbBool build );
 
-  struct {
-    Widget x, y, z, camera;
-  } buttons;
+  static SoXtViewerButton SoXtPlaneViewerButtons[];
+  SoXtViewerButton * buttons;
+  int findButton( Widget button ) const;
+  
+  static void buttonCB( Widget, XtPointer, XtPointer );
+
+  Widget prefshell, prefsheet, * prefparts;
+  int numprefparts;
 
   struct {
     Pixmap ortho, ortho_ins;
     Pixmap perspective, perspective_ins;
   } pixmaps;
 
-  Widget prefshell, prefsheet, * prefparts;
-  int numprefparts;
-
-  void xbutton(void);
-  static void xbuttonCB( Widget, XtPointer, XtPointer );
-  void ybutton(void);
-  static void ybuttonCB( Widget, XtPointer, XtPointer );
-  void zbutton(void);
-  static void zbuttonCB( Widget, XtPointer, XtPointer );
-  void camerabutton(void);
-  static void camerabuttonCB( Widget, XtPointer, XtPointer );
-
-  void zoom( const float difference );
-
-  SbVec2f prevMousePosition;
-
-private:
   SoAnyPlaneViewer * const common;
 
 }; // class SoXtPlaneViewer

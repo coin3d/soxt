@@ -22,6 +22,8 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+#include <string.h>
+
 #include <X11/keysym.h>
 
 #include <Xm/PushB.h>
@@ -77,6 +79,44 @@ SOXT_OBJECT_SOURCE(SoXtPlaneViewer);
   The current viewer mode.
 */
 
+// *************************************************************************
+
+struct SoXtViewerButton {
+  char * keyword;
+  char * label;
+  void (*pressed)( Widget, XtPointer, XtPointer );
+  char ** xpm_data;
+  Widget bwidget;
+  Widget lwidget;
+};
+
+struct SoXtViewerButton
+SoXtPlaneViewer::SoXtPlaneViewerButtons[] = {
+  {
+    "x", "X",
+    SoXtPlaneViewer::buttonCB,
+    x_xpm,
+    NULL, NULL
+  },
+  { // plane Y button
+    "y", "Y",
+    SoXtPlaneViewer::buttonCB,
+    y_xpm,
+    NULL, NULL
+  },
+  { // plane Z button
+    "z", "Z",
+    SoXtPlaneViewer::buttonCB,
+    z_xpm,
+    NULL, NULL
+  },
+  { // camera type button
+    "camera", "C",
+    SoXtPlaneViewer::buttonCB,
+    perspective_xpm,
+    NULL, NULL
+  }
+}; // SoXtPlaneViewerButtons[]
 
 // *************************************************************************
 
@@ -121,7 +161,9 @@ void
 SoXtPlaneViewer::constructor(
   SbBool build )
 {
-  this->mode = IDLE_MODE;
+  const int buttons = sizeof(SoXtPlaneViewerButtons) / sizeof(SoXtViewerButton);
+  this->buttons = new SoXtViewerButton [ buttons ];
+  memcpy( this->buttons, SoXtPlaneViewerButtons, sizeof(SoXtPlaneViewerButtons) );
 
   this->prefshell = this->prefsheet = (Widget) NULL;
   this->prefparts = NULL;
@@ -149,6 +191,7 @@ SoXtPlaneViewer::constructor(
 SoXtPlaneViewer::~SoXtPlaneViewer(
   void )
 {
+  delete [] this->buttons;
   delete this->common;
 } // ~SoXtPlaneViewer()
 
@@ -201,17 +244,17 @@ SoXtPlaneViewer::setCamera( // virtual
   }
 
 #if HAVE_LIBXPM
-  XtUnmanageChild( this->buttons.camera );
-  XtVaSetValues( this->buttons.camera,
+  XtUnmanageChild( this->buttons[3].bwidget );
+  XtVaSetValues( this->buttons[3].bwidget,
     XmNlabelType, XmPIXMAP,
     XmNlabelPixmap, pixmap,
     XmNselectPixmap, pixmap,
     XmNlabelInsensitivePixmap, pixmap_ins,
     XmNselectInsensitivePixmap, pixmap_ins,
     NULL );
-  XtVaSetValues( this->buttons.camera,
+  XtVaSetValues( this->buttons[3].bwidget,
     XmNwidth, 30, XmNheight, 30, NULL );
-  XtManageChild( this->buttons.camera );
+  XtManageChild( this->buttons[3].bwidget );
 #endif // HAVE_LIBXPM
 
   inherited::setCamera( camera );
@@ -241,111 +284,51 @@ SoXtPlaneViewer::createViewerButtons( // virtual, protected
 {
   inherited::createViewerButtons( parent, buttonlist );
 
-  this->buttons.x = XtVaCreateManagedWidget( "xbutton",
-    xmPushButtonWidgetClass, parent,
-    XmNshadowType, XmSHADOW_OUT,
-    XmNhighlightThickness, 0,
-    XmNshadowThickness, 2,
-    XmNtraversalOn, False,
-    XmNwidth, 30,
-    XmNheight, 30,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      "X", 2, // strlen( "X" ) + 1,
-    NULL );
-
-  this->buttons.y = XtVaCreateManagedWidget( "ybutton",
-    xmPushButtonWidgetClass, parent,
-    XmNshadowType, XmSHADOW_OUT,
-    XmNhighlightThickness, 0,
-    XmNshadowThickness, 2,
-    XmNtraversalOn, False,
-    XmNwidth, 30,
-    XmNheight, 30,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      "Y", 2, // strlen( "Y" ) + 1,
-    NULL );
-
-  this->buttons.z = XtVaCreateManagedWidget( "zbutton",
-    xmPushButtonWidgetClass, parent,
-    XmNshadowType, XmSHADOW_OUT,
-    XmNhighlightThickness, 0,
-    XmNshadowThickness, 2,
-    XmNtraversalOn, False,
-    XmNwidth, 30,
-    XmNheight, 30,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      "Z", 2, // strlen( "Z" ) + 1,
-    NULL );
+  const int buttons = sizeof(SoXtPlaneViewerButtons) / sizeof(SoXtViewerButton);
+  for ( int button = 0; button < buttons; button++ ) {
+    Widget widget = 
+      XtVaCreateManagedWidget( this->buttons[button].keyword,
+      xmPushButtonWidgetClass, parent,
+      XmNshadowType, XmSHADOW_OUT,
+      XmNhighlightThickness, 0,
+      XmNshadowThickness, 2,
+      XmNtraversalOn, False,
+      XmNwidth, 30,
+      XmNheight, 30,
+      XtVaTypedArg,
+        XmNlabelString, XmRString,
+        this->buttons[button].label, strlen(this->buttons[button].label) + 1,
+      NULL );
+    this->buttons[button].bwidget = widget;
 
 #if HAVE_LIBXPM
-  Pixmap xpixmap = createPixmapFromXpmData( this->buttons.x, x_xpm );
-  if ( xpixmap )
-    XtVaSetValues( this->buttons.x,
-      XmNlabelType, XmPIXMAP,
-      XmNlabelPixmap, xpixmap,
-      NULL );
+    Pixmap pixmap = createPixmapFromXpmData( widget, this->buttons[button].xpm_data );
+    if ( pixmap )
+      XtVaSetValues( widget,
+        XmNlabelType, XmPIXMAP,
+        XmNlabelPixmap, pixmap,
+        NULL );
+#endif
 
-  Pixmap ypixmap = createPixmapFromXpmData( this->buttons.y, y_xpm );
-  if ( ypixmap )
-    XtVaSetValues( this->buttons.y,
-      XmNlabelType, XmPIXMAP,
-      XmNlabelPixmap, ypixmap,
-      NULL );
+    buttonlist->append( widget );
 
-  Pixmap zpixmap = createPixmapFromXpmData( this->buttons.y, z_xpm );
-  if ( zpixmap )
-    XtVaSetValues( this->buttons.z,
-      XmNlabelType, XmPIXMAP,
-      XmNlabelPixmap, zpixmap,
-      NULL );
-#endif // HAVE_LIBXPM
-
-  buttonlist->append( this->buttons.x );
-  buttonlist->append( this->buttons.y );
-  buttonlist->append( this->buttons.z );
-
-  XtAddCallback( this->buttons.x, XmNactivateCallback,
-    SoXtPlaneViewer::xbuttonCB, (XtPointer) this );
-
-  XtAddCallback( this->buttons.y, XmNactivateCallback,
-    SoXtPlaneViewer::ybuttonCB, (XtPointer) this );
-
-  XtAddCallback( this->buttons.z, XmNactivateCallback,
-    SoXtPlaneViewer::zbuttonCB, (XtPointer) this );
-
-  this->buttons.camera = XtVaCreateManagedWidget( "C",
-    xmPushButtonWidgetClass, parent,
-    XmNshadowType, XmSHADOW_OUT,
-    XmNhighlightThickness, 0,
-    XmNshadowThickness, 2,
-    XmNtraversalOn, False,
-    XmNwidth, 30,
-    XmNheight, 30,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      "C", strlen( "C" ) + 1,
-    NULL );
-
-  XtAddCallback( this->buttons.camera, XmNactivateCallback,
-    SoXtPlaneViewer::camerabuttonCB, this );
-
-  buttonlist->append( this->buttons.camera );
+    XtAddCallback( widget, XmNactivateCallback,
+      SoXtPlaneViewer::buttonCB, (XtPointer) this );
+  } // for ( button < buttons )
 
 #if HAVE_LIBXPM
   this->pixmaps.ortho =
-    createPixmapFromXpmData( this->buttons.camera, ortho_xpm );
+    createPixmapFromXpmData( this->buttons[3].bwidget, ortho_xpm );
   this->pixmaps.ortho_ins =
-    createInsensitivePixmapFromXpmData( this->buttons.camera, ortho_xpm );
+    createInsensitivePixmapFromXpmData( this->buttons[3].bwidget, ortho_xpm );
   this->pixmaps.perspective =
-    createPixmapFromXpmData( this->buttons.camera, perspective_xpm );
+    createPixmapFromXpmData( this->buttons[3].bwidget, perspective_xpm );
   this->pixmaps.perspective_ins =
-    createInsensitivePixmapFromXpmData( this->buttons.camera, perspective_xpm );
+    createInsensitivePixmapFromXpmData( this->buttons[3].bwidget, perspective_xpm );
 #endif // HAVE_LIBXPM
-
 } // createViewerButtons()
+
+// *************************************************************************
 
 /*!
 */
@@ -394,8 +377,6 @@ SoXtPlaneViewer::processSoEvent( // virtual, protected
   return inherited::processSoEvent( event );
 } // processSoEvent()
 
-// *************************************************************************
-
 /*!
 */
 
@@ -406,60 +387,9 @@ SoXtPlaneViewer::processEvent(
   if ( SoXtViewer::processCommonEvents( event ) )
     return;
 
-/*
-  if ( ! this->mapped ) {
-    this->mapped = TRUE; // Must be set before setCursorRepresentation() call.
-    this->setCursorRepresentation( this->mode );
-  }
-*/
-
-  SbVec2s canvassize( this->getGLSize() );
-  SbVec2s mousepos( -1, -1 );
-
-  switch ( event->type ) {
-  case ButtonPress:
-  case ButtonRelease:
-    mousepos[0] = ((XButtonEvent *)event)->x;
-    mousepos[1] = canvassize[1] - ((XButtonEvent *)event)->y;
-    break;
-  case MotionNotify:
-    mousepos[0] = ((XPointerMovedEvent *)event)->x;
-    mousepos[1] = canvassize[1] - ((XPointerMovedEvent *)event)->y;
-    break;
-  default:
-    break;
-  }
-
-  SbVec2f mousepos_normalized;
-  mousepos_normalized[0] = (float) mousepos[0] / (float) canvassize[0];
-  mousepos_normalized[1] = (float) mousepos[1] / (float) canvassize[1];
-
-  switch ( event->type ) {
-  case ButtonPress:
-    common->setPointerLocation( mousepos );
-    common->setPointerLocation( mousepos );
-    this->prevMousePosition = mousepos_normalized;
-    switch ( ((XButtonEvent *) event)->button ) {
-    case 1:
-      if ( this->mode == IDLE_MODE ) {
-        this->interactiveCountInc();
-        this->mode = DOLLY_MODE;
-      } else if ( this->mode == SEEK_WAIT_MODE ) {
-        this->interactiveCountInc();
-        this->seekToPoint( mousepos );
-      }
-      break;
-
-    case 2:
-      if ( this->mode == IDLE_MODE ) {
-        this->interactiveCountInc();
-        this->mode = TRANSLATE_MODE;
-      } else if ( this->mode == ROTZ_WAIT_MODE ) {
-        this->mode = ROTZ_MODE;
-      }
-      break;
-
-    case 3:
+  if ( event->type == ButtonPress ) {
+    // SoDebugError::postInfo( "", "button %d", ((XButtonEvent *) event)->button );
+    if ( ((XButtonEvent *) event)->button == 3 ) {
       if ( this->isPopupMenuEnabled() ) {
         int x = ((XButtonEvent *) event)->x_root;
         int y = ((XButtonEvent *) event)->y_root;
@@ -468,110 +398,8 @@ SoXtPlaneViewer::processEvent(
         this->prefmenu->PopUp( this->getGLWidget(), x, y );
         return;
       }
-      break;
-
-    case 4:
-      this->zoom( 0.1f );
-      return;
-
-    case 5:
-      this->zoom( -0.1f );
-      return;
-
-    default:
-      break;
-    } // switch ( button )
-
-    break;
-
-  case ButtonRelease:
-    switch ( ((XButtonEvent *) event)->button ) {
-    case 1:
-    case 2:
-      if ( this->mode != IDLE_MODE && this->mode != ROTZ_MODE ) {
-        this->interactiveCountDec();
-        this->mode = IDLE_MODE;
-      }
-      break;
-
-    default:
-      break;
-    } // switch ( ((XButtonEvent *) event)->button )
-    break;
-
-  case MotionNotify:
-    switch ( this->mode ) {
-    case DOLLY_MODE:
-      if ( mousepos_normalized[1] != this->prevMousePosition[1] ) {
-        float value = this->getRightWheelValue() +
-          (this->prevMousePosition[1] - mousepos_normalized[1]) * 10.0f;
-        this->rightWheelMotion( value );
-        this->setRightWheelValue( value );
-      }
-      break;
-
-    case TRANSLATE_MODE:
-      if ( (mousepos_normalized[0] != this->prevMousePosition[0]) ||
-           (mousepos_normalized[1] != this->prevMousePosition[1]) ) {
-        float dx = (mousepos_normalized[0] - this->prevMousePosition[0]) * 2.5f;
-        float dy = (mousepos_normalized[1] - this->prevMousePosition[1]) * 2.5f;
-        float yvalue = this->getLeftWheelValue() - dy;
-        float xvalue = this->getBottomWheelValue() + dx;
-        this->leftWheelMotion( yvalue );
-        this->setLeftWheelValue( yvalue );
-        this->bottomWheelMotion( xvalue );
-        this->setBottomWheelValue( xvalue );
-      }
-      break;
-
-    case ROTZ_MODE:
-    {
-      common->setPointerLocation( mousepos );
-      common->rotateZ( common->getPointerOrigoMotionAngle() );
-      break;
     }
-
-    default:
-      break;
-    } // switch ( this->mode )
-    break;
-
-  case KeyPress:
-  case KeyRelease:
-  {
-    char keybuf[8];
-    KeySym keysym = 0;
-
-//    int keybuflen =
-      XLookupString( (XKeyEvent *) event, keybuf, 8, &keysym, NULL );
-
-    switch ( keysym ) {
-    case XK_Control_L:
-    case XK_Control_R:
-      if ( event->type == KeyPress ) {
-        this->mode = ROTZ_MODE;
-        common->setCanvasSize( canvassize );
-        common->setPointerLocation( mousepos );
-        common->setPointerLocation( mousepos );
-	this->scheduleRedraw();
-      } else {
-        this->mode = IDLE_MODE;
-	this->scheduleRedraw();
-      }
-      break;
-    default:
-      break;
-    }
-
-    break;
   }
-
-  default:
-    break;
-
-  } // switch ( event->type )
-
-  this->prevMousePosition = mousepos_normalized;
 
   inherited::processEvent( event );
 } // processEvent()
@@ -597,8 +425,10 @@ SoXtPlaneViewer::actualRedraw(
   void )
 {
   inherited::actualRedraw();
+#if 0
   if ( this->mode == ROTZ_MODE )
     common->drawRotateGraphics();
+#endif
 } // actualRedraw()
 
 /*!
@@ -647,39 +477,9 @@ void
 SoXtPlaneViewer::rightWheelMotion( // virtual
   float value )
 {
-  this->zoom( this->getRightWheelValue() - value );
+  common->zoom( this->getRightWheelValue() - value );
   inherited::rightWheelMotion( value );
 } // rightWheelMotion()
-
-/*!
-  This method moves the camera inwards and outwards.  It will be moved to
-  common code soon.
-*/
-
-void
-SoXtPlaneViewer::zoom(
-  const float difference )
-{
-  SoCamera * camera = this->getCamera();
-  assert( camera != NULL );
-
-  SoType type = camera->getTypeId();
-  float multiplicator = exp( difference ); // in the range of <0, ->>
-
-  if ( type.isDerivedFrom( SoOrthographicCamera::getClassTypeId() ) ) {
-    SoOrthographicCamera * orthocam = (SoOrthographicCamera *) camera;
-    orthocam->height = orthocam->height.getValue() * multiplicator;
-  } else if ( type.isDerivedFrom( SoPerspectiveCamera::getClassTypeId() ) ) {
-    float oldfocaldist = camera->focalDistance.getValue();
-    camera->focalDistance = oldfocaldist * multiplicator;
-    SbVec3f direction;
-    camera->orientation.getValue().multVec( SbVec3f( 0, 0, -1 ), direction );
-    camera->position = camera->position.getValue() +
-      (camera->focalDistance.getValue() - oldfocaldist) * -direction;
-  } else {
-    assert( 0 && "impossible" );
-  }
-} // zoom()
 
 // *************************************************************************
 
@@ -708,96 +508,43 @@ SoXtPlaneViewer::createPrefSheet(
 /*!
 */
 
-void
-SoXtPlaneViewer::xbutton(
-  void )
+int
+SoXtPlaneViewer::findButton( // private
+  Widget widget ) const
 {
-  common->viewPlaneX();
-} // xbutton()
+  const int buttons = sizeof(SoXtPlaneViewerButtons) / sizeof(SoXtViewerButton);
+  for ( int button = 0; button < buttons; button++ ) {
+    if ( this->buttons[button].bwidget == widget ) return button;
+  }
+  return -1;
+} // findButton()
 
 /*!
-  static callback
+  static callback for the plane viewer buttons
 */
 
 void
-SoXtPlaneViewer::xbuttonCB( // xbutton
-  Widget,
+SoXtPlaneViewer::buttonCB( // static, private
+  Widget widget,
   XtPointer closure,
   XtPointer )
 {
+  assert( closure != NULL );
   SoXtPlaneViewer * viewer = (SoXtPlaneViewer *) closure;
-  viewer->xbutton();
-} // xbuttonCB()
-
-/*!
-*/
-
-void
-SoXtPlaneViewer::ybutton(
-  void )
-{
-  common->viewPlaneY();
-} // ybutton()
-
-/*!
-*/
-
-void
-SoXtPlaneViewer::ybuttonCB( // static
-  Widget,
-  XtPointer closure,
-  XtPointer )
-{
-  SoXtPlaneViewer * viewer = (SoXtPlaneViewer *) closure;
-  viewer->ybutton();
-} // ybuttonCB()
-
-/*!
-*/
-
-void
-SoXtPlaneViewer::zbutton(
-  void )
-{
-  common->viewPlaneZ();
-} // zbutton()
-
-/*!
-  static callback
-*/
-
-void
-SoXtPlaneViewer::zbuttonCB( // static
-  Widget,
-  XtPointer closure,
-  XtPointer )
-{
-  SoXtPlaneViewer * viewer = (SoXtPlaneViewer *) closure;
-  viewer->zbutton();
-} // zbuttonCB()
-
-/*!
-*/
-
-void
-SoXtPlaneViewer::camerabutton(
-  void )
-{
-  this->toggleCameraType();
-} // camerabutton()
-
-/*!
-  static callbacks
-*/
-
-void
-SoXtPlaneViewer::camerabuttonCB( // static
-  Widget,
-  XtPointer closure,
-  XtPointer )
-{
-  SoXtPlaneViewer * viewer = (SoXtPlaneViewer *) closure;
-  viewer->camerabutton();
+  const int idx = viewer->findButton( widget );
+  if ( idx == -1 ) {
+    SoDebugError::post( "SoXtPlaneViewer::buttonCB", "unknown button" );
+  } else if ( strcmp( viewer->buttons[idx].keyword, "x" ) == 0 ) {
+    viewer->common->viewPlaneX();
+  } else if ( strcmp( viewer->buttons[idx].keyword, "y" ) == 0 ) {
+    viewer->common->viewPlaneY();
+  } else if ( strcmp( viewer->buttons[idx].keyword, "z" ) == 0 ) {
+    viewer->common->viewPlaneZ();
+  } else if ( strcmp( viewer->buttons[idx].keyword, "camera" ) == 0 ) {
+    viewer->toggleCameraType();
+  } else {
+    SoDebugError::post( "SoXtPlaneViewer::buttonCB", "unsupported button" );
+  }
 } /// camerabuttonCB()
 
 // *************************************************************************
