@@ -70,20 +70,64 @@ SIM_CHECK_MOTIF( , AC_MSG_ERROR(couldn't compile and link against Motif))
 
 dnl ************************************************************************
 
-AC_CACHE_CHECK([for GL/GLwMDrawA.h], sim_header_GLwMDrawA,
+AC_CACHE_CHECK([for GL/GLwMDrawA.h], sim_header_GL_GLwMDrawA,
   [AC_TRY_CPP([#include <GL/GLwMDrawA.h>],
-              sim_header_GLwMDrawA=yes,
-              sim_header_GLwMDrawA=no)])
+              sim_header_GL_GLwMDrawA=yes,
+              sim_header_GL_GLwMDrawA=no)])
 
-if test $sim_header_GLwMDrawA != yes; then
-  AC_MSG_ERROR([
-  SoXt depends on the glwMDrawingAreaWidgetClass Xt/Motif-extension.])
+if test x$sim_header_GL_GLwMDrawA != xyes; then
+  AC_CACHE_CHECK([for X11/GLw/GLwMDrawA.h], sim_header_X11_GLw_GLwMDrawA,
+    [AC_TRY_CPP([#include <X11/GLw/GLwMDrawA.h>],
+                sim_header_X11_GLw_GLwMDrawA=yes,
+                sim_header_X11_GLw_GLwMDrawA=no)])
+  if test x$sim_header_X11_GLw_GLwMDrawA != xyes; then
+    AC_MSG_ERROR([SoXt depends on the glwMDrawingAreaWidgetClass Xt/Motif-extension.])
+  else
+    AC_DEFINE(HAVE_X11_GLW_GLWMDRAWA_H)
+  fi
 fi
 
-dnl AC_CACHE_CHECK([for libGLwM], sim_library_GLwM,
-dnl   [AC_TRY_LINK([#include <GL/GLwDrawA.h>],[
-dnl      XtVaCreateManagedWidget( "test", glwMDrawingAreaWidgetClass, 
+if test x$sim_header_X11_GLw_GLwMDrawA = xyes; then
+  INCLUDE_PATH=X11/GLw/GLwMDrawA.h
+else
+  INCLUDE_PATH=GL/GLwMDrawA.h
+fi
 
+AC_MSG_CHECKING([for glwMDrawingAreaWidgetClass in -lMesaGLwM])
+SAVELIBS="$LIBS"
+LIBS="$LIBS -lMesaGLwM"
+AC_TRY_LINK([
+#include <X11/Intrinsic.h>
+#include <$INCLUDE_PATH>
+],[
+  WidgetClass x = glwMDrawingAreaWidgetClass;
+],[
+  COMPONENTLIBS="-lMesaGLwM"
+  AC_MSG_RESULT(yes)
+],[
+  COMPONENTLIBS="no"
+  AC_MSG_RESULT(no)
+])
+LIBS=$SAVELIBS
+
+if test x"$COMPONENTLIBS" = xno; then
+  AC_MSG_CHECKING([for glwMDrawingAreaWidgetClass in -lGLw])
+  SAVELIBS="$LIBS"
+  LIBS="$LIBS -lGLw"
+  AC_TRY_LINK( $INCLUDES,[
+    WidgetClass x = glwMDrawingAreaWidgetClass;
+  ],[
+    COMPONENTLIBS="-lGLw"
+    AC_MSG_RESULT(yes)
+  ],[
+    COMPONENTLIBS="no"
+    AC_MSG_RESULT(no)
+  ])
+  LIBS=$SAVELIBS
+  if test x"$COMPONENTLIBS" = xno; then
+      AC_MSG_ERROR(Could not find a library with glwMDrawingAreaWidgetClass)
+  fi
+fi
 
 CXXFLAGS="$CXXFLAGS -DSOXT_DEBUG=1"
 
@@ -111,7 +155,6 @@ AC_SUBST(WIDGET)
 AC_SUBST(EVENT)
 AC_SUBST(COMPONENTHEADER)
 
-COMPONENTLIBS="-lMesaGLwM"
 AC_SUBST(COMPONENTLIBS)
 
 AC_PATH_XTRA
