@@ -11,6 +11,8 @@
 
 static SoMaterial * material;
 
+#define WANT_INTEGRATED 1
+
 SoSeparator *
 makescene(void)
 {
@@ -29,7 +31,7 @@ main(int argc, char ** argv)
   viewer->setSceneGraph(root = makescene());
   viewer->show();
 
-#if 0
+#if WANT_INTEGRATED
   // we want ColorEditor in scene
   SoSeparator * editorscene = new SoSeparator;
   SoTranslation * trans = new SoTranslation;
@@ -49,7 +51,6 @@ main(int argc, char ** argv)
   material->diffuseColor.connectFrom(&(inscene->color));
   editorscene->addChild(inscene);
   root->insertChild(editorscene, 0);
-
 #else
   SoXtColorEditor * editor = new SoXtColorEditor;
   editor->attach(&(material->diffuseColor));
