@@ -583,6 +583,8 @@ XtNativePopupMenu::removeMenuItem(
   int idx = this->items->find(rec);
   assert(idx != -1);
   this->items->removeFast(idx);
+  delete [] rec->name;
+  delete [] rec->title;
   delete rec;
   this->dirty = TRUE;
 } // removeMenuItem()
