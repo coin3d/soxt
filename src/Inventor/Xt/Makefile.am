@@ -4,9 +4,9 @@
 
 include common/Makefile.common
 
-SUBDIRS = devices widgets viewers .
+SUBDIRS = devices editors nodes viewers widgets .
 
-INCLUDES = -I$(top_srcdir)/src -I$(top_builddir)/data
+DEFAULT_INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src -I$(top_builddir)/data
 
 BUILT_SOURCES = \
 	$(SoGuiAllBuiltFiles)
@@ -37,8 +37,10 @@ nodist_libSoXt_la_SOURCES = \
 
 libSoXt_la_LIBADD = \
 	devices/libSoXtDevices.la \
-	widgets/libSoXtWidgets.la \
-	viewers/libSoXtViewers.la
+	editors/libSoXtEditors.la \
+	nodes/libSoGuiNodes.la \
+	viewers/libSoXtViewers.la \
+	widgets/libSoXtWidgets.la
 
 libSoXt_la_LDFLAGS = \
 	-no-undefined \
@@ -93,6 +95,8 @@ uninstall-local: uninstall-SoXtincHEADERS uninstall-nodist_SoXtincHEADERS
 	@baseincdir="$(DESTDIR)$(includedir)/Inventor"; \
 	for dir in \
 	  "$$baseincdir/Xt/devices" \
+	  "$$baseincdir/Xt/editors" \
+	  "$$baseincdir/Xt/nodes" \
 	  "$$baseincdir/Xt/viewers" \
 	  "$$baseincdir/Xt/widgets" \
 	  "$$baseincdir/Xt" \
