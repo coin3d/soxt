@@ -571,7 +571,7 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 DIST_SOURCES = $(libSoXtWidgets_la_SOURCES)
 HEADERS = $(SoXtWidgetsinc_HEADERS) $(nodist_SoXtWidgetsinc_HEADERS)
 
-DIST_COMMON = README $(SoXtWidgetsinc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = $(SoXtWidgetsinc_HEADERS) Makefile.am Makefile.in
 SOURCES = $(libSoXtWidgets_la_SOURCES) $(nodist_libSoXtWidgets_la_SOURCES)
 
 all: $(BUILT_SOURCES)
