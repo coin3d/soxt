@@ -423,6 +423,9 @@ SoXtPlaneViewer::processEvent(
       }
       break;
 
+    case ROTZ_MODE:
+      break;
+
     default:
       break;
     } // switch ( this->mode )
@@ -476,7 +479,11 @@ SoXtPlaneViewer::openViewerHelpCard( // virtual
   this->openHelpCard( "SoXtPlaneViewer.help" );
 } // openViewerHelpCard()
 
+// *************************************************************************
+
 /*!
+  This method set up the bottom wheel to control camera translation in the
+  horizontal direction.
 */
 
 void
@@ -489,6 +496,8 @@ SoXtPlaneViewer::bottomWheelMotion( // virtual
 } // bottomWheelMotion()
 
 /*!
+  This method set up the left wheel to control camera translation in the
+  vertical direction.
 */
 
 void
@@ -501,6 +510,8 @@ SoXtPlaneViewer::leftWheelMotion( // virtual
 } // leftWheelMotion()
 
 /*!
+  This method set up the right wheel to control camera movement in the
+  inwards direction.
 */
 
 void
@@ -512,6 +523,8 @@ SoXtPlaneViewer::rightWheelMotion( // virtual
 } // rightWheelMotion()
 
 /*!
+  This method moves the camera inwards and outwards.  It will be moved to
+  common code soon.
 */
 
 void
@@ -539,7 +552,11 @@ SoXtPlaneViewer::zoom(
   }
 } // zoom()
 
+// *************************************************************************
+
 /*!
+  This method creates the preferences sheet widgets for the Plane Viewer
+  prefereences window.
 */
 
 void
@@ -547,18 +564,10 @@ SoXtPlaneViewer::createPrefSheet(
   void )
 {
   if ( ! this->prefshell ) {
-#if SOXT_DEBUG && 0
-    SoDebugError::postInfo( "SoXtExaminerViewer::createPrefSheet",
-      "creating preferences window" );
-#endif // SOXT_DEBUG
     this->prefparts = new Widget [ 16 ];
     this->createPrefSheetShellAndForm( this->prefshell, this->prefsheet );
     this->createDefaultPrefSheetParts( this->prefparts, this->numprefparts,
       this->prefsheet );
-#if SOXT_DEBUG && 0
-    SoDebugError::postInfo( "SoXtExaminerViewer::createPrefSheet",
-      "numparts = %d", this->numprefparts );
-#endif // SOXT_DEBUG
     // add parts specific for derived viewer
   }
   this->layoutPartsAndMapPrefSheet( this->prefparts, this->numprefparts,
