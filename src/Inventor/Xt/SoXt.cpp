@@ -27,14 +27,23 @@ static const char rcsid[] =
 #include <Inventor/SoInteraction.h>
 #include <Inventor/misc/SoBasic.h>
 #include <Inventor/nodekits/SoNodeKit.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/sensors/SoSensorManager.h>
 
 #include <Inventor/Xt/SoXt.h>
 
 // *************************************************************************
+// the static SoXt:: variables
 
 Display *     SoXt::display = NULL;
 XtAppContext  SoXt::xtAppContext;
-Widget        SoXt::toplevelWidget = (Widget) NULL;
+Widget        SoXt::mainWidget = (Widget) NULL;
+XtIntervalId  SoXt::timerSensorId = 0;
+SbBool        SoXt::timerSensorActive = FALSE;
+XtIntervalId  SoXt::delaySensorId = 0;
+SbBool        SoXt::delaySensorActive = FALSE;
+XtIntervalId  SoXt::idleSensorId = 0;
+SbBool        SoXt::idleSensorActive = FALSE;
 
 // *************************************************************************
 
@@ -66,13 +75,16 @@ void
 SoXt::init( // static
   Widget toplevel )
 {
-  SoXt::toplevelWidget = toplevel;
+  SoXt::mainWidget = toplevel;
   SoXt::display = XtDisplay( toplevel );
   SoXt::xtAppContext = XtWidgetToApplicationContext( toplevel );
 
   SoDB::init();
   SoNodeKit::init();
   SoInteraction::init();
+
+  SoDB::getSensorManager()->setChangedCallback( SoXt::sensorQueueChanged, NULL);
+
 } // init()
 
 // *************************************************************************
@@ -120,7 +132,7 @@ Widget
 SoXt::getTopLevelWidget( // static
   void )
 {
-  return SoXt::toplevelWidget;
+  return SoXt::mainWidget;
 } // getTopLevelWidget()
 
 // *************************************************************************
@@ -187,6 +199,8 @@ Widget
 SoXt::getShellWidget( // static
   Widget widget )
 {
+  if ( XtIsTopLevelShell( SoXt::mainWidget ) )
+    return SoXt::mainWidget;
   COIN_STUB();
   return (Widget) NULL;
 } // getShellWidget()
@@ -280,5 +294,104 @@ SoXt::getExtensionEventHandler( // static
 {
   COIN_STUB();
 } // getExtensionEventHandler()
+
+// *************************************************************************
+
+/*!
+*/
+
+void
+SoXt::timerSensorCB( // static, private
+  XtPointer closure,
+  XtIntervalId * id )
+{
+  SoDB::getSensorManager()->processTimerQueue();
+  SoXt::timerSensorId = 0;
+  SoXt::timerSensorActive = FALSE;
+  SoXt::sensorQueueChanged( NULL );
+} // timerSensorCB()
+
+/*!
+*/
+
+void
+SoXt::delaySensorCB( // static, private
+  XtPointer closure,
+  XtIntervalId * id )
+{
+  SoDB::getSensorManager()->processDelayQueue(FALSE);
+  SoXt::delaySensorId = 0;
+  SoXt::delaySensorActive = FALSE;
+  SoXt::sensorQueueChanged( NULL );
+} // delaySensorCB()
+
+/*!
+*/
+
+void
+SoXt::idleSensorCB( // static, private
+  XtPointer closure,
+  XtIntervalId * id )
+{
+  SoDB::getSensorManager()->processDelayQueue(TRUE);
+  SoXt::idleSensorId = 0;
+  SoXt::idleSensorActive = FALSE;
+  SoXt::sensorQueueChanged( NULL );
+} // idleSensorCB()
+
+// *************************************************************************
+
+/*!
+  This callback handles events from sensors in the scene graph, needed to
+  deal with scene interaction.
+*/
+
+void
+SoXt::sensorQueueChanged( // static, private
+  void * user )
+{
+  SoSensorManager * sensormanager = SoDB::getSensorManager();
+
+  SbTime timevalue;
+  if ( sensormanager->isTimerSensorPending( timevalue ) ) {
+    SbTime interval = timevalue - SbTime::getTimeOfDay();
+    if ( SoXt::timerSensorActive )
+      XtRemoveTimeOut( SoXt::timerSensorId );
+    SoXt::timerSensorId = XtAppAddTimeOut(
+                              SoXt::getAppContext(), interval.getMsecValue(),
+                              SoXt::timerSensorCB, NULL );
+    SoXt::timerSensorActive = TRUE;
+  } else if ( SoXt::timerSensorActive ) {
+    XtRemoveTimeOut( SoXt::timerSensorId );
+    SoXt::timerSensorId = 0;
+    SoXt::timerSensorActive = FALSE;
+  }
+
+  if ( sensormanager->isDelaySensorPending() ) {
+    if ( ! SoXt::idleSensorActive ) {
+      SoXt::idleSensorId = XtAppAddTimeOut( SoXt::getAppContext(), 1,
+                               SoXt::idleSensorCB, NULL );
+      SoXt::idleSensorActive = TRUE;
+    }
+
+    if ( ! SoXt::delaySensorActive ) {
+      SoXt::delaySensorId = XtAppAddTimeOut( SoXt::getAppContext(),
+                                SoDB::getDelaySensorTimeout().getMsecValue(),
+                                SoXt::delaySensorCB, NULL );
+      SoXt::delaySensorActive = TRUE;
+    }
+  } else {
+    if ( SoXt::idleSensorActive ) {
+      XtRemoveTimeOut( SoXt::idleSensorId );
+      SoXt::idleSensorId = 0;
+      SoXt::idleSensorActive = FALSE;
+    }
+    if ( SoXt::delaySensorActive ) {
+      XtRemoveTimeOut( SoXt::delaySensorId );
+      SoXt::delaySensorId = 0;
+      SoXt::delaySensorActive = FALSE;
+    }
+  }
+} // sensorQueueChange()
 
 // *************************************************************************

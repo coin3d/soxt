@@ -264,7 +264,7 @@ SoXtFullViewer::hide( // virtual
 
 // *************************************************************************
 
-bool
+SbBool
 SoXtFullViewer::eventFilter( // virtual
   Widget obj,
   XAnyEvent * event )

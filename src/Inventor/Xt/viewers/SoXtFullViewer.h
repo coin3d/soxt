@@ -65,7 +65,7 @@ protected:
       BuildFlag flag, Type type, SbBool build );
   ~SoXtFullViewer(void);
 
-  virtual bool eventFilter(Widget obj, XAnyEvent * e);
+  virtual SbBool eventFilter(Widget obj, XAnyEvent * e);
 
   Widget buildWidget(Widget parent);
 

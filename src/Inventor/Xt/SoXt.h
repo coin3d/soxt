@@ -24,6 +24,7 @@
 
 #include <X11/Intrinsic.h>
 
+#include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2s.h>
 
 // *************************************************************************
@@ -65,20 +66,36 @@ public:
   static void removeColormapFromShell( Widget widget, Widget shell );
 
 public:
-  static void addExtensionEventHandler(
-      Widget widget, int extensionEventType, XtEventHandler proc, XtPointer clientData);
-  static void removeExtensionEventHandler(
-      Widget widget, int extensionEventType, XtEventHandler proc, XtPointer clientData);
+  static void addExtensionEventHandler( Widget widget,
+                  int extensionEventType, XtEventHandler proc,
+                  XtPointer clientData );
+  static void removeExtensionEventHandler( Widget widget,
+                  int extensionEventType, XtEventHandler proc,
+                  XtPointer clientData );
   static Widget getwidget( unsigned int what );
 
 protected:
-  static void getExtensionEventHandler(
-      XEvent * event, Widget & widget, XtEventHandler & proc, XtPointer & clientData );
+  static void getExtensionEventHandler( XEvent * event, Widget & widget,
+                  XtEventHandler & proc, XtPointer & clientData );
 
 private:
   static Display * display;
   static XtAppContext xtAppContext;
-  static Widget toplevelWidget;
+  static Widget mainWidget;
+
+  static void timerSensorCB( XtPointer, XtIntervalId * );
+  static XtIntervalId timerSensorId;
+  static SbBool timerSensorActive;
+
+  static void delaySensorCB( XtPointer, XtIntervalId * );
+  static XtIntervalId delaySensorId;
+  static SbBool delaySensorActive;
+
+  static void idleSensorCB( XtPointer, XtIntervalId * );
+  static XtIntervalId idleSensorId;
+  static SbBool idleSensorActive;
+
+  static void sensorQueueChanged( void * user );
 
 }; // class SoXt
 
