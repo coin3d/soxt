@@ -139,7 +139,7 @@ SoXtMaterialList::removeCallback(
   SoXtMaterialListCB * const callback,
   void * const closure )
 {
-  this->common->removeCallback( callback, closure );
+  common->removeCallback( callback, closure );
 } // removeCallback()
 
 // *************************************************************************
