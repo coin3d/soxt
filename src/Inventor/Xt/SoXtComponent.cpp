@@ -475,7 +475,7 @@ SoXtComponent::setWindowCloseCallback(
   void * const closure)
 {
   this->addWindowCloseCallback(callback, closure);
-} // setWindowCloseAction()
+}
 
 /*!
   This method adds a close callback for the component window.
@@ -498,7 +498,7 @@ SoXtComponent::addWindowCloseCallback(
   info->callback = callback;
   info->closure = closure;
   PRIVATE(this)->closecbs->append(info);
-} // addWindowCloseCallback()
+}
 
 /*!
   This method removes a close callback for the component window.
@@ -531,7 +531,7 @@ SoXtComponent::removeWindowCloseCallback(
   SoDebugError::post("SoXtComponent::removeWindowCloseCallback",
     "trying to remove nonexisting callback");
 #endif // SOXT_DEBUG
-} // removeWindowCloseCallback()
+}
 
 /*!
   This method invokes the close callbacks for the component window.
@@ -559,7 +559,7 @@ SoXtComponent::invokeWindowCloseCallbacks(// protected
     // Cast required for AIX
     info->callback(info->closure, (SoXtComponent *) this);
   }
-} // invokeWindowCloseCallbacks()
+}
 
 // *************************************************************************
 
@@ -577,7 +577,7 @@ SoXtComponent::getComponent(// static
   if (pos == -1)
     return NULL;
   return (SoXtComponent *) (*SoXtComponentP::components)[pos];
-} // getComponent()
+}
 
 /*!
   This method returns the name of the component.
@@ -588,7 +588,7 @@ SoXtComponent::getWidgetName(
   void) const
 {
   return PRIVATE(this)->widgetname ? PRIVATE(this)->widgetname : this->getDefaultWidgetName();
-} // getWidgetName()
+}
 
 /*!
   This method returns the class name of the component.
@@ -599,7 +599,7 @@ SoXtComponent::getClassName(
   void) const
 {
   return PRIVATE(this)->widgetclass;
-} // getClassName()
+}
 
 /*!
   This method sets the base widget of the component.
@@ -628,7 +628,7 @@ SoXtComponent::setBaseWidget(Widget widget)
 
   XtInsertEventHandler(PRIVATE(this)->widget, events, False,
     SoXtComponent::event_handler, (XtPointer) this, XtListTail);
-} // setBaseWidget()
+}
 
 /*!
   This method sets the class name of the widget.
@@ -644,7 +644,7 @@ SoXtComponent::setClassName(// protected
     delete [] PRIVATE(this)->widgetclass;
     PRIVATE(this)->widgetclass = strcpy(new char [strlen(name)+1], name);
   }
-} // setClassName()
+}
 
 /*!
   This method should be hooked up to window close events.
@@ -661,17 +661,11 @@ SoXtComponent::windowCloseAction(// virtual, protected
   } else {
     this->hide();
   }
-} // windowCloseAction()
+}
 
-/*!
-  This method is a hook that is called when the component is realized.
-
-  Invocation of this hook is not implemented yet.
-*/
-
+// Documented in common/SoGuiComponentCommon.cpp.in.
 void
-SoXtComponent::afterRealizeHook(// virtual, protected
-  void)
+SoXtComponent::afterRealizeHook(void)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtComponent::afterRealizeHook", "invoked");
@@ -690,7 +684,7 @@ SoXtComponent::afterRealizeHook(// virtual, protected
                     NULL);
     }
   }
-} // afterRealizeHook()
+}
 
 // *************************************************************************
 
@@ -715,7 +709,7 @@ SoXtComponent::registerWidget(// protected
   }
   SoXtComponentP::widgets->append((void *) widget);
   SoXtComponentP::components->append((void *) this);
-} // registerWidget()
+}
 
 /*!
   This method unregisters \a widget.
@@ -737,7 +731,7 @@ SoXtComponent::unregisterWidget(// protected
   assert(SoXtComponentP::components != NULL);
   SoXtComponentP::widgets->remove(pos);
   SoXtComponentP::components->remove(pos);
-} // unregisterWidget()
+}
 
 // *************************************************************************
 
@@ -760,7 +754,7 @@ SoXtComponent::addVisibilityChangeCallback(// protected
   SoXtComponentVisibilityCallbackInfo * info =
     new SoXtComponentVisibilityCallbackInfo;
   PRIVATE(this)->visibilitycbs->append(info);
-} // addVisibilityChangeCallback()
+}
 
 /*!
   This method removes a callback from the list of callbacks that are to be
@@ -791,7 +785,7 @@ SoXtComponent::removeVisibilityChangeCallback(// protected
   SoDebugError::post("SoXtComponent::removeVisibilityChangeCallback",
     "Tried to remove nonexistent callback.");
 #endif // SOXT_DEBUG
-} // removeVisibilityChangeCallback()
+}
 
 /*!
   This method invokes all the visibility-change callbacks.
@@ -815,7 +809,7 @@ SoXtComponent::invokeVisibilityChangeCallbacks(// protected
         (*PRIVATE(this)->visibilitycbs)[i];
     info->callback(info->closure, enable);
   }
-} // invokeVisibilityChangeCallbacks()
+}
 
 // *************************************************************************
 
@@ -838,7 +832,7 @@ SoXtComponent::openHelpCard(const char * const name)
   SoXt::createSimpleErrorDialog(this->getWidget(),
                                 "Not Implemented",
                                 "Help Card functionality is not implemented yet.");
-} // openHelpCard()
+}
 
 // *************************************************************************
 
@@ -852,7 +846,7 @@ SoXtComponent::getlabel(// static, protected
 {
   SOXT_STUB();
   return "(null)";
-} // getlabel()
+}
 
 // *************************************************************************
 
@@ -932,7 +926,7 @@ SoXtComponent::event_handler(Widget widget,
   assert(closure != NULL);
   SoXtComponent * component = (SoXtComponent *) closure;
   *dispatch = component->sysEventHandler(widget, event);
-} // event_handler()
+}
 
 /*!
   Toggle full screen mode for this component, if possible.
