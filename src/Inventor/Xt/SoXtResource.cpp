@@ -30,6 +30,7 @@ static const char rcsid[] =
 #include <Inventor/errors/SoDebugError.h>
 
 #include <Inventor/Xt/SoXtBasic.h>
+#include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtComponent.h>
 
 #include <Inventor/Xt/SoXtResource.h>
@@ -37,20 +38,21 @@ static const char rcsid[] =
 /*!
   \class SoXtResource Inventor/Xt/SoXtResource.h
   \brief The SoXtResource class is a utility class for fetching X resource
-  values for widgets.
+  values for widgets.  Special care is taken for SoXt components.
+
+  The SoXtResource objects are
 */
 
 // *************************************************************************
 
 /*!
+  Constructor.   sets up the SoXtResource object to fetch resources for
+  the \a widget Widget.
 */
 
 SoXtResource::SoXtResource(
   const Widget widget )
-: display( XtDisplay( widget ) )
 {
-  assert( widget != NULL && display != NULL );
-
   static SbBool initialized = FALSE;
   if ( ! initialized ) {
     XrmInitialize();
@@ -58,6 +60,16 @@ SoXtResource::SoXtResource(
   }
 
   this->hierarchy_depth = 0;
+
+  if ( ! widget ) {
+    this->name_hierarchy = NULL;
+    this->class_hierarchy = NULL;
+    this->display = SoXt::getDisplay();
+    return;
+  }
+
+  this->display = XtDisplay( widget );
+
   SbIntList quarks;
   Widget stop = NULL;
 
@@ -73,14 +85,14 @@ SoXtResource::SoXtResource(
     if ( XtIsShell( w ) )
       break;
     if ( (component == NULL) &&
-         ((component = SoXtComponent::getComponent( widget )) != NULL) ) {
+         ((component = SoXtComponent::getComponent( w )) != NULL) ) {
       stop = XtParent( component->getWidget() );
     }
     w = XtParent( w );
   }
 
 #if SOXT_DEBUG
-  if ( ! component )
+  if ( component == NULL )
     SoDebugError::postInfo( "SoXtResource",
       "using SoXtResource for non-component widget (which is OK)" );
 #endif // SOXT_DEBUG
@@ -97,7 +109,7 @@ SoXtResource::SoXtResource(
   this->class_hierarchy[ this->hierarchy_depth ] = 0;
   this->class_hierarchy[ this->hierarchy_depth + 1 ] = 0;
 
-#if SOXT_DEBUG
+#if SOXT_DEBUG && 0
   this->DumpInternals();
 #endif // SOXT_DEBUG
 } // SoXtResource()
@@ -121,14 +133,16 @@ SoXtResource::DumpInternals(
   void ) const
 {
   SoDebugError::postInfo( "SoXtResource::DumpInternals", "dumping" );
-  fprintf( stdout, "Class hierarchy:\n  " );
+  fprintf( stdout, "Classes: " );
   int i;
   for ( i = 0; i < this->hierarchy_depth; i++ ) {
     fprintf( stdout, "%s", XrmQuarkToString( this->class_hierarchy[i] ) );
     if ( i < (this->hierarchy_depth - 1) )
       fprintf( stdout, "." );
   }
-  fprintf( stdout, "\nName hierarchy:\n  " );
+  fprintf( stdout, "\n" );
+
+  fprintf( stdout, "Names:  " );
   for ( i = 0; i < this->hierarchy_depth; i++ ) {
     fprintf( stdout, "%s", XrmQuarkToString( this->name_hierarchy[i] ) );
     if ( i < (this->hierarchy_depth - 1) )
@@ -144,21 +158,29 @@ SoXtResource::DumpInternals(
   XrmRepresentation format;                                                    \
   char * formatstr = NULL;                                                     \
   do {                                                                         \
+    SbBool found = FALSE;                                                      \
     XrmDatabase database = XrmGetDatabase( this->display );                    \
-    this->name_hierarchy[this->hierarchy_depth] = XrmStringToQuark( rname );   \
-    this->class_hierarchy[this->hierarchy_depth] = XrmStringToQuark( rclass ); \
-    if (   ! XrmQGetResource( database, this->name_hierarchy,                  \
-             this->class_hierarchy, &format, &value ) &&                       \
-         ! XrmGetResource( database, rname, rclass, &formatstr, &value ) ) {   \
+    if ( this->name_hierarchy != NULL ) {                                      \
+      this->name_hierarchy[this->hierarchy_depth] = XrmStringToQuark( rname ); \
+      this->class_hierarchy[this->hierarchy_depth] =                           \
+        XrmStringToQuark( rclass );                                            \
+      found = XrmQGetResource( database, this->name_hierarchy,                 \
+                this->class_hierarchy, &format, &value ) ? TRUE : FALSE;       \
       this->name_hierarchy[this->hierarchy_depth] = 0;                         \
       this->class_hierarchy[this->hierarchy_depth] = 0;                        \
-      SoDebugError::postInfo( "getResource", "resource \"%s\" (%s) not found", \
-        rname, rclass );                                                       \
+    }                                                                          \
+    if ( ! found )                                                             \
+      found = XrmGetResource( database, rname,                                 \
+                rclass, &formatstr, &value ) ? TRUE : FALSE;                   \
+    if ( ! found ) {                                                           \
+      this->DumpInternals();                                                   \
+      SoDebugError::postInfo( "getResource",                                   \
+        "resource \"%s\" (%s) not found", rname, rclass );                     \
       return FALSE;                                                            \
     }                                                                          \
-    this->name_hierarchy[this->hierarchy_depth] = 0;                           \
-    this->class_hierarchy[this->hierarchy_depth] = 0;                          \
   } while ( FALSE )
+
+// *************************************************************************
 
 /*!
   This method retrieves the given X resource and puts it into the
@@ -176,7 +198,7 @@ SoXtResource::getResource(
   GET_RESOURCE();
 
   if ( ! formatstr ) {
-    SoDebugError::postInfo( "getResource", "resource format = %s\n",
+    SoDebugError::postInfo( "getResource", "resource format (quark) = %s\n",
       XrmQuarkToString(format) );
   } else {
     SoDebugError::postInfo( "getResource", "resource format = %s\n",
@@ -203,7 +225,7 @@ SoXtResource::getResource(
   GET_RESOURCE();
 
   if ( ! formatstr ) {
-    SoDebugError::postInfo( "getResource", "resource format = %s\n",
+    SoDebugError::postInfo( "getResource", "resource format (quark) = %s\n",
       XrmQuarkToString(format) );
   } else {
     SoDebugError::postInfo( "getResource", "resource format = %s\n",
@@ -230,7 +252,7 @@ SoXtResource::getResource(
   GET_RESOURCE();
 
   if ( ! formatstr ) {
-    SoDebugError::postInfo( "getResource", "resource format = %s\n",
+    SoDebugError::postInfo( "getResource", "resource format (quark) = %s\n",
       XrmQuarkToString(format) );
   } else {
     SoDebugError::postInfo( "getResource", "resource format = %s\n",
@@ -242,8 +264,8 @@ SoXtResource::getResource(
 } // getResource()
 
 /*!
-  This method retrieves the given X resource and puts it into the
-  char * \a retval.
+  This method retrieves the given X resource and points the \a retval
+  pointer to it's data.
 
   TRUE is returned if the resource is found, and FALSE otherwise.
 */
@@ -256,16 +278,17 @@ SoXtResource::getResource(
 {
   GET_RESOURCE();
 
-  if ( ! formatstr ) {
-    SoDebugError::postInfo( "getResource", "resource format = %s\n",
-      XrmQuarkToString(format) );
-  } else {
-    SoDebugError::postInfo( "getResource", "resource format = %s\n",
-      formatstr );
-  }
+  XrmQuark strq = XrmStringToQuark( XmRString );
+  if ( formatstr != NULL )
+    format = XrmStringToQuark( formatstr );
 
-  SOXT_STUB_ONCE();
-  return FALSE;
+  if ( strq != format ) {
+    SoDebugError::postInfo( "getResource",
+      "resource format \"%s\" not supported\n", XrmQuarkToString( format ) );
+    return FALSE;
+  }
+  retval = (char *) value.addr;
+  return TRUE;
 } // getResource()
 
 /*!
@@ -284,7 +307,7 @@ SoXtResource::getResource(
   GET_RESOURCE();
 
   if ( ! formatstr ) {
-    SoDebugError::postInfo( "getResource", "resource format = %s\n",
+    SoDebugError::postInfo( "getResource", "resource format (quark) = %s\n",
       XrmQuarkToString(format) );
   } else {
     SoDebugError::postInfo( "getResource", "resource format = %s\n",
@@ -311,7 +334,7 @@ SoXtResource::getResource(
   GET_RESOURCE();
 
   if ( ! formatstr ) {
-    SoDebugError::postInfo( "getResource", "resource format = %s\n",
+    SoDebugError::postInfo( "getResource", "resource format (quark) = %s\n",
       XrmQuarkToString(format) );
   } else {
     SoDebugError::postInfo( "getResource", "resource format = %s\n",

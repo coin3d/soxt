@@ -51,7 +51,7 @@ public:
   void DumpInternals(void) const;
 
 private:
-  Display * const display;
+  Display * display;
   XrmQuark * name_hierarchy;
   XrmQuark * class_hierarchy;
   int hierarchy_depth;
