@@ -326,44 +326,6 @@ SoXtPlaneViewer::createViewerButtons(// virtual, protected
   FIXME: write doc
 */
 
-const char *
-SoXtPlaneViewer::getDefaultWidgetName(
-  void) const
-{
-  static const char defaultWidgetName[] = "SoXtPlaneViewer";
-  return defaultWidgetName;
-} // getDefaultWidgetName()
-
-/*!
-  FIXME: write doc
-*/
-
-const char *
-SoXtPlaneViewer::getDefaultTitle(
-  void) const
-{
-  static const char defaultTitle[] = "Plane Viewer";
-  return defaultTitle;
-} // getDefaultTitle()
-
-/*!
-  FIXME: write doc
-*/
-
-const char *
-SoXtPlaneViewer::getDefaultIconTitle(
-  void) const
-{
-  static const char defaultIconTitle[] = "Plane Viewer";
-  return defaultIconTitle;
-} // getDefaultIconTitle()
-
-// *************************************************************************
-
-/*!
-  FIXME: write doc
-*/
-
 void
 SoXtPlaneViewer::processEvent(
   XAnyEvent * event)
