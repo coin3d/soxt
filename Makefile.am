@@ -21,7 +21,9 @@ BUILT_SOURCES = \
 	src/Inventor/Xt/SoXtRenderArea.h \
 	src/Inventor/Xt/SoXtRenderArea.cpp \
 	src/Inventor/Xt/viewers/SoXtViewer.h \
-	src/Inventor/Xt/viewers/SoXtViewer.cpp
+	src/Inventor/Xt/viewers/SoXtViewer.cpp \
+	src/Inventor/Xt/viewers/SoAnyFullViewer.h \
+	src/Inventor/Xt/viewers/SoAnyFullViewer.cpp
 
 soxt-config: soxt-config.in
 
@@ -33,19 +35,35 @@ m4data_DATA = conf-macros/soxt.m4 conf-macros/modifierlist.m4
 ############################################################################
 
 src/Inventor/Xt/SoXtRenderArea.h: \
-  $(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.h.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyRenderArea.h.in ./config.status
+  $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.h.in
+	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoGuiRenderArea.h.in ./config.status
 
 src/Inventor/Xt/SoXtRenderArea.cpp: \
-  $(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.cpp.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyRenderArea.cpp.in ./config.status
+  $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.cpp.in
+	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoGuiRenderArea.cpp.in ./config.status
 
 src/Inventor/Xt/viewers/SoXtViewer.h: \
-  $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.h.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyViewer.h.in ./config.status
+  $(top_srcdir)/src/Inventor/Xt/common/SoGuiViewer.h.in
+	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoGuiViewer.h.in ./config.status
 
 src/Inventor/Xt/viewers/SoXtViewer.cpp: \
-  $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.cpp.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyViewer.cpp.in $(top_builddir)/config.status
+  $(top_srcdir)/src/Inventor/Xt/common/SoGuiViewer.cpp.in
+	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoGuiViewer.cpp.in $(top_builddir)/config.status
+
+src/Inventor/Xt/viewers/SoAnyFullViewer.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.h.in
+	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyFullViewer.h.in ./config.status
+
+src/Inventor/Xt/viewers/SoAnyFullViewer.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp.in
+	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyFullViewer.cpp.in $(top_builddir)/config.status
+
+src/Inventor/Xt/viewers/SoAnyExaminerViewer.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.h.in
+	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyExaminerViewer.h.in ./config.status
+
+src/Inventor/Xt/viewers/SoAnyExaminerViewer.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp.in
+	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyExaminerViewer.cpp.in $(top_builddir)/config.status
 
 ############################################################################

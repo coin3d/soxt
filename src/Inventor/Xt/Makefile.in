@@ -107,6 +107,11 @@ INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 
 lib_LTLIBRARIES = libSoXt.la
 
+BUILT_SOURCES = \
+	SoXtRenderArea.h \
+	SoXtRenderArea.cpp
+
+
 libSoXt_la_SOURCES = \
 	SoXt.h \
 	SoXt.cpp \
@@ -114,8 +119,7 @@ libSoXt_la_SOURCES = \
 	SoXtComponent.cpp \
 	SoXtGLWidget.h \
 	SoXtGLWidget.cpp \
-	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.h \
-	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.cpp \
+	$(BUILT_SOURCES) \
 	SoXtRenderAreaExtra.cpp
 
 
@@ -236,7 +240,6 @@ clean-libtool:
 distclean-libtool:
 
 maintainer-clean-libtool:
-SoXtRenderArea.lo: $(top_builddir)/src/Inventor/Xt/SoXtRenderArea.cpp
 
 libSoXt.la: $(libSoXt_la_OBJECTS) $(libSoXt_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libSoXt_la_LDFLAGS) $(libSoXt_la_OBJECTS) $(libSoXt_la_LIBADD) $(LIBS)
@@ -423,6 +426,7 @@ distclean-generic:
 
 maintainer-clean-generic:
 	-rm -f Makefile.in
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 mostlyclean-am:  mostlyclean-libLTLIBRARIES mostlyclean-compile \
 		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
 		mostlyclean-generic
@@ -474,10 +478,10 @@ maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
 ############################################################################
 
-SoXtRenderArea.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.h.in
+SoXtRenderArea.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.h.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtRenderArea.h )
 
-SoXtRenderArea.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.cpp.in
+SoXtRenderArea.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.cpp.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtRenderArea.cpp )
 
 ############################################################################

@@ -6,6 +6,10 @@ INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 
 lib_LTLIBRARIES = libSoXt.la
 
+BUILT_SOURCES = \
+	SoXtRenderArea.h \
+	SoXtRenderArea.cpp
+
 libSoXt_la_SOURCES = \
 	SoXt.h \
 	SoXt.cpp \
@@ -13,8 +17,7 @@ libSoXt_la_SOURCES = \
 	SoXtComponent.cpp \
 	SoXtGLWidget.h \
 	SoXtGLWidget.cpp \
-	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.h \
-	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.cpp \
+	$(BUILT_SOURCES) \
 	SoXtRenderAreaExtra.cpp
 
 libSoXt_la_LIBADD = \
@@ -32,10 +35,10 @@ libSoXtinc_HEADERS = \
 
 ############################################################################
 
-SoXtRenderArea.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.h.in
+SoXtRenderArea.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.h.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtRenderArea.h )
 
-SoXtRenderArea.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.cpp.in
+SoXtRenderArea.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.cpp.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtRenderArea.cpp )
 
 ############################################################################

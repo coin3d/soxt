@@ -104,12 +104,16 @@ LIBS =
 
 noinst_LTLIBRARIES = libSoXtViewers.la
 
+BUILT_SOURCES = \
+	SoXtViewer.h \
+	SoXtViewer.cpp \
+	SoAnyFullViewer.h \
+	SoAnyFullViewer.cpp
+
+
 libSoXtViewers_la_SOURCES = \
-	$(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.cpp \
-	$(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.h \
+	$(BUILT_SOURCES) \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtViewerExtra.cpp \
-	$(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp \
-	$(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.cpp \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp \
@@ -141,8 +145,8 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libSoXtViewers_la_LDFLAGS = 
 libSoXtViewers_la_LIBADD = 
-am_libSoXtViewers_la_OBJECTS =  SoXtViewer.lo SoXtViewerExtra.lo \
-SoAnyFullViewer.lo SoXtFullViewer.lo SoAnyExaminerViewer.lo \
+am_libSoXtViewers_la_OBJECTS =  SoXtViewer.lo SoAnyFullViewer.lo \
+SoXtViewerExtra.lo SoXtFullViewer.lo SoAnyExaminerViewer.lo \
 SoXtExaminerViewer.lo
 libSoXtViewers_la_OBJECTS =  $(am_libSoXtViewers_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -211,11 +215,8 @@ clean-libtool:
 distclean-libtool:
 
 maintainer-clean-libtool:
-SoXtViewer.lo: $(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.cpp
 SoXtViewerExtra.lo: \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtViewerExtra.cpp
-SoAnyFullViewer.lo: \
-	$(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp
 SoXtFullViewer.lo: \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.cpp
 SoAnyExaminerViewer.lo: \
@@ -342,6 +343,7 @@ distclean-generic:
 
 maintainer-clean-generic:
 	-rm -f Makefile.in
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 mostlyclean-am:  mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
 		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
 		mostlyclean-generic
@@ -387,11 +389,29 @@ mostlyclean distclean maintainer-clean
 
 ############################################################################
 
-SoXtViewer.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.h.in
+SoXtViewer.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiViewer.h.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/viewers/SoXtViewer.h )
 
-SoXtViewer.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.cpp.in
+SoXtViewer.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoGuiViewer.cpp.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/viewers/SoXtViewer.cpp )
+
+SoAnyFullViewer.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyFullViewer.h )
+
+SoAnyFullViewer.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyFullViewer.cpp )
+
+SoAnyExaminerViewer.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyExaminerViewer.h )
+
+SoAnyExaminerViewer.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyExaminerViewer.cpp )
 
 ############################################################################
 

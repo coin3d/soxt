@@ -4,12 +4,15 @@ LIBS =
 
 noinst_LTLIBRARIES = libSoXtViewers.la
 
+BUILT_SOURCES = \
+	SoXtViewer.h \
+	SoXtViewer.cpp \
+	SoAnyFullViewer.h \
+	SoAnyFullViewer.cpp
+
 libSoXtViewers_la_SOURCES = \
-	$(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.cpp \
-	$(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.h \
+	$(BUILT_SOURCES) \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtViewerExtra.cpp \
-	$(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp \
-	$(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.cpp \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp \
@@ -26,11 +29,29 @@ libSoXtViewersinc_HEADERS = \
 
 ############################################################################
 
-SoXtViewer.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.h.in
+SoXtViewer.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiViewer.h.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/viewers/SoXtViewer.h )
 
-SoXtViewer.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.cpp.in
+SoXtViewer.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoGuiViewer.cpp.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/viewers/SoXtViewer.cpp )
+
+SoAnyFullViewer.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyFullViewer.h )
+
+SoAnyFullViewer.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyFullViewer.cpp )
+
+SoAnyExaminerViewer.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyExaminerViewer.h )
+
+SoAnyExaminerViewer.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyExaminerViewer.cpp )
 
 ############################################################################
 
