@@ -320,8 +320,7 @@ SoXt::init(Widget toplevel)
   SoNodeKit::init();
   SoInteraction::init();
 
-  SoXtP::setUpErrorHandler();
-
+  // CAT_MOD BEGIN  
 #if SOXT_DEBUG
   setbuf(stdout, NULL);
   setbuf(stderr, NULL);
@@ -331,6 +330,9 @@ SoXt::init(Widget toplevel)
   SoXtP::display = XtDisplay(toplevel);
   SoXtP::xtappcontext = XtWidgetToApplicationContext(toplevel);
 
+  SoXtP::setUpErrorHandler();
+  // CAT_MOD END
+  
   SoXtObject::init();
   SoGuiNodes::initClasses();
   SoGuiEngines::initClasses();
