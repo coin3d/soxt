@@ -7472,17 +7472,20 @@ AC_ARG_ENABLE(
 
 if test x"$enable_warnings" = x"yes"; then
 
-  for sim_ac_try_warning_option in \
-    "-W" "-Wall" "-Wno-unused" "-Wno-multichar" "-Woverloaded-virtual"; do
+  for sim_ac_try_cc_warning_option in \
+    "-W" "-Wall" "-Wno-unused" "-Wno-multichar"; do
 
     if test x"$GCC" = x"yes"; then
-      SIM_AC_CC_COMPILER_OPTION([$sim_ac_try_warning_option],
-                                [CFLAGS="$CFLAGS $sim_ac_try_warning_option"])
+      SIM_AC_CC_COMPILER_OPTION([$sim_ac_try_cc_warning_option],
+                                [CFLAGS="$CFLAGS $sim_ac_try_cc_warning_option"])
     fi
+  done
 
+  for sim_ac_try_cxx_warning_option in \
+    "-W" "-Wall" "-Wno-unused" "-Wno-multichar" "-Woverloaded-virtual"; do
     if test x"$GXX" = x"yes"; then
-      SIM_AC_CXX_COMPILER_OPTION([$sim_ac_try_warning_option],
-                                 [CXXFLAGS="$CXXFLAGS $sim_ac_try_warning_option"])
+      SIM_AC_CXX_COMPILER_OPTION([$sim_ac_try_cxx_warning_option],
+                                 [CXXFLAGS="$CXXFLAGS $sim_ac_try_cxx_warning_option"])
     fi
 
   done

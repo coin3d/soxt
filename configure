@@ -19446,8 +19446,8 @@ fi;
 
 if test x"$enable_warnings" = x"yes"; then
 
-  for sim_ac_try_warning_option in \
-    "-W" "-Wall" "-Wno-unused" "-Wno-multichar" "-Woverloaded-virtual"; do
+  for sim_ac_try_cc_warning_option in \
+    "-W" "-Wall" "-Wno-unused" "-Wno-multichar"; do
 
     if test x"$GCC" = x"yes"; then
 
@@ -19459,11 +19459,11 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
-echo "$as_me:$LINENO: checking whether $CC accepts $sim_ac_try_warning_option" >&5
-echo $ECHO_N "checking whether $CC accepts $sim_ac_try_warning_option... $ECHO_C" >&6
+echo "$as_me:$LINENO: checking whether $CC accepts $sim_ac_try_cc_warning_option" >&5
+echo $ECHO_N "checking whether $CC accepts $sim_ac_try_cc_warning_option... $ECHO_C" >&6
 
 sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS $sim_ac_try_warning_option"
+CPPFLAGS="$CPPFLAGS $sim_ac_try_cc_warning_option"
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
@@ -19505,7 +19505,7 @@ echo "${ECHO_T}$sim_ac_accept_result" >&6
 CPPFLAGS=$sim_ac_save_cppflags
 # This need to go last, in case CPPFLAGS is modified in arg 2 or arg 3.
 if test $sim_ac_accept_result = yes; then
-  CFLAGS="$CFLAGS $sim_ac_try_warning_option"
+  CFLAGS="$CFLAGS $sim_ac_try_cc_warning_option"
 else
   :
 fi
@@ -19518,7 +19518,10 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
     fi
+  done
 
+  for sim_ac_try_cxx_warning_option in \
+    "-W" "-Wall" "-Wno-unused" "-Wno-multichar" "-Woverloaded-virtual"; do
     if test x"$GXX" = x"yes"; then
 
 
@@ -19529,11 +19532,11 @@ ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
-echo "$as_me:$LINENO: checking whether $CXX accepts $sim_ac_try_warning_option" >&5
-echo $ECHO_N "checking whether $CXX accepts $sim_ac_try_warning_option... $ECHO_C" >&6
+echo "$as_me:$LINENO: checking whether $CXX accepts $sim_ac_try_cxx_warning_option" >&5
+echo $ECHO_N "checking whether $CXX accepts $sim_ac_try_cxx_warning_option... $ECHO_C" >&6
 
 sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS $sim_ac_try_warning_option"
+CPPFLAGS="$CPPFLAGS $sim_ac_try_cxx_warning_option"
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
@@ -19575,7 +19578,7 @@ echo "${ECHO_T}$sim_ac_accept_result" >&6
 CPPFLAGS=$sim_ac_save_cppflags
 # This need to go last, in case CPPFLAGS is modified in arg 2 or arg 3.
 if test $sim_ac_accept_result = yes; then
-  CXXFLAGS="$CXXFLAGS $sim_ac_try_warning_option"
+  CXXFLAGS="$CXXFLAGS $sim_ac_try_cxx_warning_option"
 else
   :
 fi
@@ -24109,6 +24112,67 @@ if $sim_cv_have_oiv_have_socamera_setstereomode; then
 
 cat >>confdefs.h <<\_ACEOF
 #define HAVE_SOCAMERA_SETSTEREOMODE 1
+_ACEOF
+
+
+else
+  :
+fi
+
+
+
+
+echo "$as_me:$LINENO: checking for SoGLRenderAction::SORTED_LAYERS_BLEND transparency mode" >&5
+echo $ECHO_N "checking for SoGLRenderAction::SORTED_LAYERS_BLEND transparency mode... $ECHO_C" >&6
+if test "${sim_cv_have_oiv_have_sorted_layers_blend+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <Inventor/actions/SoGLRenderAction.h>
+int
+main ()
+{
+
+  /* try to get SORTED_LAYERS_BLEND transparency mode value */
+  int num = (int) SoGLRenderAction::SORTED_LAYERS_BLEND;
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_cv_have_oiv_have_sorted_layers_blend=true
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+sim_cv_have_oiv_have_sorted_layers_blend=false
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+fi
+echo "$as_me:$LINENO: result: $sim_cv_have_oiv_have_sorted_layers_blend" >&5
+echo "${ECHO_T}$sim_cv_have_oiv_have_sorted_layers_blend" >&6
+
+if $sim_cv_have_oiv_have_sorted_layers_blend; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_SORTED_LAYERS_BLEND 1
 _ACEOF
 
 
