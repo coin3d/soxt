@@ -23,6 +23,7 @@ static const char rcsid[] =
 #endif // SOXT_DEBUG
 
 #include <string.h>
+#include <stdlib.h> // atoi()
 
 #include <X11/cursorfont.h>
 #include <X11/keysym.h>
