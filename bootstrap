@@ -84,7 +84,7 @@ EOF
   DIE=true
 fi
 
-if test -z "`libtool --version | grep \" $LIBTOOL_VER \" 2> /dev/null`"; then
+if test -z "`libtool --version | grep \" $LIBTOOL_VER\" 2> /dev/null`"; then
   cat <<EOF
 
   Invalid Version of Libtool
@@ -92,7 +92,7 @@ if test -z "`libtool --version | grep \" $LIBTOOL_VER \" 2> /dev/null`"; then
   You must have libtool version $LIBTOOL_VER installed to generate
   configure information and Makefiles for $PROJECT.
 
-  Get ftp://ftp.gnu.org/pub/gnu/libtool/libtool-1.3.5.tar.gz
+  Get ftp://ftp.gnu.org/pub/gnu/libtool/libtool-$LIBTOOL_VER.tar.gz
 EOF
   DIE=true
 fi
