@@ -195,6 +195,8 @@ SoGui_src_Inventor_Gui_viewers_BuiltFiles = \
   $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@ConstrainedViewer.cpp \
   $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.h \
   $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.cpp \
+  $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.h \
+  $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp \
   $(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyFullViewer.h \
   $(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyFullViewer.cpp \
   $(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyExaminerViewer.h \
@@ -351,6 +353,8 @@ SoGuiCommonDistFiles = \
   src/Inventor/@Gui@/common/viewers/SoGuiConstrainedViewer.h.in \
   src/Inventor/@Gui@/common/viewers/SoGuiFlyViewer.cpp.in \
   src/Inventor/@Gui@/common/viewers/SoGuiFlyViewer.h.in \
+  src/Inventor/@Gui@/common/viewers/SoGuiFullViewer.cpp.in \
+  src/Inventor/@Gui@/common/viewers/SoGuiFullViewer.h.in \
   src/Inventor/@Gui@/common/viewers/SoGuiViewer.cpp.in \
   src/Inventor/@Gui@/common/viewers/SoGuiViewer.h.in \
   src/Inventor/@Gui@/common/pixmaps/help.xpm \
@@ -394,14 +398,13 @@ DISTCLEANFILES = \
 
 ############################################################################
 libSoXtViewers_la_SOURCES = \
-	So@Gui@FullViewer.cpp \
-	So@Gui@FullViewer.h \
 	So@Gui@ExaminerViewer.cpp \
 	So@Gui@ExaminerViewer.h \
 	So@Gui@PlaneViewer.cpp \
 	So@Gui@PlaneViewer.h \
 	So@Gui@WalkViewer.cpp \
-	So@Gui@WalkViewer.h
+	So@Gui@WalkViewer.h \
+	FullViewer.cpp
 
 
 nodist_libSoXtViewers_la_SOURCES = \
@@ -414,7 +417,6 @@ nodist_libSoXtViewers_la_SOURCES = \
 SoXtViewersincdir = $(includedir)/Inventor/@Gui@/viewers
 
 SoXtViewersinc_HEADERS = \
-	So@Gui@FullViewer.h \
 	So@Gui@ExaminerViewer.h \
 	So@Gui@PlaneViewer.h \
 	So@Gui@WalkViewer.h
@@ -423,6 +425,7 @@ SoXtViewersinc_HEADERS = \
 nodist_SoXtViewersinc_HEADERS = \
 	So@Gui@Viewer.h \
 	So@Gui@ConstrainedViewer.h \
+	So@Gui@FullViewer.h \
 	So@Gui@FlyViewer.h
 
 subdir = src/Inventor/Xt/viewers
@@ -433,14 +436,13 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 
 libSoXtViewers_la_LDFLAGS =
 libSoXtViewers_la_LIBADD =
-am_libSoXtViewers_la_OBJECTS = So@Gui@FullViewer.lo \
-	So@Gui@ExaminerViewer.lo So@Gui@PlaneViewer.lo \
-	So@Gui@WalkViewer.lo
+am_libSoXtViewers_la_OBJECTS = So@Gui@ExaminerViewer.lo \
+	So@Gui@PlaneViewer.lo So@Gui@WalkViewer.lo FullViewer.lo
 @BUILD_METAFILES_TRUE@nodist_libSoXtViewers_la_OBJECTS = \
 @BUILD_METAFILES_TRUE@	So@Gui@Viewer.lo \
 @BUILD_METAFILES_TRUE@	So@Gui@ConstrainedViewer.lo \
-@BUILD_METAFILES_TRUE@	So@Gui@FlyViewer.lo SoAnyFullViewer.lo \
-@BUILD_METAFILES_TRUE@	SoAnyExaminerViewer.lo \
+@BUILD_METAFILES_TRUE@	So@Gui@FlyViewer.lo So@Gui@FullViewer.lo \
+@BUILD_METAFILES_TRUE@	SoAnyFullViewer.lo SoAnyExaminerViewer.lo \
 @BUILD_METAFILES_TRUE@	SoAnyPlaneViewer.lo SoAnyWalkViewer.lo \
 @BUILD_METAFILES_TRUE@	@meta_prefix@So@Gui@Viewer.lo \
 @BUILD_METAFILES_TRUE@	@meta_prefix@So@Gui@FullViewer.lo \
@@ -452,7 +454,8 @@ am_libSoXtViewers_la_OBJECTS = So@Gui@FullViewer.lo \
 @BUILD_METAFILES_FALSE@nodist_libSoXtViewers_la_OBJECTS = \
 @BUILD_METAFILES_FALSE@	So@Gui@Viewer.lo \
 @BUILD_METAFILES_FALSE@	So@Gui@ConstrainedViewer.lo \
-@BUILD_METAFILES_FALSE@	So@Gui@FlyViewer.lo SoAnyFullViewer.lo \
+@BUILD_METAFILES_FALSE@	So@Gui@FlyViewer.lo So@Gui@FullViewer.lo \
+@BUILD_METAFILES_FALSE@	SoAnyFullViewer.lo \
 @BUILD_METAFILES_FALSE@	SoAnyExaminerViewer.lo \
 @BUILD_METAFILES_FALSE@	SoAnyPlaneViewer.lo SoAnyWalkViewer.lo
 libSoXtViewers_la_OBJECTS = $(am_libSoXtViewers_la_OBJECTS) \
@@ -471,6 +474,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/@meta_prefix@So@Gui@PlaneViewer.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/@meta_prefix@So@Gui@Viewer.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/@meta_prefix@So@Gui@WalkViewer.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/FullViewer.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/So@Gui@ConstrainedViewer.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/So@Gui@ExaminerViewer.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/So@Gui@FlyViewer.Plo \
@@ -535,6 +539,8 @@ So@Gui@ConstrainedViewer.lo: \
 	$(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@ConstrainedViewer.cpp
 So@Gui@FlyViewer.lo: \
 	$(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.cpp
+So@Gui@FullViewer.lo: \
+	$(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp
 SoAnyFullViewer.lo: \
 	$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyFullViewer.cpp
 SoAnyExaminerViewer.lo: \
@@ -573,6 +579,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/@meta_prefix@So@Gui@PlaneViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/@meta_prefix@So@Gui@Viewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/@meta_prefix@So@Gui@WalkViewer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/FullViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@ConstrainedViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@ExaminerViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@FlyViewer.Plo@am__quote@
@@ -659,6 +666,24 @@ So@Gui@FlyViewer.lo: $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FlyViewer
 @AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@FlyViewer.Plo' tmpdepfile='$(DEPDIR)/So@Gui@FlyViewer.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@FlyViewer.lo `test -f $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.cpp
+
+So@Gui@FullViewer.o: $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp' object='So@Gui@FullViewer.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@FullViewer.Po' tmpdepfile='$(DEPDIR)/So@Gui@FullViewer.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@FullViewer.o `test -f $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp
+
+So@Gui@FullViewer.obj: $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp' object='So@Gui@FullViewer.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@FullViewer.Po' tmpdepfile='$(DEPDIR)/So@Gui@FullViewer.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@FullViewer.obj `cygpath -w $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp`
+
+So@Gui@FullViewer.lo: $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp' object='So@Gui@FullViewer.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@FullViewer.Plo' tmpdepfile='$(DEPDIR)/So@Gui@FullViewer.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@FullViewer.lo `test -f $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp
 
 SoAnyFullViewer.o: $(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyFullViewer.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyFullViewer.cpp' object='SoAnyFullViewer.o' libtool=no @AMDEPBACKSLASH@
@@ -1150,6 +1175,12 @@ $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.h: $(top_srcdir)/src
 $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/viewers/SoGuiFlyViewer.cpp.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.cpp:src/Inventor/@Gui@/common/viewers/SoGuiFlyViewer.cpp.in )
 
+$(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.h: $(top_srcdir)/src/Inventor/@Gui@/common/viewers/SoGuiFullViewer.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/So@Gui@FullViewer.h:src/Inventor/@Gui@/common/viewers/SoGuiFullViewer.h.in )
+
+$(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/viewers/SoGuiFullViewer.cpp.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp:src/Inventor/@Gui@/common/viewers/SoGuiFullViewer.cpp.in )
+
 $(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyFullViewer.h: $(top_srcdir)/src/Inventor/@Gui@/common/viewers/SoAnyFullViewer.h.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyFullViewer.h:src/Inventor/@Gui@/common/viewers/SoAnyFullViewer.h.in )
 
@@ -1287,10 +1318,10 @@ $(top_builddir)/man/man1/so@gui@-config.1: $(top_srcdir)/src/Inventor/@Gui@/comm
 @BUILD_METAFILES_TRUE@	echo "$(MOC) -o src/Inventor/@Gui@/viewers/@meta_prefix@So@Gui@Viewer.cpp src/Inventor/@Gui@/viewers/So@Gui@Viewer.h"; \
 @BUILD_METAFILES_TRUE@	$(MOC) -o src/Inventor/@Gui@/viewers/@meta_prefix@So@Gui@Viewer.cpp src/Inventor/@Gui@/viewers/So@Gui@Viewer.h )
 
-@BUILD_METAFILES_TRUE@$(top_builddir)/src/Inventor/@Gui@/viewers/@meta_prefix@So@Gui@FullViewer.cpp: $(top_srcdir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.h $(top_builddir)/config.status
+@BUILD_METAFILES_TRUE@$(top_builddir)/src/Inventor/@Gui@/viewers/@meta_prefix@So@Gui@FullViewer.cpp: $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.h $(top_builddir)/config.status
 @BUILD_METAFILES_TRUE@	@( cd $(top_builddir); \
-@BUILD_METAFILES_TRUE@	echo "$(MOC) -o src/Inventor/@Gui@/viewers/@meta_prefix@So@Gui@FullViewer.cpp `$(UNIX2WINPATH) $(top_srcdir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.h`"; \
-@BUILD_METAFILES_TRUE@	$(MOC) -o src/Inventor/@Gui@/viewers/@meta_prefix@So@Gui@FullViewer.cpp `$(UNIX2WINPATH) $(top_srcdir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.h` )
+@BUILD_METAFILES_TRUE@	echo "$(MOC) -o src/Inventor/@Gui@/viewers/@meta_prefix@So@Gui@FullViewer.cpp `$(UNIX2WINPATH) $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.h`"; \
+@BUILD_METAFILES_TRUE@	$(MOC) -o src/Inventor/@Gui@/viewers/@meta_prefix@So@Gui@FullViewer.cpp `$(UNIX2WINPATH) $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.h` )
 
 @BUILD_METAFILES_TRUE@$(top_builddir)/src/Inventor/@Gui@/viewers/@meta_prefix@So@Gui@ExaminerViewer.cpp: $(top_srcdir)/src/Inventor/@Gui@/viewers/So@Gui@ExaminerViewer.h $(top_builddir)/config.status
 @BUILD_METAFILES_TRUE@	@( cd $(top_builddir); \
