@@ -22,6 +22,15 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtTransformSliderSet Inventor/Xt/SoXtTransformSliderSet.h
+  \brief The SoXtTransformSliderSet class is yet to be documented.
+*/
+
+// *************************************************************************
+
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #include <Xm/Form.h>
@@ -33,14 +42,10 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/SoXtTransformSliderSet.h>
 
-/*!
-  \class SoXtTransformSliderSet Inventor/Xt/SoXtTransformSliderSet.h
-  \brief The SoXtTransformSliderSet class is yet to be documented.
-*/
-
 // *************************************************************************
 
 /*!
+  Constructor.
 */
 
 SoXtTransformSliderSet::SoXtTransformSliderSet(
@@ -54,6 +59,7 @@ SoXtTransformSliderSet::SoXtTransformSliderSet(
 } // SoXtTransformSliderSet()
 
 /*!
+  Constructor.
 */
 
 SoXtTransformSliderSet::SoXtTransformSliderSet( // protected
@@ -68,6 +74,7 @@ SoXtTransformSliderSet::SoXtTransformSliderSet( // protected
 } // SoXtTransformSliderSet()
 
 /*!
+  Common constructor code.
 */
 
 void
@@ -84,6 +91,7 @@ SoXtTransformSliderSet::constructor( // private
 } // constructor()
 
 /*!
+  Destructor.
 */
 
 SoXtTransformSliderSet::~SoXtTransformSliderSet(
@@ -94,6 +102,7 @@ SoXtTransformSliderSet::~SoXtTransformSliderSet(
 // *************************************************************************
 
 /*!
+  FIXME: write code
 */
 
 Widget
@@ -106,6 +115,7 @@ SoXtTransformSliderSet::buildWidget( // protected
 // *************************************************************************
 
 /*!
+  FIXME: write code
 */
 
 const char *
@@ -117,6 +127,7 @@ SoXtTransformSliderSet::getDefaultWidgetName( // virtual, protected
 } // getDefaultWidgetName()
 
 /*!
+  FIXME: write code
 */
 
 const char *
@@ -128,6 +139,7 @@ SoXtTransformSliderSet::getDefaultTitle( // virtual, protected
 } // getDefaultTitle()
 
 /*!
+  FIXME: write code
 */
 
 const char *

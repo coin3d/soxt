@@ -22,20 +22,26 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtMaterialSliderSet Inventor/Xt/SoXtMaterialSliderSet.h
+  \brief The SoXtMaterialSliderSet class is yet to be documented.
+  \ingroup components slidersets
+*/
+
+// *************************************************************************
+
 #include <Inventor/errors/SoDebugError.h>
 
 #include <soxtdefs.h>
 
 #include <Inventor/Xt/SoXtMaterialSliderSet.h>
 
-/*!
-  \class SoXtMaterialSliderSet Inventor/Xt/SoXtMaterialSliderSet.h
-  \brief The SoXtMaterialSliderSet class is yet to be documented.
-*/
-
 // *************************************************************************
 
 /*!
+  Constructor.
 */
 
 SoXtMaterialSliderSet::SoXtMaterialSliderSet(
@@ -49,6 +55,7 @@ SoXtMaterialSliderSet::SoXtMaterialSliderSet(
 } // SoXtMaterialSliderSet()
 
 /*!
+  Constructor.
 */
 
 SoXtMaterialSliderSet::SoXtMaterialSliderSet( // protected
@@ -63,20 +70,11 @@ SoXtMaterialSliderSet::SoXtMaterialSliderSet( // protected
 } // SoXtMaterialSliderSet()
 
 /*!
-*/
-
-SoXtMaterialSliderSet::~SoXtMaterialSliderSet(
-  void )
-{
-} // ~SoXtMaterialSliderSet()
-
-// *************************************************************************
-
-/*!
+  Common code for all constructors.
 */
 
 void
-SoXtMaterialSliderSet::constructor(
+SoXtMaterialSliderSet::constructor( // private
   SbBool build )
 {
   if ( build ) {
@@ -88,6 +86,18 @@ SoXtMaterialSliderSet::constructor(
 } // constructor()
 
 /*!
+  Destructor.
+*/
+
+SoXtMaterialSliderSet::~SoXtMaterialSliderSet(
+  void )
+{
+} // ~SoXtMaterialSliderSet()
+
+// *************************************************************************
+
+/*!
+  FIXME: write doc
 */
 
 Widget
@@ -100,6 +110,7 @@ SoXtMaterialSliderSet::buildWidget(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -111,6 +122,7 @@ SoXtMaterialSliderSet::getDefaultWidgetName( // virtual, protected
 } // getDefaultWidgetName()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -122,6 +134,7 @@ SoXtMaterialSliderSet::getDefaultTitle( // virtual, protected
 } // getDefaultTitle()
 
 /*!
+  FIXME: write doc
 */
 
 const char *

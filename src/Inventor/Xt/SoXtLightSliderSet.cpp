@@ -22,6 +22,20 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtLightSliderSet Inventor/Xt/SoXtLightSliderSet.h
+  \brief The SoXtLightSliderSet class is a component for modifying light nodes.
+  \ingroup components slidersets
+
+  This component is designed for editing SoLight nodes.
+  One slider is created for adjusting the intensity of the light,
+  while another slider set is created for adjusting the light color.
+*/
+
+// *************************************************************************
+
 #include <assert.h>
 
 #include <X11/Intrinsic.h>
@@ -35,19 +49,10 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/SoXtLightSliderSet.h>
 
-/*!
-  \class SoXtLightSliderSet Inventor/Xt/SoXtLightSliderSet.h
-  \brief The SoXtLightSliderSet class is a component for modifying light
-  nodes.
-
-  This component is designed for editing SoLight nodes.
-  One slider is created for adjusting the intensity of the light,
-  while another slider set is created for adjusting the light color.
-*/
-
 // *************************************************************************
 
 /*!
+  Constructor.
 */
 
 SoXtLightSliderSet::SoXtLightSliderSet(
@@ -61,6 +66,7 @@ SoXtLightSliderSet::SoXtLightSliderSet(
 } // SoXtLightSliderSet()
 
 /*!
+  Constructor.
 */
 
 SoXtLightSliderSet::SoXtLightSliderSet( // protected
@@ -91,6 +97,7 @@ SoXtLightSliderSet::constructor( // private
 } // constructor()
 
 /*!
+  Destructor.
 */
 
 SoXtLightSliderSet::~SoXtLightSliderSet(
@@ -101,6 +108,7 @@ SoXtLightSliderSet::~SoXtLightSliderSet(
 // *************************************************************************
 
 /*!
+  FIXME: build widget
 */
 
 Widget
@@ -113,6 +121,7 @@ SoXtLightSliderSet::buildWidget( // protected
 // *************************************************************************
 
 /*!
+  FIXME: build widget
 */
 
 const char *
@@ -124,6 +133,7 @@ SoXtLightSliderSet::getDefaultWidgetName( // virtual, protected
 } // getDefaultWidgetName()
 
 /*!
+  FIXME: build widget
 */
 
 const char *
@@ -135,6 +145,7 @@ SoXtLightSliderSet::getDefaultTitle( // virtual, protected
 } // getDefaultTitle()
 
 /*!
+  FIXME: build widget
 */
 
 const char *

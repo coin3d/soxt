@@ -22,6 +22,18 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtSliderSet Inventor/Xt/SoXtSliderSet.h
+  \brief The SoXtSliderSet class is yet to be documented.
+  \ingroup components slidersets
+
+  This class is not implemented (not compatible with InventorXt at least).
+*/
+
+// *************************************************************************
+
 #include <assert.h>
 
 #include <X11/Xlib.h>
@@ -49,11 +61,7 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/SoXtSliderSet.h>
 
-/*!
-  \class SoXtSliderSet Inventor/Xt/SoXtSliderSet.h
-  \brief The SoXtSliderSet class is yet to be documented.
-*/
-
+// *************************************************************************
 // *************************************************************************
 
 struct SoXtSliderSetClosure {
@@ -70,6 +78,10 @@ struct SoXtSliderSetClosure {
 
 // *************************************************************************
 
+/*!
+  Constructor.
+*/
+
 SoXtSliderSet::SoXtSliderSet(
   const Widget parent,
   const char * const name,
@@ -81,6 +93,7 @@ SoXtSliderSet::SoXtSliderSet(
 } // SoXtSliderSet()
   
 /*!
+  Constructor.
 */
 
 SoXtSliderSet::SoXtSliderSet( // protected
@@ -95,6 +108,7 @@ SoXtSliderSet::SoXtSliderSet( // protected
 } // SoXtSliderSet()
 
 /*!
+  Common constructor code.
 */
 
 void
@@ -114,7 +128,7 @@ SoXtSliderSet::constructor( // private
 } // constructor()
 
 /*!
-  Destructor.  Does nothing.
+  Destructor.
 */
 
 SoXtSliderSet::~SoXtSliderSet( // protected
@@ -140,6 +154,7 @@ SoXtSliderSet::~SoXtSliderSet( // protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -155,7 +170,9 @@ SoXtSliderSet::setNode( // virtual
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
+
 void
 SoXtSliderSet::updateLayout(
   void )
@@ -166,6 +183,7 @@ SoXtSliderSet::updateLayout(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -216,6 +234,7 @@ SoXtSliderSet::buildWidget( // protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -247,6 +266,7 @@ SoXtSliderSet::buildSliderModule(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -391,6 +411,7 @@ SoXtSliderSet::buildSliderSet(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -443,6 +464,7 @@ SoXtSliderSet::folding( // private
 } // folding()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -459,6 +481,7 @@ SoXtSliderSet::folding_cb( // private, static
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -502,6 +525,7 @@ SoXtSliderSet::style( // private
 } // style()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -518,6 +542,7 @@ SoXtSliderSet::style_cb( // private, static
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -644,6 +669,7 @@ SoXtSliderSet::slider( // private
 } // slider()
 
 /*!
+  FIXME: write doc
 */
 
 void
