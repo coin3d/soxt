@@ -21,8 +21,17 @@
  *
 \**************************************************************************/
 
-#include "SoXtInternal.cpp"
-#include "SoXt.cpp"
-#include "SoXtComponent.cpp"
-#include "SoXtGLWidget.cpp"
-#include "SoXtResource.cpp"
+#include <Inventor/Xt/SoAny.cpp>
+#include <Inventor/Xt/SoXt.cpp>
+#include <Inventor/Xt/SoXtCommon.cpp>
+#include <Inventor/Xt/SoXtInternal.cpp>
+#include <Inventor/Xt/SoXtObject.cpp>
+#include <Inventor/Xt/SoXtComponent.cpp>
+#include <Inventor/Xt/SoXtComponentCommon.cpp>
+#include <Inventor/Xt/SoXtGLWidget.cpp>
+#include <Inventor/Xt/SoXtGLWidgetCommon.cpp>
+#include <Inventor/Xt/SoXtRenderArea.cpp>
+#include <Inventor/Xt/SoXtResource.cpp>
+#include <Inventor/Xt/SoXtCursor.cpp>
+#include <Inventor/Xt/SoXtClipboard.cpp>
+
