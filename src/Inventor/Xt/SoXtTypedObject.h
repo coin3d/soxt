@@ -25,7 +25,7 @@
 #include <assert.h>
 
 #include <Inventor/SbBasic.h>
-#include <Inventor/SbName.h>
+#include <Inventor/SbString.h>
 #include <Inventor/SoType.h>
 
 #include <Inventor/Xt/SoXtBasic.h>
