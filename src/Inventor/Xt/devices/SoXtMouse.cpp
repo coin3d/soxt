@@ -178,12 +178,14 @@ SoXtMouse::makeButtonEvent( // private
   case 3: // right button
     this->buttonEvent->setButton( SoMouseButtonEvent::BUTTON3 );
     break;
+#if 0 // FIXME: disabled until it's enabled again through autoconf test
   case 4: // wheel up
     this->buttonEvent->setButton( SoMouseButtonEvent::BUTTON4 );
     break;
   case 5: // wheel down
     this->buttonEvent->setButton( SoMouseButtonEvent::BUTTON5 );
     break;
+#endif
   default:
     this->buttonEvent->setButton( SoMouseButtonEvent::ANY );
     break;
