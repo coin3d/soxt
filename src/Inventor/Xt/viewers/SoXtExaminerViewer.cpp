@@ -203,12 +203,12 @@ SoXtExaminerViewer::processEvent(
     }
 
     if ( ((XButtonEvent *) event)->button == Button4 ) {
-      common->zoom( 0.1f );
+      common->zoom( -0.1f );
       break;
     }
       
     if ( ((XButtonEvent *) event)->button == Button5 ) {
-      common->zoom( -0.1f );
+      common->zoom( 0.1f );
       break;
     }
 
@@ -738,13 +738,15 @@ SoXtExaminerViewer::setCamera( // virtual
 
   XtUnmanageChild( this->camerabutton );
 #if HAVE_LIBXPM
-  XtVaSetValues( this->camerabutton,
-    XmNlabelType, XmPIXMAP,
-    XmNlabelPixmap, pixmap,
-    XmNselectPixmap, pixmap,
-    XmNlabelInsensitivePixmap, pixmap_ins,
-    XmNselectInsensitivePixmap, pixmap_ins,
-    NULL );
+  if ( pixmap ) {
+    XtVaSetValues( this->camerabutton,
+      XmNlabelType, XmPIXMAP,
+      XmNlabelPixmap, pixmap,
+      XmNselectPixmap, pixmap,
+      XmNlabelInsensitivePixmap, pixmap_ins,
+      XmNselectInsensitivePixmap, pixmap_ins,
+      NULL );
+  }
 #endif // HAVE_LIBXPM
   XtVaSetValues( this->camerabutton,
     XmNwidth, 30, XmNheight, 30, NULL );
@@ -830,7 +832,7 @@ void SoXtExaminerViewer::setFeedbackSize(
     char buf[8];
     sprintf( buf, "%d", size );
     XmTextSetString( this->axessizefield, buf );
-    XmTextSetCursorPosition( this->axessizefield, strlen(buf) );
+    XmTextSetCursorPosition( this->axessizefield, (long) strlen(buf) );
   }
   common->setFeedbackSize( size );
 } // setFeedbackSize()
@@ -1035,7 +1037,7 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
   char buffer[16];
   sprintf( buffer, "%d", this->getFeedbackSize() );
   XmTextSetString( this->axessizefield, buffer );
-  XmTextSetCursorPosition( this->axessizefield, strlen(buffer) );
+  XmTextSetCursorPosition( this->axessizefield, (long) strlen(buffer) );
 
   XtAddCallback( this->axessizefield, XmNactivateCallback,
     SoXtExaminerViewer::axesfieldchangedCB, (XtPointer) this );
@@ -1155,3 +1157,6 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // rotpointoverlaytoggled()
 
 // *************************************************************************
+
+static const char * getSoXtExaminerViewerRCSId(void) { return rcsid; }
+
