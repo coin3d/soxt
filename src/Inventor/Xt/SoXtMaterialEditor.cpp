@@ -38,7 +38,7 @@ static const char rcsid[] =
 
 SoXtMaterialEditor::SoXtMaterialEditor(
   Widget parent,
-  const char * const name,
+  const char * name,
   SbBool inParent )
 {
 } // SoXtMaterialEditor()

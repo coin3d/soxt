@@ -34,17 +34,12 @@ public:
     Widget parent = NULL,
     const char * const name = NULL,
     SbBool inParent = TRUE,
-    SoNode * const node = NULL );
+    SoNode * const node = NULL,
+    SbBool build = TRUE );
 
   ~SoXtMaterialSliderSet(void);
 
 protected:
-  SoXtMaterialSliderSet(
-    Widget parent,
-    const char * name,
-    SbBool inParent,
-    SoNode * node,
-    SbBool build );
 
   void constructor( SbBool build );
 

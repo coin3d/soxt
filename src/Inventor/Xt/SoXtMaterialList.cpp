@@ -82,7 +82,7 @@ SoXtMaterialList::~SoXtMaterialList(
 
 void
 SoXtMaterialList::addCallback(
-  SoXtMaterialListCB * callback,
+  SoXtMaterialListCB * const callback,
   void * const user )
 {
   SOXT_STUB();
@@ -90,7 +90,7 @@ SoXtMaterialList::addCallback(
 
 void
 SoXtMaterialList::removeCallback(
-  SoXtMaterialListCB * callback,
+  SoXtMaterialListCB * const callback,
   void * const user )
 {
   SOXT_STUB();

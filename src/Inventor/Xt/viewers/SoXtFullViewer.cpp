@@ -370,7 +370,7 @@ SoXtFullViewer::buildWidget( // protected
   int depth = DefaultDepthOfScreen( screen );
   if ( depth < 16 ) {
     SoDebugError::postInfo( "SoXtFullViewer::buildWidget",
-      "depth = %d - trying to get bettea visual", depth );
+      "depth = %d - trying to get better visual", depth );
     XVisualInfo * visInfo = new XVisualInfo;
     assert( visInfo != NULL );
     // FIXME - fix screen param (0)
@@ -383,7 +383,7 @@ SoXtFullViewer::buildWidget( // protected
         XMatchVisualInfo( dpy, DefaultScreen(dpy), 16, StaticColor, visInfo ) ||
         XMatchVisualInfo( dpy, DefaultScreen(dpy), 16, DirectColor, visInfo ) )
     {
-//      visual = visInfo.visual;
+//      visual = visInfo->visual;
 //      depth = 24;
 //      this->setNormalVisual( visInfo );
       SoDebugError::postInfo( "SoXtFullViewer::buildWidget",
@@ -889,16 +889,28 @@ SoXtFullViewer::createPixmapFromXpmData(
   int error = XpmCreateImageFromData( dpy, xpm, &image, &stencil, NULL );
   if ( error != XpmSuccess ) {
 #if SOXT_DEBUG
+    // FIXME - is there a better way to do the following?
+    // FIXME - if not, then the following should be made into a method
+    //         so it can be used in
+    //         SoXtFullViewer::createInsensitivePixmapFromXpmData()
+    char *errmsg =  error == XpmColorError ? "color error"
+                    : error == XpmOpenFailed ? "open failed"
+                    : error == XpmFileInvalid ? "file invalid"
+                    : error == XpmNoMemory ? "no memory"
+                    : error == XpmColorFailed ? "color failed"
+                    : "unknown";
     SoDebugError::postInfo( "SoXtFullViewer::createPixmapFromXpmData",
-      "XpmCreateImageFromData failed" );
+      "XpmCreateImageFromData failed: %s", errmsg );
 #endif // SOXT_DEBUG
     return 0;
   }
-  for ( int x = 0; x < image->width; x++ ) {
-    for ( int y = 0; y < image->height; y++ ) {
-      Pixel pixel = XGetPixel( stencil, x, y );
-      if ( pixel == 0 ) // background must be set in image
-        XPutPixel( image, x, y, bg );
+  if (stencil) {
+    for ( int x = 0; x < image->width; x++ ) {
+      for ( int y = 0; y < image->height; y++ ) {
+        Pixel pixel = XGetPixel( stencil, x, y );
+        if ( pixel == 0 ) // background must be set in image
+          XPutPixel( image, x, y, bg );
+      }
     }
   }
   const int width = 24, height = 24;
@@ -908,7 +920,7 @@ SoXtFullViewer::createPixmapFromXpmData(
   XPutImage( dpy, retval, gc, image, 0, 0, 0, 0, width, height );
   XFreeGC( dpy, gc );
   XDestroyImage( image );
-  XDestroyImage( stencil );
+  if (stencil) XDestroyImage( stencil );
   return retval;
 #else // ! HAVE_LIBXPM
   return (Pixmap) 0;
@@ -939,11 +951,13 @@ SoXtFullViewer::createInsensitivePixmapFromXpmData(
 #endif // SOXT_DEBUG
     return 0;
   }
-  for ( int x = 0; x < image->width; x++ ) {
-    for ( int y = 0; y < image->height; y++ ) {
-      Pixel pixel = XGetPixel( stencil, x, y );
-      if ( (pixel == 0) || (((x+y) & 1) == 1) )
-        XPutPixel( image, x, y, bg );
+  if (stencil) {
+    for ( int x = 0; x < image->width; x++ ) {
+      for ( int y = 0; y < image->height; y++ ) {
+        Pixel pixel = XGetPixel( stencil, x, y );
+        if ( (pixel == 0) || (((x+y) & 1) == 1) )
+          XPutPixel( image, x, y, bg );
+      }
     }
   }
   const int width = 24, height = 24;
@@ -953,7 +967,7 @@ SoXtFullViewer::createInsensitivePixmapFromXpmData(
   XPutImage( dpy, retval, gc, image, 0, 0, 0, 0, width, height );
   XFreeGC( dpy, gc );
   XDestroyImage( image );
-  XDestroyImage( stencil );
+  if (stencil) XDestroyImage( stencil );
   return retval;
 #else // ! HAVE_LIBXPM
   return (Pixmap) 0;

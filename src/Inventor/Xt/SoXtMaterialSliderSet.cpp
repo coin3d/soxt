@@ -39,19 +39,6 @@ SoXtMaterialSliderSet::SoXtMaterialSliderSet(
   Widget parent,
   const char * const name,
   SbBool inParent,
-  SoNode * const node )
-: inherited( parent, name, inParent, node )
-{
-  SOXT_STUB();
-} // SoXtMaterialSliderSet()
-
-/*!
-*/
-
-SoXtMaterialSliderSet::SoXtMaterialSliderSet( // protected
-  Widget parent,
-  const char * const name,
-  SbBool inParent,
   SoNode * const node,
   SbBool build )
 : inherited( parent, name, inParent, node )

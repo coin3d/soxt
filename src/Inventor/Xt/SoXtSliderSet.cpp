@@ -39,7 +39,7 @@ SoXtSliderSet::SoXtSliderSet( // protected
   Widget parent,
   const char * const name,
   SbBool inParent,
-  SoNode * node )
+  SoNode * const node )
 : inherited( parent, name, inParent )
 {
   this->_parentShellWidget;
