@@ -235,16 +235,6 @@ SoXtPlaneViewer::buildWidget(Widget parent)
 /*!
   FIXME: write doc
 */
-
-void
-SoXtPlaneViewer::setViewing(SbBool enable)
-{
-  inherited::setViewing(enable);
-}
-
-/*!
-  FIXME: write doc
-*/
 void
 SoXtPlaneViewer::setCamera(SoCamera * camera)
 {
