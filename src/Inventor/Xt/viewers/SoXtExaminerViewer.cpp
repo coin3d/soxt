@@ -43,8 +43,8 @@ static const char rcsid[] =
 #include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
 
 #if HAVE_LIBXPM
-#include "icons/ortho.xpm"
-#include "icons/perspective.xpm"
+#include <Inventor/Xt/common/pixmaps/ortho.xpm>
+#include <Inventor/Xt/common/pixmaps/perspective.xpm>
 #endif // HAVE_LIBXPM
 
 #include <X11/cursorfont.h>

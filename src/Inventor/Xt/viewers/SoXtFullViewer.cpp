@@ -28,13 +28,13 @@ static const char rcsid[] =
 
 #if HAVE_LIBXPM
 #include <X11/xpm.h>
-#include "icons/pick.xpm"
-#include "icons/view.xpm"
-#include "icons/help.xpm"
-#include "icons/home.xpm"
-#include "icons/set_home.xpm"
-#include "icons/view_all.xpm"
-#include "icons/seek.xpm"
+#include <Inventor/Xt/common/pixmaps/pick.xpm>
+#include <Inventor/Xt/common/pixmaps/view.xpm>
+#include <Inventor/Xt/common/pixmaps/help.xpm>
+#include <Inventor/Xt/common/pixmaps/home.xpm>
+#include <Inventor/Xt/common/pixmaps/set_home.xpm>
+#include <Inventor/Xt/common/pixmaps/view_all.xpm>
+#include <Inventor/Xt/common/pixmaps/seek.xpm>
 #endif // HAVE_LIBXPM
 
 #include <Xm/Xm.h>
