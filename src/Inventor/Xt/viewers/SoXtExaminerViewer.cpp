@@ -45,6 +45,8 @@ static const char rcsid[] =
 #include "icons/perspective.xpm"
 #endif // HAVE_LIBXPM
 
+#include <X11/cursorfont.h>
+
 // *************************************************************************
 
 SoXtExaminerViewer::SoXtExaminerViewer(
@@ -90,6 +92,13 @@ SoXtExaminerViewer::constructor( // private
     Widget viewer = this->buildWidget( this->getParentWidget() );
     this->setBaseWidget( viewer );
   }
+  Display *display = getDisplay();
+  cursor = XCreateFontCursor(display, XC_hand2);
+  Colormap  cmap(DefaultColormap(display, DefaultScreen(display)));
+  XColor    redcol, whitecol, unused;
+  XAllocNamedColor(getDisplay(), cmap, "red", &redcol, &unused);
+  XAllocNamedColor(display, cmap, "white",  &whitecol, &unused);
+  XRecolorCursor(display, cursor, &redcol, &whitecol);
 } // constructor()
 
 /*!

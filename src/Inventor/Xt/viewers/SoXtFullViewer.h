@@ -63,6 +63,8 @@ public:
   virtual void setBufferingType( SoXtViewer::BufferType type );
   virtual void setCamera( SoCamera * camera );
   virtual void hide(void);
+protected:
+  Cursor cursor;
 
 protected:
   SoXtFullViewer( Widget parent, const char * name, SbBool inParent,

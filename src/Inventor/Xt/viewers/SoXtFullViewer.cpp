@@ -85,6 +85,7 @@ SoXtFullViewer::SoXtFullViewer( // protected
 {
   this->viewerbase = NULL;
   this->canvas = NULL;
+  this->cursor = 0;
 
   char axisindicator[] = { 'Y', 'X', 'Z' };
   for ( int i = FIRSTDECORATION; i <= LASTDECORATION; i++) {
@@ -516,6 +517,12 @@ SoXtFullViewer::setViewing( // virtual
   XtVaSetValues( this->viewerbuttons.seek,
     XmNwidth, 30, XmNheight, 30, NULL );
   XtManageChild( this->viewerbuttons.seek );
+
+  if (this->cursor) {
+    if (enable) {
+       XDefineCursor(getDisplay(), XtWindow(this->glxWidget), this->cursor);
+    } else XUndefineCursor(getDisplay(), XtWindow(this->glxWidget));
+  }
 } // setViewing()
 
 /*!
