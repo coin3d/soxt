@@ -70,7 +70,7 @@ SoXtInternal::xpmErrorString(int error)
   Does nothing if libXpm use hasn't been enabled.
 */
 Pixmap
-SoXtInternal::createPixmapFromXpm(Widget widget, const char ** xpm)
+SoXtInternal::createPixmapFromXpm(Widget widget, const char ** xpm, SbBool ghost)
 {
   Pixmap pixels = 0;
 #if HAVE_LIBXPM
@@ -94,12 +94,6 @@ SoXtInternal::createPixmapFromXpm(Widget widget, const char ** xpm)
 
   attrs.valuemask = XpmVisual | XpmColormap | XpmDepth;
 
-#if SOXT_DEBUG && 0
-  SoDebugError::postInfo("SoXtInternal::createPixmapFromXpm",
-                         "visualinfo: %p, %d, %d", attrs.visual, attrs.colormap,
-                         attrs.depth);
-#endif // SOXT_DEBUG
-
   Drawable draw = RootWindow(dpy, DefaultScreen(dpy));
   Pixmap stencil = 0;
 
@@ -110,88 +104,10 @@ SoXtInternal::createPixmapFromXpm(Widget widget, const char ** xpm)
   if (error != XpmSuccess) {
 #if SOXT_DEBUG
     SoDebugError::postInfo("SoXtInternal::createPixmapFromXpm",
-                           "XpmCreateImageFromData failed: %s",
-                           SoXtInternal::xpmErrorString(error));
-#endif // SOXT_DEBUG
-    return 0;
-  }
-
-  if (stencil) {
-    Pixel bg;
-    XtVaGetValues(widget, XmNbackground, &bg, NULL);
-
-    XImage * pixmap = XGetImage(dpy, pixels, 0, 0, attrs.width, attrs.height,
-                                0xffffffff, ZPixmap);
-    XImage * mask = XGetImage(dpy, stencil, 0, 0, attrs.width, attrs.height,
-                              0xffffffff, ZPixmap);
-    assert(pixmap != NULL && mask != NULL);
-
-    for (unsigned int x = 0; x < attrs.width; x++) {
-      for (unsigned int y = 0; y < attrs.height; y++) {
-        Pixel pixel = XGetPixel(mask, x, y);
-        if (pixel == 0) // background must be set in image
-          XPutPixel(pixmap, x, y, bg);
-      }
-    }
-
-    GC temp = XCreateGC(dpy, pixels, 0, NULL);
-    XPutImage(dpy, pixels, temp, pixmap,
-              0, 0, 0, 0, attrs.width, attrs.height);
-    XFreeGC(dpy, temp);
-
-    XDestroyImage(pixmap);
-    XDestroyImage(mask);
-  }
-
-#endif // HAVE_LIBXPM
-  return pixels;
-}
-
-/*!
-  \internal
-  Does nothing if libXpm use hasn't been enabled.
-*/
-Pixmap
-SoXtInternal::createInsensitivePixmapFromXpm(Widget widget, const char ** xpm)
-{
-  Pixmap pixels = 0;
-
-#if HAVE_LIBXPM
-  Widget shell = widget;
-  while (! XtIsShell(shell) && widget != (Widget) NULL) {
-    shell = XtParent(shell);
-  }
-  assert(shell != (Widget) NULL);
-
-  Display * dpy = XtDisplay(shell);
-
-  XpmAttributes attrs;
-  attrs.visual = NULL;
-  attrs.colormap = 0;
-  attrs.depth = 0;
-
-  XtVaGetValues(shell,
-                XmNcolormap, &attrs.colormap,
-                XmNdepth,    &attrs.depth,
-                XmNvisual,   &attrs.visual,
-                NULL);
-
-  attrs.valuemask = XpmVisual | XpmColormap | XpmDepth;
-
-  Drawable draw = RootWindow(dpy, DefaultScreen(dpy));
-  Pixmap stencil = 0;
-
-  // FIXME: that cast is pretty nasty -- get rid of it. 20020319 mortene.
-  int error = XpmCreatePixmapFromData(dpy, draw, (char **)xpm,
-                                      &pixels, &stencil, &attrs);
-
-  if (error != XpmSuccess) {
-#if SOXT_DEBUG
-    SoDebugError::postInfo("SoXtInternal::createInsensitivePixmapFromXpm",
                            "XpmCreatePixmapFromData() failed: %s",
                            SoXtInternal::xpmErrorString(error));
 #endif // SOXT_DEBUG
-    return (Pixmap) 0;
+    return (Pixmap)0;
   }
 
   if (stencil) {
@@ -207,8 +123,11 @@ SoXtInternal::createInsensitivePixmapFromXpm(Widget widget, const char ** xpm)
     for (unsigned int x = 0; x < attrs.width; x++) {
       for (unsigned int y = 0; y < attrs.height; y++) {
         Pixel pixel = XGetPixel(mask, x, y);
-        if ((pixel == 0) || (((x+y) & 1) == 1))
+        Bool usebg = (pixel == 0);
+        if (ghost && !usebg) { usebg = ((x+y) % 2) == 1; }
+        if (usebg) { // background must be set in image
           XPutPixel(pixmap, x, y, bg);
+        }
       }
     }
 

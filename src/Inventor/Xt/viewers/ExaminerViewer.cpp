@@ -390,11 +390,11 @@ SoXtExaminerViewer::createViewerButtons(// virtual
   this->camerapixmaps.ortho =
     SoXtInternal::createPixmapFromXpm(this->camerabutton, ortho_xpm);
   this->camerapixmaps.ortho_ins =
-    SoXtInternal::createInsensitivePixmapFromXpm(this->camerabutton, ortho_xpm);
+    SoXtInternal::createPixmapFromXpm(this->camerabutton, ortho_xpm, TRUE);
   this->camerapixmaps.perspective =
     SoXtInternal::createPixmapFromXpm(this->camerabutton, perspective_xpm);
   this->camerapixmaps.perspective_ins =
-    SoXtInternal::createInsensitivePixmapFromXpm(this->camerabutton, perspective_xpm);
+    SoXtInternal::createPixmapFromXpm(this->camerabutton, perspective_xpm, TRUE);
 #endif // HAVE_LIBXPM
 
 } // createViewerButtons()

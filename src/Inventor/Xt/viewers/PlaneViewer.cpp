@@ -328,11 +328,11 @@ SoXtPlaneViewer::createViewerButtons(// virtual, protected
   this->pixmaps.ortho =
     SoXtInternal::createPixmapFromXpm(this->buttons[3].bwidget, ortho_xpm);
   this->pixmaps.ortho_ins =
-    SoXtInternal::createInsensitivePixmapFromXpm(this->buttons[3].bwidget, ortho_xpm);
+    SoXtInternal::createPixmapFromXpm(this->buttons[3].bwidget, ortho_xpm, TRUE);
   this->pixmaps.perspective =
     SoXtInternal::createPixmapFromXpm(this->buttons[3].bwidget, perspective_xpm);
   this->pixmaps.perspective_ins =
-    SoXtInternal::createInsensitivePixmapFromXpm(this->buttons[3].bwidget, perspective_xpm);
+    SoXtInternal::createPixmapFromXpm(this->buttons[3].bwidget, perspective_xpm, TRUE);
 #endif // HAVE_LIBXPM
 } // createViewerButtons()
 

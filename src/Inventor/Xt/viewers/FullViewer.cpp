@@ -1037,13 +1037,13 @@ SoXtFullViewer::createViewerButtons(Widget parent,
       pixmap = pixmaps.pick =
         SoXtInternal::createPixmapFromXpm(button, pick_xpm);
       pixmap_ins = pixmaps.pick_ins =
-        SoXtInternal::createInsensitivePixmapFromXpm(button, pick_xpm);
+        SoXtInternal::createPixmapFromXpm(button, pick_xpm, TRUE);
       break;
     case EXAMINE_BUTTON:
       pixmap = pixmaps.view =
         SoXtInternal::createPixmapFromXpm(button, view_xpm);
       pixmap_ins = pixmaps.view_ins =
-        SoXtInternal::createInsensitivePixmapFromXpm(button, view_xpm);
+        SoXtInternal::createPixmapFromXpm(button, view_xpm, TRUE);
       break;
     case HELP_BUTTON:
       pixmap = pixmap_ins = pixmaps.help =
@@ -1065,7 +1065,7 @@ SoXtFullViewer::createViewerButtons(Widget parent,
       pixmap = pixmaps.seek =
         SoXtInternal::createPixmapFromXpm(button, seek_xpm);
       pixmap_ins = pixmaps.seek_ins =
-        SoXtInternal::createInsensitivePixmapFromXpm(button, seek_xpm);
+        SoXtInternal::createPixmapFromXpm(button, seek_xpm, TRUE);
       break;
     default:
       assert(0 && "impossible");

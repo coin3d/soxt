@@ -30,8 +30,8 @@
 
 class SoXtInternal {
 public:
-  static Pixmap createPixmapFromXpm(Widget button, const char ** xpm);
-  static Pixmap createInsensitivePixmapFromXpm(Widget button, const char ** xpm);
+  static Pixmap createPixmapFromXpm(Widget button, const char ** xpm,
+                                    SbBool ghost = FALSE);
 
 private:
   static const char * xpmErrorString(int error);
