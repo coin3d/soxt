@@ -32,9 +32,8 @@ static const char rcsid[] =
 
 /*
   TODO:
-    - interactivity and callbacks
-    - implement use of a virtual Colormap instead of creating graphics
-      the way it is now.
+    - use a virtual Colormap instead of creating graphics the way it is
+      hardcoded now.
 */
 
 // *************************************************************************
@@ -200,6 +199,7 @@ initialize(
   widget->thumbwheel.armed = False;
   widget->thumbwheel.arm_value = 0.0f;
   widget->thumbwheel.thumbwheel = NULL;
+  widget->thumbwheel.currentpixmap = -1;
 
   XGCValues gc;
   gc.line_style = LineSolid;
@@ -546,6 +546,7 @@ expose(
     XCopyArea( XtDisplay(widget), widget->thumbwheel.pixmaps[pixmap],
       XtWindow(widget), widget->thumbwheel.context,
       0, 0, widget->core.width, widget->core.height, 0, 0 );
+   widget->thumbwheel.currentpixmap = pixmap;
   } else {
 #if SOXT_DEBUG
     SoDebugError::postInfo( "SoXtThumbWheel::expose",
@@ -629,6 +630,7 @@ Arm(
   XButtonPressedEvent * event = (XButtonPressedEvent *) e;
 
   SoXtThumbWheelWidget widget = (SoXtThumbWheelWidget) w;
+  if ( ! widget->core.sensitive ) return;
   SoAnyThumbWheel * wheel = (SoAnyThumbWheel *) widget->thumbwheel.thumbwheel;
 
   int width = 0, height = 0;
@@ -710,6 +712,19 @@ Roll(
       CalculateValue( widget->thumbwheel.arm_value,
                       widget->thumbwheel.arm_position,
                       (pos - widget->thumbwheel.arm_position) );
+
+  SoAnyThumbWheel * wheel = (SoAnyThumbWheel *) widget->thumbwheel.thumbwheel;
+
+  int pixmap = wheel->GetBitmapForValue( widget->thumbwheel.value,
+    SoAnyThumbWheel::ENABLED );
+
+  if ( pixmap != widget->thumbwheel.currentpixmap ) {
+    SoDebugError::postInfo( "", "update" );
+    XCopyArea( XtDisplay(widget), widget->thumbwheel.pixmaps[pixmap],
+      XtWindow(widget), widget->thumbwheel.context,
+      0, 0, widget->core.width, widget->core.height, 0, 0 );
+    widget->thumbwheel.currentpixmap = pixmap;
+  }
 
   XtCallCallbackList( w, widget->thumbwheel.valuechanged_callback,
                       &(widget->thumbwheel.value) );

@@ -58,6 +58,7 @@ typedef struct _SoXtThumbWheelPart {
   GC context;
   Pixmap * pixmaps;
   int numpixmaps; // or null-terminate?
+  int currentpixmap;
   Boolean armed;
   float arm_value;
   int arm_position;
