@@ -28,6 +28,18 @@ static const char rcsid[] =
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoBasic.h>
 
+/*
+  SOXT_THUMBWHEELTEST
+  - for enabling the testcode for the thumbwheel widget in development.
+  Be aware; it is disabled for a reason...
+
+  [bash$ CPPFLAGS="-DSOXT_THUMBWHEELTEST" ../../src/SoXt/configure]
+*/
+
+#ifdef SOXT_THUMBWHEELTEST
+#include <Inventor/Xt/widgets/SoXtThumbWheel.h>
+#endif // SOXT_THUMBWHEELTEST
+
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
 
 enum DefaultViewerButtons {
@@ -125,8 +137,7 @@ SoXtFullViewer::buildBottomTrim( // virtual
   Widget parent )
 {
   Widget trim = XtVaCreateManagedWidget( "BottomTrim",
-      xmFormWidgetClass, parent, XmNshadowType, XmSHADOW_OUT, NULL );
-  XtVaSetValues( trim,
+      xmFormWidgetClass, parent,
       XmNleftAttachment, XmATTACH_FORM,
       XmNrightAttachment, XmATTACH_FORM,
       XmNbottomAttachment, XmATTACH_FORM,
@@ -145,6 +156,20 @@ SoXtFullViewer::buildBottomTrim( // virtual
     XmNleftOffset, 5,
     NULL );
 
+#ifdef SOXT_THUMBWHEELTEST
+  // add right thumb wheel
+  Widget wheel = XtVaCreateManagedWidget( "BottomWheel",
+    soXtThumbWheelWidgetClass, trim,
+    XmNorientation, XmHORIZONTAL,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, label2,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNtopOffset, 2,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNbottomOffset, 2,
+    XmNheight, 90,
+    NULL );
+#endif // SOXT_THUMBWHEELTEST
 
   Widget label3 = XtVaCreateManagedWidget( "Dolly", xmLabelWidgetClass,
     trim, XmNtopAttachment, XmATTACH_FORM,
@@ -153,6 +178,7 @@ SoXtFullViewer::buildBottomTrim( // virtual
 
   return trim;
 } // buildBottomTrim()
+
 /*!
 */
 
@@ -161,17 +187,33 @@ SoXtFullViewer::buildLeftTrim( // virtual
   Widget parent )
 {
   Widget trim = XtVaCreateManagedWidget( "LeftTrim",
-      xmFormWidgetClass, parent, NULL );
-  XtVaSetValues( trim,
+      xmFormWidgetClass, parent,
       XmNwidth, 30,
       XmNleftAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_FORM,
       XmNbottomAttachment, XmATTACH_WIDGET,
       XmNbottomWidget, this->decorform[BOTTOMDECORATION],
       NULL );
+
+  // build application buttons
+
+#ifdef SOXT_THUMBWHEELTEST
+  // add right thumb wheel
+  Widget wheel = XtVaCreateManagedWidget( "LeftWheel",
+    soXtThumbWheelWidgetClass, trim,
+    XmNorientation, XmVERTICAL,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNleftOffset, 2,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNrightOffset, 2,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNbottomOffset, 2,
+    XmNheight, 90,
+    NULL );
+#endif // SOXT_THUMBWHEELTEST
+
   return trim;
 } // buildLeftTrim()
-
 
 /*!
 */
@@ -181,9 +223,7 @@ SoXtFullViewer::buildRightTrim( // virtual
   Widget parent )
 {
   Widget trim = XtVaCreateManagedWidget( "RightTrim",
-      xmFormWidgetClass, parent, NULL );
-
-  XtVaSetValues( trim,
+      xmFormWidgetClass, parent,
       XmNwidth, 30,
       XmNtopAttachment, XmATTACH_FORM,
       XmNrightAttachment, XmATTACH_FORM,
@@ -194,7 +234,20 @@ SoXtFullViewer::buildRightTrim( // virtual
   Widget buttonForm = this->buildViewerButtons( trim );
   XtManageChild( buttonForm );
 
+#ifdef SOXT_THUMBWHEELTEST
   // add right thumb wheel
+  Widget wheel = XtVaCreateManagedWidget( "RightWheel",
+    soXtThumbWheelWidgetClass, trim,
+    XmNorientation, XmVERTICAL,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNleftOffset, 2,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNrightOffset, 2,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNbottomOffset, 2,
+    XmNheight, 90,
+    NULL );
+#endif // SOXT_THUMBWHEELTEST
 
   return trim;
 } // buildRightTrim()
@@ -226,14 +279,14 @@ SoXtFullViewer::setDrawStyle( // virtual
   SoXtViewer::DrawStyle style )
 {
   COIN_STUB();
-}
+} // setDrawStyle()
 
 void
 SoXtFullViewer::setBufferingType( // virtual
   SoXtViewer::BufferType type )
 {
   COIN_STUB();
-}
+} // setBufferingType()
 
 void
 SoXtFullViewer::setCamera( // virtual
@@ -260,7 +313,7 @@ SoXtFullViewer::hide( // virtual
   void )
 {
   COIN_STUB();
-}
+} // hide()
 
 // *************************************************************************
 
@@ -327,14 +380,14 @@ SoXtFullViewer::createViewerButtons(
         xmPushButtonWidgetClass, parent, NULL );
     buttonlist->append( button );
   }
-}
+} // createViewerButtons()
 
 void
 SoXtFullViewer::buildPopupMenu(
   void )
 {
   COIN_STUB();
-}
+} // buildPopupMenu()
 
 Widget
 SoXtFullViewer::makeSubPreferences(
@@ -342,67 +395,68 @@ SoXtFullViewer::makeSubPreferences(
 {
   COIN_STUB();
   return (Widget) NULL;
-}
+} // makeSubPreferences()
 
 void
 SoXtFullViewer::leftWheelStart(
   void )
 {
   COIN_STUB();
-}
+} // leftWheelStart()
 
 void
 SoXtFullViewer::leftWheelMotion(
   float )
 {
   COIN_STUB();
-}
+} // leftWheelMotion()
 
 void
 SoXtFullViewer::leftWheelFinish(void)
 {
   COIN_STUB();
-}
+} // leftWheelFinished()
 
 void
 SoXtFullViewer::bottomWheelStart(void)
 {
   COIN_STUB();
-}
+} // bottomWheelStart()
 
 void
 SoXtFullViewer::bottomWheelMotion(float)
 {
   COIN_STUB();
-}
+} // bottomWheelMode()
 
 void
 SoXtFullViewer::bottomWheelFinish(void)
 {
   COIN_STUB();
-}
+} // bottomWheelFinish()
 
 void
 SoXtFullViewer::rightWheelStart(void)
 {
   COIN_STUB();
-}
+} // rightWheelStart()
 
 void
 SoXtFullViewer::rightWheelMotion(float)
 {
   COIN_STUB();
-}
+} // rightWheelMotion()
 
 void
 SoXtFullViewer::rightWheelFinish(void)
 {
   COIN_STUB();
-}
+} // rightWheelFinish()
 
 void
 SoXtFullViewer::openViewerHelpCard(void)
 {
   COIN_STUB();
-}
+} // openViewerHelpCard()
 
+// *************************************************************************
