@@ -167,11 +167,11 @@ SOXT_OBJECT_ABSTRACT_SOURCE(SoXtGLWidget);
 */
 
 SoXtGLWidget::SoXtGLWidget(// protected
-  Widget parent,
-  const char * name,
-  SbBool embed,
-  int glModes,
-  SbBool build)
+  Widget const parent,
+  const char * const name,
+  const SbBool embed,
+  const int glModes,
+  const SbBool build)
   : inherited(parent, name, embed),
     waitForExpose(TRUE), drawToFrontBuffer(FALSE)
 {
@@ -359,7 +359,7 @@ SoXtGLWidget::isOverlayRender(void) const
   This method sets whether double buffering is to be used or not.
 */
 void        // virtual
-SoXtGLWidget::setDoubleBuffer(SbBool enable)
+SoXtGLWidget::setDoubleBuffer(const SbBool enable)
 {
   PRIVATE(this)->doublebuffer = enable;
 }
@@ -378,7 +378,7 @@ SoXtGLWidget::isDoubleBuffer(void) const
 */
 
 void
-SoXtGLWidget::setBorder(SbBool enable)
+SoXtGLWidget::setBorder(const SbBool enable)
 {
   PRIVATE(this)->border = enable;
   if (PRIVATE(this)->glxwidget != (Widget) NULL) {
@@ -415,7 +415,7 @@ SoXtGLWidget::isBorder(void) const
 */
 
 void
-SoXtGLWidget::setDrawToFrontBufferEnable(SbBool enable)
+SoXtGLWidget::setDrawToFrontBufferEnable(const SbBool enable)
 {
   this->drawToFrontBuffer = enable;
 } // setDrawToFrontBufferEnable()

@@ -119,7 +119,7 @@ public:
   static String fallbackresources[];
 
   static int SOXT_XSYNC;
-  static int (*previous_handler)(Display * d, XErrorEvent * ee);
+  static XErrorHandler previous_handler;
   static int X11Errorhandler(Display * d, XErrorEvent * ee);
 
   static void timerSensorCB(XtPointer, XtIntervalId *);
@@ -142,7 +142,7 @@ char * SoXtP::appclass = NULL;
 
 #define ENVVAR_NOT_INITED INT_MAX
 int SoXtP::SOXT_XSYNC = ENVVAR_NOT_INITED;
-int (*SoXtP::previous_handler)(Display *, XErrorEvent *) = NULL;
+XErrorHandler SoXtP::previous_handler = NULL;
 
 static Atom WM_PROTOCOLS = 0;
 static Atom WM_DELETE_WINDOW = 0;
@@ -207,7 +207,7 @@ SoXt::internal_init(int & argc, char ** argv,
 {
   assert(SoXtP::previous_handler == NULL && "call SoXt::init() only once!");
   // Intervene upon X11 errors.
-  SoXtP::previous_handler = XSetErrorHandler(SoXtP::X11Errorhandler);
+  SoXtP::previous_handler = XSetErrorHandler((XErrorHandler)SoXtP::X11Errorhandler);
 
   // FIXME: as far as I can see, no SoXt::init() method in InventorXt
   // matches the signature of this constructor. So we should probably
@@ -319,7 +319,7 @@ SoXt::internal_init(Widget toplevel)
 {
   // Intervene upon X11 errors.
   if (SoXtP::previous_handler == NULL) {
-    SoXtP::previous_handler = XSetErrorHandler(SoXtP::X11Errorhandler);
+    SoXtP::previous_handler = XSetErrorHandler((XErrorHandler)SoXtP::X11Errorhandler);
   }
 
 #if SOXT_DEBUG
@@ -515,7 +515,7 @@ SoXt::getAppClass(void)
   This function realizes the given \a widget.
 */
 void
-SoXt::show(Widget widget)
+SoXt::show(Widget const widget)
 {
   if (XtIsTopLevelShell(widget)) {
     XtRealizeWidget(widget);
@@ -529,7 +529,7 @@ SoXt::show(Widget widget)
   This function hides the given \a widget.
 */
 void
-SoXt::hide(Widget widget)
+SoXt::hide(Widget const widget)
 {
   if (XtIsTopLevelShell(widget)) {
     XtUnrealizeWidget(widget);
@@ -575,7 +575,7 @@ SoXt::decodeString(XmString xstring)
   This function resizes the widget to the given \a size.
 */
 void
-SoXt::setWidgetSize(Widget widget, const SbVec2s size)
+SoXt::setWidgetSize(Widget const widget, const SbVec2s size)
 {
   if (! widget) {
 #if SOXT_DEBUG
@@ -593,7 +593,7 @@ SoXt::setWidgetSize(Widget widget, const SbVec2s size)
   This function returns the size of the given widget.
 */
 SbVec2s
-SoXt::getWidgetSize(Widget widget)
+SoXt::getWidgetSize(Widget const widget)
 {
   if (! widget) {
 #if SOXT_DEBUG

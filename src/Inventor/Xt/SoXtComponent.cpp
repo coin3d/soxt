@@ -663,8 +663,8 @@ SoXtComponent::getIconTitle(
 
 void
 SoXtComponent::setWindowCloseCallback(
-  SoXtComponentCB * callback,
-  void * closure)
+  SoXtComponentCB * const callback,
+  void * const closure)
 {
   this->addWindowCloseCallback(callback, closure);
 } // setWindowCloseAction()
@@ -759,7 +759,7 @@ SoXtComponent::invokeWindowCloseCallbacks(// protected
 
 SoXtComponent *
 SoXtComponent::getComponent(// static
-  Widget widget)
+  Widget const widget)
 {
   assert(SoXtComponentP::widgets != NULL);
   int pos = SoXtComponentP::widgets->find((void *) widget);
@@ -988,8 +988,8 @@ SoXtComponent::unregisterWidget(// protected
 
 void
 SoXtComponent::addVisibilityChangeCallback(// protected
-  SoXtComponentVisibilityCB * callback,
-  void * closure)
+  SoXtComponentVisibilityCB * const callback,
+  void * const closure)
 {
   if (PRIVATE(this)->visibilitycbs == NULL)
     PRIVATE(this)->visibilitycbs = new SbPList;
@@ -1007,8 +1007,8 @@ SoXtComponent::addVisibilityChangeCallback(// protected
 
 void
 SoXtComponent::removeVisibilityChangeCallback(// protected
-  SoXtComponentVisibilityCB * callback,
-  void * closure)
+  SoXtComponentVisibilityCB * const callback,
+  void * const closure)
 {
   if (PRIVATE(this)->visibilitycbs != NULL) {
     const int num = PRIVATE(this)->visibilitycbs->getLength();
