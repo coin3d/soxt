@@ -143,6 +143,8 @@ if test x"$sim_ac_x11_avail" = xyes; then
   SIM_CHECK_X_INTRINSIC([
     SOXT_EXTRA_LIBS="$sim_ac_xt_libs $SOXT_EXTRA_LIBS"
   ])
+else
+  AC_MSG_ERROR(need to able to compile and link against X11 libraries)
 fi
 
 SIM_AC_CHECK_OPENGL([

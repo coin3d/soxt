@@ -3533,6 +3533,8 @@ else
   
 fi
 
+else
+  { echo "configure: error: need to able to compile and link against X11 libraries" 1>&2; exit 1; }
 fi
 
 
@@ -3593,7 +3595,7 @@ if test x"$with_opengl" != xno; then
   LDFLAGS="$LDFLAGS $sim_ac_gl_ldflags"
 
   echo $ac_n "checking whether OpenGL libraries are available... $ac_c" 1>&6
-echo "configure:3597: checking whether OpenGL libraries are available" 1>&5
+echo "configure:3599: checking whether OpenGL libraries are available" 1>&5
 if test "${sim_cv_lib_gl+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -3606,7 +3608,7 @@ else
       if test "x$sim_cv_lib_gl" = "xUNRESOLVED"; then
         LIBS="$sim_ac_gl_libcheck $sim_ac_save_libs"
         cat >conftest.$ac_ext <<EOF
-#line 3610 "configure"
+#line 3612 "configure"
 #include "confdefs.h"
 #include <GL/gl.h>
                     #include <GL/glu.h>
@@ -3615,7 +3617,7 @@ glPointSize(1.0f);
                     gluSphere(0L, 1.0, 1, 1);
 ; return 0; }
 EOF
-if { (eval echo configure:3619: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3621: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_lib_gl="$sim_ac_gl_libcheck"
 else
@@ -3665,19 +3667,19 @@ if test x"$with_pthread" != xno; then
   LIBS="$sim_ac_pthread_libs $LIBS"
 
   echo $ac_n "checking whether the pthread development system is available... $ac_c" 1>&6
-echo "configure:3669: checking whether the pthread development system is available" 1>&5
+echo "configure:3671: checking whether the pthread development system is available" 1>&5
 if test "${sim_cv_lib_pthread_avail+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3674 "configure"
+#line 3676 "configure"
 #include "confdefs.h"
 #include <pthread.h>
 int main() {
 (void)pthread_create(0L, 0L, 0L, 0L);
 ; return 0; }
 EOF
-if { (eval echo configure:3681: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3683: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_lib_pthread_avail=yes
 else
@@ -3706,7 +3708,7 @@ fi
 
     if test "x$sim_ac_pthread_avail" = "xyes"; then
       echo $ac_n "checking whether OpenGL libraries can be linked with pthread library... $ac_c" 1>&6
-echo "configure:3710: checking whether OpenGL libraries can be linked with pthread library" 1>&5
+echo "configure:3712: checking whether OpenGL libraries can be linked with pthread library" 1>&5
 if test "${sim_cv_lib_gl_pthread+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -3719,7 +3721,7 @@ else
           if test "x$sim_cv_lib_gl_pthread" = "xUNRESOLVED"; then
             LIBS="$sim_ac_gl_libcheck $sim_ac_pthread_libs $sim_ac_save_libs"
             cat >conftest.$ac_ext <<EOF
-#line 3723 "configure"
+#line 3725 "configure"
 #include "confdefs.h"
 #include <GL/gl.h>
                         #include <GL/glu.h>
@@ -3728,7 +3730,7 @@ glPointSize(1.0f);
                         gluSphere(0L, 1.0, 1, 1);
 ; return 0; }
 EOF
-if { (eval echo configure:3732: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3734: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_lib_gl_pthread="$sim_ac_gl_libcheck"
 else
@@ -3787,7 +3789,7 @@ if test x"$with_inventor" != xno; then
     sim_ac_oiv_ldflags="-L${with_inventor}/lib"
   else
     echo $ac_n "checking value of the OIVHOME environment variable... $ac_c" 1>&6
-echo "configure:3791: checking value of the OIVHOME environment variable" 1>&5
+echo "configure:3793: checking value of the OIVHOME environment variable" 1>&5
     if test x"$OIVHOME" = x; then
       echo "$ac_t""empty" 1>&6
       echo "configure: warning: OIVHOME environment variable not set -- this might be an indication of a problem" 1>&2
@@ -3809,19 +3811,19 @@ echo "configure:3791: checking value of the OIVHOME environment variable" 1>&5
   LIBS="$sim_ac_oiv_libs $LIBS"
 
   echo $ac_n "checking for Open Inventor developer kit... $ac_c" 1>&6
-echo "configure:3813: checking for Open Inventor developer kit" 1>&5
+echo "configure:3815: checking for Open Inventor developer kit" 1>&5
 if test "${sim_cv_lib_oiv_avail+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3818 "configure"
+#line 3820 "configure"
 #include "confdefs.h"
 #include <Inventor/SoDB.h>
 int main() {
 SoDB::init();
 ; return 0; }
 EOF
-if { (eval echo configure:3825: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3827: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_lib_oiv_avail=yes
 else
@@ -3879,7 +3881,7 @@ if test "x$with_coin" != "xno"; then
   # Extract the first word of "coin-config", so it can be a program name with args.
 set dummy coin-config; ac_word=$2
 echo $ac_n "checking for $ac_word... $ac_c" 1>&6
-echo "configure:3883: checking for $ac_word" 1>&5
+echo "configure:3885: checking for $ac_word" 1>&5
 if test "${ac_cv_path_sim_ac_conf_cmd+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -3918,7 +3920,7 @@ fi
   sim_ac_coin_libs=`$sim_ac_conf_cmd --libs`
 
   echo $ac_n "checking whether the Coin library is available... $ac_c" 1>&6
-echo "configure:3922: checking whether the Coin library is available" 1>&5
+echo "configure:3924: checking whether the Coin library is available" 1>&5
 if test "${sim_cv_lib_coin_avail+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -3930,14 +3932,14 @@ else
     LDFLAGS="$LDFLAGS $sim_ac_coin_ldflags"
     LIBS="$sim_ac_coin_libs $LIBS"
     cat >conftest.$ac_ext <<EOF
-#line 3934 "configure"
+#line 3936 "configure"
 #include "confdefs.h"
 #include <Inventor/SoDB.h>
 int main() {
 SoDB::init();
 ; return 0; }
 EOF
-if { (eval echo configure:3941: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3943: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_lib_coin_avail=yes
 else
@@ -3979,19 +3981,19 @@ fi
 
 
 echo $ac_n "checking for the SoPolygonOffset node... $ac_c" 1>&6
-echo "configure:3983: checking for the SoPolygonOffset node" 1>&5
+echo "configure:3985: checking for the SoPolygonOffset node" 1>&5
 if test "${sim_cv_sopolygonoffset+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3988 "configure"
+#line 3990 "configure"
 #include "confdefs.h"
 #include <Inventor/nodes/SoPolygonOffset.h>
 int main() {
 SoPolygonOffset * p = new SoPolygonOffset;
 ; return 0; }
 EOF
-if { (eval echo configure:3995: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3997: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_sopolygonoffset=yes
 else
@@ -4046,19 +4048,19 @@ if test x"$with_motif" != xno; then
   LIBS="$sim_ac_motif_libs $LIBS"
 
   echo $ac_n "checking for a Motif development environment... $ac_c" 1>&6
-echo "configure:4050: checking for a Motif development environment" 1>&5
+echo "configure:4052: checking for a Motif development environment" 1>&5
 if test "${sim_cv_lib_motif_avail+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 4055 "configure"
+#line 4057 "configure"
 #include "confdefs.h"
 #include <Xm/Xm.h>
 int main() {
 XmUpdateDisplay(0L);
 ; return 0; }
 EOF
-if { (eval echo configure:4062: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:4064: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_lib_motif_avail=yes
 else
@@ -4104,7 +4106,7 @@ fi
 sim_ac_ivexamples_available=no
 if test x"${with_ivexamples+set}" = x"set"; then
   echo $ac_n "checking for ivexamples directory... $ac_c" 1>&6
-echo "configure:4108: checking for ivexamples directory" 1>&5
+echo "configure:4110: checking for ivexamples directory" 1>&5
   if test -f ${srcdir}/ivexamples/configure.in; then
     echo "$ac_t""found" 1>&6
     sim_ac_ivexamples_available=yes
