@@ -19,54 +19,28 @@
 
 #include <X11/X.h>
 
-#include <Inventor/misc/SoBasic.h>
-
 #include <soxtdefs.h>
-#include <Inventor/Xt/SoXtBasic.h>
-
 #include <Inventor/Xt/devices/SoXtInputFocus.h>
+#include <Inventor/Xt/devices/SoGuiInputFocusP.h>
 
 // *************************************************************************
 
-/*!
-  \class SoXtInputFocus Inventor/Xt/devices/SoXtInputFocus.h
-  \brief The SoXtInputFocus class is a virtual device.
-  \ingroup devices
-
-  This device class is a virtual device that only takes advantage of
-  the event handling mechanism for the Xt components, and never really
-  translates any events.
-
-  It is not implemented yet.
-*/
+class SoXtInputFocusP : public SoGuiInputFocusP {
+public:
+  SoXtInputFocusP(SoXtInputFocus * p) : SoGuiInputFocusP(p) { }
+};
 
 // *************************************************************************
 
-SOXT_OBJECT_SOURCE(SoXtInputFocus);
-
-// *************************************************************************
-
-/*!
-  \enum SoXtInputFocus::InputFocusEvents
-
-  Enumeration over unsupported event types.
-*/
-
-// *************************************************************************
-
-/*!
-  Public constructor.
-*/
 SoXtInputFocus::SoXtInputFocus(int events)
 {
-  this->eventmask = events;
+  PRIVATE(this) = new SoXtInputFocusP(this);
+  PRIVATE(this)->eventmask = events;
 }
 
-/*!
-  Destructor.
-*/
 SoXtInputFocus::~SoXtInputFocus()
 {
+  delete PRIVATE(this);
 }
 
 // *************************************************************************
@@ -91,10 +65,6 @@ SoXtInputFocus::disable(Widget, // widget,
 
 // *************************************************************************
 
-/*!
-  This method translates between X events and Open Inventor events.
-  \c NULL is always returned.
-*/
 const SoEvent *
 SoXtInputFocus::translateEvent(XAnyEvent * event)
 {
