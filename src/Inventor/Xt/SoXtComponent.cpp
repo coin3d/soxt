@@ -25,10 +25,18 @@ static const char rcsid[] =
 #include <Xm/Xm.h>
 
 #include <Inventor/misc/SoBasic.h>
+#include <Inventor/SoLists.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtComponent.h>
+
+// *************************************************************************
+
+// static variables
+SbPList * SoXtComponent::widgets = NULL;
+SbPList * SoXtComponent::components = NULL;
 
 // *************************************************************************
 
@@ -117,6 +125,9 @@ SoXtComponent::isTopLevelShell(
   return FALSE;
 } // isTopLevelShell()
 
+/*!
+*/
+
 Widget
 SoXtComponent::getShellWidget(
   void ) const
@@ -124,12 +135,18 @@ SoXtComponent::getShellWidget(
   return SoXt::getShellWidget(this->parent);
 } // getShellWidget()
 
+/*!
+*/
+
 Widget      
 SoXtComponent::getParentWidget(
   void ) const
 {
   return this->parent;
 } // getParentWidget()
+
+/*!
+*/
 
 void    
 SoXtComponent::setSize(
@@ -140,6 +157,9 @@ SoXtComponent::setSize(
   this->size = size;
 } // setSize()
 
+/*!
+*/
+
 SbVec2s   
 SoXtComponent::getSize(
   void )
@@ -147,12 +167,20 @@ SoXtComponent::getSize(
   return this->size;
 } // getSize()
 
+/*!
+*/
+
 Display *
 SoXtComponent::getDisplay(
   void )
 {
   return SoXt::getDisplay();
 } // getDisplay()
+
+// *************************************************************************
+
+/*!
+*/
 
 void      
 SoXtComponent::setTitle(
@@ -168,11 +196,14 @@ SoXtComponent::setTitle(
   // set our widget's title
   if (parent || widget) {
     // FIXME: doesn't work if the widget is already realized. 20000324 mortene.
-     XtVaSetValues(parent ? parent : widget,
-                   XmNtitle, this->title,
-                   0, 0);
+     XtVaSetValues( parent ? parent : widget,
+       XmNtitle, this->title,
+       NULL );
   }
 } // setTitle()
+
+/*!
+*/
 
 const char *
 SoXtComponent::getTitle(
@@ -180,6 +211,9 @@ SoXtComponent::getTitle(
 {
   return this->title;
 }
+
+/*!
+*/
 
 void      
 SoXtComponent::setIconTitle(
@@ -201,12 +235,18 @@ SoXtComponent::setIconTitle(
   }
 }
 
+/*!
+*/
+
 const char * 
 SoXtComponent::getIconTitle(
   void ) const
 {
   return this->iconTitle;
 } // getIconTitle()
+
+/*!
+*/
 
 void      
 SoXtComponent::setWindowCloseCallback(
@@ -216,13 +256,24 @@ SoXtComponent::setWindowCloseCallback(
   SOXT_STUB();
 }
 
+/*!
+  This method returns the SoXtComponent object \a widget is registered
+  for.
+*/
+
 SoXtComponent *
 SoXtComponent::getComponent( // static
   Widget widget )
 {
-  SOXT_STUB();
-  return NULL;
+  assert( SoXtComponent::widgets != NULL );
+  int pos = SoXtComponent::widgets->find( (void *) widget );
+  if ( pos == -1 )
+    return NULL;
+  return (SoXtComponent *) (*SoXtComponent::components)[pos];
 } // getComponent()
+
+/*!
+*/
 
 const char *
 SoXtComponent::getWidgetName(
@@ -231,12 +282,18 @@ SoXtComponent::getWidgetName(
   return this->widgetName;
 } // getWidgetName()
 
+/*!
+*/
+
 const char *
 SoXtComponent::getClassName(
   void ) const
 {
   return this->widgetClass;
 } // getClassName()
+
+/*!
+*/
 
 void
 SoXtComponent::setBaseWidget( // protected
@@ -247,6 +304,9 @@ SoXtComponent::setBaseWidget( // protected
     XtVaSetValues( this->widget,
         XtNwidth, this->size[0], XtNheight, this->size[1], NULL );
 } // setBaseWidget()
+
+/*!
+*/
 
 void
 SoXtComponent::setClassName( // protected
@@ -260,6 +320,10 @@ SoXtComponent::setClassName( // protected
   }
 } // setClassName()
 
+/*!
+  Hook called when window is closed.
+*/
+
 void
 SoXtComponent::windowCloseAction( // virtual, protected
   void )
@@ -267,12 +331,19 @@ SoXtComponent::windowCloseAction( // virtual, protected
   SOXT_STUB();
 } // windowCloseAction()
 
+/*!
+  Hook called when window is realized.
+*/
+
 void
 SoXtComponent::afterRealizeHook( // virtual, protected
   void )
 {
   SOXT_STUB();
 } // afterRealizeHook()
+
+/*!
+*/
 
 const char *
 SoXtComponent::getDefaultWidgetName( // virtual, protected
@@ -282,6 +353,9 @@ SoXtComponent::getDefaultWidgetName( // virtual, protected
   return defaultWidgetName;
 } // getDefaultWidgetName()
 
+/*!
+*/
+
 const char *
 SoXtComponent::getDefaultTitle( // virtual, protected
   void ) const
@@ -289,6 +363,9 @@ SoXtComponent::getDefaultTitle( // virtual, protected
   static const char defaultTitle[] = "Xt Component";
   return defaultTitle;
 } // getDefaultTitle()
+
+/*!
+*/
 
 const char *
 SoXtComponent::getDefaultIconTitle( // virtual, protected
@@ -298,19 +375,42 @@ SoXtComponent::getDefaultIconTitle( // virtual, protected
   return defaultIconTitle;
 } // getDefaultIconTitle()
 
+/*!
+*/
+
 void
 SoXtComponent::registerWidget( // protected
   Widget widget )
 {
-  SOXT_STUB();
+  if ( SoXtComponent::widgets == NULL ) {
+    SoXtComponent::widgets = new SbPList;
+    SoXtComponent::components = new SbPList;
+  }
+  SoXtComponent::widgets->append( (void *) widget );
+  SoXtComponent::components->append( (void *) this );
 } // registerWidget()
+
+/*!
+*/
 
 void
 SoXtComponent::unregisterWidget( // protected
   Widget widget )
 {
-  SOXT_STUB();
+  assert( SoXtComponent::widgets != NULL );
+  assert( widget != NULL );
+  int pos = SoXtComponent::widgets->find( (void *) widget );
+  if ( pos == -1 ) {
+    SoDebugError::post( "SoXtComponent::unregisterWidget",
+      "widget (%s) not registered", XtName( widget ) );
+  }
+  assert( SoXtComponent::components != NULL );
+  SoXtComponent::widgets->remove( pos );
+  SoXtComponent::components->remove( pos );
 } // unregisterWidget()
+
+/*!
+*/
 
 void
 SoXtComponent::addVisibilityChangeCallback( // protected

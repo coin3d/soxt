@@ -28,6 +28,7 @@
 #include <Inventor/SbLinear.h>
 
 class SoXtComponent;
+class SbPList;
 
 // *************************************************************************
 
@@ -77,6 +78,7 @@ protected:
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
+
   void registerWidget( Widget widget );
   void unregisterWidget( Widget widget );
 
@@ -97,6 +99,9 @@ private:
   char * iconTitle;
 
   SbVec2s size;
+
+  static SbPList * widgets;
+  static SbPList * components;
 
 }; // class SoXtComponent
 
