@@ -204,7 +204,7 @@ XtNativePopupMenu::newMenuItem(
   int id = itemid;
   if (id == -1) {
     id = 1;
-    while (this->getItemRecord(itemid) != NULL) id++;
+    while (this->getItemRecord(id) != NULL) id++;
   } else {
     if (this->getItemRecord(itemid) != NULL) {
 #if SOXT_DEBUG
