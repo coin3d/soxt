@@ -33,6 +33,7 @@ static const char rcsid[] =
 #include <Inventor/nodes/SoOrthographicCamera.h>
 
 #include <soxtdefs.h>
+#include <../SoXtInternal.h>
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtResource.h>
@@ -76,7 +77,7 @@ struct SoXtViewerButton {
   char * keyword;
   char * label;
   void (*pressed)(Widget, XtPointer, XtPointer);
-  char ** xpm_data;
+  const char ** xpm_data;
   Widget bwidget;
   Widget lwidget;
 };
@@ -309,7 +310,7 @@ SoXtPlaneViewer::createViewerButtons(// virtual, protected
     this->buttons[button].bwidget = widget;
 
 #if HAVE_LIBXPM
-    Pixmap pixmap = createPixmapFromXpmData(widget, this->buttons[button].xpm_data);
+    Pixmap pixmap = SoXtInternal::createPixmapFromXpm(widget, this->buttons[button].xpm_data);
     if (pixmap)
       XtVaSetValues(widget,
         XmNlabelType, XmPIXMAP,
@@ -325,13 +326,13 @@ SoXtPlaneViewer::createViewerButtons(// virtual, protected
 
 #if HAVE_LIBXPM
   this->pixmaps.ortho =
-    createPixmapFromXpmData(this->buttons[3].bwidget, ortho_xpm);
+    SoXtInternal::createPixmapFromXpm(this->buttons[3].bwidget, ortho_xpm);
   this->pixmaps.ortho_ins =
-    createInsensitivePixmapFromXpmData(this->buttons[3].bwidget, ortho_xpm);
+    SoXtInternal::createInsensitivePixmapFromXpm(this->buttons[3].bwidget, ortho_xpm);
   this->pixmaps.perspective =
-    createPixmapFromXpmData(this->buttons[3].bwidget, perspective_xpm);
+    SoXtInternal::createPixmapFromXpm(this->buttons[3].bwidget, perspective_xpm);
   this->pixmaps.perspective_ins =
-    createInsensitivePixmapFromXpmData(this->buttons[3].bwidget, perspective_xpm);
+    SoXtInternal::createInsensitivePixmapFromXpm(this->buttons[3].bwidget, perspective_xpm);
 #endif // HAVE_LIBXPM
 } // createViewerButtons()
 

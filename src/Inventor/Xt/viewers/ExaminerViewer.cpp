@@ -44,6 +44,7 @@ static const char rcsid[] =
 #include <Inventor/sensors/SoTimerSensor.h>
 
 #include <soxtdefs.h>
+#include <../SoXtInternal.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXtResource.h>
@@ -377,8 +378,8 @@ SoXtExaminerViewer::createViewerButtons(// virtual
   inherited::createViewerButtons(parent, buttonlist);
 
   this->camerabutton = XtVaCreateManagedWidget("C",
-    xmPushButtonWidgetClass, parent,
-    NULL);
+                                               xmPushButtonWidgetClass, parent,
+                                               NULL);
 
   XtAddCallback(this->camerabutton,
     XmNdisarmCallback, SoXtExaminerViewer::camerabuttonCB, this);
@@ -387,13 +388,13 @@ SoXtExaminerViewer::createViewerButtons(// virtual
 
 #if HAVE_LIBXPM
   this->camerapixmaps.ortho =
-    createPixmapFromXpmData(this->camerabutton, ortho_xpm);
+    SoXtInternal::createPixmapFromXpm(this->camerabutton, ortho_xpm);
   this->camerapixmaps.ortho_ins =
-    createInsensitivePixmapFromXpmData(this->camerabutton, ortho_xpm);
+    SoXtInternal::createInsensitivePixmapFromXpm(this->camerabutton, ortho_xpm);
   this->camerapixmaps.perspective =
-    createPixmapFromXpmData(this->camerabutton, perspective_xpm);
+    SoXtInternal::createPixmapFromXpm(this->camerabutton, perspective_xpm);
   this->camerapixmaps.perspective_ins =
-    createInsensitivePixmapFromXpmData(this->camerabutton, perspective_xpm);
+    SoXtInternal::createInsensitivePixmapFromXpm(this->camerabutton, perspective_xpm);
 #endif // HAVE_LIBXPM
 
 } // createViewerButtons()

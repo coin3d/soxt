@@ -41,6 +41,7 @@
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 
 #include <soxtdefs.h>
+#include <../SoXtInternal.h>
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtResource.h>
@@ -935,186 +936,6 @@ SoXtFullViewer::buildViewerButtons(Widget parent)
 // *************************************************************************
 
 /*!
-  \internal
-*/
-
-#ifdef HAVE_LIBXPM
-static const char *
-_xpmErrorString(
-  int error)
-{
-  switch (error) {
-  case XpmSuccess:      return "success";
-  case XpmColorError:   return "color error";
-  case XpmOpenFailed:   return "open failed";
-  case XpmFileInvalid:  return "file invalid";
-  case XpmNoMemory:     return "no memory";
-  case XpmColorFailed:  return "color failed";
-  default:              return "<unknown>";
-  } // switch (error)
-} // _xpmStringError()
-#endif
-
-/*
-  \internal
-  Does nothing if libXpm use hasn't been enabled.
-*/
-
-Pixmap
-SoXtFullViewer::createPixmapFromXpmData(
-  Widget widget,
-  char ** xpm)
-{
-  Pixmap pixels = 0;
-#if HAVE_LIBXPM
-
-  Widget shell = widget;
-  while (! XtIsShell(shell) && shell != (Widget) NULL)
-    shell = XtParent(shell);
-  assert(shell != (Widget) NULL);
-  Display * dpy = XtDisplay(shell);
-
-  XpmAttributes attrs;
-  attrs.visual = NULL;
-  attrs.colormap = 0;
-  attrs.depth = 0;
-
-  XtVaGetValues(shell,
-    XmNcolormap, &attrs.colormap,
-    XmNdepth,    &attrs.depth,
-    XmNvisual,   &attrs.visual,
-    NULL);
-
-  attrs.valuemask = XpmVisual | XpmColormap | XpmDepth;
-
-#if SOXT_DEBUG && 0
-  SoDebugError::postInfo("SoXtFullViewer::createPixmapFromXpmData",
-    "visualinfo: %p, %d, %d", attrs.visual, attrs.colormap, attrs.depth);
-#endif // SOXT_DEBUG
-
-  Drawable draw = RootWindow(dpy, DefaultScreen(dpy));
-  Pixmap stencil = 0;
-  int error = XpmCreatePixmapFromData(dpy, draw, xpm,
-                &pixels, &stencil, &attrs);
-
-  if (error != XpmSuccess) {
-#if SOXT_DEBUG
-    SoDebugError::postInfo("SoXtFullViewer::createPixmapFromXpmData",
-      "XpmCreateImageFromData failed: %s", _xpmErrorString(error));
-#endif // SOXT_DEBUG
-    return 0;
-  }
-
-  if (stencil) {
-    Pixel bg;
-    XtVaGetValues(widget, XmNbackground, &bg, NULL);
-
-    XImage * pixmap = XGetImage(dpy, pixels, 0, 0, attrs.width, attrs.height,
-      0xffffffff, ZPixmap);
-    XImage * mask = XGetImage(dpy, stencil, 0, 0, attrs.width, attrs.height,
-      0xffffffff, ZPixmap);
-    assert(pixmap != NULL && mask != NULL);
-
-    for (unsigned int x = 0; x < attrs.width; x++) {
-      for (unsigned int y = 0; y < attrs.height; y++) {
-        Pixel pixel = XGetPixel(mask, x, y);
-        if (pixel == 0) // background must be set in image
-          XPutPixel(pixmap, x, y, bg);
-      }
-    }
-
-    GC temp = XCreateGC(dpy, pixels, 0, NULL);
-    XPutImage(dpy, pixels, temp, pixmap,
-      0, 0, 0, 0, attrs.width, attrs.height);
-    XFreeGC(dpy, temp);
-
-    XDestroyImage(pixmap);
-    XDestroyImage(mask);
-  }
-
-#endif // HAVE_LIBXPM
-  return pixels;
-} // createPixmapFromXpmData()
-
-/*!
-  \internal
-  Does nothing if libXpm use hasn't been enabled.
-*/
-
-Pixmap
-SoXtFullViewer::createInsensitivePixmapFromXpmData(
-  Widget widget,
-  char ** xpm)
-{
-  Pixmap pixels = 0;
-
-#if HAVE_LIBXPM
-  Widget shell = widget;
-  while (! XtIsShell(shell) && widget != (Widget) NULL)
-    shell = XtParent(shell);
-  assert(shell != (Widget) NULL);
-
-  Display * dpy = XtDisplay(shell);
-
-  XpmAttributes attrs;
-  attrs.visual = NULL;
-  attrs.colormap = 0;
-  attrs.depth = 0;
-
-  XtVaGetValues(shell,
-    XmNcolormap, &attrs.colormap,
-    XmNdepth,    &attrs.depth,
-    XmNvisual,   &attrs.visual,
-    NULL);
-
-  attrs.valuemask = XpmVisual | XpmColormap | XpmDepth;
-
-  Drawable draw = RootWindow(dpy, DefaultScreen(dpy));
-  Pixmap stencil = 0;
-  int error = XpmCreatePixmapFromData(dpy, draw, xpm,
-     &pixels, &stencil, &attrs);
-
-  if (error != XpmSuccess) {
-#if SOXT_DEBUG
-    SoDebugError::postInfo(
-      "SoXtFullViewer::createInsensitivePixmapFromXpmData",
-      "XpmCreatePixmapFromData() failed: %s", _xpmErrorString(error));
-#endif // SOXT_DEBUG
-    return (Pixmap) 0;
-  }
-
-  if (stencil) {
-    Pixel bg;
-    XtVaGetValues(widget, XmNbackground, &bg, NULL);
-
-    XImage * pixmap = XGetImage(dpy, pixels, 0, 0, attrs.width, attrs.height,
-      0xffffffff, ZPixmap);
-    XImage * mask = XGetImage(dpy, stencil, 0, 0, attrs.width, attrs.height,
-      0xffffffff, ZPixmap);
-    assert(pixmap != NULL && mask != NULL);
-
-    for (unsigned int x = 0; x < attrs.width; x++) {
-      for (unsigned int y = 0; y < attrs.height; y++) {
-        Pixel pixel = XGetPixel(mask, x, y);
-        if ((pixel == 0) || (((x+y) & 1) == 1))
-          XPutPixel(pixmap, x, y, bg);
-      }
-    }
-
-    GC temp = XCreateGC(dpy, pixels, 0, NULL);
-    XPutImage(dpy, pixels, temp, pixmap,
-      0, 0, 0, 0, attrs.width, attrs.height);
-    XFreeGC(dpy, temp);
-
-    XDestroyImage(pixmap);
-    XDestroyImage(mask);
-  }
-
-#endif // HAVE_LIBXPM
-  return pixels;
-} // createInsensitivePixmapFromXpmData()
-
-/*!
   FIXME: write doc
 */
 
@@ -1214,37 +1035,37 @@ SoXtFullViewer::createViewerButtons(Widget parent,
     switch (viewerbutton) {
     case INTERACT_BUTTON:
       pixmap = pixmaps.pick =
-        createPixmapFromXpmData(button, pick_xpm);
+        SoXtInternal::createPixmapFromXpm(button, pick_xpm);
       pixmap_ins = pixmaps.pick_ins =
-        createInsensitivePixmapFromXpmData(button, pick_xpm);
+        SoXtInternal::createInsensitivePixmapFromXpm(button, pick_xpm);
       break;
     case EXAMINE_BUTTON:
       pixmap = pixmaps.view =
-        createPixmapFromXpmData(button, view_xpm);
+        SoXtInternal::createPixmapFromXpm(button, view_xpm);
       pixmap_ins = pixmaps.view_ins =
-        createInsensitivePixmapFromXpmData(button, view_xpm);
+        SoXtInternal::createInsensitivePixmapFromXpm(button, view_xpm);
       break;
     case HELP_BUTTON:
       pixmap = pixmap_ins = pixmaps.help =
-        createPixmapFromXpmData(button, help_xpm);
+        SoXtInternal::createPixmapFromXpm(button, help_xpm);
       break;
     case HOME_BUTTON:
       pixmap = pixmap_ins = pixmaps.home =
-        createPixmapFromXpmData(button, home_xpm);
+        SoXtInternal::createPixmapFromXpm(button, home_xpm);
       break;
     case SET_HOME_BUTTON:
       pixmap = pixmap_ins = pixmaps.set_home =
-        createPixmapFromXpmData(button, set_home_xpm);
+        SoXtInternal::createPixmapFromXpm(button, set_home_xpm);
       break;
     case VIEW_ALL_BUTTON:
       pixmap = pixmap_ins = pixmaps.view_all =
-        createPixmapFromXpmData(button, view_all_xpm);
+        SoXtInternal::createPixmapFromXpm(button, view_all_xpm);
       break;
     case SEEK_BUTTON:
       pixmap = pixmaps.seek =
-        createPixmapFromXpmData(button, seek_xpm);
+        SoXtInternal::createPixmapFromXpm(button, seek_xpm);
       pixmap_ins = pixmaps.seek_ins =
-        createInsensitivePixmapFromXpmData(button, seek_xpm);
+        SoXtInternal::createInsensitivePixmapFromXpm(button, seek_xpm);
       break;
     default:
       assert(0 && "impossible");
@@ -1252,12 +1073,12 @@ SoXtFullViewer::createViewerButtons(Widget parent,
     } // switch (viewerbutton)
     if (pixmap && pixmap_ins) {
       XtVaSetValues(button,
-        XmNlabelType, XmPIXMAP,
-        XmNlabelPixmap, pixmap,
-        XmNlabelInsensitivePixmap, pixmap_ins,
-        XmNselectPixmap, pixmap,
-        XmNselectInsensitivePixmap, pixmap_ins,
-        NULL);
+                    XmNlabelType, XmPIXMAP,
+                    XmNlabelPixmap, pixmap,
+                    XmNlabelInsensitivePixmap, pixmap_ins,
+                    XmNselectPixmap, pixmap,
+                    XmNselectInsensitivePixmap, pixmap_ins,
+                    NULL);
     }
 #endif // HAVE_LIBXPM
 
