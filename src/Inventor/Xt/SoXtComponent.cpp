@@ -1092,16 +1092,13 @@ SoXtComponent::getlabel(// static, protected
 /*!
   FIXME: write doc
 */
-
-Boolean
-SoXtComponent::eventHandler(// protected, virtual
-  Widget widget,
-  XEvent * event)
+Boolean      // protected, virtual
+SoXtComponent::sysEventHandler(Widget widget, XEvent * event)
 {
   if (widget == PRIVATE(this)->widget) { // base widget
 #if SOXT_DEBUG && 0
-    SoDebugError::postInfo("SoXtComponent::eventHandler",
-      "base widget event (%d)", event->type);
+    SoDebugError::postInfo("SoXtComponent::sysEventHandler",
+                           "base widget event (%d)", event->type);
 #endif // SOXT_DEBUG
     if (event->type == ConfigureNotify) {
       XConfigureEvent * conf = (XConfigureEvent *) event;
@@ -1118,7 +1115,7 @@ SoXtComponent::eventHandler(// protected, virtual
       PRIVATE(this)->size = SbVec2s(width, height);
       this->sizeChanged(PRIVATE(this)->size);
     } else if (event->type == VisibilityNotify) {
-//    SoDebugError::postInfo("SoXtComponent::eventHandler", "Visibility");
+//    SoDebugError::postInfo("SoXtComponent::sysEventHandler", "Visibility");
       XVisibilityEvent * visibility = (XVisibilityEvent *) event;
       SbBool newvisibility = TRUE;
       if (visibility->state == VisibilityFullyObscured)
@@ -1130,8 +1127,8 @@ SoXtComponent::eventHandler(// protected, virtual
     }
   } else if (this->isTopLevelShell() && widget == this->getShellWidget()) {
 #if SOXT_DEBUG && 0
-    SoDebugError::postInfo("SoXtComponent::eventHandler",
-      "shell widget event (%d)", event->type);
+    SoDebugError::postInfo("SoXtComponent::sysEventHandler",
+                           "shell widget event (%d)", event->type);
 #endif // SOXT_DEBUG
 
     if (event->type == ConfigureNotify) {
@@ -1147,29 +1144,27 @@ SoXtComponent::eventHandler(// protected, virtual
     }
   } else {
 #if SOXT_DEBUG && 0
-    SoDebugError::postInfo("SoXtComponent::eventHandler",
-      "[removing] event handler for unknown widget");
+    SoDebugError::postInfo("SoXtComponent::sysEventHandler",
+                           "[removing] event handler for unknown widget");
 #endif // SOXT_DEBUG
   }
   return True;
-} // eventHandler()
+}
 
 /*!
-  This static callback invokes SoXtComponent::eventHandler.
+  This static callback invokes SoXtComponent::sysEventHandler.
 
-  \sa eventHandler
+  \sa sysEventHandler
 */
-
 void
-SoXtComponent::event_handler(
-  Widget widget,
-  XtPointer closure,
-  XEvent * event,
-  Boolean * dispatch)
+SoXtComponent::event_handler(Widget widget,
+                             XtPointer closure,
+                             XEvent * event,
+                             Boolean * dispatch)
 {
   assert(closure != NULL);
   SoXtComponent * component = (SoXtComponent *) closure;
-  *dispatch = component->eventHandler(widget, event);
+  *dispatch = component->sysEventHandler(widget, event);
 } // event_handler()
 
 /*!
