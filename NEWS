@@ -1,3 +1,7 @@
 NEWS
 ====
 
+* 2000-05-22 larsa
+	SoXt no longer uses the GLw/GLwM widget from SGI / Mesa, but uses
+	it's own integrated SoXtGLArea widget based on the SGI sources.
+
