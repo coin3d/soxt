@@ -606,7 +606,7 @@ SoXtExaminerViewer::createViewerButtons( // virtual
   this->camerabutton = XtVaCreateManagedWidget( "C",
     xmPushButtonWidgetClass, parent,
     XmNshadowType, XmSHADOW_OUT,
-    XmNhighlightThickness, 2,
+    XmNhighlightThickness, 0,
     XmNshadowThickness, 2,
     XmNtraversalOn, False,
     XmNwidth, 30,
