@@ -73,9 +73,8 @@ soxtdefs.h: $(top_srcdir)/soxtdefs.h.in
 
 src/Inventor/Xt/SoXtBasic.h: \
   $(top_srcdir)/src/Inventor/Xt/common/SoGuiBasic.h.in
-	@CONFIG_HEADERS=$@:SoXtBasic.h.in CONFIG_FILES=$(top_srcdir)/SoXtBasic.h.in:src/Inventor/Xt/common/SoGuiBasic.h.in ./config.status
-	@echo "removing $(top_srcdir)/SoXtBasic.h.in (temporary file)"
-	@rm $(top_srcdir)/SoXtBasic.h.in
+	@CONFIG_FILES=-:src/Inventor/Xt/common/SoGuiBasic.h.in CONFIG_HEADERS= \
+	./config.status | CONFIG_FILES= CONFIG_HEADERS=$@:- ./config.status
 
 src/Inventor/Xt/SoXtRenderArea.h: \
   $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.h.in
