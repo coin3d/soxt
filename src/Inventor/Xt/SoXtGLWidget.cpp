@@ -501,10 +501,10 @@ void
 SoXtGLWidget::eventHandler( // static, protected
   Widget widget,
   SoXtGLWidget * user,
-  XAnyEvent * event,
+  XEvent * event,
   Boolean * dispatch )
 {
-  user->processEvent( event );
+  user->processEvent( (XAnyEvent *) event );
   *dispatch = False;
 } // eventHandler()
 

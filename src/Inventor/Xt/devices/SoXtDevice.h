@@ -33,6 +33,8 @@ class SbPList;
 
 // *************************************************************************
 
+typedef XtEventHandler SoXtEventHandlerPtr;
+
 class SOXT_DLL_EXPORT SoXtDevice {
 public:
   virtual ~SoXtDevice(void);
