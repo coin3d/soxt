@@ -27,53 +27,58 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbLinear.h>
 
-class SoXtComponent;
 class SbPList;
+class SoXtComponent;
 
 // *************************************************************************
 
-typedef void SoXtComponentCB( void * user, SoXtComponent * component);
+typedef void SoXtComponentCB( void * user, SoXtComponent * component );
 typedef void SoXtComponentVisibilityCB( void * user, SbBool enable );
 
 class SoXtComponent {
 public:
+  virtual ~SoXtComponent(void);
+
   virtual void show(void);
   virtual void hide(void);
-
   SbBool isVisible(void);
+
   Widget getWidget(void) const;
   Widget baseWidget(void) const;
+  Widget getBaseWidget(void) const;
 
   SbBool isTopLevelShell(void) const;
   Widget getShellWidget(void) const;
-
   Widget getParentWidget(void) const;
+
+  Display * getDisplay(void);
+
   void setSize( const SbVec2s size );
   SbVec2s getSize(void);
-  Display * getDisplay(void);
+
+  const char * getWidgetName(void) const;
+  const char * getClassName(void) const;
   void setTitle( const char * const title );
   const char * getTitle(void) const;
   void setIconTitle( const char * const title );
   const char * getIconTitle(void) const;
 
   void setWindowCloseCallback(
-      SoXtComponentCB * func, void * user = NULL);
-  static SoXtComponent * getComponent( Widget widget );
-  const char * getWidgetName(void) const;
-  const char * getClassName(void) const;
+    SoXtComponentCB * func, void * user = NULL );
 
-  virtual ~SoXtComponent(void);
+  static SoXtComponent * getComponent( Widget widget );
 
 protected:
-  SoXtComponent( Widget parent = NULL, const char * name = NULL,
-      SbBool buildInsideParent = TRUE );
+  SoXtComponent(
+    const Widget parent = NULL,
+    const char * const name = NULL,
+    const SbBool embed = TRUE );
 
   void setBaseWidget( Widget widget );
   void setClassName( const char * const name );
+
   virtual void windowCloseAction(void);
   virtual void afterRealizeHook(void);
-
-  SbBool firstRealize;
 
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
@@ -83,12 +88,15 @@ protected:
   void unregisterWidget( Widget widget );
 
   void addVisibilityChangeCallback(
-      SoXtComponentVisibilityCB * func, void * user = NULL );
+    SoXtComponentVisibilityCB * func, void * user = NULL );
   void removeVisibilityChangeCallback(
-      SoXtComponentVisibilityCB * func, void * user = NULL );
+    SoXtComponentVisibilityCB * func, void * user = NULL );
 
   void openHelpCard( const char * name );
+
   static char * getlabel( unsigned int what );
+
+  SbBool firstRealize;
 
 private:
   Widget parent;
@@ -97,6 +105,9 @@ private:
   char * widgetClass;
   char * title;
   char * iconTitle;
+
+  SbBool embedded;
+  Widget constructorParent;
 
   SbVec2s size;
 
