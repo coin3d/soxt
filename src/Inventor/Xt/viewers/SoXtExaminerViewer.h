@@ -57,6 +57,8 @@ public:
   void setFeedbackSize( const int size );
   int getFeedbackSize(void) const;
 
+  virtual void setCamera( SoCamera * camera );
+
 protected:
   SoXtExaminerViewer(
     Widget parent,
@@ -68,7 +70,6 @@ protected:
 
   virtual void actualRedraw( void );
 
-  virtual void setCamera( SoCamera * camera );
   virtual void setSeekMode( SbBool enable );
 
   virtual void processEvent( XAnyEvent * event );
