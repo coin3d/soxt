@@ -17,11 +17,6 @@
  *
  **************************************************************************/
 
-#if SOXT_DEBUG
-static const char rcsid[] =
-  "$Id$";
-#endif // SOXT_DEBUG
-
 #include <unistd.h>
 #include <stdlib.h>
 #include <math.h>
@@ -37,6 +32,7 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXt.h>
 
 #include <Inventor/Xt/devices/SoXtLinuxJoystick.h>
+#include <Inventor/Xt/devices/6DOFEvents.h>
 #include <Inventor/Xt/SoAny.h>
 
 #ifdef HAVE_CONFIG_H
@@ -48,10 +44,6 @@ static const char rcsid[] =
 #include <sys/ioctl.h>
 #include <linux/joystick.h>
 #endif // HAVE_JOYSTICK_LINUX
-
-#ifndef M_PI
-#define M_PI 3.141592653579
-#endif
 
 // *************************************************************************
 
@@ -67,11 +59,82 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-SOXT_OBJECT_SOURCE(SoXtLinuxJoystick);
+class SoXtLinuxJoystickP {
+public:
+  SoXtLinuxJoystickP(SoXtLinuxJoystick * p);
+  ~SoXtLinuxJoystickP();
+
+  static const char * getDevicePathName(void);
+
+  void input(int * source, XtInputId * id);
+  static void input_cb(XtPointer closure, int * source, XtInputId * id);
+
+  int events;
+  int joydev;
+  XtInputId joyid;
+
+  char * name;
+  int numaxes;
+  int32_t * axisvalues;
+  int numbuttons;
+  SbBool * buttonvalues;
+
+  float rotationScaleFactor;
+  float translationScaleFactor;
+
+  SoMotion3Event * motion3Event;
+  SoSpaceballButtonEvent * buttonEvent;
+
+  SoMotion3Event * makeMotion3Event(SoXt6dofDevicePressureEvent * event);
+  SoSpaceballButtonEvent * makeButtonEvent(SoXt6dofDeviceButtonEvent * event,
+                                           SoButtonEvent::State state);
+
+  static SbBool enabled;
+
+private:
+  SoXtLinuxJoystick * publ;
+};
+
+SbBool SoXtLinuxJoystickP::enabled = FALSE;
+
+#define PRIVATE(p) (p->pimpl)
+#define PUBLIC(p) (p->publ)
+
+SoXtLinuxJoystickP::SoXtLinuxJoystickP(SoXtLinuxJoystick * p)
+{
+  PUBLIC(this) = p;
+  
+  this->joydev = 0;
+  this->joyid = (XtInputId) 0;
+  this->numaxes = 0;
+  this->axisvalues = NULL;
+  this->numbuttons = 0;
+  this->buttonvalues = NULL;
+  this->name = NULL;
+  this->rotationScaleFactor = M_PI / float(3*0x10000);
+  this->translationScaleFactor = M_PI / float(0x10000);
+  this->motion3Event = NULL;
+  this->buttonEvent = NULL;
+}
+
+SoXtLinuxJoystickP::~SoXtLinuxJoystickP()
+{
+  if (this->joydev != 0)
+    close(this->joydev);
+
+  delete [] this->name;
+  delete [] this->axisvalues;
+  delete [] this->buttonvalues;
+
+  delete this->motion3Event;
+  delete this->buttonEvent;
+}
 
 // *************************************************************************
 
-SbBool SoXtLinuxJoystick::enabled = FALSE;
+SOXT_OBJECT_SOURCE(SoXtLinuxJoystick);
+
+// *************************************************************************
 
 /*!
   \enum SoXtLinuxJoystick::LinuxJoystickEvents
@@ -85,40 +148,20 @@ SbBool SoXtLinuxJoystick::enabled = FALSE;
   Public constructor.
 */
 
-SoXtLinuxJoystick::SoXtLinuxJoystick(
-  int events)
+SoXtLinuxJoystick::SoXtLinuxJoystick(int events)
 {
-  this->events = events;
-  this->joydev = 0;
-  this->joyid = (XtInputId) 0;
-  this->numaxes = 0;
-  this->axisvalues = NULL;
-  this->numbuttons = 0;
-  this->buttonvalues = NULL;
-  this->name = NULL;
-  this->rotationScaleFactor = M_PI / float(3*0x10000);
-  this->translationScaleFactor = M_PI / float(0x10000);
-  this->motion3Event = NULL;
-  this->buttonEvent = NULL;
-} // SoXtLinuxJoystick()
+  PRIVATE(this) = new SoXtLinuxJoystickP(this);
+  PRIVATE(this)->events = events;
+}
 
 /*!
   Destructor.
 */
 
-SoXtLinuxJoystick::~SoXtLinuxJoystick(// virtual
-  void)
+SoXtLinuxJoystick::~SoXtLinuxJoystick()
 {
-  if (this->joydev != 0)
-    close(this->joydev);
-
-  delete [] this->name;
-  delete [] this->axisvalues;
-  delete [] this->buttonvalues;
-
-  delete this->motion3Event;
-  delete this->buttonEvent;
-} // ~SoXtLinuxJoystick()
+  delete PRIVATE(this);
+}
 
 // *************************************************************************
 
@@ -134,64 +177,64 @@ SoXtLinuxJoystick::enable(Widget widget,
                           Window window)
 {
 #ifdef HAVE_JOYSTICK_LINUX
-  if (! SoXtLinuxJoystick::enabled) {
-    const char * devpathname = SoXtLinuxJoystick::getDevicePathName();
-    this->joydev = open(devpathname, O_RDONLY | O_NONBLOCK);
-    if (joydev <= 0) {
+  if (! SoXtLinuxJoystickP::enabled) {
+    const char * devpathname = SoXtLinuxJoystickP::getDevicePathName();
+    PRIVATE(this)->joydev = open(devpathname, O_RDONLY | O_NONBLOCK);
+    if (PRIVATE(this)->joydev <= 0) {
       SoDebugError::post("SoXtLinuxJoystick::enable",
-        "failed to open device '%s'...", devpathname);
-      this->joydev = 0;
+                         "failed to open device '%s'...", devpathname);
+      PRIVATE(this)->joydev = 0;
       return;
     }
     char char_return;
     int int_return;
 
-    if (ioctl(this->joydev, JSIOCGAXES, &char_return) >= 0) {
-      this->numaxes = char_return;
+    if (ioctl(PRIVATE(this)->joydev, JSIOCGAXES, &char_return) >= 0) {
+      PRIVATE(this)->numaxes = char_return;
     } else {
       SoDebugError::post("SoXtLinuxJoystick::enable",
-        "ioctl(JSIOCGAXES) failed");
+                         "ioctl(JSIOCGAXES) failed");
     }
 
-    if (ioctl(this->joydev, JSIOCGBUTTONS, &char_return) >= 0) {
-      this->numbuttons = char_return;
+    if (ioctl(PRIVATE(this)->joydev, JSIOCGBUTTONS, &char_return) >= 0) {
+      PRIVATE(this)->numbuttons = char_return;
     } else {
       SoDebugError::post("SoXtLinuxJoystick::enable",
-        "ioctl(JSIOCGBUTTONS) failed");
+                         "ioctl(JSIOCGBUTTONS) failed");
     }
 
     char name[128];
-    if (ioctl(this->joydev, JSIOCGNAME(sizeof(name)), name) >= 0) {
-      this->name = strcpy(new char [strlen(name)+1], name);
+    if (ioctl(PRIVATE(this)->joydev, JSIOCGNAME(sizeof(name)), name) >= 0) {
+      PRIVATE(this)->name = strcpy(new char [strlen(name)+1], name);
     } else {
       SoDebugError::post("SoXtLinuxJoystick::enable",
-        "ioctl(JSIOCGNAME) failed");
-      this->name = strcpy(new char [sizeof("Unknown")+1], "Unknown");
+                         "ioctl(JSIOCGNAME) failed");
+      PRIVATE(this)->name = strcpy(new char [sizeof("Unknown")+1], "Unknown");
     }
 
 #if SOXT_DEBUG && 0
     SoDebugError::post("SoXtLinuxJoystick::enable",
-      "successfully opened \"%s\" device with %d axes and %d buttons",
-      this->name, this->numaxes, this->numbuttons);
+                       "successfully opened \"%s\" device with %d axes and %d buttons",
+                       PRIVATE(this)->name, PRIVATE(this)->numaxes, PRIVATE(this)->numbuttons);
 #endif // SOXT_DEBUG
 
     int i;
-    this->axisvalues = new int32_t [this->numaxes];
-    for (i = 0; i < this->numaxes; i++)
-      this->axisvalues[i] = 0;
+    PRIVATE(this)->axisvalues = new int32_t [PRIVATE(this)->numaxes];
+    for (i = 0; i < PRIVATE(this)->numaxes; i++)
+      PRIVATE(this)->axisvalues[i] = 0;
     
-    this->buttonvalues = new int32_t [this->numbuttons];
-    for (i = 0; i < this->numbuttons; i++)
-      this->buttonvalues[i] = FALSE;
+    PRIVATE(this)->buttonvalues = new int32_t [PRIVATE(this)->numbuttons];
+    for (i = 0; i < PRIVATE(this)->numbuttons; i++)
+      PRIVATE(this)->buttonvalues[i] = FALSE;
 
-    XtAppAddInput(SoXt::getAppContext(), this->joydev,
-      (XtPointer) XtInputReadMask,
-      SoXtLinuxJoystick::input_cb, (XtPointer) this);
+    XtAppAddInput(SoXt::getAppContext(), PRIVATE(this)->joydev,
+                  (XtPointer) XtInputReadMask,
+                  SoXtLinuxJoystickP::input_cb, (XtPointer) this);
   }
 
   this->addEventHandler(widget, handler, closure, window);
 #endif // HAVE_JOYSTICK_LINUX
-} // enable()
+}
 
 /*!
   This method removes \a handler from the list of device handlers.
@@ -205,7 +248,7 @@ SoXtLinuxJoystick::disable(Widget widget,
 #ifdef HAVE_JOYSTICK_LINUX
   this->removeEventHandler(widget, handler, closure);
 #endif // HAVE_JOYSTICK_LINUX
-} // disable()
+}
 
 // *************************************************************************
 
@@ -218,25 +261,24 @@ SoXtLinuxJoystick::disable(Widget widget,
 */
 
 const SoEvent *
-SoXtLinuxJoystick::translateEvent(
-  XAnyEvent * xevent)
+SoXtLinuxJoystick::translateEvent(XAnyEvent * xevent)
 {
 #ifdef HAVE_JOYSTICK_LINUX
   switch (xevent->type) {
   case soxt6dofDeviceButtonPressedEvent:
-    return this->makeButtonEvent((SoXt6dofDeviceButtonEvent *) xevent,
-      SoButtonEvent::DOWN);
+    return PRIVATE(this)->makeButtonEvent((SoXt6dofDeviceButtonEvent *) xevent,
+                                          SoButtonEvent::DOWN);
   case soxt6dofDeviceButtonReleasedEvent:
-    return this->makeButtonEvent((SoXt6dofDeviceButtonEvent *) xevent,
-      SoButtonEvent::UP);
+    return PRIVATE(this)->makeButtonEvent((SoXt6dofDeviceButtonEvent *) xevent,
+                                          SoButtonEvent::UP);
   case soxt6dofDevicePressureEvent:
-    return this->makeMotion3Event((SoXt6dofDevicePressureEvent *) xevent);
+    return PRIVATE(this)->makeMotion3Event((SoXt6dofDevicePressureEvent *) xevent);
   default:
     break;
   }
 #endif // HAVE_JOYSTICK_LINUX
   return (SoEvent *) NULL;
-} // translateEvent()
+}
 
 // *************************************************************************
 
@@ -246,11 +288,10 @@ SoXtLinuxJoystick::translateEvent(
 */
 
 void
-SoXtLinuxJoystick::setRotationScaleFactor(
-  const float factor)
+SoXtLinuxJoystick::setRotationScaleFactor(const float factor)
 {
-  this->rotationScaleFactor = factor;
-} // setRotationScaleFactor()
+  PRIVATE(this)->rotationScaleFactor = factor;
+}
 
 /*!
   This method returns the scale factor used on the Linux Joystick driver
@@ -258,11 +299,10 @@ SoXtLinuxJoystick::setRotationScaleFactor(
 */
 
 float
-SoXtLinuxJoystick::getRotationScaleFactor(
-  void) const
+SoXtLinuxJoystick::getRotationScaleFactor(void) const
 {
-  return this->rotationScaleFactor;
-} // getRotationScaleFactor()
+  return PRIVATE(this)->rotationScaleFactor;
+}
 
 /*!
   This method sets the scale factor used on the Linux Joystick driver
@@ -270,11 +310,10 @@ SoXtLinuxJoystick::getRotationScaleFactor(
 */
 
 void
-SoXtLinuxJoystick::setTranslationScaleFactor(
-  const float factor)
+SoXtLinuxJoystick::setTranslationScaleFactor(const float factor)
 {
-  this->translationScaleFactor = factor;
-} // setTranslationScaleFactor()
+  PRIVATE(this)->translationScaleFactor = factor;
+}
 
 /*!
   This method returns the scale factor used on the Linux Joystick driver
@@ -282,11 +321,10 @@ SoXtLinuxJoystick::setTranslationScaleFactor(
 */
 
 float
-SoXtLinuxJoystick::getTranslationScaleFactor(
-  void) const
+SoXtLinuxJoystick::getTranslationScaleFactor(void) const
 {
-  return this->translationScaleFactor;
-} // getTranslationScaleFactor()
+  return PRIVATE(this)->translationScaleFactor;
+}
 
 // *************************************************************************
 
@@ -296,13 +334,12 @@ SoXtLinuxJoystick::getTranslationScaleFactor(
 */
 
 SbBool
-SoXtLinuxJoystick::exists(// static
-  void)
+SoXtLinuxJoystick::exists(void)
 {
 #ifdef HAVE_JOYSTICK_LINUX
-  if (SoXtLinuxJoystick::enabled)
+  if (SoXtLinuxJoystickP::enabled)
     return TRUE;
-  const char * jsdevicepath = SoXtLinuxJoystick::getDevicePathName();
+  const char * jsdevicepath = SoXtLinuxJoystickP::getDevicePathName();
   int joydev = open(jsdevicepath, O_RDONLY);
   if (joydev <= 0)
     return FALSE;
@@ -311,7 +348,7 @@ SoXtLinuxJoystick::exists(// static
 #else // ! HAVE_JOYSTICK_LINUX
   return FALSE;
 #endif // ! HAVE_JOYSTICK_LINUX
-} // exists()
+}
 
 // *************************************************************************
 
@@ -320,8 +357,7 @@ SoXtLinuxJoystick::exists(// static
 */
 
 const char *
-SoXtLinuxJoystick::getDevicePathName(// static, private
-  void)
+SoXtLinuxJoystickP::getDevicePathName(void)
 {
   const char * devicepath = SoAny::si()->getenv("SOXT_JOYSTICK_DEVICE");
 #ifdef SOXT_JOYSTICK_LINUX_DEVICE
@@ -333,7 +369,7 @@ SoXtLinuxJoystick::getDevicePathName(// static, private
   if (devicepath == NULL)
     devicepath = hardcoded;
   return devicepath;
-} // getDevicePathName()
+}
 
 // *************************************************************************
 
@@ -343,58 +379,54 @@ SoXtLinuxJoystick::getDevicePathName(// static, private
 */
 
 int
-SoXtLinuxJoystick::getNumButtons(
-  void) const
+SoXtLinuxJoystick::getNumButtons(void) const
 {
-  return this->numbuttons;
-} // getNumButtons()
+  return PRIVATE(this)->numbuttons;
+}
 
 /*!
   Returns whether the given button is pressed or not.
 */
 
 SbBool
-SoXtLinuxJoystick::getButtonValue(
-  const int button) const
+SoXtLinuxJoystick::getButtonValue(const int button) const
 {
-  if (button < 0 || button >= this->numbuttons) {
+  if (button < 0 || button >= PRIVATE(this)->numbuttons) {
 #if SOXT_DEBUG
     SoDebugError::post("SoXtLinuxJoystick::getButtonValue",
       "invalid button %d", button);
 #endif // SOXT_DEBUG
     return FALSE;
   }
-  return this->buttonvalues[button];
-} // getButtonValue()
+  return PRIVATE(this)->buttonvalues[button];
+}
 
 /*!
   Returns the number of axes on the input device.
 */
 
 int
-SoXtLinuxJoystick::getNumAxes(
-  void) const
+SoXtLinuxJoystick::getNumAxes(void) const
 {
-  return this->numaxes;
-} // getNumAxes()
+  return PRIVATE(this)->numaxes;
+}
 
 /*!
   Returns the current value of the given axis on the input device.
 */
 
 float
-SoXtLinuxJoystick::getAxisValue(
-  const int axis) const
+SoXtLinuxJoystick::getAxisValue(const int axis) const
 {
-  if (axis < 0 || axis >= this->numaxes) {
+  if (axis < 0 || axis >= PRIVATE(this)->numaxes) {
 #if SOXT_DEBUG
     SoDebugError::post("SoXtLinuxJoystick::getButtonValue",
       "invalid axis %d", axis);
 #endif // SOXT_DEBUG
     return 0.0f;
   }
-  return float(this->axisvalues[axis]) * this->translationScaleFactor;
-} // getAxisValue()
+  return float(PRIVATE(this)->axisvalues[axis]) * PRIVATE(this)->translationScaleFactor;
+}
 
 // *************************************************************************
 
@@ -403,23 +435,21 @@ SoXtLinuxJoystick::getAxisValue(
 */
 
 void
-SoXtLinuxJoystick::setFocusToWindow(
-  SbBool enable)
+SoXtLinuxJoystick::setFocusToWindow(SbBool enable)
 {
   SOXT_STUB();
-} // setFocusToWindow()
+}
 
 /*!
   This method is not implemented.
 */
 
 SbBool
-SoXtLinuxJoystick::isFocusToWindow(
-  void) const
+SoXtLinuxJoystick::isFocusToWindow(void) const
 {
   SOXT_STUB();
   return FALSE;
-} // isFocusToWindow()
+}
 
 // *************************************************************************
 
@@ -431,9 +461,7 @@ SoXtLinuxJoystick::isFocusToWindow(
 */
 
 void
-SoXtLinuxJoystick::input(// private
-  int * source,
-  XtInputId * id)
+SoXtLinuxJoystickP::input(int * source, XtInputId * id)
 {
 #ifdef HAVE_JOYSTICK_LINUX
   struct js_event event;
@@ -502,7 +530,7 @@ SoXtLinuxJoystick::input(// private
     xevent.button = button;
     xevent.buttons = this->numbuttons;
 
-    this->invokeHandlers((XEvent *) &xevent);
+    PUBLIC(this)->invokeHandlers((XEvent *) &xevent);
   }
 
   if (motion != FALSE) {
@@ -542,25 +570,22 @@ SoXtLinuxJoystick::input(// private
         this->rotationScaleFactor * float(this->axisvalues[5]);
     } while (FALSE);
 
-    this->invokeHandlers((XEvent *) &xevent);
+    PUBLIC(this)->invokeHandlers((XEvent *) &xevent);
   }
 #endif // HAVE_JOYSTICK_LINUX
-} // input()
+}
 
 /*!
   This callback just jumps to the input handler in the device object.
 */
 
 void
-SoXtLinuxJoystick::input_cb(// static, private
-  XtPointer closure,
-  int * source,
-  XtInputId * id)
+SoXtLinuxJoystickP::input_cb(XtPointer closure, int * source, XtInputId * id)
 {
   assert(closure != NULL);
   SoXtLinuxJoystick * device = (SoXtLinuxJoystick *) closure;
-  device->input(source, id);
-} // input_cb()
+  PRIVATE(device)->input(source, id);
+}
 
 // *************************************************************************
 
@@ -570,8 +595,7 @@ SoXtLinuxJoystick::input_cb(// static, private
 */
 
 SoMotion3Event *
-SoXtLinuxJoystick::makeMotion3Event(// private
-  SoXt6dofDevicePressureEvent * event)
+SoXtLinuxJoystickP::makeMotion3Event(SoXt6dofDevicePressureEvent * event)
 {
   if (this->motion3Event == NULL)
     this->motion3Event = new SoMotion3Event;
@@ -588,7 +612,7 @@ SoXtLinuxJoystick::makeMotion3Event(// private
   this->motion3Event->setRotation(xrot * yrot * zrot);
 
   return this->motion3Event;
-} // makeMotion3Event()
+}
 
 /*!
   This method translates between custom device button events and
@@ -596,9 +620,8 @@ SoXtLinuxJoystick::makeMotion3Event(// private
 */
 
 SoSpaceballButtonEvent *
-SoXtLinuxJoystick::makeButtonEvent(
-  SoXt6dofDeviceButtonEvent * event,
-  SoButtonEvent::State state)
+SoXtLinuxJoystickP::makeButtonEvent(SoXt6dofDeviceButtonEvent * event,
+                                    SoButtonEvent::State state)
 {
   if (this->buttonEvent == NULL)
     this->buttonEvent = new SoSpaceballButtonEvent;
@@ -633,16 +656,11 @@ SoXtLinuxJoystick::makeButtonEvent(
   // FIXME: which one should it be?
   case 8: this->buttonEvent->setButton(SoSpaceballButtonEvent::PICK); break;
   default: break;
-  } // switch (event->button)
+  }
 
   this->buttonEvent->setState(state);
 
   return this->buttonEvent;
-} // makeButtonEvent()
+}
 
 // *************************************************************************
-
-#if SOXT_DEBUG
-static const char * getSoXtLinuxJoystickRCSId(void) { return rcsid; }
-#endif // SOXT_DEBUG
-

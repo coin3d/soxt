@@ -69,34 +69,9 @@ public:
   float getAxisValue(const int axis) const;
 
 private:
-  static const char * getDevicePathName(void);
-
-  void input(int * source, XtInputId * id);
-  static void input_cb(XtPointer closure, int * source, XtInputId * id);
-
-private:
-  int events;
-  int joydev;
-  XtInputId joyid;
-
-  char * name;
-  int numaxes;
-  int32_t * axisvalues;
-  int numbuttons;
-  SbBool * buttonvalues;
-
-  float rotationScaleFactor;
-  float translationScaleFactor;
-
-  SoMotion3Event * motion3Event;
-  SoSpaceballButtonEvent * buttonEvent;
-
-  SoMotion3Event * makeMotion3Event(SoXt6dofDevicePressureEvent * event);
-  SoSpaceballButtonEvent * makeButtonEvent(SoXt6dofDeviceButtonEvent * event,
-      SoButtonEvent::State state);
-
-  static SbBool enabled;
-}; // class SoXtLinuxJoystick
+  class SoXtLinuxJoystickP * pimpl;
+  friend class SoXtLinuxJoystickP;
+};
 
 #define SO_XT_ALL_LINUX_JOYSTICK_EVENTS SoXtLinuxJoystick::ALL_EVENTS
 
