@@ -20,6 +20,8 @@
 static const char rcsid[] =
   "$Id$";
 
+#include <assert.h>
+
 #include <Xm/Xm.h>
 #include <Xm/Form.h>
 #include <Xm/Label.h>

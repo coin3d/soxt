@@ -20,6 +20,8 @@
 static const char rcsid[] =
   "$Id$";
 
+#include <assert.h>
+
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
@@ -27,7 +29,8 @@ static const char rcsid[] =
 #include <Inventor/sensors/SoTimerSensor.h>
 
 #include <Inventor/Xt/SoXt.h>
-#include <Inventor/Xt/common/SoAnyExaminerViewer.h>
+#include <Inventor/Xt/viewers/SoAnyExaminerViewer.h>
+
 #include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
 
 // *************************************************************************
