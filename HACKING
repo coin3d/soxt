@@ -1,0 +1,22 @@
+This file describes some hacking techniques that are particular
+for the Open Inventor GUI toolkit family.
+
+Be sure to check Coin/HACKING for Coin-specific tricks and more
+generic information, plus the src/Inventor/Xt/common/HACKING file for
+some hints common to all GUI interface toolkits.
+
+
+0 Debugging X11 Window System Protocol Errors
+=============================================
+
+  Because X11 does asynchronous client-server communication, it can be
+  hard to debug: in the default setup, you can't simply set up
+  breakpoints and get a sensible backtrace. So for information on how
+  to debug X11 problems, see this link for a very thorough
+  walk-through of the issues one should know about:
+
+        <URL:http://www.rahul.net/kenton/perrors.html>
+
+
+(FIXME: use and describe XSynchronize(), XSetErrorHandler().
+20011202 mortene.)
