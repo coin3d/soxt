@@ -393,25 +393,26 @@ SoXtFullViewer::buildWidget( // protected
 
   this->buildDecoration( this->viewerbase );
   
-  if ( ( this->isTopLevelShell() ||
-         XtIsShell(XtParent(this->getBaseWidget())) ) &&
+  if ( this->isTopLevelShell() &&
        this->decorations != FALSE ) {
     Widget shell = this->getShellWidget();
-    Dimension minheight =
-      30 + 90 + 30 * this->viewerButtonWidgets->getLength() + 8;
-    Dimension width, height;
-    XtVaGetValues( shell,
-      XmNwidth, &width,
-      XmNheight, &height,
-      NULL );
-    width = SoXtMax( width, (Dimension) 300 );
-    height = SoXtMax( height, minheight );
-    XtVaSetValues( shell,
-      XmNminWidth, 300,
-      XmNminHeight, minheight,
-      XmNwidth, width,
-      XmNheight, height,
-      NULL );
+    if ( shell != NULL ) {
+      Dimension minheight =
+        30 + 90 + 30 * this->viewerButtonWidgets->getLength() + 8;
+      Dimension width, height;
+      XtVaGetValues( shell,
+        XmNwidth, &width,
+        XmNheight, &height,
+        NULL );
+      width = SoXtMax( width, (Dimension) 300 );
+      height = SoXtMax( height, minheight );
+      XtVaSetValues( shell,
+        XmNminWidth, 300,
+        XmNminHeight, minheight,
+        XmNwidth, width,
+        XmNheight, height,
+        NULL );
+    }
   }
   return this->viewerbase;
 } // buildWidget()
