@@ -527,19 +527,20 @@ SoXtComponent::fitSize(
 } // fitSize()
 
 /*!
-  Since SoXtComponent doesn't manage any internal widgets, this default
-  implementation does nothing.
-
-  Derived components should implement this to resize internal widgets and
-  pass the [modified] size down to the parent class afterwards.
+  Called internally from within the SoXt library when the widget
+  embedded in a component changes it size. that is usually triggered
+  by end-user interaction.
 */
-
-void
-SoXtComponent::sizeChanged(// virtual
-  const SbVec2s)
+void         // virtual
+SoXtComponent::sizeChanged(const SbVec2s & size)
 {
-  // empty
-} // sizeChanged()
+  // Since SoXtComponent doesn't manage any internal widgets, this
+  // default implementation does nothing.
+  //
+  // Derived components should implement this to resize internal
+  // widgets and pass the [modified] size down to the parent class
+  // afterwards.
+}
 
 // *************************************************************************
 

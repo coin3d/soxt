@@ -575,13 +575,9 @@ SoXtGLWidget::hasNormalGLArea(void) const
   return ((SoXtGLWidget*)this)->getNormalWidget() != 0;
 }
  
-/*!
-  This method is invoked when the GL widget component changes size.
-*/
-
-void
-SoXtGLWidget::sizeChanged(// virtual, protected
-  const SbVec2s size)
+// doc in super
+void    // virtual, protected
+SoXtGLWidget::sizeChanged(const SbVec2s & size)
 {
 //  SoDebugError::postInfo("SoXtGLWidget::sizeChanged", "[invoked (%d, %d)]",
 //    size[0], size[1]);
@@ -592,15 +588,13 @@ SoXtGLWidget::sizeChanged(// virtual, protected
     PRIVATE(this)->glsize = size;
   }
   XtResizeWidget(PRIVATE(this)->glxwidget, PRIVATE(this)->glsize[0], PRIVATE(this)->glsize[1], 0);
-} // sizeChanged()
+}
 
 /*!
-  This method is invoked when a widget Cin the component is changed.
+  This method is invoked when a widget in the component is changed.
 */
-
-void
-SoXtGLWidget::widgetChanged(// virtual, protected
-  Widget widget)
+void        // virtual, protected
+SoXtGLWidget::widgetChanged(Widget widget)
 {
   SOXT_STUB();
 } // widgetChanged()

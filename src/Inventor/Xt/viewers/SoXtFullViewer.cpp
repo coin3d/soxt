@@ -4038,12 +4038,9 @@ SoXtFullViewer::speedDecCB(
 
 // *************************************************************************
 
-/*!
-*/
-
+// doc in super
 void
-SoXtFullViewer::sizeChanged(
-  const SbVec2s size)
+SoXtFullViewer::sizeChanged(const SbVec2s & size)
 {
   SbVec2s newsize(size);
   if (this->isDecoration()) {

@@ -120,7 +120,7 @@ protected:
   void setRightWheelString(const char * const name);
   Widget getRightWheelLabelWidget(void) const;
 
-  virtual void sizeChanged(const SbVec2s size);
+  virtual void sizeChanged(const SbVec2s & size);
 
   virtual void openViewerHelpCard(void);
 
