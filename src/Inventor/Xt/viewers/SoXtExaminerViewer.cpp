@@ -130,6 +130,8 @@ SoXtExaminerViewer::processEvent(
   switch ( event->type ) {
 
   case ButtonPress:
+    this->lastmouseposition = norm_mousepos;
+    this->spinsaveposition = norm_mousepos;
     if ( ((XButtonEvent *) event)->button == Button3 )
       break;
 
@@ -486,6 +488,9 @@ SoXtExaminerViewer::spin(
   const SbVec2f & mousepos )
 {
   assert( this->projector != NULL );
+  if ( mousepos == spinsaveposition )
+    return;
+  spinsaveposition = mousepos;
 
   SbRotation rotation;
   this->projector->projectAndGetRotation( mousepos, rotation );

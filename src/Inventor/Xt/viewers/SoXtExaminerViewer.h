@@ -100,6 +100,7 @@ private:
 
   SbSphereSheetProjector * projector;
   SbVec2f lastmouseposition;
+  SbVec2f spinsaveposition;
   SbPlane panningplane;
 
 }; // class SoXtExaminerViewer
