@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <assert.h>
 
@@ -165,5 +167,7 @@ SoXtCollisionViewer::removeCallback(
 
 // *************************************************************************
 
+#if SOXT_DEBUG
 static const char * getSoXtCollisionViewerRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
 

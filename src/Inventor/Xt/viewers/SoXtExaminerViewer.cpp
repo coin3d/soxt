@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #if HAVE_CONFIG_H
 #include "config.h"
@@ -1158,5 +1160,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 
 // *************************************************************************
 
+#if SOXT_DEBUG
 static const char * getSoXtExaminerViewerRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
 

@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <Inventor/errors/SoDebugError.h>
 
@@ -208,5 +210,7 @@ SoXtConstrainedViewer::computeSeekFinalOrientation( // virtual, protected
 
 // *************************************************************************
 
+#if SOXT_DEBUG
 static const char * getSoXtConstrainedViewerRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
 

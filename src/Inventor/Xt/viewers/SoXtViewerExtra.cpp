@@ -17,8 +17,10 @@
  *
 \**************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <X11/keysym.h>
 
@@ -133,5 +135,7 @@ SoXtViewer::processCommonEvents(
 
 // *************************************************************************
 
+#if SOXT_DEBUG
 static const char * getSoXtViewerExtraRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
 

@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <assert.h>
 
@@ -680,5 +682,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 
 // *************************************************************************
 
+#if SOXT_DEBUG
 static const char * getSoXtPlaneViewerRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
 

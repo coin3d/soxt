@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <assert.h>
 
@@ -270,5 +272,7 @@ SoXtFlyViewer::openViewerHelpCard( // virtual, protected
 
 // *************************************************************************
 
+#if SOXT_DEBUG
 static const char * getSoXtFlyViewerRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
 
