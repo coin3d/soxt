@@ -240,12 +240,13 @@ INPUT                 = \
 	@soxt_build_dir@/src/Inventor/Xt/SoXtBasic.h \
 	@soxt_src_dir@/src/Inventor/Xt/SoXt.cpp \
 	@soxt_src_dir@/src/Inventor/Xt/SoXt.h \
+	@soxt_build_dir@/src/Inventor/Xt/SoXtObject.cpp \
+	@soxt_build_dir@/src/Inventor/Xt/SoXtObject.h \
 	@soxt_src_dir@/src/Inventor/Xt/SoXtComponent.cpp \
 	@soxt_src_dir@/src/Inventor/Xt/SoXtComponent.h \
 	@soxt_src_dir@/src/Inventor/Xt/SoXtGLWidget.cpp \
 	@soxt_src_dir@/src/Inventor/Xt/SoXtGLWidget.h \
 	@soxt_build_dir@/src/Inventor/Xt/SoXtRenderArea.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtRenderAreaExtra.cpp \
 	@soxt_build_dir@/src/Inventor/Xt/SoXtRenderArea.h \
 	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtDevice.cpp \
 	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtDevice.h \
@@ -260,7 +261,6 @@ INPUT                 = \
 	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtLinuxJoystick.cpp \
 	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtLinuxJoystick.h \
 	@soxt_build_dir@/src/Inventor/Xt/viewers/SoXtViewer.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtViewerExtra.cpp \
 	@soxt_build_dir@/src/Inventor/Xt/viewers/SoXtViewer.h \
 	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtFullViewer.cpp \
 	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtFullViewer.h \
