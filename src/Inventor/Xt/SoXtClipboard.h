@@ -22,7 +22,9 @@
 #ifndef SOXT_CLIPBOARD_H
 #define SOXT_CLIPBOARD_H
 
-#include <inttypes.h>
+// FIXME: this is not compatible with SGI/TGS Inventor. 20000528 mortene.
+#include <Inventor/system/inttypes.h>
+
 #include <X11/Xatom.h>
 #include <X11/Intrinsic.h>
 #include <Inventor/SbBasic.h>
