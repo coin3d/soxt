@@ -635,9 +635,9 @@ close_dialog_cb(
 void
 SoXt::createSimpleErrorDialog( // static
   Widget parent,
-  char * title,
-  char * string1,
-  char * string2 )
+  const char * title,
+  const char * string1,
+  const char * string2 )
 {
   Arg args[10];
   int argc = 0;

@@ -66,8 +66,9 @@ public:
 
   static Widget getShellWidget( Widget widget );
 
-  static void createSimpleErrorDialog( Widget widget, char * title,
-      char * string1, char * string2 = NULL );
+  static void createSimpleErrorDialog( Widget widget, const char * title,
+                                       const char * string1, 
+                                       const char * string2 = NULL );
   static void getPopupArgs(
       Display * display, int screen, ArgList args, int * n );
 
