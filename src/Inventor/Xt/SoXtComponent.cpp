@@ -112,7 +112,6 @@ public:
   SbPList * closecbs;
   SbPList * visibilitycbs;
   SbBool visibilitystate, fullscreen;
-  SoXtCursor cursor;
 
 private:
   const SoXtComponent * owner;
@@ -1199,17 +1198,16 @@ SoXtComponent::isFullScreen(void) const
 void 
 SoXtComponent::setComponentCursor(const SoXtCursor & cursor)
 {
-  PRIVATE(this)->cursor = cursor;
-  SOXT_STUB();
+  SoXtComponent::setWidgetCursor(this->getWidget(), cursor);
 }
 
 /*!
-  Returns the current cursor for this component.
+  Set cursor for a native widget in the underlying toolkit.
 */
-const SoXtCursor &
-SoXtComponent::getComponentCursor(void) const
+void
+SoXtComponent::setWidgetCursor(Widget w, const SoXtCursor & cursor)
 {
-  return PRIVATE(this)->cursor;
+  SOXT_STUB();
 }
 
 // *************************************************************************
