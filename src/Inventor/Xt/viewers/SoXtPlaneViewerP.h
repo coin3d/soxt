@@ -36,6 +36,22 @@ class SoXtPlaneViewerP : public SoGuiPlaneViewerP
 public:
   SoXtPlaneViewerP(SoXtPlaneViewer * publ);
   ~SoXtPlaneViewerP();
+
+  void constructor(SbBool build);
+
+  static struct SoXtViewerButton SoXtPlaneViewerButtons[];
+  struct SoXtViewerButton * buttons;
+  int findButton(Widget button) const;
+  
+  static void buttonCB(Widget, XtPointer, XtPointer);
+
+  Widget prefshell, prefsheet, * prefparts;
+  int numprefparts;
+
+  struct {
+    Pixmap ortho, ortho_ins;
+    Pixmap perspective, perspective_ins;
+  } pixmaps;
 };
 
 // ************************************************************************
