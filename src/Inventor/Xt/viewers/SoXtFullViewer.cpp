@@ -1347,6 +1347,7 @@ SoXtFullViewer::buildDrawStyleSubmenu(
 } // buildDrawStyleSubmenu()
 
 /*!
+  FIXME: write doc
 */
 
 void

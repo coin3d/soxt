@@ -54,6 +54,12 @@ static const char rcsid[] =
 
 SOXT_OBJECT_ABSTRACT_SOURCE(SoXtDevice);
 
+/*!
+  \internal
+  This function initializes the type system for all the device classes.
+  It is called indirectly when calling SoXt::init().
+*/
+
 void
 SoXtDevice::initClasses(
   void )

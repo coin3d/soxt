@@ -73,20 +73,6 @@ SOXT_OBJECT_SOURCE(SoXtPlaneViewer);
 
 // *************************************************************************
 
-/*!
-  \enum SoXtPlaneViewer::PlaneViewerMode
-
-  Misc viewer modes.
-*/
-
-/*!
-  \var SoXtPlaneViewer::PlaneViewerMode SoXtPlaneViewer::mode
-
-  The current viewer mode.
-*/
-
-// *************************************************************************
-
 struct SoXtViewerButton {
   char * keyword;
   char * label;
@@ -204,6 +190,7 @@ SoXtPlaneViewer::~SoXtPlaneViewer(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -214,6 +201,7 @@ SoXtPlaneViewer::setViewing( // virtual
 } // setViewing()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -267,6 +255,7 @@ SoXtPlaneViewer::setCamera( // virtual
 } // setCamera()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -337,6 +326,7 @@ SoXtPlaneViewer::createViewerButtons( // virtual, protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -348,6 +338,7 @@ SoXtPlaneViewer::getDefaultWidgetName(
 } // getDefaultWidgetName()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -359,6 +350,7 @@ SoXtPlaneViewer::getDefaultTitle(
 } // getDefaultTitle()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -372,6 +364,7 @@ SoXtPlaneViewer::getDefaultIconTitle(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 SbBool
@@ -384,6 +377,7 @@ SoXtPlaneViewer::processSoEvent( // virtual, protected
 } // processSoEvent()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -413,6 +407,7 @@ SoXtPlaneViewer::processEvent(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -424,6 +419,7 @@ SoXtPlaneViewer::setSeekMode(
 } // setSeekMode()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -438,7 +434,9 @@ SoXtPlaneViewer::actualRedraw(
 } // actualRedraw()
 
 /*!
+  FIXME: write doc
 */
+
 void
 SoXtPlaneViewer::openViewerHelpCard( // virtual
   void )
@@ -512,6 +510,7 @@ SoXtPlaneViewer::createPrefSheet(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 int

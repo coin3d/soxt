@@ -169,6 +169,11 @@ SOXT_OBJECT_ABSTRACT_SOURCE(SoXtGLWidget);
   Integer that tracks the lock/unlock calls.
 */
 
+/*!
+  \var SbBool SoXtGLWidget::currentIsNormal
+
+  Whether locked GL context is normal or overlay context.
+*/
 
 // *************************************************************************
 
@@ -455,6 +460,7 @@ SoXtGLWidget::isDrawToFrontBufferEnable(
 /*!
   Enables or disables quad buffer stereo.
 */
+
 void 
 SoXtGLWidget::setQuadBufferStereo(const SbBool enable)
 {
@@ -594,7 +600,9 @@ SoXtGLWidget::setGLSize( // protected
 
 /*!
   \fn const SbVec2s SoXtGLWidget::getGlxSize( void ) const
+
   This method returns the size of the Glx area.
+
   \sa getGLSize
 */
 
@@ -608,6 +616,14 @@ SoXtGLWidget::getGLSize( // protected
 {
   return this->glSize;
 } // getGLSize()
+
+/*!
+  \fn float SoXtGLWidget::getGlxAspectRatio(void) const
+
+  This is the old name for getGLAspectRatio.
+  
+  \sa getGLAspectRatio
+*/
 
 /*!
   This method returns the aspect ratio of the GL area.
@@ -864,6 +880,10 @@ SoXtGLWidget::getGLWidget( // protected
 
 // *************************************************************************
 
+/*!
+  This method makes redering go to the normal context or the overlay context.
+*/
+
 void
 SoXtGLWidget::setOverlayRender(
   const SbBool enable )
@@ -871,10 +891,20 @@ SoXtGLWidget::setOverlayRender(
   this->currentIsNormal = enable ? FALSE : TRUE;
 } // setOverlayRender()
 
+/*!
+  This method returns whether rendering is set for the normal context or the
+  overlay context.
+*/
+
 SbBool
 SoXtGLWidget::isOverlayRender(
   void ) const
 {
+#if SOXT_DEBUG
+  if ( this->glLockLevel == 0 ) {
+    SoDebugError::postWarning( "SoXtGLWidget::isOverlayRender", "GL not locked" );
+  }
+#endif
   return this->currentIsNormal ? FALSE : TRUE;
 } // isOverlayRender()
 

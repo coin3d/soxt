@@ -387,6 +387,12 @@ SoXt::dispatchEvent( // static
 } // dispatchEvent()
 
 /*!
+  This method makes the event loop stop processing events and exit so the
+  program can finish.
+
+  This is an SoXt extension not found in InventorXt.
+
+  \sa SoXt::mainLoop
 */
 
 void
