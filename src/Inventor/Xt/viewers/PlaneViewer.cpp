@@ -36,7 +36,6 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtResource.h>
-#include <Inventor/Xt/viewers/SoAnyPlaneViewer.h>
 #include <Inventor/Xt/widgets/XtNativePopupMenu.h>
 
 #include <Inventor/Xt/viewers/SoXtPlaneViewer.h>
@@ -123,7 +122,6 @@ SoXtPlaneViewer::SoXtPlaneViewer(
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type)
 : inherited(parent, name, embed, flag, type, FALSE)
-, common(new SoAnyPlaneViewer(this))
 {
   this->constructor(TRUE);
 } // SoXtPlaneViewer()
@@ -140,7 +138,6 @@ SoXtPlaneViewer::SoXtPlaneViewer(// protected
   SoXtViewer::Type type,
   SbBool build)
 : inherited(parent, name, embed, flag, type, FALSE)
-, common(new SoAnyPlaneViewer(this))
 {
   this->constructor(build);
 } // SoXtPlaneViewer()
@@ -153,6 +150,8 @@ void
 SoXtPlaneViewer::constructor(
   SbBool build)
 {
+  this->commonConstructor(); // generic code
+
   const int buttons = sizeof(SoXtPlaneViewerButtons) / sizeof(SoXtViewerButton);
   this->buttons = new SoXtViewerButton [ buttons ];
   memcpy(this->buttons, SoXtPlaneViewerButtons, sizeof(SoXtPlaneViewerButtons));
@@ -184,7 +183,6 @@ SoXtPlaneViewer::~SoXtPlaneViewer(
   void)
 {
   delete [] this->buttons;
-  delete this->common;
 } // ~SoXtPlaneViewer()
 
 // *************************************************************************
@@ -371,7 +369,7 @@ SbBool
 SoXtPlaneViewer::processSoEvent(// virtual, protected
   const SoEvent * const event)
 {
-  if (common->processSoEvent(event))
+  if (this->processGenericSoEvent(event))
     return TRUE;
   return inherited::processSoEvent(event);
 } // processSoEvent()
@@ -429,7 +427,7 @@ SoXtPlaneViewer::actualRedraw(
   inherited::actualRedraw();
 #if 0
   if (this->mode == ROTZ_MODE)
-    common->drawRotateGraphics();
+    this->drawRotateGraphics();
 #endif
 } // actualRedraw()
 
@@ -455,7 +453,7 @@ void
 SoXtPlaneViewer::bottomWheelMotion(// virtual
   float value)
 {
-  common->translateX(value - this->getBottomWheelValue());
+  this->translateX(value - this->getBottomWheelValue());
   inherited::bottomWheelMotion(value);
 } // bottomWheelMotion()
 
@@ -468,7 +466,7 @@ void
 SoXtPlaneViewer::leftWheelMotion(// virtual
   float value)
 {
-  common->translateY(value - this->getLeftWheelValue());
+  this->translateY(value - this->getLeftWheelValue());
   inherited::leftWheelMotion(value);
 } // leftWheelMotion()
 
@@ -481,7 +479,7 @@ void
 SoXtPlaneViewer::rightWheelMotion(// virtual
   float value)
 {
-  common->zoom(this->getRightWheelValue() - value);
+  this->zoom(this->getRightWheelValue() - value);
   inherited::rightWheelMotion(value);
 } // rightWheelMotion()
 
@@ -540,11 +538,11 @@ SoXtPlaneViewer::buttonCB(// static, private
   if (idx == -1) {
     SoDebugError::post("SoXtPlaneViewer::buttonCB", "unknown button");
   } else if (strcmp(viewer->buttons[idx].keyword, "x") == 0) {
-    viewer->common->viewPlaneX();
+    viewer->viewPlaneX();
   } else if (strcmp(viewer->buttons[idx].keyword, "y") == 0) {
-    viewer->common->viewPlaneY();
+    viewer->viewPlaneY();
   } else if (strcmp(viewer->buttons[idx].keyword, "z") == 0) {
-    viewer->common->viewPlaneZ();
+    viewer->viewPlaneZ();
   } else if (strcmp(viewer->buttons[idx].keyword, "camera") == 0) {
     viewer->toggleCameraType();
   } else {
