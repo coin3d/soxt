@@ -735,20 +735,6 @@ SoXtComponent::invokeVisibilityChangeCallbacks(// protected
 // *************************************************************************
 
 /*!
-  This function is not implemented yet.
-*/
-
-char *
-SoXtComponent::getlabel(// static, protected
-  unsigned int what)
-{
-  SOXT_STUB();
-  return "(null)";
-}
-
-// *************************************************************************
-
-/*!
   FIXME: write doc
 */
 Boolean      // protected, virtual
