@@ -5,6 +5,17 @@ AC_INIT(src/Inventor/Xt/SoXt.h)
 AC_CONFIG_AUX_DIR(cfg)
 
 # **************************************************************************
+# create "reconfigure" script for invoking configure again with the exact
+# same command line options as last time.
+
+cat >reconfigure <<END_OF_SCRIPT
+#! /bin/sh
+echo $0 $@
+exec $0 $@
+END_OF_SCRIPT
+chmod 755 reconfigure
+
+# **************************************************************************
 # Make sure the given source repository is in sync with the master source
 # repository.
 
@@ -59,7 +70,7 @@ AC_CANONICAL_SYSTEM
 
 AC_PROG_CC
 
-AM_INIT_AUTOMAKE(libSoXt, $SOXT_VERSION)
+AM_INIT_AUTOMAKE(SoXt, $SOXT_VERSION)
 AM_CONFIG_HEADER(config.h)
 
 AM_DISABLE_STATIC
@@ -119,8 +130,11 @@ if test x"$sim_ac_x11_avail" = xyes; then
     SOXT_EXTRA_LIBS="$sim_ac_xpm_libs $SOXT_EXTRA_LIBS"
     AC_DEFINE(HAVE_LIBXPM, 1, [Define this to use libXpm])
     sim_ac_xpm_status="Yes"
+    SIM_AC_CONFIGURATION_SETTING([Xpm Library], [Yes])
   ], [
-    sim_ac_xpm_status="No"
+    SIM_AC_CONFIGURATION_SETTING([Xpm Library], [Yes])
+    SIM_AC_CONFIGURATION_WARNING(
+      [Without libXpm support you will not get graphics on the viewer buttons.])
   ])
   SIM_AC_CHECK_X11SHMEM([
     SOXT_EXTRA_LIBS="$sim_ac_x11shmem_libs $SOXT_EXTRA_LIBS"
@@ -168,7 +182,8 @@ if test "${with_inventor+set}" = set; then
     SOXT_EXTRA_LDFLAGS="$sim_ac_oiv_ldflags $SOXT_EXTRA_LDFLAGS"
     SOXT_EXTRA_LIBS="$sim_ac_oiv_libs $SOXT_EXTRA_LIBS"
   ], [AC_MSG_ERROR([couldn't compile and link against Open Inventor])])
-  sim_ac_brand_inventor="SGI/TGS Inventor"
+
+  SIM_AC_CONFIGURATION_SETTING([Open Inventor brand], [SGI/TGS Inventor])
 else
   # check for Coin library and its dependencies
   SIM_AC_HAVE_COIN_IFELSE([
@@ -179,7 +194,8 @@ else
     SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_coin_ldflags"
     SOXT_EXTRA_LIBS="$sim_ac_coin_libs $SOXT_EXTRA_LIBS"
   ], [AC_MSG_ERROR([couldn't compile and link against Coin])])
-  sim_ac_brand_inventor="Coin"
+
+  SIM_AC_CONFIGURATION_SETTING([Open Inventor brand], [Coin])
 fi
 
 # **************************************************************************
@@ -242,6 +258,12 @@ if test x"${with_devcode+set}" = x"set"; then
 fi
 
 SIM_AC_SOGUI_STATIC_DEFAULTS
+
+if $sim_ac_static_defaults; then
+  SIM_AC_CONFIGURATION_SETTING([Static Materials], [Yes])
+else
+  SIM_AC_CONFIGURATION_SETTING([Static Materials], [No])
+fi
 
 AM_CONDITIONAL(BUILD_DEVCODE, $sim_ac_want_devcode)
 
@@ -378,15 +400,10 @@ AC_OUTPUT([
 	chmod a+x soxt-config
 ])
 
-sim_ac_sogui_static_defaults=No
-$sim_ac_static_defaults && sim_ac_sogui_static_defaults=Yes
+SIM_AC_CONFIGURATION_SETTING([Installation Prefix], [$prefix])
 
-echo ""
-echo "So$Gui configuration:"
-echo "  Open Inventor Brand:  $sim_ac_brand_inventor"
-echo "  Xpm Library:          $sim_ac_xpm_status"
-echo "  Static Materials:     $sim_ac_sogui_static_defaults"
-echo "  Install Prefix:       $prefix"
+SIM_AC_CONFIGURATION_SUMMARY
+
 echo ""
 echo "Now, run 'make install' to build and install So$Gui."
 echo ""

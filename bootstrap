@@ -43,7 +43,7 @@ for arg in $@; do
 done
 
 AUTOCONF_VER=2.49[bc]   # Autoconf from CVS
-AUTOMAKE_VER=1.4a       # CVS development version
+AUTOMAKE_VER=1.4[abc]   # Automake from CVS
 LIBTOOL_VER=1.3.5
 
 PROJECT=SoXt
