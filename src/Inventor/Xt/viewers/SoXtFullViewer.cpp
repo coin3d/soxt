@@ -42,6 +42,9 @@ static const char rcsid[] =
 #include <Xm/Label.h>
 #include <Xm/PushB.h>
 #include <Xm/ToggleB.h>
+#include <Xm/DialogS.h>
+#include <Xm/RowColumn.h>
+#include <Xm/Text.h>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoBasic.h>
@@ -660,13 +663,13 @@ SoXtFullViewer::createPixmapFromXpmData(
   Pixel bg;
   XtVaGetValues( button, XmNbackground, &bg, NULL );
   Display * dpy = SoXt::getDisplay();
-  XImage * image;
-  int error = XpmCreateImageFromData( dpy, xpm, &image, NULL, NULL );
+  XImage * image, * stencil;
+  int error = XpmCreateImageFromData( dpy, xpm, &image, &stencil, NULL );
   if ( error != XpmSuccess ) return 0;
   for ( int x = 0; x < image->width; x++ ) {
     for ( int y = 0; y < image->height; y++ ) {
-      Pixel pixel = XGetPixel( image, x, y );
-      if ( pixel == 0 ) // black background must be translated
+      Pixel pixel = XGetPixel( stencil, x, y );
+      if ( pixel == 0 ) // background must be set in image
         XPutPixel( image, x, y, bg );
     }
   }
@@ -677,6 +680,7 @@ SoXtFullViewer::createPixmapFromXpmData(
   XPutImage( dpy, retval, gc, image, 0, 0, 0, 0, width, height );
   XFreeGC( dpy, gc );
   XDestroyImage( image );
+  XDestroyImage( stencil );
   return retval;
 #endif // HAVE_LIBXPM
   return (Pixmap) 0;
@@ -696,12 +700,12 @@ SoXtFullViewer::createInsensitivePixmapFromXpmData(
   Pixel bg;
   XtVaGetValues( button, XmNbackground, &bg, NULL );
   Display * dpy = SoXt::getDisplay();
-  XImage * image;
-  int error = XpmCreateImageFromData( dpy, xpm, &image, NULL, NULL );
+  XImage * image, * stencil;
+  int error = XpmCreateImageFromData( dpy, xpm, &image, &stencil, NULL );
   if ( error != XpmSuccess ) return 0;
   for ( int x = 0; x < image->width; x++ ) {
     for ( int y = 0; y < image->height; y++ ) {
-      Pixel pixel = XGetPixel( image, x, y );
+      Pixel pixel = XGetPixel( stencil, x, y );
       if ( (pixel == 0) || (((x+y) & 1) == 1) )
         XPutPixel( image, x, y, bg );
     }
@@ -713,6 +717,7 @@ SoXtFullViewer::createInsensitivePixmapFromXpmData(
   XPutImage( dpy, retval, gc, image, 0, 0, 0, 0, width, height );
   XFreeGC( dpy, gc );
   XDestroyImage( image );
+  XDestroyImage( stencil );
   return retval;
 #endif // HAVE_LIBXPM
   return (Pixmap) 0;
@@ -901,17 +906,6 @@ SoXtFullViewer::buildPopupMenu(
   this->prefmenu->SetMenuItemMarked( HEADLIGHT_ITEM, this->isHeadlight() );
   this->prefmenu->SetMenuItemEnabled( SEEK_ITEM, this->isViewing() );
 } // buildPopupMenu()
-
-/*!
-*/
-
-Widget
-SoXtFullViewer::makeSubPreferences(
-  Widget parent )
-{
-  SOXT_STUB();
-  return (Widget) NULL;
-} // makeSubPreferences()
 
 // *************************************************************************
 
@@ -1215,6 +1209,176 @@ SoXtFullViewer::showDecorationWidgets(
       XmNleftOffset, 0, XmNrightOffset, 0, XmNbottomOffset, 0, NULL );
   }
 } // showDecorationWidgets()
+
+// *************************************************************************
+
+/*
+Widget
+SoXtFullViewer::makePreferencesWindow(
+  Widget parent )
+{
+  Widget pane = XtCreateWidget( "pane",
+    xmPanedWindowWidgetClass, prefs,
+    XmNsashWidth, 1,
+    XmNsashHeight, 1,
+    NULL );
+
+  Widget form = XtVaCreateWidget( "form",
+    xmFormWidgetClass, pane,
+    NULL );
+
+  Widget seek_preferences =
+    this->makeSeekPreferences( form );
+//  Widget seek_distance_preferences =
+//    this->makeSeekDistancePreferences( form );
+//  Widget zoom_preferences =
+//    this->makeZoomPreferences( form );
+//  Widget autoclip_preferences =
+//    this->makeAutoclipPreferences( form );
+
+//  this->makeSubPreferences( form );
+
+  return prefs;
+} // makePreferencesWindow()
+*/
+
+// *************************************************************************
+
+void
+SoXtFullViewer::setPrefSheetString( // protected
+  const char * const name )
+{
+  if ( this->prefstring )
+    delete [] this->prefstring;
+  this->prefstring = NULL;
+  if ( name )
+    this->prefstring = strcpy( new char [strlen(name) + 1], name );
+
+  if ( this->prefshell ) {
+    // FIXME: set shell title
+  }
+} // setPrefSheetString()
+
+void
+SoXtFullViewer::createPrefSheet( // protected, virtual
+  void )
+{
+  
+  SOXT_STUB();
+} // createPrefSheet()
+
+void
+SoXtFullViewer::createPrefSheetShellAndForm(  // protected
+  Widget & shell,
+  Widget & form )
+{
+  shell = XtVaCreatePopupShell( "Preferences",
+    xmDialogShellWidgetClass, SoXt::getShellWidget( SoXt::getTopLevelWidget() ),
+    XmNdeleteResponse, XmDESTROY,
+    NULL );
+  form = XtVaCreateWidget( "form", xmFormWidgetClass, shell, NULL );
+} // createPrefSheetShellAndForm()
+
+void
+SoXtFullViewer::createDefaultPrefSheetParts( // protected
+  Widget * widgets,
+  int & num,
+  Widget form )
+{
+  SOXT_STUB();
+} // createDefaultPrefSheetParts()
+
+void
+SoXtFullViewer::layoutPartsAndMapPrefSheet( // protected
+  Widget * widgets,
+  int num,
+  Widget form,
+  Widget shell )
+{
+  SOXT_STUB();
+} // layoutPartsAndMapPrefSheet()
+ 
+// *************************************************************************
+
+Widget
+SoXtFullViewer::createSeekPrefSheetGuts( // protected
+  Widget parent )
+{
+  Widget grid = XtVaCreateManagedWidget( "rowcolumn",
+    xmRowColumnWidgetClass, parent,
+    XmNnumColumns, 3,
+    XmNorientation, XmHORIZONTAL,
+    NULL );
+
+  XmString labelstring;
+
+  labelstring = SoXt::encodeString( "Seek animation time" );
+  Widget label = XtVaCreateManagedWidget( "seektime",
+    xmLabelWidgetClass, grid,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  Widget input = XtVaCreateManagedWidget( "seektimeinput",
+    xmTextWidgetClass, grid, NULL );
+
+  Widget denotion = XtVaCreateManagedWidget( "seconds",
+    xmLabelWidgetClass, grid, NULL );
+
+  labelstring = SoXt::encodeString( "Seek to:" );
+  Widget tolabel = XtVaCreateManagedWidget( "tolabel",
+    xmLabelWidgetClass, grid,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  Widget pointb = XtVaCreateManagedWidget( "point",
+    xmToggleButtonWidgetClass, grid, NULL );
+  Widget objectb = XtVaCreateManagedWidget( "object",
+    xmToggleButtonWidgetClass, grid, NULL );
+
+  return grid;
+} // createSeekPrefSheetGuts()
+
+Widget
+SoXtFullViewer::createSeekDistPrefSheetGuts( // protected
+  Widget parent )
+{
+  SOXT_STUB();
+  return (Widget) NULL;
+} // createSeekDistPrefSheetGuts()
+
+Widget
+SoXtFullViewer::createZoomPrefSheetGuts( // protected
+  Widget parent )
+{
+  SOXT_STUB();
+  return (Widget) NULL;
+} // createZoomPrefSheetGuts()
+
+Widget
+SoXtFullViewer::createClippingPrefSheetGuts( // protected
+  Widget parent )
+{
+  SOXT_STUB();
+  return (Widget) NULL;
+} // createClippingPrefSheetGuts()
+
+Widget
+SoXtFullViewer::createStereoPrefSheetGuts( // protected
+  Widget parent )
+{
+  SOXT_STUB();
+  return (Widget) NULL;
+} // createStereoPrefSheetGuts()
+
+Widget
+SoXtFullViewer::createSpeedPrefSheetGuts( // protected
+  Widget parent )
+{
+  SOXT_STUB();
+  return (Widget) NULL;
+} // createSpeedPrefSheetGuts()
 
 // *************************************************************************
 

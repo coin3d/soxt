@@ -84,9 +84,6 @@ protected:
   Widget buildFunctionsSubmenu( Widget popup );
   Widget buildDrawStyleSubmenu( Widget popup );
 
-  virtual Widget makeSubPreferences( Widget parent );
-  void setPrefSheetString( const char * title );
-
 #define WIDGET_CB(name) static void name( Widget, XtPointer, XtPointer )
 
   virtual void leftWheelStart(void);
@@ -147,14 +144,36 @@ protected:
 //    Widget * bufferStyleWidgets;
   SoAnyPopupMenu * prefmenu;
 
+protected: // preference sheet routines
+  void setPrefSheetString( const char * name );
+  virtual void createPrefSheet(void);
+  void createPrefSheetShellAndForm(
+    Widget & shell, Widget & form );
+  void createDefaultPrefSheetParts(
+    Widget * widgets, int & num, Widget form );
+  void layoutPartsAndMapPrefSheet(
+    Widget * widgets, int num, Widget form, Widget shell );
+
+  Widget createSeekPrefSheetGuts( Widget parent );
+  Widget createSeekDistPrefSheetGuts( Widget parent );
+  Widget createZoomPrefSheetGuts( Widget parent );
+  Widget createClippingPrefSheetGuts( Widget parent );
+  Widget createStereoPrefSheetGuts( Widget parent );
+  Widget createSpeedPrefSheetGuts( Widget parent );
+
+private: // preference sheet data
+  char * prefstring;
+  Widget prefshell;
+  Widget prefsheet;
+
+/*
+  static void prefSheetDestroyCB( Widget, SoXtFullViewer *, void * );
+  static void seekPrefSheetFieldCB( Widget, SoXtFullViewer *, void * );
+  static void seekPrefSheetToggle1CB( Widget, Widget, void * );
+  static void seekPrefSheetToggle2CB( Widget, Widget, void * );
+*/
 
 private:
-  Widget makePreferencesWindow(void);
-  Widget makeSeekPreferences( Widget parent );
-  Widget makeSeekDistancePreferences( Widget parent );
-  Widget makeZoomPreferences( Widget parent );
-  Widget makeAutoclipPreferences( Widget parent );
-
   SbBool decorations;
 
   Widget viewerbase, canvas;
