@@ -14,9 +14,7 @@ BUILT_SOURCES = \
 	So@Gui@RenderArea.cpp \
 	SoAnyMaterialList.h \
 	SoAnyMaterialList.cpp \
-	SoAnyMaterialListBuiltins.cpp \
-	SoAnyConversionChain.h \
-	SoAnyConversionChain.cpp
+	SoAnyMaterialListBuiltins.cpp
 
 noinst_DATA = $(BUILT_SOURCES)
 
@@ -102,12 +100,6 @@ SoAnyMaterialList.cpp: $(srcdir)/common/SoAnyMaterialList.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyMaterialListBuiltins.cpp: $(srcdir)/common/SoAnyMaterialListBuiltins.cpp.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-SoAnyConversionChain.h: $(srcdir)/common/SoAnyConversionChain.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-SoAnyConversionChain.cpp: $(srcdir)/common/SoAnyConversionChain.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 ############################################################################

@@ -13,9 +13,7 @@ BUILT_SOURCES = \
 	SoAnyPopupMenu.h \
 	SoAnyPopupMenu.cpp \
 	SoAnyThumbWheel.h \
-	SoAnyThumbWheel.cpp \
-	SoAnyStateStack.h \
-	SoAnyStateStack.cpp
+	SoAnyThumbWheel.cpp
 
 ############################################################################
 ## 
@@ -45,12 +43,6 @@ SoAnyThumbWheel.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyThumbWheel.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.cpp.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-SoAnyStateStack.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyStateStack.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-SoAnyStateStack.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyStateStack.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 ############################################################################

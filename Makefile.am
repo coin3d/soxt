@@ -89,16 +89,6 @@ src/Inventor/@Gui@/SoAnyMaterialListBuiltins.cpp: \
 	@./config.status \
 	  --file=$@:src/Inventor/@Gui@/common/SoAnyMaterialListBuiltins.cpp.in
 
-src/Inventor/@Gui@/SoAnyConversionChain.h: \
-  $(srcdir)/src/Inventor/@Gui@/common/SoAnyConversionChain.h.in
-	@./config.status \
-	  --file=$@:src/Inventor/@Gui@/common/SoAnyConversionChain.h.in
-
-src/Inventor/@Gui@/SoAnyConversionChain.cpp: \
-  $(srcdir)/src/Inventor/@Gui@/common/SoAnyConversionChain.cpp.in
-	@./config.status \
-	  --file=$@:src/Inventor/@Gui@/common/SoAnyConversionChain.cpp.in
-
 src/Inventor/@Gui@/viewers/So@Gui@Viewer.h: \
   $(srcdir)/src/Inventor/@Gui@/common/SoGuiViewer.h.in
 	@./config.status \
@@ -188,15 +178,5 @@ src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp: \
   $(srcdir)/src/Inventor/@Gui@/common/SoAnyPopupMenu.cpp.in
 	@./config.status \
 	  --file=$@:src/Inventor/@Gui@/common/SoAnyPopupMenu.cpp.in
-
-src/Inventor/@Gui@/widgets/SoAnyStateStack.h: \
-  $(srcdir)/src/Inventor/@Gui@/common/SoAnyStateStack.h.in
-	@./config.status \
-	  --file=$@:src/Inventor/@Gui@/common/SoAnyStateStack.h.in
-
-src/Inventor/@Gui@/widgets/SoAnyStateStack.cpp: \
-  $(srcdir)/src/Inventor/@Gui@/common/SoAnyStateStack.cpp.in
-	@./config.status \
-	  --file=$@:src/Inventor/@Gui@/common/SoAnyStateStack.cpp.in
 
 ############################################################################

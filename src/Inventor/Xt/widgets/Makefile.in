@@ -125,9 +125,7 @@ BUILT_SOURCES = \
 	SoAnyPopupMenu.h \
 	SoAnyPopupMenu.cpp \
 	SoAnyThumbWheel.h \
-	SoAnyThumbWheel.cpp \
-	SoAnyStateStack.h \
-	SoAnyStateStack.cpp
+	SoAnyThumbWheel.cpp
 
 
 ############################################################################
@@ -173,8 +171,7 @@ X_PRE_LIBS = @X_PRE_LIBS@
 libSoXtWidgets_la_LDFLAGS = 
 libSoXtWidgets_la_LIBADD = 
 am_libSoXtWidgets_la_OBJECTS =  SoAnyPopupMenu.lo SoAnyThumbWheel.lo \
-SoAnyStateStack.lo SoXtGLArea.lo SoXtPopupMenu.lo SoXtThumbWheel.lo \
-SoXtSlider.lo
+SoXtGLArea.lo SoXtPopupMenu.lo SoXtThumbWheel.lo SoXtSlider.lo
 libSoXtWidgets_la_OBJECTS =  $(am_libSoXtWidgets_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -191,9 +188,9 @@ HEADERS =  $(libSoXtWidgetsinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAnyPopupMenu.Plo \
-$(DEPDIR)/SoAnyStateStack.Plo $(DEPDIR)/SoAnyThumbWheel.Plo \
-$(DEPDIR)/SoXtGLArea.Plo $(DEPDIR)/SoXtPopupMenu.Plo \
-$(DEPDIR)/SoXtSlider.Plo $(DEPDIR)/SoXtThumbWheel.Plo
+$(DEPDIR)/SoAnyThumbWheel.Plo $(DEPDIR)/SoXtGLArea.Plo \
+$(DEPDIR)/SoXtPopupMenu.Plo $(DEPDIR)/SoXtSlider.Plo \
+$(DEPDIR)/SoXtThumbWheel.Plo
 DIST_COMMON =  $(libSoXtWidgetsinc_HEADERS) Makefile.am Makefile.in
 
 
@@ -298,7 +295,6 @@ distclean-tags:
 maintainer-clean-tags:
 
 @AMDEP@include $(DEPDIR)/SoAnyPopupMenu.Plo
-@AMDEP@include $(DEPDIR)/SoAnyStateStack.Plo
 @AMDEP@include $(DEPDIR)/SoAnyThumbWheel.Plo
 @AMDEP@include $(DEPDIR)/SoXtGLArea.Plo
 @AMDEP@include $(DEPDIR)/SoXtPopupMenu.Plo
@@ -436,12 +432,6 @@ SoAnyThumbWheel.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyThumbWheel.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.cpp.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-SoAnyStateStack.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyStateStack.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-SoAnyStateStack.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyStateStack.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 ############################################################################
