@@ -550,18 +550,17 @@ SoXtExaminerViewer::setCamera( // virtual
     pixmap_ins = this->camerapixmaps.ortho_ins;
   }
 
-/*
-  FIXME: this somehow disturbs the layout of the hole viewer button row..
+  XtUnmanageChild( this->camerabutton );
   XtVaSetValues( this->camerabutton,
     XmNlabelType, XmPIXMAP,
     XmNlabelPixmap, pixmap,
     XmNselectPixmap, pixmap,
     XmNlabelInsensitivePixmap, pixmap_ins,
     XmNselectInsensitivePixmap, pixmap_ins,
-    XmNwidth, 30,
-    XmNheight, 30,
     NULL );
-*/
+  XtVaSetValues( this->camerabutton,
+    XmNwidth, 30, XmNheight, 30, NULL );
+  XtManageChild( this->camerabutton );
 
   // FIXME: update zoom/dolly string
 
