@@ -686,6 +686,31 @@ SoXtGLWidget::eventHandler( // static, protected
   *dispatch = False;
 } // event_handler()
 
+static void
+buildGLAttrs(int * attrs, int trynum)
+{
+  int pos = 0;
+  attrs[pos++] = GLX_RGBA;
+  attrs[pos++] = GLX_DEPTH_SIZE;
+  attrs[pos++] = 1;
+  if ( ! (trynum & 0x04) ) {
+    attrs[pos++] = GLX_STENCIL_SIZE;
+    attrs[pos++] = 1;
+  }
+  if ( ! (trynum & 0x02) ) {
+    attrs[pos++] = GLX_DOUBLEBUFFER;
+  }
+  if ( ! (trynum & 0x01) ) {
+    attrs[pos++] = GLX_RED_SIZE;
+    attrs[pos++] = 4;
+    attrs[pos++] = GLX_GREEN_SIZE;
+    attrs[pos++] = 4;
+    attrs[pos++] = GLX_BLUE_SIZE;
+    attrs[pos++] = 4;
+  }
+  attrs[pos] = None;
+}
+
 /*!
   This method builds the GL widget inside \a parent.
   The returned widget is the widget managing the GL widget and providing it
@@ -719,67 +744,23 @@ SoXtGLWidget::buildWidget( // protected
   if ( rsc.getResource( "border", XmRBoolean, haveborder ) )
     this->border = haveborder;
 
-  static int double_good_attrs[] = {
-    GLX_RGBA,
-    GLX_RED_SIZE, 4, GLX_GREEN_SIZE, 4, GLX_BLUE_SIZE, 4,
-    GLX_DOUBLEBUFFER,
-    GLX_DEPTH_SIZE, 1,
-    GLX_STENCIL_SIZE, 1,
-    None
-  };
-
-  static int double_poor_attrs[] = {
-    GLX_RGBA,
-    GLX_DOUBLEBUFFER,
-    GLX_DEPTH_SIZE, 1,
-    GLX_STENCIL_SIZE, 1,
-    None
-  };
-
-  static int single_good_attrs[] = {
-    GLX_RGBA,
-    GLX_RED_SIZE, 4, GLX_GREEN_SIZE, 4, GLX_BLUE_SIZE, 4,
-    GLX_DEPTH_SIZE, 1,
-    GLX_STENCIL_SIZE, 1,
-    None
-  };
-
-  static int single_poor_attrs[] = {
-    GLX_RGBA,
-    GLX_DEPTH_SIZE, 1,
-    GLX_STENCIL_SIZE, 1,
-    None
-  };
-
   Display * const display = SoXt::getDisplay();
-
-  if ( this->normalVisual == NULL )
-    this->normalVisual =
-      glXChooseVisual( display, DefaultScreen(display), double_good_attrs );
-
-  if ( this->normalVisual == NULL )
-    this->normalVisual =
-      glXChooseVisual( display, DefaultScreen(display), double_poor_attrs );
+  int trynum = 0;
+  int attrs[32];
+  int screen = DefaultScreen(display);
+  while ( this->normalVisual == NULL && trynum < 8 ) {
+    buildGLAttrs( attrs, trynum );
+    this->normalVisual = glXChooseVisual( display, screen, attrs );
+    trynum++;
+  }
 
   if ( this->normalVisual == NULL ) {
-#if SOXT_DEBUG
-    SoDebugError::postInfo( "SoXtGLWidget::buildWidget",
-      "could not double-buffer - trying single-buffering" );
-#endif // SOXT_DEBUG
-    this->doubleBuffer = FALSE;
-    this->normalVisual =
-      glXChooseVisual( display, DefaultScreen( display ), single_good_attrs );
-
-    if ( this->normalVisual == NULL )
-      this->normalVisual =
-        glXChooseVisual( display, DefaultScreen( display ), single_poor_attrs );
-
-    if ( this->normalVisual == NULL ) {
-      SoDebugError::post( "SoXtGLWidget::buildWidget",
-        "could not get visual with RGB and ZBUFFER capabilities" );
-      XtAppError( SoXt::getAppContext(), "SoXtGLWidget::buildWidget()" );
-    }
+    SoDebugError::post( "SoXtGLWidget::buildWidget",
+      "could not get satisfactory visual for GLX" );
+    XtAppError( SoXt::getAppContext(), "SoXtGLWidget::buildWidget()" );
   }
+
+  this->doubleBuffer = ((trynum-1) & 0x02) ? FALSE : TRUE;
 
   if ( (this->normalVisual->c_class != TrueColor) &&
        (this->normalVisual->c_class != PseudoColor) ) {
