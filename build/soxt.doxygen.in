@@ -276,6 +276,16 @@ INPUT                 = \
 	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtFlyViewer.h \
 	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtCollisionViewer.cpp \
 	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtCollisionViewer.h \
+	@soxt_src_dir@/src/Inventor/Xt/SoXtSliderSetBase.cpp \
+	@soxt_src_dir@/src/Inventor/Xt/SoXtSliderSetBase.h \
+	@soxt_src_dir@/src/Inventor/Xt/SoXtSliderSet.cpp \
+	@soxt_src_dir@/src/Inventor/Xt/SoXtSliderSet.h \
+	@soxt_src_dir@/src/Inventor/Xt/SoXtLightSliderSet.cpp \
+	@soxt_src_dir@/src/Inventor/Xt/SoXtLightSliderSet.h \
+	@soxt_src_dir@/src/Inventor/Xt/SoXtMaterialSliderSet.cpp \
+	@soxt_src_dir@/src/Inventor/Xt/SoXtMaterialSliderSet.h \
+	@soxt_src_dir@/src/Inventor/Xt/SoXtTransformSliderSet.cpp \
+	@soxt_src_dir@/src/Inventor/Xt/SoXtTransformSliderSet.h \
 	@soxt_src_dir@/src/Inventor/Xt/SoXtMaterialList.cpp \
 	@soxt_src_dir@/src/Inventor/Xt/SoXtMaterialList.h \
 	@soxt_src_dir@/src/Inventor/Xt/SoXtResource.cpp \
@@ -283,7 +293,11 @@ INPUT                 = \
 	@soxt_src_dir@/src/Inventor/Xt/SoXtClipboard.cpp \
 	@soxt_src_dir@/src/Inventor/Xt/SoXtClipboard.h \
 	@soxt_src_dir@/src/Inventor/Xt/SoXtPrintDialog.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtPrintDialog.h
+	@soxt_src_dir@/src/Inventor/Xt/SoXtPrintDialog.h \
+	@soxt_src_dir@/src/Inventor/Xt/SoXtMaterialEditor.cpp \
+	@soxt_src_dir@/src/Inventor/Xt/SoXtMaterialEditor.h \
+	@soxt_src_dir@/src/Inventor/Xt/SoXtDirectionalLightEditor.cpp \
+	@soxt_src_dir@/src/Inventor/Xt/SoXtDirectionalLightEditor.h
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
