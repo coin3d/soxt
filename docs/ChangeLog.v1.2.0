@@ -1,0 +1,574 @@
+2004-09-21 17:10  larsa
+
+	* configure.ac:
+	
+	set version 1.2.0
+
+2004-09-21 17:06  larsa
+
+	* Makefile.am, NEWS, configure.ac, docs/ChangeLog.v1.1.0,
+	docs/ChangeLog.v1.2.0, docs/announcement-1_2_0.txt:
+	
+	release preparations
+
+2004-09-21 17:02  larsa
+
+	* README:
+	
+	minor improvements
+
+2004-09-21 16:56  larsa
+
+	* src/Inventor/Xt/: SoXt.cpp, SoXtClipboard.cpp, SoXtClipboard.h,
+	SoXtComponent.cpp, SoXtComponentP.h,
+	SoXtDirectionalLightEditor.cpp, SoXtDirectionalLightEditor.h,
+	SoXtGLWidget.cpp, SoXtGLWidgetP.h, SoXtIcons.cpp, SoXtIcons.h,
+	SoXtInternal.cpp, SoXtInternal.h, SoXtLightSliderSet.cpp,
+	SoXtLightSliderSet.h, SoXtMaterialList.cpp,
+	SoXtMaterialSliderSet.cpp, SoXtMaterialSliderSet.h,
+	SoXtPrintDialog.cpp, SoXtPrintDialog.h, SoXtResource.cpp,
+	SoXtResource.h, SoXtSliderSet.cpp, SoXtSliderSet.h,
+	SoXtSliderSetBase.cpp, SoXtSliderSetBase.h,
+	SoXtTransformSliderSet.cpp, SoXtTransformSliderSet.h,
+	all-soxt-cpp.cpp, devices/6DOFEvents.h, devices/SoXtDevice.cpp,
+	devices/SoXtDeviceP.h, devices/SoXtInputFocus.cpp,
+	devices/SoXtKeyboard.cpp, devices/SoXtLinuxJoystick.cpp,
+	devices/SoXtLinuxJoystick.h, devices/SoXtMouse.cpp,
+	devices/SoXtSpaceball.cpp, devices/SoXtSpaceballP.h,
+	devices/all-devices-cpp.cpp, editors/all-editors-cpp.cpp,
+	engines/all-engines-cpp.cpp, nodes/all-nodes-cpp.cpp,
+	viewers/ExaminerViewer.cpp, viewers/FullViewer.cpp,
+	viewers/PlaneViewer.cpp, viewers/SoXtExaminerViewerP.h,
+	viewers/SoXtFullViewerP.h, viewers/SoXtPlaneViewerP.h,
+	viewers/WalkViewer.cpp, viewers/all-viewers-cpp.cpp,
+	widgets/SoXtSlider.cpp, widgets/SoXtSlider.h,
+	widgets/SoXtThumbWheel.cpp, widgets/SoXtThumbWheel.h,
+	widgets/SoXtThumbWheelP.h, widgets/XtNativePopupMenu.cpp,
+	widgets/XtNativePopupMenu.h, widgets/all-widgets-cpp.cpp:
+	
+	copyright header update
+
+2004-09-21 14:46  kintel
+
+	* BUGS.txt:
+	
+	New item
+
+2004-09-16 13:13  larsa
+
+	* Makefile.am, src/Inventor/Xt/Makefile.am:
+	
+	dist fixes
+
+2004-09-16 11:26  larsa
+
+	* src/Inventor/Xt/: Makefile.am, all-soxt-cpp.cpp:
+	
+	SoXtClipboard not to be included for now
+
+2004-09-01 14:30  larsa
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	free visual in destructor
+
+2004-08-29 20:01  mortene
+
+	* configure.ac:
+	
+	SOXT_BETA_VERSION should be defined.
+
+2004-08-27 11:16  larsa
+
+	* src/Inventor/Xt/: SoXtGLWidget.cpp, SoXtGLWidgetP.h:
+	
+	make eventHandler protected API-member for SoXt
+
+2004-08-27 11:15  larsa
+
+	* src/Inventor/Xt/all-soxt-cpp.cpp:
+	
+	lots was missing
+
+2004-08-27 11:14  larsa
+
+	* src/Inventor/Xt/Makefile.am:
+	
+	add SoXtClipboard to build
+
+2004-08-27 11:13  larsa
+
+	* src/Inventor/Xt/: SoXtClipboard.cpp, SoXtClipboard.h:
+	
+	empty class
+
+2004-08-26 15:55  larsa
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	missing functions SGI has
+
+2004-08-25 18:23  larsa
+
+	* src/Inventor/Xt/: SoXtComponent.cpp, SoXtGLWidget.cpp:
+	
+	compile fixes
+
+2004-08-24 18:19  larsa
+
+	* src/Inventor/Xt/SoXtResource.cpp:
+	
+	compile fix
+
+2004-08-24 18:13  larsa
+
+	* src/Inventor/Xt/: SoXtResource.cpp, viewers/PlaneViewer.cpp,
+	widgets/SoXtSlider.cpp:
+	
+	fix warnings
+
+2004-08-24 18:00  larsa
+
+	* Makefile.am:
+	
+	omission
+
+2004-08-24 13:30  larsa
+
+	* src/Inventor/Xt/: Makefile.am, editors/Makefile.am,
+	editors/all-editors-cpp.cpp:
+	
+	completion of --enable-compact
+
+2004-08-24 13:01  larsa
+
+	* src/Inventor/Xt/: devices/Makefile.am,
+	devices/all-devices-cpp.cpp, engines/Makefile.am,
+	engines/all-engines-cpp.cpp, nodes/Makefile.am,
+	nodes/all-nodes-cpp.cpp, viewers/Makefile.am,
+	viewers/all-viewers-cpp.cpp, widgets/Makefile.am,
+	widgets/SoXtGLArea.cpp, widgets/SoXtGLArea.h,
+	widgets/SoXtSlider.cpp, widgets/SoXtThumbWheel.cpp,
+	widgets/SoXtThumbWheelP.h, widgets/XtNativePopupMenu.cpp,
+	widgets/all-widgets-cpp.cpp:
+	
+	--enable-compact fixes
+
+2004-08-23 19:26  larsa
+
+	* src/Inventor/Xt/devices/: Makefile.am, SoXtDevice.cpp,
+	SoXtInputFocus.cpp, SoXtKeyboard.cpp, SoXtLinuxJoystick.cpp,
+	SoXtMouse.cpp, SoXtSpaceball.cpp, all-devices-cpp.cpp:
+	
+	--enable-compact tweaks
+
+2004-08-23 17:50  larsa
+
+	* configure.ac, src/Inventor/Xt/all-soxt-cpp.cpp,
+	src/Inventor/Xt/soxt-all-cpp.cpp,
+	src/Inventor/Xt/devices/Makefile.am,
+	src/Inventor/Xt/devices/all-devices-cpp.cpp,
+	src/Inventor/Xt/devices/soxtdevices-all-cpp.cpp,
+	src/Inventor/Xt/editors/all-editors-cpp.cpp,
+	src/Inventor/Xt/editors/soxteditors-all-cpp.cpp,
+	src/Inventor/Xt/engines/all-engines-cpp.cpp,
+	src/Inventor/Xt/engines/soxtengines-all-cpp.cpp,
+	src/Inventor/Xt/nodes/all-nodes-cpp.cpp,
+	src/Inventor/Xt/nodes/soxtnodes-all-cpp.cpp,
+	src/Inventor/Xt/viewers/ExaminerViewer.cpp,
+	src/Inventor/Xt/viewers/FullViewer.cpp,
+	src/Inventor/Xt/viewers/Makefile.am,
+	src/Inventor/Xt/viewers/PlaneViewer.cpp,
+	src/Inventor/Xt/viewers/WalkViewer.cpp,
+	src/Inventor/Xt/viewers/all-viewers-cpp.cpp,
+	src/Inventor/Xt/viewers/soxtviewers-all-cpp.cpp,
+	src/Inventor/Xt/widgets/Makefile.am,
+	src/Inventor/Xt/widgets/all-widgets-cpp.cpp,
+	src/Inventor/Xt/widgets/soxtwidgets-all-cpp.cpp:
+	
+	--enable-compact for devices/ and viewers/. Bootstrap
+
+2004-08-16 18:32  larsa
+
+	* src/Inventor/Xt/SoXtInternal.cpp:
+	
+	additional include
+
+2004-08-16 17:02  larsa
+
+	* cfg/errors.txt:
+	
+	bootstrap
+
+2004-08-16 17:00  larsa
+
+	* src/Inventor/Xt/SoXtInternal.cpp:
+	
+	add include
+
+2004-08-16 16:29  larsa
+
+	* src/Inventor/Xt/: soxt-all-cpp.cpp, devices/Makefile.am,
+	devices/soxtdevices-all-cpp.cpp, editors/soxteditors-all-cpp.cpp,
+	engines/soxtengines-all-cpp.cpp, nodes/soxtnodes-all-cpp.cpp,
+	viewers/soxtviewers-all-cpp.cpp, widgets/soxtwidgets-all-cpp.cpp:
+	
+	preparation for Coin-like link hack
+
+2004-08-16 16:28  larsa
+
+	* configure.ac:
+	
+	minor tweak
+
+2004-07-07 18:30  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Doc: corrects and adds to mainpage doc.
+
+2004-03-27 16:22  larsa
+
+	* src/Inventor/Xt/widgets/XtNativePopupMenu.cpp:
+	
+	plug minor leak
+
+2004-03-27 16:14  larsa
+
+	* src/Inventor/Xt/widgets/XtNativePopupMenu.cpp:
+	
+	implement removeMenuItem()
+
+2004-03-26 13:10  larsa
+
+	* src/Inventor/Xt/widgets/: XtNativePopupMenu.cpp,
+	XtNativePopupMenu.h:
+	
+	misc cleanups, csmetics
+
+2004-03-25 11:51  larsa
+
+	* configure.ac:
+	
+	prepare for enabling --enable-compact option
+
+2004-03-24 10:50  larsa
+
+	* src/Inventor/Xt/widgets/XtNativePopupMenu.cpp:
+	
+	change how menu visuals/colormaps are set up
+
+2004-03-19 10:46  larsa
+
+	* configure.ac:
+	
+	obsolete option
+
+2004-03-19 10:41  larsa
+
+	* src/Inventor/Xt/: SoXtInternal.cpp, XVisual.old:
+	
+	remove old XVisual selection code
+
+2004-03-15 16:01  larsa
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	some extra visibility monitoring
+
+2004-03-12 11:09  larsa
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	for debugging the visibilitystate
+
+2004-03-10 21:21  larsa
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	did not work as hoped
+
+2004-03-10 21:18  larsa
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	update shell-mapped-state on component creation
+
+2004-03-10 19:42  larsa
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	bugfix?
+
+2004-03-09 16:24  larsa
+
+	* src/Inventor/Xt/widgets/SoXtThumbWheel.cpp:
+	
+	less greedy color allocation
+
+2004-03-08 17:36  larsa
+
+	* src/Inventor/Xt/widgets/SoXtThumbWheel.cpp:
+	
+	tweaks
+
+2004-03-08 16:11  larsa
+
+	* src/Inventor/Xt/SoXtInternal.cpp:
+	
+	heed --enable-default-visual option
+
+2004-03-08 15:11  larsa
+
+	* cfg/errors.txt:
+	
+	bootstrap
+
+2004-03-08 15:08  larsa
+
+	* configure.ac:
+	
+	new option
+
+2004-03-08 15:07  larsa
+
+	* ChangeLog.sh:
+	
+	obsoleted
+
+2004-03-08 14:21  larsa
+
+	* src/Inventor/Xt/: SoXt.cpp, SoXtComponent.cpp, SoXtComponentP.h:
+	
+	redo event handling
+
+2004-03-08 14:20  larsa
+
+	* src/Inventor/Xt/viewers/FullViewer.cpp:
+	
+	cosmetics
+
+2004-03-08 14:20  larsa
+
+	* src/Inventor/Xt/: SoXtGLWidget.cpp, SoXtGLWidgetP.h:
+	
+	catch first expose
+
+2004-03-02 18:50  larsa
+
+	* src/Inventor/Xt/: SoXtComponent.cpp, SoXtComponentP.h:
+	
+	hook for WM_DELETE_WINDOW actions
+
+2004-03-02 18:42  larsa
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	bugfix
+
+2004-02-20 13:16  pederb
+
+	* configure.ac:
+	
+	Add check for SORTED_LAYERS_BLEND
+
+2004-02-06 12:17  larsa
+
+	* src/Inventor/Xt/: SoXt.cpp, SoXtComponent.cpp, SoXtGLWidget.cpp:
+	
+	misc fixes
+
+2004-02-05 17:45  larsa
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	reorder error-handler-related initcode
+
+2004-01-05 16:13  larsa
+
+	* Makefile.am, configure.ac, html/Makefile.am,
+	man/man3/Makefile.am:
+	
+	--disable-build/--enable-html fixes
+
+2003-12-10 20:48  thammer
+
+	* cfg/errors.txt:
+	
+	bootstrap
+
+2003-12-10 19:27  thammer
+
+	* html/Makefile.am:
+	
+	Copy coin logo
+
+2003-12-02 15:27  handegar
+
+	* src/Inventor/Xt/: SoXtGLWidget.cpp, SoXtGLWidgetP.h:
+	
+	Added framework for alphachannel support.
+
+2003-10-12 13:52  mortene
+
+	* src/Inventor/Xt/widgets/XtNativePopupMenu.cpp:
+	
+	FIXME note.
+
+2003-10-12 13:50  mortene
+
+	* src/Inventor/Xt/widgets/XtNativePopupMenu.cpp:
+	
+	Bugfix: newMenu() passed the wrong argument to getMenuRecord(),
+	causing a neverending loop when invoked with -1 as its second
+	argument.
+
+2003-09-12 08:53  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Make it possible to turn off the X11 error handler callback.
+
+2003-08-27 16:44  pederb
+
+	* cfg/errors.txt:
+	
+	bootstrap to build ViewpointWrapper.
+
+2003-08-05 18:48  larsa
+
+	* src/Inventor/Xt/: SoXtInternal.cpp, widgets/SoXtThumbWheel.cpp:
+	
+	set default visual if visual is NULL - thanks to Winnie E. Wong
+
+2003-07-14 11:31  larsa
+
+	* src/Inventor/Xt/widgets/: SoXtGLArea.cpp, SoXtGLArea.h:
+	
+	MKS compile fixes
+
+2003-07-10 12:27  larsa
+
+	* cfg/wrapmsvc.exe:
+	
+	bootstrap
+
+2003-07-10 12:27  larsa
+
+	* configure.ac:
+	
+	reorder some stuff to fix a @SET_MAKE@ issue on MKS
+
+2003-06-27 15:28  larsa
+
+	* Makefile.am:
+	
+	forget about the bootstrap script
+
+2003-06-27 15:05  larsa
+
+	* bootstrap:
+	
+	scrap old stuff
+
+2003-06-26 16:44  larsa
+
+	* configure.ac:
+	
+	check for windows.h
+
+2003-06-25 19:54  larsa
+
+	* configure.ac:
+	
+	MKS fix for cross_compiling test
+
+2003-06-25 15:17  larsa
+
+	* configure.ac:
+	
+	MKS fix
+
+2003-06-25 13:04  larsa
+
+	* src/Inventor/Xt/SoXtInternal.cpp:
+	
+	include path fix
+
+2003-06-18 17:47  larsa
+
+	* Makefile.am, configure.ac:
+	
+	am-conditional on Xpm library usage, and reenable test-code dir
+
+2003-06-18 17:40  larsa
+
+	* src/Inventor/Xt/SoXtInternal.cpp:
+	
+	include X11/Xmu.h
+
+2003-06-18 14:48  larsa
+
+	* src/Inventor/Xt/SoXtInternal.cpp:
+	
+	make sure header is included before other X11 headers
+
+2003-06-18 14:22  larsa
+
+	* Makefile.am:
+	
+	don't enter test-code
+
+2003-06-12 15:16  larsa
+
+	* configure.ac, cfg/depcomp, cfg/errors.txt, cfg/gendsp.sh:
+	
+	bootstrap
+
+2003-06-12 15:15  larsa
+
+	* docs/XtAppSetExitFlag:
+	
+	small note
+
+2003-05-27 15:47  larsa
+
+	* src/Inventor/Xt/: SoXt.cpp, SoXtComponent.cpp, SoXtInternal.cpp,
+	devices/SoXtKeyboard.cpp, viewers/ExaminerViewer.cpp,
+	viewers/FullViewer.cpp, viewers/PlaneViewer.cpp:
+	
+	#ifdef, not #if
+
+2003-04-28 16:03  mortene
+
+	* Makefile.am, bootstrap, configure.ac, cfg/depcomp,
+	cfg/doxy4win.pl, cfg/errors.txt, cfg/gendsp.sh, cfg/soxt.m4,
+	cfg/wrapmsvc.exe:
+	
+	Convert from conf-macros to simacros. Bootstrap.
+
+2003-04-28 16:01  mortene
+
+	* soxt.m4:
+	
+	Remove duplicate.
+
+2003-04-25 14:43  mortene
+
+	* src/Inventor/Xt/: Makefile.am, SoXtColorEditor.h,
+	SoXtMaterialEditor.h:
+	
+	SoXt*Editor.h files now generated from common templates.
+
+2003-04-23 16:58  larsa
+
+	* configure.ac:
+	
+	need to keep MICRO_VERSION an integer...
+
+2003-04-23 16:40  larsa
+
+	* NEWS, configure.ac:
+	
+	set version 1.1.1a
+
