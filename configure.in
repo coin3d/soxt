@@ -155,6 +155,12 @@ SIM_AC_CHECK_OPENGL([
   SOXT_EXTRA_LIBS="$sim_ac_gl_libs $SOXT_EXTRA_LIBS"
 ], AC_MSG_ERROR(needs an OpenGL-compatible development system installation))
 
+SIM_AC_CHECK_GLU([
+  SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
+  SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_glu_ldflags"
+  SOXT_EXTRA_LIBS="$sim_ac_glu_libs $SOXT_EXTRA_LIBS"
+], AC_MSG_ERROR(needs the OpenGL utility library))
+
 if test x"${with_inventor+set}" = x"set"; then
   # check for SGI or TGS Open Inventor
   SIM_CHECK_INVENTOR([
