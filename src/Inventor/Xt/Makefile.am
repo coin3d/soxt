@@ -16,6 +16,7 @@ BUILT_SOURCES = \
 	So@Gui@Cursors.cpp \
 	So@Gui@Object.h \
 	So@Gui@Object.cpp \
+	So@Gui@Component.h \
 	So@Gui@GLWidget.h \
 	So@Gui@RenderArea.h \
 	So@Gui@RenderArea.cpp \
@@ -34,7 +35,6 @@ libSoXt_la_SOURCES = \
 	So@Gui@.cpp \
 	So@Gui@Clipboard.h \
 	So@Gui@Clipboard.cpp \
-	So@Gui@Component.h \
 	So@Gui@Component.cpp \
 	So@Gui@DirectionalLightEditor.h \
 	So@Gui@DirectionalLightEditor.cpp \
@@ -87,6 +87,9 @@ So@Gui@Object.h: $(srcdir)/common/SoGuiObject.h.in
 So@Gui@Object.cpp: $(srcdir)/common/SoGuiObject.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
+So@Gui@Component.h: $(srcdir)/common/SoGuiComponent.h.in
+	@( cd $(top_builddir); $(MAKE) built-sources )
+
 So@Gui@GLWidget.h: $(srcdir)/common/SoGuiGLWidget.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
@@ -119,7 +122,6 @@ libSoXtincdir = $(includedir)/Inventor/@Gui@
 libSoXtinc_HEADERS = \
 	So@Gui@.h \
 	So@Gui@Clipboard.h \
-	So@Gui@Component.h \
 	So@Gui@DirectionalLightEditor.h \
 	So@Gui@Icons.h \
 	So@Gui@LightSliderSet.h \
@@ -134,6 +136,7 @@ libSoXtinc_HEADERS = \
 	$(top_builddir)/src/Inventor/@Gui@/So@Gui@Cursors.h \
 	$(top_builddir)/src/Inventor/@Gui@/So@Gui@Basic.h \
 	$(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.h \
+	$(top_builddir)/src/Inventor/@Gui@/So@Gui@Component.h \
 	$(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidget.h \
 	$(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.h
 

@@ -217,7 +217,7 @@ SoXtComponent::SoXtComponent(const Widget parent,
   if ((parent == (Widget) NULL) || ! embed) {
     // create own shell
 
-    Visual * visual = NULL; 
+    Visual * visual = NULL;
     Colormap colormap = 0;
     int depth = 0;
     Display * dpy = SoXt::getDisplay();
@@ -228,7 +228,7 @@ SoXtComponent::SoXtComponent(const Widget parent,
         shell = XtParent(shell);
       assert(shell != (Widget) NULL);
       dpy = XtDisplay(shell);
-      XtVaGetValues(shell, 
+      XtVaGetValues(shell,
         XmNvisual, &visual,
         XmNcolormap, &colormap,
         XmNdepth, &depth,
@@ -449,7 +449,7 @@ SoXtComponent::getShellWidget(
 */
 // FIXME: ^^^ this last statement doesn't seem valid -- investigate.
 // 20011012 mortene.
-Widget      
+Widget
 SoXtComponent::getParentWidget(
   void) const
 {
@@ -464,7 +464,7 @@ SoXtComponent::getParentWidget(
   The method assumes the caller knows what he is doing.
 */
 
-void    
+void
 SoXtComponent::setSize(
   const SbVec2s size)
 {
@@ -497,10 +497,8 @@ SoXtComponent::setSize(
   The size that is returned is a cached size value, not a value fetched
   from the GUI system.
 */
-
-SbVec2s   
-SoXtComponent::getSize(
-  void)
+SbVec2s
+SoXtComponent::getSize(void) const
 {
   return PRIVATE(this)->size;
 } // getSize()
@@ -571,7 +569,7 @@ SoXtComponent::getDisplay(
   its own window.
 */
 
-void      
+void
 SoXtComponent::setTitle(
   const char * const title)
 {
@@ -613,7 +611,7 @@ SoXtComponent::getTitle(
   own window.
 */
 
-void      
+void
 SoXtComponent::setIconTitle(
   const char * const title)
 {
@@ -639,7 +637,7 @@ SoXtComponent::setIconTitle(
   If no icon title has been set, the default icon title is returned.
 */
 
-const char * 
+const char *
 SoXtComponent::getIconTitle(
   void) const
 {
@@ -791,10 +789,8 @@ SoXtComponent::getClassName(
 /*!
   This method sets the base widget of the component.
 */
-
-void
-SoXtComponent::setBaseWidget(// protected
-  Widget widget)
+void         // protected
+SoXtComponent::setBaseWidget(const Widget widget)
 {
   const EventMask events = StructureNotifyMask | VisibilityChangeMask;
 
@@ -1001,7 +997,7 @@ SoXtComponent::addVisibilityChangeCallback(// protected
 /*!
   This method removes a callback from the list of callbacks that are to be
   invoked when the component visibility changes.
-  
+
   \sa SoXtComponent::addVisibilityChangeCallback()
 */
 
@@ -1068,13 +1064,12 @@ SoXtComponent::invokeVisibilityChangeCallbacks(// protected
   \sa SoXtViewer::openViewerHelpCard()
 */
 
-void
-SoXtComponent::openHelpCard(// protected
-  const char * name)
+void         // protected
+SoXtComponent::openHelpCard(const char * const name)
 {
   SoXt::createSimpleErrorDialog(this->getWidget(),
-    "Not Implemented",
-    "Help Card functionality is not implemented yet.");
+                                "Not Implemented",
+                                "Help Card functionality is not implemented yet.");
 } // openHelpCard()
 
 // *************************************************************************
@@ -1183,7 +1178,7 @@ SoXtComponent::event_handler(
   toolkit doesn't support attempts at making the component cover the
   complete screen or if the component is not a toplevel window.
 */
-SbBool 
+SbBool
 SoXtComponent::setFullScreen(const SbBool onoff)
 {
   if (onoff == PRIVATE(this)->fullscreen) { return TRUE; }
@@ -1194,7 +1189,7 @@ SoXtComponent::setFullScreen(const SbBool onoff)
 /*!
   Returns if this widget/component is in full screen mode.
 */
-SbBool 
+SbBool
 SoXtComponent::isFullScreen(void) const
 {
   return PRIVATE(this)->fullscreen;
@@ -1205,4 +1200,3 @@ SoXtComponent::isFullScreen(void) const
 #if SOXT_DEBUG
 static const char * getSoXtComponentRCSId(void) { return rcsid; }
 #endif // SOXT_DEBUG
-

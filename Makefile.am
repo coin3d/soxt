@@ -18,6 +18,7 @@ BUILT_SOURCES = \
 	src/Inventor/@Gui@/So@Gui@Cursors.cpp \
 	src/Inventor/@Gui@/So@Gui@Object.h \
 	src/Inventor/@Gui@/So@Gui@Object.cpp \
+	src/Inventor/@Gui@/So@Gui@Component.h \
 	src/Inventor/@Gui@/So@Gui@GLWidget.h \
 	src/Inventor/@Gui@/So@Gui@RenderArea.h \
 	src/Inventor/@Gui@/So@Gui@RenderArea.cpp \
@@ -90,6 +91,11 @@ src/Inventor/@Gui@/So@Gui@Object.cpp: \
   $(srcdir)/src/Inventor/@Gui@/common/SoGuiObject.cpp.in
 	@./config.status \
 	  --file=$@:src/Inventor/@Gui@/common/SoGuiObject.cpp.in
+
+src/Inventor/@Gui@/So@Gui@Component.h: \
+  $(srcdir)/src/Inventor/@Gui@/common/SoGuiComponent.h.in
+	@./config.status \
+	  --file=$@:src/Inventor/@Gui@/common/SoGuiComponent.h.in
 
 src/Inventor/@Gui@/So@Gui@GLWidget.h: \
   $(srcdir)/src/Inventor/@Gui@/common/SoGuiGLWidget.h.in
