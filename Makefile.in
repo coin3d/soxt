@@ -602,6 +602,7 @@ DISTCLEANFILES = \
 EXTRA_DIST = \
 	LICENSE.GPL \
 	build/so@gui@.spec.in \
+	cfg/soxt.m4 \
 	docs/announcement-1_1_0.txt \
 	$(SoGuiCommonDistFiles)
 
