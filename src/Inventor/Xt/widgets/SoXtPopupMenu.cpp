@@ -609,9 +609,27 @@ SoXtPopupMenu::PopUp(
     this->popup = this->build( inside );
   }
   this->dirty = FALSE;
+  int x_off = 0, y_off = 0;
+
+  Widget parent = inside;
+  while ( parent ) {
+    Dimension xoff = 0, yoff = 0;
+    XtVaGetValues( parent,
+      XmNx, &xoff,
+      XmNy, &yoff,
+      NULL );
+    x_off += xoff;
+    y_off += yoff;
+    parent = XtParent(parent);
+    if ( ! parent || XtIsShell(parent) )
+      break;
+  }
+
   XButtonEvent pos;
-  pos.x_root = x;
-  pos.y_root = y;
+  pos.x_root = x - x_off + 2;
+  pos.y_root = y - y_off + 2;
+//  SoDebugError::postInfo( "SoXtPopupMenu::PopUp", "PopUp() at ( %3d, %3d ) - ( %3d, %3d )",
+//    x, y, x_off, y_off );
   XmMenuPosition( this->popup, &pos );
   XtManageChild( this->popup );
 //  SoDebugError::postInfo( "SoXtPopupMenu::PopUp", "menu popped up" );
