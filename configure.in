@@ -9,30 +9,31 @@ AC_CONFIG_AUX_DIR(cfg)
 
 sim_ac_cvs_syncproblem=false;
 
-sim_ac_data_check_file=${srcdir}/data/configure.in
+sim_ac_macro_dir=${srcdir}/cfg/m4
 
-if test ! -f $sim_ac_data_check_file; then
+if test ! -d $sim_ac_macro_dir; then
   if test "x${with_auto_cvs_update+set}" = "xset"; then
     echo "Trying to honor the --with-auto-cvs-update option."
     sim_ac_save_cwd="`pwd`"
     cd ${srcdir}
-    if test -d ./data -o ! -f ./CVS/Entries; then
+    if test -d cfg/m4 -o ! -f ./CVS/Entries; then
       AC_MSG_ERROR([something failed horribly - can't do auto-cvs-update])
     fi
-    cvs co SoXtData
+    cvs co SoXtMacros
     cd ${sim_ac_save_cwd}
     echo "Done.  Proceeding..."
   fi
 fi
 
-if test ! -f $sim_ac_data_check_file; then
+if test ! -d $sim_ac_macro_dir; then
   cat <<EOF
 
   You appear to have an old setup of the SoXt source repository.
   Parts of it have changed structurally, and you need to do the
   following in the SoXt source directory:
 
-    $ cvs co SoXtData
+    $ rm -rf conf-macros
+    $ cvs co SoXtMacros
 
   You can also run configure with the option --with-auto-cvs-update
   to allow the configure script to try to take care of this.  This
@@ -43,9 +44,7 @@ EOF
   sim_ac_cvs_syncproblem=true
 fi
 
-if test "x$sim_ac_cvs_syncproblem" = "xtrue"; then
-  exit 1
-fi
+$sim_ac_cvs_syncproblem && echo "" && echo "Aborting..." && exit 1
 
 # **************************************************************************
 
