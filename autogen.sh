@@ -12,9 +12,24 @@ DIE=0
 GUI=Xt
 
 PROJECT=So$GUI
-
 MACRODIR=conf-macros
 SUBPROJECTS="$MACRODIR examples"
+
+if test "$1" = "--clean"; then
+  rm -f aclocal.m4 \
+	config.guess \
+	config.h.in \
+	config.sub \
+	configure \
+	depcomp \
+	install-sh \
+	ltconfig \
+	ltmain.sh \
+	missing \
+	mkinstalldirs \
+	stamp-h*
+  exit
+fi
 
 echo "Checking the installed configuration tools..."
 
@@ -73,9 +88,11 @@ for project in $SUBPROJECTS; do
 done
 
 if test "$DIE" -eq 1; then
-        exit 1
+  exit 1
 fi
 
+test -f ltconfig || libtoolize --copy
+test -f missing || automake --add-missing --copy
 
 echo "Running aclocal (generating aclocal.m4)..."
 aclocal -I $MACRODIR
