@@ -9,7 +9,7 @@
 /* Define to enable use of SoMouseButtonEvent::BUTTON5 */
 #undef HAVE_SOMOUSEBUTTONEVENT_BUTTONS
 
-/* Define to enable use of the SoPolygonOffset node */
+/* Define to enable use of the Open Inventor SoPolygonOffset node */
 #undef HAVE_SOPOLYGONOFFSET
 
 /* Define this to true if the __FUNCTION__ variable contains the current
@@ -39,7 +39,7 @@
 /* SoXt minor version */
 #undef SOXT_MINOR_VERSION
 
-/* Version string for SoXt */
+/* Version string for SoXt (major.minor.micro) */
 #undef SOXT_VERSION
 
 /* Version number of package */
