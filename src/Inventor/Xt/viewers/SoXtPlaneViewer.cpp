@@ -471,7 +471,6 @@ SoXtPlaneViewer::actualRedraw(
 
 /*!
 */
-
 void
 SoXtPlaneViewer::openViewerHelpCard( // virtual
   void )
@@ -490,9 +489,8 @@ void
 SoXtPlaneViewer::bottomWheelMotion( // virtual
   float value )
 {
-  inherited::bottomWheelMotion(
-    common->transXWheelMotion( value, this->getBottomWheelValue(),
-      this->getCamera() ) );
+  common->translateX( value - this->getBottomWheelValue() );
+  inherited::bottomWheelMotion( value );
 } // bottomWheelMotion()
 
 /*!
@@ -504,9 +502,8 @@ void
 SoXtPlaneViewer::leftWheelMotion( // virtual
   float value )
 {
-  inherited::leftWheelMotion(
-    common->transYWheelMotion( value, this->getLeftWheelValue(),
-      this->getCamera() ) );
+  common->translateY( value - this->getLeftWheelValue() );
+  inherited::leftWheelMotion( value );
 } // leftWheelMotion()
 
 /*!
@@ -583,7 +580,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   SoXtPlaneViewer,
   xbutton )
 {
-  common->viewPlaneX( this->getCamera() );
+  common->viewPlaneX();
 } // xbutton()
 
 /*!
@@ -593,7 +590,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   SoXtPlaneViewer,
   ybutton )
 {
-  common->viewPlaneY( this->getCamera() );
+  common->viewPlaneY();
 } // ybutton()
 
 /*!
@@ -603,7 +600,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   SoXtPlaneViewer,
   zbutton )
 {
-  common->viewPlaneZ( this->getCamera() );
+  common->viewPlaneZ();
 } // zbutton()
 
 /*!
