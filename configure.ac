@@ -93,6 +93,12 @@ AC_SUBST(SOGUI_EXTRA_CXXFLAGS, $CXXFLAGS)
 AC_SUBST(SOGUI_EXTRA_LDFLAGS, $LDFLAGS)
 AC_SUBST(SOGUI_EXTRA_LIBS, $LIBS)
 
+AH_TOP([
+#ifndef SOXT_INTERNAL
+#error this is a private header file
+#endif /* !SOXT_INTERNAL */
+])
+
 # **************************************************************************
 # If you just want to generate docs, ignore all the build-related tests
 
@@ -402,12 +408,15 @@ AC_OUTPUT([
 	src/Inventor/Makefile
 	src/Inventor/Xt/Makefile
 	src/Inventor/Xt/devices/Makefile
-	src/Inventor/Xt/widgets/Makefile
+	src/Inventor/Xt/editors/Makefile
+	src/Inventor/Xt/nodes/Makefile
 	src/Inventor/Xt/viewers/Makefile
+	src/Inventor/Xt/widgets/Makefile
 	man/Makefile
 	man/man1/Makefile
 	man/man3/Makefile
 	html/Makefile
+	test-code/Makefile
 	build/soxt.spec
 ])
 
