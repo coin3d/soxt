@@ -40,6 +40,7 @@ static const char rcsid[] =
 #include <Inventor/errors/SoDebugError.h>
 
 #include <soxtdefs.h>
+#include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/widgets/XtNativePopupMenu.h>
 
 // *************************************************************************
@@ -549,14 +550,14 @@ XtNativePopupMenu::removeMenu(
 #endif // SOXT_DEBUG
     return;
   }
-//  if (rec->parent == NULL) {
-//#if SOXT_DEBUG
-//    SoDebugError::postInfo("XtNativePopupMenu::RemoveMenu", "menu not attached");
-//#endif // SOXT_DEBUG
-//    return;
-//  }
-//  rec->parent->removeItem(rec->menuid);
-//  rec->parent = NULL;
+  // if (rec->parent == NULL) {
+// #if SOXT_DEBUG
+  //   SoDebugError::postInfo("XtNativePopupMenu::RemoveMenu", "menu not attached");
+// #endif // SOXT_DEBUG
+  //   return;
+  // }
+  // rec->parent->removeItem(rec->menuid);
+  // rec->parent = NULL;
 } // removeMenu()
 
 /*!
@@ -577,14 +578,14 @@ XtNativePopupMenu::removeMenuItem(
 #endif // SOXT_DEBUG
     return;
   }
-//  if (rec->parent == NULL) {
-//#if SOXT_DEBUG
-//    SoDebugError::postInfo("XtNativePopupMenu::RemoveMenu", "item not attached");
-//#endif // SOXT_DEBUG
-//    return;
-//  }
-//  rec->parent->removeItem(rec->itemid);
-//  rec->parent = NULL;
+  // if (rec->parent == NULL) {
+#if SOXT_DEBUG
+  //   SoDebugError::postInfo("XtNativePopupMenu::RemoveMenu", "item not attached");
+#endif // SOXT_DEBUG
+  //   return;
+  // }
+  // rec->parent->removeItem(rec->itemid);
+  // rec->parent = NULL;
 } // removeMenuItem()
 
 // *************************************************************************
@@ -650,7 +651,7 @@ XtNativePopupMenu::traverseBuild(
     for (i = 0; i < numMenus; i++) {
       sub = (MenuRecord *) (*this->menus)[i];
       if (sub->pos == j && sub->parent == menu) {
-//        fprintf(stderr, "%s%s {\n", pre, sub->name);
+        // fprintf(stderr, "%s%s {\n", pre, sub->name);
         Widget shell = parent;
         while (shell && ! XtIsShell(shell))
           shell = XtParent(shell);
@@ -658,11 +659,16 @@ XtNativePopupMenu::traverseBuild(
         Colormap colormap;
         Visual * visual;
         int depth;
-        XtVaGetValues(shell,
-          XmNvisual, &visual,
-          XmNdepth, &depth,
-          XmNcolormap, &colormap,
-          NULL);
+        Display * dpy = SoXt::getDisplay();
+        const int screen = DefaultScreen(dpy);
+        visual = DefaultVisual(dpy, screen);
+        colormap = DefaultColormap(dpy, screen);
+        depth = DefaultDepth(dpy, screen);
+        // XtVaGetValues(shell,
+        //   XmNvisual, &visual,
+        //   XmNdepth, &depth,
+        //   XmNcolormap, &colormap,
+        //   NULL);
         Arg args[10];
         int argc = 0;
         XtSetArg(args[argc], XmNvisual, visual); argc++;
@@ -677,7 +683,7 @@ XtNativePopupMenu::traverseBuild(
             sub->title, strlen(sub->title)+1,
           NULL);
         this->traverseBuild(submenu, sub, indent + 2);
-//        fprintf(stderr, "%s}\n", pre);
+        // fprintf(stderr, "%s}\n", pre);
         break;
       } else {
         sub = (MenuRecord *) NULL;
@@ -733,14 +739,20 @@ XtNativePopupMenu::build(
     shell = XtParent(shell);
   assert(shell != (Widget) NULL);
 
+  Display * dpy = SoXt::getDisplay();
+  const int screen = DefaultScreen(dpy);
   Colormap colormap;
   Visual * visual;
   int depth;
-  XtVaGetValues(shell,
-    XmNvisual, &visual,
-    XmNdepth, &depth,
-    XmNcolormap,  &colormap,
-    NULL);
+  visual = DefaultVisual(dpy, screen);
+  colormap = DefaultColormap(dpy, screen);
+  depth = DefaultDepth(dpy, screen);
+
+  // XtVaGetValues(shell,
+  //   XmNvisual, &visual,
+  //   XmNdepth, &depth,
+  //   XmNcolormap,  &colormap,
+  //   NULL);
   Arg args[10];
   int argc = 0;
   XtSetArg(args[argc], XmNvisual, visual); argc++;
@@ -749,9 +761,9 @@ XtNativePopupMenu::build(
 
   Widget popup = XmCreatePopupMenu(parent, root->name, args, argc);
 
-//  fprintf(stderr, "%s {\n", root->name);
+  // fprintf(stderr, "%s {\n", root->name);
   (void) this->traverseBuild(popup, root, 2);
-//  fprintf(stderr, "}\n");
+  // fprintf(stderr, "}\n");
   return popup;
 } // build()
 
