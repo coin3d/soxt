@@ -219,6 +219,7 @@ SoXt::init(int & argc, char ** argv,
 
   Display * display = XOpenDisplay(NULL);
   if (display == NULL) {
+    // FIXME: SoDebugError::initClass() not yet invoked! 20021021 mortene.
     SoDebugError::postInfo("SoXt::init", "Failed to open display.");
     // FIXME: invoke the fatal error handler. 20011220 mortene.
     exit(-1);
