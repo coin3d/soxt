@@ -33,6 +33,7 @@ extern "C" {
 struct SoXtThumbWheelCallbackData {
   float current;
   float previous;
+  int ticks;
 };
 
 extern WidgetClass soxtThumbWheelWidgetClass;

@@ -676,10 +676,18 @@ Arm(
        event->y < tpadding || event->y >= (widget->core.height - tpadding) )
     return; // pointer missed wheel
 
+  widget->thumbwheel.prev_position = widget->thumbwheel.arm_position;
   widget->thumbwheel.arm_value = widget->thumbwheel.value;
+  widget->thumbwheel.prev_value = widget->thumbwheel.value;
   widget->thumbwheel.armed = True;
 
-  XtCallCallbackList( w, widget->thumbwheel.arm_callback, NULL );
+  SoXtThumbWheelCallbackData data = {
+    widget->thumbwheel.value,
+    widget->thumbwheel.value,
+    0 // no movement on arm action
+  };
+
+  XtCallCallbackList( w, widget->thumbwheel.arm_callback, (XtPointer) &data );
 } // Arm()
 
 /*!
@@ -695,7 +703,15 @@ Disarm(
   SoXtThumbWheelWidget widget = (SoXtThumbWheelWidget) w;
   if ( ! widget->thumbwheel.armed ) return;
   widget->thumbwheel.armed = False;
-  XtCallCallbackList( w, widget->thumbwheel.disarm_callback, NULL );
+
+  SoXtThumbWheelCallbackData data = {
+    widget->thumbwheel.value,
+    widget->thumbwheel.value,
+    0 // no movement on disarm
+  };
+
+  XtCallCallbackList( w, widget->thumbwheel.disarm_callback,
+    (XtPointer) &data );
 } // Disarm()
 
 void
@@ -710,6 +726,7 @@ Roll(
   SoXtThumbWheelWidget widget = (SoXtThumbWheelWidget) w;
   if ( ! widget->thumbwheel.armed )
     return;
+
   int pos = 0;
   switch ( widget->thumbwheel.orientation ) {
   case XmHORIZONTAL:
@@ -725,7 +742,10 @@ Roll(
     break;
   } // switch ( widget->thumbwheel.orientation )
 
-  float oldval = widget->thumbwheel.value;
+  if ( widget->thumbwheel.prev_position == pos )
+    return;
+
+  widget->thumbwheel.prev_value = widget->thumbwheel.value;
   widget->thumbwheel.value =
     ((SoAnyThumbWheel *) widget->thumbwheel.thumbwheel)->
       CalculateValue( widget->thumbwheel.arm_value,
@@ -746,10 +766,13 @@ Roll(
 
   struct SoXtThumbWheelCallbackData data = {
     widget->thumbwheel.value,
-    oldval
+    widget->thumbwheel.prev_value,
+    pos - widget->thumbwheel.prev_position
   };
 
   XtCallCallbackList( w, widget->thumbwheel.valuechanged_callback, &data );
+
+  widget->thumbwheel.prev_position = pos;
 } // Roll()
 
 /*!
@@ -762,7 +785,9 @@ WheelUp(
   String *,
   Cardinal * )
 {
+#if SOXT_DEBUG
   SOXT_STUB();
+#endif // SOXT_DEBUG
 } // WheelUp()
 
 /*!
@@ -775,7 +800,9 @@ WheelDown(
   String *,
   Cardinal * )
 {
+#if SOXT_DEBUG
   SOXT_STUB();
+#endif // SOXT_DEBUG
 } // WheelDown()
 
 // *************************************************************************

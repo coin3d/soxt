@@ -61,7 +61,9 @@ typedef struct _SoXtThumbWheelPart {
   int currentpixmap;
   Boolean armed;
   float arm_value;
+  float prev_value;
   int arm_position;
+  int prev_position;
   void * thumbwheel;
 
 } SoXtThumbWheelPart;
