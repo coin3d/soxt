@@ -21,13 +21,13 @@
  *
 \**************************************************************************/
 
-#if HAVE_CONFIG_H
+#ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
 #include <assert.h>
 
-#if HAVE_LIBXPM
+#ifdef HAVE_LIBXPM
 #include <X11/xpm.h>
 #endif // HAVE_LIBXPM
 

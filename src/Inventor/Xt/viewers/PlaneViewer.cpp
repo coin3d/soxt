@@ -27,6 +27,10 @@
 
 // *************************************************************************
 
+#ifdef HAVE_CONFIG_H
+#include <config.h> // for HAVE_LIBXPM
+#endif // HAVE_CONFIG_H
+
 #include <string.h>
 
 #include <X11/keysym.h>
@@ -46,10 +50,6 @@
 
 #include <Inventor/Xt/viewers/SoXtPlaneViewer.h>
 #include <Inventor/Xt/viewers/SoXtPlaneViewerP.h>
-
-#if HAVE_CONFIG_H
-#include <config.h> // for HAVE_LIBXPM
-#endif // HAVE_CONFIG_H
 
 #if HAVE_LIBXPM
 #include <Inventor/Xt/common/pixmaps/ortho.xpm>

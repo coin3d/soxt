@@ -27,6 +27,10 @@
 
 // ************************************************************************
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -60,10 +64,6 @@
 
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
 #include <Inventor/Xt/viewers/SoXtFullViewerP.h>
-
-#if HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #if HAVE_LIBXPM
 #include <X11/xpm.h>

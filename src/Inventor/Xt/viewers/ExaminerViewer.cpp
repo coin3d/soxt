@@ -25,6 +25,10 @@
 
 // *************************************************************************
 
+#ifdef HAVE_CONFIG_H
+#include <config.h> // for HAVE_LIBXPM
+#endif // HAVE_CONFIG_H
+
 #include <string.h>
 #include <stdlib.h> // atoi()
 
@@ -56,10 +60,6 @@
 
 #include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
 #include <Inventor/Xt/viewers/SoXtExaminerViewerP.h>
-
-#if HAVE_CONFIG_H
-#include <config.h> // for HAVE_LIBXPM
-#endif // HAVE_CONFIG_H
 
 #if HAVE_LIBXPM
 #include <Inventor/Xt/common/pixmaps/ortho.xpm>
