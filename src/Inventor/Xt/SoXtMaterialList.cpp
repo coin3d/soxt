@@ -190,14 +190,20 @@ SoXtMaterialList::buildWidget( // protected
   Widget palettemenu = this->buildPulldownMenu( menubar );
 
   SoXtMaterialDirectory * dir = common->getMaterialDirectory();
-  const int group = dir->current;
-  const int materials = dir->groups[group]->numMaterials;
 
-  XmStringTable list =
-    (XmStringTable) XtMalloc( sizeof(XmString) * materials );
-  for ( int i = 0; i < materials; i++ )
-    list[i] =
-      SoXt::encodeString( dir->groups[group]->materials[i]->name );
+  int group, materials;
+  XmStringTable list;
+  if ( dir->numGroups > 0 ) {
+    group = dir->current;
+    materials = dir->groups[group]->numMaterials;
+    list = (XmStringTable) XtMalloc( sizeof(XmString) * materials );
+    for ( int i = 0; i < materials; i++ )
+      list[i] =
+        SoXt::encodeString( dir->groups[group]->materials[i]->name );
+  } else {
+    materials = 0;
+    list = NULL;
+  }
 
   Arg argv[10];
   int argc = 0;
