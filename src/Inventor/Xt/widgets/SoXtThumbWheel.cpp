@@ -230,8 +230,8 @@ realize(
 } // realize()
 
 // these come on top of primitive.shadow_thickness
-static const int WHEEL_DIAMETER_PADDING = 6;
-static const int WHEEL_THICKNESS_PADDING = 3;
+static const int WHEEL_DIAMETER_PADDING = 1;
+static const int WHEEL_THICKNESS_PADDING = 4;
 
 static
 SoAnyThumbWheel *
@@ -536,11 +536,11 @@ init_pixmaps(
     for ( y = 0; y < height; y++ ) {
       for ( x = 0; x < width; x++ ) {
         if ( x < t || y < t )                              // top/left light
-          XPutPixel( img, x, y, light );
+          XPutPixel( img, x, y, normal /* light */ );
         if ( y > (height - t - 1) && (x >= (height - y)) ) // bottom shadow
-          XPutPixel( img, x, y, shade );
+          XPutPixel( img, x, y, normal /* shade */ );
         if ( y > (width - x - 1) && (x >= (width - t)) )   // right shadow
-          XPutPixel( img, x, y, shade );
+          XPutPixel( img, x, y, normal /* shade */ );
   
         if ( (y == rect_top || y == rect_bottom) &&        // black rectangle
              (x >= rect_left && x <= rect_right) )
