@@ -9,7 +9,7 @@ SUBDIRS = devices widgets viewers .
 INCLUDES = -I$(top_srcdir)/src -I$(top_builddir)/data
 
 BUILT_SOURCES = \
-	$(SoGuiAllBuiltSources)
+	$(SoGuiAllBuiltFiles)
 
 CLEANFILES = \
 	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
