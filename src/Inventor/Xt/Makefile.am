@@ -123,6 +123,7 @@ libSoXtinc_HEADERS = \
 	SoXtSliderSet.h \
 	SoXtSliderSetBase.h \
 	SoXtTransformSliderSet.h \
+	$(top_builddir)/src/Inventor/Xt/SoXtBasic.h \
 	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.h
 
 install-libSoXtincHEADERS: $(libSoXtinc_HEADERS)
