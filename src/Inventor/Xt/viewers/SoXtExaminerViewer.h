@@ -49,6 +49,8 @@ protected:
       SbBool inParent, SoXtFullViewer::BuildFlag flags,
       SoXtViewer::Type type, SbBool build );
 
+  virtual void setCamera( SoCamera * camera );
+
   virtual void processEvent( XAnyEvent * event );
 
   virtual void leftWheelMotion( float value );
@@ -64,6 +66,10 @@ protected:
   XtIntervalId spindetecttimerId;
   SbBool spindetecttimerActive;
   static void spindetecttimerCB( XtPointer user, XtIntervalId * id );
+
+  virtual void createViewerButtons( Widget parent, SbPList * buttonlist );
+  void camerabuttonClicked(void);
+  static void camerabuttonCB( Widget, XtPointer, XtPointer );
 
 private:
   void constructor( SbBool build );
@@ -81,6 +87,13 @@ private:
 
   void setMode( const ViewerMode mode );
   void setModeFromState( const unsigned int state );
+
+  Widget camerabutton;
+  struct {
+    Pixmap ortho, ortho_ins;
+    Pixmap perspective, perspective_ins;
+    Pixmap nocam, nocam_ins;
+  } camerapixmaps;
 
 }; // class SoXtExaminerViewer
 

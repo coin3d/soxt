@@ -20,7 +20,13 @@
 static const char rcsid[] =
   "$Id$";
 
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <assert.h>
+
+#include <Xm/PushB.h>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
@@ -29,9 +35,15 @@ static const char rcsid[] =
 #include <Inventor/sensors/SoTimerSensor.h>
 
 #include <Inventor/Xt/SoXt.h>
+#include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/viewers/SoAnyExaminerViewer.h>
 
 #include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
+
+#if HAVE_LIBXPM
+#include "icons/ortho.xpm"
+#include "icons/perspective.xpm"
+#endif // HAVE_LIBXPM
 
 // *************************************************************************
 
@@ -71,6 +83,7 @@ SoXtExaminerViewer::constructor( // private
   this->spindetecttimerActive = FALSE;
 
   this->setClassName( "SoXtExaminerViewer" );
+  this->camerabutton = (Widget) NULL;
 
   if ( build ) {
     Widget viewer = this->buildWidget( this->getParentWidget() );
@@ -418,3 +431,139 @@ SoXtExaminerViewer::spindetecttimerCB( // static
 #endif // SOXT_DEBUG
 } // spindetecttimerCB()
 
+// *************************************************************************
+
+/*!
+*/
+
+void
+SoXtExaminerViewer::createViewerButtons( // virtual
+  Widget parent,
+  SbPList * buttonlist )
+{
+  assert( this->camerabutton == (Widget) NULL );
+
+  inherited::createViewerButtons( parent, buttonlist );
+
+  this->camerabutton = XtVaCreateManagedWidget( "C",
+    xmPushButtonWidgetClass, parent,
+    XmNshadowType, XmSHADOW_OUT,
+    XmNhighlightThickness, 2,
+    XmNshadowThickness, 2,
+    XmNtraversalOn, False,
+    XmNwidth, 30,
+    XmNheight, 30,
+    NULL );
+
+  XtAddCallback( this->camerabutton,
+    XmNdisarmCallback, SoXtExaminerViewer::camerabuttonCB, this );
+
+  buttonlist->append( this->camerabutton );
+
+  this->camerapixmaps.ortho =
+    createPixmapFromXpmData( this->camerabutton, ortho_xpm );
+  this->camerapixmaps.ortho_ins =
+    createInsensitivePixmapFromXpmData( this->camerabutton, ortho_xpm );
+  this->camerapixmaps.perspective =
+    createPixmapFromXpmData( this->camerabutton, perspective_xpm );
+  this->camerapixmaps.perspective_ins =
+    createInsensitivePixmapFromXpmData( this->camerabutton, perspective_xpm );
+
+} // createViewerButtons()
+
+// *************************************************************************
+
+/*!
+*/
+
+void
+SoXtExaminerViewer::camerabuttonClicked(
+  void )
+{
+  this->toggleCameraType();
+
+/*
+  SoCamera * camera = this->getCamera();
+  if ( ! camera ) {
+#if SOXT_DEBUG
+    SoDebugError::postWarning( "SoXtExaminerViewer::camerabuttonClicked",
+      "no camera" );
+#endif // SOXT_DEBUG
+    return;
+  }
+
+  if ( camera->isOfType( SoPerspectiveCamera::getClassTypeId() ) ) {
+    this->setCamera( new SoOrthographicCamera );
+  } else if ( camera->isOfType( SoPerspectiveCamera::getClassTypeId() ) ) {
+    this->setCamera( new SoPerspectiveCamera );
+  } else {
+#if SOXT_DEBUG
+    SoDebugError::postWarning( "SoXtExaminerViewer::camerabuttonClicked",
+      "unknown camera - got no pixmap" );
+#endif // SOXT_DEBUG
+  }
+
+*/
+
+} // camerabuttonClicked()
+
+/*!
+*/
+
+void
+SoXtExaminerViewer::camerabuttonCB( // static
+  Widget w,
+  XtPointer client_data,
+  XtPointer call_data )
+{
+  SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) client_data;
+  viewer->camerabuttonClicked();
+} // camerabuttonCB()
+
+// *************************************************************************
+
+/*!
+*/
+
+void
+SoXtExaminerViewer::setCamera( // virtual
+  SoCamera * camera )
+{
+  Pixmap pixmap, pixmap_ins;
+  if ( camera == NULL ) {
+    // find better pixmaps for this...
+    pixmap = this->camerapixmaps.ortho;
+    pixmap_ins = this->camerapixmaps.ortho_ins;
+  } else if ( camera->isOfType( SoPerspectiveCamera::getClassTypeId() ) ) {
+    pixmap = this->camerapixmaps.perspective;
+    pixmap_ins = this->camerapixmaps.perspective_ins;
+  } else if ( camera->isOfType( SoOrthographicCamera::getClassTypeId() ) ) {
+    pixmap = this->camerapixmaps.ortho;
+    pixmap_ins = this->camerapixmaps.ortho_ins;
+  } else {
+    SoDebugError::postWarning( "SoXtExaminerViewer::setCamera",
+      "unknown camera type - got no pixmap" );
+    // find better pixmaps for this...
+    pixmap = this->camerapixmaps.ortho;
+    pixmap_ins = this->camerapixmaps.ortho_ins;
+  }
+
+/*
+  FIXME: this somehow disturbs the layout of the hole viewer button row..
+  XtVaSetValues( this->camerabutton,
+    XmNlabelType, XmPIXMAP,
+    XmNlabelPixmap, pixmap,
+    XmNselectPixmap, pixmap,
+    XmNlabelInsensitivePixmap, pixmap_ins,
+    XmNselectInsensitivePixmap, pixmap_ins,
+    XmNwidth, 30,
+    XmNheight, 30,
+    NULL );
+*/
+
+  // FIXME: update zoom/dolly string
+
+  inherited::setCamera( camera );
+} // setCamera()
+
+// *************************************************************************
