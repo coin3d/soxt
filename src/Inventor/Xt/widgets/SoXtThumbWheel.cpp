@@ -328,7 +328,7 @@ static enum _rgb_target_mode {
 static Display * rgb_dpy = NULL;
 static Colormap rgb_colormap = 0;
 
-#define PIXEL_CACHE_SIZE 256
+#define PIXEL_CACHE_SIZE 512
 
 static unsigned long
 abgr2pixel(uint32_t abgr)
@@ -349,7 +349,7 @@ abgr2pixel(uint32_t abgr)
   prevabgr = abgr;
 
   // try some caching and approximation stuff here...
-  const unsigned long abgrreduced = abgr & 0x00fcfcfc;
+  const unsigned long abgrreduced = abgr & 0x00f0f0f0;
   for (int i = 0; i < cached; i++ ) {
     if (cache[i] == abgrreduced) {
       // SoDebugError::postInfo("abgr2pixel", "lifted from special-purpose cache");
