@@ -238,6 +238,10 @@ WARN_FORMAT           = "$file:$line: $text"
 # with spaces. 
 
 INPUT                 = \
+	@soxt_src_dir@/src/Inventor/@Gui@/viewers/WalkViewer.cpp \
+	@soxt_build_dir@/src/Inventor/@Gui@/viewers/So@Gui@WalkViewer.cpp \
+	@soxt_build_dir@/src/Inventor/@Gui@/viewers/So@Gui@WalkViewer.h \
+        \
 	@soxt_build_dir@/src/Inventor/@Gui@/So@Gui@Basic.h \
 	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@.cpp \
 	@soxt_build_dir@/src/Inventor/@Gui@/So@Gui@Common.cpp \
@@ -272,8 +276,6 @@ INPUT                 = \
 	@soxt_src_dir@/src/Inventor/@Gui@/viewers/So@Gui@PlaneViewer.h \
 	@soxt_build_dir@/src/Inventor/@Gui@/viewers/So@Gui@ConstrainedViewer.cpp \
 	@soxt_build_dir@/src/Inventor/@Gui@/viewers/So@Gui@ConstrainedViewer.h \
-	@soxt_src_dir@/src/Inventor/@Gui@/viewers/So@Gui@WalkViewer.cpp \
-	@soxt_src_dir@/src/Inventor/@Gui@/viewers/So@Gui@WalkViewer.h \
 	@soxt_build_dir@/src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.cpp \
 	@soxt_build_dir@/src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.h \
 	@soxt_src_dir@/src/Inventor/@Gui@/viewers/So@Gui@CollisionViewer.cpp \
