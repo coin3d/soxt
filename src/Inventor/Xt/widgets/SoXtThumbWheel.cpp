@@ -347,7 +347,7 @@ init_pixmaps(
   int diameter = 0, thickness = 0;
   wheel->GetWheelSize( diameter, thickness );
 
-  Pixel image[ pixels ];
+  Pixel *image = new Pixel[ pixels ];
 
   Pixel normal = widget->core.background_pixel;
   Pixel light = widget->primitive.top_shadow_color;
@@ -403,8 +403,8 @@ init_pixmaps(
   }
 
   int j;
+  unsigned long *bitmap = new unsigned long[ diameter * thickness ];
   for ( j = 0; j < widget->thumbwheel.numpixmaps; j++ ) {
-    unsigned long bitmap[ diameter * thickness ];
     switch ( widget->thumbwheel.orientation ) {
     case XmHORIZONTAL:
       wheel->DrawBitmap( j, (void *) bitmap, SoAnyThumbWheel::HORIZONTAL );
@@ -490,6 +490,9 @@ init_pixmaps(
     img->data = NULL;
     XDestroyImage( img );
   }
+
+  delete [] image;
+  delete [] bitmap;
 } // init_pixmaps()
 
 /*!
@@ -523,7 +526,7 @@ expose(
   Region region )
 {
   SoXtThumbWheelWidget widget = (SoXtThumbWheelWidget) w;
-  if ( ! XtIsRealized( widget ) ) return;
+  if ( ! XtIsRealized( w ) ) return;
 
   if ( ! widget->thumbwheel.thumbwheel ) {
     widget->thumbwheel.thumbwheel = (void *) create_thumbwheel( widget );
@@ -600,6 +603,8 @@ query_geometry(
   XtWidgetGeometry * )
 {
   SOXT_STUB();
+  XtGeometryResult foo;
+  return foo;
 } // query_geometry()
 
 /*!
