@@ -101,33 +101,13 @@ protected:
   SbBool isRGBMode(void);
   int getDisplayListShareGroup(GLXContext context);
 
-  Colormap normalColorMap;
-  Colormap overlayColorMap;
-  int normalColorMapSize;
-  int overlayColorMapSize;
-
   SbBool waitForExpose;
   SbBool drawToFrontBuffer;
+
   Widget buildWidget(Widget parent);
   Widget getGlxMgrWidget(void);
 
-  unsigned long transparentPixel;
-
-  SbBool border;
-  int borderwidth;
-
-  Widget glxWidget;
-  Widget glxManager;
-  GLXContext normalContext;
-  GLXContext overlayContext;
-  XVisualInfo * normalVisual;
-  XVisualInfo * overlayVisual;
-
-  SbBool doubleBuffer;
-
   static void eventHandler(Widget, void *, XEvent *, Boolean *);
-
-protected:
 
   void glLockNormal(void);
   void glUnlockNormal(void);
@@ -140,9 +120,7 @@ protected:
   virtual SbBool glScheduleRedraw(void);
 
 private:
-  void initNormalContext(void);
-  SbVec2s glSize; // cached GL widget size
-
+  class SoXtGLWidgetP * pimpl;
 }; // class SoXtGLWidget
 
 // *************************************************************************

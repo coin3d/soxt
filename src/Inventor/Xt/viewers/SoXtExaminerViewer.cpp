@@ -378,7 +378,7 @@ SoXtExaminerViewer::setCursorRepresentation(int mode)
   case SoAnyExaminerViewer::EXAMINE:
   case SoAnyExaminerViewer::DRAGGING:
     this->cursor = XCreateFontCursor(display, XC_hand2);
-    XDefineCursor(display, XtWindow(this->glxWidget), this->cursor);
+    XDefineCursor(display, XtWindow(this->getGLWidget()), this->cursor);
     break;
 
   case SoAnyExaminerViewer::INTERACT:
@@ -386,7 +386,7 @@ SoXtExaminerViewer::setCursorRepresentation(int mode)
   case SoAnyExaminerViewer::WAITING_FOR_SEEK:
   case SoAnyExaminerViewer::WAITING_FOR_PAN:
   case SoAnyExaminerViewer::PANNING:
-    XUndefineCursor(display, XtWindow(this->glxWidget));
+    XUndefineCursor(display, XtWindow(this->getGLWidget()));
     break;
 
   default: SOXT_STUB(); break;
