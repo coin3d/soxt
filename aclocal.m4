@@ -5936,6 +5936,8 @@ AC_REQUIRE([SIM_AC_WITH_INVENTOR])
 
 if $sim_ac_want_inventor; then
   sim_ac_save_CPPFLAGS="$CPPFLAGS";
+  sim_ac_save_CFLAGS="$CFLAGS";
+  sim_ac_save_CXXFLAGS="$CXXFLAGS";
   sim_ac_save_LDFLAGS="$LDFLAGS";
   sim_ac_save_LIBS="$LIBS";
 
@@ -6008,6 +6010,8 @@ EOF
   done
 
   CPPFLAGS="$sim_ac_save_CPPFLAGS"
+  CFLAGS="$sim_ac_save_CFLAGS"
+  CXXFLAGS="$sim_ac_save_CXXFLAGS"
   LDFLAGS="$sim_ac_save_LDFLAGS"
   LIBS="$sim_ac_save_LIBS"
 

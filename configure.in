@@ -184,12 +184,16 @@ if test "${with_inventor+set}" = set; then
 
   # check for SGI or TGS Open Inventor
   SIM_AC_HAVE_INVENTOR_IFELSE([
-    CPPFLAGS="$CPPFLAGS $sim_ac_oiv_cppflags"
-    LDFLAGS="$LDFLAGS $sim_ac_oiv_ldflags"
-    LIBS="$sim_ac_oiv_libs $LIBS"
-    SOXT_EXTRA_CPPFLAGS="$sim_ac_oiv_cppflags $SOXT_EXTRA_CPPFLAGS"
-    SOXT_EXTRA_LDFLAGS="$sim_ac_oiv_ldflags $SOXT_EXTRA_LDFLAGS"
-    SOXT_EXTRA_LIBS="$sim_ac_oiv_libs $SOXT_EXTRA_LIBS"
+    CPPFLAGS="$CPPFLAGS $sim_ac_inventor_cppflags"
+    CFLAGS="$CFLAGS $sim_ac_inventor_cflags"
+    CXXFLAGS="$CXXFLAGS $sim_ac_inventor_cxxflags"
+    LDFLAGS="$LDFLAGS $sim_ac_inventor_ldflags"
+    LIBS="$sim_ac_inventor_libs $LIBS"
+    SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_inventor_cppflags"
+    SOXT_EXTRA_CFLAGS="$SOXT_EXTRA_CFLAGS $sim_ac_inventor_cflags"
+    SOXT_EXTRA_CXXFLAGS="$SOXT_EXTRA_CXXFLAGS $sim_ac_inventor_cxxflags"
+    SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_inventor_ldflags"
+    SOXT_EXTRA_LIBS="$sim_ac_inventor_libs $SOXT_EXTRA_LIBS"
   ], [AC_MSG_ERROR([couldn't compile and link against Open Inventor])])
 
   SIM_AC_CONFIGURATION_SETTING([Open Inventor brand], [SGI/TGS Inventor])
