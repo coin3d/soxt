@@ -31,66 +31,15 @@ typedef void * XPContext;
 #include <Inventor/Xt/SoXt.h>
 
 #include <Inventor/Xt/devices/SoXtSpaceball.h>
+#include <Inventor/Xt/devices/SoXtSpaceballP.h>
 
 // *************************************************************************
-
-/*!
-  \class SoXtSpaceball Inventor/Xt/devices/SoXtSpaceball.h
-  \brief The SoXtSpaceball class is the glue between Xt/Motif spaceball
-  handling and Inventor spaceball handling.
-  \ingroup devices
-
-  This class is not implemented yet.  Do not purchase a spaceball for use
-  with Coin unless you intend to use it through the Linux Joystick driver
-  (SoXtLinuxJoystick) at this moment.
-*/
-
-// *************************************************************************
-
-class SoXtSpaceballP {
-public:
-  int events;
-  float rotationFactor;
-  float translationFactor;
-};
-
-#define PRIVATE(p) (p->pimpl)
-
-// *************************************************************************
-
-SOXT_OBJECT_SOURCE(SoXtSpaceball);
-
-// *************************************************************************
-
-/*!
-  \enum SoXtSpaceball::DeviceType
-
-  Enumeration of unsupported Spaceball input device types.
-*/
-
-/*!
-  \enum SoXtSpaceball::Mask
-
-  Enumeration of unsupported Spaceball input device event types.
-*/
-
-// *************************************************************************
-
-/*!
-  Public constructor.
-*/
 
 SoXtSpaceball::SoXtSpaceball(int events)
 {
-  PRIVATE(this) = new SoXtSpaceballP;
+  PRIVATE(this) = new SoXtSpaceballP(this);
   PRIVATE(this)->events = events;
-  PRIVATE(this)->rotationFactor = 1.0f;
-  PRIVATE(this)->translationFactor = 1.0f;
 }
-
-/*!
-  Destructor.
-*/
 
 SoXtSpaceball::~SoXtSpaceball()
 {
@@ -119,10 +68,6 @@ SoXtSpaceball::disable(Widget, // widget,
 
 // *************************************************************************
 
-/*!
-  This method is not implemented.
-*/
-
 const SoEvent *
 SoXtSpaceball::translateEvent(XAnyEvent * event)
 {
@@ -132,51 +77,6 @@ SoXtSpaceball::translateEvent(XAnyEvent * event)
 
 // *************************************************************************
 
-/*!
-  This method sets the scale factor for the spaceball rotation vectors.
-*/
-
-void
-SoXtSpaceball::setRotationScaleFactor(float factor)
-{
-  PRIVATE(this)->rotationFactor = factor;
-}
-
-/*!
-  This method returns the scale factor for the spaceball rotation vectors.
-*/
-
-float
-SoXtSpaceball::getRotationScaleFactor(void) const
-{
-  return PRIVATE(this)->rotationFactor;
-}
-
-/*!
-  This method sets the scale factor for the spaceball translation vectors.
-*/
-
-void
-SoXtSpaceball::setTranslationScaleFactor(float factor)
-{
-  PRIVATE(this)->translationFactor = factor;
-}
-
-/*!
-  This method returns the scale factor for the spaceball translation vectors.
-*/
-
-float
-SoXtSpaceball::getTranslationScaleFactor(void) const
-{
-  return PRIVATE(this)->translationFactor;
-}
-
-// *************************************************************************
-
-/*!
-  This method checks to see if a spaceball device is available.
-*/
 SbBool
 SoXtSpaceball::exists(void)
 {
@@ -199,19 +99,11 @@ SoXtSpaceball::exists(void)
 
 // *************************************************************************
 
-/*!
-  This method is not implemented.
-*/
-
 void
 SoXtSpaceball::setFocusToWindow(SbBool)
 {
   SOXT_STUB();
 }
-
-/*!
-  This method is not implemented.
-*/
 
 SbBool
 SoXtSpaceball::isFocusToWindow(void) const
