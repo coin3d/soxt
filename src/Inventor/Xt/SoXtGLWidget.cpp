@@ -344,14 +344,14 @@ SoXtGLWidget::getOverlayVisual(
 void
 SoXtGLWidget::setOverlayRender(const SbBool onoff)
 {
-  SOWIN_STUB();
+  SOXT_STUB();
 }
 
 // FIXME: make doc in SoQtGLWidget valid for this also. 20011116 mortene.
 SbBool
 SoXtGLWidget::isOverlayRender(void) const
 {
-  SOWIN_STUB();
+  SOXT_STUB();
   return FALSE;
 }
 
