@@ -67,7 +67,6 @@ AS = @AS@
 AWK = @AWK@
 CC = @CC@
 COMPONENTHEADER = @COMPONENTHEADER@
-COMPONENTLIBS = @COMPONENTLIBS@
 CPP = @CPP@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
@@ -99,10 +98,12 @@ lGUI = @lGUI@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 uGUI = @uGUI@
 
+@BUILD_TESTS_TRUE@TESTDIR = @BUILD_TESTS_TRUE@test-code
+@BUILD_TESTS_FALSE@TESTDIR = 
 @BUILD_EXAMPLES_TRUE@EXAMPLEDIR = @BUILD_EXAMPLES_TRUE@examples
 @BUILD_EXAMPLES_FALSE@EXAMPLEDIR = 
 
-SUBDIRS = src/Inventor/Xt $(EXAMPLEDIR)
+SUBDIRS = src/Inventor/Xt $(TESTDIR) $(EXAMPLEDIR)
 
 bin_SCRIPTS = soxt-config
 
@@ -138,7 +139,7 @@ soxt-config.in
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
 GZIP_ENV = --best
-DIST_SUBDIRS =  src/Inventor/Xt examples
+DIST_SUBDIRS =  src/Inventor/Xt test-code examples
 all: all-redirect
 .SUFFIXES:
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 

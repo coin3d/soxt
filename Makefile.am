@@ -1,12 +1,18 @@
 ## Process this file with automake to generate Makefile.in.
 
+if BUILD_TESTS
+TESTDIR = test-code
+else
+TESTDIR =
+endif
+
 if BUILD_EXAMPLES
 EXAMPLEDIR = examples
 else
 EXAMPLEDIR =
 endif
 
-SUBDIRS = src/Inventor/Xt $(EXAMPLEDIR)
+SUBDIRS = src/Inventor/Xt $(TESTDIR) $(EXAMPLEDIR)
 
 bin_SCRIPTS = soxt-config
 
