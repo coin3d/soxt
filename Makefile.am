@@ -45,7 +45,9 @@ BUILT_SOURCES = \
 	src/Inventor/Xt/widgets/SoAnyThumbWheel.h \
 	src/Inventor/Xt/widgets/SoAnyThumbWheel.cpp \
 	src/Inventor/Xt/widgets/SoAnyPopupMenu.h \
-	src/Inventor/Xt/widgets/SoAnyPopupMenu.cpp
+	src/Inventor/Xt/widgets/SoAnyPopupMenu.cpp \
+	src/Inventor/Xt/widgets/SoAnyStateStack.h \
+	src/Inventor/Xt/widgets/SoAnyStateStack.cpp
 
 soxt-config: soxt-config.in
 
@@ -183,6 +185,18 @@ src/Inventor/Xt/widgets/SoAnyPopupMenu.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyPopupMenu.cpp.in
 	@CONFIG_HEADERS= \
 	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyPopupMenu.cpp.in \
+	$(top_builddir)/config.status
+
+src/Inventor/Xt/widgets/SoAnyStateStack.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyStateStack.h.in
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyStateStack.h.in \
+	$(top_builddir)/config.status
+
+src/Inventor/Xt/widgets/SoAnyStateStack.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyStateStack.cpp.in
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyStateStack.cpp.in \
 	$(top_builddir)/config.status
 
 ############################################################################
