@@ -457,8 +457,10 @@ SoXtGLWidget::processEvent(XAnyEvent * event)
 {
   switch (event->type) {
   case MapNotify:
-    PRIVATE(this)->initNormalContext();
-    this->initGraphic();
+    if ( !PRIVATE(this)->normalcontext ) {
+      PRIVATE(this)->initNormalContext();
+      this->initGraphic();
+    }
     break;
 
   case Expose:
