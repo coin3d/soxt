@@ -550,7 +550,7 @@ distclean-depend:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXXCOMPILE) -c -o $@ `( test -f $< || echo -n '$(srcdir)/'; echo -n $< ) | xargs cygpath -w`
+	$(CXXCOMPILE) -c -o $@ `cygpath -w $<`
 
 .cpp.lo:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
@@ -568,7 +568,7 @@ ColorEditor.obj: $(top_builddir)/src/Inventor/@Gui@/editors/ColorEditor.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/editors/ColorEditor.cpp' object='ColorEditor.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/ColorEditor.Po' tmpdepfile='$(DEPDIR)/ColorEditor.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ColorEditor.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/editors/ColorEditor.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/editors/ColorEditor.cpp ) | xargs cygpath -w`
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ColorEditor.obj `cygpath -w $(top_builddir)/src/Inventor/@Gui@/editors/ColorEditor.cpp`
 
 ColorEditor.lo: $(top_builddir)/src/Inventor/@Gui@/editors/ColorEditor.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/editors/ColorEditor.cpp' object='ColorEditor.lo' libtool=yes @AMDEPBACKSLASH@
@@ -757,8 +757,10 @@ uninstall-am: uninstall-SoXtEditorsincHEADERS uninstall-info-am \
 ############################################################################
 
 $(top_builddir)/sogui.doxygen: $(top_srcdir)/src/Inventor/@Gui@/common/sogui.doxygen.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(SHELL) config.status --file=sogui.doxygen:src/Inventor/@Gui@/common/sogui.doxygen.in )
-	@( cd $(top_builddir); $(top_srcdir)/cfg/m4/doxy4win.pl sogui.doxygen )
+	@cd $(top_builddir); \
+	$(SHELL) config.status --file=sogui.doxygen:src/Inventor/@Gui@/common/sogui.doxygen.in; \
+	$(top_srcdir)/cfg/m4/doxy4win.pl sogui.doxygen; \
+	rm -f sogui.doxygen.bak;
 
 $(top_builddir)/so@gui@-config: $(top_srcdir)/src/Inventor/@Gui@/common/sogui-config.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(SHELL) config.status --file=so@gui@-config:src/Inventor/@Gui@/common/sogui-config.in && chmod +x so@gui@-config )
