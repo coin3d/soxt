@@ -204,10 +204,12 @@ if test x"$sim_ac_x11_avail" = xyes; then
   ])
   SIM_AC_CHECK_X11MU([
     AC_DEFINE([HAVE_LIBXMU],, [define this if -lXmu can be used])
+    SOGUI_EXTRA_CPPFLAGS="$sim_ac_x11mu_cppflags $SOGUI_EXTRA_CPPFLAGS"
+    SOGUI_EXTRA_LDFLAGS="$sim_ac_x11mu_ldflags $SOGUI_EXTRA_LDFLAGS"
     SOGUI_EXTRA_LIBS="$sim_ac_x11mu_libs $SOGUI_EXTRA_LIBS"
   ])
   SIM_AC_CHECK_X11XID([
-    SOGUI_EXTRA_LIBS="$sim_ac_x11mu_libs $SOGUI_EXTRA_LIBS"
+    SOGUI_EXTRA_LIBS="$sim_ac_x11xid_libs $SOGUI_EXTRA_LIBS"
   ])
   # Open Group Motif depends on the Xp printing library (at least
   # on some platforms).
