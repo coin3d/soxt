@@ -34,6 +34,7 @@ static const char rcsid[] =
 
 #include <soxtdefs.h>
 #include <Inventor/Xt/SoXtBasic.h>
+
 #include <Inventor/Xt/devices/SoXtMouse.h>
 
 /*

@@ -43,10 +43,10 @@ public:
   SoXtKeyboard( int events = SoXtKeyboard::ALL_EVENTS );
   virtual ~SoXtKeyboard(void);
 
-  virtual void enable( Widget widget,
-      XtEventHandler func, XtPointer data, Window window = (Window) NULL );
-  virtual void disable( Widget widget,
-      XtEventHandler func, XtPointer data );
+  virtual void enable( Widget widget, XtEventHandler handler,
+      XtPointer closure, Window window = (Window) NULL );
+  virtual void disable( Widget widget, XtEventHandler handler,
+      XtPointer closure );
 
   virtual const SoEvent * translateEvent( XAnyEvent * xevent );
 
@@ -55,7 +55,7 @@ private:
   SoKeyboardEvent * keyboardEvent;
 
   SoKeyboardEvent * makeKeyboardEvent( XKeyEvent * event,
-                                       SoButtonEvent::State state );
+      SoButtonEvent::State state );
 
 }; // class SoXtKeyboard
 
