@@ -47,28 +47,22 @@ libSoXtWidgets_la_SOURCES = \
 ############################################################################
 
 SoAnyPopupMenu.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyPopupMenu.h.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/widgets/SoAnyPopupMenu.h )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyPopupMenu.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyPopupMenu.cpp.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/widgets/SoAnyPopupMenu.cpp )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyThumbWheel.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.h.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/widgets/SoAnyThumbWheel.h )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyThumbWheel.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.cpp.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/widgets/SoAnyThumbWheel.cpp )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyStateStack.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyStateStack.h.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/widgets/SoAnyStateStack.h )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyStateStack.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyStateStack.cpp.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/widgets/SoAnyStateStack.cpp )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 ############################################################################
 
