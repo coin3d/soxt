@@ -44,7 +44,6 @@
 #include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
 #include <Inventor/Xt/viewers/SoXtPlaneViewer.h>
 #include <Inventor/Xt/viewers/SoXtConstrainedViewer.h>
-#include <Inventor/Xt/viewers/SoXtWalkViewer.h>
 #include <Inventor/Xt/viewers/SoXtFlyViewer.h>
 #include <Inventor/Xt/SoXtCursor.h>
 
@@ -104,7 +103,9 @@ SoXtComponent::initClasses(void)
   SoXtExaminerViewer::initClass();
   SoXtPlaneViewer::initClass();
   SoXtConstrainedViewer::initClass();
+#if 0  // TMP DISABLED: walkviewer not properly implemented yet. 20020624 mortene.
   SoXtWalkViewer::initClass();
+#endif // TMP DISABLED
   SoXtFlyViewer::initClass();
 }
 

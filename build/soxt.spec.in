@@ -1,3 +1,7 @@
+# FIXME: this file has not been kept up-to-date and is now not
+# correctly reflecting the set of files which should be made part
+# of an RPM file. 20011207 mortene.
+
 # Spec file for constructing installation package in RPM format.
 # Quick instructions (these are similar to instructions found in
 # the simage.spec.in and coin.spec.in files):
@@ -562,7 +566,6 @@ strip @libdir@/libSoXt.so.0.0.0
 @includedir@/Inventor/Xt/viewers/SoXtFullViewer.h
 @includedir@/Inventor/Xt/viewers/SoXtPlaneViewer.h
 @includedir@/Inventor/Xt/viewers/SoXtViewer.h
-@includedir@/Inventor/Xt/viewers/SoXtWalkViewer.h
 @includedir@/Inventor/Xt/widgets/SoXtGLArea.h
 @includedir@/Inventor/Xt/widgets/SoXtGLAreaP.h
 @includedir@/Inventor/Xt/widgets/SoXtThumbWheel.h

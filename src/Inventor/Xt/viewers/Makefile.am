@@ -1,6 +1,5 @@
 ############################################################################
 ## SoXt/src/Inventor/Xt/viewers/Makefile.am
-## $Id$
 
 include ../common/Makefile.common
 
@@ -23,7 +22,6 @@ DISTCLEANFILES = \
 
 libSoXtViewers_la_SOURCES = \
 	PlaneViewer.cpp \
-	WalkViewer.cpp \
 	FullViewer.cpp \
 	ExaminerViewer.cpp
 
@@ -43,7 +41,6 @@ nodist_SoXtViewersinc_HEADERS = \
 	So@Gui@FullViewer.h \
 	So@Gui@ExaminerViewer.h \
 	So@Gui@FlyViewer.h \
-	So@Gui@PlaneViewer.h \
-	So@Gui@WalkViewer.h
+	So@Gui@PlaneViewer.h
 
 ############################################################################

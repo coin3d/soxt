@@ -1182,9 +1182,11 @@ SoXtP::fallbackresources[] =
   SOXT_COMPONENT "*RightWheelLabel.zoomString:" "Zoom",
 #undef SOXT_COMPONENT
 
+#if 0  // TMP DISABLED: walkviewer not properly implemented yet. 20020624 mortene.
 #define SOXT_COMPONENT "*SoXtWalkViewer"
   SOXT_COMPONENT ".title:" "Walk Viewer",
 #undef SOXT_COMPONENT
+#endif // TMP DISABLED
 
 #define SOXT_COMPONENT "*SoXtFlyViewer"
   SOXT_COMPONENT ".title:" "Fly Viewer",
