@@ -20,8 +20,8 @@ SIM_AC_CVS_CHANGES([
 # Library versioning. For information about our versioning strategy, see the
 # document ``HACKING'' in the Coin CVS module.
 
-SOXT_MAJOR_VERSION=0
-SOXT_MINOR_VERSION=5
+SOXT_MAJOR_VERSION=1
+SOXT_MINOR_VERSION=1
 SOXT_MICRO_VERSION=0
 SOXT_INTERFACE_AGE=0
 SOXT_BINARY_AGE=0
