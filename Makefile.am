@@ -20,7 +20,7 @@ else
 HTMLDIR =
 endif
 
-SUBDIRS = . $(LIBDIRS) man $(HTMLDIR) test-code
+SUBDIRS = . $(LIBDIRS) man $(HTMLDIR) # test-code
 
 ############################################################################
 

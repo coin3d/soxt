@@ -24384,6 +24384,37 @@ fi
 
 # **************************************************************************
 
+else
+
+
+if false; then
+  USE_LIBXPM_TRUE=
+  USE_LIBXPM_FALSE='#'
+else
+  USE_LIBXPM_TRUE='#'
+  USE_LIBXPM_FALSE=
+fi
+
+
+
+if false; then
+  HAVE_JOYSTICK_LINUX_TRUE=
+  HAVE_JOYSTICK_LINUX_FALSE='#'
+else
+  HAVE_JOYSTICK_LINUX_TRUE='#'
+  HAVE_JOYSTICK_LINUX_FALSE=
+fi
+
+
+
+if false; then
+  BUILD_DEVCODE_TRUE=
+  BUILD_DEVCODE_FALSE='#'
+else
+  BUILD_DEVCODE_TRUE='#'
+  BUILD_DEVCODE_FALSE=
+fi
+
 fi  # $sim_ac_build_library == true
 
 # **************************************************************************
@@ -24789,6 +24820,27 @@ if test -z "${BUILD_METAFILES_TRUE}" && test -z "${BUILD_METAFILES_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"BUILD_METAFILES\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
 echo "$as_me: error: conditional \"BUILD_METAFILES\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+if test -z "${USE_LIBXPM_TRUE}" && test -z "${USE_LIBXPM_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"USE_LIBXPM\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"USE_LIBXPM\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+if test -z "${HAVE_JOYSTICK_LINUX_TRUE}" && test -z "${HAVE_JOYSTICK_LINUX_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"HAVE_JOYSTICK_LINUX\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"HAVE_JOYSTICK_LINUX\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+if test -z "${BUILD_DEVCODE_TRUE}" && test -z "${BUILD_DEVCODE_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"BUILD_DEVCODE\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"BUILD_DEVCODE\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi

@@ -360,6 +360,10 @@ AC_SUBST(COIN_COMPILER)
 
 # **************************************************************************
 
+else
+  AM_CONDITIONAL([USE_LIBXPM], [false])
+  AM_CONDITIONAL([HAVE_JOYSTICK_LINUX], [false])
+  AM_CONDITIONAL([BUILD_DEVCODE], [false])
 fi  # $sim_ac_build_library == true
 
 # **************************************************************************
