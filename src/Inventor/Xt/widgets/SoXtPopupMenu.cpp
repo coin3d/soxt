@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <assert.h>
 #include <stdio.h>
@@ -824,3 +826,8 @@ SoXtPopupMenu::itemSelectionCallback( // private, static
 } // itemSelectionCallback()
 
 // *************************************************************************
+
+#if SOXT_DEBUG
+static const char * getSoXtPopupMenuRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
+

@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <assert.h>
 
@@ -896,3 +898,8 @@ SoXtThumbWheelGetValue(
 } // SoXtThumbWheelGetValue()
 
 // *************************************************************************
+
+#if SOXT_DEBUG
+static const char * getSoXtThumbWheelRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
+
