@@ -790,7 +790,7 @@ SoXtComponent::getClassName(
   This method sets the base widget of the component.
 */
 void         // protected
-SoXtComponent::setBaseWidget(const Widget widget)
+SoXtComponent::setBaseWidget(Widget widget)
 {
   const EventMask events = StructureNotifyMask | VisibilityChangeMask;
 
