@@ -29,9 +29,7 @@ libSoXtViewers_la_SOURCES = \
 	So@Gui@PlaneViewer.cpp \
 	So@Gui@PlaneViewer.h \
 	So@Gui@WalkViewer.cpp \
-	So@Gui@WalkViewer.h \
-	So@Gui@CollisionViewer.cpp \
-	So@Gui@CollisionViewer.h
+	So@Gui@WalkViewer.h
 
 nodist_libSoXtViewers_la_SOURCES = \
 	$(SoGui_src_Inventor_Gui_viewers_BuiltFiles) \
@@ -48,8 +46,7 @@ SoXtViewersinc_HEADERS = \
 	So@Gui@FullViewer.h \
 	So@Gui@ExaminerViewer.h \
 	So@Gui@PlaneViewer.h \
-	So@Gui@WalkViewer.h \
-	So@Gui@CollisionViewer.h
+	So@Gui@WalkViewer.h
 
 nodist_SoXtViewersinc_HEADERS = \
 	So@Gui@Viewer.h \
