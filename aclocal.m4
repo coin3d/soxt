@@ -5348,6 +5348,8 @@ fi
 AC_DEFUN([SIM_AC_CHECK_X11MU], [
 
 sim_ac_x11mu_avail=no
+sim_ac_x11mu_cppflags=""
+sim_ac_x11mu_ldflags=""
 sim_ac_x11mu_libs="-lXmu"
 
 sim_ac_save_libs=$LIBS
@@ -5370,9 +5372,13 @@ if test x"$sim_cv_lib_x11mu_avail" = xyes; then
   sim_ac_x11mu_avail=yes
 else
   # On HP-UX, Xmu might be located under /usr/contrib/X11R6/
-  if test -d /usr/contrib/X11R6; then
-    CPPFLAGS="-I/usr/contrib/X11R6/include $CPPFLAGS"
-    LDFLAGS="-L/usr/contrib/X11R6/lib $LDFLAGS"
+  mudir=/usr/contrib/X11R6
+  if test -d $mudir; then
+    sim_ac_x11mu_cppflags="-I$mudir/include"
+    sim_ac_x11mu_ldflags="-L$mudir/lib"
+    CPPFLAGS="$sim_ac_x11mu_cppflags $CPPFLAGS"
+    LDFLAGS="$sim_ac_x11mu_ldflags $LDFLAGS"
+
     AC_CACHE_CHECK(
       [once more whether the X11 miscellaneous utilities library is available],
       sim_cv_lib_x11mu_contrib_avail,
@@ -5384,6 +5390,9 @@ else
                    [sim_cv_lib_x11mu_contrib_avail=no])])
     if test x"$sim_cv_lib_x11mu_contrib_avail" = xyes; then
       sim_ac_x11mu_avail=yes
+    else
+      sim_ac_x11mu_cppflags=""
+      sim_ac_x11mu_ldflags=""
     fi
   fi
 fi
@@ -5433,7 +5442,7 @@ AC_CACHE_CHECK(
                [sim_cv_lib_x11xid_avail=yes],
                [sim_cv_lib_x11xid_avail=no])])
 
-if test x"$sim_cv_lib_x11xid_avail" = xyes; then
+if test x"$sim_cv_lib_x11xid_avail" = x"yes"; then
   sim_ac_x11xid_avail=yes
   $1
 else
