@@ -461,11 +461,28 @@ SoXt::sensorQueueChanged( // static, private
 String
 SoXt::fallback_resources[] =
 {
+#define COMPONENT "*SoXtGLWidget*"
+  COMPONENT     "background:"				"white", // not used
+#undef COMPONENT
+
+#define COMPONENT "*SoXtRenderArea*"
+  COMPONENT     "border:"				"false",
+  COMPONENT     "borderThickness:"			"2",
+  COMPONENT     "background:"				"black",
+#undef COMPONENT
 
 #define COMPONENT "*SoXtExaminerViewer*"
-// X Resources for the SoXtExaminerViewer Component:
+  COMPONENT	"title:"				"Examiner Viewer",
   COMPONENT	"LeftWheelLabel.labelString:"		"Rot Y",
   COMPONENT	"BottomWheelLabel.labelString:"		"Rot X",
+  COMPONENT	"RightWheelLabel.dollyString:"		"Dolly",
+  COMPONENT	"RightWheelLabel.zoomString:"		"Zoom",
+#undef COMPONENT
+
+#define COMPONENT "*SoXtPlaneViewer*"
+  COMPONENT	"title:"				"Plane Viewer",
+  COMPONENT	"LeftWheelLabel.labelString:"		"Trans Y",
+  COMPONENT	"BottomWheelLabel.labelString:"		"Trans X",
   COMPONENT	"RightWheelLabel.dollyString:"		"Dolly",
   COMPONENT	"RightWheelLabel.zoomString:"		"Zoom",
 #undef COMPONENT
