@@ -503,9 +503,12 @@ DISTCLEANFILES = \
 
 ############################################################################
 libSoXtViewers_la_SOURCES = \
-	PlaneViewer.cpp \
+	So@Gui@FullViewerP.h \
 	FullViewer.cpp \
-	ExaminerViewer.cpp
+	So@Gui@ExaminerViewerP.h \
+	ExaminerViewer.cpp \
+	So@Gui@PlaneViewerP.h \
+	PlaneViewer.cpp
 
 
 nodist_libSoXtViewers_la_SOURCES = \
@@ -535,8 +538,8 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 
 libSoXtViewers_la_LDFLAGS =
 libSoXtViewers_la_LIBADD =
-am_libSoXtViewers_la_OBJECTS = PlaneViewer.lo FullViewer.lo \
-	ExaminerViewer.lo
+am_libSoXtViewers_la_OBJECTS = FullViewer.lo ExaminerViewer.lo \
+	PlaneViewer.lo
 @BUILD_METAFILES_TRUE@nodist_libSoXtViewers_la_OBJECTS = \
 @BUILD_METAFILES_TRUE@	So@Gui@Viewer.lo \
 @BUILD_METAFILES_TRUE@	So@Gui@ConstrainedViewer.lo \

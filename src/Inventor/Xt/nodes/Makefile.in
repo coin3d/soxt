@@ -516,7 +516,7 @@ nodist_libSoGuiNodes_la_SOURCES = \
 # that other public headers depend on are installed for now.
 SoGuiNodesincdir = $(includedir)/Inventor/@Gui@/nodes
 
-SoGuiNodesinc_HEADERS = \
+nodist_SoGuiNodesinc_HEADERS = \
 	SoGuiColorEditor.h \
 	SoGuiMaterialEditor.h
 
@@ -566,9 +566,9 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES =
-HEADERS = $(SoGuiNodesinc_HEADERS)
+HEADERS = $(nodist_SoGuiNodesinc_HEADERS)
 
-DIST_COMMON = $(SoGuiNodesinc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = Makefile.am Makefile.in
 SOURCES = $(nodist_libSoGuiNodes_la_SOURCES)
 
 all: $(BUILT_SOURCES)
@@ -951,19 +951,19 @@ MaterialEditor.lo: $(top_builddir)/src/Inventor/@Gui@/nodes/MaterialEditor.cpp
 	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MaterialEditor.lo `test -f $(top_builddir)/src/Inventor/@Gui@/nodes/MaterialEditor.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/nodes/MaterialEditor.cpp
 CXXDEPMODE = @CXXDEPMODE@
 uninstall-info-am:
-install-SoGuiNodesincHEADERS: $(SoGuiNodesinc_HEADERS)
+install-nodist_SoGuiNodesincHEADERS: $(nodist_SoGuiNodesinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(SoGuiNodesincdir)
-	@list='$(SoGuiNodesinc_HEADERS)'; for p in $$list; do \
+	@list='$(nodist_SoGuiNodesinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(SoGuiNodesincdir)/$$f"; \
 	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(SoGuiNodesincdir)/$$f; \
 	done
 
-uninstall-SoGuiNodesincHEADERS:
+uninstall-nodist_SoGuiNodesincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(SoGuiNodesinc_HEADERS)'; for p in $$list; do \
+	@list='$(nodist_SoGuiNodesinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(SoGuiNodesincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(SoGuiNodesincdir)/$$f; \
@@ -1073,7 +1073,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-SoGuiNodesincHEADERS
+install-data-am: install-nodist_SoGuiNodesincHEADERS
 
 install-exec-am:
 
@@ -1092,19 +1092,20 @@ mostlyclean: mostlyclean-am
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
-uninstall-am: uninstall-SoGuiNodesincHEADERS uninstall-info-am
+uninstall-am: uninstall-info-am uninstall-nodist_SoGuiNodesincHEADERS
 
 .PHONY: GTAGS all all-am check check-am clean clean-generic \
 	clean-libtool clean-noinstLTLIBRARIES distclean \
 	distclean-compile distclean-depend distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am info \
-	info-am install install-SoGuiNodesincHEADERS install-am \
-	install-data install-data-am install-exec install-exec-am \
-	install-info install-info-am install-man install-strip \
+	info-am install install-am install-data install-data-am \
+	install-exec install-exec-am install-info install-info-am \
+	install-man install-nodist_SoGuiNodesincHEADERS install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool tags uninstall \
-	uninstall-SoGuiNodesincHEADERS uninstall-am uninstall-info-am
+	uninstall-am uninstall-info-am \
+	uninstall-nodist_SoGuiNodesincHEADERS
 
 
 ############################################################################

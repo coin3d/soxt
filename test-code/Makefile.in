@@ -130,24 +130,39 @@ soxt_configure_date = @soxt_configure_date@
 
 DEFAULT_INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 
-noinst_PROGRAMS = materialeditor coloreditor
+noinst_PROGRAMS = button materialeditor coloreditor examinerviewer
 
 materialeditor_SOURCES = materialeditor.cpp
 materialeditor_LDADD = ../src/Inventor/Xt/libSoXt.la
 
 coloreditor_SOURCES = coloreditor.cpp
 coloreditor_LDADD = ../src/Inventor/Xt/libSoXt.la
+
+examinerviewer_SOURCES = examinerviewer.cpp
+examinerviewer_LDADD = ../src/Inventor/Xt/libSoXt.la
+
+button_SOURCES = button.cpp
+button_LDADD = 
 subdir = test-code
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/src/config.h
 CONFIG_CLEAN_FILES =
-noinst_PROGRAMS = materialeditor$(EXEEXT) coloreditor$(EXEEXT)
+noinst_PROGRAMS = button$(EXEEXT) materialeditor$(EXEEXT) \
+	coloreditor$(EXEEXT) examinerviewer$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
 
+am_button_OBJECTS = button.$(OBJEXT)
+button_OBJECTS = $(am_button_OBJECTS)
+button_DEPENDENCIES =
+button_LDFLAGS =
 am_coloreditor_OBJECTS = coloreditor.$(OBJEXT)
 coloreditor_OBJECTS = $(am_coloreditor_OBJECTS)
 coloreditor_DEPENDENCIES = ../src/Inventor/Xt/libSoXt.la
 coloreditor_LDFLAGS =
+am_examinerviewer_OBJECTS = examinerviewer.$(OBJEXT)
+examinerviewer_OBJECTS = $(am_examinerviewer_OBJECTS)
+examinerviewer_DEPENDENCIES = ../src/Inventor/Xt/libSoXt.la
+examinerviewer_LDFLAGS =
 am_materialeditor_OBJECTS = materialeditor.$(OBJEXT)
 materialeditor_OBJECTS = $(am_materialeditor_OBJECTS)
 materialeditor_DEPENDENCIES = ../src/Inventor/Xt/libSoXt.la
@@ -158,7 +173,8 @@ CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/coloreditor.Po \
+@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/button.Po $(DEPDIR)/coloreditor.Po \
+@AMDEP_TRUE@	$(DEPDIR)/examinerviewer.Po \
 @AMDEP_TRUE@	$(DEPDIR)/materialeditor.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -169,9 +185,10 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 CXXFLAGS = @CXXFLAGS@
-DIST_SOURCES = $(coloreditor_SOURCES) $(materialeditor_SOURCES)
+DIST_SOURCES = $(button_SOURCES) $(coloreditor_SOURCES) \
+	$(examinerviewer_SOURCES) $(materialeditor_SOURCES)
 DIST_COMMON = Makefile.am Makefile.in
-SOURCES = $(coloreditor_SOURCES) $(materialeditor_SOURCES)
+SOURCES = $(button_SOURCES) $(coloreditor_SOURCES) $(examinerviewer_SOURCES) $(materialeditor_SOURCES)
 
 all: all-am
 
@@ -196,9 +213,15 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 
 clean-noinstPROGRAMS:
 	-test -z "$(noinst_PROGRAMS)" || rm -f $(noinst_PROGRAMS)
+button$(EXEEXT): $(button_OBJECTS) $(button_DEPENDENCIES) 
+	@rm -f button$(EXEEXT)
+	$(CXXLINK) $(button_LDFLAGS) $(button_OBJECTS) $(button_LDADD) $(LIBS)
 coloreditor$(EXEEXT): $(coloreditor_OBJECTS) $(coloreditor_DEPENDENCIES) 
 	@rm -f coloreditor$(EXEEXT)
 	$(CXXLINK) $(coloreditor_LDFLAGS) $(coloreditor_OBJECTS) $(coloreditor_LDADD) $(LIBS)
+examinerviewer$(EXEEXT): $(examinerviewer_OBJECTS) $(examinerviewer_DEPENDENCIES) 
+	@rm -f examinerviewer$(EXEEXT)
+	$(CXXLINK) $(examinerviewer_LDFLAGS) $(examinerviewer_OBJECTS) $(examinerviewer_LDADD) $(LIBS)
 materialeditor$(EXEEXT): $(materialeditor_OBJECTS) $(materialeditor_DEPENDENCIES) 
 	@rm -f materialeditor$(EXEEXT)
 	$(CXXLINK) $(materialeditor_LDFLAGS) $(materialeditor_OBJECTS) $(materialeditor_LDADD) $(LIBS)
@@ -209,7 +232,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/button.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/coloreditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/examinerviewer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/materialeditor.Po@am__quote@
 
 distclean-depend:

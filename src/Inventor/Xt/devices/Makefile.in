@@ -503,18 +503,16 @@ DISTCLEANFILES = \
 
 ############################################################################
 libSoXtDevices_la_SOURCES = \
-	So@Gui@Device.h \
+	So@Gui@DeviceP.h \
 	So@Gui@Device.cpp \
-	So@Gui@InputFocus.h \
 	So@Gui@InputFocus.cpp \
-	So@Gui@Keyboard.h \
 	So@Gui@Keyboard.cpp \
-	So@Gui@Mouse.h \
 	So@Gui@Mouse.cpp \
-	So@Gui@Spaceball.h \
+	So@Gui@SpaceballP.h \
 	So@Gui@Spaceball.cpp \
 	So@Gui@LinuxJoystick.h \
-	So@Gui@LinuxJoystick.cpp
+	So@Gui@LinuxJoystick.cpp \
+	6DOFEvents.h
 
 
 nodist_libSoXtDevices_la_SOURCES = \
@@ -550,11 +548,14 @@ nodist_libSoXtDevices_la_SOURCES = \
 SoXtDevicesincdir = $(includedir)/Inventor/@Gui@/devices
 
 SoXtDevicesinc_HEADERS = \
+	So@Gui@LinuxJoystick.h
+
+
+nodist_SoXtDevicesinc_HEADERS = \
 	So@Gui@Device.h \
 	So@Gui@Keyboard.h \
 	So@Gui@Mouse.h \
-	So@Gui@Spaceball.h \
-	So@Gui@LinuxJoystick.h
+	So@Gui@Spaceball.h
 
 subdir = src/Inventor/Xt/devices
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -608,7 +609,7 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(libSoXtDevices_la_SOURCES)
-HEADERS = $(SoXtDevicesinc_HEADERS)
+HEADERS = $(SoXtDevicesinc_HEADERS) $(nodist_SoXtDevicesinc_HEADERS)
 
 DIST_COMMON = $(SoXtDevicesinc_HEADERS) Makefile.am Makefile.in
 SOURCES = $(libSoXtDevices_la_SOURCES) $(nodist_libSoXtDevices_la_SOURCES)
@@ -818,6 +819,23 @@ uninstall-SoXtDevicesincHEADERS:
 	  echo " rm -f $(DESTDIR)$(SoXtDevicesincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(SoXtDevicesincdir)/$$f; \
 	done
+install-nodist_SoXtDevicesincHEADERS: $(nodist_SoXtDevicesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(SoXtDevicesincdir)
+	@list='$(nodist_SoXtDevicesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(SoXtDevicesincdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(SoXtDevicesincdir)/$$f; \
+	done
+
+uninstall-nodist_SoXtDevicesincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(nodist_SoXtDevicesinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(SoXtDevicesincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(SoXtDevicesincdir)/$$f; \
+	done
 
 tags: TAGS
 
@@ -877,7 +895,7 @@ check: check-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(SoXtDevicesincdir)
+	$(mkinstalldirs) $(DESTDIR)$(SoXtDevicesincdir) $(DESTDIR)$(SoXtDevicesincdir)
 
 install: install-am
 install-exec: install-exec-am
@@ -923,7 +941,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-SoXtDevicesincHEADERS
+install-data-am: install-SoXtDevicesincHEADERS \
+	install-nodist_SoXtDevicesincHEADERS
 
 install-exec-am:
 
@@ -942,7 +961,8 @@ mostlyclean: mostlyclean-am
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
-uninstall-am: uninstall-SoXtDevicesincHEADERS uninstall-info-am
+uninstall-am: uninstall-SoXtDevicesincHEADERS uninstall-info-am \
+	uninstall-nodist_SoXtDevicesincHEADERS
 
 .PHONY: GTAGS all all-am check check-am clean clean-generic \
 	clean-libtool clean-noinstLTLIBRARIES distclean \
@@ -950,11 +970,13 @@ uninstall-am: uninstall-SoXtDevicesincHEADERS uninstall-info-am
 	distclean-libtool distclean-tags distdir dvi dvi-am info \
 	info-am install install-SoXtDevicesincHEADERS install-am \
 	install-data install-data-am install-exec install-exec-am \
-	install-info install-info-am install-man install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
+	install-info install-info-am install-man \
+	install-nodist_SoXtDevicesincHEADERS install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool tags uninstall \
-	uninstall-SoXtDevicesincHEADERS uninstall-am uninstall-info-am
+	uninstall-SoXtDevicesincHEADERS uninstall-am uninstall-info-am \
+	uninstall-nodist_SoXtDevicesincHEADERS
 
 
 ############################################################################
