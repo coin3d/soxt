@@ -36,6 +36,10 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/devices/SoXtKeyboard.h>
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 // *************************************************************************
 
 /*!
@@ -271,7 +275,11 @@ SoXtKeyboard::makeKeyboardEvent( // private
     case XK_Pause:        key = SoKeyboardEvent::PAUSE;          break;
     case XK_Scroll_Lock:  key = SoKeyboardEvent::SCROLL_LOCK;    break;
     case XK_Escape:       key = SoKeyboardEvent::ESCAPE;         break;
+#ifdef HAVE_SOKEYBOARDEVENT_DELETE
     case XK_Delete:       key = SoKeyboardEvent::DELETE;         break;
+#else /* very strange */
+    case XK_Delete:       key = SoKeyboardEvent::KEY_DELETE;     break;
+#endif
     case XK_Print:        key = SoKeyboardEvent::PRINT;          break;
     case XK_Insert:       key = SoKeyboardEvent::INSERT;         break;
     case XK_Num_Lock:     key = SoKeyboardEvent::NUM_LOCK;       break;
