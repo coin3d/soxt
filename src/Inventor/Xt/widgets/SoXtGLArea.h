@@ -147,6 +147,9 @@ extern "C" {
 #define SoXtNaccumAlphaSize       "accumAlphaSize"
 #define SoXtCAccumAlphaSize       "AccumAlphaSize"
 
+#define SoXtNrefresh              "refresh"
+#define SoXtCRefresh              "Refresh"
+
 typedef  struct _SoXtGLAreaClassRec *  SoXtGLAreaWidgetClass;
 typedef  struct _SoXtGLAreaRec *       SoXtGLAreaWidget;
 

@@ -61,7 +61,7 @@ extern "C" {
 /* ********************************************************************** */
 
 typedef struct _SoXtGLAreaClassPart {
-  caddr_t extension;
+  XtPointer extension;
 } SoXtGLAreaClassPart;
 
 typedef struct _SoXtGLAreaClassRec {
@@ -86,6 +86,8 @@ typedef struct _SoXtGLAreaPart {
   XtCallbackList       resizeCallback;
   XtCallbackList       exposeCallback;
   XtCallbackList       inputCallback;
+
+  Boolean              refresh;
 
   /* specific attributes; add as we get new attributes */
   int                  bufferSize;

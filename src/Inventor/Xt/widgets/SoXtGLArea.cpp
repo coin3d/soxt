@@ -55,6 +55,11 @@
  *     19th may 2000
  */
 
+#if SOXT_DEBUG
+static const char rcsid[] =
+  "$Id$";
+#endif // SOXT_DEBUG
+
 #include <assert.h>
 
 #include <X11/IntrinsicP.h>
@@ -80,6 +85,7 @@ static void Redraw( SoXtGLAreaWidget, XEvent *, Region );
 static void Resize( SoXtGLAreaWidget );
 static void Destroy( SoXtGLAreaWidget );
 static void glwInput( SoXtGLAreaWidget, XEvent *, String *, Cardinal * );
+static Boolean set_values( Widget, Widget, Widget, ArgList, Cardinal * );
 
 // *************************************************************************
 
@@ -222,7 +228,12 @@ static XtResource resources[] =
     SoXtNexposeCallback, SoXtCCallback, XtRCallback,
     sizeof(XtCallbackList), offset(exposeCallback),
     XtRImmediate, (XtPointer) NULL
+  }, {
+    SoXtNrefresh, SoXtCRefresh, XtRBoolean,
+    sizeof(Boolean), offset(refresh),
+    XtRImmediate, (XtPointer) NULL
   },
+
   // Changes to Motif primitive resources
   {
     XmNtraversalOn, XmCTraversalOn, XmRBoolean,
@@ -301,47 +312,49 @@ static XtResource otherColorResources[] =
 #undef offset
 
 SoXtGLAreaClassRec soxtGLAreaClassRec = {
-  { /* core fields */
-    /* superclass                */        (WidgetClass) &xmPrimitiveClassRec,
-    /* class_name                */        "SoXtGLArea",
-    /* widget_size               */        sizeof(SoXtGLAreaRec),
-    /* class_initialize          */        NULL,
-    /* class_part_initialize     */        NULL,
-    /* class_inited              */        FALSE,
-    /* initialize                */        (XtInitProc) Initialize,
-    /* initialize_hook           */        NULL,
-    /* realize                   */        Realize,
-    /* actions                   */        actions,
-    /* num_actions               */        XtNumber(actions),
-    /* resources                 */        resources,
-    /* num_resources             */        XtNumber(resources),
-    /* xrm_class                 */        NULLQUARK,
-    /* compress_motion           */        TRUE,
-    /* compress_exposure         */        TRUE,
-    /* compress_enterleave       */        TRUE,
-    /* visible_interest          */        TRUE,
-    /* destroy                   */        (XtWidgetProc) Destroy,
-    /* resize                    */        (XtWidgetProc) Resize,
-    /* expose                    */        (XtExposeProc) Redraw,
-    /* set_values                */        NULL,
-    /* set_values_hook           */        NULL,
-    /* set_values_almost         */        XtInheritSetValuesAlmost,
-    /* get_values_hook           */        NULL,
-    /* accept_focus              */        NULL,
-    /* version                   */        XtVersion,
-    /* callback_private          */        NULL,
-    /* tm_table                  */        defaultTranslations,
-    /* query_geometry            */        XtInheritQueryGeometry,
-    /* display_accelerator       */        XtInheritDisplayAccelerator,
-    /* extension                 */        NULL
+  { // core fields
+    (WidgetClass) &xmPrimitiveClassRec,    // superclass
+    "SoXtGLArea",                          // class_name
+    sizeof(SoXtGLAreaRec),                 // widget_size
+    NULL,                                  // class_initialize
+    NULL,                                  // class_part_initialize
+    FALSE,                                 // class_inited
+    (XtInitProc) Initialize,               // initialize
+    NULL,                                  // initialize_hook
+    Realize,                               // realize
+    actions,                               // actions
+    XtNumber(actions),                     // num_actions
+    resources,                             // resources
+    XtNumber(resources),                   // num_resources
+    NULLQUARK,                             // xrm_class
+    TRUE,                                  // compress_motion
+    TRUE,                                  // compress_exposure
+    TRUE,                                  // compress_enterleave
+    TRUE,                                  // visible_interest
+    (XtWidgetProc) Destroy,                // destroy
+    (XtWidgetProc) Resize,                 // resize
+    (XtExposeProc) Redraw,                 // expose
+    set_values,                            // set_values
+    NULL,                                  // set_values_hook
+    XtInheritSetValuesAlmost,              // set_values_almost
+    NULL,                                  // get_values_hook
+    NULL,                                  // accept_focus
+    XtVersion,                             // version
+    NULL,                                  // callback_private
+    defaultTranslations,                   // tm_table
+    XtInheritQueryGeometry,                // query_geometry
+    XtInheritDisplayAccelerator,           // display_accelerator
+    NULL                                   // extension
   }, {
-    /* border_highlight          */        XmInheritBorderHighlight,
-    /* border_unhighlight        */        XmInheritBorderUnhighlight,
-    /* translations              */        XtInheritTranslations,
-    /* arm_and_activate          */        NULL,
-    /* get_resources             */        NULL,
-    /* num get_resources         */        0,
-    /* extension                 */        NULL,                                
+    XmInheritBorderHighlight,              // border_highlight
+    XmInheritBorderUnhighlight,            // border_unhighlight
+    XtInheritTranslations,                 // translations
+    NULL,                                  // arm_and_activate
+    NULL,                                  // get_resources
+    0,                                     // num get_resources
+    NULL                                   // extension
+  }, {
+    (XtPointer) NULL                       // extension
   }
 }; // soxtGLAreaClassRec
 
@@ -423,12 +436,14 @@ createVisualInfo(
 {
   static XVisualInfo * visualInfo;
   assert( widget->soxtGLArea.attribList );
-  widget->soxtGLArea.visualInfo = 
-    glXChooseVisual( XtDisplay(widget),
-                     XScreenNumberOfScreen( XtScreen(widget) ),
-                     widget->soxtGLArea.attribList);
+
+  if ( widget->soxtGLArea.visualInfo == NULL )
+    widget->soxtGLArea.visualInfo = 
+      glXChooseVisual( XtDisplay(widget),
+                       XScreenNumberOfScreen( XtScreen(widget) ),
+                       widget->soxtGLArea.attribList);
   if ( ! widget->soxtGLArea.visualInfo )
-     error( (Widget) widget, "requested visual not supported" );
+    error( (Widget) widget, "requested visual not supported" );
 } // createVisualkInfo()
 
 // *************************************************************************
@@ -733,3 +748,31 @@ SoXtGLAreaSwapBuffers(
 } // SoXtGLAreaSwapBuffers()
 
 // *************************************************************************
+
+Boolean
+set_values(
+  Widget current,
+  Widget request,
+  Widget new_widget,
+  ArgList args,
+  Cardinal * num_args )
+{
+  Boolean redisplay = False;
+  SoXtGLAreaWidget curcw = (SoXtGLAreaWidget) current;
+  SoXtGLAreaWidget reqcw = (SoXtGLAreaWidget) request;
+  SoXtGLAreaWidget newcw = (SoXtGLAreaWidget) new_widget;
+
+  if ( newcw->soxtGLArea.refresh != curcw->soxtGLArea.refresh ) {
+    newcw->soxtGLArea.refresh = False;
+    redisplay = True;
+  }
+
+  return redisplay;
+} // set_values()
+
+// *************************************************************************
+
+#if SOXT_DEBUG
+static const char * getSoXtGLAreaRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
+
