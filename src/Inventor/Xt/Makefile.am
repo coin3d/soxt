@@ -53,7 +53,8 @@ SoXtincdir = $(includedir)/Inventor/Xt
 
 SoXtinc_HEADERS = \
 	SoXtResource.h \
-	SoXtColorEditor.h
+	SoXtColorEditor.h \
+	SoXtMaterialEditor.h
 
 nodist_SoXtinc_HEADERS = \
 	SoXt.h \

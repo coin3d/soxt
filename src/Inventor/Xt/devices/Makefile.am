@@ -21,18 +21,16 @@ DISTCLEANFILES = \
 ############################################################################
 
 libSoXtDevices_la_SOURCES = \
-	So@Gui@Device.h \
+	So@Gui@DeviceP.h \
 	So@Gui@Device.cpp \
-	So@Gui@InputFocus.h \
 	So@Gui@InputFocus.cpp \
-	So@Gui@Keyboard.h \
 	So@Gui@Keyboard.cpp \
-	So@Gui@Mouse.h \
 	So@Gui@Mouse.cpp \
-	So@Gui@Spaceball.h \
+	So@Gui@SpaceballP.h \
 	So@Gui@Spaceball.cpp \
 	So@Gui@LinuxJoystick.h \
-	So@Gui@LinuxJoystick.cpp
+	So@Gui@LinuxJoystick.cpp \
+	6DOFEvents.h
 
 nodist_libSoXtDevices_la_SOURCES = \
 	$(SoGui_src_Inventor_Gui_devices_BuiltFiles)
@@ -67,10 +65,12 @@ nodist_libSoXtDevices_la_SOURCES = \
 SoXtDevicesincdir = $(includedir)/Inventor/@Gui@/devices
 
 SoXtDevicesinc_HEADERS = \
+	So@Gui@LinuxJoystick.h
+
+nodist_SoXtDevicesinc_HEADERS = \
 	So@Gui@Device.h \
 	So@Gui@Keyboard.h \
 	So@Gui@Mouse.h \
-	So@Gui@Spaceball.h \
-	So@Gui@LinuxJoystick.h
+	So@Gui@Spaceball.h
 
 ############################################################################

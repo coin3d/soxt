@@ -21,9 +21,12 @@ DISTCLEANFILES = \
 ############################################################################
 
 libSoXtViewers_la_SOURCES = \
-	PlaneViewer.cpp \
+	So@Gui@FullViewerP.h \
 	FullViewer.cpp \
-	ExaminerViewer.cpp
+	So@Gui@ExaminerViewerP.h \
+	ExaminerViewer.cpp \
+	So@Gui@PlaneViewerP.h \
+	PlaneViewer.cpp
 
 nodist_libSoXtViewers_la_SOURCES = \
 	$(SoGui_src_Inventor_Gui_viewers_BuiltFiles) \

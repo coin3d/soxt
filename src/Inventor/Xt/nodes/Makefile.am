@@ -34,7 +34,7 @@ nodist_libSoGuiNodes_la_SOURCES = \
 
 SoGuiNodesincdir = $(includedir)/Inventor/@Gui@/nodes
 
-SoGuiNodesinc_HEADERS = \
+nodist_SoGuiNodesinc_HEADERS = \
 	SoGuiColorEditor.h \
 	SoGuiMaterialEditor.h
 
