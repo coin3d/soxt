@@ -51,8 +51,8 @@ nodist_libSoGuiEngines_la_SOURCES = \
 # to be made public, but until then we'll let them mature.  Only headers
 # that other public headers depend on are installed for now.
 
-SoGuiEnginesincdir = $(includedir)/Inventor/@Gui@/engines
+# SoGuiEnginesincdir = $(includedir)/Inventor/@Gui@/engines
 
-SoGuiEnginesinc_HEADERS =
+# SoGuiEnginesinc_HEADERS =
 
 ############################################################################
