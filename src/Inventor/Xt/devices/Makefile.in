@@ -95,6 +95,8 @@ F77 = @F77@
 FFLAGS = @FFLAGS@
 GUI = @GUI@
 Gui = @Gui@
+HACKING_COMPACT_BUILD_FALSE = @HACKING_COMPACT_BUILD_FALSE@
+HACKING_COMPACT_BUILD_TRUE = @HACKING_COMPACT_BUILD_TRUE@
 HAVE_JOYSTICK_LINUX_FALSE = @HAVE_JOYSTICK_LINUX_FALSE@
 HAVE_JOYSTICK_LINUX_TRUE = @HAVE_JOYSTICK_LINUX_TRUE@
 INSTALL_DATA = @INSTALL_DATA@
@@ -588,7 +590,7 @@ DISTCLEANFILES = \
 
 
 ############################################################################
-libSoXtDevices_la_SOURCES = \
+RegularSources = \
 	So@Gui@DeviceP.h \
 	So@Gui@Device.cpp \
 	So@Gui@InputFocus.cpp \
@@ -599,6 +601,18 @@ libSoXtDevices_la_SOURCES = \
 	So@Gui@LinuxJoystick.h \
 	So@Gui@LinuxJoystick.cpp \
 	6DOFEvents.h
+
+LinkHackSources = \
+	soxtdevices-all-cpp.cpp
+
+@HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
+
+@HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_FALSE@ExtraSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_TRUE@ExtraSources = $(RegularSources)
+
+libSoXtDevices_la_SOURCES = \
+	$(BuildSources)
 
 
 nodist_libSoXtDevices_la_SOURCES = \
@@ -652,13 +666,20 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 
 libSoXtDevices_la_LDFLAGS =
 libSoXtDevices_la_LIBADD =
-am_libSoXtDevices_la_OBJECTS = So@Gui@Device.lo So@Gui@InputFocus.lo \
-	So@Gui@Keyboard.lo So@Gui@Mouse.lo So@Gui@Spaceball.lo \
-	So@Gui@LinuxJoystick.lo
-am__objects_1 = spwinput_x11.lo spwinput_win32.lo So@Gui@DeviceCommon.lo \
+am__libSoXtDevices_la_SOURCES_DIST = So@Gui@DeviceP.h So@Gui@Device.cpp \
+	So@Gui@InputFocus.cpp So@Gui@Keyboard.cpp So@Gui@Mouse.cpp \
+	So@Gui@SpaceballP.h So@Gui@Spaceball.cpp So@Gui@LinuxJoystick.h \
+	So@Gui@LinuxJoystick.cpp 6DOFEvents.h soxtdevices-all-cpp.cpp
+am__objects_1 = soxtdevices-all-cpp.lo
+am__objects_2 = So@Gui@Device.lo So@Gui@InputFocus.lo So@Gui@Keyboard.lo \
+	So@Gui@Mouse.lo So@Gui@Spaceball.lo So@Gui@LinuxJoystick.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
+am_libSoXtDevices_la_OBJECTS = $(am__objects_3)
+am__objects_4 = spwinput_x11.lo spwinput_win32.lo So@Gui@DeviceCommon.lo \
 	So@Gui@InputFocusCommon.lo So@Gui@KeyboardCommon.lo \
 	So@Gui@MouseCommon.lo So@Gui@SpaceballCommon.lo
-nodist_libSoXtDevices_la_OBJECTS = $(am__objects_1)
+nodist_libSoXtDevices_la_OBJECTS = $(am__objects_4)
 libSoXtDevices_la_OBJECTS = $(am_libSoXtDevices_la_OBJECTS) \
 	$(nodist_libSoXtDevices_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -674,6 +695,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/So@Gui@MouseCommon.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/So@Gui@Spaceball.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/So@Gui@SpaceballCommon.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/soxtdevices-all-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/spwinput_win32.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/spwinput_x11.Plo
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -691,7 +713,7 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libSoXtDevices_la_SOURCES)
+DIST_SOURCES = $(am__libSoXtDevices_la_SOURCES_DIST)
 HEADERS = $(SoXtDevicesinc_HEADERS) $(nodist_SoXtDevicesinc_HEADERS)
 
 DIST_COMMON = $(SoXtDevicesinc_HEADERS) \
@@ -737,6 +759,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/So@Gui@MouseCommon.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/So@Gui@Spaceball.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/So@Gui@SpaceballCommon.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/soxtdevices-all-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spwinput_win32.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spwinput_x11.Plo@am__quote@
 
