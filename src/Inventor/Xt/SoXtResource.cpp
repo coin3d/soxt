@@ -55,7 +55,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-int icstrcmp(char * str1, char * str2);
+int icstrcmp(const char * str1, const char * str2);
 
 /*!
   Constructor.   sets up the SoXtResource object to fetch resources for
@@ -463,8 +463,8 @@ inline char upcase(char letter) {
 
 int
 icstrcmp(
-  char * str1,
-  char * str2)
+  const char * str1,
+  const char * str2)
 {
   int i = 0;
   while (str1[i] && (upcase(str1[i]) == upcase(str2[i]))) i++;
