@@ -91,43 +91,6 @@ priority the item has.
 
 ========================================================================
 
-009 On HP-UX, configure misses the presence of gl.h.  The file is
-    located at /opt/graphics/OpenGL/include/GL/gl.h.  The gl.h in
-    src/Inventor/Xt/common fails.  Defining HAVE_GL_GL_H (of course)
-    fixes this problem.
-
-    Reported by Mark Anderson
-
-========================================================================
-
-010 Something in the configure script messes up and uses
-    @SOQT_EXTRA_CPPFLAGS@, @SOQT_VERSION@, etc. instead of the SoXt
-    versions, so that I have to manually go in and edit each Makefile
-    to use the correct cppflags, cxxflags, etc.
-
-    Reported by Mark Anderson
-
-========================================================================
-
-011 Even though the Xmu check failed, the functions using Xmu still get
-    written (e.g. in SoXt.cpp).  I don't have a version of Xmu compiled
-    with X11R6 so I have not been able to get everything to compile
-    correctly (it is somehow mixing R5, which I have Xmu compiled for,
-    with R6, which is where /usr/include/X11 is pointing to).
-
-    Reported by Mark Anderson
-
-========================================================================
-
-012 Finally, I'm having problems now with the Xmu library.  On HP, it's
-    installed in a non-standard location (/usr/contrib/X11R6) and I have
-    to hack my way through the code (by forcing HAVE_LIBXMU to be
-    defined) to get it to compile.
-
-    Reported by Mark Anderson
-
-========================================================================
-
 013 Something is fishy with how the default visual, colormap and depth
     are picked out (SoXtInternal, SoXtThumbWheel) - cause X errors on
     IRIX.
