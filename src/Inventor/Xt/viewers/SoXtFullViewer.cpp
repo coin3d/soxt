@@ -603,9 +603,39 @@ SoXtFullViewer::createViewerButtons(
   SbPList * buttonlist )
 {
   assert( buttonlist != NULL );
-  for ( int i = 0; i <= SEEK_BUTTON; i++ ) {
+  int viewerbutton;
+  for ( viewerbutton = 0; viewerbutton <= SEEK_BUTTON; viewerbutton++ ) {
     Widget button = XtVaCreateManagedWidget( "b",
         xmPushButtonWidgetClass, parent, NULL );
+    XtCallbackProc proc = NULL;
+    switch ( viewerbutton ) {
+    case INTERACT_BUTTON:
+      proc = SoXtFullViewer::interactbuttonCB;
+      break;
+    case EXAMINE_BUTTON:
+      proc = SoXtFullViewer::examinebuttonCB;
+      break;
+    case HELP_BUTTON:
+      proc = SoXtFullViewer::helpbuttonCB;
+      break;
+    case HOME_BUTTON:
+      proc = SoXtFullViewer::homebuttonCB;
+      break;
+    case SET_HOME_BUTTON:
+      proc = SoXtFullViewer::sethomebuttonCB;
+      break;
+    case VIEW_ALL_BUTTON:
+      proc = SoXtFullViewer::viewallbuttonCB;
+      break;
+    case SEEK_BUTTON:
+      proc = SoXtFullViewer::seekbuttonCB;
+      break;
+    default:
+      assert( 0 );
+      break;
+    } // switch ( viewerbutton )
+    if ( proc != NULL )
+      XtAddCallback( button, XmNactivateCallback, proc, this );
     buttonlist->append( button );
   }
 } // createViewerButtons()
@@ -875,53 +905,132 @@ SoXtFullViewer::selectedPrefs(
 }
 
 void
+SoXtFullViewer::interactbuttonClicked(
+  void )
+{
+  if ( this->isViewing() )
+    this->setViewing( FALSE );
+} // interactbuttonClicked()
+
+void
+SoXtFullViewer::interactbuttonCB(
+  Widget,
+  XtPointer client_data,
+  XtPointer )
+{
+  ((SoXtFullViewer *) client_data)->interactbuttonClicked();
+} // interactbuttonCB()
+
+void
+SoXtFullViewer::examinebuttonClicked(
+  void )
+{
+  if ( ! this->isViewing() )
+    this->setViewing( TRUE );
+} // examinebuttonClicked();
+
+void
+SoXtFullViewer::examinebuttonCB(
+  Widget,
+  XtPointer client_data,
+  XtPointer )
+{
+  ((SoXtFullViewer *) client_data)->examinebuttonClicked();
+} // examinebuttonCB()
+
+void
 SoXtFullViewer::helpbuttonClicked(
   void )
 {
-  SOXT_STUB();
-}
+  this->openViewerHelpCard();
+} // helpbuttonClicked()
+
+void
+SoXtFullViewer::helpbuttonCB(
+  Widget,
+  XtPointer client_data,
+  XtPointer )
+{
+  ((SoXtFullViewer *) client_data)->helpbuttonClicked();
+} // helpbuttonCB()
 
 void
 SoXtFullViewer::homebuttonClicked(
   void )
 {
-  SOXT_STUB();
-}
+  this->resetToHomePosition();
+} // homebuttonClicked()
+
+void
+SoXtFullViewer::homebuttonCB(
+  Widget,
+  XtPointer client_data,
+  XtPointer )
+{
+  ((SoXtFullViewer *) client_data)->homebuttonClicked();
+} // homebuttonCB()
 
 void
 SoXtFullViewer::sethomebuttonClicked(
   void )
 {
-  SOXT_STUB();
-}
+  this->saveHomePosition();
+} // sethomebuttonClicked()
+
+void
+SoXtFullViewer::sethomebuttonCB(
+  Widget,
+  XtPointer client_data,
+  XtPointer )
+{
+  ((SoXtFullViewer *) client_data)->sethomebuttonClicked();
+} // sethomebuttonCB()
 
 void
 SoXtFullViewer::viewallbuttonClicked(
   void )
 {
-  SOXT_STUB();
-}
+  this->viewAll();
+} // viewallbuttonClicked()
+
+void
+SoXtFullViewer::viewallbuttonCB(
+  Widget,
+  XtPointer client_data,
+  XtPointer )
+{
+  ((SoXtFullViewer *) client_data)->viewallbuttonClicked();
+} // viewallbuttonCB()
 
 void
 SoXtFullViewer::seekbuttonClicked(
   void )
 {
-  SOXT_STUB();
-}
+  this->setSeekMode(this->isSeekMode() ? FALSE : TRUE);
+} // seekbuttonClicked()
+
+void
+SoXtFullViewer::seekbuttonCB(
+  Widget,
+  XtPointer client_data,
+  XtPointer )
+{
+  ((SoXtFullViewer *) client_data)->seekbuttonClicked();
+} // seekbuttonCB()
 
 void
 SoXtFullViewer::copyviewSelected(
   void )
 {
-  SOXT_STUB();
-}
+  this->copyView( SbTime::getTimeOfDay() );
+} // copyviewSelected()
 
 void
 SoXtFullViewer::pasteviewSelected(
   void )
 {
-  SOXT_STUB();
-}
+  this->pasteView( SbTime::getTimeOfDay() );
+} // pasteviewSelected()
 
 void
 SoXtFullViewer::drawstyleActivated(
@@ -929,6 +1038,5 @@ SoXtFullViewer::drawstyleActivated(
 {
   SOXT_STUB();
 }
-
 
 // *************************************************************************
