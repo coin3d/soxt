@@ -130,8 +130,17 @@ SoXtFullViewer::SoXtFullViewer( // protected
   pixmaps.view_all = 0;
   pixmaps.seek = 0;
 
-  if ( build != FALSE )
-    this->buildWidget( parent );
+  if ( build != FALSE ) {
+    Widget widget = this->buildWidget( parent );
+    XtVaSetValues( widget,
+      XmNleftAttachment, XmATTACH_FORM,
+      XmNtopAttachment, XmATTACH_FORM,
+      XmNrightAttachment, XmATTACH_FORM,
+      XmNbottomAttachment, XmATTACH_FORM,
+      NULL );
+    this->setBaseWidget( widget );
+  }
+
 } // SoXtFullViewer()
 
 /*!
@@ -164,7 +173,6 @@ SoXtFullViewer::setDecoration(
   if ( this->prefmenu )
     this->prefmenu->SetMenuItemMarked( DECORATION_ITEM, enable );
 
-/*
   Widget shell = this->baseWidget();
   while ( shell != NULL && ! XtIsWMShell( shell ) )
     shell = XtParent( shell );
@@ -184,22 +192,31 @@ SoXtFullViewer::setDecoration(
     if ( enable ) {
       if ( curminwidth == 0 ) {
         XtVaSetValues( shell, XmNminWidth, minwidth, NULL );
-//        if ( curwidth < minwidth )
-//          XtVaSetValues( shell, XmNwidth, minwidth, NULL );
+        if ( curwidth < minwidth ) {
+          XtVaSetValues( shell, XmNwidth, minwidth, NULL );
+        }
       }
       if ( curminheight == 0 ) {
         XtVaSetValues( shell, XmNminHeight, minheight, NULL );
-//        if ( curheight < minheight )
-//          XtVaSetValues( shell, XmNheight, minheight, NULL );
+        if ( curheight < minheight ) {
+          XtVaSetValues( shell, XmNheight, minheight, NULL );
+        }
       }
     } else {
-      if ( curminwidth == minwidth )
-        XtVaSetValues( shell, XmNminWidth, 0, NULL );
-      if ( curminheight == minheight )
-        XtVaSetValues( shell, XmNminHeight, 0, NULL );
+      if ( curminwidth == minwidth ) {
+// why the crash bang boom?
+//        XtVaSetValues( shell,
+//          XmNminWidth, 100,
+//          NULL );
+      }
+      if ( curminheight == minheight ) {
+// why the crash bang boom?
+//        XtVaSetValues( shell,
+//          XmNminHeight, 100,
+//          NULL );
+      }
     }
   }
-*/
 } // setDecoration()
 
 /*!
@@ -342,15 +359,8 @@ SoXtFullViewer::buildWidget( // protected
 {
   this->viewerbase = XtVaCreateManagedWidget( this->getClassName(),
     xmFormWidgetClass, parent,
-/*
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNrightAttachment, XmATTACH_FORM,
-    XmNbottomAttachment, XmATTACH_FORM,
-*/
     NULL );
 
-  this->setBaseWidget( this->viewerbase );
   this->registerWidget( this->viewerbase );
 
   char * titleString = NULL;
@@ -458,23 +468,18 @@ SoXtFullViewer::buildLeftTrim( // virtual
       NULL );
 
   // build application buttons
+/*
   this->appButtonsForm = this->buildAppButtonsForm( trim );
-
   XtVaSetValues( this->appButtonsForm,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_FORM,
     NULL );
-  XtManageChild( this->appButtonsForm );
+*/
 
   // add right thumb wheel
   this->wheels[LEFTDECORATION] = XtVaCreateManagedWidget( "LeftWheel",
     soxtThumbWheelWidgetClass, trim,
-    XmNorientation, XmVERTICAL,
-    XmNshadowType, XmSHADOW_OUT,
-    XmNhighlightThickness, 0,
-    XmNshadowThickness, 2,
-    XmNtraversalOn, False,
     XmNleftAttachment, XmATTACH_FORM,
     XmNleftOffset, 2,
     XmNrightAttachment, XmATTACH_FORM,
@@ -482,6 +487,11 @@ SoXtFullViewer::buildLeftTrim( // virtual
     XmNbottomAttachment, XmATTACH_FORM,
     XmNbottomOffset, 2,
     XmNheight, 90,
+    XmNorientation, XmVERTICAL,
+    XmNshadowType, XmSHADOW_OUT,
+    XmNhighlightThickness, 0,
+    XmNshadowThickness, 2,
+    XmNtraversalOn, False,
     NULL );
 
   XtAddCallback( this->wheels[LEFTDECORATION],
@@ -519,11 +529,6 @@ SoXtFullViewer::buildRightTrim( // virtual
   // add right thumb wheel
   this->wheels[RIGHTDECORATION] = XtVaCreateManagedWidget( "RightWheel",
     soxtThumbWheelWidgetClass, trim,
-    XmNorientation, XmVERTICAL,
-    XmNshadowType, XmSHADOW_OUT,
-    XmNhighlightThickness, 0,
-    XmNshadowThickness, 2,
-    XmNtraversalOn, False,
     XmNleftAttachment, XmATTACH_FORM,
     XmNleftOffset, 2,
     XmNrightAttachment, XmATTACH_FORM,
@@ -531,6 +536,11 @@ SoXtFullViewer::buildRightTrim( // virtual
     XmNbottomAttachment, XmATTACH_FORM,
     XmNbottomOffset, 2,
     XmNheight, 90,
+    XmNorientation, XmVERTICAL,
+    XmNshadowType, XmSHADOW_OUT,
+    XmNhighlightThickness, 0,
+    XmNshadowThickness, 2,
+    XmNtraversalOn, False,
     NULL );
 
   XtAddCallback( this->wheels[RIGHTDECORATION],
@@ -640,41 +650,37 @@ SoXtFullViewer::setViewing( // virtual
     this->prefmenu->SetMenuItemEnabled( SEEK_ITEM, enable );
   }
 
-  XtSetMappedWhenManaged( this->viewerbuttons.view, True );
-
-//  SoDebugError::postInfo( "", "yo!" );
-  XtUnrealizeWidget( this->viewerbuttons.view );
-//  SoDebugError::postInfo( "", "yo!!" );
-
-  XtVaSetValues( this->viewerbuttons.view,
-                 XmNset, enable ? True : False,
-                 XmNsensitive, enable ? False : True,
-                 XmNwidth, 30,
-                 XmNheight, 30,
-                 NULL );
-  XtRealizeWidget( this->viewerbuttons.view );
-  XtMapWidget( this->viewerbuttons.view );
-
-  XtSetMappedWhenManaged( this->viewerbuttons.pick, True );
+  XtUnmapWidget( this->viewerbuttons.pick );
   XtUnrealizeWidget( this->viewerbuttons.pick );
-//  XtSetSensitive( this->viewerbuttons.pick, enable ? True : False );
+  XtSetSensitive( this->viewerbuttons.pick, enable ? True : False );
   XtVaSetValues( this->viewerbuttons.pick,
-                 XmNset, enable ? False : True,
-                 XmNsensitive, enable ? True : False,
-                 XmNwidth, 30,
-                 XmNheight, 30,
-                 NULL );
+    XmNset, enable ? False : True,
+    XmNwidth, 30,
+    XmNheight, 30,
+    NULL );
   XtRealizeWidget( this->viewerbuttons.pick );
   XtMapWidget( this->viewerbuttons.pick );
 
-  XtUnmanageChild( this->viewerbuttons.seek );
-  XtSetSensitive( this->viewerbuttons.seek,
-    enable ? True : False );
+  XtUnmapWidget( this->viewerbuttons.view );
+  XtUnrealizeWidget( this->viewerbuttons.view );
+  XtSetSensitive( this->viewerbuttons.view, enable ? False : True );
+  XtVaSetValues( this->viewerbuttons.view,
+    XmNset, enable ? True : False,
+    XmNwidth, 30,
+    XmNheight, 30,
+    NULL );
+  XtRealizeWidget( this->viewerbuttons.view );
+  XtMapWidget( this->viewerbuttons.view );
+
+  XtUnmapWidget( this->viewerbuttons.seek );
+  XtUnrealizeWidget( this->viewerbuttons.seek );
+  XtSetSensitive( this->viewerbuttons.seek, enable ? True : False );
   XtVaSetValues( this->viewerbuttons.seek,
     XmNwidth, 30,
     XmNheight, 30,
     NULL );
-  XtManageChild( this->viewerbuttons.seek );
+  XtRealizeWidget( this->viewerbuttons.seek );
+  XtMapWidget( this->viewerbuttons.seek );
 } // setViewing()
 
 /*!
@@ -796,8 +802,6 @@ SoXtFullViewer::buildViewerButtons(
 
   this->createViewerButtons( parent, this->viewerButtonsList );
 
-  const int buttons = this->viewerButtonsList->getLength();
-
 //  XtVaSetValues( form,
 //    XmNx, 0, XmNy, 0,
 //    XmNleftAttachment, XmATTACH_POSITION,
@@ -807,18 +811,33 @@ SoXtFullViewer::buildViewerButtons(
 //    XmNfractionBase, buttons,
 //    NULL );
 
-  for ( int i = 0; i < this->viewerButtonsList->getLength(); i++ ) {
+  const int buttons = this->viewerButtonsList->getLength();
+  for ( int i = 0; i < buttons; i++ ) {
     Widget button = (Widget) (*this->viewerButtonsList)[i];
     XtVaSetValues( button,
-       XmNleftAttachment, XmATTACH_FORM,
-       XmNtopAttachment, XmATTACH_FORM,
-       XmNtopOffset, i * 30,
-       XmNrightAttachment, XmATTACH_FORM,
-       XmNwidth, 30,
-       XmNheight, 30,
-       NULL );
+      XmNleftAttachment, XmATTACH_FORM,
+      XmNtopAttachment, XmATTACH_FORM,
+      XmNtopOffset, i * 30,
+      XmNrightAttachment, XmATTACH_FORM,
+      XmNwidth, 30,
+      XmNheight, 30,
+      XmNbottomAttachment, XmATTACH_OPPOSITE_FORM,
+      XmNbottomOffset, 1 - ((i+1) * 30),
+      NULL );
   }
 
+/*
+  XtUnmanageChild( this->viewerbuttons.pick );
+  XtSetSensitive( this->viewerbuttons.pick, this->isViewing() ? True : False );
+  XtVaSetValues( this->viewerbuttons.pick,
+    XmNset, this->isViewing() ? False : True,
+    XmNwidth, 30,
+    XmNheight, 30,
+    NULL );
+  XtManageChild( this->viewerbuttons.pick );
+*/
+
+/*
   XtUnmanageChild( this->viewerbuttons.view );
   XtSetSensitive( this->viewerbuttons.view, this->isViewing() ? False : True );
   XtVaSetValues( this->viewerbuttons.view,
@@ -827,15 +846,7 @@ SoXtFullViewer::buildViewerButtons(
                  XmNheight, 30,
                  NULL );
   XtManageChild( this->viewerbuttons.view );
-
-  XtUnmanageChild( this->viewerbuttons.pick );
-  XtSetSensitive( this->viewerbuttons.pick, this->isViewing() ? True : False );
-  XtVaSetValues( this->viewerbuttons.pick,
-                 XmNset, this->isViewing() ? False : True,
-                 XmNwidth, 30,
-                 XmNheight, 30,
-                 NULL );
-  XtManageChild( this->viewerbuttons.pick );
+*/
 
   return parent;
 } // buildViewerButtons()
@@ -976,7 +987,6 @@ SoXtFullViewer::createViewerButtons(
         XmNwidth, 30,
         XmNheight, 30,
         NULL );
-      XtSetMappedWhenManaged( button, True );
       if ( viewerbutton == EXAMINE_BUTTON ) {
         XtVaSetValues( button, XmNset, this->isViewing() ? True : False, NULL );
       }
@@ -993,7 +1003,6 @@ SoXtFullViewer::createViewerButtons(
         XmNwidth, 30,
         XmNheight, 30,
         NULL );
-      XtSetMappedWhenManaged( button, True );
     }
 
     switch ( viewerbutton ) {
@@ -1475,9 +1484,11 @@ Widget
 SoXtFullViewer::buildAppButtonsForm(
   Widget parent )
 {
-  Widget form = XtVaCreateManagedWidget( "appbuttons", xmFormWidgetClass,
-    parent, NULL );
+  Widget form = XtVaCreateManagedWidget( "appbuttons",
+    xmFormWidgetClass, parent,
+    NULL );
 
+  SOXT_STUB();
   return form;
 } // buildAppButtonsForm()
 
@@ -1493,20 +1504,26 @@ SoXtFullViewer::showDecorationWidgets(
   assert( this->decorform[2] != (Widget) NULL );
 
   if ( enable ) {
-    XtRealizeWidget( this->decorform[0] );
-    XtManageChild( this->decorform[0] );
-    XtRealizeWidget( this->decorform[1] );
-    XtManageChild( this->decorform[1] );
-    XtRealizeWidget( this->decorform[2] );
-    XtManageChild( this->decorform[2] );
     XtVaSetValues( this->canvas,
-      XmNleftOffset, 30, XmNrightOffset, 30, XmNbottomOffset, 30, NULL );
+      XmNleftOffset, 30,
+      XmNrightOffset, 30,
+      XmNbottomOffset, 30,
+      NULL );
+    XtMapWidget( this->decorform[LEFTDECORATION] );
+    XtManageChild( this->decorform[LEFTDECORATION] );
+    XtMapWidget( this->decorform[RIGHTDECORATION] );
+    XtManageChild( this->decorform[RIGHTDECORATION] );
+    XtMapWidget( this->decorform[BOTTOMDECORATION] );
+    XtManageChild( this->decorform[BOTTOMDECORATION] );
   } else {
-    XtUnrealizeWidget( this->decorform[0] );
-    XtUnrealizeWidget( this->decorform[1] );
-    XtUnrealizeWidget( this->decorform[2] );
+    XtUnmapWidget( this->decorform[LEFTDECORATION] );
+    XtUnmapWidget( this->decorform[RIGHTDECORATION] );
+    XtUnmapWidget( this->decorform[BOTTOMDECORATION] );
     XtVaSetValues( this->canvas,
-      XmNleftOffset, 0, XmNrightOffset, 0, XmNbottomOffset, 0, NULL );
+      XmNleftOffset, 0,
+      XmNrightOffset, 0,
+      XmNbottomOffset, 0,
+      NULL );
   }
 } // showDecorationWidgets()
 
