@@ -22,13 +22,10 @@
 #ifndef SOXT_CLIPBOARD_H
 #define SOXT_CLIPBOARD_H
 
-#include <inttypes.h>
-
 #include <X11/Xatom.h>
 #include <X11/Intrinsic.h>
 
 #include <Inventor/SbBasic.h>
-
 #include <Inventor/Xt/SoXtBasic.h>
 
 class SbDict;
