@@ -259,10 +259,10 @@ create_thumbwheel(
   thickness -= 2 * WHEEL_THICKNESS_PADDING;
 
   SoAnyThumbWheel * wheel = new SoAnyThumbWheel;
-  wheel->SetWheelSize( diameter, thickness );
-  wheel->SetGraphicsByteOrder( SoAnyThumbWheel::ABGR );
-  wheel->SetWheelMotionMethod( SoAnyThumbWheel::UNIFORM );
-  wheel->SetWheelRangeBoundaryHandling( SoAnyThumbWheel::ACCUMULATE );
+  wheel->setSize( diameter, thickness );
+  wheel->setGraphicsByteOrder( SoAnyThumbWheel::ABGR );
+  wheel->setMovement( SoAnyThumbWheel::UNIFORM );
+  wheel->setBoundaryHandling( SoAnyThumbWheel::ACCUMULATE );
   return wheel;
 } // create_thumbwheel()
 
@@ -297,14 +297,14 @@ dirty_pixmaps(
   thickness -= 2 * WHEEL_THICKNESS_PADDING;
 
   int d = 0, t = 0;
-  ((SoAnyThumbWheel *) widget->thumbwheel.thumbwheel)->GetWheelSize( d, t );
+  ((SoAnyThumbWheel *) widget->thumbwheel.thumbwheel)->getSize( d, t );
 
   if ( diameter != d || thickness != t ) {
 #if SOXT_DEBUG
     SoDebugError::postInfo( "SoXtThumbWheel:dirty_pixmaps", "dirty pixmaps" );
 #endif // SOXT_DEBUG
     ((SoAnyThumbWheel *) widget->thumbwheel.thumbwheel)->
-      SetWheelSize( diameter, thickness );
+      setSize( diameter, thickness );
     return True;
   }
 
@@ -428,14 +428,14 @@ init_pixmaps(
   SoAnyThumbWheel * const wheel =
     (SoAnyThumbWheel *) widget->thumbwheel.thumbwheel;
 
-  widget->thumbwheel.numpixmaps = wheel->BitmapsRequired();
+  widget->thumbwheel.numpixmaps = wheel->getNumBitmaps();
   widget->thumbwheel.pixmaps = new Pixmap [ widget->thumbwheel.numpixmaps ];
 
   const int width = widget->core.width;
   const int height = widget->core.height;
   const int pixels = width * height;
   int diameter = 0, thickness = 0;
-  wheel->GetWheelSize( diameter, thickness );
+  wheel->getSize( diameter, thickness );
 
   Widget shell = (Widget) widget;
   while ( ! XtIsShell(shell) && shell != (Widget) NULL )
@@ -494,7 +494,7 @@ init_pixmaps(
 
   unsigned long * const rgbdata = new unsigned long [ diameter * thickness ];
   assert( rgbdata != NULL );
-  wheel->SetGraphicsByteOrder( SoAnyThumbWheel::ABGR );
+  wheel->setGraphicsByteOrder( SoAnyThumbWheel::ABGR );
 
   int frame = 0;
   for ( frame = widget->thumbwheel.numpixmaps - 1; frame > 0; frame-- ) {
@@ -553,10 +553,10 @@ init_pixmaps(
   
     switch ( widget->thumbwheel.orientation ) {
     case XmHORIZONTAL:
-      wheel->DrawBitmap( frame, (void *) rgbdata, SoAnyThumbWheel::HORIZONTAL );
+      wheel->drawBitmap( frame, (void *) rgbdata, SoAnyThumbWheel::HORIZONTAL );
       break;
     case XmVERTICAL:
-      wheel->DrawBitmap( frame, (void *) rgbdata, SoAnyThumbWheel::VERTICAL );
+      wheel->drawBitmap( frame, (void *) rgbdata, SoAnyThumbWheel::VERTICAL );
       break;
     default:
       assert( 0 && "invalid thumbwheel orientation" );
@@ -571,12 +571,12 @@ init_pixmaps(
     case XmHORIZONTAL:
       lpadding += WHEEL_DIAMETER_PADDING;
       tpadding += WHEEL_THICKNESS_PADDING;
-      wheel->GetWheelSize( wheelwidth, wheelheight );
+      wheel->getSize( wheelwidth, wheelheight );
       break;
     case XmVERTICAL:
       lpadding += WHEEL_THICKNESS_PADDING;
       tpadding += WHEEL_DIAMETER_PADDING;
-      wheel->GetWheelSize( wheelheight, wheelwidth );
+      wheel->getSize( wheelheight, wheelwidth );
       break;
     default:
       assert( 0 && "impossible" );
@@ -668,11 +668,11 @@ expose(
     int pixmap = 0;
     if ( widget->core.sensitive ) {
       pixmap = ((SoAnyThumbWheel *) widget->thumbwheel.thumbwheel)->
-        GetBitmapForValue( widget->thumbwheel.value, SoAnyThumbWheel::ENABLED );
+        getBitmapForValue( widget->thumbwheel.value, SoAnyThumbWheel::ENABLED );
     } else {
       pixmap =
         ((SoAnyThumbWheel *) widget->thumbwheel.thumbwheel)->
-          GetBitmapForValue( widget->thumbwheel.value,
+          getBitmapForValue( widget->thumbwheel.value,
                              SoAnyThumbWheel::DISABLED );
     }
     XCopyArea( XtDisplay(widget), widget->thumbwheel.pixmaps[pixmap],
@@ -723,11 +723,11 @@ set_values(
     SoXtThumbWheelWidget wheel = (SoXtThumbWheelWidget) newcw;
     if ( wheel->core.sensitive ) {
       pixmap = ((SoAnyThumbWheel *) wheel->thumbwheel.thumbwheel)->
-        GetBitmapForValue( wheel->thumbwheel.value, SoAnyThumbWheel::ENABLED );
+        getBitmapForValue( wheel->thumbwheel.value, SoAnyThumbWheel::ENABLED );
     } else {
       pixmap =
         ((SoAnyThumbWheel *) wheel->thumbwheel.thumbwheel)->
-          GetBitmapForValue( wheel->thumbwheel.value,
+          getBitmapForValue( wheel->thumbwheel.value,
                              SoAnyThumbWheel::DISABLED );
     }
     if ( pixmap != wheel->thumbwheel.currentpixmap )
@@ -807,13 +807,13 @@ Arm(
 
   switch ( widget->thumbwheel.orientation ) {
   case XmHORIZONTAL:
-    wheel->GetWheelSize( width, height );
+    wheel->getSize( width, height );
     tpadding = widget->primitive.shadow_thickness + 1 + WHEEL_THICKNESS_PADDING;
     lpadding = widget->primitive.shadow_thickness + 1 + WHEEL_DIAMETER_PADDING;
     widget->thumbwheel.arm_position = event->x - lpadding;
     break;
   case XmVERTICAL:
-    wheel->GetWheelSize( height, width );
+    wheel->getSize( height, width );
     tpadding = widget->primitive.shadow_thickness + 1 + WHEEL_DIAMETER_PADDING;
     lpadding = widget->primitive.shadow_thickness + 1 + WHEEL_THICKNESS_PADDING;
     widget->thumbwheel.arm_position = event->y - tpadding;
@@ -906,13 +906,13 @@ Roll(
   widget->thumbwheel.prev_value = widget->thumbwheel.value;
   widget->thumbwheel.value =
     ((SoAnyThumbWheel *) widget->thumbwheel.thumbwheel)->
-      CalculateValue( widget->thumbwheel.arm_value,
+      calculateValue( widget->thumbwheel.arm_value,
                       widget->thumbwheel.arm_position,
                       (pos - widget->thumbwheel.arm_position) );
 
   SoAnyThumbWheel * wheel = (SoAnyThumbWheel *) widget->thumbwheel.thumbwheel;
 
-  int pixmap = wheel->GetBitmapForValue( widget->thumbwheel.value,
+  int pixmap = wheel->getBitmapForValue( widget->thumbwheel.value,
     SoAnyThumbWheel::ENABLED );
 
   if ( pixmap != widget->thumbwheel.currentpixmap ) {
@@ -989,11 +989,11 @@ SoXtThumbWheelSetValue(
   int pixmap = 0;
   if ( wheel->core.sensitive ) {
     pixmap = ((SoAnyThumbWheel *) wheel->thumbwheel.thumbwheel)->
-      GetBitmapForValue( wheel->thumbwheel.value, SoAnyThumbWheel::ENABLED );
+      getBitmapForValue( wheel->thumbwheel.value, SoAnyThumbWheel::ENABLED );
   } else {
     pixmap =
       ((SoAnyThumbWheel *) wheel->thumbwheel.thumbwheel)->
-        GetBitmapForValue( wheel->thumbwheel.value,
+        getBitmapForValue( wheel->thumbwheel.value,
                            SoAnyThumbWheel::DISABLED );
   }
 
