@@ -196,7 +196,7 @@ fi
 # check for availability of features which may not be part of some
 # Open Inventor versions/implementations
 
-SIM_AC_HAVE_SOPOLYGONOFFSET
+SIM_AC_HAVE_INVENTOR_NODE(SoPolygonOffset)
 
 SIM_AC_HAVE_SOMOUSEBUTTONEVENT_BUTTONS
 
