@@ -22,6 +22,20 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtLinuxJoystick Inventor/Xt/devices/SoXtLinuxJoystick.h
+  \brief The SoXtLinuxJoystick class is for enabling use of joysticks with
+  SoXt through the Linux Joystick driver.
+  \ingroup devices
+
+  This class is an SoXt-specific extension.  It is not included with
+  Open Inventor.
+*/
+
+// *************************************************************************
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -49,22 +63,20 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/devices/SoXtLinuxJoystick.h>
 
-/*!
-  \class SoXtLinuxJoystick Inventor/Xt/devices/SoXtLinuxJoystick.h
-  \brief The SoXtLinuxJoystick class is for enabling use of joysticks with
-  SoXt through the Linux Joystick driver.
-
-  This class is not included with Open Inventor, but is an SoXt-specific
-  extension.
-*/
-
 // *************************************************************************
 
 SbBool SoXtLinuxJoystick::enabled = FALSE;
 
+/*!
+  \enum SoXtLinuxJoystick::LinuxJoystickEvents
+
+  Enumeration over supported event types.
+*/
+
 // *************************************************************************
 
 /*!
+  Public constructor.
 */
 
 SoXtLinuxJoystick::SoXtLinuxJoystick(
@@ -85,6 +97,7 @@ SoXtLinuxJoystick::SoXtLinuxJoystick(
 } // SoXtLinuxJoystick()
 
 /*!
+  Destructor.
 */
 
 SoXtLinuxJoystick::~SoXtLinuxJoystick( // virtual
@@ -104,6 +117,8 @@ SoXtLinuxJoystick::~SoXtLinuxJoystick( // virtual
 // *************************************************************************
 
 /*!
+  This method enables the Linux Joystick driver, and sets up \a handler
+  to handle the Linux Joystick events.
 */
 
 void
@@ -172,6 +187,7 @@ SoXtLinuxJoystick::enable( // virtual
 } // enable()
 
 /*!
+  This method removes \a handler from the list of device handlers.
 */
 
 void
@@ -187,7 +203,9 @@ SoXtLinuxJoystick::disable( // virtual
 
 /*!
   This method translates X events into Open Inventor events suitable for
-  propagating into the scene graph.  NULL is returned if the event can't
+  propagating into the scene graph.
+
+  NULL is returned if the event can't
   be translated (wrong event type for this device).
 */
 
@@ -213,6 +231,8 @@ SoXtLinuxJoystick::translateEvent(
 // *************************************************************************
 
 /*!
+  This method sets the scale factor for the Linux Joystick driver rotation
+  vectors.
 */
 
 void
@@ -223,6 +243,8 @@ SoXtLinuxJoystick::setRotationScaleFactor(
 } // setRotationScaleFactor()
 
 /*!
+  This method returns the scale factor used on the Linux Joystick driver
+  rotation vectors.
 */
 
 float
@@ -233,6 +255,8 @@ SoXtLinuxJoystick::getRotationScaleFactor(
 } // getRotationScaleFactor()
 
 /*!
+  This method sets the scale factor used on the Linux Joystick driver
+  translation vectors.
 */
 
 void
@@ -243,6 +267,8 @@ SoXtLinuxJoystick::setTranslationScaleFactor(
 } // setTranslationScaleFactor()
 
 /*!
+  This method returns the scale factor used on the Linux Joystick driver
+  translation vectors.
 */
 
 float
@@ -255,9 +281,8 @@ SoXtLinuxJoystick::getTranslationScaleFactor(
 // *************************************************************************
 
 /*!
-  This method returns wether there is a Joystick device on the given
-  display or not.  A NULL \a display argument means the default display,
-  of course.
+  This function returns wether there is a Linux Joystick device available
+  on the application server.
 */
 
 SbBool
@@ -277,6 +302,7 @@ SoXtLinuxJoystick::exists( // static
 // *************************************************************************
 
 /*!
+  Return the path name of the device file to try to connect with.
 */
 
 const char *
@@ -298,6 +324,8 @@ SoXtLinuxJoystick::getDevicePathName( // static, private
 // *************************************************************************
 
 /*!
+  Returns the number of buttons on the device attached to the Linux Joystick
+  driver.
 */
 
 int
@@ -308,6 +336,7 @@ SoXtLinuxJoystick::getNumButtons(
 } // getNumButtons()
 
 /*!
+  Returns whether the given button is pressed or not.
 */
 
 SbBool
@@ -325,6 +354,7 @@ SoXtLinuxJoystick::getButtonValue(
 } // getButtonValue()
 
 /*!
+  Returns the number of axes on the input device.
 */
 
 int
@@ -335,6 +365,7 @@ SoXtLinuxJoystick::getNumAxes(
 } // getNumAxes()
 
 /*!
+  Returns the current value of the given axis on the input device.
 */
 
 float
@@ -354,6 +385,7 @@ SoXtLinuxJoystick::getAxisValue(
 // *************************************************************************
 
 /*!
+  This method is not implemented.
 */
 
 void
@@ -364,6 +396,7 @@ SoXtLinuxJoystick::setFocusToWindow(
 } // setFocusToWindow()
 
 /*!
+  This method is not implemented.
 */
 
 SbBool
@@ -378,9 +411,9 @@ SoXtLinuxJoystick::isFocusToWindow(
 
 /*!
   This method is invoked when the joystick is enabled and there are joystick
-  events coming in.
+  events in the queue.
 
-  See linux/Documentation/joystick-api.txt.
+  See linux/Documentation/joystick-api.txt for programming information.
 */
 
 void
@@ -516,6 +549,8 @@ SoXtLinuxJoystick::input_cb( // static, private
 // *************************************************************************
 
 /*!
+  This method translates between custom input device pressure events
+  and Open Inventor SoMotion3Event events.
 */
 
 SoMotion3Event *
@@ -540,6 +575,8 @@ SoXtLinuxJoystick::makeMotion3Event( // private
 } // makeMotion3Event()
 
 /*!
+  This method translates between custom device button events and
+  Open Inventor SoSpaceballButtonEvent events.
 */
 
 SoSpaceballButtonEvent *

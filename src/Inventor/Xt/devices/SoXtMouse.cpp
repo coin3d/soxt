@@ -22,6 +22,17 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtMouse Inventor/Xt/devices/SoXtMouse.h
+  \brief The SoXtMouse class is the glue between Xt/Motif mouse handling
+  and mouse interaction in the Inventor scene graph.
+  \ingroup devices
+*/
+
+// *************************************************************************
+
 #include <X11/X.h>
 
 #if SOXT_DEBUG
@@ -44,6 +55,15 @@ static const char rcsid[] =
 // *************************************************************************
 
 /*!
+  \enum SoXtMouse::MouseEvents
+
+  Enumeration over supported mouse events.
+*/
+
+// *************************************************************************
+
+/*!
+  Public constructor.
 */
 
 SoXtMouse::SoXtMouse(
@@ -55,6 +75,7 @@ SoXtMouse::SoXtMouse(
 } // SoXtMouse()
 
 /*!
+  Destructor.
 */
 
 SoXtMouse::~SoXtMouse( // virtual
@@ -67,6 +88,7 @@ SoXtMouse::~SoXtMouse( // virtual
 // *************************************************************************
 
 /*!
+  This method is not implemented yet.
 */
 
 void
@@ -80,6 +102,7 @@ SoXtMouse::enable( // virtual
 } // enable()
 
 /*!
+  This method is not implemented yet.
 */
 
 void
@@ -94,6 +117,13 @@ SoXtMouse::disable( // virtual
 // *************************************************************************
 
 /*!
+  This method translates from X mouse events to Open Inventor events.
+
+  If \a event is an X pointer motion event, an SoLocation2Event object is
+  returned.
+  If \a event is an X mouse button event, an SoMouseButtonEvent object is
+  returned.
+  If \a event is not an X mouse event, NULL is returned.
 */
 
 const SoEvent *
@@ -143,6 +173,8 @@ SoXtMouse::translateEvent( // virtual
 // *************************************************************************
 
 /*!
+  This method translates from X motion events to Open Inventor
+  SoLocation2Event events.
 */
 
 SoLocation2Event *
@@ -168,6 +200,8 @@ SoXtMouse::makeLocationEvent( // private
 } // makeLocationEvent()
 
 /*!
+  This method translates from X button events (mouse/pointer) to
+  Open Inventor SoMouseButtonEvent events.
 */
 
 SoMouseButtonEvent *

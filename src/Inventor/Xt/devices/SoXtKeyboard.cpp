@@ -22,6 +22,20 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtKeyboard Inventor/Xt/devices/SoXtKeyboard.h
+  \brief The SoXtKeyboard class glues Xt/Motif keyboard interaction together
+  with the Open Inventor scene graph.
+  \ingroup devices
+
+  All components derived from the SoXtRenderArea have got an SoXtKeyboard 
+  device attached by default.
+*/
+
+// *************************************************************************
+
 #include <ctype.h> // toupper()
 
 #include <X11/X.h>
@@ -39,6 +53,15 @@ static const char rcsid[] =
 // *************************************************************************
 
 /*!
+  \enum SoXtKeyboard::KeyboardEvents
+
+  Enumeration over supported event types.
+*/
+
+// *************************************************************************
+
+/*!
+  Public constructor.
 */
 
 SoXtKeyboard::SoXtKeyboard(
@@ -49,6 +72,7 @@ SoXtKeyboard::SoXtKeyboard(
 } // SoXtKeyboard()
 
 /*!
+  Destructor.
 */
 
 SoXtKeyboard::~SoXtKeyboard( // virtual
@@ -60,6 +84,7 @@ SoXtKeyboard::~SoXtKeyboard( // virtual
 // *************************************************************************
 
 /*!
+  This method is not implemented.
 */
 
 void
@@ -73,6 +98,7 @@ SoXtKeyboard::enable( // virtual
 } // enable()
 
 /*!
+  This methid is not implemented.
 */
 
 void
@@ -87,6 +113,10 @@ SoXtKeyboard::disable( // virtual
 // *************************************************************************
 
 /*!
+  This method translates between X events and Open Inventor events.
+
+  If the X event is a keyboard event, an event of the type SoKeyboardEvent
+  is returned.  Otherwise, NULL is returned.
 */
 
 const SoEvent *
@@ -110,7 +140,10 @@ SoXtKeyboard::translateEvent( // virtual
   return (SoEvent *) NULL;
 } // translateEvent()
 
+// *************************************************************************
+
 /*!
+  This method creates an SoKeyboardEvent from an X event.
 */
 
 SoKeyboardEvent *
@@ -274,7 +307,6 @@ SoXtKeyboard::makeKeyboardEvent( // private
 
 // *************************************************************************
 
-// To shut up nagging compilers...
 #if SOXT_DEBUG
 static const char * getSoXtKeyboardRCSId(void) { return rcsid; }
 #endif // SOXT_DEBUG

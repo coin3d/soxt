@@ -22,6 +22,19 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtDevice Inventor/Xt/SoXtDevice.h
+  \brief The SoXtDevice class is the base class for the SoXt device classes.
+  \ingroup devices
+
+  The SoXt device classes provide glue functionality for translating GUI
+  Xt/Motif events to Inventor Scene Graph SoEvent events.
+*/
+
+// *************************************************************************
+
 #include <assert.h>
 
 #if SOXT_DEBUG
@@ -36,12 +49,6 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/devices/SoXtDevice.h>
 
-/*!
-  \class SoXtDevice Inventor/Xt/SoXtDevice.h
-  \brief The SoXtDevice class system is for gluing GUI events to Inventor
-  Scene Graph events.
-*/
-
 // *************************************************************************
 
 struct SoXtDeviceHandlerInfo {
@@ -54,9 +61,11 @@ struct SoXtDeviceHandlerInfo {
 // *************************************************************************
 
 /*!
+  Constructor.  Protected to only enable invocation from derived device
+  classes.
 */
 
-SoXtDevice::SoXtDevice(
+SoXtDevice::SoXtDevice( // protected
   void )
 : size( 0, 0 )
 , handlers( NULL )
@@ -64,6 +73,7 @@ SoXtDevice::SoXtDevice(
 } // SoXtDevice()
 
 /*!
+  Public virtual destructor.
 */
 
 SoXtDevice::~SoXtDevice( // virtual
@@ -97,9 +107,17 @@ SoXtDevice::~SoXtDevice( // virtual
   This method will disable the handler for the device.
 */
 
+/*!
+  \fn SoEvent * SoXtDevice::translateEvent( XAnyEvent * event ) = 0
+
+  This method translates from X events to Open Inventor SoEvent events.
+*/
+
 // *************************************************************************
 
 /*!
+  This method sets the cached size of the window the device is "attached"
+  to.
 */
 
 void
@@ -110,6 +128,7 @@ SoXtDevice::setWindowSize(
 } // setWindowSize()
 
 /*!
+  This method returns the cached window size.
 */
 
 const SbVec2s
@@ -122,6 +141,8 @@ SoXtDevice::getWindowSize(
 // *************************************************************************
 
 /*!
+  This method fills in the position information of \a event, translating the
+  coordinates into the correct coordinate system.
 */
 
 void
@@ -142,6 +163,7 @@ SoXtDevice::setEventPosition(
 // *************************************************************************
 
 /*!
+  This method adds an event handler.
 */
 
 void
@@ -162,6 +184,7 @@ SoXtDevice::addEventHandler(
 } // addEventHandler()
 
 /*!
+  This method removes an event handler.
 */
 
 void
@@ -189,6 +212,7 @@ SoXtDevice::removeEventHandler(
 } // removeEventHandler()
 
 /*!
+  This method invokes all the event handlers.
 */
 
 void

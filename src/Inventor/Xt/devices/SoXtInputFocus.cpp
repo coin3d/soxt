@@ -22,6 +22,22 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtInputFocus Inventor/Xt/devices/SoXtInputFocus.h
+  \brief The SoXtInputFocus class is a virtual device.
+  \ingroup devices
+
+  This device class is a virtual device that only takes advantage of
+  the event handling mechanism for the Xt components, and never really
+  translates any events.
+
+  It is not implemented yet.
+*/
+
+// *************************************************************************
+
 #include <X11/X.h>
 
 #include <Inventor/misc/SoBasic.h>
@@ -34,6 +50,15 @@ static const char rcsid[] =
 // *************************************************************************
 
 /*!
+  \enum SoXtInputFocus::InputFocusEvents
+
+  Enumeration over unsupported event types.
+*/
+
+// *************************************************************************
+
+/*!
+  Public constructor.
 */
 
 SoXtInputFocus::SoXtInputFocus(
@@ -43,6 +68,7 @@ SoXtInputFocus::SoXtInputFocus(
 } // SoXtInputfocus()
 
 /*!
+  Destructor.
 */
 
 SoXtInputFocus::~SoXtInputFocus( // virtual
@@ -50,7 +76,10 @@ SoXtInputFocus::~SoXtInputFocus( // virtual
 {
 } // ~SoXtInputfocus()
 
+// *************************************************************************
+
 /*!
+  This method is not implemented.
 */
 
 void
@@ -64,6 +93,7 @@ SoXtInputFocus::enable( // virtual
 } // enable()
 
 /*!
+  This method is not implemented.
 */
 
 void
@@ -75,7 +105,11 @@ SoXtInputFocus::disable( // virtual
   SOXT_STUB();
 } // disable()
 
+// *************************************************************************
+
 /*!
+  This method translates between X events and Open Inventor events.
+  NULL is always returned.
 */
 
 const SoEvent *

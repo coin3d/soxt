@@ -22,6 +22,21 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtSpaceball Inventor/Xt/devices/SoXtSpaceball.h
+  \brief The SoXtSpaceball class is the glue between Xt/Motif spaceball
+  handling and Inventor spaceball handling.
+  \ingroup devices
+
+  This class is not implemented yet.  Do not purchase a spaceball for use
+  with Coin unless you intend to use it through the Linux Joystick driver
+  (SoXtLinuxJoystick) at this moment.
+*/
+
+// *************************************************************************
+
 #include <assert.h>
 
 #include <X11/extensions/XInput.h>
@@ -42,15 +57,34 @@ typedef void * XPContext;
 // *************************************************************************
 
 /*!
+  \enum SoXtSpaceball::DeviceType
+
+  Enumeration of unsupported Spaceball input device types.
+*/
+
+/*!
+  \enum SoXtSpaceball::Mask
+
+  Enumeration of unsupported Spaceball input device event types.
+*/
+
+// *************************************************************************
+
+/*!
+  Public constructor.
 */
 
 SoXtSpaceball::SoXtSpaceball(
   int events )
 {
   this->events = events;
+  this->rotationFactor = 1.0f;
+  this->translationFactor = 1.0f;
 } // SoXtSpaceball()
 
 /*!
+  Alternative constructor, for using a spaceball device attached to
+  a given display.
 */
 
 SoXtSpaceball::SoXtSpaceball(
@@ -61,6 +95,7 @@ SoXtSpaceball::SoXtSpaceball(
 } // SoXtSpaceball()
 
 /*!
+  Destructor.
 */
 
 SoXtSpaceball::~SoXtSpaceball( // virtual
@@ -71,6 +106,7 @@ SoXtSpaceball::~SoXtSpaceball( // virtual
 // *************************************************************************
 
 /*!
+  This method is not implemented.
 */
 
 void
@@ -84,6 +120,7 @@ SoXtSpaceball::enable( // virtual
 } // enable()
 
 /*!
+  This method is not implemented.
 */
 
 void
@@ -98,6 +135,7 @@ SoXtSpaceball::disable( // virtual
 // *************************************************************************
 
 /*!
+  This method is not implemented.
 */
 
 const SoEvent *
@@ -111,6 +149,7 @@ SoXtSpaceball::translateEvent( // virtual
 // *************************************************************************
 
 /*!
+  This method sets the scale factor for the spaceball rotation vectors.
 */
 
 void
@@ -121,6 +160,7 @@ SoXtSpaceball::setRotationScaleFactor(
 } // setRotationScaleFactor()
 
 /*!
+  This method returns the scale factor for the spaceball rotation vectors.
 */
 
 float
@@ -131,6 +171,7 @@ SoXtSpaceball::getRotationScaleFactor(
 } // getRotationScaleFactor()
 
 /*!
+  This method sets the scale factor for the spaceball translation vectors.
 */
 
 void
@@ -141,6 +182,7 @@ SoXtSpaceball::setTranslationScaleFactor(
 } // setTranslationScaleFactor()
 
 /*!
+  This method returns the scale factor for the spaceball translation vectors.
 */
 
 float
@@ -153,6 +195,7 @@ SoXtSpaceball::getTranslationScaleFactor(
 // *************************************************************************
 
 /*!
+  This method checks to see if a spaceball device is available on \a display.
 */
 
 SbBool
@@ -180,6 +223,7 @@ SoXtSpaceball::exists( // static
 // *************************************************************************
 
 /*!
+  This method is not implemented.
 */
 
 void
@@ -190,6 +234,7 @@ SoXtSpaceball::setFocusToWindow(
 } // setFocusToWindow()
 
 /*!
+  This method is not implemented.
 */
 
 SbBool
