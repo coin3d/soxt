@@ -62,6 +62,7 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXtMaterialList.h>
 #include <Inventor/Xt/SoXtMaterialEditor.h>
 #include <Inventor/Xt/SoXtPrintDialog.h>
+#include <Inventor/Xt/SoXtCursor.h>
 
 #include <X11/Xlib.h>
 #include <X11/Intrinsic.h>
@@ -111,6 +112,7 @@ public:
   SbPList * closecbs;
   SbPList * visibilitycbs;
   SbBool visibilitystate, fullscreen;
+  SoXtCursor cursor;
 
 private:
   const SoXtComponent * owner;
@@ -1189,6 +1191,25 @@ SbBool
 SoXtComponent::isFullScreen(void) const
 {
   return PRIVATE(this)->fullscreen;
+}
+
+/*!
+  Sets the cursor for this component.
+*/
+void 
+SoXtComponent::setCursor(const SoXtCursor & cursor)
+{
+  PRIVATE(this)->cursor = cursor;
+  SOXT_STUB();
+}
+
+/*!
+  Returns the current cursor for this component.
+*/
+const SoXtCursor &
+SoXtComponent::getCursor(void) const
+{
+  return PRIVATE(this)->cursor;
 }
 
 // *************************************************************************

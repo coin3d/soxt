@@ -85,6 +85,7 @@ SoXtinc_HEADERS = \
 nodist_SoXtinc_HEADERS = \
 	So@Gui@.h \
 	So@Gui@Basic.h \
+	So@Gui@Cursor.h \
 	So@Gui@Cursors.h \
 	So@Gui@Component.h \
 	So@Gui@Object.h \
