@@ -797,15 +797,14 @@ buildGLAttrs(int * attrs, int trynum)
   return pos;
 }
 
-/*!
-  This method builds the GL widget inside \a parent.  The returned
-  widget is the widget managing the GL widget and providing it with a
-  border.
-*/
-
-Widget      // protected
+// Documented in common/SoGuiGLWidgetCommon.cpp.in.
+Widget
 SoXtGLWidget::buildWidget(Widget parent)
 {
+  // This method builds the GL widget inside \a parent.  The returned
+  // widget is the widget managing the GL widget and providing it with
+  // a border.
+
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtGLWidget::buildWidget", "[enter]");
 #endif // SOXT_DEBUG
