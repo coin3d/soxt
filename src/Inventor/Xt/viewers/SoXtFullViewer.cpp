@@ -91,7 +91,8 @@ SoXtFullViewer::SoXtFullViewer( // protected
   Type type,
   SbBool build )
 : inherited( parent, name, inParent, type, FALSE )
-, SoAnyFullViewer( this )
+// , SoAnyFullViewer( this )
+, common( new SoAnyFullViewer( this ) )
 {
   this->viewerbase = NULL;
   this->canvas = NULL;
@@ -136,6 +137,7 @@ SoXtFullViewer::SoXtFullViewer( // protected
 SoXtFullViewer::~SoXtFullViewer( // protected
   void )
 {
+  delete this->common;
   delete this->appButtonsList;
   delete this->viewerButtonsList;
 } // ~SoXtFullViewer()
@@ -528,7 +530,7 @@ SoXtFullViewer::setDrawStyle( // virtual
 {
   inherited::setDrawStyle( type, style );
   if ( this->prefmenu )
-    this->setDrawStyleMenuActivation( type, style );
+    common->setDrawStyleMenuActivation( type, style );
 } // setDrawStyle()
 
 /*!
@@ -892,7 +894,7 @@ SoXtFullViewer::buildPopupMenu(
   void )
 {
   if ( this->prefmenu == NULL )
-    this->prefmenu = setupStandardPopupMenu();
+    this->prefmenu = common->setupStandardPopupMenu();
 
   this->setDrawStyle(
     SoXtViewer::STILL, this->getDrawStyle( SoXtViewer::STILL ) );

@@ -22,17 +22,14 @@
 #ifndef SOXT_FULLVIEWER_H
 #define SOXT_FULLVIEWER_H
 
-#include <Inventor/Xt/viewers/SoAnyFullViewer.h>
 #include <Inventor/Xt/viewers/SoXtViewer.h>
 
+class SoAnyFullViewer;
 class SoAnyPopupMenu;
 
 // *************************************************************************
 
-class SoXtFullViewer :
-  public SoXtViewer,
-  public SoAnyFullViewer
-{
+class SoXtFullViewer : public SoXtViewer {
   typedef SoXtViewer inherited;
   friend class SoAnyFullViewer;
 
@@ -196,6 +193,9 @@ private:
   void copyviewSelected(void);
   void pasteviewSelected(void);
   void drawstyleActivated( int );
+
+private:
+  SoAnyFullViewer * const common;
 
 }; // class SoXtFullViewer
 

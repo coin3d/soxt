@@ -23,17 +23,14 @@
 #define SOXT_EXAMINERVIEWER_H
 
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
-#include <Inventor/Xt/viewers/SoAnyExaminerViewer.h>
 
 class SbRotation;
 class SoTimerSensor;
+class SoAnyExaminerViewer;
 
 // *************************************************************************
 
-class SoXtExaminerViewer :
-  public SoXtFullViewer,
-  public SoAnyExaminerViewer
-{
+class SoXtExaminerViewer : public SoXtFullViewer {
   typedef SoXtFullViewer inherited;
   friend class SoAnyExaminerViewer;
 
@@ -48,6 +45,18 @@ protected:
   SoXtExaminerViewer( Widget parent, const char * name,
       SbBool inParent, SoXtFullViewer::BuildFlag flags,
       SoXtViewer::Type type, SbBool build );
+
+  void setAnimationEnabled( const SbBool enable );
+  SbBool isAnimationEnabled(void) const;
+
+  void stopAnimating(void);
+  SbBool isAnimating(void) const;
+
+  void setFeedbackVisibility( const SbBool enable );
+  SbBool isFeedbackVisible(void) const;
+
+  void setFeedbackSize( const int size );
+  int getFeedbackSize(void) const;
 
   virtual void setCamera( SoCamera * camera );
 
@@ -74,6 +83,8 @@ protected:
 private:
   void constructor( SbBool build );
 
+  SbVec2f lastmouseposition;
+
   enum ViewerMode {
     IDLE,
     INTERACT,
@@ -94,6 +105,9 @@ private:
     Pixmap perspective, perspective_ins;
     Pixmap nocam, nocam_ins;
   } camerapixmaps;
+
+private:
+  SoAnyExaminerViewer * const common;
 
 }; // class SoXtExaminerViewer
 

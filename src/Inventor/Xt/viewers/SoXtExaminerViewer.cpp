@@ -36,8 +36,8 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtBasic.h>
-#include <Inventor/Xt/viewers/SoAnyExaminerViewer.h>
 
+#include <Inventor/Xt/viewers/SoAnyExaminerViewer.h>
 #include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
 
 #if HAVE_LIBXPM
@@ -54,7 +54,7 @@ SoXtExaminerViewer::SoXtExaminerViewer(
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type )
 : inherited( parent, name, inParent, flag, type, FALSE )
-, SoAnyExaminerViewer( this )
+, common( new SoAnyExaminerViewer( this ) )
 {
   this->constructor( TRUE );
 } // SoXtExaminerViewer()
@@ -67,7 +67,7 @@ SoXtExaminerViewer::SoXtExaminerViewer( // protected
   SoXtViewer::Type type,
   SbBool build )
 : inherited( parent, name, inParent, flag, type, FALSE )
-, SoAnyExaminerViewer( this )
+, common( new SoAnyExaminerViewer( this ) )
 {
   this->constructor( build );
 } // SoXtExaminerViewer()
@@ -83,6 +83,7 @@ SoXtExaminerViewer::constructor( // private
   this->spindetecttimerActive = FALSE;
 
   this->setClassName( "SoXtExaminerViewer" );
+  this->setTitle( "Examiner Viewer" );
   this->camerabutton = (Widget) NULL;
 
   if ( build ) {
@@ -98,6 +99,7 @@ SoXtExaminerViewer::constructor( // private
 SoXtExaminerViewer::~SoXtExaminerViewer(
   void )
 {
+  delete this->common;
 } // ~SoXtExaminerViewer()
 
 // *************************************************************************
@@ -135,17 +137,17 @@ SoXtExaminerViewer::processEvent(
 
   case ButtonPress:
     this->lastmouseposition = norm_mousepos;
-    this->lastspinposition = norm_mousepos;
+    common->lastspinposition = norm_mousepos;
     if ( ((XButtonEvent *) event)->button == Button3 )
       break;
 
     if ( ((XButtonEvent *) event)->button == Button4 ) {
-      this->zoom( 0.1f );
+      common->zoom( 0.1f );
       break;
     }
       
     if ( ((XButtonEvent *) event)->button == Button5 ) {
-      this->zoom( -0.1f );
+      common->zoom( -0.1f );
       break;
     }
 
@@ -183,8 +185,8 @@ SoXtExaminerViewer::processEvent(
       XtRemoveTimeOut( this->spindetecttimerId );
       this->spindetecttimerId = 0;
       this->spindetecttimerActive = FALSE;
-      this->spinanimating = TRUE;
-      this->spintimertrigger->schedule();
+      common->spinanimating = TRUE;
+      common->spintimertrigger->schedule();
       this->interactiveCountInc();
     }
 
@@ -213,15 +215,15 @@ SoXtExaminerViewer::processEvent(
         XtAppAddTimeOut( SoXt::getAppContext(), 10,
           SoXtExaminerViewer::spindetecttimerCB, this );
         this->spindetecttimerActive = TRUE;
-        this->spin( norm_mousepos );
+        common->spin( norm_mousepos );
       break;
 
     case PANNING:
-      this->pan( norm_mousepos );
+      common->pan( norm_mousepos );
       break;
 
     case ZOOMING:
-      this->zoomByCursor( norm_mousepos );
+      common->zoomByCursor( norm_mousepos );
       break;
 
     default:
@@ -262,10 +264,10 @@ void
 SoXtExaminerViewer::leftWheelMotion( // virtual, protected
   float value )
 {
-  if ( this->isAnimating() )
-    this->stopAnimating();
+  if ( common->isAnimating() )
+    common->stopAnimating();
   inherited::leftWheelMotion(
-    rotXWheelMotion( value, this->getLeftWheelValue() ) );
+    common->rotXWheelMotion( value, this->getLeftWheelValue() ) );
 } // leftWheelMotion()
 
 /*!
@@ -275,10 +277,10 @@ void
 SoXtExaminerViewer::bottomWheelMotion( // virtual, protected
   float value )
 {
-  if ( this->isAnimating() )
-    this->stopAnimating();
+  if ( common->isAnimating() )
+    common->stopAnimating();
   inherited::bottomWheelMotion(
-    rotYWheelMotion( value, this->getLeftWheelValue() ) );
+    common->rotYWheelMotion( value, this->getLeftWheelValue() ) );
 } // bottomWheelMotion()
 
 /*!
@@ -288,7 +290,7 @@ void
 SoXtExaminerViewer::rightWheelMotion( // virtual, protected
   float value )
 {
-  this->zoom( this->getRightWheelValue() - value );
+  common->zoom( this->getRightWheelValue() - value );
   inherited::rightWheelMotion( value );
 } // rightWheelMotion()
 
@@ -396,14 +398,14 @@ SoXtExaminerViewer::setMode(
     break;
 
   case DRAGGING:
-    this->spinprojector->project( this->lastmouseposition );
+    common->spinprojector->project( this->lastmouseposition );
     break;
 
   case PANNING:
     do {
       SoCamera * camera = this->getCamera();
       SbViewVolume volume = camera->getViewVolume( this->getGLAspectRatio() );
-      this->panningplane = volume.getPlane( camera->focalDistance.getValue() );
+      common->panningplane = volume.getPlane( camera->focalDistance.getValue() );
     } while ( FALSE );
     break;
 
@@ -565,5 +567,39 @@ SoXtExaminerViewer::setCamera( // virtual
 
   inherited::setCamera( camera );
 } // setCamera()
+
+// *************************************************************************
+
+void SoXtExaminerViewer::setAnimationEnabled( const SbBool enable ) {
+  common->setAnimationEnabled( enable );
+}
+
+SbBool SoXtExaminerViewer::isAnimationEnabled(void) const {
+  return common->isAnimationEnabled();
+}
+
+void SoXtExaminerViewer::stopAnimating(void) {
+  common->stopAnimating();
+}
+
+SbBool SoXtExaminerViewer::isAnimating(void) const {
+  return common->isAnimating();
+}
+
+void SoXtExaminerViewer::setFeedbackVisibility( const SbBool enable ) {
+  common->setFeedbackVisibility( enable );
+}
+
+SbBool SoXtExaminerViewer::isFeedbackVisible(void) const {
+  return common->isFeedbackVisible();
+}
+
+void SoXtExaminerViewer::setFeedbackSize( const int size ) {
+  common->setFeedbackSize( size );
+}
+
+int SoXtExaminerViewer::getFeedbackSize(void) const {
+  return common->getFeedbackSize();
+}
 
 // *************************************************************************
