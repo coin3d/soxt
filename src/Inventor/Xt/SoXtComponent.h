@@ -119,24 +119,7 @@ protected:
   virtual Boolean eventHandler(Widget widget, XEvent * event);
 
 private:
-  Widget parent;
-  Widget widget;
-  char * widgetName;
-  char * widgetClass;
-  char * title;
-  char * iconTitle;
-
-  SbBool embedded;
-  Widget constructorParent;
-
-  SbVec2s size;
-
-  static SbPList * widgets;
-  static SbPList * components;
-
-  SbPList * close_callbacks;
-  SbPList * visibility_callbacks;
-  SbBool visibility_state, fullscreen;
+  class SoXtComponentP * pimpl;
 
   static void event_handler(Widget, XtPointer, XEvent *, Boolean *);
 

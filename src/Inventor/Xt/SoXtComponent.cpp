@@ -24,6 +24,14 @@ static const char rcsid[] =
 
 // *************************************************************************
 
+/*!
+  \class SoXtComponent Inventor/Xt/SoXtComponent.h
+  \brief The SoXtComponent class is the base class for all SoXt components.
+  \ingroup components
+*/
+
+// *************************************************************************
+
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -71,11 +79,47 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-/*!
-  \class SoXtComponent Inventor/Xt/SoXtComponent.h
-  \brief The SoXtComponent class is the base class for all SoXt components.
-  \ingroup components
-*/
+// The private data for the SoXtComponent.
+
+class SoXtComponentP {
+public:
+  // Constructor.
+  SoXtComponentP(const SoXtComponent * o)
+    : widget(NULL), widgetname(NULL), widgetclass(NULL), title(NULL),
+      icontitle(NULL), size(SbVec2s(-1, -1)),
+      closecbs(NULL), visibilitycbs(NULL),
+      visibilitystate(FALSE), fullscreen(FALSE)
+  {
+    this->owner = o;
+  }
+
+
+  Widget parent;
+  Widget widget;
+  char * widgetname;
+  char * widgetclass;
+  char * title;
+  char * icontitle;
+
+  SbBool embedded;
+
+  SbVec2s size;
+
+  static SbPList * widgets;
+  static SbPList * components;
+
+  SbPList * closecbs;
+  SbPList * visibilitycbs;
+  SbBool visibilitystate, fullscreen;
+
+private:
+  const SoXtComponent * owner;
+};
+
+SbPList * SoXtComponentP::widgets = NULL;
+SbPList * SoXtComponentP::components = NULL;
+
+#define PRIVATE(o) (o->pimpl)
 
 // *************************************************************************
 
@@ -114,10 +158,6 @@ SoXtComponent::initClasses(
 } // initClasses()
 
 // *************************************************************************
-
-// static variables
-SbPList * SoXtComponent::widgets = NULL;
-SbPList * SoXtComponent::components = NULL;
 
 struct SoXtWindowCloseCallbackInfo {
   SoXtComponentCB * callback;
@@ -163,29 +203,16 @@ struct SoXtComponentVisibilityCallbackInfo {
   words.
 */
 
-SoXtComponent::SoXtComponent(// protected
-  const Widget parent,
-  const char * const name,
-  const SbBool embed)
+SoXtComponent::SoXtComponent(const Widget parent,
+                             const char * const name,
+                             const SbBool embed) // protected
 {
-  this->constructorParent = parent;
+  PRIVATE(this) = new SoXtComponentP(this);
 
-  this->title = NULL;
-  this->iconTitle = NULL;
-  this->widgetName = NULL;
-  this->widgetClass = NULL;
   this->firstRealize = TRUE;
-  this->widget = NULL;
-  this->visibility_state = FALSE;
-  this->fullscreen = FALSE;
-
-  this->close_callbacks = NULL;
-  this->visibility_callbacks = NULL;
-
-  this->size = SbVec2s(-1, -1);
 
   if (name && strlen(name) > 0)
-    this->widgetName = strcpy(new char [ strlen(name) + 1 ], name);
+    PRIVATE(this)->widgetname = strcpy(new char [ strlen(name) + 1 ], name);
 
   if ((parent == (Widget) NULL) || ! embed) {
     // create own shell
@@ -211,7 +238,7 @@ SoXtComponent::SoXtComponent(// protected
     }
     assert(dpy != NULL);
 
-    this->parent = XtVaAppCreateShell(
+    PRIVATE(this)->parent = XtVaAppCreateShell(
       SoXt::getAppName(), // didn't work
       SoXt::getAppClass(),
       topLevelShellWidgetClass,
@@ -224,20 +251,20 @@ SoXtComponent::SoXtComponent(// protected
 #ifdef HAVE_LIBXMU
 #if SOXT_DEBUG
     XtEventHandler editres_hook = (XtEventHandler) _XEditResCheckMessages;
-    XtAddEventHandler(this->parent, (EventMask) 0, True, editres_hook, NULL);
+    XtAddEventHandler(PRIVATE(this)->parent, (EventMask) 0, True, editres_hook, NULL);
 #endif // SOXT_DEBUG
 #endif // HAVE_LIBXMU
 
-    this->embedded = FALSE;
+    PRIVATE(this)->embedded = FALSE;
   } else {
-    this->parent = parent;
-    this->embedded = TRUE;
+    PRIVATE(this)->parent = parent;
+    PRIVATE(this)->embedded = TRUE;
   }
   if (parent && XtIsShell(parent))
-    this->embedded = FALSE;
+    PRIVATE(this)->embedded = FALSE;
 
-  if (XtIsShell(this->parent))
-    XtInsertEventHandler(this->parent, (EventMask) StructureNotifyMask, False,
+  if (XtIsShell(PRIVATE(this)->parent))
+    XtInsertEventHandler(PRIVATE(this)->parent, (EventMask) StructureNotifyMask, False,
       SoXtComponent::event_handler, (XtPointer) this, XtListTail);
 } // SoXtComponent()
 
@@ -248,29 +275,31 @@ SoXtComponent::SoXtComponent(// protected
 SoXtComponent::~SoXtComponent(// virtual
   void)
 {
-  delete [] this->widgetName;
-  delete [] this->widgetClass;
-  delete [] this->title;
-  delete [] this->iconTitle;
-  if (this->close_callbacks != NULL) {
-    const int num = this->close_callbacks->getLength();
+  delete [] PRIVATE(this)->widgetname;
+  delete [] PRIVATE(this)->widgetclass;
+  delete [] PRIVATE(this)->title;
+  delete [] PRIVATE(this)->icontitle;
+  if (PRIVATE(this)->closecbs != NULL) {
+    const int num = PRIVATE(this)->closecbs->getLength();
     for (int i = 0; i < num; i++) {
       SoXtWindowCloseCallbackInfo * info =
-        (SoXtWindowCloseCallbackInfo *) (*this->close_callbacks)[i];
+        (SoXtWindowCloseCallbackInfo *) (*PRIVATE(this)->closecbs)[i];
       delete info;
     }
-    delete this->close_callbacks;
+    delete PRIVATE(this)->closecbs;
   }
-  if (this->visibility_callbacks != NULL) {
-    const int num = this->visibility_callbacks->getLength();
+  if (PRIVATE(this)->visibilitycbs != NULL) {
+    const int num = PRIVATE(this)->visibilitycbs->getLength();
     for (int i = 0; i < num; i++) {
       SoXtComponentVisibilityCallbackInfo * info =
         (SoXtComponentVisibilityCallbackInfo *)
-          (*this->visibility_callbacks)[i];
+          (*PRIVATE(this)->visibilitycbs)[i];
       delete info;
     }
-    delete this->visibility_callbacks;
+    delete PRIVATE(this)->visibilitycbs;
   }
+
+  delete PRIVATE(this);
 } // ~SoXtComponent()
 
 // *************************************************************************
@@ -341,7 +370,7 @@ SbBool
 SoXtComponent::isVisible(
   void)
 {
-  return this->visibility_state;
+  return PRIVATE(this)->visibilitystate;
 } // isVisible()
 
 // *************************************************************************
@@ -382,7 +411,7 @@ Widget
 SoXtComponent::getBaseWidget(
   void) const
 {
-  return this->widget;
+  return PRIVATE(this)->widget;
 } // getBaseWidget()
 
 /*!
@@ -394,7 +423,7 @@ SbBool
 SoXtComponent::isTopLevelShell(
   void) const
 {
-  return this->embedded ? FALSE : TRUE;
+  return PRIVATE(this)->embedded ? FALSE : TRUE;
 } // isTopLevelShell()
 
 /*!
@@ -407,21 +436,24 @@ Widget
 SoXtComponent::getShellWidget(
   void) const
 {
-  return this->isTopLevelShell() ? this->parent : (Widget) NULL;
+  return this->isTopLevelShell() ? PRIVATE(this)->parent : (Widget) NULL;
 } // getShellWidget()
 
 /*!
-  This method returns the parent widget of the component widget.
-  If the component created its own toplevel shell, this method returns the
-  the shell widget.  If the component is embedded, this method returns the
-  widget given in the \a parent argument of the constructor.
-*/
+  This method returns the parent widget of the component widget.  If
+  the component created its own toplevel shell, this method returns
+  the the shell widget.
 
+  If the component is embedded, this method returns the widget given
+  in the \a parent argument of the constructor.
+*/
+// FIXME: ^^^ this last statement doesn't seem valid -- investigate.
+// 20011012 mortene.
 Widget      
 SoXtComponent::getParentWidget(
   void) const
 {
-  return this->parent;
+  return PRIVATE(this)->parent;
 } // getParentWidget()
 
 // *************************************************************************
@@ -436,7 +468,7 @@ void
 SoXtComponent::setSize(
   const SbVec2s size)
 {
-  this->size = size;
+  PRIVATE(this)->size = size;
   Widget widget;
   if (this->isTopLevelShell())
     widget = this->getShellWidget();
@@ -470,7 +502,7 @@ SbVec2s
 SoXtComponent::getSize(
   void)
 {
-  return this->size;
+  return PRIVATE(this)->size;
 } // getSize()
 
 /*!
@@ -484,14 +516,14 @@ void
 SoXtComponent::fitSize(
   const SbVec2s size)
 {
-  if (this->isTopLevelShell() || (this->parent && XtIsShell(this->parent))) {
+  if (this->isTopLevelShell() || (PRIVATE(this)->parent && XtIsShell(PRIVATE(this)->parent))) {
     XtWidgetGeometry geometry;
     XtQueryGeometry(this->getBaseWidget(), NULL, &geometry);
-    this->size[0] = SoXtMax((short) geometry.width, size[0]);
-    this->size[1] = SoXtMax((short) geometry.height, size[1]);
+    PRIVATE(this)->size[0] = SoXtMax((short) geometry.width, size[0]);
+    PRIVATE(this)->size[1] = SoXtMax((short) geometry.height, size[1]);
     XtVaSetValues(this->getShellWidget(),
-      XmNwidth, this->size[0],
-      XmNheight, this->size[1],
+      XmNwidth, PRIVATE(this)->size[0],
+      XmNheight, PRIVATE(this)->size[1],
       NULL);
   }
 } // fitSize()
@@ -543,11 +575,11 @@ void
 SoXtComponent::setTitle(
   const char * const title)
 {
-  if (this->title && strlen(this->title) >= strlen(title)) {
-    strcpy(this->title, (char *) title);
+  if (PRIVATE(this)->title && strlen(PRIVATE(this)->title) >= strlen(title)) {
+    strcpy(PRIVATE(this)->title, (char *) title);
   } else {
-    delete [] this->title;
-    this->title = strcpy(new char [strlen(title)+1], title);
+    delete [] PRIVATE(this)->title;
+    PRIVATE(this)->title = strcpy(new char [strlen(title)+1], title);
   }
 
   Widget shell = this->isTopLevelShell() ?
@@ -555,7 +587,7 @@ SoXtComponent::setTitle(
   if (! shell)
     return;
   XtVaSetValues(shell,
-    XmNtitle, this->title,
+    XmNtitle, PRIVATE(this)->title,
     NULL);
 } // setTitle()
 
@@ -571,7 +603,7 @@ SoXtComponent::getTitle(
   void) const
 {
   // FIXME: use SoXtResource to see if title is set?
-  return this->title ? this->title : this->getDefaultTitle();
+  return PRIVATE(this)->title ? PRIVATE(this)->title : this->getDefaultTitle();
 }
 
 /*!
@@ -585,18 +617,18 @@ void
 SoXtComponent::setIconTitle(
   const char * const title)
 {
-  if (this->iconTitle && strlen(this->iconTitle) >= strlen(title)) {
-    strcpy(this->iconTitle, (char *) title);
+  if (PRIVATE(this)->icontitle && strlen(PRIVATE(this)->icontitle) >= strlen(title)) {
+    strcpy(PRIVATE(this)->icontitle, (char *) title);
   } else {
-    delete [] this->iconTitle;
-    this->iconTitle = strcpy(new char [strlen(title)+1], title);
+    delete [] PRIVATE(this)->icontitle;
+    PRIVATE(this)->icontitle = strcpy(new char [strlen(title)+1], title);
   }
   Widget shell = this->isTopLevelShell() ?
     this->getShellWidget() : (Widget) NULL;
   if (! shell)
     return;
   XtVaSetValues(shell,
-    XtNiconName, this->iconTitle,
+    XtNiconName, PRIVATE(this)->icontitle,
     NULL);
 }
 
@@ -612,7 +644,7 @@ SoXtComponent::getIconTitle(
   void) const
 {
   // FIXME: use SoXtResource to see if iconName is set?
-  return this->iconTitle ? this->iconTitle : this->getDefaultIconTitle();
+  return PRIVATE(this)->icontitle ? PRIVATE(this)->icontitle : this->getDefaultIconTitle();
 } // getIconTitle()
 
 // *************************************************************************
@@ -650,12 +682,12 @@ SoXtComponent::addWindowCloseCallback(
   SoXtComponentCB * callback,
   void * closure)
 {
-  if (this->close_callbacks == NULL)
-    this->close_callbacks = new SbPList;
+  if (PRIVATE(this)->closecbs == NULL)
+    PRIVATE(this)->closecbs = new SbPList;
   SoXtWindowCloseCallbackInfo * info = new SoXtWindowCloseCallbackInfo;
   info->callback = callback;
   info->closure = closure;
-  this->close_callbacks->append(info);
+  PRIVATE(this)->closecbs->append(info);
 } // addWindowCloseCallback()
 
 /*!
@@ -673,13 +705,13 @@ SoXtComponent::removeWindowCloseCallback(
   SoXtComponentCB * callback,
   void * closure)
 {
-  if (this->close_callbacks != NULL) {
-    const int num = this->close_callbacks->getLength();
+  if (PRIVATE(this)->closecbs != NULL) {
+    const int num = PRIVATE(this)->closecbs->getLength();
     for (int i = 0; i < num; i++) {
       SoXtWindowCloseCallbackInfo * info =
-        (SoXtWindowCloseCallbackInfo *) (*this->close_callbacks)[i];
+        (SoXtWindowCloseCallbackInfo *) (*PRIVATE(this)->closecbs)[i];
       if (info->callback == callback && info->closure == closure) {
-        this->close_callbacks->remove(i);
+        PRIVATE(this)->closecbs->remove(i);
         delete info;
         return;
       }
@@ -705,12 +737,12 @@ void
 SoXtComponent::invokeWindowCloseCallbacks(// protected
   void) const
 {
-  if (this->close_callbacks == NULL)
+  if (PRIVATE(this)->closecbs == NULL)
     return;
-  const int num = this->close_callbacks->getLength();
+  const int num = PRIVATE(this)->closecbs->getLength();
   for (int i = 0; i < num; i++) {
     SoXtWindowCloseCallbackInfo * info =
-      (SoXtWindowCloseCallbackInfo *) (*this->close_callbacks)[i];
+      (SoXtWindowCloseCallbackInfo *) (*PRIVATE(this)->closecbs)[i];
     // Cast required for AIX
     info->callback(info->closure, (SoXtComponent *) this);
   }
@@ -727,11 +759,11 @@ SoXtComponent *
 SoXtComponent::getComponent(// static
   Widget widget)
 {
-  assert(SoXtComponent::widgets != NULL);
-  int pos = SoXtComponent::widgets->find((void *) widget);
+  assert(SoXtComponentP::widgets != NULL);
+  int pos = SoXtComponentP::widgets->find((void *) widget);
   if (pos == -1)
     return NULL;
-  return (SoXtComponent *) (*SoXtComponent::components)[pos];
+  return (SoXtComponent *) (*SoXtComponentP::components)[pos];
 } // getComponent()
 
 /*!
@@ -742,7 +774,7 @@ const char *
 SoXtComponent::getWidgetName(
   void) const
 {
-  return this->widgetName ? this->widgetName : this->getDefaultWidgetName();
+  return PRIVATE(this)->widgetname ? PRIVATE(this)->widgetname : this->getDefaultWidgetName();
 } // getWidgetName()
 
 /*!
@@ -753,7 +785,7 @@ const char *
 SoXtComponent::getClassName(
   void) const
 {
-  return this->widgetClass;
+  return PRIVATE(this)->widgetclass;
 } // getClassName()
 
 /*!
@@ -770,20 +802,20 @@ SoXtComponent::setBaseWidget(// protected
 //    FocusChangeMask;
 //    EnterWindowMask | LeaveWindowMask |
 
-  if (this->widget) {
+  if (PRIVATE(this)->widget) {
     // remove event handler
   }
 
-  this->widget = widget;
+  PRIVATE(this)->widget = widget;
 
   // really resize widget?  after all, size has been touched...
-  if (this->size[0] != -1)
-    XtVaSetValues(this->widget, XtNwidth, this->size[0], NULL);
-  if (this->size[1] != -1)
-    XtVaSetValues(this->widget, XtNheight, this->size[1], NULL);
+  if (PRIVATE(this)->size[0] != -1)
+    XtVaSetValues(PRIVATE(this)->widget, XtNwidth, PRIVATE(this)->size[0], NULL);
+  if (PRIVATE(this)->size[1] != -1)
+    XtVaSetValues(PRIVATE(this)->widget, XtNheight, PRIVATE(this)->size[1], NULL);
   // register widget?
 
-  XtInsertEventHandler(this->widget, events, False,
+  XtInsertEventHandler(PRIVATE(this)->widget, events, False,
     SoXtComponent::event_handler, (XtPointer) this, XtListTail);
 } // setBaseWidget()
 
@@ -795,11 +827,11 @@ void
 SoXtComponent::setClassName(// protected
   const char * const name)
 {
-  if (this->widgetClass && strlen(this->widgetClass) >= strlen(name)) {
-    strcpy(this->widgetClass, (char *) name);
+  if (PRIVATE(this)->widgetclass && strlen(PRIVATE(this)->widgetclass) >= strlen(name)) {
+    strcpy(PRIVATE(this)->widgetclass, (char *) name);
   } else {
-    delete [] this->widgetClass;
-    this->widgetClass = strcpy(new char [strlen(name)+1], name);
+    delete [] PRIVATE(this)->widgetclass;
+    PRIVATE(this)->widgetclass = strcpy(new char [strlen(name)+1], name);
   }
 } // setClassName()
 
@@ -840,10 +872,10 @@ SoXtComponent::afterRealizeHook(// virtual, protected
       XmNiconName, this->getIconTitle(),
       NULL);
 
-    if (this->size[0] > 0) {
+    if (PRIVATE(this)->size[0] > 0) {
       XtVaSetValues(this->getShellWidget(),
-        XmNwidth, this->size[0],
-        XmNheight, this->size[1],
+        XmNwidth, PRIVATE(this)->size[0],
+        XmNheight, PRIVATE(this)->size[1],
         NULL);
     }
   }
@@ -913,12 +945,12 @@ void
 SoXtComponent::registerWidget(// protected
   Widget widget)
 {
-  if (SoXtComponent::widgets == NULL) {
-    SoXtComponent::widgets = new SbPList;
-    SoXtComponent::components = new SbPList;
+  if (SoXtComponentP::widgets == NULL) {
+    SoXtComponentP::widgets = new SbPList;
+    SoXtComponentP::components = new SbPList;
   }
-  SoXtComponent::widgets->append((void *) widget);
-  SoXtComponent::components->append((void *) this);
+  SoXtComponentP::widgets->append((void *) widget);
+  SoXtComponentP::components->append((void *) this);
 } // registerWidget()
 
 /*!
@@ -931,16 +963,16 @@ void
 SoXtComponent::unregisterWidget(// protected
   Widget widget)
 {
-  assert(SoXtComponent::widgets != NULL);
+  assert(SoXtComponentP::widgets != NULL);
   assert(widget != NULL);
-  int pos = SoXtComponent::widgets->find((void *) widget);
+  int pos = SoXtComponentP::widgets->find((void *) widget);
   if (pos == -1) {
     SoDebugError::post("SoXtComponent::unregisterWidget",
       "widget (%s) not registered", XtName(widget));
   }
-  assert(SoXtComponent::components != NULL);
-  SoXtComponent::widgets->remove(pos);
-  SoXtComponent::components->remove(pos);
+  assert(SoXtComponentP::components != NULL);
+  SoXtComponentP::widgets->remove(pos);
+  SoXtComponentP::components->remove(pos);
 } // unregisterWidget()
 
 // *************************************************************************
@@ -959,11 +991,11 @@ SoXtComponent::addVisibilityChangeCallback(// protected
   SoXtComponentVisibilityCB * callback,
   void * closure)
 {
-  if (this->visibility_callbacks == NULL)
-    this->visibility_callbacks = new SbPList;
+  if (PRIVATE(this)->visibilitycbs == NULL)
+    PRIVATE(this)->visibilitycbs = new SbPList;
   SoXtComponentVisibilityCallbackInfo * info =
     new SoXtComponentVisibilityCallbackInfo;
-  this->visibility_callbacks->append(info);
+  PRIVATE(this)->visibilitycbs->append(info);
 } // addVisibilityChangeCallback()
 
 /*!
@@ -978,14 +1010,14 @@ SoXtComponent::removeVisibilityChangeCallback(// protected
   SoXtComponentVisibilityCB * callback,
   void * closure)
 {
-  if (this->visibility_callbacks != NULL) {
-    const int num = this->visibility_callbacks->getLength();
+  if (PRIVATE(this)->visibilitycbs != NULL) {
+    const int num = PRIVATE(this)->visibilitycbs->getLength();
     for (int i = 0; i < num; i++) {
       SoXtComponentVisibilityCallbackInfo * info =
         (SoXtComponentVisibilityCallbackInfo *)
-          (*this->visibility_callbacks)[i];
+          (*PRIVATE(this)->visibilitycbs)[i];
       if (info->callback == callback && info->closure == closure) {
-        this->visibility_callbacks->remove(i);
+        PRIVATE(this)->visibilitycbs->remove(i);
         delete info;
         return;
       }
@@ -1010,13 +1042,13 @@ void
 SoXtComponent::invokeVisibilityChangeCallbacks(// protected
   const SbBool enable) const
 {
-  if (this->visibility_callbacks == NULL)
+  if (PRIVATE(this)->visibilitycbs == NULL)
     return;
-  const int num = this->visibility_callbacks->getLength();
+  const int num = PRIVATE(this)->visibilitycbs->getLength();
   for (int i = 0; i < num; i++) {
     SoXtComponentVisibilityCallbackInfo * info =
       (SoXtComponentVisibilityCallbackInfo *)
-        (*this->visibility_callbacks)[i];
+        (*PRIVATE(this)->visibilitycbs)[i];
     info->callback(info->closure, enable);
   }
 } // invokeVisibilityChangeCallbacks()
@@ -1070,16 +1102,16 @@ SoXtComponent::eventHandler(// protected, virtual
   Widget widget,
   XEvent * event)
 {
-  if (widget == this->widget) { // base widget
+  if (widget == PRIVATE(this)->widget) { // base widget
 #if SOXT_DEBUG && 0
     SoDebugError::postInfo("SoXtComponent::eventHandler",
       "base widget event (%d)", event->type);
 #endif // SOXT_DEBUG
     if (event->type == ConfigureNotify) {
       XConfigureEvent * conf = (XConfigureEvent *) event;
-      if (this->size != SbVec2s(conf->width, conf->height)) {
-        this->size = SbVec2s(conf->width, conf->height);
-        this->sizeChanged(this->size);
+      if (PRIVATE(this)->size != SbVec2s(conf->width, conf->height)) {
+        PRIVATE(this)->size = SbVec2s(conf->width, conf->height);
+        this->sizeChanged(PRIVATE(this)->size);
       }
     } else if (event->type == MapNotify) {
       Dimension width = 0, height = 0;
@@ -1087,17 +1119,17 @@ SoXtComponent::eventHandler(// protected, virtual
         XmNwidth, &width,
         XmNheight, &height,
         NULL);
-      this->size = SbVec2s(width, height);
-      this->sizeChanged(this->size);
+      PRIVATE(this)->size = SbVec2s(width, height);
+      this->sizeChanged(PRIVATE(this)->size);
     } else if (event->type == VisibilityNotify) {
 //    SoDebugError::postInfo("SoXtComponent::eventHandler", "Visibility");
       XVisibilityEvent * visibility = (XVisibilityEvent *) event;
       SbBool newvisibility = TRUE;
       if (visibility->state == VisibilityFullyObscured)
         newvisibility = FALSE;
-      if (this->visibility_state != newvisibility) {
-        this->visibility_state = newvisibility;
-        this->invokeVisibilityChangeCallbacks(this->visibility_state);
+      if (PRIVATE(this)->visibilitystate != newvisibility) {
+        PRIVATE(this)->visibilitystate = newvisibility;
+        this->invokeVisibilityChangeCallbacks(PRIVATE(this)->visibilitystate);
       }
     }
   } else if (this->isTopLevelShell() && widget == this->getShellWidget()) {
@@ -1108,13 +1140,13 @@ SoXtComponent::eventHandler(// protected, virtual
 
     if (event->type == ConfigureNotify) {
       XConfigureEvent * conf = (XConfigureEvent *) event;
-      if (this->size != SbVec2s(conf->width, conf->height)) {
-        this->size = SbVec2s(conf->width, conf->height);
+      if (PRIVATE(this)->size != SbVec2s(conf->width, conf->height)) {
+        PRIVATE(this)->size = SbVec2s(conf->width, conf->height);
         XtVaSetValues(this->getBaseWidget(),
-          XmNwidth, this->size[0],
-          XmNheight, this->size[1],
+          XmNwidth, PRIVATE(this)->size[0],
+          XmNheight, PRIVATE(this)->size[1],
           NULL);
-        this->sizeChanged(this->size);
+        this->sizeChanged(PRIVATE(this)->size);
       }
     }
   } else {
@@ -1154,7 +1186,7 @@ SoXtComponent::event_handler(
 SbBool 
 SoXtComponent::setFullScreen(const SbBool onoff)
 {
-  if (onoff == this->fullscreen) { return TRUE; }
+  if (onoff == PRIVATE(this)->fullscreen) { return TRUE; }
   SOXT_STUB();
   return FALSE;
 }
@@ -1165,7 +1197,7 @@ SoXtComponent::setFullScreen(const SbBool onoff)
 SbBool 
 SoXtComponent::isFullScreen(void) const
 {
-  return this->fullscreen;
+  return PRIVATE(this)->fullscreen;
 }
 
 // *************************************************************************
