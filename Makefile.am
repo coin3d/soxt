@@ -8,7 +8,10 @@ ACLOCAL_AMFLAGS = -I cfg/m4
 ############################################################################
 
 if BUILD_LIBRARY
-LIBDIRS = data src
+# Material editor(s) not part of the public API yet, so there's
+# no point yet in installing the material data.
+#LIBDIRS = data src
+LIBDIRS = src
 else
 LIBDIRS =
 endif

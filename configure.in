@@ -385,16 +385,18 @@ SIM_AC_UNIQIFY_LIST(LIBS, $LIBS)
 # **************************************************************************
 # Configure the submodule with the data.
 
-if $sim_ac_build_library; then
-  AC_CONFIG_SUBDIRS([data])
-fi
+# Material editor(s) not part of the public API yet, so there's
+# no point yet in installing the material data.
+#if $sim_ac_build_library; then
+#  AC_CONFIG_SUBDIRS([data])
+#fi
 
 # **************************************************************************
 # Generate the makefiles and config files.
 #
 # Note that soxt-$CONFIG.cfg needs to be generated from the configure
 # script -- not just from the Makefile -- as the data/configure script
-# depends on it.
+# depends on it. (data/configure is temporarily disabled, BTW, but anyway..)
 
 AC_OUTPUT([
 	soxt-$CONFIG.cfg:src/Inventor/Xt/common/sogui.cfg.in
