@@ -62,7 +62,9 @@ SoXtViewer::processCommonEvents(
 
   SbVec2f pos( 0.0f, 0.0f );
 
+#if SOXT_DEBUG && 0
   SoDebugError::postInfo( "processCommonEvents", "buflen = %d", keybuflen );
+#endif // SOXT_DEBUG
 
   switch ( keysym ) {
   case XK_S:

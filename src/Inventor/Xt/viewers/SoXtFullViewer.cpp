@@ -1394,6 +1394,9 @@ SoXtFullViewer::viewallbuttonCB(
   ((SoXtFullViewer *) client_data)->viewallbuttonClicked();
 } // viewallbuttonCB()
 
+/*!
+*/
+
 void
 SoXtFullViewer::seekbuttonClicked(
   void )
@@ -1436,6 +1439,6 @@ SoXtFullViewer::drawstyleActivated(
   int item )
 {
   SOXT_STUB();
-}
+} // drawstyleActivated()
 
 // *************************************************************************
