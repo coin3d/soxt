@@ -1,0 +1,10 @@
+
+all:: built-sources soxt.doxygen
+	doxygen soxt.doxygen
+
+built-sources:
+	@( cd ..; $(MAKE) built-sources )
+
+soxt.doxygen: @top_srcdir@/docs/soxt.doxygen.in
+	@( cd ..; ./config.status docs/soxt.doxygen )
+
