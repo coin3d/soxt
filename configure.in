@@ -255,6 +255,7 @@ AC_OUTPUT([
 	src/Inventor/Xt/viewers/Makefile
 	src/Inventor/Xt/widgets/Makefile
 	test-code/Makefile
+	test-code/bugs/Makefile
 	test-code/widgets/Makefile
 ],[
 	chmod a+x soxt-config

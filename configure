@@ -4118,7 +4118,7 @@ config_files="\\
     Makefile soxt-config src/Inventor/Xt/Makefile
     src/Inventor/Xt/devices/Makefile src/Inventor/Xt/viewers/Makefile
     src/Inventor/Xt/widgets/Makefile test-code/Makefile
-    test-code/widgets/Makefile"
+    test-code/bugs/Makefile test-code/widgets/Makefile"
 config_headers="\\
     config.h"
 
@@ -4169,6 +4169,7 @@ do
   'src/Inventor/Xt/viewers/Makefile' ) CONFIG_FILES="\$CONFIG_FILES src/Inventor/Xt/viewers/Makefile" ;;
   'src/Inventor/Xt/widgets/Makefile' ) CONFIG_FILES="\$CONFIG_FILES src/Inventor/Xt/widgets/Makefile" ;;
   'test-code/Makefile' ) CONFIG_FILES="\$CONFIG_FILES test-code/Makefile" ;;
+  'test-code/bugs/Makefile' ) CONFIG_FILES="\$CONFIG_FILES test-code/bugs/Makefile" ;;
   'test-code/widgets/Makefile' ) CONFIG_FILES="\$CONFIG_FILES test-code/widgets/Makefile" ;;
   'config.h' ) CONFIG_HEADERS="\$CONFIG_HEADERS config.h" ;;
   # This is an error.
