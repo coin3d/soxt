@@ -74,6 +74,7 @@ protected:
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
 
+  virtual SbBool processSoEvent( const SoEvent * const event );
   virtual void processEvent( XAnyEvent * event );
   virtual void setSeekMode( SbBool enable );
   virtual void actualRedraw(void);

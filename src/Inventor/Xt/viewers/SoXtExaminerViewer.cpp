@@ -55,6 +55,7 @@ static const char rcsid[] =
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/projectors/SbSphereSheetProjector.h>
+#include <Inventor/projectors/SbSpherePlaneProjector.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 
 #include <soxtdefs.h>
@@ -100,16 +101,6 @@ static const char rcsid[] =
   Widget for field for setting axes size.
 */
 
-/*!
-  \var XtIntervalId SoXtExaminerViewer::spindetecttimerId
-  Id for spin detect timer.
-*/
-
-/*!
-  \var SbBool SoXtExaminerViewer::spindetecttimerActive
-  Variable telling whether spin detect timer is active or not.
-*/
-
 // *************************************************************************
 
 /*!
@@ -151,17 +142,13 @@ SoXtExaminerViewer::SoXtExaminerViewer( // protected
 
 void
 SoXtExaminerViewer::constructor( // private
-  SbBool build )
+  const SbBool build )
 {
-  this->prefshell = this->prefsheet = (Widget) NULL;
+//  this->prefshell = this->prefsheet = (Widget) NULL;
   this->prefparts = NULL;
   this->numprefparts = 0;
 
-// don't uncomment this until constructor sends FALSE to FullViewer class
   this->mode = EXAMINE;
-
-  this->spindetecttimerId = 0;
-  this->spindetecttimerActive = FALSE;
 
   this->setClassName( this->getWidgetName() );
   this->camerabutton = (Widget) NULL;
@@ -194,44 +181,39 @@ SoXtExaminerViewer::~SoXtExaminerViewer(
 // *************************************************************************
 
 /*!
-  FIXME: write doc
+  Translating events into SoEvent events and working with them makes the
+  code more portable, so that is the purpose of this method.
+
+  This method is not part of the original InventorXt API.
+*/
+
+SbBool
+SoXtExaminerViewer::processSoEvent( // virtual
+  const SoEvent * const event )
+{
+  if ( common->processSoEvent(event) ) return TRUE;
+  if ( inherited::processSoEvent(event) ) return TRUE;
+  return FALSE;
+} // processSoEvent()
+
+/*!
+  This method handles X events in the way they should be handled especially
+  for examiner viewer components.
 */
 
 void
 SoXtExaminerViewer::processEvent(
   XAnyEvent * event )
 {
-  if ( SoXtViewer::processCommonEvents( event ) )
-    return; // handled in SoXtViewer
+// if ( SoXtViewer::processCommonEvents( event ) )
+//   return; // handled in SoXtViewer
 
-  if ( ! this->mapped ) {
-    this->mapped = TRUE; // Must be set before setCursorRepresentation() call.
-    this->setCursorRepresentation( this->mode );
-  }
+  inherited::processEvent( event );
+  return;
 
+/*
   SbVec2s canvassize = this->getGLSize();
-  SbVec2s mousepos( 0, 0 );
-
-  switch ( event->type ) {
-  case ButtonPress:
-  case ButtonRelease:
-    mousepos[0] = ((XButtonEvent *)event)->x;
-    mousepos[1] = ((XButtonEvent *)event)->y;
-    break;
-    
-  case MotionNotify:
-    mousepos[0] = ((XPointerMovedEvent *)event)->x;
-    mousepos[1] = ((XPointerMovedEvent *)event)->y;
-    break;
-
-  default:
-    break;
-  }
-
   mousepos[1] = canvassize[1] - mousepos[1];
-
-  SbVec2f norm_mousepos( (float)mousepos[0]/(float)canvassize[0],
-                         (float)mousepos[1]/(float)canvassize[1] );
 
   switch ( event->type ) {
 
@@ -239,103 +221,19 @@ SoXtExaminerViewer::processEvent(
     common->lastmouseposition = norm_mousepos;
     common->lastspinposition = norm_mousepos;
 
-    if ( ((XButtonEvent *) event)->button == 3 && this->isPopupMenuEnabled() ) {
-      int x = ((XButtonEvent *) event)->x_root;
-      int y = ((XButtonEvent *) event)->y_root;
-      if ( ! this->prefmenu )
-        this->buildPopupMenu();
-      this->prefmenu->PopUp( this->getGLWidget(), x, y );
-      break;
-    }
-
-    if ( ((XButtonEvent *) event)->button == Button4 ) {
-      common->zoom( -0.1f );
-      break;
-    }
-      
-    if ( ((XButtonEvent *) event)->button == Button5 ) {
-      common->zoom( 0.1f );
-      break;
-    }
-
     this->interactiveCountInc();
 
     if ( this->mode == WAITING_FOR_SEEK ) {
       this->seekToPoint( mousepos );
-    } else {
-      do {
-        unsigned int state = ((XButtonEvent *)event)->state;
-        switch ( ((XButtonEvent *)event)->button ) {
-        case Button1: state |= Button1Mask; break;
-        case Button2: state |= Button2Mask; break;
-        case Button3: state |= Button3Mask; break;
-        case Button4: state |= Button4Mask; break;
-        case Button5: state |= Button5Mask; break;
-        default: break;
-        }
-        this->setModeFromState( state );
-        if ( this->isAnimating() )
-          this->stopAnimating();
-      } while ( FALSE );
     }
 
     break;
 
   case ButtonRelease:
     if ( ((XButtonEvent *)event)->button != Button1 &&
-         ((XButtonEvent *)event)->button != Button2 )
-      break;
-
-    if ( this->mode == DRAGGING &&
-         this->isAnimationEnabled() &&
-         this->spindetecttimerActive ) {
-      XtRemoveTimeOut( this->spindetecttimerId );
-      this->spindetecttimerId = 0;
-      this->spindetecttimerActive = FALSE;
-      common->spinanimating = TRUE;
-      common->spintimertrigger->schedule();
-      this->interactiveCountInc();
-    }
-
-    this->interactiveCountDec();
-    do {
-      unsigned int state = ((XButtonEvent *)event)->state;
-      switch ( ((XButtonEvent *)event)->button ) {
-      case Button1: state &= ~Button1Mask; break;
-      case Button2: state &= ~Button2Mask; break;
-      case Button3: state &= ~Button3Mask; break;
-      case Button4: state &= ~Button4Mask; break;
-      case Button5: state &= ~Button5Mask; break;
-      default: break;
-      }
-      this->setModeFromState( state );
-    } while ( FALSE );
-    break;
 
   case MotionNotify:
     // XPointerMovedEvent
-    switch ( this->mode ) {
-    case DRAGGING:
-      if ( this->spindetecttimerId )
-        XtRemoveTimeOut( this->spindetecttimerId );
-      this->spindetecttimerId =
-        XtAppAddTimeOut( SoXt::getAppContext(), 10,
-          SoXtExaminerViewer::spindetecttimerCB, this );
-        this->spindetecttimerActive = TRUE;
-        common->spin( norm_mousepos );
-      break;
-
-    case PANNING:
-      common->pan( norm_mousepos );
-      break;
-
-    case ZOOMING:
-      common->zoomByCursor( norm_mousepos );
-      break;
-
-    default:
-      break;
-    }
     break;
 
   case KeyPress:
@@ -383,6 +281,7 @@ SoXtExaminerViewer::processEvent(
   } // switch ( event )
 
   common->lastmouseposition = norm_mousepos;
+*/
 } // processEvent()
 
 // *************************************************************************
@@ -665,26 +564,6 @@ SoXtExaminerViewer::setMode(
 // *************************************************************************
 
 /*!
-  \internal
-*/
-
-void
-SoXtExaminerViewer::spindetecttimerCB( // static
-  XtPointer user,
-  XtIntervalId * id )
-{
-  SoXtExaminerViewer * that = (SoXtExaminerViewer *) user;
-  that->spindetecttimerId = 0;
-  that->spindetecttimerActive = FALSE;
-#if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXtExaminerViewer::spindetecttimerCB",
-    "called - but doin' squat" );
-#endif // SOXT_DEBUG
-} // spindetecttimerCB()
-
-// *************************************************************************
-
-/*!
   FIXME: write doc
 */
 
@@ -853,17 +732,24 @@ SoXtExaminerViewer::setSeekMode(
 // *************************************************************************
 
 /*!
-  This method is overloaded to draw the poin-of-rotation axis cross on
-  each redraw, if user-configured.
+  This method is overloaded to draw the point-of-rotation axis cross on each
+  redraw, if the user has configured it that way.
 */
 
 void
 SoXtExaminerViewer::actualRedraw( // virtual
   void )
 {
-  inherited::actualRedraw();
-  if ( this->isFeedbackVisible() )
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXtDebugError::actualRedraw()", "[invoked]" );
+#endif // SOXT_DEBUG
+
+  common->actualRedraw();               // spinanimation preparation
+  inherited::actualRedraw();            // actual scene rendering
+  if ( common->isFeedbackVisible() )    // extra dingbats
     common->drawAxisCross();
+  if ( common->isAnimating() )          // animation
+    this->scheduleRedraw();
 } // actualRedraw()
 
 // *************************************************************************
@@ -879,7 +765,9 @@ SoXtExaminerViewer::setAnimationEnabled(
   common->setAnimationEnabled( enable );
   if ( this->spinanimtoggle ) {
     Boolean enabled = False;
-    XtVaGetValues( this->spinanimtoggle, XmNset, &enabled, NULL );
+    XtVaGetValues( this->spinanimtoggle,
+      XmNset, &enabled,
+      NULL );
     if ( enable != enabled )
       XtVaSetValues( this->spinanimtoggle,
         XmNset, enable ? True : False,
@@ -993,8 +881,8 @@ SoXtExaminerViewer::createPrefSheet( // protected, virtual
     SoDebugError::postInfo( "SoXtExaminerViewer::createPrefSheet",
       "numparts = %d", this->numprefparts );
 #endif // SOXT_DEBUG
-    // add parts specific for derived viewer
 
+    // add parts specific for derived viewer
     this->prefparts[this->numprefparts] =
       this->createFramedSpinAnimPrefSheetGuts( this->prefsheet );
     if ( this->prefparts[this->numprefparts] != NULL ) this->numprefparts++;
@@ -1234,7 +1122,7 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
       "axes size", strlen( "axes size" ) + 1,
     NULL );
 
-#endif
+#endif // 0
 
   return form;
 } // createRotAxisPrefSheetGuts()
@@ -1365,6 +1253,24 @@ SoXtExaminerViewer::rotaxesoverlaytoggledCB( // static
   SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
   viewer->rotaxesoverlaytoggled();
 } // rotaxesoverlaytoggledCB()
+
+/*!
+  Invoked when first mapped.
+  Just makes sure the cursor gets set for the GL area.
+*/
+
+void
+SoXtExaminerViewer::afterRealizeHook( // virtual, protected
+  void )
+{
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXtExaminerViewer::afterRealizeHook",
+    "[invoked]" );
+#endif // SOXT_DEBUG
+  inherited::afterRealizeHook();
+  this->mapped = TRUE;
+//  this->setCursorRepresentation( this->mode );
+} // afterRealizeHook()
 
 // *************************************************************************
 

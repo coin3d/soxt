@@ -77,8 +77,8 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXtResource.h>
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
 #include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
-#include <Inventor/Xt/viewers/SoAnyFullViewer.h>
 
+#include <Inventor/Xt/viewers/SoAnyFullViewer.h>
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
 
 #ifndef M_PI
@@ -257,6 +257,10 @@ SoXtFullViewer::SoXtFullViewer( // protected
   this->rightWheelLabel = NULL;
 
   // initialization of private members
+  this->leftDecoration = NULL;
+  this->rightDecoration = NULL;
+  this->bottomDecoration = NULL;
+
   this->viewerbase = NULL;
   this->canvas = NULL;
 
@@ -401,6 +405,7 @@ SoXtFullViewer::setPopupMenuString(
 {
   SOXT_STUB();
 } // setPopupMenuString()
+
 
 // *************************************************************************
 
@@ -582,8 +587,8 @@ void
 SoXtFullViewer::buildDecoration( // virtual
   Widget parent )
 {
-  this->decorform[LEFTDECORATION]   = this->buildLeftTrim( parent );
-  XtVaSetValues( this->decorform[LEFTDECORATION],
+  this->leftDecoration = this->buildLeftTrim( parent );
+  XtVaSetValues( this->leftDecoration,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_OPPOSITE_FORM,
@@ -591,11 +596,9 @@ SoXtFullViewer::buildDecoration( // virtual
     XmNbottomAttachment, XmATTACH_FORM,
     XmNbottomOffset, 30,
     NULL );
-//  XtRealizeWidget( this->decorform[LEFTDECORATION] );
-//  XtManageChild( this->decorform[LEFTDECORATION] );
 
-  this->decorform[RIGHTDECORATION]  = this->buildRightTrim( parent );
-  XtVaSetValues( this->decorform[RIGHTDECORATION],
+  this->rightDecoration = this->buildRightTrim( parent );
+  XtVaSetValues( this->rightDecoration,
     XmNleftAttachment, XmATTACH_OPPOSITE_FORM,
     XmNleftOffset, -30,
     XmNtopAttachment, XmATTACH_FORM,
@@ -603,19 +606,15 @@ SoXtFullViewer::buildDecoration( // virtual
     XmNbottomAttachment, XmATTACH_FORM,
     XmNbottomOffset, 30,
     NULL );
-//  XtRealizeWidget( this->decorform[RIGHTDECORATION] );
-//  XtManageChild( this->decorform[RIGHTDECORATION] );
 
-  this->decorform[BOTTOMDECORATION] = this->buildBottomTrim( parent );
-  XtVaSetValues( this->decorform[BOTTOMDECORATION],
+  this->bottomDecoration = this->buildBottomTrim( parent );
+  XtVaSetValues( this->bottomDecoration,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_OPPOSITE_FORM,
     XmNtopOffset, -30,
     XmNrightAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
     NULL );
-//  XtRealizeWidget( this->decorform[BOTTOMDECORATION] );
-//  XtManageChild( this->decorform[BOTTOMDECORATION] );
 } // buildDecorations()
 
 // *************************************************************************
@@ -635,8 +634,8 @@ SoXtFullViewer::buildLeftTrim( // virtual
       xmFormWidgetClass, parent,
       NULL );
 
-  // build application buttons
 #if 0
+  // build application buttons
   this->appButtonsForm = this->buildAppButtonsForm( trim );
   XtVaSetValues( this->appButtonsForm,
     XmNleftAttachment, XmATTACH_FORM,
@@ -1417,6 +1416,36 @@ SoXtFullViewer::buildDrawStyleSubmenu(
   return (Widget) NULL;
 } // buildDrawStyleSubmenu()
 
+/*!
+*/
+
+void
+SoXtFullViewer::openPopupMenu(
+  const SbVec2s position )
+{
+  if ( ! this->isPopupMenuEnabled() )
+    return;
+  if ( this->prefmenu == NULL )
+    this->buildPopupMenu();
+  assert( this->prefmenu != NULL );
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXtFullViewer::openPopupMenu", "[invoked]" );
+#endif // SOXT_DEBUG && 0
+  Dimension x = 0, y = 0, xt = 0, yt = 0;
+  Widget widget = this->getGLWidget();
+  assert( widget != NULL );
+  do {
+    xt = yt = 0;
+    XtVaGetValues( widget, XmNx, &xt, XmNy, &yt, NULL );
+    x += xt; y += yt;
+    widget = XtParent(widget);
+  } while ( widget && ! XtIsShell(widget) );
+  XtVaGetValues( this->getShellWidget(), XmNx, &xt, XmNy, &yt, NULL );
+  x += xt + position[0] + 2;
+  y += yt + this->getGLSize()[1] - position[1] + 2;
+  this->prefmenu->PopUp( this->getGLWidget(), x, y );
+} // openPopupMenu()
+
 // *************************************************************************
 
 /*!
@@ -1878,9 +1907,9 @@ SoXtFullViewer::showDecorationWidgets(
   SbBool enable )
 {
   if ( ! this->canvas ) return;
-  assert( this->decorform[0] != (Widget) NULL );
-  assert( this->decorform[1] != (Widget) NULL );
-  assert( this->decorform[2] != (Widget) NULL );
+  assert( this->leftDecoration != (Widget) NULL );
+  assert( this->rightDecoration != (Widget) NULL );
+  assert( this->bottomDecoration != (Widget) NULL );
 
   if ( enable ) {
     XtVaSetValues( this->canvas,
@@ -1888,19 +1917,19 @@ SoXtFullViewer::showDecorationWidgets(
       XmNrightOffset, 30,
       XmNbottomOffset, 30,
       NULL );
-    if ( XtWindow( this->decorform[LEFTDECORATION] ) != 0 ) {
-      XtMapWidget( this->decorform[LEFTDECORATION] );
-      XtManageChild( this->decorform[LEFTDECORATION] );
-      XtMapWidget( this->decorform[RIGHTDECORATION] );
-      XtManageChild( this->decorform[RIGHTDECORATION] );
-      XtMapWidget( this->decorform[BOTTOMDECORATION] );
-      XtManageChild( this->decorform[BOTTOMDECORATION] );
+    if ( XtWindow( this->leftDecoration ) != 0 ) {
+      XtMapWidget( this->leftDecoration );
+      XtManageChild( this->leftDecoration );
+      XtMapWidget( this->rightDecoration );
+      XtManageChild( this->rightDecoration );
+      XtMapWidget( this->bottomDecoration );
+      XtManageChild( this->bottomDecoration );
     }
   } else {
-    if ( XtWindow( this->decorform[LEFTDECORATION] ) != 0 ) {
-      XtUnmapWidget( this->decorform[LEFTDECORATION] );
-      XtUnmapWidget( this->decorform[RIGHTDECORATION] );
-      XtUnmapWidget( this->decorform[BOTTOMDECORATION] );
+    if ( XtWindow( this->leftDecoration ) != 0 ) {
+      XtUnmapWidget( this->leftDecoration );
+      XtUnmapWidget( this->rightDecoration );
+      XtUnmapWidget( this->bottomDecoration );
     }
     XtVaSetValues( this->canvas,
       XmNleftOffset, 0,
@@ -4028,29 +4057,6 @@ SoXtFullViewer::zoomvaluechangedCB(
   FIXME: write doc
 */
 
-Widget
-SoXtFullViewer::getThumbWheel(
-  int num )
-{
-  switch ( num ) {
-  case LEFTDECORATION: return this->leftWheel;
-  case BOTTOMDECORATION: return this->bottomWheel;
-  case RIGHTDECORATION: return this->rightWheel;
-  default:
-#if SOXT_DEBUG
-    SoDebugError::post( "SoXtFullViewer::getThumbWheel",
-      "invalid thumbwheel" );
-#endif // SOXT_DEBUG
-  }
-  return (Widget) NULL;
-} // getThumbWheel()
-
-// *************************************************************************
-
-/*!
-  FIXME: write doc
-*/
-
 void
 SoXtFullViewer::speedInc(
   void )
@@ -4096,6 +4102,39 @@ SoXtFullViewer::speedDecCB(
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->speedDec();
 } // speedDecCB()
+
+// *************************************************************************
+
+/*!
+*/
+
+void
+SoXtFullViewer::sizeChanged(
+  const SbVec2s size )
+{
+  SbVec2s newsize( size );
+  if ( this->isDecoration() ) {
+    newsize[0] = size[0] - 2 * 30;
+    newsize[1] = size[1] - 30;
+  }
+  inherited::sizeChanged( newsize );
+} // sizeChanged()
+
+// *************************************************************************
+
+/*!
+*/
+
+SbBool
+SoXtFullViewer::processSoEvent( // virtual, protected
+  const SoEvent * const event )
+{
+  if ( common->processSoEvent(event) )
+    return TRUE;
+  if ( inherited::processSoEvent(event) )
+    return TRUE;
+  return FALSE;
+} // processSoEvent()
 
 // *************************************************************************
 

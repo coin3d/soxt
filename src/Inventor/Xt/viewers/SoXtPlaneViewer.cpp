@@ -385,6 +385,20 @@ SoXtPlaneViewer::getDefaultIconTitle(
 /*!
 */
 
+SbBool
+SoXtPlaneViewer::processSoEvent( // virtual, protected
+  const SoEvent * const event )
+{
+  if ( common->processSoEvent( event ) )
+    return TRUE;
+  return inherited::processSoEvent( event );
+} // processSoEvent()
+
+// *************************************************************************
+
+/*!
+*/
+
 void
 SoXtPlaneViewer::processEvent(
   XAnyEvent * event )

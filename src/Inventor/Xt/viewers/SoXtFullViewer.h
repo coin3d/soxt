@@ -48,10 +48,10 @@ public:
   SbBool isPopupMenuEnabled(void) const;
 
   Widget getAppPushButtonParent(void) const;
-  void addAppPushButton( Widget newButton );
-  void insertAppPushButton( Widget newButton, int idx );
-  void removeAppPushButton( Widget oldButton );
-  int findAppPushButton( Widget oldButton ) const;
+  void addAppPushButton( Widget button );
+  void insertAppPushButton( Widget button, int idx );
+  void removeAppPushButton( Widget button );
+  int findAppPushButton( Widget button ) const;
   int lengthAppPushButton(void) const;
 
   Widget getRenderAreaWidget(void) const;
@@ -88,6 +88,7 @@ protected:
   void setPopupMenuString( const char * const title );
   Widget buildFunctionsSubmenu( Widget popup );
   Widget buildDrawStyleSubmenu( Widget popup );
+  void openPopupMenu( const SbVec2s position );
 
   virtual void leftWheelStart(void);
   static void leftWheelStartCB( Widget, XtPointer, XtPointer );
@@ -123,19 +124,9 @@ protected:
   void setRightWheelString( const char * const name );
   Widget getRightWheelLabelWidget(void) const;
 
+  virtual void sizeChanged( const SbVec2s size );
+
   virtual void openViewerHelpCard(void);
-
-  Widget getThumbWheel( int num );
-
-  enum {
-    LEFTDECORATION,
-    BOTTOMDECORATION,
-    RIGHTDECORATION,
-
-    FIRSTDECORATION = LEFTDECORATION,
-    LASTDECORATION = RIGHTDECORATION,
-    NUMDECORATIONS = LASTDECORATION - FIRSTDECORATION + 1
-  };
 
   Pixmap createPixmapFromXpmData( Widget button, char ** xpm );
   Pixmap createInsensitivePixmapFromXpmData( Widget button, char ** xpm );
@@ -144,6 +135,8 @@ protected:
   SbBool popupEnabled;
 
   SoAnyPopupMenu * prefmenu;
+
+  virtual SbBool processSoEvent( const SoEvent * const event );
 
 protected: // preference sheet routines
   void setPrefSheetString( const char * name );
@@ -205,7 +198,9 @@ private:
   SbBool decorations;
 
   Widget viewerbase, canvas;
-  Widget decorform[NUMDECORATIONS];
+  Widget leftDecoration;
+  Widget rightDecoration;
+  Widget bottomDecoration;
 
   Widget mainlayout;
   void showDecorationWidgets( SbBool enable );

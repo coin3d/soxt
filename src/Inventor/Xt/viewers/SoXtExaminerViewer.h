@@ -74,6 +74,10 @@ protected:
 
   virtual void processEvent( XAnyEvent * event );
 
+  virtual void afterRealizeHook(void);
+
+  virtual SbBool processSoEvent( const SoEvent * const event );
+
   virtual void leftWheelStart( void );
   virtual void leftWheelMotion( float value );
   virtual void bottomWheelStart( void );
@@ -85,10 +89,6 @@ protected:
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
-
-  XtIntervalId spindetecttimerId;
-  SbBool spindetecttimerActive;
-  static void spindetecttimerCB( XtPointer user, XtIntervalId * id );
 
   virtual void createViewerButtons( Widget parent, SbPList * buttonlist );
   void camerabuttonClicked(void);
@@ -115,7 +115,7 @@ protected:
   static void axesfieldchangedCB( Widget, XtPointer, XtPointer );
 
 private:
-  void constructor( SbBool build );
+  void constructor( const SbBool build );
 
   enum ViewerMode {
     IDLE,
@@ -139,13 +139,13 @@ private:
     Pixmap nocam, nocam_ins;
   } camerapixmaps;
 
-  SoAnyExaminerViewer * const common;
   Cursor cursor;
   SbBool mapped;
 
-//  Widget prefshell, prefsheet;
   Widget * prefparts;
   int numprefparts;
+
+  SoAnyExaminerViewer * const common;
 
 }; // class SoXtExaminerViewer
 

@@ -76,10 +76,10 @@ private:
   void constructor( SbBool build );
 
   SoAnyWalkViewer * const common;
-  Widget prefshell, prefsheet, * prefparts;
+  Widget * prefparts;
   int numprefparts;
 
-  Widget tiltwheel, heightwheel;
+  Widget heightwheel;
   float heightvalue;
 
   void wheelarmed(void);
