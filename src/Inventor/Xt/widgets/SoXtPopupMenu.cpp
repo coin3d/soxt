@@ -656,9 +656,9 @@ SoXtPopupMenu::traverseBuild(
           NULL );
         Arg args[10];
         int argc = 0;
-        XtSetArg( args[0], XmNvisual, visual ); argc++;
-        XtSetArg( args[0], XmNdepth, depth ); argc++;
-        XtSetArg( args[0], XmNcolormap, colormap ); argc++;
+        XtSetArg( args[argc], XmNvisual, visual ); argc++;
+        XtSetArg( args[argc], XmNdepth, depth ); argc++;
+        XtSetArg( args[argc], XmNcolormap, colormap ); argc++;
         Widget submenu = XmCreatePulldownMenu( parent, sub->name, args, argc );
         sub->menu = XtVaCreateManagedWidget( sub->name,
           xmCascadeButtonGadgetClass, parent,
@@ -734,9 +734,9 @@ SoXtPopupMenu::build(
     NULL );
   Arg args[10];
   int argc = 0;
-  XtSetArg( args[0], XmNvisual, visual ); argc++;
-  XtSetArg( args[0], XmNdepth, depth ); argc++;
-  XtSetArg( args[0], XmNcolormap, colormap ); argc++;
+  XtSetArg( args[argc], XmNvisual, visual ); argc++;
+  XtSetArg( args[argc], XmNdepth, depth ); argc++;
+  XtSetArg( args[argc], XmNcolormap, colormap ); argc++;
 
   Widget popup = XmCreatePopupMenu( parent, root->name, args, argc );
 
