@@ -301,8 +301,10 @@ SoXtFullViewer::setDecoration(const SbBool enable)
 {
   if (!!PRIVATE(this)->decorations && !!enable) { return; }
 
-  if ((PRIVATE(this)->decorations != enable) && (PRIVATE(this)->viewerbase != (Widget) NULL))
+  if ( (PRIVATE(this)->decorations != enable) &&
+       (PRIVATE(this)->viewerbase != (Widget) NULL) ) {
     PRIVATE(this)->showDecorationWidgets(enable);
+  }
   PRIVATE(this)->decorations = enable;
 
   if (this->isTopLevelShell() || XtIsShell(XtParent(this->getBaseWidget()))) {
@@ -310,7 +312,7 @@ SoXtFullViewer::setDecoration(const SbBool enable)
     Dimension minwidth = SOXT_VIEWER_MIN_WIDTH;
     Dimension minheight = SOXT_VIEWER_MIN_HEIGHT_BASE +
       30 * this->viewerButtonWidgets->getLength();
-    if (enable) {
+    if ( enable ) {
       Dimension width, height;
       XtVaGetValues(shell, 
                     XmNwidth, &width,
@@ -324,8 +326,7 @@ SoXtFullViewer::setDecoration(const SbBool enable)
                     XmNwidth, width,
                     XmNheight, height,
                     NULL);
-    }
-    else {
+    } else {
       XtVaSetValues(shell,
                     XmNminWidth, 0,
                     XmNminHeight, 0,
@@ -1255,27 +1256,37 @@ SoXtFullViewerP::showDecorationWidgets(SbBool enable)
   assert(PUBLIC(this)->rightDecoration != (Widget) NULL);
   assert(PUBLIC(this)->bottomDecoration != (Widget) NULL);
 
-  if (enable) {
+  if ( enable ) {
     XtVaSetValues(this->canvas,
+                  XmNtopOffset, 0,
                   XmNleftOffset, 30,
                   XmNrightOffset, 30,
                   XmNbottomOffset, 30,
                   NULL);
-    if (XtWindow(PUBLIC(this)->leftDecoration) != 0) {
+    if ( XtWindow(PUBLIC(this)->leftDecoration) != 0 ) {
       XtMapWidget(PUBLIC(this)->leftDecoration);
       XtManageChild(PUBLIC(this)->leftDecoration);
+    }
+    if ( XtWindow(PUBLIC(this)->rightDecoration) != 0 ) {
       XtMapWidget(PUBLIC(this)->rightDecoration);
       XtManageChild(PUBLIC(this)->rightDecoration);
+    }
+    if ( XtWindow(PUBLIC(this)->bottomDecoration) != 0 ) {
       XtMapWidget(PUBLIC(this)->bottomDecoration);
       XtManageChild(PUBLIC(this)->bottomDecoration);
     }
   } else {
-    if (XtWindow(PUBLIC(this)->leftDecoration) != 0) {
+    if ( XtWindow(PUBLIC(this)->leftDecoration) != 0 ) {
       XtUnmapWidget(PUBLIC(this)->leftDecoration);
+    }
+    if ( XtWindow(PUBLIC(this)->rightDecoration) != 0 ) {
       XtUnmapWidget(PUBLIC(this)->rightDecoration);
+    }
+    if ( XtWindow(PUBLIC(this)->bottomDecoration) != 0 ) {
       XtUnmapWidget(PUBLIC(this)->bottomDecoration);
     }
     XtVaSetValues(this->canvas,
+                  XmNtopOffset, 0,
                   XmNleftOffset, 0,
                   XmNrightOffset, 0,
                   XmNbottomOffset, 0,
@@ -1381,7 +1392,7 @@ void
 SoXtFullViewer::sizeChanged(const SbVec2s & size)
 {
   SbVec2s newsize(size);
-  if (this->isDecoration()) {
+  if ( this->isDecoration() ) {
     newsize[0] = size[0] - 2 * 30;
     newsize[1] = size[1] - 30;
   }
