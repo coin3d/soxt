@@ -1,0 +1,115 @@
+dnl ************************************************************************
+dnl * SoXt/configure.in
+dnl ************************************************************************
+
+AC_INIT(src/Inventor/Xt/SoXt.h)
+
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_CXX
+AC_PROG_CXXCPP
+AC_LANG_CPLUSPLUS
+
+SOXT_MAJOR_VERSION=0
+SOXT_MINOR_VERSION=1
+SOXT_MICRO_VERSION=0
+SOXT_INTERFACE_AGE=0
+SOXT_BINARY_AGE=0
+SOXT_VERSION=$SOXT_MAJOR_VERSION.$SOXT_MINOR_VERSION.$SOXT_MICRO_VERSION
+
+AC_SUBST(SOXT_MAJOR_VERSION)
+AC_SUBST(SOXT_MINOR_VERSION)
+AC_SUBST(SOXT_MICRO_VERSION)
+AC_SUBST(SOXT_VERSION)
+AC_SUBST(SOXT_INTERFACE_AGE)
+AC_SUBST(SOXT_BINARY_AGE)
+
+LT_RELEASE=$SOXT_MAJOR_VERSION.$SOXT_MINOR_VERSION
+LT_CURRENT=`expr $SOXT_MICRO_VERSION - $SOXT_INTERFACE_AGE`
+LT_REVISION=$SOXT_INTERFACE_AGE
+LT_AGE=`expr $SOXT_BINARY_AGE - $SOXT_INTERFACE_AGE`
+AC_SUBST(LT_RELEASE)
+AC_SUBST(LT_CURRENT)
+AC_SUBST(LT_REVISION)
+AC_SUBST(LT_AGE)
+
+VERSION=$SOXT_VERSION
+
+AM_INIT_AUTOMAKE(libSoXt,0.1)
+AM_CONFIG_HEADER(config.h)
+
+AM_DISABLE_STATIC
+AM_MAINTAINER_MODE
+AC_PROG_LIBTOOL
+
+dnl * The ld tests generates an a.out file that isn't removed afterwards,
+dnl * which is very annoying for a bloke like me, so we remove it manually...
+rm -f a.out
+
+dnl *******************************************************************
+dnl * Search and set up necessary stuff to use Open Inventor with 
+dnl * "native" InventorXt.
+dnl *******************************************************************
+
+# For Open Inventor linkage, we need to check for a shitload of libraries.
+
+SIM_CHECK_DL
+SIM_CHECK_X11
+if test x"$sim_ac_x11_avail" = xyes; then
+  SIM_CHECK_X11SHMEM
+  SIM_CHECK_X11MU
+  SIM_CHECK_X11XID
+fi
+
+SIM_CHECK_OPENGL( , AC_MSG_ERROR(needs an OpenGL-compatible development system installation))
+dnl SIM_CHECK_INVENTOR( , AC_MSG_ERROR(couldn't compile and link against Open Inventor))
+
+SIM_CHECK_COIN( , AC_MSG_ERROR(couldn't compile and link against Coin))
+SIM_CHECK_MOTIF( , AC_MSG_ERROR(couldn't compile and link against the Motif library))
+
+dnl SIM_CHECK_OIV_XT( , AC_MSG_ERROR(couldn't compile and link against the InventorXt library))
+
+AM_CONDITIONAL(HAVE_RENDERAREA, true)
+AM_CONDITIONAL(HAVE_EXAMINERVIEWER, false)
+AM_CONDITIONAL(HAVE_PLANEVIEWER, false)
+AM_CONDITIONAL(HAVE_WALKVIEWER, false)
+AM_CONDITIONAL(HAVE_FLYVIEWER, false)
+
+dnl ************************************************************************
+
+GUI=Xt
+WIDGET="Widget"
+
+AC_SUBST(GUI)
+AC_SUBST(WIDGET)
+
+COMPONENTLIBS="-lMesaGLwM"
+AC_SUBST(COMPONENTLIBS)
+
+dnl ************************************************************************
+dnl * finally generate all the directories, makefiles, and config headers.
+dnl ************************************************************************
+
+test -d src || mkdir src
+test -d src/Inventor || mkdir src/Inventor
+test -d src/Inventor/Xt || mkdir src/Inventor/Xt
+
+AC_OUTPUT([
+	Makefile
+	src/Inventor/Xt/Makefile
+	src/Inventor/Xt/devices/Makefile
+	src/Inventor/Xt/viewers/Makefile
+	src/Inventor/Xt/widgets/Makefile
+	examples/Makefile
+	examples/widgets/Makefile
+	examples/components/Makefile
+	examples/components/renderarea.cpp
+	examples/components/examinerviewer.cpp
+	examples/components/planeviewer.cpp
+	examples/components/walkviewer.cpp
+	examples/components/flyviewer.cpp
+])
+
+echo "Now, run 'make install' to build and install So$GUI."
+
+dnl ************************************************************************
