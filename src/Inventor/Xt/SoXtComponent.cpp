@@ -607,7 +607,8 @@ SoXtComponent::setBaseWidget(Widget widget)
   XtAddCallback(PRIVATE(this)->widget, XmNdestroyCallback,
                 SoXtComponentP::widgetDestroyedCB, (XtPointer) PRIVATE(this));
 
-  XtAddEventHandler(PRIVATE(this)->widget, StructureNotifyMask, False,
+  XtAddEventHandler(PRIVATE(this)->widget,
+                    StructureNotifyMask | VisibilityChangeMask, False,
                     SoXtComponentP::structureNotifyOnWidgetCB, (XtPointer) PRIVATE(this));
 
   Widget shell = SoXt::getShellWidget(PRIVATE(this)->widget);
@@ -807,6 +808,17 @@ SoXtComponentP::structureNotifyOnWidgetCB(Widget widget, XtPointer closure, XEve
     thisp->widgetmappedstatus = FALSE;
     thisp->checkVisibilityChange();
     break;
+  case VisibilityNotify:
+    {
+      XVisibilityEvent * visibility = (XVisibilityEvent *) event;
+      if ( visibility->state == VisibilityFullyObscured ) {
+        thisp->widgetmappedstatus = FALSE;
+      } else {
+        thisp->widgetmappedstatus = TRUE;
+      }
+    }
+    thisp->checkVisibilityChange();
+    break;
   case ConfigureNotify:
     // do anything with these?
     break;
@@ -858,21 +870,21 @@ SoXtComponentP::checkVisibilityChange(void)
 #endif // SOXT_VISIBILITY_DEBUG
     this->visibilitystate = FALSE;
   }
-  else if ( !this->widgetmappedstatus ) {
+  if ( !this->widgetmappedstatus ) {
 #if SOXT_VISIBILITY_DEBUG
     SoDebugError::postInfo("SoXtComponentP::checkVisibilityChange",
                            "widget not mapped - not visible");
 #endif // SOXT_VISIBILITY_DEBUG
     this->visibilitystate = FALSE;
   }
-  else if ( !this->shellmappedstatus ) {
+  if ( !this->shellmappedstatus ) {
 #if SOXT_VISIBILITY_DEBUG
     SoDebugError::postInfo("SoXtComponentP::checkVisibilityChange",
                            "shell not mapped - not visible");
 #endif // SOXT_VISIBILITY_DEBUG
     this->visibilitystate = FALSE;
   }
-  else if ( !XtWindow(this->widget) ) {
+  if ( !XtWindow(this->widget) ) {
 #if SOXT_VISIBILITY_DEBUG
     SoDebugError::postInfo("SoXtComponentP::checkVisibilityChange",
                            "base widget has no window - not visible");
