@@ -1,7 +1,13 @@
 
 DEFAULT_INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 
-noinst_PROGRAMS = button materialeditor coloreditor examinerviewer
+if USE_LIBXPM
+XpmApps = button
+else
+XpmApps = 
+endif
+
+noinst_PROGRAMS = materialeditor coloreditor examinerviewer $(XpmApps)
 
 materialeditor_SOURCES = materialeditor.cpp
 materialeditor_LDADD = ../src/Inventor/Xt/libSoXt.la

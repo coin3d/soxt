@@ -211,6 +211,8 @@ else
   AC_MSG_ERROR(need to able to compile and link against X11 libraries)
 fi
 
+AM_CONDITIONAL([USE_LIBXPM], [test x"$sim_ac_xpm_status" = x"Yes"])
+
 if test "${with_inventor+set}" = set; then
   SIM_AC_CHECK_OPENGL([
     SOGUI_EXTRA_CPPFLAGS="$SOGUI_EXTRA_CPPFLAGS $sim_ac_ogl_cppflags"
