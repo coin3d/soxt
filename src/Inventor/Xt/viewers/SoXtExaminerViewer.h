@@ -41,6 +41,8 @@ public:
       SoXtViewer::Type type = BROWSER );
   ~SoXtExaminerViewer(void);
 
+  virtual void setViewing( const SbBool enable );
+
   void setAnimationEnabled( const SbBool enable );
   SbBool isAnimationEnabled(void) const;
 
@@ -98,6 +100,7 @@ private:
     PANNING
   } mode;
 
+  void setCursorRepresentation(const ViewerMode mode);
   void setMode( const ViewerMode mode );
   void setModeFromState( const unsigned int state );
 
@@ -108,8 +111,9 @@ private:
     Pixmap nocam, nocam_ins;
   } camerapixmaps;
 
-private:
   SoAnyExaminerViewer * const common;
+  Cursor cursor;
+  SbBool mapped;
 
 }; // class SoXtExaminerViewer
 

@@ -92,13 +92,8 @@ SoXtExaminerViewer::constructor( // private
     Widget viewer = this->buildWidget( this->getParentWidget() );
     this->setBaseWidget( viewer );
   }
-  Display *display = getDisplay();
-  cursor = XCreateFontCursor(display, XC_hand2);
-  Colormap  cmap(DefaultColormap(display, DefaultScreen(display)));
-  XColor    redcol, whitecol, unused;
-  XAllocNamedColor(getDisplay(), cmap, "red", &redcol, &unused);
-  XAllocNamedColor(display, cmap, "white",  &whitecol, &unused);
-  XRecolorCursor(display, cursor, &redcol, &whitecol);
+
+  this->mapped = FALSE;
 } // constructor()
 
 /*!
@@ -117,6 +112,11 @@ void
 SoXtExaminerViewer::processEvent(
   XAnyEvent * event )
 {
+  if (!this->mapped) {
+    this->mapped = TRUE; // Must be done before setCursorRepresenation() call.
+    this->setCursorRepresentation( this->mode );
+  }
+
   if ( this->processCommonEvents(event) )
     return;
 
@@ -374,6 +374,78 @@ SoXtExaminerViewer::openViewerHelpCard(
 
 // *************************************************************************
 
+/*!
+  This method overloaded from parent class to make sure the mouse
+  pointer cursor is updated.
+*/
+
+void
+SoXtExaminerViewer::setViewing( // virtual
+  SbBool enable )
+{
+  this->setMode( enable ? EXAMINE : INTERACT );
+  inherited::setViewing( enable );
+} // setViewing()
+
+// *************************************************************************
+
+/*!
+  \internal
+
+  Set cursor graphics according to mode.
+*/
+
+void
+SoXtExaminerViewer::setCursorRepresentation(const ViewerMode mode)
+{
+  // FIXME: the cursor handling is just a hack at the moment, but the
+  // design layout matches that of SoQtExaminerViewer and is looking
+  // ok. What needs to be done is: use pixmaps for the cursor graphics
+  // (same gfx as for the other GUI glue libraries), and remember to
+  // set up / change the cursor gfx whenever needed (we need to
+  // overload setCursorEnabled(), for instance). 20000426 mortene.
+
+
+  // Don't try to actually set cursor before window has been mapped.
+  if ( ! this->mapped ) return;
+
+  if ( ! this->isCursorEnabled() ) {
+    // FIXME: set blank bitmap for cursor (or disable it through X11
+    // call?). 20000426 mortene.
+    return;
+  }
+
+  Display * display = this->getDisplay();
+
+  switch (mode) {
+  case EXAMINE:
+  case DRAGGING:
+    this->cursor = XCreateFontCursor( display, XC_hand2 );
+    XDefineCursor( display, XtWindow( this->glxWidget ), this->cursor );
+    break;
+
+  case INTERACT:
+  case ZOOMING:
+  case WAITING_FOR_SEEK:
+  case WAITING_FOR_PAN:
+  case PANNING:
+    XUndefineCursor( display, XtWindow( this->glxWidget ) );
+    break;
+
+  default: SOXT_STUB(); break;
+  }
+
+#if 0
+  Colormap cmap( DefaultColormap( display, DefaultScreen( display ) ) );
+  XColor redcol, whitecol, unused;
+  XAllocNamedColor( display, cmap, "red", &redcol, &unused );
+  XAllocNamedColor( display, cmap, "white",  &whitecol, &unused );
+  XRecolorCursor( display, this->cursor, &redcol, &whitecol );
+#endif
+} // setCursorRepresentation()
+
+// *************************************************************************
+
 void
 SoXtExaminerViewer::setModeFromState(
   const unsigned int state )
@@ -446,6 +518,7 @@ SoXtExaminerViewer::setMode(
   } // switch ( mode )
 
   this->mode = mode;
+  this->setCursorRepresentation( mode );
 } // setMode()
 
 // *************************************************************************
@@ -539,6 +612,8 @@ SoXtExaminerViewer::camerabuttonClicked(
 */
 
 } // camerabuttonClicked()
+
+// *************************************************************************
 
 /*!
 */
