@@ -991,6 +991,35 @@ debug_visualclassname(const int vclass)
   }
 }
 
+static void
+debug_dumpvisualinfo(const XVisualInfo * v)
+{
+  SoDebugError::postInfo("debug_dumpvisualinfo",
+                         "Visual==%p, VisualID==%d, screen==%d, "
+                         "depth==%d, class==%s, "
+                         "rgb masks==[0x%04x, 0x%04x, 0x%04x], "
+                         "colormap_size==%d, bits_per_rgb==%d",
+                         v->visual,
+                         v->visualid,
+                         v->screen,
+                         v->depth,
+                         debug_visualclassname(v->c_class),
+                         v->red_mask, v->green_mask, v->blue_mask,
+                         v->colormap_size,
+                         v->bits_per_rgb);
+}
+
+static void
+debug_dumpvisualinfo(Display * d, Visual * v)
+{
+  XVisualInfo xvitemplate;
+  xvitemplate.visualid = XVisualIDFromVisual(v);
+  int nrret;
+  XVisualInfo * xvi = XGetVisualInfo(d, VisualIDMask, &xvitemplate, &nrret);
+  assert(nrret == 1);
+  debug_dumpvisualinfo(xvi);
+}
+
 /*!
   This function tries to find the best visual type, depth, and
   colormap combination for the display.  The display argument may be
@@ -1026,8 +1055,8 @@ SoXt::selectBestVisual(Display * & dpy, Visual * & visual,
   // This is _extremely_ useful for debugging X errors: activate this
   // code (set the SOXT_XSYNC environment variable on your system to
   // "1"), then rerun the application code in a debugger with a
-  // breakpoint set at _XError. Now you can backtrace to the exact
-  // source location of the failing X request.
+  // breakpoint set at SoXtP::X11Errorhandler(). Now you can backtrace
+  // to the exact source location of the failing X request.
   if (SoXtP::SOXT_XSYNC == ENVVAR_NOT_INITED) {
     const char * env = SoAny::si()->getenv("SOXT_XSYNC");
     SoXtP::SOXT_XSYNC = env ? atoi(env) : 0;
@@ -1041,8 +1070,11 @@ SoXt::selectBestVisual(Display * & dpy, Visual * & visual,
   int snum = XDefaultScreen(dpy);
 
   if (XDefaultDepth(dpy, snum) >= 16) { // me like...
-    depth = XDefaultDepth(dpy, snum);
     visual = XDefaultVisual(dpy, snum);
+#if SOXT_DEBUG && 0 // debug
+    debug_dumpvisualinfo(dpy, visual);
+#endif // debug
+    depth = XDefaultDepth(dpy, snum);
     colormap = XDefaultColormap(dpy, snum);
     return;
   }
