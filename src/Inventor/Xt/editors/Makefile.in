@@ -550,7 +550,7 @@ distclean-depend:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXXCOMPILE) -c -o $@ `cygpath -w $<`
+	$(CXXCOMPILE) -c -o $@ `( test -f $< || echo -n '$(srcdir)/'; echo -n $< ) | xargs cygpath -w`
 
 .cpp.lo:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
@@ -568,7 +568,7 @@ ColorEditor.obj: $(top_builddir)/src/Inventor/@Gui@/editors/ColorEditor.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/editors/ColorEditor.cpp' object='ColorEditor.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/ColorEditor.Po' tmpdepfile='$(DEPDIR)/ColorEditor.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ColorEditor.obj `cygpath -w $(top_builddir)/src/Inventor/@Gui@/editors/ColorEditor.cpp`
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ColorEditor.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/editors/ColorEditor.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/editors/ColorEditor.cpp ) | xargs cygpath -w`
 
 ColorEditor.lo: $(top_builddir)/src/Inventor/@Gui@/editors/ColorEditor.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/editors/ColorEditor.cpp' object='ColorEditor.lo' libtool=yes @AMDEPBACKSLASH@

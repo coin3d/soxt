@@ -552,7 +552,7 @@ distclean-depend:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXXCOMPILE) -c -o $@ `cygpath -w $<`
+	$(CXXCOMPILE) -c -o $@ `( test -f $< || echo -n '$(srcdir)/'; echo -n $< ) | xargs cygpath -w`
 
 .cpp.lo:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
@@ -570,7 +570,7 @@ Nodes.obj: $(top_builddir)/src/Inventor/@Gui@/nodes/Nodes.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/Nodes.cpp' object='Nodes.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/Nodes.Po' tmpdepfile='$(DEPDIR)/Nodes.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Nodes.obj `cygpath -w $(top_builddir)/src/Inventor/@Gui@/nodes/Nodes.cpp`
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Nodes.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/nodes/Nodes.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/nodes/Nodes.cpp ) | xargs cygpath -w`
 
 Nodes.lo: $(top_builddir)/src/Inventor/@Gui@/nodes/Nodes.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/Nodes.cpp' object='Nodes.lo' libtool=yes @AMDEPBACKSLASH@
@@ -588,7 +588,7 @@ ViewportFix.obj: $(top_builddir)/src/Inventor/@Gui@/nodes/ViewportFix.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/ViewportFix.cpp' object='ViewportFix.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/ViewportFix.Po' tmpdepfile='$(DEPDIR)/ViewportFix.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ViewportFix.obj `cygpath -w $(top_builddir)/src/Inventor/@Gui@/nodes/ViewportFix.cpp`
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ViewportFix.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/nodes/ViewportFix.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/nodes/ViewportFix.cpp ) | xargs cygpath -w`
 
 ViewportFix.lo: $(top_builddir)/src/Inventor/@Gui@/nodes/ViewportFix.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/ViewportFix.cpp' object='ViewportFix.lo' libtool=yes @AMDEPBACKSLASH@
@@ -606,7 +606,7 @@ Pane.obj: $(top_builddir)/src/Inventor/@Gui@/nodes/Pane.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/Pane.cpp' object='Pane.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/Pane.Po' tmpdepfile='$(DEPDIR)/Pane.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Pane.obj `cygpath -w $(top_builddir)/src/Inventor/@Gui@/nodes/Pane.cpp`
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Pane.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/nodes/Pane.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/nodes/Pane.cpp ) | xargs cygpath -w`
 
 Pane.lo: $(top_builddir)/src/Inventor/@Gui@/nodes/Pane.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/Pane.cpp' object='Pane.lo' libtool=yes @AMDEPBACKSLASH@
@@ -624,7 +624,7 @@ Position.obj: $(top_builddir)/src/Inventor/@Gui@/nodes/Position.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/Position.cpp' object='Position.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/Position.Po' tmpdepfile='$(DEPDIR)/Position.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Position.obj `cygpath -w $(top_builddir)/src/Inventor/@Gui@/nodes/Position.cpp`
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Position.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/nodes/Position.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/nodes/Position.cpp ) | xargs cygpath -w`
 
 Position.lo: $(top_builddir)/src/Inventor/@Gui@/nodes/Position.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/Position.cpp' object='Position.lo' libtool=yes @AMDEPBACKSLASH@
@@ -642,7 +642,7 @@ Translation.obj: $(top_builddir)/src/Inventor/@Gui@/nodes/Translation.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/Translation.cpp' object='Translation.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/Translation.Po' tmpdepfile='$(DEPDIR)/Translation.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Translation.obj `cygpath -w $(top_builddir)/src/Inventor/@Gui@/nodes/Translation.cpp`
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Translation.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/nodes/Translation.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/nodes/Translation.cpp ) | xargs cygpath -w`
 
 Translation.lo: $(top_builddir)/src/Inventor/@Gui@/nodes/Translation.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/Translation.cpp' object='Translation.lo' libtool=yes @AMDEPBACKSLASH@
@@ -660,7 +660,7 @@ Frame.obj: $(top_builddir)/src/Inventor/@Gui@/nodes/Frame.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/Frame.cpp' object='Frame.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/Frame.Po' tmpdepfile='$(DEPDIR)/Frame.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Frame.obj `cygpath -w $(top_builddir)/src/Inventor/@Gui@/nodes/Frame.cpp`
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Frame.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/nodes/Frame.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/nodes/Frame.cpp ) | xargs cygpath -w`
 
 Frame.lo: $(top_builddir)/src/Inventor/@Gui@/nodes/Frame.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/Frame.cpp' object='Frame.lo' libtool=yes @AMDEPBACKSLASH@
@@ -678,7 +678,7 @@ Slider1.obj: $(top_builddir)/src/Inventor/@Gui@/nodes/Slider1.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/Slider1.cpp' object='Slider1.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/Slider1.Po' tmpdepfile='$(DEPDIR)/Slider1.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Slider1.obj `cygpath -w $(top_builddir)/src/Inventor/@Gui@/nodes/Slider1.cpp`
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Slider1.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/nodes/Slider1.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/nodes/Slider1.cpp ) | xargs cygpath -w`
 
 Slider1.lo: $(top_builddir)/src/Inventor/@Gui@/nodes/Slider1.cpp
 @AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/nodes/Slider1.cpp' object='Slider1.lo' libtool=yes @AMDEPBACKSLASH@
