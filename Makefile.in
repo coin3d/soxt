@@ -170,29 +170,93 @@ BUILT_SOURCES = \
 	src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp
 
 
+EXTRA_DIST = \
+	build/soxt.spec.in \
+	build/soxt.doxygen.in \
+	src/Inventor/@Gui@/common/SoAny.h.in \
+	src/Inventor/@Gui@/common/SoAny.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyConstrainedViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyConstrainedViewer.h.in \
+	src/Inventor/@Gui@/common/SoAnyExaminerViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyExaminerViewer.h.in \
+	src/Inventor/@Gui@/common/SoAnyFlyViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyFlyViewer.h.in \
+	src/Inventor/@Gui@/common/SoAnyFullViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyFullViewer.h.in \
+	src/Inventor/@Gui@/common/SoAnyMaterialList.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyMaterialList.h.in \
+	src/Inventor/@Gui@/common/SoAnyMaterialListBuiltins.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyMaterialListBuiltins.cpp.in.m4 \
+	src/Inventor/@Gui@/common/SoAnyPlaneViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyPlaneViewer.h.in \
+	src/Inventor/@Gui@/common/SoAnyPopupMenu.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyPopupMenu.h.in \
+	src/Inventor/@Gui@/common/SoAnyThumbWheel.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyThumbWheel.h.in \
+	src/Inventor/@Gui@/common/SoAnyWalkViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyWalkViewer.h.in \
+	src/Inventor/@Gui@/common/SoGuiBasic.h.in \
+	src/Inventor/@Gui@/common/SoGuiConstrainedViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoGuiConstrainedViewer.h.in \
+	src/Inventor/@Gui@/common/SoGuiCursors.cpp.in \
+	src/Inventor/@Gui@/common/SoGuiCursors.h.in \
+	src/Inventor/@Gui@/common/SoGuiFlyViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoGuiFlyViewer.h.in \
+	src/Inventor/@Gui@/common/SoGuiGLWidget.h.in \
+	src/Inventor/@Gui@/common/SoGuiObject.cpp.in \
+	src/Inventor/@Gui@/common/SoGuiObject.h.in \
+	src/Inventor/@Gui@/common/SoGuiRenderArea.cpp.in \
+	src/Inventor/@Gui@/common/SoGuiRenderArea.h.in \
+	src/Inventor/@Gui@/common/SoGuiViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoGuiViewer.h.in \
+	src/Inventor/@Gui@/common/gl.h.in \
+	src/Inventor/@Gui@/common/sogui.cfg.in \
+	src/Inventor/@Gui@/common/sogui-config.in \
+	src/Inventor/@Gui@/common/soguidefs.h.in \
+	src/Inventor/@Gui@/common/spwinput.h.in \
+	src/Inventor/@Gui@/common/spwinput_x11.cpp.in \
+	src/Inventor/@Gui@/common/pixmaps/help.xpm \
+	src/Inventor/@Gui@/common/pixmaps/home.xpm \
+	src/Inventor/@Gui@/common/pixmaps/ortho.xpm \
+	src/Inventor/@Gui@/common/pixmaps/perspective.xpm \
+	src/Inventor/@Gui@/common/pixmaps/pick.xpm \
+	src/Inventor/@Gui@/common/pixmaps/seek.xpm \
+	src/Inventor/@Gui@/common/pixmaps/set_home.xpm \
+	src/Inventor/@Gui@/common/pixmaps/view.xpm \
+	src/Inventor/@Gui@/common/pixmaps/view_all.xpm \
+	src/Inventor/@Gui@/common/pixmaps/x.xpm \
+	src/Inventor/@Gui@/common/pixmaps/y.xpm \
+	src/Inventor/@Gui@/common/pixmaps/z.xpm
+
+
 acdatadir = $(datadir)/aclocal
-acdata_DATA = so@gui@.m4
+dist_acdata_DATA = so@gui@.m4
 
 cfgdatadir = $(datadir)/Coin/conf
 cfgdata_DATA = so@gui@-@CONFIG@.cfg
 
-dist_bin_SCRIPTS = so@gui@-config
+bin_SCRIPTS = so@gui@-config
+
+DISTCLEANFILES = \
+	so@gui@-config \
+	so@gui@-@CONFIG@.cfg
+
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/src/config.h
 CONFIG_CLEAN_FILES = soxt-$CONFIG.cfg build/soxt.spec build/soxt.doxygen
-SCRIPTS = $(dist_bin_SCRIPTS)
+SCRIPTS = $(bin_SCRIPTS)
 
 DIST_SOURCES =
-DATA = $(acdata_DATA) $(cfgdata_DATA)
+DATA = $(cfgdata_DATA) $(dist_acdata_DATA)
 
 
 RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	uninstall-info-recursive all-recursive install-data-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
-DIST_COMMON = README $(dist_bin_SCRIPTS) AUTHORS COPYING ChangeLog \
+DIST_COMMON = README $(dist_acdata_DATA) AUTHORS COPYING ChangeLog \
 	INSTALL Makefile.am Makefile.in NEWS TODO aclocal.m4 \
 	cfg/config.guess cfg/config.sub cfg/depcomp cfg/install-sh \
 	cfg/ltmain.sh cfg/missing cfg/mkinstalldirs configure \
@@ -233,10 +297,10 @@ build/soxt.spec: $(top_builddir)/config.status $(top_srcdir)/build/soxt.spec.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
 build/soxt.doxygen: $(top_builddir)/config.status $(top_srcdir)/build/soxt.doxygen.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
-install-dist_binSCRIPTS: $(dist_bin_SCRIPTS)
+install-binSCRIPTS: $(bin_SCRIPTS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(bindir)
-	@list='$(dist_bin_SCRIPTS)'; for p in $$list; do \
+	@list='$(bin_SCRIPTS)'; for p in $$list; do \
 	  f="`echo $$p|sed '$(transform)'`"; \
 	  if test -f $$p; then \
 	    echo " $(INSTALL_SCRIPT) $$p $(DESTDIR)$(bindir)/$$f"; \
@@ -247,31 +311,14 @@ install-dist_binSCRIPTS: $(dist_bin_SCRIPTS)
 	  else :; fi; \
 	done
 
-uninstall-dist_binSCRIPTS:
+uninstall-binSCRIPTS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(dist_bin_SCRIPTS)'; for p in $$list; do \
+	@list='$(bin_SCRIPTS)'; for p in $$list; do \
 	  f="`echo $$p|sed '$(transform)'`"; \
 	  echo " rm -f $(DESTDIR)$(bindir)/$$f"; \
 	  rm -f $(DESTDIR)$(bindir)/$$f; \
 	done
 uninstall-info-am:
-install-acdataDATA: $(acdata_DATA)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(acdatadir)
-	@list='$(acdata_DATA)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(acdatadir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(acdatadir)/$$f; \
-	done
-
-uninstall-acdataDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(acdata_DATA)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(acdatadir)/$$f"; \
-	  rm -f $(DESTDIR)$(acdatadir)/$$f; \
-	done
 install-cfgdataDATA: $(cfgdata_DATA)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(cfgdatadir)
@@ -288,6 +335,23 @@ uninstall-cfgdataDATA:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(cfgdatadir)/$$f"; \
 	  rm -f $(DESTDIR)$(cfgdatadir)/$$f; \
+	done
+install-dist_acdataDATA: $(dist_acdata_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(acdatadir)
+	@list='$(dist_acdata_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(acdatadir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(acdatadir)/$$f; \
+	done
+
+uninstall-dist_acdataDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_acdata_DATA)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(acdatadir)/$$f"; \
+	  rm -f $(DESTDIR)$(acdatadir)/$$f; \
 	done
 
 # This directory's subdirectories are mostly independent; you can cd
@@ -393,7 +457,7 @@ GZIP_ENV = --best
 distdir: $(DISTFILES)
 	-chmod -R a+w $(distdir) >/dev/null 2>&1; rm -rf $(distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/build $(distdir)/cfg $(distdir)/src/Inventor/Xt/common
+	$(mkinstalldirs) $(distdir)/build $(distdir)/cfg $(distdir)/src/Inventor/@Gui@/common $(distdir)/src/Inventor/@Gui@/common/pixmaps $(distdir)/src/Inventor/Xt/common
 	@for file in $(DISTFILES); do \
 	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
 	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
@@ -467,7 +531,7 @@ check: check-recursive
 all-am: Makefile $(SCRIPTS) $(DATA) all-local
 installdirs: installdirs-recursive
 installdirs-am:
-	$(mkinstalldirs) $(DESTDIR)$(bindir) $(DESTDIR)$(acdatadir) $(DESTDIR)$(cfgdatadir)
+	$(mkinstalldirs) $(DESTDIR)$(bindir) $(DESTDIR)$(cfgdatadir) $(DESTDIR)$(acdatadir)
 
 install: install-recursive
 install-exec: install-exec-recursive
@@ -488,6 +552,7 @@ clean-generic:
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES) stamp-h stamp-h[0-9]*
+	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -513,10 +578,9 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-acdataDATA install-cfgdataDATA \
-	install-dist_binSCRIPTS
+install-data-am: install-cfgdataDATA install-dist_acdataDATA
 
-install-exec-am:
+install-exec-am: install-binSCRIPTS
 
 install-info: install-info-recursive
 
@@ -532,8 +596,8 @@ mostlyclean: mostlyclean-recursive
 
 mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
-uninstall-am: uninstall-acdataDATA uninstall-cfgdataDATA \
-	uninstall-dist_binSCRIPTS uninstall-info-am
+uninstall-am: uninstall-binSCRIPTS uninstall-cfgdataDATA \
+	uninstall-dist_acdataDATA uninstall-info-am
 
 uninstall-info: uninstall-info-recursive
 
@@ -541,9 +605,9 @@ uninstall-info: uninstall-info-recursive
 	clean clean-generic clean-libtool clean-recursive dist dist-all \
 	distcheck distclean distclean-generic distclean-libtool \
 	distclean-recursive distclean-tags distdir dvi dvi-am \
-	dvi-recursive info info-am info-recursive install \
-	install-acdataDATA install-am install-cfgdataDATA install-data \
-	install-data-am install-data-recursive install-dist_binSCRIPTS \
+	dvi-recursive info info-am info-recursive install install-am \
+	install-binSCRIPTS install-cfgdataDATA install-data \
+	install-data-am install-data-recursive install-dist_acdataDATA \
 	install-exec install-exec-am install-exec-recursive \
 	install-info install-info-am install-info-recursive install-man \
 	install-recursive install-strip installcheck installcheck-am \
@@ -551,8 +615,8 @@ uninstall-info: uninstall-info-recursive
 	maintainer-clean maintainer-clean-generic \
 	maintainer-clean-recursive mostlyclean mostlyclean-generic \
 	mostlyclean-libtool mostlyclean-recursive tags tags-recursive \
-	uninstall uninstall-acdataDATA uninstall-am \
-	uninstall-cfgdataDATA uninstall-dist_binSCRIPTS \
+	uninstall uninstall-am uninstall-binSCRIPTS \
+	uninstall-cfgdataDATA uninstall-dist_acdataDATA \
 	uninstall-info-am uninstall-info-recursive uninstall-recursive
 
 

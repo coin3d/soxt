@@ -15,11 +15,12 @@ BUILT_SOURCES = \
 	SoAnyThumbWheel.h \
 	SoAnyThumbWheel.cpp
 
+DISTCLEANFILES = \
+	$(BUILT_SOURCES)
+
 ############################################################################
-## 
 
 libSoXtWidgets_la_SOURCES = \
-	$(BUILT_SOURCES) \
 	SoXtGLArea.h \
 	SoXtGLAreaP.h \
 	SoXtGLArea.cpp \
@@ -30,6 +31,9 @@ libSoXtWidgets_la_SOURCES = \
 	SoXtThumbWheel.cpp \
 	SoXtSlider.h \
 	SoXtSlider.cpp
+
+nodist_libSoXtWidgets_la_SOURCES = \
+	$(BUILT_SOURCES)
 
 ############################################################################
 
@@ -47,9 +51,9 @@ SoAnyThumbWheel.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.cpp.in
 
 ############################################################################
 
-libSoXtWidgetsincdir = $(includedir)/Inventor/Xt/widgets
+SoXtWidgetsincdir = $(includedir)/Inventor/Xt/widgets
 
-libSoXtWidgetsinc_HEADERS = \
+SoXtWidgetsinc_HEADERS = \
 	SoXtThumbWheel.h \
 	SoXtThumbWheelP.h \
 	SoXtGLArea.h \

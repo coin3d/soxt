@@ -52,9 +52,9 @@ libSoXtDevices_la_SOURCES = \
 ############################################################################
 ## Header file installation information.
 
-libSoXtDevicesincdir = $(includedir)/Inventor/@Gui@/devices
+SoXtDevicesincdir = $(includedir)/Inventor/@Gui@/devices
 
-libSoXtDevicesinc_HEADERS = \
+SoXtDevicesinc_HEADERS = \
 	So@Gui@Device.h \
 	So@Gui@InputFocus.h \
 	So@Gui@Keyboard.h \

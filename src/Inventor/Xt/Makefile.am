@@ -4,7 +4,7 @@
 
 lib_LTLIBRARIES = libSoXt.la
 
-SUBDIRS = devices widgets viewers
+SUBDIRS = devices widgets viewers .
 
 INCLUDES = -I$(top_srcdir)/src -I$(top_builddir)/data
 
@@ -25,13 +25,11 @@ BUILT_SOURCES = \
 	SoAnyMaterialList.cpp \
 	SoAnyMaterialListBuiltins.cpp
 
-noinst_DATA = $(BUILT_SOURCES)
+DISTCLEANFILES = $(BUILT_SOURCES) common/gl.h
 
 ############################################################################
-##
 
 libSoXt_la_SOURCES = \
-	$(BUILT_SOURCES) \
 	So@Gui@.cpp \
 	So@Gui@Clipboard.h \
 	So@Gui@Clipboard.cpp \
@@ -60,6 +58,9 @@ libSoXt_la_SOURCES = \
 	So@Gui@TransformSliderSet.h \
 	So@Gui@TransformSliderSet.cpp
 
+nodist_libSoXt_la_SOURCES = \
+	$(BUILT_SOURCES)
+
 libSoXt_la_LIBADD = \
 	devices/libSoXtDevices.la \
 	widgets/libSoXtWidgets.la \
@@ -70,7 +71,30 @@ libSoXt_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
 ############################################################################
-##
+
+SoXtincdir = $(includedir)/Inventor/@Gui@
+SoXtinc_HEADERS = \
+	So@Gui@Clipboard.h \
+	So@Gui@Cursors.h \
+	So@Gui@DirectionalLightEditor.h \
+	So@Gui@Icons.h \
+	So@Gui@LightSliderSet.h \
+	So@Gui@MaterialEditor.h \
+	So@Gui@MaterialList.h \
+	So@Gui@MaterialSliderSet.h \
+	So@Gui@PrintDialog.h \
+	So@Gui@Resource.h \
+	So@Gui@SliderSet.h \
+	So@Gui@SliderSetBase.h \
+	So@Gui@TransformSliderSet.h \
+	So@Gui@.h \
+	So@Gui@Basic.h \
+	So@Gui@Object.h \
+	So@Gui@Component.h \
+	So@Gui@GLWidget.h \
+	So@Gui@RenderArea.h
+
+############################################################################
 
 So@Gui@Basic.h: $(srcdir)/common/SoGuiBasic.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
@@ -116,31 +140,5 @@ SoAnyMaterialList.cpp: $(srcdir)/common/SoAnyMaterialList.cpp.in
 
 SoAnyMaterialListBuiltins.cpp: $(srcdir)/common/SoAnyMaterialListBuiltins.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
-
-############################################################################
-##
-
-libSoXtincdir = $(includedir)/Inventor/@Gui@
-
-libSoXtinc_HEADERS = \
-	So@Gui@Clipboard.h \
-	So@Gui@DirectionalLightEditor.h \
-	So@Gui@Icons.h \
-	So@Gui@LightSliderSet.h \
-	So@Gui@MaterialEditor.h \
-	So@Gui@MaterialList.h \
-	So@Gui@MaterialSliderSet.h \
-	So@Gui@PrintDialog.h \
-	So@Gui@Resource.h \
-	So@Gui@SliderSet.h \
-	So@Gui@SliderSetBase.h \
-	So@Gui@TransformSliderSet.h \
-	$(top_builddir)/src/Inventor/@Gui@/So@Gui@Cursors.h \
-	$(top_builddir)/src/Inventor/@Gui@/So@Gui@Basic.h \
-	$(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.h \
-	$(top_builddir)/src/Inventor/@Gui@/So@Gui@.h \
-	$(top_builddir)/src/Inventor/@Gui@/So@Gui@Component.h \
-	$(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidget.h \
-	$(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.h
 
 ############################################################################

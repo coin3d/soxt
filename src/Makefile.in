@@ -127,6 +127,10 @@ SUBDIRS = . Inventor
 BUILT_SOURCES = \
 	soxtdefs.h
 
+
+DISTCLEANFILES = \
+	$(BUILT_SOURCES)
+
 subdir = src
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = config.h
@@ -337,6 +341,7 @@ clean-generic:
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES) stamp-h stamp-h[0-9]*
+	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"

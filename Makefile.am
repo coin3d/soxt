@@ -46,13 +46,75 @@ BUILT_SOURCES = \
 	src/Inventor/@Gui@/widgets/SoAnyPopupMenu.h \
 	src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp
 
+EXTRA_DIST = \
+	build/soxt.spec.in \
+	build/soxt.doxygen.in \
+	src/Inventor/@Gui@/common/SoAny.h.in \
+	src/Inventor/@Gui@/common/SoAny.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyConstrainedViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyConstrainedViewer.h.in \
+	src/Inventor/@Gui@/common/SoAnyExaminerViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyExaminerViewer.h.in \
+	src/Inventor/@Gui@/common/SoAnyFlyViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyFlyViewer.h.in \
+	src/Inventor/@Gui@/common/SoAnyFullViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyFullViewer.h.in \
+	src/Inventor/@Gui@/common/SoAnyMaterialList.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyMaterialList.h.in \
+	src/Inventor/@Gui@/common/SoAnyMaterialListBuiltins.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyMaterialListBuiltins.cpp.in.m4 \
+	src/Inventor/@Gui@/common/SoAnyPlaneViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyPlaneViewer.h.in \
+	src/Inventor/@Gui@/common/SoAnyPopupMenu.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyPopupMenu.h.in \
+	src/Inventor/@Gui@/common/SoAnyThumbWheel.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyThumbWheel.h.in \
+	src/Inventor/@Gui@/common/SoAnyWalkViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoAnyWalkViewer.h.in \
+	src/Inventor/@Gui@/common/SoGuiBasic.h.in \
+	src/Inventor/@Gui@/common/SoGuiConstrainedViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoGuiConstrainedViewer.h.in \
+	src/Inventor/@Gui@/common/SoGuiCursors.cpp.in \
+	src/Inventor/@Gui@/common/SoGuiCursors.h.in \
+	src/Inventor/@Gui@/common/SoGuiFlyViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoGuiFlyViewer.h.in \
+	src/Inventor/@Gui@/common/SoGuiGLWidget.h.in \
+	src/Inventor/@Gui@/common/SoGuiObject.cpp.in \
+	src/Inventor/@Gui@/common/SoGuiObject.h.in \
+	src/Inventor/@Gui@/common/SoGuiRenderArea.cpp.in \
+	src/Inventor/@Gui@/common/SoGuiRenderArea.h.in \
+	src/Inventor/@Gui@/common/SoGuiViewer.cpp.in \
+	src/Inventor/@Gui@/common/SoGuiViewer.h.in \
+	src/Inventor/@Gui@/common/gl.h.in \
+	src/Inventor/@Gui@/common/sogui.cfg.in \
+	src/Inventor/@Gui@/common/sogui-config.in \
+	src/Inventor/@Gui@/common/soguidefs.h.in \
+	src/Inventor/@Gui@/common/spwinput.h.in \
+	src/Inventor/@Gui@/common/spwinput_x11.cpp.in \
+	src/Inventor/@Gui@/common/pixmaps/help.xpm \
+	src/Inventor/@Gui@/common/pixmaps/home.xpm \
+	src/Inventor/@Gui@/common/pixmaps/ortho.xpm \
+	src/Inventor/@Gui@/common/pixmaps/perspective.xpm \
+	src/Inventor/@Gui@/common/pixmaps/pick.xpm \
+	src/Inventor/@Gui@/common/pixmaps/seek.xpm \
+	src/Inventor/@Gui@/common/pixmaps/set_home.xpm \
+	src/Inventor/@Gui@/common/pixmaps/view.xpm \
+	src/Inventor/@Gui@/common/pixmaps/view_all.xpm \
+	src/Inventor/@Gui@/common/pixmaps/x.xpm \
+	src/Inventor/@Gui@/common/pixmaps/y.xpm \
+	src/Inventor/@Gui@/common/pixmaps/z.xpm
+
 acdatadir = $(datadir)/aclocal
-acdata_DATA = so@gui@.m4
+dist_acdata_DATA = so@gui@.m4
 
 cfgdatadir = $(datadir)/Coin/conf
 cfgdata_DATA = so@gui@-@CONFIG@.cfg
 
-dist_bin_SCRIPTS = so@gui@-config
+bin_SCRIPTS = so@gui@-config
+
+DISTCLEANFILES = \
+	so@gui@-config \
+	so@gui@-@CONFIG@.cfg
 
 so@gui@-config: Makefile config.status $(srcdir)/src/Inventor/@Gui@/common/sogui-config.in
 	@$(SHELL) config.status --file=$@:src/Inventor/@Gui@/common/sogui-config.in

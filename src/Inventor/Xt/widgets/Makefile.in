@@ -138,10 +138,13 @@ BUILT_SOURCES = \
 	SoAnyThumbWheel.cpp
 
 
+DISTCLEANFILES = \
+	$(BUILT_SOURCES)
+
+
 
 ############################################################################
 libSoXtWidgets_la_SOURCES = \
-	$(BUILT_SOURCES) \
 	SoXtGLArea.h \
 	SoXtGLAreaP.h \
 	SoXtGLArea.cpp \
@@ -154,11 +157,15 @@ libSoXtWidgets_la_SOURCES = \
 	SoXtSlider.cpp
 
 
+nodist_libSoXtWidgets_la_SOURCES = \
+	$(BUILT_SOURCES)
+
+
 
 ############################################################################
-libSoXtWidgetsincdir = $(includedir)/Inventor/Xt/widgets
+SoXtWidgetsincdir = $(includedir)/Inventor/Xt/widgets
 
-libSoXtWidgetsinc_HEADERS = \
+SoXtWidgetsinc_HEADERS = \
 	SoXtThumbWheel.h \
 	SoXtThumbWheelP.h \
 	SoXtGLArea.h \
@@ -172,9 +179,11 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 
 libSoXtWidgets_la_LDFLAGS =
 libSoXtWidgets_la_LIBADD =
-am_libSoXtWidgets_la_OBJECTS = SoAnyPopupMenu.lo SoAnyThumbWheel.lo \
-	SoXtGLArea.lo SoXtPopupMenu.lo SoXtThumbWheel.lo SoXtSlider.lo
-libSoXtWidgets_la_OBJECTS = $(am_libSoXtWidgets_la_OBJECTS)
+am_libSoXtWidgets_la_OBJECTS = SoXtGLArea.lo SoXtPopupMenu.lo \
+	SoXtThumbWheel.lo SoXtSlider.lo
+nodist_libSoXtWidgets_la_OBJECTS = SoAnyPopupMenu.lo SoAnyThumbWheel.lo
+libSoXtWidgets_la_OBJECTS = $(am_libSoXtWidgets_la_OBJECTS) \
+	$(nodist_libSoXtWidgets_la_OBJECTS)
 
 DEFS = @DEFS@
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)/src
@@ -205,10 +214,10 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(libSoXtWidgets_la_SOURCES)
-HEADERS = $(libSoXtWidgetsinc_HEADERS)
+HEADERS = $(SoXtWidgetsinc_HEADERS)
 
-DIST_COMMON = $(libSoXtWidgetsinc_HEADERS) Makefile.am Makefile.in
-SOURCES = $(libSoXtWidgets_la_SOURCES)
+DIST_COMMON = $(SoXtWidgetsinc_HEADERS) Makefile.am Makefile.in
+SOURCES = $(libSoXtWidgets_la_SOURCES) $(nodist_libSoXtWidgets_la_SOURCES)
 
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -272,22 +281,22 @@ distclean-depend:
 	$(LTCXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 CXXDEPMODE = @CXXDEPMODE@
 uninstall-info-am:
-install-libSoXtWidgetsincHEADERS: $(libSoXtWidgetsinc_HEADERS)
+install-SoXtWidgetsincHEADERS: $(SoXtWidgetsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libSoXtWidgetsincdir)
-	@list='$(libSoXtWidgetsinc_HEADERS)'; for p in $$list; do \
+	$(mkinstalldirs) $(DESTDIR)$(SoXtWidgetsincdir)
+	@list='$(SoXtWidgetsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libSoXtWidgetsincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libSoXtWidgetsincdir)/$$f; \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(SoXtWidgetsincdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(SoXtWidgetsincdir)/$$f; \
 	done
 
-uninstall-libSoXtWidgetsincHEADERS:
+uninstall-SoXtWidgetsincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libSoXtWidgetsinc_HEADERS)'; for p in $$list; do \
+	@list='$(SoXtWidgetsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libSoXtWidgetsincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libSoXtWidgetsincdir)/$$f; \
+	  echo " rm -f $(DESTDIR)$(SoXtWidgetsincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(SoXtWidgetsincdir)/$$f; \
 	done
 
 tags: TAGS
@@ -348,7 +357,7 @@ check: check-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(libSoXtWidgetsincdir)
+	$(mkinstalldirs) $(DESTDIR)$(SoXtWidgetsincdir)
 
 install: install-am
 install-exec: install-exec-am
@@ -369,6 +378,7 @@ clean-generic:
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES) stamp-h stamp-h[0-9]*
+	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -392,7 +402,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-libSoXtWidgetsincHEADERS
+install-data-am: install-SoXtWidgetsincHEADERS
 
 install-exec-am:
 
@@ -411,20 +421,19 @@ mostlyclean: mostlyclean-am
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
-uninstall-am: uninstall-info-am uninstall-libSoXtWidgetsincHEADERS
+uninstall-am: uninstall-SoXtWidgetsincHEADERS uninstall-info-am
 
 .PHONY: GTAGS all all-am check check-am clean clean-generic \
 	clean-libtool clean-noinstLTLIBRARIES distclean \
 	distclean-compile distclean-depend distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am info \
-	info-am install install-am install-data install-data-am \
-	install-exec install-exec-am install-info install-info-am \
-	install-libSoXtWidgetsincHEADERS install-man install-strip \
+	info-am install install-SoXtWidgetsincHEADERS install-am \
+	install-data install-data-am install-exec install-exec-am \
+	install-info install-info-am install-man install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool tags uninstall \
-	uninstall-am uninstall-info-am \
-	uninstall-libSoXtWidgetsincHEADERS
+	uninstall-SoXtWidgetsincHEADERS uninstall-am uninstall-info-am
 
 
 ############################################################################

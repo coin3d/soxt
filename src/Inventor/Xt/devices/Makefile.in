@@ -150,9 +150,9 @@ libSoXtDevices_la_SOURCES = \
 
 
 ############################################################################
-libSoXtDevicesincdir = $(includedir)/Inventor/@Gui@/devices
+SoXtDevicesincdir = $(includedir)/Inventor/@Gui@/devices
 
-libSoXtDevicesinc_HEADERS = \
+SoXtDevicesinc_HEADERS = \
 	So@Gui@Device.h \
 	So@Gui@InputFocus.h \
 	So@Gui@Keyboard.h \
@@ -202,9 +202,9 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(libSoXtDevices_la_SOURCES)
-HEADERS = $(libSoXtDevicesinc_HEADERS)
+HEADERS = $(SoXtDevicesinc_HEADERS)
 
-DIST_COMMON = $(libSoXtDevicesinc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = $(SoXtDevicesinc_HEADERS) Makefile.am Makefile.in
 SOURCES = $(libSoXtDevices_la_SOURCES)
 
 all: $(BUILT_SOURCES)
@@ -269,22 +269,22 @@ distclean-depend:
 	$(LTCXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 CXXDEPMODE = @CXXDEPMODE@
 uninstall-info-am:
-install-libSoXtDevicesincHEADERS: $(libSoXtDevicesinc_HEADERS)
+install-SoXtDevicesincHEADERS: $(SoXtDevicesinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libSoXtDevicesincdir)
-	@list='$(libSoXtDevicesinc_HEADERS)'; for p in $$list; do \
+	$(mkinstalldirs) $(DESTDIR)$(SoXtDevicesincdir)
+	@list='$(SoXtDevicesinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libSoXtDevicesincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libSoXtDevicesincdir)/$$f; \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(SoXtDevicesincdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(SoXtDevicesincdir)/$$f; \
 	done
 
-uninstall-libSoXtDevicesincHEADERS:
+uninstall-SoXtDevicesincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libSoXtDevicesinc_HEADERS)'; for p in $$list; do \
+	@list='$(SoXtDevicesinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libSoXtDevicesincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libSoXtDevicesincdir)/$$f; \
+	  echo " rm -f $(DESTDIR)$(SoXtDevicesincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(SoXtDevicesincdir)/$$f; \
 	done
 
 tags: TAGS
@@ -345,7 +345,7 @@ check: check-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(libSoXtDevicesincdir)
+	$(mkinstalldirs) $(DESTDIR)$(SoXtDevicesincdir)
 
 install: install-am
 install-exec: install-exec-am
@@ -389,7 +389,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-libSoXtDevicesincHEADERS
+install-data-am: install-SoXtDevicesincHEADERS
 
 install-exec-am:
 
@@ -408,20 +408,19 @@ mostlyclean: mostlyclean-am
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
-uninstall-am: uninstall-info-am uninstall-libSoXtDevicesincHEADERS
+uninstall-am: uninstall-SoXtDevicesincHEADERS uninstall-info-am
 
 .PHONY: GTAGS all all-am check check-am clean clean-generic \
 	clean-libtool clean-noinstLTLIBRARIES distclean \
 	distclean-compile distclean-depend distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am info \
-	info-am install install-am install-data install-data-am \
-	install-exec install-exec-am install-info install-info-am \
-	install-libSoXtDevicesincHEADERS install-man install-strip \
+	info-am install install-SoXtDevicesincHEADERS install-am \
+	install-data install-data-am install-exec install-exec-am \
+	install-info install-info-am install-man install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool tags uninstall \
-	uninstall-am uninstall-info-am \
-	uninstall-libSoXtDevicesincHEADERS
+	uninstall-SoXtDevicesincHEADERS uninstall-am uninstall-info-am
 
 
 ############################################################################

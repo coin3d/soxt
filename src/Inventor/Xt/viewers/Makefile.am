@@ -23,11 +23,12 @@ BUILT_SOURCES = \
 	SoAnyWalkViewer.cpp \
 	SoAnyWalkViewer.h
 
+DISTCLEANFILES = \
+	$(BUILT_SOURCES)
+
 ############################################################################
-##
 
 libSoXtViewers_la_SOURCES = \
-	$(BUILT_SOURCES) \
 	So@Gui@FullViewer.cpp \
 	So@Gui@FullViewer.h \
 	So@Gui@ExaminerViewer.cpp \
@@ -43,8 +44,10 @@ libSoXtViewers_la_SOURCES = \
 	So@Gui@CollisionViewer.cpp \
 	So@Gui@CollisionViewer.h
 
+nodist_libSoXtViewers_la_SOURCES = \
+	$(BUILT_SOURCES)
+
 ############################################################################
-##
 
 So@Gui@Viewer.h: $(srcdir)/../common/SoGuiViewer.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
@@ -89,18 +92,17 @@ SoAnyWalkViewer.cpp: $(srcdir)/../common/SoAnyWalkViewer.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 ############################################################################
-##
 
-libSoXtViewersincdir = $(includedir)/Inventor/@Gui@/viewers
+SoXtViewersincdir = $(includedir)/Inventor/@Gui@/viewers
 
-libSoXtViewersinc_HEADERS = \
-	$(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@Viewer.h \
-	$(top_srcdir)/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.h \
-	$(top_srcdir)/src/Inventor/@Gui@/viewers/So@Gui@ExaminerViewer.h \
-	$(top_srcdir)/src/Inventor/@Gui@/viewers/So@Gui@PlaneViewer.h \
-	$(top_srcdir)/src/Inventor/@Gui@/viewers/So@Gui@ConstrainedViewer.h \
-	$(top_srcdir)/src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.h \
-	$(top_srcdir)/src/Inventor/@Gui@/viewers/So@Gui@WalkViewer.h \
-	$(top_srcdir)/src/Inventor/@Gui@/viewers/So@Gui@CollisionViewer.h
+SoXtViewersinc_HEADERS = \
+	So@Gui@Viewer.h \
+	So@Gui@FullViewer.h \
+	So@Gui@ExaminerViewer.h \
+	So@Gui@PlaneViewer.h \
+	So@Gui@ConstrainedViewer.h \
+	So@Gui@FlyViewer.h \
+	So@Gui@WalkViewer.h \
+	So@Gui@CollisionViewer.h
 
 ############################################################################
