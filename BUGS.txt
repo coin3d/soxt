@@ -130,7 +130,7 @@ priority the item has.
     Code that works for non-realized widgets was submitted, but not
     code that can toggle already opened windows.
 
-    Reported by Fabian May?
+    Reported by Fernando Vega
 
 ========================================================================
 
