@@ -1,9 +1,2 @@
-COPYING
-=======
-
-The SoXt library is covered by the Q Public License, which you will find in
-the LICENSE.QPL file.
-
-The configure/build system used in SoXt is covered by the GNU General Public
-License, which you will find in the LICENSE.GPL file.
-
+SoXt is released publicly under the GNU Lesser General Public License,
+version 2.1.  See the file LICENSE.LGPL for all the details.
