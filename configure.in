@@ -368,7 +368,6 @@ AC_OUTPUT([
 	src/Inventor/Xt/Makefile
 	src/Inventor/Xt/devices/Makefile
 	src/Inventor/Xt/widgets/Makefile
-	src/Inventor/Xt/sliders/Makefile
 	src/Inventor/Xt/viewers/Makefile
 	build/soxt.doxygen
 ], [
