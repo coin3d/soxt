@@ -22,6 +22,17 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtResource Inventor/Xt/SoXtResource.h
+  \brief The SoXtResource class is a utility class for fetching X resource
+  values for widgets.  Special care is taken for SoXt components.
+  \ingroup misc
+*/
+
+// *************************************************************************
+
 #include <assert.h>
 #include <stdio.h>
 
@@ -36,12 +47,6 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXtComponent.h>
 
 #include <Inventor/Xt/SoXtResource.h>
-
-/*!
-  \class SoXtResource Inventor/Xt/SoXtResource.h
-  \brief The SoXtResource class is a utility class for fetching X resource
-  values for widgets.  Special care is taken for SoXt components.
-*/
 
 // *************************************************************************
 

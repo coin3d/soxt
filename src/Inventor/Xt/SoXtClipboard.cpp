@@ -22,11 +22,69 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtClipboard Inventor/Xt/SoXtClipboard.h
+  \brief The SoXtClipboard class is yet to be documented.
+  \ingroup misc
+
+  This class is not implemented yet.
+*/
+
+// *************************************************************************
+
 #include <soxtdefs.h>
 
 #include <Inventor/Xt/SoXtClipboard.h>
 
 // *************************************************************************
+
+/*!
+  \var Widget SoXtClipboard::widget
+  FIXME: write doc
+*/
+
+/*!
+  \var Atom SoXtClipboard::clipboardAtom
+  FIXME: write doc
+*/
+
+/*!
+  \var SbTime SoXtClipboard::eventTime
+  FIXME: write doc
+*/
+
+/*!
+  \var SoXtClipboardPasteCB SoXtClipboard::callbackFunc
+  Paste callback function pointer.
+*/
+
+/*!
+  \var SbTime SoXtClipboard::userData
+  Callback closure.
+*/
+
+/*!
+  \var SoXtImportInterestList * SoXtClipboard::pasteInterest
+  FIXME: write doc
+*/
+
+/*!
+  \var SbPList * SoXtClipboard::copyInterest
+  FIXME: write doc
+*/
+
+/*!
+  \var SbDict SoXtClipboard::selOwnerList
+  FIXME: write doc
+*/
+
+// *************************************************************************
+
+/*!
+  Constructor.
+*/
 
 SoXtClipboard::SoXtClipboard(
   Widget widget,
@@ -34,12 +92,20 @@ SoXtClipboard::SoXtClipboard(
 {
 } // SoXtClipboard()
 
+/*!
+  Destructor.
+*/
+
 SoXtClipboard::~SoXtClipboard(
   void )
 {
 } // ~SoXtClipboard()
 
 // *************************************************************************
+
+/*!
+  FIXME: write doc
+*/
 
 void
 SoXtClipboard::copy(
@@ -49,6 +115,10 @@ SoXtClipboard::copy(
   SOXT_STUB();
 } // copy()
 
+/*!
+  FIXME: write doc
+*/
+
 void
 SoXtClipboard::copy(
   SoPath * path,
@@ -57,6 +127,10 @@ SoXtClipboard::copy(
   SOXT_STUB();
 } // copy()
 
+/*!
+  FIXME: write doc
+*/
+
 void
 SoXtClipboard::copy(
   SoPathList * paths,
@@ -64,6 +138,10 @@ SoXtClipboard::copy(
 {
   SOXT_STUB();
 } // copy()
+
+/*!
+  FIXME: write doc
+*/
 
 void
 SoXtClipboard::copy(
@@ -75,6 +153,10 @@ SoXtClipboard::copy(
   SOXT_STUB();
 } // copy()
 
+/*!
+  FIXME: write doc
+*/
+
 void
 SoXtClipboard::copy( // protected
   SoByteStream * byteStream,
@@ -82,6 +164,10 @@ SoXtClipboard::copy( // protected
 {
   SOXT_STUB();
 } // copy()
+
+/*!
+  FIXME: write doc
+*/
 
 void
 SoXtClipboard::paste(
@@ -92,6 +178,10 @@ SoXtClipboard::paste(
   SOXT_STUB();
 } // paste()
 
+/*!
+  FIXME: write doc
+*/
+
 void
 SoXtClipboard::addPasteInterest(
   Atom datatype,
@@ -100,6 +190,10 @@ SoXtClipboard::addPasteInterest(
 {
   SOXT_STUB();
 } // addPasteInterest()
+
+/*!
+  FIXME: write doc
+*/
 
 SbBool
 SoXtClipboard::convertData( // static
@@ -114,12 +208,20 @@ SoXtClipboard::convertData( // static
   return FALSE;
 } // convertData()
 
+/*!
+  FIXME: write doc
+*/
+
 void
 SoXtClipboard::setEmptyListOK(
   SbBool enable )
 {
   SOXT_STUB();
 } // setEmptyListOK()
+
+/*!
+  FIXME: write doc
+*/
 
 SbBool
 SoXtClipboard::isEmptyListOK(
@@ -129,6 +231,10 @@ SoXtClipboard::isEmptyListOK(
   return FALSE;
 } // isEmptyListOK()
 
+/*!
+  FIXME: write doc
+*/
+
 void
 SoXtClipboard::getExportTargets( // protected
   char ** value,
@@ -136,6 +242,10 @@ SoXtClipboard::getExportTargets( // protected
 {
   SOXT_STUB();
 } // getExportTargets()
+
+/*!
+  FIXME: write doc
+*/
 
 Atom
 SoXtClipboard::chooseFromImportTargets( // protected
@@ -145,6 +255,10 @@ SoXtClipboard::chooseFromImportTargets( // protected
   SOXT_STUB();
   return _XA_CLIPBOARD_;
 } // chooseFromImportTargets()
+
+/*!
+  FIXME: write doc
+*/
 
 SbBool
 SoXtClipboard::writeToFile( // static, protected
@@ -156,6 +270,10 @@ SoXtClipboard::writeToFile( // static, protected
   return FALSE;
 } // writeToFile()
 
+/*!
+  FIXME: write doc
+*/
+
 void
 SoXtClipboard::readFile( // static, protected
   SoPathList * & paths,
@@ -163,6 +281,10 @@ SoXtClipboard::readFile( // static, protected
 {
   SOXT_STUB();
 } // readFile()
+
+/*!
+  FIXME: write doc
+*/
 
 SoPathList *
 SoXtClipboard::readData( // static, protected

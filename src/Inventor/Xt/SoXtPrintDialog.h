@@ -45,12 +45,12 @@ public:
   SoXtPrintDialog(
     Widget parent = NULL,
     const char * const name = NULL,
-    SbBool inParent = TRUE );
+    SbBool embed = TRUE );
   SoXtPrintDialog(
     SoGLRenderAction * const action,
     Widget parent = NULL,
     const char * const name = NULL,
-    SbBool inParent = TRUE );
+    SbBool embed = TRUE );
   ~SoXtPrintDialog(void);
 
   void setSceneGraph( SoPath * path );
@@ -72,7 +72,10 @@ public:
 
 protected:
   SoXtPrintDialog(
-    Widget parent, const char * const name, SbBool inParent, SbBool build );
+    Widget parent,
+    const char * const name,
+    SbBool embed,
+    SbBool build );
 
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;

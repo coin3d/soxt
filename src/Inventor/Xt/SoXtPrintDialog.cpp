@@ -17,60 +17,261 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
-#include <Inventor/errors/SoDebugError.h>
-
-#include <soxtdefs.h>
-#include <Inventor/Xt/SoXtPrintDialog.h>
+// *************************************************************************
 
 /*!
   \class SoXtPrintDialog Inventor/Xt/SoXtPrintDialog.h
   \brief The SoXtPrintDialog class is yet to be documented.
+  \ingroup components
+
+  This class is not implemented.
+*/
+
+// *************************************************************************
+
+#include <Inventor/errors/SoDebugError.h>
+
+#include <soxtdefs.h>
+
+#include <Inventor/Xt/SoXtPrintDialog.h>
+
+// *************************************************************************
+
+/*!
+  \var SoNode * SoXtPrintDialog::rootNode
+  FIXME: write doc
+*/
+
+/*!
+  \var SoPath * SoXtPrintDialog::rootPath
+  FIXME: write doc
+*/
+
+/*!
+  \var SbBool SoXtPrintDialog::printDone
+  FIXME: write doc
+*/
+
+/*!
+  \var SbBool SoXtPrintDialog::highQuality
+  FIXME: write doc
+*/
+
+/*!
+  \var SbBool SoXtPrintDialog::portraitFormat
+  FIXME: write doc
+*/
+
+/*!
+  \var SbBool SoXtPrintDialog::printerOutput
+  FIXME: write doc
+*/
+
+/*!
+  \var SbBool SoXtPrintDialog::postScriptOutput
+  FIXME: write doc
+*/
+
+/*!
+  \var SbBool SoXtPrintDialog::nodeMostRecent
+  FIXME: write doc
+*/
+
+/*!
+  \var SbBool SoXtPrintDialog::WYSIWYGflag
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::messageWidget
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::printButton
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::quitButton
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::messageLabelWidget
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::fileFormatWidget
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::toPrinterWidget
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::toPostScriptFileWidget
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::toRGBFileWidget
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::printerHorizSize
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::printerVertSize
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::postScriptHorizSize
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::postScriptVertSize
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::rgbHorizSize
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::rgbVertSize
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::printerDPIField
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::postScriptDPIField
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::rgbFilenameWidget
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::postScriptFilenameWidget
+  FIXME: write doc
+*/
+
+/*!
+  \var SbPList * SoXtPrintDialog::printers
+  FIXME: write doc
+*/
+
+/*!
+  \var char * SoXtPrintDialog::defaultPrinter
+  FIXME: write doc
+*/
+
+/*!
+  \var int SoXtPrintDialog::whichPrinter
+  FIXME: write doc
+*/
+
+/*!
+  \var SbVec2f SoXtPrintDialog::printSize
+  FIXME: write doc
+*/
+
+/*!
+  \var SbVec2s SoXtPrintDialog::printRes
+  FIXME: write doc
+*/
+
+/*!
+  \var SoCallbackList SoXtPrintDialog::beforeList
+  FIXME: write doc
+*/
+
+/*!
+  \var SoCallbackList SoXtPrintDialog::afterList
+  FIXME: write doc
+*/
+
+/*!
+  \var SbBool SoXtPrintDialog::alreadyUpdated
+  FIXME: write doc
+*/
+
+/*!
+  \var Widget SoXtPrintDialog::styleButton
+  FIXME: write doc
+*/
+
+/*!
+  \var int SoXtPrintDialog::currentStyle
+  FIXME: write doc
 */
 
 // *************************************************************************
 
 /*!
+  Constructor.
 */
 
 SoXtPrintDialog::SoXtPrintDialog(
   Widget parent,
   const char * const name,
-  SbBool inParent )
-: inherited()
+  SbBool embed )
+: inherited( parent, name, embed)
 {
   this->constructor( TRUE );
 } // SoXtPrintDialog()
 
 /*!
+  Constructor.
 */
 
 SoXtPrintDialog::SoXtPrintDialog(
   SoGLRenderAction * const action,
   Widget parent,
   const char * const name,
-  SbBool inParent )
-: inherited()
+  SbBool embed )
+: inherited( parent, name, embed)
 {
   this->constructor( TRUE );
 } // SoXtPrintDialog()
 
 /*!
+  Constructor.
 */
 
 SoXtPrintDialog::SoXtPrintDialog( // protected
   Widget parent,
   const char * const name,
-  SbBool inParent,
+  SbBool embed,
   SbBool build )
-: inherited()
+: inherited( parent, name, embed)
 {
   this->constructor( build );
 } // SoXtPrintDialog()
 
 /*!
+  Common constructor code.
 */
 
 void
@@ -81,6 +282,7 @@ SoXtPrintDialog::constructor( // private
 } // constructor()
 
 /*!
+  Destructor.
 */
 
 SoXtPrintDialog::~SoXtPrintDialog(
@@ -91,6 +293,7 @@ SoXtPrintDialog::~SoXtPrintDialog(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -100,6 +303,7 @@ SoXtPrintDialog::setSceneGraph(
 } // setSceneGraph()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -109,6 +313,7 @@ SoXtPrintDialog::setSceneGraph(
 } // setSceneGraph()
 
 /*!
+  FIXME: write doc
 */
 
 SoNode *
@@ -119,6 +324,7 @@ SoXtPrintDialog::getSceneGraph(
 } // getSceneGraph()
 
 /*!
+  FIXME: write doc
 */
 
 SoPath *
@@ -129,6 +335,7 @@ SoXtPrintDialog::getSceneGraphPath(
 } // getSceneGraphPath()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -138,6 +345,7 @@ SoXtPrintDialog::setGLRenderAction(
 } // setGLRenderAction()
 
 /*!
+  FIXME: write doc
 */
 
 SoGLRenderAction *
@@ -148,6 +356,7 @@ SoXtPrintDialog::getGLRenderAction(
 } // getGLRenderAction()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -157,6 +366,7 @@ SoXtPrintDialog::setPrintSize(
 } // setPrintSize()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -166,6 +376,7 @@ SoXtPrintDialog::setPrintSize(
 } // setPrintSize()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -176,6 +387,7 @@ SoXtPrintDialog::setBeforePrintCallback(
 } // setBeforePrintCallback()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -188,6 +400,7 @@ SoXtPrintDialog::setAfterPrintCallback(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -199,6 +412,7 @@ SoXtPrintDialog::getDefaultWidgetName( // virtual, protected
 } // getDefaultWidgetName()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -210,6 +424,7 @@ SoXtPrintDialog::getDefaultTitle( // virtual, protected
 } // getDefaultTitle()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -223,6 +438,7 @@ SoXtPrintDialog::getDefaultIconTitle( // virtual, protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -232,6 +448,7 @@ SoXtPrintDialog::print( // protected
 } // print()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -241,6 +458,7 @@ SoXtPrintDialog::getPrinterList( // protected
 } // getPrinterList()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -255,6 +473,7 @@ SoXtPrintDialog::printToPostScript( // protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -264,6 +483,7 @@ SoXtPrintDialog::buildToPrinterWidget( // protected
 } // buildToPrinterWidget()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -273,6 +493,7 @@ SoXtPrintDialog::buildToPostScriptFileWidget( // protected
 } // buildToPostScriptFileWidget()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -282,6 +503,7 @@ SoXtPrintDialog::buildToRGBFileWidget( // protected
 } // buildToRGBFileWidget()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -291,6 +513,7 @@ SoXtPrintDialog::placeBottomOfDialog( // protected
 } // placeBottomOfdialog()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -306,6 +529,7 @@ SoXtPrintDialog::buildRadioButton( // protected
 } // buildRadioButton()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -321,6 +545,7 @@ SoXtPrintDialog::buildSizeFields( // protected
 } // buildSizeFields()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -333,6 +558,7 @@ SoXtPrintDialog::buildDPIField( // protected
 } // buildDPIField()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -344,6 +570,7 @@ SoXtPrintDialog::updateTextports( // protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -356,6 +583,7 @@ SoXtPrintDialog::qualityCB(
 } // qualityCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -368,6 +596,7 @@ SoXtPrintDialog::pageFormatCB(
 } // pageFormatCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -380,6 +609,7 @@ SoXtPrintDialog::fileFormatCB(
 } // fileFormatCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -392,6 +622,7 @@ SoXtPrintDialog::printerHorizSizeCB(
 } // printerHorizCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -404,6 +635,7 @@ SoXtPrintDialog::printerVertSizeCB(
 } // printerVertSizeCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -416,6 +648,7 @@ SoXtPrintDialog::postScriptHorizSizeCB(
 } // postScriptHorizSizeCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -428,6 +661,7 @@ SoXtPrintDialog::postScriptVertSizeCB(
 } // postScriptVertSizeCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -440,6 +674,7 @@ SoXtPrintDialog::rgbHorizSizeCB(
 } // rgbHorizSizeCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -452,6 +687,7 @@ SoXtPrintDialog::rgbVertSizeCB(
 } // rgbVertSizeCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -464,6 +700,7 @@ SoXtPrintDialog::printerDPICB(
 } // printerDPICB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -476,6 +713,7 @@ SoXtPrintDialog::postScriptDPICB(
 } // postScriptDPICB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -488,6 +726,7 @@ SoXtPrintDialog::outputCB(
 } // outputCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -500,6 +739,7 @@ SoXtPrintDialog::printCB(
 } // printCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -512,6 +752,7 @@ SoXtPrintDialog::quitCB(
 } // quitCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -526,6 +767,7 @@ SoXtPrintDialog::listPick(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 // why private?
@@ -538,3 +780,8 @@ SoXtPrintDialog::buildWidget( // private
 } // buildWidget()
 
 // *************************************************************************
+
+#if SOXT_DEBUG
+static const char * getSoXtPrintDialogRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
+
