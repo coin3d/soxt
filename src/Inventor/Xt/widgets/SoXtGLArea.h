@@ -49,6 +49,8 @@
  *     19th may 2000
  */
 
+/* $Id$ */
+
 #ifndef SOXT_GLAREA_H
 #define SOXT_GLAREA_H
 
