@@ -597,8 +597,7 @@ RegularSources = \
 	SoXt.cpp \
 	SoXtComponent.cpp \
 	SoXtGLWidget.cpp \
-	SoXtResource.cpp \
-	SoXtClipboard.cpp
+	SoXtResource.cpp
 
 BuiltSources = \
 	$(SoGui_src_Inventor_Gui_BuiltFiles) \
@@ -643,7 +642,6 @@ libSoXt_la_LDFLAGS = \
 SoXtincdir = $(includedir)/Inventor/Xt
 
 SoXtinc_HEADERS = \
-	SoXtClipboard.h \
 	SoXtResource.h
 
 
@@ -671,10 +669,10 @@ libSoXt_la_DEPENDENCIES = devices/libSoXtDevices.la \
 	widgets/libSoXtWidgets.la
 am__libSoXt_la_SOURCES_DIST = SoXtInternal.cpp SoXt.cpp \
 	SoXtComponent.cpp SoXtGLWidget.cpp SoXtResource.cpp \
-	SoXtClipboard.cpp all-soxt-cpp.cpp
+	all-soxt-cpp.cpp
 am__objects_1 = all-soxt-cpp.lo
 am__objects_2 = SoXtInternal.lo SoXt.lo SoXtComponent.lo SoXtGLWidget.lo \
-	SoXtResource.lo SoXtClipboard.lo
+	SoXtResource.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_libSoXt_la_OBJECTS = $(am__objects_3)
@@ -699,7 +697,6 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/So@Gui@Object.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/So@Gui@RenderArea.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoAny.Plo ./$(DEPDIR)/SoXt.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoXtClipboard.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoXtComponent.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoXtGLWidget.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoXtInternal.Plo \
@@ -789,7 +786,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/So@Gui@RenderArea.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAny.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoXt.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoXtClipboard.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoXtComponent.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoXtGLWidget.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoXtInternal.Plo@am__quote@
