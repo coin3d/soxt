@@ -536,26 +536,34 @@ SoXtGLWidget::buildWidget( // protected
     this->border = haveborder;
 
   static int double_good_attrs[] = {
-    GLX_RGBA, GLX_RED_SIZE, 4, GLX_GREEN_SIZE, 4, GLX_BLUE_SIZE, 4,
-    GLX_DEPTH_SIZE, 16, GLX_DOUBLEBUFFER,
+    GLX_RGBA,
+    GLX_RED_SIZE, 4, GLX_GREEN_SIZE, 4, GLX_BLUE_SIZE, 4,
+    GLX_DEPTH_SIZE, 16,
+    GLX_DOUBLEBUFFER,
+    GLX_STENCIL_SIZE, 1,
     None
   };
 
   static int double_poor_attrs[] = {
     GLX_RGBA,
-    GLX_DEPTH_SIZE, 16, GLX_DOUBLEBUFFER,
+    GLX_DEPTH_SIZE, 16,
+    GLX_DOUBLEBUFFER,
+    GLX_STENCIL_SIZE, 1,
     None
   };
 
   static int single_good_attrs[] = {
-    GLX_RGBA, GLX_RED_SIZE, 4, GLX_GREEN_SIZE, 4, GLX_BLUE_SIZE, 4,
+    GLX_RGBA,
+    GLX_RED_SIZE, 4, GLX_GREEN_SIZE, 4, GLX_BLUE_SIZE, 4,
     GLX_DEPTH_SIZE, 16,
+    GLX_STENCIL_SIZE, 1,
     None
   };
 
   static int single_poor_attrs[] = {
     GLX_RGBA,
     GLX_DEPTH_SIZE, 16,
+    GLX_STENCIL_SIZE, 1,
     None
   };
 
@@ -633,6 +641,7 @@ SoXtGLWidget::buildWidget( // protected
     soxtGLAreaWidgetClass, this->glxManager,
     SoXtNvisualInfo, this->normalVisual,
     XmNcolormap, colors,
+    SoXtNstencilSize, 1,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_FORM,
