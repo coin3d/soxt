@@ -17,11 +17,6 @@
  *
  **************************************************************************/
 
-#if SOXT_DEBUG
-static const char rcsid[] =
-  "$Id$";
-#endif // SOXT_DEBUG
-
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -52,7 +47,6 @@ static const char rcsid[] =
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
 #include <Inventor/Xt/widgets/SoXtPopupMenu.h>
 
-#include <Inventor/Xt/viewers/SoAnyFullViewer.h>
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
 
 #if HAVE_CONFIG_H
@@ -69,10 +63,6 @@ static const char rcsid[] =
 #include <Inventor/Xt/common/pixmaps/view_all.xpm>
 #include <Inventor/Xt/common/pixmaps/seek.xpm>
 #endif // HAVE_LIBXPM
-
-#ifndef M_PI
-#define M_PI 3.1415926535f
-#endif // ! M_PI
 
 // *************************************************************************
 
@@ -239,9 +229,8 @@ SoXtFullViewer::SoXtFullViewer(// protected
   BuildFlag flags,
   Type type,
   SbBool build)
-: inherited(parent, name, embed, type, FALSE)
-, popupTitle(NULL)
-, common(new SoAnyFullViewer(this))
+  : inherited(parent, name, embed, type, FALSE),
+    popupTitle(NULL)
 {
   // initialization of protected members
   this->leftWheel = NULL;
@@ -308,10 +297,8 @@ SoXtFullViewer::SoXtFullViewer(// protected
   The destructor.
 */
 
-SoXtFullViewer::~SoXtFullViewer(// protected
-  void)
+SoXtFullViewer::~SoXtFullViewer()
 {
-  delete this->common;
   delete this->appButtonsList;
   delete this->viewerButtonWidgets;
 } // ~SoXtFullViewer()
@@ -395,17 +382,6 @@ SoXtFullViewer::isPopupMenuEnabled(
 {
   return this->popupEnabled;
 } // isPopupMenuEnabled()
-
-
-/*!
-  Set title of popup menu.
-*/
-void
-SoXtFullViewer::setPopupMenuString(
-  const char * const title)
-{
-  this->common->setPopupMenuString(title);
-} // setPopupMenuString()
 
 
 // *************************************************************************
@@ -1308,7 +1284,7 @@ SoXtFullViewer::buildPopupMenu(
   void)
 {
   if (this->prefmenu == NULL)
-    this->prefmenu = this->common->setupStandardPopupMenu();
+    this->prefmenu = this->setupStandardPopupMenu();
 } // buildPopupMenu()
 
 /*!
@@ -1354,7 +1330,7 @@ SoXtFullViewer::openPopupMenu(const SbVec2s position)
   int x = position[0] + 2;
   int y = this->getGLSize()[1] - position[1] + 2;
 
-  this->common->prepareMenu(this->prefmenu);
+  this->prepareMenu(this->prefmenu);
   this->prefmenu->popUp(this->getGLWidget(), x, y);
 } // openPopupMenu()
 
@@ -3372,17 +3348,6 @@ SoXtFullViewer::pasteviewSelected(
   this->pasteView(SbTime::getTimeOfDay());
 } // pasteviewSelected()
 
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtFullViewer::drawstyleActivated(
-  int item)
-{
-  SOXT_STUB();
-} // drawstyleActivated()
-
 // *************************************************************************
 
 /*!
@@ -3994,20 +3959,3 @@ SoXtFullViewer::sizeChanged(const SbVec2s & size)
 } // sizeChanged()
 
 // *************************************************************************
-
-/*!
-*/
-
-SbBool
-SoXtFullViewer::processSoEvent(// virtual, protected
-  const SoEvent * const event)
-{
-  if (common->processSoEvent(event)) return TRUE;
-  return inherited::processSoEvent(event);
-} // processSoEvent()
-
-// *************************************************************************
-
-#if SOXT_DEBUG
-static const char * getSoXtFullViewerRCSId(void) { return rcsid; }
-#endif // SOXT_DEBUG
