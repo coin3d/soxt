@@ -975,8 +975,10 @@ void
 SoXtFullViewer::interactbuttonClicked(
   Boolean set )
 {
+#if SOXT_DEBUG && 0
   SoDebugError::postInfo( "SoXtFullViewer::interactbuttonClicked",
     "%s", set ? "Set" : "Unset" );
+#endif // SOXT_DEBUG
   if ( this->isViewing() && set )
     this->setViewing( FALSE );
   else if ( ! this->isViewing() && ! set )
@@ -998,8 +1000,10 @@ void
 SoXtFullViewer::examinebuttonClicked(
   Boolean set )
 {
+#if SOXT_DEBUG && 0
   SoDebugError::postInfo( "SoXtFullViewer::examinebuttonClicked",
     "%s", set ? "Set" : "Unset" );
+#endif // SOXT_DEBUG
   if ( this->isViewing() && ! set )
     this->setViewing( FALSE );
   else if ( ! this->isViewing() && set )
