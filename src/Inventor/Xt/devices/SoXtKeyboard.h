@@ -54,7 +54,8 @@ private:
   int events;
   SoKeyboardEvent * keyboardEvent;
 
-  SoKeyboardEvent * makeKeyboardEvent( XKeyEvent * event, SoButtonEvent::State state );
+  SoKeyboardEvent * makeKeyboardEvent( XKeyEvent * event,
+                                       SoButtonEvent::State state );
 
 }; // class SoXtKeyboard
 

@@ -43,6 +43,8 @@ public:
   const SbVec2s getWindowSize(void) const;
 
 protected:
+  SoXtDevice(void);
+
   void setEventPosition( SoEvent * event, int x, int y ) const;
 
 private:

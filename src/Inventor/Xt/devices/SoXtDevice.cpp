@@ -20,9 +20,24 @@
 static const char rcsid[] =
   "$Id$";
 
+#include <assert.h>
+
+#if SOXT_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // SOXT_DEBUG
+
 #include <Inventor/misc/SoBasic.h>
+#include <Inventor/events/SoEvent.h>
 
 #include <Inventor/Xt/devices/SoXtDevice.h>
+
+// *************************************************************************
+
+SoXtDevice::SoXtDevice(
+  void )
+: size( 0, 0 )
+{
+} // SoXtDevice()
 
 // *************************************************************************
 
@@ -31,14 +46,14 @@ SoXtDevice::setWindowSize(
   const SbVec2s size )
 {
   this->size = size;
-}
+} // setWindowSize()
 
 const SbVec2s
 SoXtDevice::getWindowSize(
   void ) const
 {
   return this->size;
-}
+} // getWindowSize()
 
 // *************************************************************************
 
@@ -48,7 +63,13 @@ SoXtDevice::setEventPosition(
   int x,
   int y ) const
 {
-  COIN_STUB();
+  assert( event != NULL );
+  SbVec2s position( x, this->size[1] - y - 1 );
+  event->setPosition( position );
+#if 0 // SOXT_DEBUG
+  SoDebugError::postInfo( "SoXtDevice::setEventPosition",
+    "position = (%d, %d)", position[0], position[1] );
+#endif // 0 was SOXT_DEBUG
 } // setEventPosition()
 
 // *************************************************************************

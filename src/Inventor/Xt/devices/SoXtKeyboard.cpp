@@ -20,6 +20,8 @@
 static const char rcsid[] =
   "$Id$";
 
+#include <X11/X.h>
+
 #include <Inventor/misc/SoBasic.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 
@@ -27,18 +29,27 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-SoXtKeyboard::SoXtKeyboard( int events )
+/*!
+*/
+
+SoXtKeyboard::SoXtKeyboard(
+  int events )
 {
   this->events = events;
   this->keyboardEvent = NULL;
 } // SoXtKeyboard()
 
+/*!
+*/
+
 SoXtKeyboard::~SoXtKeyboard(
   void )
 {
-  if ( this->keyboardEvent != NULL )
-    delete this->keyboardEvent;
+  delete this->keyboardEvent;
 } // ~SoXtKeyboard()
+
+/*!
+*/
 
 void
 SoXtKeyboard::enable( // virtual
@@ -50,6 +61,9 @@ SoXtKeyboard::enable( // virtual
   COIN_STUB();
 } // enable()
 
+/*!
+*/
+
 void
 SoXtKeyboard::disable( // virtual
   Widget widget,
@@ -59,13 +73,36 @@ SoXtKeyboard::disable( // virtual
   COIN_STUB();
 } // disable()
 
+/*!
+*/
+
 const SoEvent *
 SoXtKeyboard::translateEvent( // virtual
-  XAnyEvent * xevent )
+  XAnyEvent * event )
 {
-  COIN_STUB();
+  switch ( event->type ) {
+
+  // events we should catch:
+  case KeyPress:
+  case KeyRelease:
+    do {
+      COIN_STUB();
+    } while ( FALSE );
+    // return SoEvent * here
+    // return this->makeKeyboardEvent( event ); ??
+    break;
+
+  // events we should ignore:
+  default:
+    break;
+
+  } // switch ( event->type )
+
   return (SoEvent *) NULL;
 } // translateEvent()
+
+/*!
+*/
 
 SoKeyboardEvent *
 SoXtKeyboard::makeKeyboardEvent( // private

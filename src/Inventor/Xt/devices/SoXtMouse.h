@@ -60,7 +60,8 @@ private:
   SoMouseButtonEvent * buttonEvent;
 
   SoLocation2Event * makeLocationEvent( XMotionEvent * event );
-  SoMouseButtonEvent * makeButtonEvent( XButtonEvent * event, SoButtonEvent::State state );
+  SoMouseButtonEvent * makeButtonEvent( XButtonEvent * event,
+                                        SoButtonEvent::State state );
 
 }; // class SoXtMouse
 

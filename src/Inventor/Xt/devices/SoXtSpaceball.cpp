@@ -20,17 +20,25 @@
 static const char rcsid[] =
   "$Id$";
 
+#include <X11/X.h>
+
 #include <Inventor/misc/SoBasic.h>
 
 #include <Inventor/Xt/devices/SoXtSpaceball.h>
 
 // *************************************************************************
 
+/*!
+*/
+
 SoXtSpaceball::SoXtSpaceball(
   int events )
 {
   this->events = events;
 } // SoXtSpaceball()
+
+/*!
+*/
 
 SoXtSpaceball::SoXtSpaceball(
   Display * display,
@@ -39,10 +47,16 @@ SoXtSpaceball::SoXtSpaceball(
   this->events = events;
 } // SoXtSpaceball()
 
+/*!
+*/
+
 SoXtSpaceball::~SoXtSpaceball(
   void )
 {
 } // ~SoXtSpaceball()
+
+/*!
+*/
 
 void
 SoXtSpaceball::enable( // virtual
@@ -54,6 +68,9 @@ SoXtSpaceball::enable( // virtual
   COIN_STUB();
 } // enable()
 
+/*!
+*/
+
 void
 SoXtSpaceball::disable( // virtual
   Widget widget,
@@ -63,12 +80,34 @@ SoXtSpaceball::disable( // virtual
   COIN_STUB();
 } // disable()
 
+/*!
+*/
+
 const SoEvent *
 SoXtSpaceball::translateEvent( // virtual
- XAnyEvent * xevent )
+ XAnyEvent * event )
 {
-  COIN_STUB();
+  switch ( event->type ) {
+
+  // events we should handle:
+  case ClientMessage: // ???
+    do {
+      COIN_STUB();
+    } while ( FALSE );
+    // return SoEvent * here
+    break;
+
+  // events we should ignore:
+  default:
+    break;
+
+  } // switch ( event->type )
+
+  return (SoEvent *) NULL;
 } // translateEvent()
+
+/*!
+*/
 
 void
 SoXtSpaceball::setRotationScaleFactor(
@@ -77,12 +116,18 @@ SoXtSpaceball::setRotationScaleFactor(
   this->rotationFactor = factor;
 } // setRotationScaleFactor()
 
+/*!
+*/
+
 float
 SoXtSpaceball::getRotationScaleFactor(
   void ) const
 {
   return this->rotationFactor;
 } // getRotationScaleFactor()
+
+/*!
+*/
 
 void
 SoXtSpaceball::setTranslationScaleFactor(
@@ -91,12 +136,18 @@ SoXtSpaceball::setTranslationScaleFactor(
   this->translationFactor = factor;
 } // setTranslationScaleFactor()
 
+/*!
+*/
+
 float
 SoXtSpaceball::getTranslationScaleFactor(
   void ) const
 {
   return this->translationFactor;
 } // getTranslationScaleFactor()
+
+/*!
+*/
 
 SbBool
 SoXtSpaceball::exists( // static
@@ -105,12 +156,18 @@ SoXtSpaceball::exists( // static
   COIN_STUB();
 } // exists()
 
+/*!
+*/
+
 void
 SoXtSpaceball::setFocusToWindow(
   SbBool flag )
 {
   COIN_STUB();
 } // setFocusToWindow()
+
+/*!
+*/
 
 SbBool
 SoXtSpaceball::isFocusToWindow(

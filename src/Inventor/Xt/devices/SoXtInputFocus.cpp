@@ -20,11 +20,16 @@
 static const char rcsid[] =
   "$Id$";
 
+#include <X11/X.h>
+
 #include <Inventor/misc/SoBasic.h>
 
 #include <Inventor/Xt/devices/SoXtInputFocus.h>
 
 // *************************************************************************
+
+/*!
+*/
 
 SoXtInputFocus::SoXtInputFocus(
   int events )
@@ -32,10 +37,16 @@ SoXtInputFocus::SoXtInputFocus(
   this->events = events;
 } // SoXtInputfocus()
 
+/*!
+*/
+
 SoXtInputFocus::~SoXtInputFocus(
   void )
 {
 } // ~SoXtInputfocus()
+
+/*!
+*/
 
 void
 SoXtInputFocus::enable( // virtual
@@ -47,6 +58,9 @@ SoXtInputFocus::enable( // virtual
   COIN_STUB();
 } // enable()
 
+/*!
+*/
+
 void
 SoXtInputFocus::disable( // virtual
   Widget widget,
@@ -56,11 +70,30 @@ SoXtInputFocus::disable( // virtual
   COIN_STUB();
 } // disable()
 
+/*!
+*/
+
 const SoEvent *
 SoXtInputFocus::translateEvent( // virtual
-  XAnyEvent * xevent )
+  XAnyEvent * event )
 {
-  COIN_STUB();
+  switch ( event->type ) {
+
+  // events we should handle:
+  case FocusIn:
+  case FocusOut:
+    do {
+      COIN_STUB();
+    } while ( FALSE );
+    // return SoEvent here
+    break;
+
+  // events we should ignore:
+  default:
+    break;
+  } // switch ( event->type )
+
+  return (SoEvent *) NULL;
 } // translateEvent()
 
 // *************************************************************************
