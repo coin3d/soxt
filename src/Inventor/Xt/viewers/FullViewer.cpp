@@ -17,6 +17,12 @@
  *
  **************************************************************************/
 
+// ************************************************************************
+
+// Class is documented in common/viewers/SoGuiFullViewer.cpp.in.
+
+// ************************************************************************
+
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -64,14 +70,6 @@
 #include <Inventor/Xt/common/pixmaps/view_all.xpm>
 #include <Inventor/Xt/common/pixmaps/seek.xpm>
 #endif // HAVE_LIBXPM
-
-// *************************************************************************
-
-/*!
-  \class SoXtFullViewer Inventor/Xt/SoXtFullViewer.h
-  \brief The SoXtFullViewer class adds GUI decorations to the viewer component.
-  \ingroup components viewers
-*/
 
 // *************************************************************************
 
