@@ -1,5 +1,8 @@
 ############################################################################
-##
+## SoXt/src/Inventor/Xt/widgets/Makefile.am
+## $Id$
+
+# SUBDIRS = compound
 
 noinst_LTLIBRARIES = libSoXtWidgets.la
 
@@ -42,7 +45,9 @@ libSoXtWidgets_la_SOURCES = \
 	SoXtPopupMenu.cpp \
 	SoXtThumbWheel.h \
 	SoXtThumbWheelP.h \
-	SoXtThumbWheel.cpp
+	SoXtThumbWheel.cpp \
+	SoXtSlider.h \
+	SoXtSlider.cpp
 
 ############################################################################
 
