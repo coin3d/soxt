@@ -378,9 +378,12 @@ SoQt_ExtraBuiltMetaFiles = \
 
 ACLOCAL_AMFLAGS = -I cfg/m4
 
-
 ############################################################################
-@BUILD_LIBRARY_TRUE@LIBDIRS = data src
+
+# Material editor(s) not part of the public API yet, so there's
+# no point yet in installing the material data.
+#LIBDIRS = data src
+@BUILD_LIBRARY_TRUE@LIBDIRS = src
 @BUILD_LIBRARY_FALSE@LIBDIRS = 
 
 @BUILD_HTMLPAGES_TRUE@HTMLDIR = html
@@ -437,7 +440,7 @@ DIST_COMMON = README $(dist_acdata_DATA) AUTHORS COPYING ChangeLog \
 	cfg/config.guess cfg/config.sub cfg/depcomp cfg/install-sh \
 	cfg/ltmain.sh cfg/missing cfg/mkinstalldirs configure \
 	configure.in
-DIST_SUBDIRS = . data src man html
+DIST_SUBDIRS = . src man html
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
