@@ -673,30 +673,6 @@ SoXtExaminerViewer::camerabuttonClicked(
   void )
 {
   this->toggleCameraType();
-
-/*
-  SoCamera * const camera = this->getCamera();
-  if ( ! camera ) {
-#if SOXT_DEBUG
-    SoDebugError::postWarning( "SoXtExaminerViewer::camerabuttonClicked",
-      "no camera" );
-#endif // SOXT_DEBUG
-    return;
-  }
-
-  if ( camera->isOfType( SoPerspectiveCamera::getClassTypeId() ) ) {
-    this->setCamera( new SoOrthographicCamera );
-  } else if ( camera->isOfType( SoPerspectiveCamera::getClassTypeId() ) ) {
-    this->setCamera( new SoPerspectiveCamera );
-  } else {
-#if SOXT_DEBUG
-    SoDebugError::postWarning( "SoXtExaminerViewer::camerabuttonClicked",
-      "unknown camera - got no pixmap" );
-#endif // SOXT_DEBUG
-  }
-
-*/
-
 } // camerabuttonClicked()
 
 // *************************************************************************
