@@ -456,8 +456,12 @@ init_pixmaps(
           break;
         default:
 #if SOXT_DEBUG
-          SoDebugError::postWarning( "SoXtThumbWheel:init_pixmaps",
-            "unsupported pixmap depth (%d)", depth );
+          static int first = 1;
+          if ( first )
+            SoDebugError::postWarning( "SoXtThumbWheel:init_pixmaps",
+              "unsupported pixmap depth (%d)\n%s", depth,
+              "thumbwheel pixmaps won't be shown" );
+          first = 0;
 #endif // SOXT_DEBUG
           break;
         }
