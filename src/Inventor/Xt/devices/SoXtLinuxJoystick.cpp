@@ -43,6 +43,7 @@ static const char rcsid[] =
 #include <assert.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <math.h>
 
 #ifdef HAVE_JOYSTICK_LINUX
 #include <fcntl.h>
@@ -61,6 +62,10 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXt.h>
 
 #include <Inventor/Xt/devices/SoXtLinuxJoystick.h>
+
+#ifndef M_PI
+#define M_PI 3.141592653579
+#endif
 
 // *************************************************************************
 
