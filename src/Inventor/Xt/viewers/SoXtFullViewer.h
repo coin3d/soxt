@@ -54,9 +54,9 @@ public:
 
   virtual void setViewing(SbBool on);
   virtual void setHeadlight(SbBool on);
-  virtual void setDrawStyle(SoQtViewer::DrawType type,
-                            SoQtViewer::DrawStyle style);
-  virtual void setBufferingType(SoQtViewer::BufferType type);
+  virtual void setDrawStyle(SoXtViewer::DrawType type,
+                            SoXtViewer::DrawStyle style);
+  virtual void setBufferingType(SoXtViewer::BufferType type);
   virtual void setCamera(SoCamera * cam);
   virtual void hide(void);
 
@@ -117,6 +117,9 @@ protected:
   };
 
 private:
+
+  Widget viewerbase, canvas;
+  Widget decorform[NUMDECORATIONS];
 
 }; // class SoXtFullViewer
 

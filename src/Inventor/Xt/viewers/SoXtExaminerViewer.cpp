@@ -30,7 +30,7 @@ SoXtExaminerViewer::SoXtExaminerViewer(
   SbBool inParent,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type )
-: inherited( parent, name, inParent, flag, type, FALSE )
+: inherited( parent, name, inParent, flag, type, TRUE )
 {
   this->constructor( TRUE );
 } // SoXtExaminerViewer()
@@ -51,8 +51,9 @@ void
 SoXtExaminerViewer::constructor( // private
   SbBool build )
 {
-  if ( build )
-    this->setBaseWidget( this->buildWidget( this->getParentWidget() ) );
+// don't uncomment this until constructor sends FALSE to FullViewer class
+//  if ( build )
+//    this->setBaseWidget( this->buildWidget( this->getParentWidget() ) );
 } // constructor()
 
 /*!
