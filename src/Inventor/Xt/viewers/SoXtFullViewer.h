@@ -124,6 +124,9 @@ protected:
     NUMDECORATIONS = LASTDECORATION - FIRSTDECORATION + 1
   };
 
+  Pixmap createPixmapFromXpmData( Widget button, char ** xpm );
+  Pixmap createInsensitivePixmapFromXpmData( Widget button, char ** xpm );
+
 private:
   Widget makePreferencesWindow(void);
   Widget makeSeekPreferences( Widget parent );
@@ -158,13 +161,17 @@ private:
 
 private:
   struct {
-    Pixmap help;
-    Pixmap home;
-    Pixmap pick;
-    Pixmap seek;
-    Pixmap set_home;
-    Pixmap view;
-    Pixmap view_all;
+    Widget pick, view, help, home, set_home, view_all, seek;
+  } viewerbuttons;
+
+  struct {
+    Pixmap pick, pick_ins;
+    Pixmap view, view_ins;
+    Pixmap help, help_ins;
+    Pixmap home, home_ins;
+    Pixmap set_home, set_home_ins;
+    Pixmap view_all, view_all_ins;
+    Pixmap seek, seek_ins;
   } pixmaps;
 
 private:

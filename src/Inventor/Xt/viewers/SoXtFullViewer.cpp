@@ -484,20 +484,22 @@ SoXtFullViewer::setViewing( // virtual
   if ( this->prefmenu )
     this->prefmenu->SetMenuItemMarked( EXAMINING_ITEM, enable );
 
-  XtVaSetValues( VIEWERBUTTON(EXAMINE_BUTTON),
+  XtVaSetValues( this->viewerbuttons.view,
                  XmNset, enable ? True : False, NULL );
-  XtVaSetValues( VIEWERBUTTON(INTERACT_BUTTON),
+  XtVaSetValues( this->viewerbuttons.pick,
                  XmNset, enable ? False : True, NULL );
+
 /*
   FIXME: desensitize seek button on view mode changes
   - neither of the following lines manages to preserve the layout of
     the viewer buttons row when changing seek button sensitivity - WTFIGO?
 
 Alt 1:
-  XtSetSensitive( VIEWERBUTTON(SEEK_BUTTON), enable ? True : False );
+  XtSetSensitive( this->viewerbuttons.seek, // VIEWERBUTTON(SEEK_BUTTON),
+    enable ? True : False );
 
 Alt 2:
-  XtVaSetValues( VIEWERBUTTON(SEEK_BUTTON),
+  XtVaSetValues( this->viewerbuttons.seek, // VIEWERBUTTON(SEEK_BUTTON),
     XmNsensitive, enable ? True : False,
     XmNwidth, 30, XmNheight, 30,
     NULL );
@@ -651,17 +653,16 @@ SoXtFullViewer::buildViewerButtons(
 // *************************************************************************
 
 /*
-  Internal utility function.
-  Use
+  \internal
+  Does nothing if libXpm use hasn't been enabled.
 */
 
-#if HAVE_LIBXPM
-static
 Pixmap
-ButtonPixmap(
+SoXtFullViewer::createPixmapFromXpmData(
   Widget button,
   char ** xpm )
 {
+#if HAVE_LIBXPM
   Pixel bg;
   XtVaGetValues( button, XmNbackground, &bg, NULL );
   Display * dpy = SoXt::getDisplay();
@@ -682,8 +683,44 @@ ButtonPixmap(
   XPutImage( dpy, retval, gc, image, 0, 0, 0, 0, width, height );
   XDestroyImage( image );
   return retval;
-} // ButtonPixmap()
 #endif // HAVE_LIBXPM
+  return (Pixmap) 0;
+} // ButtonPixmap()
+
+/*!
+  \internal
+  Does nothing if libXpm use hasn't been enabled.
+*/
+
+Pixmap
+SoXtFullViewer::createInsensitivePixmapFromXpmData(
+  Widget button,
+  char ** xpm )
+{
+#if HAVE_LIBXPM
+  Pixel bg;
+  XtVaGetValues( button, XmNbackground, &bg, NULL );
+  Display * dpy = SoXt::getDisplay();
+  XImage * image;
+  int error = XpmCreateImageFromData( dpy, xpm, &image, NULL, NULL );
+  if ( error != XpmSuccess ) return 0;
+  for ( int x = 0; x < image->width; x++ ) {
+    for ( int y = 0; y < image->height; y++ ) {
+      Pixel pixel = XGetPixel( image, x, y );
+      if ( (pixel == 0) || (((x+y) % 1) == 1) )
+        XPutPixel( image, x, y, bg );
+    }
+  }
+  const int width = 24, height = 24;
+  Drawable draw = RootWindow( dpy, DefaultScreen(dpy) );
+  Pixmap retval = XCreatePixmap( dpy, draw, width, height, image->depth );
+  GC gc = XCreateGC( dpy, draw, 0, NULL );
+  XPutImage( dpy, retval, gc, image, 0, 0, 0, 0, width, height );
+  XDestroyImage( image );
+  return retval;
+#endif // HAVE_LIBXPM
+  return (Pixmap) 0;
+} // createInsensitivePixmapFromXpmData()
 
 /*!
 */
@@ -762,29 +799,65 @@ SoXtFullViewer::createViewerButtons(
         XmNheight, 30,
         NULL );
     }
-#if HAVE_LIBXPM
-    Pixmap pixmap;
+
     switch ( viewerbutton ) {
     case INTERACT_BUTTON:
-      pixmap = pixmaps.pick = ButtonPixmap( button, pick_xpm );
+      this->viewerbuttons.pick = button;
       break;
     case EXAMINE_BUTTON:
-      pixmap = pixmaps.view = ButtonPixmap( button, view_xpm );
+      this->viewerbuttons.view = button;
       break;
     case HELP_BUTTON:
-      pixmap = pixmaps.help = ButtonPixmap( button, help_xpm );
+      this->viewerbuttons.help = button;
       break;
     case HOME_BUTTON:
-      pixmap = pixmaps.home = ButtonPixmap( button, home_xpm );
+      this->viewerbuttons.home = button;
       break;
     case SET_HOME_BUTTON:
-      pixmap = pixmaps.set_home = ButtonPixmap( button, set_home_xpm );
+      this->viewerbuttons.set_home = button;
       break;
     case VIEW_ALL_BUTTON:
-      pixmap = pixmaps.view_all = ButtonPixmap( button, view_all_xpm );
+      this->viewerbuttons.view_all = button;
       break;
     case SEEK_BUTTON:
-      pixmap = pixmaps.seek = ButtonPixmap( button, seek_xpm );
+      this->viewerbuttons.seek = button;
+      break;
+    default:
+      assert( 0 && "impossible" );
+      break;
+    } // switch ( viewerbutton )
+#if HAVE_LIBXPM
+    Pixmap pixmap, pixmap_ins;
+    switch ( viewerbutton ) {
+    case INTERACT_BUTTON:
+      pixmap = pixmap_ins = pixmaps.pick =
+        createPixmapFromXpmData( button, pick_xpm );
+      break;
+    case EXAMINE_BUTTON:
+      pixmap = pixmap_ins = pixmaps.view =
+        createPixmapFromXpmData( button, view_xpm );
+      break;
+    case HELP_BUTTON:
+      pixmap = pixmap_ins = pixmaps.help =
+        createPixmapFromXpmData( button, help_xpm );
+      break;
+    case HOME_BUTTON:
+      pixmap = pixmap_ins = pixmaps.home =
+        createPixmapFromXpmData( button, home_xpm );
+      break;
+    case SET_HOME_BUTTON:
+      pixmap = pixmap_ins = pixmaps.set_home =
+        createPixmapFromXpmData( button, set_home_xpm );
+      break;
+    case VIEW_ALL_BUTTON:
+      pixmap = pixmap_ins = pixmaps.view_all =
+        createPixmapFromXpmData( button, view_all_xpm );
+      break;
+    case SEEK_BUTTON:
+      pixmap = pixmaps.seek =
+        createPixmapFromXpmData( button, seek_xpm );
+      pixmap_ins = pixmaps.seek_ins =
+        createInsensitivePixmapFromXpmData( button, seek_xpm );
       break;
     default:
       assert( 0 && "impossible" );
@@ -793,9 +866,10 @@ SoXtFullViewer::createViewerButtons(
     XtVaSetValues( button,
       XmNlabelType, XmPIXMAP,
       XmNlabelPixmap, pixmap,
-      XmNlabelInsensitivePixmap, pixmap,
+      XmNlabelInsensitivePixmap, pixmap_ins,
       XmNselectPixmap, pixmap,
-      XmNselectInsensitivePixmap, pixmap,
+      XmNselectInsensitivePixmap, pixmap_ins,
+      XmNwidth, 30, XmNheight, 30,
       NULL );
 #endif // HAVE_LIBXPM
 
