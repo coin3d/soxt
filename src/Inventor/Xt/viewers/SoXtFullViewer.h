@@ -101,11 +101,11 @@ protected:
   float getLeftWheelValue(void) const;
 
   virtual void bottomWheelStart(void);
-  static void bottomWheelStartCB( Widget, XtPointer, XtPointer );
+  WIDGET_CB( bottomWheelStartCB );
   virtual void bottomWheelMotion( float value );
-  static void bottomWheelMotionCB( Widget, XtPointer, XtPointer );
+  WIDGET_CB( bottomWheelMotionCB );
   virtual void bottomWheelFinish(void);
-  static void bottomWheelFinishCB( Widget, XtPointer, XtPointer );
+  WIDGET_CB( bottomWheelFinishCB );
   float getBottomWheelValue(void) const;
 
   virtual void rightWheelStart(void);
@@ -115,6 +115,7 @@ protected:
   virtual void rightWheelFinish(void);
   WIDGET_CB( rightWheelFinishCB );
   float getRightWheelValue(void) const;
+
 #undef WIDGET_CB
 
   void setLeftWheelString( const char * const name );

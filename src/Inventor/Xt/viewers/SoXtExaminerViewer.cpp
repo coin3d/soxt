@@ -258,17 +258,41 @@ SoXtExaminerViewer::processEvent(
 // *************************************************************************
 
 /*!
+  Stops the model from spin-animating.
+*/
+
+void
+SoXtExaminerViewer::leftWheelStart( // virtual, protected
+  void )
+{
+  if ( common->isAnimating() )
+    common->stopAnimating();
+  inherited::leftWheelStart();
+} // leftWheelStart()
+
+/*!
 */
 
 void
 SoXtExaminerViewer::leftWheelMotion( // virtual, protected
   float value )
 {
-  if ( common->isAnimating() )
-    common->stopAnimating();
   inherited::leftWheelMotion(
     common->rotXWheelMotion( value, this->getLeftWheelValue() ) );
 } // leftWheelMotion()
+
+/*!
+  Stops the model from spin-animating.
+*/
+
+void
+SoXtExaminerViewer::bottomWheelStart( // virtual, protected
+  void )
+{
+  if ( common->isAnimating() )
+    common->stopAnimating();
+  inherited::bottomWheelStart();
+} // bottomWheelStart()
 
 /*!
 */
@@ -277,10 +301,8 @@ void
 SoXtExaminerViewer::bottomWheelMotion( // virtual, protected
   float value )
 {
-  if ( common->isAnimating() )
-    common->stopAnimating();
   inherited::bottomWheelMotion(
-    common->rotYWheelMotion( value, this->getLeftWheelValue() ) );
+    common->rotYWheelMotion( value, this->getBottomWheelValue() ) );
 } // bottomWheelMotion()
 
 /*!

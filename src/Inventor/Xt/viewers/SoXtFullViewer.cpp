@@ -946,10 +946,12 @@ SoXtFullViewer::leftWheelStart( // virtual
 
 void
 SoXtFullViewer::leftWheelStartCB( // static
-  Widget,
-  XtPointer,
-  XtPointer )
+  Widget, // w,
+  XtPointer client_data,
+  XtPointer ) // call_data )
 {
+  assert( client_data != NULL );
+  ((SoXtFullViewer *) client_data)->leftWheelStart();
 } // leftWheelStartCB()
 
 /*!
@@ -959,7 +961,7 @@ void
 SoXtFullViewer::leftWheelMotion( // virtual
   float value )
 {
-  SOXT_STUB();
+  this->wheelvalues[LEFTDECORATION] = value;
 } // leftWheelMotion()
 
 /*!
@@ -967,10 +969,13 @@ SoXtFullViewer::leftWheelMotion( // virtual
 
 void
 SoXtFullViewer::leftWheelMotionCB( // static
-  Widget,
-  XtPointer,
-  XtPointer )
+  Widget, // w,
+  XtPointer client_data,
+  XtPointer call_data )
 {
+  assert( client_data != NULL && call_data != NULL );
+  float * valueptr = call_data;
+  ((SoXtFullViewer *) client_data)->leftWheelMotion( *valueptr );
 } // leftWheelMotionCB()
 
 /*!
@@ -988,10 +993,12 @@ SoXtFullViewer::leftWheelFinish( // virtual
 
 void
 SoXtFullViewer::leftWheelFinishCB( // static
-  Widget,
-  XtPointer,
-  XtPointer )
+  Widget, // w,
+  XtPointer client_data,
+  XtPointer ) // call_data )
 {
+  assert( client_data != NULL );
+  ((SoXtFullViewer *) client_data)->leftWheelFinish();
 } // leftWheelFinishCB()
 
 /*!
@@ -1021,10 +1028,11 @@ SoXtFullViewer::bottomWheelStart( // virtual
 
 void
 SoXtFullViewer::bottomWheelStartCB( // static
-  Widget w,
+  Widget, // w,
   XtPointer client_data,
-  XtPointer call_data )
+  XtPointer ) // call_data )
 {
+  assert( client_data != NULL );
   ((SoXtFullViewer *) client_data)->bottomWheelStart();
 } // bottomWheelStart()
 
@@ -1035,7 +1043,7 @@ void
 SoXtFullViewer::bottomWheelMotion( // virtual
   float value )
 {
-  SOXT_STUB();
+  this->wheelvalues[BOTTOMDECORATION] = value;
 } // bottomWheelMode()
 
 /*!
@@ -1043,11 +1051,13 @@ SoXtFullViewer::bottomWheelMotion( // virtual
 
 void
 SoXtFullViewer::bottomWheelMotionCB( // static
-  Widget w,
+  Widget, // w,
   XtPointer client_data,
   XtPointer call_data )
 {
-  ((SoXtFullViewer *) client_data)->bottomWheelMotion( 0.0f );
+  assert( client_data != NULL && call_data != NULL );
+  float * valueptr = call_data;
+  ((SoXtFullViewer *) client_data)->bottomWheelMotion( *valueptr );
 } // bottomWheelStart()
 
 /*!
@@ -1065,10 +1075,11 @@ SoXtFullViewer::bottomWheelFinish( // virtual
 
 void
 SoXtFullViewer::bottomWheelFinishCB( // static
-  Widget w,
+  Widget, // w,
   XtPointer client_data,
-  XtPointer call_data )
+  XtPointer ) // call_data )
 {
+  assert( client_data != NULL );
   ((SoXtFullViewer *) client_data)->bottomWheelFinish();
 } // bottomWheelStart()
 
@@ -1098,11 +1109,13 @@ SoXtFullViewer::rightWheelStart( // virtual
 */
 
 void
-SoXtFullViewer::rightWheelStartCB(
-  Widget,
-  XtPointer,
-  XtPointer )
+SoXtFullViewer::rightWheelStartCB( // static
+  Widget, // w,
+  XtPointer client_data,
+  XtPointer ) // call_data )
 {
+  assert( client_data != NULL );
+  ((SoXtFullViewer *) client_data)->rightWheelStart();
 } // rightWheelStartCB()
 
 /*!
@@ -1112,7 +1125,7 @@ void
 SoXtFullViewer::rightWheelMotion( // virtual
   float value )
 {
-  SOXT_STUB();
+  this->wheelvalues[RIGHTDECORATION] = value;
 } // rightWheelMotion()
 
 /*!
@@ -1120,10 +1133,13 @@ SoXtFullViewer::rightWheelMotion( // virtual
 
 void
 SoXtFullViewer::rightWheelMotionCB(
-  Widget,
-  XtPointer,
-  XtPointer )
+  Widget, // w,
+  XtPointer client_data,
+  XtPointer call_data )
 {
+  assert( client_data != NULL && call_data != NULL );
+  float * valueptr = call_data;
+  ((SoXtFullViewer *) client_data)->rightWheelMotion( *valueptr );
 } // rightWheelMotionCB()
 
 /*!
@@ -1141,10 +1157,12 @@ SoXtFullViewer::rightWheelFinish( // virtual
 
 void
 SoXtFullViewer::rightWheelFinishCB(
-  Widget,
-  XtPointer,
-  XtPointer )
+  Widget, // w,
+  XtPointer client_data,
+  XtPointer ) // call_data
 {
+  assert( client_data != NULL );
+  ((SoXtFullViewer *) client_data)->rightWheelFinish();
 } // rightWheelFinishCB()
 
 /*!
@@ -1154,8 +1172,7 @@ float
 SoXtFullViewer::getRightWheelValue(
   void ) const
 {
-  SOXT_STUB();
-  return 0.0f;
+  return this->wheelvalues[RIGHTDECORATION];
 } // getRightWheelValue()
 
 // *************************************************************************

@@ -63,7 +63,9 @@ protected:
 
   virtual void processEvent( XAnyEvent * event );
 
+  virtual void leftWheelStart( void );
   virtual void leftWheelMotion( float value );
+  virtual void bottomWheelStart( void );
   virtual void bottomWheelMotion( float value );
   virtual void rightWheelMotion( float value );
 
