@@ -249,6 +249,18 @@ if test x"${with_devcode+set}" = x"set"; then
   fi
 fi
 
+sim_ac_static_defaults=true;
+AC_ARG_ENABLE(
+  [static-defaults],
+  AC_HELP_STRING([--disable-static-defaults], [Disable misc. defaults from being statically linked with SoXt]),
+  [],
+  [sim_ac_static_defaults=false])
+
+if $sim_ac_static_defaults; then
+  AC_DEFINE(WITH_STATIC_DEFAULTS,,
+    [Define this if you want defaults to be linked into SoXt])
+fi
+
 AM_CONDITIONAL(BUILD_DEVCODE, $sim_ac_want_devcode)
 AM_CONDITIONAL(BUILD_EXAMPLES, true)
 AM_CONDITIONAL(BUILD_IV_EXAMPLES, $sim_ac_want_ivexamples)
@@ -307,6 +319,8 @@ AC_OUTPUT([
 	test-code/Makefile
 	test-code/bugs/Makefile
 	test-code/widgets/Makefile
+], [
+	chmod a+x soxt-config
 ])
 
 echo ""
