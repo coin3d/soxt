@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <assert.h>
 #include <stdio.h>
@@ -42,6 +44,8 @@ static const char rcsid[] =
 */
 
 // *************************************************************************
+
+int icstrcmp( char * str1, char * str2 );
 
 /*!
   Constructor.   sets up the SoXtResource object to fetch resources for
@@ -203,16 +207,29 @@ SoXtResource::getResource(
   SbColor & retval ) const
 {
   GET_RESOURCE();
+  SOXT_STUB_ONCE();
 
-  if ( ! formatstr ) {
-    SoDebugError::postInfo( "getResource", "resource format (quark) = %s\n",
-      XrmQuarkToString(format) );
-  } else {
-    SoDebugError::postInfo( "getResource", "resource format = %s\n",
-      formatstr );
+  XrmQuark stringq = XrmStringToQuark( XmRString );
+
+  if ( formatstr != NULL )
+    format = XrmStringToQuark( formatstr );
+
+  if ( format == stringq ) {
+    XColor exact, screen;
+    Display * dpy = SoXt::getDisplay();
+    Colormap cmap = 0; // = SoXt::getColormap();
+    if ( XLookupColor( dpy, cmap, (char *) value.addr, &exact, &screen ) ) {
+      retval = SbColor( float(exact.red) / 65535.0f,
+        float(exact.green) / 65535.0f, float(exact.blue) / 65535.0f );
+      return TRUE;
+    }
+    return FALSE;
   }
 
-  SOXT_STUB_ONCE();
+#if SOXT_DEBUG
+  SoDebugError::postInfo( "getResource",
+    "resource format \"%s\" not supported\n", XrmQuarkToString( format ) );
+#endif // SOXT_DEBUG
   return FALSE;
 } // getResource()
 
@@ -358,18 +375,22 @@ SoXtResource::getResource(
   }
 
   if ( format == stringq ) {
-    if ( strcasecmp( (char *) value.addr, "true" ) == 0 ||
-         strcasecmp( (char *) value.addr, "on" ) == 0 ||
-         strcasecmp( (char *) value.addr, "yes" ) == 0 ||
-         strcasecmp( (char *) value.addr, "enable" ) == 0 ||
-         strcasecmp( (char *) value.addr, "1" ) == 0 ) {
+    if ( icstrcmp( (char *) value.addr, "true" ) == 0 ||
+         icstrcmp( (char *) value.addr, "on" ) == 0 ||
+         icstrcmp( (char *) value.addr, "yes" ) == 0 ||
+         icstrcmp( (char *) value.addr, "enable" ) == 0 ||
+         icstrcmp( (char *) value.addr, "enabled" ) == 0 ||
+         icstrcmp( (char *) value.addr, "set" ) == 0 ||
+         icstrcmp( (char *) value.addr, "1" ) == 0 ) {
       retval = TRUE;
       return TRUE;
-    } else if ( strcasecmp( (char *) value.addr, "false" ) == 0 ||
-                strcasecmp( (char *) value.addr, "off" ) == 0 ||
-                strcasecmp( (char *) value.addr, "no" ) == 0 ||
-                strcasecmp( (char *) value.addr, "disable" ) == 0 ||
-                strcasecmp( (char *) value.addr, "0" ) == 0 ) {
+    } else if ( icstrcmp( (char *) value.addr, "false" ) == 0 ||
+                icstrcmp( (char *) value.addr, "off" ) == 0 ||
+                icstrcmp( (char *) value.addr, "no" ) == 0 ||
+                icstrcmp( (char *) value.addr, "disable" ) == 0 ||
+                icstrcmp( (char *) value.addr, "disabled" ) == 0 ||
+                icstrcmp( (char *) value.addr, "unset" ) == 0 ||
+                icstrcmp( (char *) value.addr, "0" ) == 0 ) {
       retval = FALSE;
       return TRUE;
     } else {
@@ -427,3 +448,26 @@ SoXtResource::getResource(
 } // getResource()
 
 // *************************************************************************
+
+inline char upcase( char letter ) {
+  if ( letter >= 'a' && letter <= 'z' )
+    return letter - 'a' + 'A';
+  return letter;
+}
+
+int
+icstrcmp(
+  char * str1,
+  char * str2 )
+{
+  int i = 0;
+  while ( str1[i] && (upcase(str1[i]) == upcase(str2[i])) ) i++;
+  return str2[i] - str1[i];
+} // icstrcmp()
+
+// *************************************************************************
+
+#if SOXT_DEBUG
+static const char * getSoXtResourceRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
+
