@@ -199,6 +199,12 @@ Widget
 SoXt::init(int & argc, char ** argv,
            const char * appname, const char * appclass)
 {
+  // Must do this here so SoDebugError is initialized before it could
+  // be attempted used.
+  if (!SoDB::isInitialized()) { SoDB::init(); }
+  SoNodeKit::init();
+  SoInteraction::init();
+
   assert(SoXtP::previous_handler == NULL && "call SoXt::init() only once!");
   // Intervene upon X11 errors.
   SoXtP::previous_handler = XSetErrorHandler((XErrorHandler)SoXtP::X11Errorhandler);
@@ -296,6 +302,12 @@ wm_close_handler(Widget widget, XtPointer user, XEvent * e, Boolean * dispatch)
 void
 SoXt::init(Widget toplevel)
 {
+  // Must do this here so SoDebugError is initialized before it could
+  // be attempted used.
+  if (!SoDB::isInitialized()) { SoDB::init(); }
+  SoNodeKit::init();
+  SoInteraction::init();
+
   // Intervene upon X11 errors.
   if (SoXtP::previous_handler == NULL) {
     SoXtP::previous_handler = XSetErrorHandler((XErrorHandler)SoXtP::X11Errorhandler);
@@ -310,9 +322,6 @@ SoXt::init(Widget toplevel)
   SoXtP::display = XtDisplay(toplevel);
   SoXtP::xtappcontext = XtWidgetToApplicationContext(toplevel);
 
-  SoDB::init();
-  SoNodeKit::init();
-  SoInteraction::init();
   SoXtObject::init();
 
   SoDB::getSensorManager()->setChangedCallback(SoGuiP::sensorQueueChanged, NULL);
