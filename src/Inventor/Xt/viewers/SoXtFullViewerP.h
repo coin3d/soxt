@@ -40,6 +40,8 @@ public:
   SoXtFullViewerP(SoXtFullViewer * publ);
   ~SoXtFullViewerP();
 
+  static void setThumbWheelValue(void * wheel, float val);
+
   static void leftWheelStartCB(Widget, XtPointer, XtPointer);
   static void leftWheelMotionCB(Widget, XtPointer, XtPointer);
   static void leftWheelFinishCB(Widget, XtPointer, XtPointer);

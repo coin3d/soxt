@@ -2941,4 +2941,10 @@ SoXtFullViewerP::seekbuttonClicked(void)
   PUBLIC(this)->setSeekMode(PUBLIC(this)->isSeekMode() ? FALSE : TRUE);
 }
 
+void
+SoXtFullViewerP::setThumbWheelValue(void * wheel, float val)
+{
+  SoXtThumbWheelSetValue((Widget)wheel, val);
+}
+
 // *************************************************************************
