@@ -409,6 +409,7 @@ AC_OUTPUT([
 	src/Inventor/Xt/Makefile
 	src/Inventor/Xt/devices/Makefile
 	src/Inventor/Xt/editors/Makefile
+	src/Inventor/Xt/engines/Makefile
 	src/Inventor/Xt/nodes/Makefile
 	src/Inventor/Xt/viewers/Makefile
 	src/Inventor/Xt/widgets/Makefile
