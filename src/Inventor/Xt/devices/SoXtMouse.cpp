@@ -195,3 +195,11 @@ SoXtMouse::makeButtonEvent( // private
 } // makeButtonEvent()
 
 // *************************************************************************
+
+// To shut up nagging compilers...
+const char *
+getSoXtMouseRCSId(void)
+{
+  return rcsid;
+} // getSoXtMouseRCSId()
+

@@ -115,3 +115,11 @@ SoXtKeyboard::makeKeyboardEvent( // private
 } // makeKeyboardEvent()
 
 // *************************************************************************
+
+// To shut up nagging compilers...
+const char *
+getSoXtKeyboardRCSId(void)
+{
+  return rcsid;
+} // getSoXtKeyboardRCSId()
+

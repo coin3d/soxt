@@ -180,3 +180,11 @@ SoXtSpaceball::isFocusToWindow(
 } // isFocusToWindow()
 
 // *************************************************************************
+
+// To shut up nagging compilers...
+const char *
+getSoXtSpaceballRCSId(void)
+{
+  return rcsid;
+} // getSoXtSpaceballRCSId()
+

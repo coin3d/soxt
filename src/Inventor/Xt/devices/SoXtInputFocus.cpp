@@ -99,3 +99,11 @@ SoXtInputFocus::translateEvent( // virtual
 } // translateEvent()
 
 // *************************************************************************
+
+// To shut up nagging compilers...
+const char *
+getSoXtInputFocusRCSId(void)
+{
+  return rcsid;
+} // getSoXtInputFocusRCSId()
+

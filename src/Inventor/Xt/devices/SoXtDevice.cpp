@@ -73,3 +73,11 @@ SoXtDevice::setEventPosition(
 } // setEventPosition()
 
 // *************************************************************************
+
+// To shut up nagging compilers...
+const char *
+getSoXtDeviceRCSId(void)
+{
+  return rcsid;
+} // getSoXtDeviceRCSId()
+
