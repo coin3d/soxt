@@ -399,7 +399,7 @@ void
 SoXtFullViewer::setPopupMenuString(
   const char * const title )
 {
-  SOXT_STUB()
+  SOXT_STUB();
 } // setPopupMenuString()
 
 // *************************************************************************
@@ -1402,6 +1402,7 @@ SoXtFullViewer::buildFunctionsSubmenu(
   Widget popup )
 {
   SOXT_STUB();
+  return (Widget) NULL;
 } // buildFunctionsSubmenu()
 
 /*!
@@ -1413,6 +1414,7 @@ SoXtFullViewer::buildDrawStyleSubmenu(
   Widget popup )
 {
   SOXT_STUB();
+  return (Widget) NULL;
 } // buildDrawStyleSubmenu()
 
 // *************************************************************************
