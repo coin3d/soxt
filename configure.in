@@ -38,7 +38,6 @@ VERSION=$SOXT_VERSION
 AM_INIT_AUTOMAKE(libSoXt,$SOXT_VERSION)
 AM_CONFIG_HEADER(config.h)
 
-
 AM_DISABLE_STATIC
 AM_MAINTAINER_MODE
 AC_PROG_LIBTOOL
@@ -63,73 +62,16 @@ if test x"$sim_ac_x11_avail" = xyes; then
 fi
 
 SIM_CHECK_OPENGL( , AC_MSG_ERROR(needs an OpenGL-compatible development system installation))
-dnl SIM_CHECK_INVENTOR( , AC_MSG_ERROR(couldn't compile and link against Open Inventor))
 
-SIM_CHECK_COIN( , AC_MSG_ERROR(couldn't compile and link against Coin))
-SIM_CHECK_MOTIF( , AC_MSG_ERROR(couldn't compile and link against Motif))
+SIM_CHECK_COIN( , AC_MSG_ERROR(couldn't compile and link with Coin))
+LIBS="$LIBS $sim_ac_coin_libs"
 
-dnl ************************************************************************
+SIM_CHECK_MOTIF( , AC_MSG_ERROR(couldn't compile and link with Motif))
 
-AC_CACHE_CHECK([for GL/GLwMDrawA.h], sim_header_GL_GLwMDrawA,
-  [AC_TRY_CPP([#include <GL/GLwMDrawA.h>],
-              sim_header_GL_GLwMDrawA=yes,
-              sim_header_GL_GLwMDrawA=no)])
-
-if test x$sim_header_GL_GLwMDrawA != xyes; then
-  AC_CACHE_CHECK([for X11/GLw/GLwMDrawA.h], sim_header_X11_GLw_GLwMDrawA,
-    [AC_TRY_CPP([#include <X11/GLw/GLwMDrawA.h>],
-                sim_header_X11_GLw_GLwMDrawA=yes,
-                sim_header_X11_GLw_GLwMDrawA=no)])
-  if test x$sim_header_X11_GLw_GLwMDrawA != xyes; then
-    AC_MSG_ERROR([SoXt depends on the glwMDrawingAreaWidgetClass Xt/Motif-extension.])
-  else
-    AC_DEFINE(HAVE_X11_GLW_GLWMDRAWA_H)
-  fi
-fi
-
-if test x$sim_header_X11_GLw_GLwMDrawA = xyes; then
-  INCLUDE_PATH=X11/GLw/GLwMDrawA.h
-else
-  INCLUDE_PATH=GL/GLwMDrawA.h
-fi
-
-AC_MSG_CHECKING([for glwMDrawingAreaWidgetClass in -lMesaGLwM])
-SAVELIBS="$LIBS"
-LIBS="$LIBS -lMesaGLwM"
-AC_TRY_LINK([
-#include <X11/Intrinsic.h>
-#include <$INCLUDE_PATH>
-],[
-  WidgetClass x = glwMDrawingAreaWidgetClass;
-],[
-  COMPONENTLIBS="-lMesaGLwM"
-  AC_MSG_RESULT(yes)
-],[
-  COMPONENTLIBS="no"
-  AC_MSG_RESULT(no)
-])
-LIBS=$SAVELIBS
-
-if test x"$COMPONENTLIBS" = xno; then
-  AC_MSG_CHECKING([for glwMDrawingAreaWidgetClass in -lGLw])
-  SAVELIBS="$LIBS"
-  LIBS="$LIBS -lGLw"
-  AC_TRY_LINK( $INCLUDES,[
-    WidgetClass x = glwMDrawingAreaWidgetClass;
-  ],[
-    COMPONENTLIBS="-lGLw"
-    AC_MSG_RESULT(yes)
-  ],[
-    COMPONENTLIBS="no"
-    AC_MSG_RESULT(no)
-  ])
-  LIBS=$SAVELIBS
-  if test x"$COMPONENTLIBS" = xno; then
-      AC_MSG_ERROR(Could not find a library with glwMDrawingAreaWidgetClass)
-  fi
-fi
+SIM_CHECK_MOTIF_GLW( , AC_MSG_ERROR(couldn't compile and link with the Motif glwMDrawingAreaWidgetClass extension))
 
 CXXFLAGS="$CXXFLAGS -DSOXT_DEBUG=1"
+COMPONENTLIBS=$sim_cv_lib_glw
 
 dnl ************************************************************************
 
@@ -190,6 +132,8 @@ examples/components/walkviewer.cpp
 examples/components/flyviewer.cpp
 ])
 
-echo "Now, run 'make install' to build and install So$GUI."
+echo "
+Now, run 'make install' to build and install So$GUI.
+"
 
 dnl ************************************************************************

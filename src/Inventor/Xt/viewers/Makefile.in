@@ -101,6 +101,7 @@ uGUI = @uGUI@
 
 
 INCLUDES = -I$(top_srcdir)/src -I$(top_builddir)/src
+LIBS = 
 
 noinst_LTLIBRARIES = libSoXtViewers.la
 
@@ -131,7 +132,6 @@ LTLIBRARIES =  $(noinst_LTLIBRARIES)
 DEFS = @DEFS@ -I. -I$(srcdir) -I../../../..
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
-LIBS = @LIBS@
 X_CFLAGS = @X_CFLAGS@
 X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@

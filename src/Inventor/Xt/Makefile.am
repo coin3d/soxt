@@ -1,6 +1,6 @@
 ############################################################################
 
-SUBDIRS = common devices viewers
+SUBDIRS = common devices viewers widgets
 
 ############################################################################
 
@@ -22,7 +22,8 @@ libSoXt_la_SOURCES = \
 libSoXt_la_LIBADD = \
 	common/libSoCommon.la \
 	devices/libSoXtDevices.la \
-	viewers/libSoXtViewers.la
+	viewers/libSoXtViewers.la \
+	widgets/libSoXtWidgets.la
 
 libSoXtincdir = $(includedir)/Inventor/Xt
 

@@ -1,6 +1,7 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
 
-#undef HAVE_X11_GLW_GLWMDRAWA_H
+/* Define this if the GLwMDrawA.h header is located in GL/ */
+#undef HAVE_GL_GLWMDRAWA_H
 
 /* Define if you have the `dnet' library (-ldnet). */
 #undef HAVE_LIBDNET
@@ -22,6 +23,9 @@
 
 /* Define if you have the `socket' library (-lsocket). */
 #undef HAVE_LIBSOCKET
+
+/* Define this if the GLwMDrawA.h header is located in X11/GLw/ */
+#undef HAVE_X11_GLW_GLWMDRAWA_H
 
 /* Name of package */
 #undef PACKAGE

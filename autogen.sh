@@ -77,9 +77,6 @@ echo "Running automake (generating the Makefile.in files)..."
 echo "[ignore any \"directory should not contain '/'\" warning]"
 automake
 
-echo "Running autoconf (generating ./configure and the Makefile files)..."
-autoconf
-
 AMBUGFIXES=`find . -name Makefile.in.diff`
 fixmsg=0
 for bugfix in $AMBUGFIXES; do
@@ -89,6 +86,9 @@ for bugfix in $AMBUGFIXES; do
   fi
   patch --no-backup-if-mismatch -p0 < $bugfix
 done
+
+echo "Running autoconf (generating ./configure)..."
+autoconf
 
 echo "Done: Now run './configure' and 'make install' to build $PROJECT."
 

@@ -102,7 +102,7 @@ uGUI = @uGUI@
 ############################################################################
 
 
-SUBDIRS = common devices viewers
+SUBDIRS = common devices viewers widgets
 
 ############################################################################
 
@@ -125,7 +125,8 @@ libSoXt_la_SOURCES = \
 libSoXt_la_LIBADD = \
 	common/libSoCommon.la \
 	devices/libSoXtDevices.la \
-	viewers/libSoXtViewers.la
+	viewers/libSoXtViewers.la \
+	widgets/libSoXtWidgets.la
 
 
 libSoXtincdir = $(includedir)/Inventor/Xt
@@ -153,7 +154,8 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libSoXt_la_LDFLAGS = 
 libSoXt_la_DEPENDENCIES =  common/libSoCommon.la \
-devices/libSoXtDevices.la viewers/libSoXtViewers.la
+devices/libSoXtDevices.la viewers/libSoXtViewers.la \
+widgets/libSoXtWidgets.la
 am_libSoXt_la_OBJECTS =  SoXt.lo SoXtComponent.lo SoXtGLWidget.lo \
 SoXtRenderArea.lo SoXtRenderAreaExtra.lo
 libSoXt_la_OBJECTS =  $(am_libSoXt_la_OBJECTS)
