@@ -23,7 +23,9 @@ BUILT_SOURCES = \
 	src/Inventor/Xt/viewers/SoXtViewer.h \
 	src/Inventor/Xt/viewers/SoXtViewer.cpp \
 	src/Inventor/Xt/viewers/SoAnyFullViewer.h \
-	src/Inventor/Xt/viewers/SoAnyFullViewer.cpp
+	src/Inventor/Xt/viewers/SoAnyFullViewer.cpp \
+	src/Inventor/Xt/viewers/SoAnyExaminerViewer.h \
+	src/Inventor/Xt/viewers/SoAnyExaminerViewer.cpp
 
 soxt-config: soxt-config.in
 
