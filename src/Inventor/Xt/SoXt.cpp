@@ -982,27 +982,28 @@ SoXt::fallback_resources[] =
 #undef _COMPONENT
 
 #define _COMPONENT "*SoXtLightSliderSet"
-  _COMPONENT	".title:"				"Light Slider Set",
-  _COMPONENT	".module1:"				"LightIntensity",
-  _COMPONENT	".module2:"				"LightColor",
+  _COMPONENT	".title:"				"Light Sliders",
+  _COMPONENT	".sliderset1:"				"LightIntensity",
+  _COMPONENT	".sliderset2:"				"LightColor",
 #undef _COMPONENT
 
 #define _COMPONENT "*SoXtMaterialSliderSet"
-  _COMPONENT	".title:"				"Material Slider Set",
-  _COMPONENT	".module1:"				"AmbientColor",
-  _COMPONENT	".module2:"				"DiffuseColor",
-  _COMPONENT	".module3:"				"SpecularColor",
-  _COMPONENT	".module4:"				"EmissiveColor",
-  _COMPONENT	".module5:"				"Shininess",
-  _COMPONENT	".module6:"				"Transparency",
+  _COMPONENT	".title:"				"Material Sliders",
+  _COMPONENT	".sliderset1:"				"AmbientColor",
+  _COMPONENT	".sliderset2:"				"DiffuseColor",
+  _COMPONENT	".sliderset3:"				"SpecularColor",
+  _COMPONENT	".sliderset4:"				"EmissiveColor",
+  _COMPONENT	".sliderset5:"				"Shininess",
+  _COMPONENT	".sliderset6:"				"Transparency",
 #undef _COMPONENT
 
 #define _COMPONENT "*SoXtTransformSliderSet"
-  _COMPONENT	".title:"				"Transform Slider Set",
-  _COMPONENT	".module1:"				"Translate",
-  _COMPONENT	".module2:"				"Scale",
-  _COMPONENT	".module3:"				"Rotate",
-  _COMPONENT	".module4:"				"Center",
+  _COMPONENT	".title:"				"Transform Sliders",
+  _COMPONENT	".sliderset1:"				"Translations",
+  _COMPONENT	".sliderset2:"				"Scales",
+  _COMPONENT	".sliderset3:"				"Rotations",
+  _COMPONENT	".sliderset4:"				"ScaleOrientation",
+  _COMPONENT	".sliderset5:"				"Center",
 #undef _COMPONENT
 
 #define _COMPONENT "*SoXtMaterialList"
@@ -1012,35 +1013,55 @@ SoXt::fallback_resources[] =
   _COMPONENT	"*title:"				"Print",
 #undef _COMPONENT
 
+// *************************************************************************
+
 #define _COMPONENT "*SoXtAmbientColorSliderModule"
   _COMPONENT	".title:"				"AMBIENT COLOR",
-  _COMPONENT	".slider1Title:"			"Red",
+  _COMPONENT	".slider1Title:"			"Ambient Red",
   _COMPONENT	".slider1Field:"			"ambientColor[0]",
-  _COMPONENT	".slider2Title:"			"Green",
+  _COMPONENT	".slider2Title:"			"Ambient Green",
   _COMPONENT	".slider2Field:"			"ambientColor[1]",
-  _COMPONENT	".slider3Title:"			"Blue",
+  _COMPONENT	".slider3Title:"			"Ambient Blue",
   _COMPONENT	".slider3Field:"			"ambientColor[2]",
 #undef _COMPONENT
 
 #define _COMPONENT "*SoXtCenterSliderModule"
   _COMPONENT	".title:"				"CENTER",
+  _COMPONENT	".slider1Title:"			"X Center",
+  _COMPONENT	".slider1Field:"			"center[0]",
+  _COMPONENT	".slider2Title:"			"Y Center",
+  _COMPONENT	".slider2Field:"			"center[1]",
+  _COMPONENT	".slider3Title:"			"Z Center",
+  _COMPONENT	".slider3Field:"			"center[2]",
 #undef _COMPONENT
 
 #define _COMPONENT "*SoXtDiffuseColorSliderModule"
   _COMPONENT	".title:"				"DIFFUSE COLOR",
+  _COMPONENT	".slider1Title:"			"Diffuse Red",
+  _COMPONENT	".slider1Field:"			"diffuseColor[0]",
+  _COMPONENT	".slider2Title:"			"Diffuse Green",
+  _COMPONENT	".slider2Field:"			"diffuseColor[1]",
+  _COMPONENT	".slider3Title:"			"Diffuse Blue",
+  _COMPONENT	".slider3Field:"			"diffuseColor[2]",
 #undef _COMPONENT
 
 #define _COMPONENT "*SoXtEmissiveColorSliderModule"
   _COMPONENT	".title:"				"EMISSIVE COLOR",
+  _COMPONENT	".slider1Title:"			"Emissive Red",
+  _COMPONENT	".slider1Field:"			"emissiveColor[0]",
+  _COMPONENT	".slider2Title:"			"Emissive Green",
+  _COMPONENT	".slider2Field:"			"emissiveColor[1]",
+  _COMPONENT	".slider3Title:"			"Emissive Blue",
+  _COMPONENT	".slider3Field:"			"emissiveColor[2]",
 #undef _COMPONENT
 
 #define _COMPONENT "*SoXtLightColorSliderModule"
   _COMPONENT	".title:"				"COLOR",
   _COMPONENT	".slider1Title:"			"Red",
   _COMPONENT	".slider1Field:"			"color[0]",
-  _COMPONENT	".slider2Title:"			"Red",
+  _COMPONENT	".slider2Title:"			"Green",
   _COMPONENT	".slider2Field:"			"color[1]",
-  _COMPONENT	".slider3Title:"			"Red",
+  _COMPONENT	".slider3Title:"			"Blue",
   _COMPONENT	".slider3Field:"			"color[2]",
 #undef _COMPONENT
 
@@ -1050,28 +1071,66 @@ SoXt::fallback_resources[] =
   _COMPONENT	".slider1Field:"			"intensity",
 #undef _COMPONENT
 
-#define _COMPONENT "*SoXtRotateSliderModule"
-  _COMPONENT	".title:"				"ROTATION",
+#define _COMPONENT "*SoXtRotationsSliderModule"
+  _COMPONENT	".title:"				"ROTATIONS",
+  _COMPONENT	".slider1Title:"			"X Rotate",
+  _COMPONENT	".slider1Field:"			"rotation[0]",
+  _COMPONENT	".slider2Title:"			"Y Rotate",
+  _COMPONENT	".slider2Field:"			"rotation[1]",
+  _COMPONENT	".slider3Title:"			"Z Rotate",
+  _COMPONENT	".slider3Field:"			"rotation[2]",
 #undef _COMPONENT
 
-#define _COMPONENT "*SoXtScaleSliderModule"
-  _COMPONENT	".title:"				"SCALE",
+#define _COMPONENT "*SoXtScalesSliderModule"
+  _COMPONENT	".title:"				"SCALES",
+  _COMPONENT	".slider1Title:"			"X Scale",
+  _COMPONENT	".slider1Field:"			"scaleFactor[0]",
+  _COMPONENT	".slider2Title:"			"Y Scale",
+  _COMPONENT	".slider2Field:"			"scaleFactor[1]",
+  _COMPONENT	".slider3Title:"			"Z Scale",
+  _COMPONENT	".slider3Field:"			"scaleFactor[2]",
+#undef _COMPONENT
+
+#define _COMPONENT "*SoXtScaleOrientationSliderModule"
+  _COMPONENT	".title:"				"SCALE ORIENTATION",
+  _COMPONENT	".slider1Title:"			"X Rotate",
+  _COMPONENT	".slider1Field:"			"scaleOrientation[0]",
+  _COMPONENT	".slider2Title:"			"Y Rotate",
+  _COMPONENT	".slider2Field:"			"scaleOrientation[1]",
+  _COMPONENT	".slider3Title:"			"Z Rotate",
+  _COMPONENT	".slider3Field:"			"scaleOrientation[2]",
 #undef _COMPONENT
 
 #define _COMPONENT "*SoXtShininessSliderModule"
   _COMPONENT	".title:"				"SHININESS",
+  _COMPONENT	".slider1Title:"			"Shininess",
+  _COMPONENT	".slider1Field:"			"shininess",
 #undef _COMPONENT
 
 #define _COMPONENT "*SoXtSpecularColorSliderModule"
   _COMPONENT	".title:"				"SPECULAR COLOR",
+  _COMPONENT	".slider1Title:"			"Specular Red",
+  _COMPONENT	".slider1Field:"			"specularColor[0]",
+  _COMPONENT	".slider2Title:"			"Specular Green",
+  _COMPONENT	".slider2Field:"			"specularColor[1]",
+  _COMPONENT	".slider3Title:"			"Specular Blue",
+  _COMPONENT	".slider3Field:"			"specularColor[2]",
 #undef _COMPONENT
 
-#define _COMPONENT "*SoXtTranslateSliderModule"
-  _COMPONENT	".title:"				"TRANSLATE",
+#define _COMPONENT "*SoXtTranslationsSliderModule"
+  _COMPONENT	".title:"				"TRANSLATIONS",
+  _COMPONENT	".slider1Title:"			"X Translation",
+  _COMPONENT	".slider1Field:"			"translation[0]",
+  _COMPONENT	".slider2Title:"			"Y Translation",
+  _COMPONENT	".slider2Field:"			"translation[1]",
+  _COMPONENT	".slider3Title:"			"Z Translation",
+  _COMPONENT	".slider3Field:"			"translation[2]",
 #undef _COMPONENT
 
 #define _COMPONENT "*SoXtTransparencySliderModule"
   _COMPONENT	".title:"				"TRANSPARENCY",
+  _COMPONENT	".slider1Title:"			"Transparency",
+  _COMPONENT	".slider1Field:"			"transparency",
 #undef _COMPONENT
 
   NULL
