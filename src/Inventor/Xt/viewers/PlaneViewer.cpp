@@ -339,10 +339,7 @@ SoXtPlaneViewer::createViewerButtons(Widget parent,
 
 // *************************************************************************
 
-/*!
-  This method creates the preferences sheet widgets for the Plane Viewer
-  prefereences window.
-*/
+// Documented in superclass.
 void
 SoXtPlaneViewer::createPrefSheet(void)
 {

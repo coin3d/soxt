@@ -1410,30 +1410,10 @@ SoXtFullViewer::setPrefSheetString(const char * name)
     XtVaSetValues(this->prefshell, XtNtitle, this->prefstring, NULL);
 }
 
-/*!
-  This is a hook for constructing the preferences window in the derived
-  viewer classes.
-
-  Basically, derived classes will do the following in this method:
-
-  \code
-    if (! this->prefshell) {
-      createPrefSheetShellAndForm(this->prefshell, this->prefsheet);
-      createDefaultPrefSheetParts(this->prefparts, this->numprefparts,
-        this->prefsheet);
-      // add parts specific for derived viewer
-    }
-    layoutPartsAndMapPrefSheet(this->prefparts, this->numprefparts,
-      this->prefsheet, this->prefshell);
-  \endcode
-*/
-
+// Documented in common/viewers/SoGuiFullViewer.cpp.in.
 void
 SoXtFullViewer::createPrefSheet(void)
 {
-/*¡
-  Method could be made abstract.?
-*/
 }
 
 /*!
