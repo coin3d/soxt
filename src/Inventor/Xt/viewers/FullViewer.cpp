@@ -1331,18 +1331,6 @@ SoXtFullViewerP::seekbuttonCB(Widget, XtPointer client_data, XtPointer)
   PRIVATE(viewer)->seekbuttonClicked();
 }
 
-void
-SoXtFullViewerP::copyviewSelected(void)
-{
-  PUBLIC(this)->copyView(SbTime::getTimeOfDay());
-}
-
-void
-SoXtFullViewerP::pasteviewSelected(void)
-{
-  PUBLIC(this)->pasteView(SbTime::getTimeOfDay());
-}
-
 // *************************************************************************
 
 void

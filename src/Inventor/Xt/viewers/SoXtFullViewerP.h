@@ -57,8 +57,6 @@ public:
   void selectedViewing(void);
   void selectedDecoration(void);
   void selectedHeadlight(void);
-  void copyviewSelected(void);
-  void pasteviewSelected(void);
 
   static void interactbuttonCB(Widget, XtPointer, XtPointer);
   static void examinebuttonCB(Widget, XtPointer, XtPointer);
