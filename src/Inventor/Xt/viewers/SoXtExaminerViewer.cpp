@@ -136,7 +136,7 @@ SoXtExaminerViewer::processEvent(
   switch ( event->type ) {
 
   case ButtonPress:
-    this->lastmouseposition = norm_mousepos;
+    common->lastmouseposition = norm_mousepos;
     common->lastspinposition = norm_mousepos;
     if ( ((XButtonEvent *) event)->button == Button3 )
       break;
@@ -250,7 +250,7 @@ SoXtExaminerViewer::processEvent(
 
   } // switch ( event )
 
-  this->lastmouseposition = norm_mousepos;
+  common->lastmouseposition = norm_mousepos;
 
   inherited::processEvent( event );
 } // processEvent()
@@ -398,7 +398,7 @@ SoXtExaminerViewer::setMode(
     break;
 
   case DRAGGING:
-    common->spinprojector->project( this->lastmouseposition );
+    common->spinprojector->project( common->lastmouseposition );
     break;
 
   case PANNING:

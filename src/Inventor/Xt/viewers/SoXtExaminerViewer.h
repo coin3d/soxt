@@ -83,8 +83,6 @@ protected:
 private:
   void constructor( SbBool build );
 
-  SbVec2f lastmouseposition;
-
   enum ViewerMode {
     IDLE,
     INTERACT,
