@@ -117,7 +117,13 @@ BUILT_SOURCES = \
 	SoAnyExaminerViewer.h \
 	SoAnyExaminerViewer.cpp \
 	SoAnyPlaneViewer.h \
-	SoAnyPlaneViewer.cpp
+	SoAnyPlaneViewer.cpp \
+	SoAnyConstrainedViewer.h \
+	SoAnyConstrainedViewer.cpp \
+	SoAnyFlyViewer.h \
+	SoAnyFlyViewer.cpp \
+	SoAnyWalkViewer.h \
+	SoAnyWalkViewer.cpp
 
 
 ############################################################################
@@ -132,7 +138,13 @@ libSoXtViewers_la_SOURCES = \
 	SoXtExaminerViewer.cpp \
 	SoXtExaminerViewer.h \
 	SoXtPlaneViewer.cpp \
-	SoXtPlaneViewer.h
+	SoXtPlaneViewer.h \
+	SoXtConstrainedViewer.cpp \
+	SoXtConstrainedViewer.h \
+	SoXtFlyViewer.cpp \
+	SoXtFlyViewer.h \
+	SoXtWalkViewer.cpp \
+	SoXtWalkViewer.h
 
 
 ############################################################################
@@ -143,7 +155,10 @@ libSoXtViewersinc_HEADERS = \
 	$(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtPlaneViewer.h
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtPlaneViewer.h \
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtConstrainedViewer.h \
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFlyViewer.h \
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtWalkViewer.h
 
 subdir = src/Inventor/Xt/viewers
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -162,8 +177,10 @@ X_PRE_LIBS = @X_PRE_LIBS@
 libSoXtViewers_la_LDFLAGS = 
 libSoXtViewers_la_LIBADD = 
 am_libSoXtViewers_la_OBJECTS =  SoXtViewer.lo SoAnyFullViewer.lo \
-SoAnyExaminerViewer.lo SoAnyPlaneViewer.lo SoXtViewerExtra.lo \
-SoXtFullViewer.lo SoXtExaminerViewer.lo SoXtPlaneViewer.lo
+SoAnyExaminerViewer.lo SoAnyPlaneViewer.lo SoAnyConstrainedViewer.lo \
+SoAnyFlyViewer.lo SoAnyWalkViewer.lo SoXtViewerExtra.lo \
+SoXtFullViewer.lo SoXtExaminerViewer.lo SoXtPlaneViewer.lo \
+SoXtConstrainedViewer.lo SoXtFlyViewer.lo SoXtWalkViewer.lo
 libSoXtViewers_la_OBJECTS =  $(am_libSoXtViewers_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -185,11 +202,14 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
 GZIP_ENV = --best
 depcomp = $(SHELL) $(top_srcdir)/depcomp
-DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAnyExaminerViewer.Plo \
+DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAnyConstrainedViewer.Plo \
+$(DEPDIR)/SoAnyExaminerViewer.Plo $(DEPDIR)/SoAnyFlyViewer.Plo \
 $(DEPDIR)/SoAnyFullViewer.Plo $(DEPDIR)/SoAnyPlaneViewer.Plo \
-$(DEPDIR)/SoXtExaminerViewer.Plo $(DEPDIR)/SoXtFullViewer.Plo \
-$(DEPDIR)/SoXtPlaneViewer.Plo $(DEPDIR)/SoXtViewer.Plo \
-$(DEPDIR)/SoXtViewerExtra.Plo
+$(DEPDIR)/SoAnyWalkViewer.Plo $(DEPDIR)/SoXtConstrainedViewer.Plo \
+$(DEPDIR)/SoXtExaminerViewer.Plo $(DEPDIR)/SoXtFlyViewer.Plo \
+$(DEPDIR)/SoXtFullViewer.Plo $(DEPDIR)/SoXtPlaneViewer.Plo \
+$(DEPDIR)/SoXtViewer.Plo $(DEPDIR)/SoXtViewerExtra.Plo \
+$(DEPDIR)/SoXtWalkViewer.Plo
 SOURCES = $(libSoXtViewers_la_SOURCES)
 OBJECTS = $(am_libSoXtViewers_la_OBJECTS)
 
@@ -285,14 +305,20 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 
+@AMDEP@include $(DEPDIR)/SoAnyConstrainedViewer.Plo
 @AMDEP@include $(DEPDIR)/SoAnyExaminerViewer.Plo
+@AMDEP@include $(DEPDIR)/SoAnyFlyViewer.Plo
 @AMDEP@include $(DEPDIR)/SoAnyFullViewer.Plo
 @AMDEP@include $(DEPDIR)/SoAnyPlaneViewer.Plo
+@AMDEP@include $(DEPDIR)/SoAnyWalkViewer.Plo
+@AMDEP@include $(DEPDIR)/SoXtConstrainedViewer.Plo
 @AMDEP@include $(DEPDIR)/SoXtExaminerViewer.Plo
+@AMDEP@include $(DEPDIR)/SoXtFlyViewer.Plo
 @AMDEP@include $(DEPDIR)/SoXtFullViewer.Plo
 @AMDEP@include $(DEPDIR)/SoXtPlaneViewer.Plo
 @AMDEP@include $(DEPDIR)/SoXtViewer.Plo
 @AMDEP@include $(DEPDIR)/SoXtViewerExtra.Plo
+@AMDEP@include $(DEPDIR)/SoXtWalkViewer.Plo
 
 mostlyclean-depend:
 
@@ -439,6 +465,36 @@ SoAnyPlaneViewer.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyPlaneViewer.cpp.in
 	@( cd $(top_builddir); \
 	   $(MAKE) src/Inventor/Xt/viewers/SoAnyPlaneViewer.cpp )
+
+SoAnyConstrainedViewer.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyConstrainedViewer.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyConstrainedViewer.h )
+
+SoAnyConstrainedViewer.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyConstrainedViewer.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyConstrainedViewer.cpp )
+
+SoAnyFlyViewer.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyFlyViewer.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyFlyViewer.h )
+
+SoAnyFlyViewer.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyFlyViewer.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyFlyViewer.cpp )
+
+SoAnyWalkViewer.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyWalkViewer.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyWalkViewer.h )
+
+SoAnyWalkViewer.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyWalkViewer.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyWalkViewer.cpp )
 
 install-libSoXtViewersincHEADERS: $(libSoXtViewersinc_HEADERS)
 	@$(NORMAL_INSTALL)

@@ -36,6 +36,12 @@ BUILT_SOURCES = \
 	src/Inventor/Xt/viewers/SoAnyExaminerViewer.cpp \
 	src/Inventor/Xt/viewers/SoAnyPlaneViewer.h \
 	src/Inventor/Xt/viewers/SoAnyPlaneViewer.cpp \
+	src/Inventor/Xt/viewers/SoAnyConstrainedViewer.h \
+	src/Inventor/Xt/viewers/SoAnyConstrainedViewer.cpp \
+	src/Inventor/Xt/viewers/SoAnyFlyViewer.h \
+	src/Inventor/Xt/viewers/SoAnyFlyViewer.cpp \
+	src/Inventor/Xt/viewers/SoAnyWalkViewer.h \
+	src/Inventor/Xt/viewers/SoAnyWalkViewer.cpp \
 	src/Inventor/Xt/widgets/SoAnyThumbWheel.h \
 	src/Inventor/Xt/widgets/SoAnyThumbWheel.cpp \
 	src/Inventor/Xt/widgets/SoAnyPopupMenu.h \
@@ -117,6 +123,42 @@ src/Inventor/Xt/viewers/SoAnyPlaneViewer.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyPlaneViewer.cpp.in
 	@CONFIG_HEADERS= \
 	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyPlaneViewer.cpp.in \
+	$(top_builddir)/config.status
+
+src/Inventor/Xt/viewers/SoAnyConstrainedViewer.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyConstrainedViewer.h.in
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyConstrainedViewer.h.in \
+	./config.status
+
+src/Inventor/Xt/viewers/SoAnyConstrainedViewer.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyConstrainedViewer.cpp.in
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyConstrainedViewer.cpp.in \
+	$(top_builddir)/config.status
+
+src/Inventor/Xt/viewers/SoAnyFlyViewer.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyFlyViewer.h.in
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyFlyViewer.h.in \
+	./config.status
+
+src/Inventor/Xt/viewers/SoAnyFlyViewer.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyFlyViewer.cpp.in
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyFlyViewer.cpp.in \
+	$(top_builddir)/config.status
+
+src/Inventor/Xt/viewers/SoAnyWalkViewer.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyWalkViewer.h.in
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyWalkViewer.h.in \
+	./config.status
+
+src/Inventor/Xt/viewers/SoAnyWalkViewer.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyWalkViewer.cpp.in
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyWalkViewer.cpp.in \
 	$(top_builddir)/config.status
 
 src/Inventor/Xt/widgets/SoAnyThumbWheel.h: \

@@ -14,7 +14,13 @@ BUILT_SOURCES = \
 	SoAnyExaminerViewer.h \
 	SoAnyExaminerViewer.cpp \
 	SoAnyPlaneViewer.h \
-	SoAnyPlaneViewer.cpp
+	SoAnyPlaneViewer.cpp \
+	SoAnyConstrainedViewer.h \
+	SoAnyConstrainedViewer.cpp \
+	SoAnyFlyViewer.h \
+	SoAnyFlyViewer.cpp \
+	SoAnyWalkViewer.h \
+	SoAnyWalkViewer.cpp
 
 ############################################################################
 ##
@@ -41,7 +47,13 @@ libSoXtViewers_la_SOURCES = \
 	SoXtExaminerViewer.cpp \
 	SoXtExaminerViewer.h \
 	SoXtPlaneViewer.cpp \
-	SoXtPlaneViewer.h
+	SoXtPlaneViewer.h \
+	SoXtConstrainedViewer.cpp \
+	SoXtConstrainedViewer.h \
+	SoXtFlyViewer.cpp \
+	SoXtFlyViewer.h \
+	SoXtWalkViewer.cpp \
+	SoXtWalkViewer.h
 
 ############################################################################
 ##
@@ -80,6 +92,36 @@ SoAnyPlaneViewer.cpp: \
 	@( cd $(top_builddir); \
 	   $(MAKE) src/Inventor/Xt/viewers/SoAnyPlaneViewer.cpp )
 
+SoAnyConstrainedViewer.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyConstrainedViewer.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyConstrainedViewer.h )
+
+SoAnyConstrainedViewer.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyConstrainedViewer.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyConstrainedViewer.cpp )
+
+SoAnyFlyViewer.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyFlyViewer.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyFlyViewer.h )
+
+SoAnyFlyViewer.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyFlyViewer.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyFlyViewer.cpp )
+
+SoAnyWalkViewer.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyWalkViewer.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyWalkViewer.h )
+
+SoAnyWalkViewer.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyWalkViewer.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyWalkViewer.cpp )
+
 ############################################################################
 ##
 
@@ -89,7 +131,10 @@ libSoXtViewersinc_HEADERS = \
 	$(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtPlaneViewer.h
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtPlaneViewer.h \
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtConstrainedViewer.h \
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFlyViewer.h \
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtWalkViewer.h
 
 install-libSoXtViewersincHEADERS: $(libSoXtViewersinc_HEADERS)
 	@$(NORMAL_INSTALL)
