@@ -34,7 +34,8 @@ libSoXtWidgets_la_SOURCES = \
 	SoXtSlider.cpp
 
 nodist_libSoXtWidgets_la_SOURCES = \
-	$(BUILT_SOURCES)
+	$(SoGui_src_Inventor_Gui_widgets_BuiltFiles) \
+	$(SoGui_src_Inventor_Gui_widgets_BuiltMetaFiles)
 
 ############################################################################
 

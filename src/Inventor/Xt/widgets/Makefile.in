@@ -398,7 +398,8 @@ libSoXtWidgets_la_SOURCES = \
 
 
 nodist_libSoXtWidgets_la_SOURCES = \
-	$(BUILT_SOURCES)
+	$(SoGui_src_Inventor_Gui_widgets_BuiltFiles) \
+	$(SoGui_src_Inventor_Gui_widgets_BuiltMetaFiles)
 
 
 
@@ -421,7 +422,13 @@ libSoXtWidgets_la_LDFLAGS =
 libSoXtWidgets_la_LIBADD =
 am_libSoXtWidgets_la_OBJECTS = SoXtGLArea.lo SoXtPopupMenu.lo \
 	SoXtThumbWheel.lo SoXtSlider.lo
-nodist_libSoXtWidgets_la_OBJECTS =
+@BUILD_METAFILES_TRUE@nodist_libSoXtWidgets_la_OBJECTS = \
+@BUILD_METAFILES_TRUE@	SoAnyThumbWheel.lo SoAnyPopupMenu.lo \
+@BUILD_METAFILES_TRUE@	@meta_prefix@So@Gui@PopupMenu.lo \
+@BUILD_METAFILES_TRUE@	@meta_prefix@So@Gui@GLArea.lo \
+@BUILD_METAFILES_TRUE@	@meta_prefix@So@Gui@ThumbWheel.lo
+@BUILD_METAFILES_FALSE@nodist_libSoXtWidgets_la_OBJECTS = \
+@BUILD_METAFILES_FALSE@	SoAnyThumbWheel.lo SoAnyPopupMenu.lo
 libSoXtWidgets_la_OBJECTS = $(am_libSoXtWidgets_la_OBJECTS) \
 	$(nodist_libSoXtWidgets_la_OBJECTS)
 
@@ -430,7 +437,12 @@ DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)/src
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/SoXtGLArea.Plo \
+@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/@meta_prefix@So@Gui@GLArea.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/@meta_prefix@So@Gui@PopupMenu.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/@meta_prefix@So@Gui@ThumbWheel.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoAnyPopupMenu.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoAnyThumbWheel.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoXtGLArea.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoXtPopupMenu.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoXtSlider.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoXtThumbWheel.Plo
@@ -481,6 +493,16 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
+SoAnyThumbWheel.lo: \
+	$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp
+SoAnyPopupMenu.lo: \
+	$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp
+@meta_prefix@So@Gui@PopupMenu.lo: \
+	$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@PopupMenu.cpp
+@meta_prefix@So@Gui@GLArea.lo: \
+	$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@GLArea.cpp
+@meta_prefix@So@Gui@ThumbWheel.lo: \
+	$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@ThumbWheel.cpp
 libSoXtWidgets.la: $(libSoXtWidgets_la_OBJECTS) $(libSoXtWidgets_la_DEPENDENCIES) 
 	$(CXXLINK)  $(libSoXtWidgets_la_LDFLAGS) $(libSoXtWidgets_la_OBJECTS) $(libSoXtWidgets_la_LIBADD) $(LIBS)
 
@@ -490,6 +512,11 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/@meta_prefix@So@Gui@GLArea.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/@meta_prefix@So@Gui@PopupMenu.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/@meta_prefix@So@Gui@ThumbWheel.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAnyPopupMenu.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAnyThumbWheel.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtGLArea.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtPopupMenu.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtSlider.Plo@am__quote@
@@ -515,6 +542,96 @@ distclean-depend:
 @AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(LTCXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
+
+SoAnyThumbWheel.o: $(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp' object='SoAnyThumbWheel.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/SoAnyThumbWheel.Po' tmpdepfile='$(DEPDIR)/SoAnyThumbWheel.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SoAnyThumbWheel.o `test -f $(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp
+
+SoAnyThumbWheel.obj: $(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp' object='SoAnyThumbWheel.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/SoAnyThumbWheel.Po' tmpdepfile='$(DEPDIR)/SoAnyThumbWheel.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SoAnyThumbWheel.obj `cygpath -w $(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp`
+
+SoAnyThumbWheel.lo: $(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp' object='SoAnyThumbWheel.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/SoAnyThumbWheel.Plo' tmpdepfile='$(DEPDIR)/SoAnyThumbWheel.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SoAnyThumbWheel.lo `test -f $(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp
+
+SoAnyPopupMenu.o: $(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp' object='SoAnyPopupMenu.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/SoAnyPopupMenu.Po' tmpdepfile='$(DEPDIR)/SoAnyPopupMenu.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SoAnyPopupMenu.o `test -f $(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp
+
+SoAnyPopupMenu.obj: $(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp' object='SoAnyPopupMenu.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/SoAnyPopupMenu.Po' tmpdepfile='$(DEPDIR)/SoAnyPopupMenu.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SoAnyPopupMenu.obj `cygpath -w $(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp`
+
+SoAnyPopupMenu.lo: $(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp' object='SoAnyPopupMenu.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/SoAnyPopupMenu.Plo' tmpdepfile='$(DEPDIR)/SoAnyPopupMenu.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SoAnyPopupMenu.lo `test -f $(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp
+
+@meta_prefix@So@Gui@PopupMenu.o: $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@PopupMenu.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@PopupMenu.cpp' object='@meta_prefix@So@Gui@PopupMenu.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/@meta_prefix@So@Gui@PopupMenu.Po' tmpdepfile='$(DEPDIR)/@meta_prefix@So@Gui@PopupMenu.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o @meta_prefix@So@Gui@PopupMenu.o `test -f $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@PopupMenu.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@PopupMenu.cpp
+
+@meta_prefix@So@Gui@PopupMenu.obj: $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@PopupMenu.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@PopupMenu.cpp' object='@meta_prefix@So@Gui@PopupMenu.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/@meta_prefix@So@Gui@PopupMenu.Po' tmpdepfile='$(DEPDIR)/@meta_prefix@So@Gui@PopupMenu.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o @meta_prefix@So@Gui@PopupMenu.obj `cygpath -w $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@PopupMenu.cpp`
+
+@meta_prefix@So@Gui@PopupMenu.lo: $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@PopupMenu.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@PopupMenu.cpp' object='@meta_prefix@So@Gui@PopupMenu.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/@meta_prefix@So@Gui@PopupMenu.Plo' tmpdepfile='$(DEPDIR)/@meta_prefix@So@Gui@PopupMenu.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o @meta_prefix@So@Gui@PopupMenu.lo `test -f $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@PopupMenu.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@PopupMenu.cpp
+
+@meta_prefix@So@Gui@GLArea.o: $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@GLArea.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@GLArea.cpp' object='@meta_prefix@So@Gui@GLArea.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/@meta_prefix@So@Gui@GLArea.Po' tmpdepfile='$(DEPDIR)/@meta_prefix@So@Gui@GLArea.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o @meta_prefix@So@Gui@GLArea.o `test -f $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@GLArea.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@GLArea.cpp
+
+@meta_prefix@So@Gui@GLArea.obj: $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@GLArea.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@GLArea.cpp' object='@meta_prefix@So@Gui@GLArea.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/@meta_prefix@So@Gui@GLArea.Po' tmpdepfile='$(DEPDIR)/@meta_prefix@So@Gui@GLArea.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o @meta_prefix@So@Gui@GLArea.obj `cygpath -w $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@GLArea.cpp`
+
+@meta_prefix@So@Gui@GLArea.lo: $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@GLArea.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@GLArea.cpp' object='@meta_prefix@So@Gui@GLArea.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/@meta_prefix@So@Gui@GLArea.Plo' tmpdepfile='$(DEPDIR)/@meta_prefix@So@Gui@GLArea.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o @meta_prefix@So@Gui@GLArea.lo `test -f $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@GLArea.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@GLArea.cpp
+
+@meta_prefix@So@Gui@ThumbWheel.o: $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@ThumbWheel.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@ThumbWheel.cpp' object='@meta_prefix@So@Gui@ThumbWheel.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/@meta_prefix@So@Gui@ThumbWheel.Po' tmpdepfile='$(DEPDIR)/@meta_prefix@So@Gui@ThumbWheel.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o @meta_prefix@So@Gui@ThumbWheel.o `test -f $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@ThumbWheel.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@ThumbWheel.cpp
+
+@meta_prefix@So@Gui@ThumbWheel.obj: $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@ThumbWheel.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@ThumbWheel.cpp' object='@meta_prefix@So@Gui@ThumbWheel.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/@meta_prefix@So@Gui@ThumbWheel.Po' tmpdepfile='$(DEPDIR)/@meta_prefix@So@Gui@ThumbWheel.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o @meta_prefix@So@Gui@ThumbWheel.obj `cygpath -w $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@ThumbWheel.cpp`
+
+@meta_prefix@So@Gui@ThumbWheel.lo: $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@ThumbWheel.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@ThumbWheel.cpp' object='@meta_prefix@So@Gui@ThumbWheel.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/@meta_prefix@So@Gui@ThumbWheel.Plo' tmpdepfile='$(DEPDIR)/@meta_prefix@So@Gui@ThumbWheel.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o @meta_prefix@So@Gui@ThumbWheel.lo `test -f $(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@ThumbWheel.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@ThumbWheel.cpp
 CXXDEPMODE = @CXXDEPMODE@
 uninstall-info-am:
 install-SoXtWidgetsincHEADERS: $(SoXtWidgetsinc_HEADERS)
