@@ -318,7 +318,7 @@ SoXtFullViewer::~SoXtFullViewer( // protected
 
 // *************************************************************************
 
-static const int SOXT_VIEWER_MIN_HEIGHT_BASE = 30 + 90 + 8;
+static const int SOXT_VIEWER_MIN_HEIGHT_BASE = 30 + /* 90 */ 122 + 8;
 static const int SOXT_VIEWER_MIN_WIDTH = 300;
 
 /*!
@@ -561,7 +561,7 @@ SoXtFullViewer::buildWidget( // protected
     Widget shell = this->getShellWidget();
     if ( shell != NULL ) {
       Dimension minheight =
-        30 + 90 + 30 * this->viewerButtonWidgets->getLength() + 8;
+        30 + 122 + 30 * this->viewerButtonWidgets->getLength() + 8;
       Dimension width, height;
       XtVaGetValues( shell,
         XmNwidth, &width,
@@ -656,7 +656,7 @@ SoXtFullViewer::buildLeftTrim( // virtual
     XmNrightOffset, 2,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNbottomOffset, 2,
-    XmNheight, 90,
+    XmNheight, 122,
     XmNorientation, XmVERTICAL,
     XmNshadowType, XmSHADOW_OUT,
     XmNhighlightThickness, 0,
@@ -710,7 +710,7 @@ SoXtFullViewer::buildRightTrim( // virtual
     XmNrightOffset, 2,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNbottomOffset, 2,
-    XmNheight, 90,
+    XmNheight, 122,
     XmNorientation, XmVERTICAL,
     XmNshadowType, XmSHADOW_OUT,
     XmNhighlightThickness, 0,
@@ -783,7 +783,7 @@ SoXtFullViewer::buildBottomTrim( // virtual
     XmNtopOffset, 2,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNbottomOffset, 2,
-    XmNwidth, 90,
+    XmNwidth, 122,
     NULL );
 
   XtAddCallback( this->bottomWheel,
