@@ -41,7 +41,7 @@ if test "$1" = "--clean"; then
 	stamp-h*
   find . -name Makefile.in -print | \
         egrep -v '^\./(examples|ivexamples)/' | xargs rm
-  exit
+  exit 0
 elif test "$1" = "--add"; then
   AUTOMAKE_ADD="--add-missing --gnu --copy"
 fi

@@ -119,7 +119,6 @@ libSoXtincdir = $(includedir)/Inventor/Xt
 
 libSoXtinc_HEADERS = \
 	SoXt.h \
-	SoXtBasic.h \
 	SoXtClipboard.h \
 	SoXtComponent.h \
 	SoXtCursors.h \

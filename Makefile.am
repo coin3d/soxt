@@ -25,7 +25,6 @@ SUBDIRS = . data src/Inventor/Xt $(TESTDIR) $(EXAMPLEDIR) $(IVEXAMPLEDIR)
 SUFFIXES = .h .cpp .in .lo .o
 
 bin_SCRIPTS = soxt-config
-soxt-config: $(top_srcdir)/soxt-config.in
 
 BUILT_SOURCES = \
 	soxtdefs.h \
