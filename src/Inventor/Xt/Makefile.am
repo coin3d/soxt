@@ -70,8 +70,10 @@ libSoXtincdir = $(includedir)/Inventor/Xt
 
 libSoXtinc_HEADERS = \
 	SoXt.h \
+	SoXtClipboard.h \
 	SoXtComponent.h \
 	SoXtGLWidget.h \
+	SoXtResource.h \
 	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.h
 
 install-libSoXtincHEADERS: $(libSoXtinc_HEADERS)
