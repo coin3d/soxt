@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <Inventor/Xt/SoXtCursors.h>
 
@@ -26,3 +28,8 @@ static const char rcsid[] =
 
 
 // *************************************************************************
+
+#if SOXT_DEBUG
+static const char * getSoXtCursorsRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
+
