@@ -415,20 +415,21 @@ SoXtFullViewer::buildBottomTrim( // virtual
       XmNtopOffset, -30,
       NULL );
 
-  XmString labelstring =
-    SoXt::encodeString( this->wheelstrings[LEFTDECORATION].getString() );
+  const char * string;
+
+  string = this->wheelstrings[LEFTDECORATION].getString();
   this->wheellabels[LEFTDECORATION] = XtVaCreateManagedWidget( "Roty",
     xmLabelWidgetClass, trim,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNleftOffset, 5,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      string, strlen(string) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
-  labelstring =
-    SoXt::encodeString( this->wheelstrings[BOTTOMDECORATION].getString() );
+  string = this->wheelstrings[BOTTOMDECORATION].getString();
   this->wheellabels[BOTTOMDECORATION] = XtVaCreateManagedWidget( "Rotx",
     xmLabelWidgetClass, trim,
     XmNleftAttachment, XmATTACH_WIDGET,
@@ -436,9 +437,10 @@ SoXtFullViewer::buildBottomTrim( // virtual
     XmNtopAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNleftOffset, 5,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      string, strlen(string) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   // add bottom thumb wheel
   this->wheels[BOTTOMDECORATION] = XtVaCreateManagedWidget( "BottomWheel",
@@ -465,8 +467,7 @@ SoXtFullViewer::buildBottomTrim( // virtual
   XtAddCallback( this->wheels[BOTTOMDECORATION],
     XmNvalueChangedCallback, SoXtFullViewer::bottomWheelMotionCB, this );
 
-  labelstring =
-    SoXt::encodeString( this->wheelstrings[RIGHTDECORATION].getString() );
+  string = this->wheelstrings[RIGHTDECORATION].getString();
   this->wheellabels[RIGHTDECORATION] =
     XtVaCreateManagedWidget( "rightwheellabel",
     xmLabelWidgetClass, trim,
@@ -474,9 +475,10 @@ SoXtFullViewer::buildBottomTrim( // virtual
     XmNbottomAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_FORM,
     XmNrightOffset, 5,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      string, strlen(string) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   return trim;
 } // buildBottomTrim()
