@@ -591,10 +591,10 @@ SoXtGLWidget::glReshape( // virtual
   int height )
 {
   this->sizeChanged( SbVec2s( width, height ) );
-#if SOXT_DEBUG
+#if 0 // SOXT_DEBUG
   SoDebugError::postInfo( "SoXtGLWidget::glReshape",
       "new size: %dx%d", width, height );
-#endif // SOXT_DEBUG
+#endif // 0 was SOXT_DEBUG
 } // glReshape()
 
 /*!
