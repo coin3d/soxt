@@ -101,7 +101,7 @@ dnl * The ld tests generates an a.out file that isn't removed afterwards,
 dnl * which is very annoying for a bloke like me, so we remove it manually...
 rm -f a.out
 
-SIM_RTTI_SUPPORT
+SIM_AC_RTTI_SUPPORT
 SIM_EXCEPTION_HANDLING
 SIM_AC_CHECK_VAR_FUNCTIONNAME
 
