@@ -1,6 +1,17 @@
+=====================================================================
+NOTE: see also src/Inventor/Xt/common/BUGS.txt.
+=====================================================================
 This is a list of issues that needs to be investigated and fixed.  The
 number is just the chronologic numeric id, and has no bearing on what
 priority the item has.
+=====================================================================
+
+000 Tooltips on viewer buttons.
+
+    The functionality of the different viewer pushbuttons is not
+    entirely obvious, so we should add tooltips on the buttons.
+
+    20030114 mortene.
 
 ========================================================================
 
@@ -141,5 +152,97 @@ priority the item has.
     is non-standard with the initial window attributes.
 
     Reported by Lars J. Aas
+
+========================================================================
+
+016 Crash with embedded SoXtExaminerViewer.
+
+    Reported by Kai Benndorf on coin-discuss:
+
+        i'm trying to port an application from SGI/TGS Inventor to
+        Coin using SoXt under Linux. There is a SoXtExaminerViewer
+        embedded in an wxWindows Window. The way it was done works
+        good with SGI/TGS SoXt, but not with Coins SoXt (The
+        application crashes on creating the pixmaps for the viewer
+        buttons, embedding of SoXtRenderArea works ok).
+
+        [...]
+
+        i've looked into the SoXt library myself, but don't found
+        anything wrong. So i tried to reproduce the error in a small
+        Motif (not wxWindows) example. The results is the appended
+        example program. It crashes at the same place as my
+        application. It works, if i use a SoXtRenderArea instead of
+        the SoXtExaminerViewer or build the SoXtExaminerViewer non
+        embedded.
+
+    Program to reproduce problem:
+
+    ------8<---- [snip] -----------8<---- [snip] -----------8<---
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    
+    #include <X11/Intrinsic.h>
+    #include <Xm/Xm.h>
+    #include <Xm/Form.h>
+    
+    #include <Inventor/Xt/SoXt.h>
+    #include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
+    
+    void
+    main ( int argc , char **argv )
+    {
+      Widget rootWidget;
+      XtToolkitInitialize();
+      XtAppContext appContext = XtCreateApplicationContext();
+      Display* display = XtOpenDisplay( appContext, NULL, NULL, "Gradian", NULL, 0, 
+    			   &argc, argv );
+    
+      rootWidget = XtAppCreateShell( NULL, "Gradian", applicationShellWidgetClass,
+    		    display, NULL, 0 );
+    
+      SoXt::init( rootWidget );
+    
+      Widget theMainForm = XtCreateWidget( "visMainForm" , xmFormWidgetClass ,
+    				     rootWidget , NULL , 0 );
+    
+      // The embedded viewer don't work
+      SoXtExaminerViewer *theViewer = new SoXtExaminerViewer( theMainForm ,
+               "examinerArea" , true , SoXtFullViewer::BUILD_ALL ,
+               SoXtViewer::EDITOR );
+    
+      // a embedded SoXtRenderArea works
+    //   SoXtRenderArea *theViewer = new SoXtRenderArea( theMainForm ,
+    //       "examinerArea" , true  );
+    
+      // and a non ebedded SoXtExaminerViewer works
+    //   SoXtExaminerViewer *theViewer = new SoXtExaminerViewer( NULL ,
+    //            "examinerArea" , true , SoXtFullViewer::BUILD_ALL ,
+    //            SoXtViewer::EDITOR );
+    
+    
+      Widget viewerWidget = theViewer->getWidget();
+      
+      Arg args[ 6 ];
+      int n = 0;
+      XtSetArg( args[n] , XmNtopAttachment , XmATTACH_FORM ); n++;
+      XtSetArg( args[n] , XmNleftAttachment , XmATTACH_FORM ); n++;
+      XtSetArg( args[n] , XmNrightAttachment , XmATTACH_FORM ); n++;
+      XtSetArg( args[n] , XmNbottomAttachment , XmATTACH_FORM ); n++;
+      XtSetValues( viewerWidget , args , n );
+    
+      theViewer->show();
+      SoXt::show( theMainForm );
+      SoXt::show( rootWidget );
+    
+    
+      XtRealizeWidget( rootWidget );
+      SoXt::mainLoop();
+    
+    }
+    ------8<---- [snip] -----------8<---- [snip] -----------8<---
+
+    20030217 mortene.
 
 ========================================================================
