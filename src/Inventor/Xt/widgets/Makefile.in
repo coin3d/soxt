@@ -10,11 +10,8 @@
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
 
-SHELL = @SHELL@
-
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
-VPATH = @srcdir@
 prefix = @prefix@
 exec_prefix = @exec_prefix@
 
@@ -98,19 +95,37 @@ lGUI = @lGUI@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 uGUI = @uGUI@
 
+############################################################################
 
-INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
-LIBS = 
 
 noinst_LTLIBRARIES = libSoXtWidgets.la
 
-libSoXtWidgets_la_SOURCES = \
-	SoXtThumbWheel.cpp \
-	SoXtThumbWheelP.h \
-	$(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp \
-	$(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.h \
-	SoXtThumbWheel.h
+INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
+LIBS = 
+VPATH = .:@srcdir@
+SHELL = /bin/sh
 
+BUILT_SOURCES = \
+	SoAnyPopupMenu.h \
+	SoAnyPopupMenu.cpp \
+	SoAnyThumbWheel.h \
+	SoAnyThumbWheel.cpp
+
+
+############################################################################
+
+libSoXtWidgetsVPATH = . $(srcdir)
+
+libSoXtWidgets_la_SOURCES = \
+	$(BUILT_SOURCES) \
+	SoXtPopupMenu.h \
+	SoXtPopupMenu.cpp \
+	SoXtThumbWheel.h \
+	SoXtThumbWheelP.h \
+	SoXtThumbWheel.cpp
+
+
+############################################################################
 
 libSoXtWidgetsincdir = $(includedir)/Inventor/Xt/widgets
 
@@ -134,7 +149,8 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libSoXtWidgets_la_LDFLAGS = 
 libSoXtWidgets_la_LIBADD = 
-am_libSoXtWidgets_la_OBJECTS =  SoXtThumbWheel.lo ThumbWheel.lo
+am_libSoXtWidgets_la_OBJECTS =  SoAnyPopupMenu.lo SoAnyThumbWheel.lo \
+SoXtPopupMenu.lo SoXtThumbWheel.lo
 libSoXtWidgets_la_OBJECTS =  $(am_libSoXtWidgets_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -156,8 +172,9 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
 GZIP_ENV = --best
 depcomp = $(SHELL) $(top_srcdir)/depcomp
-DEP_FILES =  @AMDEP@ $(DEPDIR)/SoXtThumbWheel.Plo \
-$(DEPDIR)/ThumbWheel.Plo
+DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAnyPopupMenu.Plo \
+$(DEPDIR)/SoAnyThumbWheel.Plo $(DEPDIR)/SoXtPopupMenu.Plo \
+$(DEPDIR)/SoXtThumbWheel.Plo
 SOURCES = $(libSoXtWidgets_la_SOURCES)
 OBJECTS = $(am_libSoXtWidgets_la_OBJECTS)
 
@@ -200,7 +217,6 @@ clean-libtool:
 distclean-libtool:
 
 maintainer-clean-libtool:
-ThumbWheel.lo: $(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp
 
 libSoXtWidgets.la: $(libSoXtWidgets_la_OBJECTS) $(libSoXtWidgets_la_DEPENDENCIES)
 	$(CXXLINK)  $(libSoXtWidgets_la_LDFLAGS) $(libSoXtWidgets_la_OBJECTS) $(libSoXtWidgets_la_LIBADD) $(LIBS)
@@ -252,8 +268,10 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 
+@AMDEP@include $(DEPDIR)/SoAnyPopupMenu.Plo
+@AMDEP@include $(DEPDIR)/SoAnyThumbWheel.Plo
+@AMDEP@include $(DEPDIR)/SoXtPopupMenu.Plo
 @AMDEP@include $(DEPDIR)/SoXtThumbWheel.Plo
-@AMDEP@include $(DEPDIR)/ThumbWheel.Plo
 
 mostlyclean-depend:
 
@@ -271,12 +289,6 @@ maintainer-clean-depend:
 @AMDEP@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(CXXCOMPILE) -c -o $@ $<
-
-.cpp.lo:
-@AMDEP@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
-@AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(LTCXXCOMPILE) -c -o $@ $<
 
 info-am:
 info: info-am
@@ -315,6 +327,7 @@ distclean-generic:
 
 maintainer-clean-generic:
 	-rm -f Makefile.in
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 mostlyclean-am:  mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
 		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
 		mostlyclean-generic
@@ -358,17 +371,35 @@ distclean-generic clean-generic maintainer-clean-generic clean \
 mostlyclean distclean maintainer-clean
 
 
-############################################################################
-
-ThumbWheel.lo: $(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp
-	source='$(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp' \
-	object='$@' libtool=yes \
+.cpp.lo:
+	@( source='$<'; \
+	for dir in $(libSoXtWidgetsVPATH); do \
+	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
+	done; \
+	eval "$(CXXDEPMODE)"; \
+	: ${depmod=none}; \
+	source="$$source" \
+	object='$@' libtool=no \
 	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
-	$(CXXDEPMODE) $(depcomp) \
-	$(LTCXXCOMPILE) -c -o $@ \
-	$(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp
+	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
 
 ############################################################################
+
+SoAnyPopupMenu.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyPopupMenu.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/widgets/SoAnyPopupMenu.h )
+
+SoAnyPopupMenu.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyPopupMenu.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/widgets/SoAnyPopupMenu.cpp )
+
+SoAnyThumbWheel.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/widgets/SoAnyThumbWheel.h )
+
+SoAnyThumbWheel.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/widgets/SoAnyThumbWheel.cpp )
 
 install-libSoXtWidgetsincHEADERS: $(libSoXtWidgetsinc_HEADERS)
 	@$(NORMAL_INSTALL)

@@ -1,33 +1,69 @@
-
-INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
-LIBS =
+############################################################################
+##
 
 noinst_LTLIBRARIES = libSoXtWidgets.la
 
+INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
+LIBS =
+VPATH = .:@srcdir@
+SHELL = /bin/sh
+
+BUILT_SOURCES = \
+	SoAnyPopupMenu.h \
+	SoAnyPopupMenu.cpp \
+	SoAnyThumbWheel.h \
+	SoAnyThumbWheel.cpp
+
+############################################################################
+## 
+
+libSoXtWidgetsVPATH = . $(srcdir)
+
+.cpp.lo:
+	@( source='$<'; \
+	for dir in $(libSoXtWidgetsVPATH); do \
+	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
+	done; \
+	eval "$(CXXDEPMODE)"; \
+	: ${depmod=none}; \
+	source="$$source" \
+	object='$@' libtool=no \
+	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
+	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
+
 libSoXtWidgets_la_SOURCES = \
-	SoXtThumbWheel.cpp \
+	$(BUILT_SOURCES) \
+	SoXtPopupMenu.h \
+	SoXtPopupMenu.cpp \
+	SoXtThumbWheel.h \
 	SoXtThumbWheelP.h \
-	$(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp \
-	$(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.h \
-	SoXtThumbWheel.h
+	SoXtThumbWheel.cpp
+
+############################################################################
+
+SoAnyPopupMenu.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyPopupMenu.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/widgets/SoAnyPopupMenu.h )
+
+SoAnyPopupMenu.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyPopupMenu.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/widgets/SoAnyPopupMenu.cpp )
+
+SoAnyThumbWheel.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/widgets/SoAnyThumbWheel.h )
+
+SoAnyThumbWheel.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/widgets/SoAnyThumbWheel.cpp )
+
+############################################################################
 
 libSoXtWidgetsincdir = $(includedir)/Inventor/Xt/widgets
 
 libSoXtWidgetsinc_HEADERS = \
 	SoXtThumbWheelP.h \
 	SoXtThumbWheel.h
-
-############################################################################
-
-ThumbWheel.lo: $(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp
-	source='$(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp' \
-	object='$@' libtool=yes \
-	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
-	$(CXXDEPMODE) $(depcomp) \
-	$(LTCXXCOMPILE) -c -o $@ \
-	$(top_srcdir)/src/Inventor/Xt/common/ThumbWheel.cpp
-	
-############################################################################
 
 install-libSoXtWidgetsincHEADERS: $(libSoXtWidgetsinc_HEADERS)
 	@$(NORMAL_INSTALL)

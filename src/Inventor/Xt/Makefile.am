@@ -1,6 +1,6 @@
 ############################################################################
 
-SUBDIRS = devices viewers widgets
+SUBDIRS = devices widgets viewers
 
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 

@@ -1,8 +1,10 @@
+############################################################################
+##
+
+noinst_LTLIBRARIES = libSoXtViewers.la
 
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 LIBS =
-
-noinst_LTLIBRARIES = libSoXtViewers.la
 
 BUILT_SOURCES = \
 	SoXtViewer.h \
@@ -12,6 +14,23 @@ BUILT_SOURCES = \
 	SoAnyExaminerViewer.h \
 	SoAnyExaminerViewer.cpp
 
+############################################################################
+##
+
+libSoXtViewersVPATH = . $(srcdir)
+
+.cpp.lo:
+	@( source='$<'; \
+	for dir in $(libSoXtViewersVPATH); do \
+	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
+	done; \
+	eval "$(CXXDEPMODE)"; \
+	: ${depmod=none}; \
+	source="$$source" \
+	object='$@' libtool=no \
+	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
+	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
+
 libSoXtViewers_la_SOURCES = \
 	$(BUILT_SOURCES) \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtViewerExtra.cpp \
@@ -20,14 +39,8 @@ libSoXtViewers_la_SOURCES = \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h
 
-libSoXtViewersincdir = $(includedir)/Inventor/Xt/viewers
-
-libSoXtViewersinc_HEADERS = \
-	$(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.h \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.h \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h
-
 ############################################################################
+##
 
 SoXtViewer.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiViewer.h.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/viewers/SoXtViewer.h )
@@ -54,20 +67,14 @@ SoAnyExaminerViewer.cpp: \
 	   $(MAKE) src/Inventor/Xt/viewers/SoAnyExaminerViewer.cpp )
 
 ############################################################################
+##
 
-.cpp.lo:
-	@( source='$<'; \
-	for dir in $(libSoXtDevicesVPATH); do \
-	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
-	done; \
-	eval "$(CXXDEPMODE)"; \
-	: ${depmod=none}; \
-	source="$$source" \
-	object='$@' libtool=no \
-	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
-	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
+libSoXtViewersincdir = $(includedir)/Inventor/Xt/viewers
 
-############################################################################
+libSoXtViewersinc_HEADERS = \
+	$(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.h \
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.h \
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h
 
 install-libSoXtViewersincHEADERS: $(libSoXtViewersinc_HEADERS)
 	@$(NORMAL_INSTALL)

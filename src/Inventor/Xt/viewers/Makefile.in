@@ -98,11 +98,13 @@ lGUI = @lGUI@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 uGUI = @uGUI@
 
+############################################################################
+
+
+noinst_LTLIBRARIES = libSoXtViewers.la
 
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 LIBS = 
-
-noinst_LTLIBRARIES = libSoXtViewers.la
 
 BUILT_SOURCES = \
 	SoXtViewer.h \
@@ -113,6 +115,10 @@ BUILT_SOURCES = \
 	SoAnyExaminerViewer.cpp
 
 
+############################################################################
+
+libSoXtViewersVPATH = . $(srcdir)
+
 libSoXtViewers_la_SOURCES = \
 	$(BUILT_SOURCES) \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtViewerExtra.cpp \
@@ -121,6 +127,8 @@ libSoXtViewers_la_SOURCES = \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h
 
+
+############################################################################
 
 libSoXtViewersincdir = $(includedir)/Inventor/Xt/viewers
 
@@ -379,6 +387,18 @@ distclean-generic clean-generic maintainer-clean-generic clean \
 mostlyclean distclean maintainer-clean
 
 
+.cpp.lo:
+	@( source='$<'; \
+	for dir in $(libSoXtViewersVPATH); do \
+	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
+	done; \
+	eval "$(CXXDEPMODE)"; \
+	: ${depmod=none}; \
+	source="$$source" \
+	object='$@' libtool=no \
+	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
+	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
+
 ############################################################################
 
 SoXtViewer.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiViewer.h.in
@@ -404,22 +424,6 @@ SoAnyExaminerViewer.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp.in
 	@( cd $(top_builddir); \
 	   $(MAKE) src/Inventor/Xt/viewers/SoAnyExaminerViewer.cpp )
-
-############################################################################
-
-.cpp.lo:
-	@( source='$<'; \
-	for dir in $(libSoXtDevicesVPATH); do \
-	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
-	done; \
-	eval "$(CXXDEPMODE)"; \
-	: ${depmod=none}; \
-	source="$$source" \
-	object='$@' libtool=no \
-	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
-	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
-
-############################################################################
 
 install-libSoXtViewersincHEADERS: $(libSoXtViewersinc_HEADERS)
 	@$(NORMAL_INSTALL)

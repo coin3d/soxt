@@ -18,7 +18,6 @@ SUFFIXES = .h .cpp .in .lo .o
 bin_SCRIPTS = soxt-config
 
 BUILT_SOURCES = \
-	soxt-config \
 	src/Inventor/Xt/SoXtRenderArea.h \
 	src/Inventor/Xt/SoXtRenderArea.cpp \
 	src/Inventor/Xt/viewers/SoXtViewer.h \
@@ -26,7 +25,11 @@ BUILT_SOURCES = \
 	src/Inventor/Xt/viewers/SoAnyFullViewer.h \
 	src/Inventor/Xt/viewers/SoAnyFullViewer.cpp \
 	src/Inventor/Xt/viewers/SoAnyExaminerViewer.h \
-	src/Inventor/Xt/viewers/SoAnyExaminerViewer.cpp
+	src/Inventor/Xt/viewers/SoAnyExaminerViewer.cpp \
+	src/Inventor/Xt/widgets/SoAnyThumbWheel.h \
+	src/Inventor/Xt/widgets/SoAnyThumbWheel.cpp \
+	src/Inventor/Xt/widgets/SoAnyPopupMenu.h \
+	src/Inventor/Xt/widgets/SoAnyPopupMenu.cpp
 
 soxt-config: soxt-config.in
 
@@ -68,5 +71,21 @@ src/Inventor/Xt/viewers/SoAnyExaminerViewer.h: \
 src/Inventor/Xt/viewers/SoAnyExaminerViewer.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp.in
 	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyExaminerViewer.cpp.in $(top_builddir)/config.status
+
+src/Inventor/Xt/widgets/SoAnyThumbWheel.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.h.in
+	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyThumbWheel.h.in $(top_builddir)/config.status
+
+src/Inventor/Xt/widgets/SoAnyThumbWheel.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.cpp.in
+	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyThumbWheel.cpp.in $(top_builddir)/config.status
+
+src/Inventor/Xt/widgets/SoAnyPopupMenu.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyPopupMenu.h.in
+	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyPopupMenu.h.in $(top_builddir)/config.status
+
+src/Inventor/Xt/widgets/SoAnyPopupMenu.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyPopupMenu.cpp.in
+	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyPopupMenu.cpp.in $(top_builddir)/config.status
 
 ############################################################################
