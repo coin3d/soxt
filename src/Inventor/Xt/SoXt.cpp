@@ -111,6 +111,10 @@ public:
   static int SOXT_XSYNC;
   static int (*previous_handler)(Display * d, XErrorEvent * ee);
   static int X11Errorhandler(Display * d, XErrorEvent * ee);
+
+  static void timerSensorCB(XtPointer, XtIntervalId *);
+  static void delaySensorCB(XtPointer, XtIntervalId *);
+  static Boolean idleSensorCB(XtPointer);
 };
 
 Display * SoXtP::display = NULL;
@@ -189,8 +193,7 @@ SoXtP::X11Errorhandler(Display * d, XErrorEvent * ee)
 */
 Widget
 SoXt::internal_init(int & argc, char ** argv,
-                    const char * appname,
-                    const char * appclass)
+                    const char * appname, const char * appclass)
 {
   assert(SoXtP::previous_handler == NULL && "call SoXt::init() only once!");
   // Intervene upon X11 errors.
@@ -219,23 +222,22 @@ SoXt::internal_init(int & argc, char ** argv,
 
   Widget toplevel = (Widget) NULL;
   if (visual) {
-    toplevel = XtVaOpenApplication(
-      &tempcontext, SoXtP::appclass, NULL, 0, &argc, argv,
-      SoXtP::fallbackresources, topLevelShellWidgetClass,
-      XmNvisual, visual,
-      XmNdepth, depth,
-      XmNcolormap, colormap,
-      NULL);
-  } else {
-    SoDebugError::postInfo("SoXt::internal_init", "default toplevel! (error)");
-    toplevel = XtVaOpenApplication(
-      &tempcontext, SoXtP::appclass, NULL, 0, &argc, argv,
-      SoXtP::fallbackresources, topLevelShellWidgetClass,
-      NULL);
+    toplevel = XtVaOpenApplication(&tempcontext, SoXtP::appclass, NULL, 0,
+                                   &argc, argv,
+                                   SoXtP::fallbackresources, topLevelShellWidgetClass,
+                                   XmNvisual, visual,
+                                   XmNdepth, depth,
+                                   XmNcolormap, colormap,
+                                   NULL);
   }
-  if (appname)
-    XtVaSetValues(toplevel, XmNtitle, SoXtP::appname, NULL);
-
+  else {
+    SoDebugError::postInfo("SoXt::internal_init", "default toplevel! (error)");
+    toplevel = XtVaOpenApplication(&tempcontext, SoXtP::appclass, NULL, 0,
+                                   &argc, argv,
+                                   SoXtP::fallbackresources, topLevelShellWidgetClass,
+                                   NULL);
+  }
+  if (appname) { XtVaSetValues(toplevel, XmNtitle, SoXtP::appname, NULL); }
   SoXt::internal_init(toplevel);
   return toplevel;
 }
@@ -249,17 +251,9 @@ SoXtObject::init(void)
   SoXtComponent::initClasses();
 }
 
-/*
-  \internal
-*/
-
-static
-void
-wm_close_handler(
-  Widget widget,
-  XtPointer user,
-  XEvent * e,
-  Boolean * dispatch)
+// internal
+static void
+wm_close_handler(Widget widget, XtPointer user, XEvent * e, Boolean * dispatch)
 {
   if (e->type == ClientMessage) {
     XClientMessageEvent * event = (XClientMessageEvent *) e;
@@ -269,16 +263,16 @@ wm_close_handler(
     }
     if (WM_DELETE_WINDOW == None) {
       WM_DELETE_WINDOW = XInternAtom(SoXt::getDisplay(),
-        "WM_DELETE_WINDOW", True);
-      if (WM_DELETE_WINDOW == None) WM_DELETE_WINDOW = (Atom) -1;
+                                     "WM_DELETE_WINDOW", True);
+      if (WM_DELETE_WINDOW == None) { WM_DELETE_WINDOW = (Atom) -1; }
     }
     if (event->message_type == WM_PROTOCOLS &&
-         (unsigned) event->data.l[0] == WM_DELETE_WINDOW) {
+        (unsigned) event->data.l[0] == WM_DELETE_WINDOW) {
       XtAppSetExitFlag(SoXt::getAppContext());
       *dispatch = False;
     }
   }
-} // wm_close_handler()
+}
 
 /*!
   \fn void SoXt::init(Widget toplevel)
@@ -316,31 +310,25 @@ SoXt::internal_init(Widget toplevel)
 
   XtAddEventHandler(toplevel, (EventMask) 0, True, wm_close_handler, NULL);
 
+  // FIXME: why the HAVE_LIBXMU wrapper? 20020117 mortene.
 #ifdef HAVE_LIBXMU
 #if SOXT_DEBUG
   XtEventHandler editres_hook = (XtEventHandler) _XEditResCheckMessages;
   XtAddEventHandler(toplevel, (EventMask) 0, True, editres_hook, NULL);
 #endif // SOXT_DEBUG
 #endif // HAVE_LIBXMU
-} // init()
+}
 
 // *************************************************************************
 
-/*
-  This is a function for translating X11 event type id to event name.
-
-  \internal
-*/
-
+// A debug aid function for translating X11 event type id to event name.
 static const char *
-_eventName(
-  const int type)
+debug_eventname(const int type)
 {
   static const char * names[LASTEvent];
   static int first = 1;
   if (first) {
-    for (int i = 0; i < LASTEvent; i++)
-      names[i] = "<not set>";
+    for (int i = 0; i < LASTEvent; i++) { names[i] = "<not set>"; }
     names[KeyPress]          = "KeyPress";
     names[KeyRelease]        = "KeyRelease";
     names[ButtonPress]       = "ButtonPress";
@@ -359,23 +347,20 @@ _eventName(
     names[CreateNotify]      = "CreateNotify";
     first = 0;
   }
-  if (type >= 0 && type < LASTEvent)
-    return names[type];
+  if (type >= 0 && type < LASTEvent) { return names[type]; }
   return "<unknown>";
-} // _eventName()
+}
 
 /*!
-  This function should be used instead of XtAppMainLoop().  The current
-  implementation is no different than the standard event loop, but in the
-  future it will add support for input device extensions.
+  This function should be used instead of XtAppMainLoop().  The
+  current implementation is no different than the standard event loop,
+  but in the future it will add support for input device extensions.
 
-  If you need your own event dispatching loop, base your code on this one,
-  and use SoXt::dispatchEvent() when appropriate.
+  If you need your own event dispatching loop, base your code on this
+  one, and use SoXt::dispatchEvent() when appropriate.
 */
-
 void
-SoXt::mainLoop(// static
-  void)
+SoXt::mainLoop(void)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXt::mainLoop", "[enter]");
@@ -389,35 +374,30 @@ SoXt::mainLoop(// static
 #if SOXT_DEBUG && 0
     if (! dispatched) {
       SoDebugError::postInfo("SoXt::mainLoop", "no event handler (%2d : %s)",
-        event.type, _eventName(event.type));
+                             event.type, debug_eventname(event.type));
     }
 #endif // SOXT_DEBUG
     exit = XtAppGetExitFlag(context);
   }
-} // mainLoop()
+}
 
 /*!
-  This function calls XtAppNextEvent() to fill in the event structure with
-  the next event for the given context.
+  This function calls XtAppNextEvent() to fill in the event structure
+  with the next event for the given context.
 */
-
 void
-SoXt::nextEvent(// static
-  XtAppContext context,
-  XEvent * event)
+SoXt::nextEvent(XtAppContext context, XEvent * event)
 {
   XtAppNextEvent(context, event);
-} // nextEvent()
+}
 
 /*!
-  This method dispatches the event by calling XtDispatchEvent().  Special
-  handling of extension input devices will be handled in this method in
-  the future.
+  This method dispatches the event by calling XtDispatchEvent().
+  Special handling of extension input devices will be handled in this
+  method in the future.
 */
-
 Boolean
-SoXt::dispatchEvent(// static
-  XEvent * event)
+SoXt::dispatchEvent(XEvent * event)
 {
   Boolean dispatched = XtDispatchEvent(event);
   if (! dispatched) {
@@ -428,46 +408,41 @@ SoXt::dispatchEvent(// static
     if (handler) {
       Boolean dispatch = False;
       (*handler)(widget, data, event, &dispatch);
-      if (dispatch == False)
-        dispatched = True;
+      if (dispatch == False) { dispatched = True; }
     }
   }
   return dispatched;
-} // dispatchEvent()
+}
 
 /*!
-  This method makes the event loop stop processing events and exit so the
-  program can finish.
+  This method makes the event loop stop processing events and exit so
+  the program can finish.
 
   This is an SoXt extension not found in InventorXt.
 
   \sa SoXt::mainLoop
 */
-
 void
-SoXt::exitMainLoop(
-  void)
+SoXt::exitMainLoop(void)
 {
   XtAppSetExitFlag(SoXt::getAppContext());
-} // exitMainLoop()
+}
 
 // *************************************************************************
 
 /*!
   This function returns the Xt Application Context for the application.
 */
-
 XtAppContext
-SoXt::getAppContext(// static
-  void)
+SoXt::getAppContext(void)
 {
   return SoXtP::xtappcontext;
-} // getAppContext()
+}
 
 /*!
   This function returns the X Display of the application.
 */
-Display *  // static
+Display *
 SoXt::getDisplay(void)
 {
   return SoXtP::display;
@@ -476,29 +451,27 @@ SoXt::getDisplay(void)
 /*!
   This function returns the toplevel shell for the application.
 */
-
 Widget
-SoXt::getTopLevelWidget(// static
-  void)
+SoXt::getTopLevelWidget(void)
 {
   return SoXtP::mainwidget;
-} // getTopLevelWidget()
+}
 
 // *************************************************************************
 
 /*!
-  This function returns the application name, given to SoXt::init.
+  This function returns the application name, given to SoXt::init().
 */
-const char * // static
+const char *
 SoXt::getAppName(void)
 {
   return SoXtP::appname;
 }
 
 /*!
-  This function returns the application class, given to SoXt::init.
+  This function returns the application class, given to SoXt::init().
 */
-const char *  // static
+const char *
 SoXt::getAppClass(void)
 {
   return SoXtP::appclass;
@@ -509,48 +482,44 @@ SoXt::getAppClass(void)
 /*!
   This function realizes the given \a widget.
 */
-
 void
-SoXt::show(// static
-  Widget widget)
+SoXt::show(Widget widget)
 {
   if (XtIsTopLevelShell(widget)) {
     XtRealizeWidget(widget);
-  } else {
+  }
+  else {
     XtManageChild(widget);
   }
-} // show()
+}
 
 /*!
   This function hides the given \a widget.
 */
-
 void
-SoXt::hide(// static
-  Widget widget)
+SoXt::hide(Widget widget)
 {
   if (XtIsTopLevelShell(widget)) {
     XtUnrealizeWidget(widget);
-  } else {
+  }
+  else {
     XtUnmanageChild(widget);
   }
-} // hide()
+}
 
 // *************************************************************************
 
 /*!
-  Create and return a localized string from \a string.
+  Create and return a localized string from \a str.
 
   The caller is responsible for freeing the returned XmString by using
-  XmStringFree() or just plain XtFree((char *) string).
+  XmStringFree() or just plain XtFree((char *) str).
 */
-
 XmString
-SoXt::encodeString(// static
-  const char * const string)
+SoXt::encodeString(const char * const str)
 {
-  return XmStringCreateLocalized((char *) string);
-} // encodeString()
+  return XmStringCreateLocalized((char *)str);
+}
 
 /*!
   Decode a left-to-right localized string into a simple character
@@ -559,27 +528,22 @@ SoXt::encodeString(// static
   The caller is responsible for freeing the returned character string
   with XtFree() to avoid memory leaks.
 */
-
 char *
-SoXt::decodeString(// static
-  XmString xstring)
+SoXt::decodeString(XmString xstring)
 {
   char * str;
   /* set str to point to the text */
   XmStringGetLtoR(xstring, XmSTRING_DEFAULT_CHARSET, &str);
   return str;
-} // decodeString()
+}
 
 // *************************************************************************
 
 /*!
   This function resizes the widget to the given \a size.
 */
-
 void
-SoXt::setWidgetSize(// static
-  Widget widget,
-  const SbVec2s size)
+SoXt::setWidgetSize(Widget widget, const SbVec2s size)
 {
   if (! widget) {
 #if SOXT_DEBUG
@@ -588,18 +552,16 @@ SoXt::setWidgetSize(// static
     return;
   }
   XtVaSetValues(widget,
-    XmNwidth, size[0],
-    XmNheight, size[1],
-    NULL);
-} // setWidgetSize()
+                XmNwidth, size[0],
+                XmNheight, size[1],
+                NULL);
+}
 
 /*!
   This function returns the size of the given widget.
 */
-
 SbVec2s
-SoXt::getWidgetSize(// static
-  Widget widget)
+SoXt::getWidgetSize(Widget widget)
 {
   if (! widget) {
 #if SOXT_DEBUG
@@ -609,50 +571,42 @@ SoXt::getWidgetSize(// static
   }
   Dimension width, height;
   XtVaGetValues(widget,
-    XtNwidth, &width,
-    XtNheight, &height,
-    NULL);
+                XtNwidth, &width,
+                XtNheight, &height,
+                NULL);
   return SbVec2s(width, height);
-} // getWidgetSize()
+}
 
 // *************************************************************************
 
 /*!
   This function returns the shell of the given \a widget.
 */
-Widget  // static
+Widget
 SoXt::getShellWidget(const Widget widget)
 {
   Widget p = widget;
   while (p != (Widget) NULL) {
-    if (XtIsShell(p))
-      return p;
+    if (XtIsShell(p)) { return p; }
     p = XtParent(p);
   }
 #if SOXT_DEBUG
   SoDebugError::postInfo("SoXt::getShellWidget",
-    "couldn't find shell for widget at %p", widget);
+                         "couldn't find shell for widget at %p", widget);
 #endif // SOXT_DEBUG
   return (Widget) NULL;
-} // getShellWidget()
+}
 
 // *************************************************************************
 
-/*
-  Internal callback.
-*/
-
-static
-void
-close_dialog_cb(
-  Widget,
-  XtPointer closure,
-  XtPointer)
+// Internal callback.
+static void
+close_dialog_cb(Widget, XtPointer closure, XtPointer)
 {
-  Widget dialogshell = (Widget) closure;
+  Widget dialogshell = (Widget)closure;
   XtPopdown(dialogshell);
   XtDestroyWidget(dialogshell);
-} // close_dialog_cb()
+}
 
 /*!
   This function creates a simple error dialog window and places it on
@@ -661,11 +615,9 @@ close_dialog_cb(
   If \a parent is \c NULL, the main toplevel widget of the application
   will be used.
 */
-void  // static
-SoXt::createSimpleErrorDialog(Widget parent,
-                              const char * title,
-                              const char * string1,
-                              const char * string2)
+void
+SoXt::createSimpleErrorDialog(Widget parent, const char * title,
+                              const char * string1, const char * string2)
 {
   // FIXME: placement is not implemented yet. 200XXXXX larsa.
 
@@ -687,63 +639,63 @@ SoXt::createSimpleErrorDialog(Widget parent,
   if (parent == NULL) { parent = SoXt::getTopLevelWidget(); }
 
   Widget errdialog = XtVaCreatePopupShell("errordialog",
-    topLevelShellWidgetClass, parent,
-    XmNvisual, vis,
-    XmNcolormap, cmap,
-    XmNdepth, depth,
-    XtVaTypedArg,
-      XmNtitle, XmRString,
-      title, strlen(title)+1,
-    XmNresizable, False,
-    NULL);
+                                          topLevelShellWidgetClass, parent,
+                                          XmNvisual, vis,
+                                          XmNcolormap, cmap,
+                                          XmNdepth, depth,
+                                          XtVaTypedArg,
+                                          XmNtitle, XmRString,
+                                          title, strlen(title)+1,
+                                          XmNresizable, False,
+                                          NULL);
 
   Widget root = XtVaCreateManagedWidget("root",
-    xmFormWidgetClass, errdialog,
-    NULL);
+                                        xmFormWidgetClass, errdialog,
+                                        NULL);
 
   Widget label1 = XtVaCreateManagedWidget("label1",
-    xmLabelWidgetClass, root,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNleftOffset, 20,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNtopOffset, 10,
-    XmNrightAttachment, XmATTACH_FORM,
-    XmNrightOffset, 20,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      string1, strlen(string1),
-    NULL);
+                                          xmLabelWidgetClass, root,
+                                          XmNleftAttachment, XmATTACH_FORM,
+                                          XmNleftOffset, 20,
+                                          XmNtopAttachment, XmATTACH_FORM,
+                                          XmNtopOffset, 10,
+                                          XmNrightAttachment, XmATTACH_FORM,
+                                          XmNrightOffset, 20,
+                                          XtVaTypedArg,
+                                          XmNlabelString, XmRString,
+                                          string1, strlen(string1),
+                                          NULL);
 
   Widget label2 = (Widget) NULL;
   if (string2 != NULL) {
     label2 = XtVaCreateManagedWidget("label2",
-      xmLabelWidgetClass, root,
-      XmNleftAttachment, XmATTACH_FORM,
-      XmNleftOffset, 20,
-      XmNtopAttachment, XmATTACH_WIDGET,
-      XmNtopWidget, label1,
-      XmNtopOffset, 5,
-      XmNrightAttachment, XmATTACH_FORM,
-      XmNrightOffset, 20,
-      XtVaTypedArg,
-        XmNlabelString, XmRString,
-        string2, strlen(string2),
-      NULL);
+                                     xmLabelWidgetClass, root,
+                                     XmNleftAttachment, XmATTACH_FORM,
+                                     XmNleftOffset, 20,
+                                     XmNtopAttachment, XmATTACH_WIDGET,
+                                     XmNtopWidget, label1,
+                                     XmNtopOffset, 5,
+                                     XmNrightAttachment, XmATTACH_FORM,
+                                     XmNrightOffset, 20,
+                                     XtVaTypedArg,
+                                     XmNlabelString, XmRString,
+                                     string2, strlen(string2),
+                                     NULL);
   }
 
   Widget close = XtVaCreateManagedWidget("close",
-    xmPushButtonWidgetClass, root,
-    XmNtopAttachment, XmATTACH_WIDGET,
-    XmNtopWidget, string2 ? label2 : label1,
-    XmNtopOffset, 5,
-    XmNrightAttachment, XmATTACH_FORM,
-    XmNrightOffset, 10,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNbottomOffset, 10,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      " Close ", 5,
-    NULL);
+                                         xmPushButtonWidgetClass, root,
+                                         XmNtopAttachment, XmATTACH_WIDGET,
+                                         XmNtopWidget, string2 ? label2 : label1,
+                                         XmNtopOffset, 5,
+                                         XmNrightAttachment, XmATTACH_FORM,
+                                         XmNrightOffset, 10,
+                                         XmNbottomAttachment, XmATTACH_FORM,
+                                         XmNbottomOffset, 10,
+                                         XtVaTypedArg,
+                                         XmNlabelString, XmRString,
+                                         " Close ", 5,
+                                         NULL);
 
   XtAddCallback(close, XmNactivateCallback, close_dialog_cb, errdialog);
 
@@ -752,147 +704,124 @@ SoXt::createSimpleErrorDialog(Widget parent,
   Dimension width = 0;
   Dimension height = 0;
   XtVaGetValues(root,
-    XmNwidth, &width,
-    XmNheight, &height,
-    NULL);
+                XmNwidth, &width,
+                XmNheight, &height,
+                NULL);
   XtVaSetValues(errdialog,
-    XmNheight, height,
-    XmNwidth, width,
-    XmNminHeight, height,
-    XmNmaxHeight, height,
-    XmNminWidth, width,
-    NULL);
-
-} // createSimpleErrorDialog()
-
-// *************************************************************************
-
-/*!
-  This function should add the necessary arguments to the \a args argument
-  list so the popup shell gets the same visual and colormap as the rest
-  of the application.
-
-  This function is not implemented.
-*/
-
-void
-SoXt::getPopupArgs(// static
-  Display * display,
-  int screen,
-  ArgList args,
-  int * n)
-{
-  SOXT_STUB();
-} // getPopupArgs()
-
-/*!
-  This function is not implemented.
-*/
-
-void
-SoXt::registerColormapLoad(// static
-  Widget widget,
-  Widget shell)
-{
-  SOXT_STUB();
-} // registerColormapLoad()
-
-/*!
-  This function is not implemented.
-*/
-
-void
-SoXt::addColormapToShell(// static
-  Widget widget,
-  Widget shell)
-{
-  SOXT_STUB();
-} // addColormapToShell()
-
-/*!
-  This function is not implemented.
-*/
-
-void
-SoXt::removeColormapFromShell(// static
-  Widget widget,
-  Widget shell)
-{
-  SOXT_STUB();
-} // removeColormapFromShell()
+                XmNheight, height,
+                XmNwidth, width,
+                XmNminHeight, height,
+                XmNmaxHeight, height,
+                XmNminWidth, width,
+                NULL);
+}
 
 // *************************************************************************
 
-typedef struct _EventHandlerInfo {
+/*!
+  This function should add the necessary arguments to the \a args
+  argument list so the popup shell gets the same visual and colormap
+  as the rest of the application.
+
+  This function is not implemented.
+*/
+void
+SoXt::getPopupArgs(Display * display, int screen, ArgList args, int * n)
+{
+  SOXT_STUB();
+}
+
+/*!
+  This function is not implemented.
+*/
+void
+SoXt::registerColormapLoad(Widget widget, Widget shell)
+{
+  SOXT_STUB();
+}
+
+/*!
+  This function is not implemented.
+*/
+void
+SoXt::addColormapToShell(Widget widget, Widget shell)
+{
+  SOXT_STUB();
+}
+
+/*!
+  This function is not implemented.
+*/
+void
+SoXt::removeColormapFromShell(Widget widget, Widget shell)
+{
+  SOXT_STUB();
+}
+
+// *************************************************************************
+
+typedef struct SoXt_EventHandlerInfo {
   int type;
   Widget widget;
   XtEventHandler handler;
   XtPointer data;
-} EventHandlerInfo;
+} SoXtEventHandlerInfo;
 
 /*!
-  This function adds an extension event handler to the application, which
-  will be considered in the SoXt::mainLoop event dispatching loop.
+  This function adds an extension event handler to the application,
+  which will be considered in the SoXt::mainLoop event dispatching
+  loop.
 
-  \sa SoXt::removeExtensionEventHandler
-  \sa SoXt::getExtensionEventHandler
+  \sa SoXt::removeExtensionEventHandler(), SoXt::getExtensionEventHandler()
 */
 
 void
-SoXt::addExtensionEventHandler(// static
-  Widget widget,
-  int type,
-  XtEventHandler proc,
-  XtPointer data)
+SoXt::addExtensionEventHandler(Widget widget, int type,
+                               XtEventHandler proc, XtPointer data)
 {
-  EventHandlerInfo * info = new EventHandlerInfo;
+  SoXtEventHandlerInfo * info = new SoXtEventHandlerInfo;
   info->type = type;
   info->widget = widget;
   info->handler = proc;
   info->data = data;
 
-  if (SoXtP::eventhandlers == NULL)
-    SoXtP::eventhandlers = new SbPList;
+  if (SoXtP::eventhandlers == NULL) { SoXtP::eventhandlers = new SbPList; }
 
 #if SOXT_DEBUG
   const int handlers = SoXtP::eventhandlers->getLength();
   for (int i = 0; i < handlers; i++) {
-    EventHandlerInfo * query = (EventHandlerInfo *) (*SoXtP::eventhandlers)[i];
-    if (query->type == type)
+    SoXtEventHandlerInfo * query = (SoXtEventHandlerInfo *) (*SoXtP::eventhandlers)[i];
+    if (query->type == type) {
       SoDebugError::postWarning("SoXt::addExtensionEventHandler",
-        "handler of type %d already exists, shadowing the new handler");
+                                "handler of type %d already exists, shadowing the new handler");
+    }
   }
 #endif // SOXT_DEBUG
 
   SoXtP::eventhandlers->append((void *) info);
-} // addExtensionEventHandler()
+}
 
 /*!
   This method removes an extension event handler.
 
-  \sa SoXt::addExtensionEventHandler
-  \sa SoXt::getExtensionEventHandler
+  \sa SoXt::addExtensionEventHandler(), SoXt::getExtensionEventHandler()
 */
-
 void
-SoXt::removeExtensionEventHandler(// static
-  Widget widget,
-  int type,
-  XtEventHandler proc,
-  XtPointer data)
+SoXt::removeExtensionEventHandler(Widget widget, int type,
+                                  XtEventHandler proc, XtPointer data)
 {
   if (SoXtP::eventhandlers == NULL) {
 #if SOXT_DEBUG
     SoDebugError::postInfo("SoXt::removeExtensionEventHandler",
-      "no extension event handlers registered.");
+                           "no extension event handlers registered.");
 #endif // SOXT_DEBUG
     return;
   }
   int handlers = SoXtP::eventhandlers->getLength();
   for (int i = 0; i < handlers; i++) {
-    EventHandlerInfo * info = (EventHandlerInfo *) (*SoXtP::eventhandlers)[i];
+    SoXtEventHandlerInfo * info = (SoXtEventHandlerInfo *) (*SoXtP::eventhandlers)[i];
     if (info->widget == widget && info->type == type &&
-         info->handler == proc && info->data == data) {
+        info->handler == proc && info->data == data) {
       SoXtP::eventhandlers->remove(i);
       delete info;
       return;
@@ -900,9 +829,9 @@ SoXt::removeExtensionEventHandler(// static
   }
 #if SOXT_DEBUG
   SoDebugError::postInfo("SoXt::removeExtensionEventHandler",
-    "no such extension event handler registered.");
+                         "no such extension event handler registered.");
 #endif // SOXT_DEBUG
-} // removeExtensionEventHandler()
+}
 
 /*!
   This method returns the extension event handler for the given \a event.
@@ -910,98 +839,77 @@ SoXt::removeExtensionEventHandler(// static
   \sa SoXt::addExtensionEventHandler
   \sa SoXt::removeExtensionEventHandler
 */
-
 void
-SoXt::getExtensionEventHandler(// static, protected
-  XEvent * event,
-  Widget & widget,
-  XtEventHandler & proc,
-  XtPointer & data)
+SoXt::getExtensionEventHandler(XEvent * event, Widget & widget,
+                               XtEventHandler & proc, XtPointer & data)
 {
   proc = (XtEventHandler) NULL;
   data = (XtPointer) NULL;
   widget = (Widget) NULL;
 
-  if (SoXtP::eventhandlers == NULL)
-    return;
+  if (SoXtP::eventhandlers == NULL) { return; }
 
   const int handlers = SoXtP::eventhandlers->getLength();
   for (int i = 0; i < handlers; i++) {
-    EventHandlerInfo * info = (EventHandlerInfo *) (*SoXtP::eventhandlers)[i];
+    SoXtEventHandlerInfo * info = (SoXtEventHandlerInfo *) (*SoXtP::eventhandlers)[i];
     if (info->type == event->type) {
       widget = info->widget;
       proc = info->handler;
       data = info->data;
     }
   }
-} // getExtensionEventHandler()
+}
 
 // *************************************************************************
 
-/*!
-  \internal
-*/
-
+// private
 void
-SoXt::timerSensorCB(// static, private
-  XtPointer closure,
-  XtIntervalId * id)
+SoXtP::timerSensorCB(XtPointer closure, XtIntervalId * id)
 {
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo("SoXt::timerSensorCB", "called");
+  SoDebugError::postInfo("SoXtP::timerSensorCB", "called");
 #endif // SOXT_DEBUG
   SoXtP::timersensorid = 0;
   SoXtP::timersensoractive = FALSE;
   SoDB::getSensorManager()->processTimerQueue();
   SoXt::sensorQueueChanged(NULL);
-} // timerSensorCB()
+}
 
-/*!
-  \internal
-*/
-
+// private
 void
-SoXt::delaySensorCB(// static, private
-  XtPointer closure,
-  XtIntervalId * id)
+SoXtP::delaySensorCB(XtPointer closure, XtIntervalId * id)
 {
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo("SoXt::delaySensorCB", "called");
+  SoDebugError::postInfo("SoXtP::delaySensorCB", "called");
 #endif // SOXT_DEBUG
   SoXtP::delaysensorid = 0;
   SoXtP::delaysensoractive = FALSE;
   SoDB::getSensorManager()->processDelayQueue(FALSE);
   SoXt::sensorQueueChanged(NULL);
-} // delaySensorCB()
+}
 
-/*!
-  \internal
-*/
-
+// private
 Boolean
-SoXt::idleSensorCB(// static, private
-  XtPointer closure)
+SoXtP::idleSensorCB(XtPointer closure)
 {
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo("SoXt::idleSensorCB", "called");
+  SoDebugError::postInfo("SoXtP::idleSensorCB", "called");
 #endif // SOXT_DEBUG
   SoXtP::idlesensorid = 0;
   SoXtP::idlesensoractive = FALSE;
   SoDB::getSensorManager()->processDelayQueue(TRUE);
   SoXt::sensorQueueChanged(NULL);
   return True;
-} // idleSensorCB()
+}
 
 // *************************************************************************
 
 /*!
-  This callback handles events from sensors in the scene graph, needed to
-  deal with scene interaction.
+  This callback handles events from sensors in the scene graph, needed
+  to deal with scene interaction.
 */
-
 void
-SoXt::sensorQueueChanged(// static, private
-  void *) // user)
+SoXt::sensorQueueChanged(void *)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXt::sensorQueueChanged", "start");
@@ -1014,23 +922,25 @@ SoXt::sensorQueueChanged(// static, private
 
 #if SOXT_DEBUG && 0
     SoDebugError::postInfo("SoXt::sensorQueueChanged",
-      "interval: %f (msec: %d)", interval.getValue(),
-      interval.getMsecValue());
+                           "interval: %f (msec: %d)", interval.getValue(),
+                           interval.getMsecValue());
 #endif // debug
 
     // On a system with some load, the interval value can easily get
     // negative. For Xt, this means it will never trigger -- which
     // causes all kinds of problems. Setting it to 0 will make it
     // trigger more-or-less immediately.
-    if (interval.getValue() < 0.0) interval.setValue(0.0);
+    if (interval.getValue() < 0.0) { interval.setValue(0.0); }
 
-    if (SoXtP::timersensoractive) XtRemoveTimeOut(SoXtP::timersensorid);
+    if (SoXtP::timersensoractive) { XtRemoveTimeOut(SoXtP::timersensorid); }
 
     SoXtP::timersensorid = XtAppAddTimeOut(SoXt::getAppContext(),
-      interval.getMsecValue(), SoXt::timerSensorCB, NULL);
+                                           interval.getMsecValue(),
+                                           SoXtP::timerSensorCB, NULL);
     SoXtP::timersensoractive = TRUE;
 
-  } else if (SoXtP::timersensoractive) {
+  }
+  else if (SoXtP::timersensoractive) {
     XtRemoveTimeOut(SoXtP::timersensorid);
     SoXtP::timersensorid = 0;
     SoXtP::timersensoractive = FALSE;
@@ -1039,18 +949,19 @@ SoXt::sensorQueueChanged(// static, private
   if (sensormanager->isDelaySensorPending()) {
     if (! SoXtP::idlesensoractive) {
       SoXtP::idlesensorid =
-        XtAppAddWorkProc(SoXt::getAppContext(), SoXt::idleSensorCB, NULL);
+        XtAppAddWorkProc(SoXt::getAppContext(), SoXtP::idleSensorCB, NULL);
       SoXtP::idlesensoractive = TRUE;
     }
 
     if (! SoXtP::delaysensoractive) {
       unsigned long timeout = SoDB::getDelaySensorTimeout().getMsecValue();
       SoXtP::delaysensorid =
-        XtAppAddTimeOut(SoXt::getAppContext(), timeout, SoXt::delaySensorCB,
-          NULL);
+        XtAppAddTimeOut(SoXt::getAppContext(), timeout, SoXtP::delaySensorCB,
+                        NULL);
       SoXtP::delaysensoractive = TRUE;
     }
-  } else {
+  }
+  else {
     if (SoXtP::idlesensoractive) {
       XtRemoveWorkProc(SoXtP::idlesensorid);
       SoXtP::idlesensorid = 0;
@@ -1062,7 +973,7 @@ SoXt::sensorQueueChanged(// static, private
       SoXtP::delaysensoractive = FALSE;
     }
   }
-} // sensorQueueChange()
+}
 
 // *************************************************************************
 
