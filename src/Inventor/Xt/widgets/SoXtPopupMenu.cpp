@@ -27,6 +27,7 @@ static const char rcsid[] =
 #include <Xm/SeparatoG.h>
 #include <Xm/PushBG.h>
 #include <Xm/ToggleBG.h>
+#include <Xm/ToggleB.h>
 #include <Xm/CascadeBG.h>
 
 #include <Inventor/SoLists.h>
@@ -74,7 +75,7 @@ SoXtPopupMenu::SoXtPopupMenu(
 {
   this->menus = new SbPList;
   this->items = new SbPList;
-  this->dirty = true;
+  this->dirty = TRUE;
   this->popup = (Widget) NULL;
 } // SoXtPopupMenu()
 
@@ -632,7 +633,7 @@ SoXtPopupMenu::traverseBuild(
       if ( sub->pos == j && sub->parent == menu ) {
 //        fprintf( stderr, "%s%s {\n", pre, sub->name );
         Widget submenu = XmCreatePulldownMenu( parent, sub->name, NULL, 0 );
-        unsigned char * temp = XmStringCreateLocalized( sub->title );
+        XmString temp = XmStringCreateLocalized( sub->title );
         sub->menu = XtVaCreateManagedWidget( sub->name,
           xmCascadeButtonGadgetClass, parent,
           XmNsubMenuId, submenu,
