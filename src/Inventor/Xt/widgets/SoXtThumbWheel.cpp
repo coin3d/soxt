@@ -555,7 +555,7 @@ expose(
     XCopyArea( XtDisplay(widget), widget->thumbwheel.pixmaps[pixmap],
       XtWindow(widget), widget->thumbwheel.context,
       0, 0, widget->core.width, widget->core.height, 0, 0 );
-   widget->thumbwheel.currentpixmap = pixmap;
+    widget->thumbwheel.currentpixmap = pixmap;
   } else {
 #if SOXT_DEBUG
     SoDebugError::postInfo( "SoXtThumbWheel::expose",
@@ -580,6 +580,12 @@ set_values(
   SoXtThumbWheelWidget curcw = (SoXtThumbWheelWidget) current;
   SoXtThumbWheelWidget reqcw = (SoXtThumbWheelWidget) request;
   SoXtThumbWheelWidget newcw = (SoXtThumbWheelWidget) new_widget;
+
+  if ( newcw->core.width != curcw->core.width )
+    redisplay = True;
+
+  if ( newcw->core.height != curcw->core.height )
+    redisplay = True;
 
   if ( newcw->core.sensitive != curcw->core.sensitive )
     redisplay = True;
@@ -829,7 +835,23 @@ SoXtThumbWheelSetValue(
   }
   SoXtThumbWheelWidget wheel = (SoXtThumbWheelWidget) w;
   wheel->thumbwheel.value = value;
-  XtVaSetValues( w, XmNrefresh, True, NULL );
+
+  if ( ! wheel->thumbwheel.thumbwheel )
+    return;
+
+  int pixmap = 0;
+  if ( wheel->core.sensitive ) {
+    pixmap = ((SoAnyThumbWheel *) wheel->thumbwheel.thumbwheel)->
+      GetBitmapForValue( wheel->thumbwheel.value, SoAnyThumbWheel::ENABLED );
+  } else {
+    pixmap =
+      ((SoAnyThumbWheel *) wheel->thumbwheel.thumbwheel)->
+        GetBitmapForValue( wheel->thumbwheel.value,
+                           SoAnyThumbWheel::DISABLED );
+  }
+
+  if ( pixmap != wheel->thumbwheel.currentpixmap )
+    XtVaSetValues( w, XmNrefresh, True, NULL );
 } // SoXtThumbWheelSetValue()
 
 /*!
