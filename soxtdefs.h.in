@@ -1,7 +1,7 @@
 /**************************************************************************
  *
- *  This file is part of the Coin SoXt GUI binding library.
- *  Copyright (C) 2000 by Systems in Motion.  All rights reserved.
+ *  This file is part of the Coin SoQt GUI binding library.
+ *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License version
@@ -9,7 +9,7 @@
  *  LICENSE.LGPL at the root directory of the distribution for all the
  *  details.
  *
- *  If you want to use Coin SoXt for applications not compatible with the
+ *  If you want to use Coin SoQt for applications not compatible with the
  *  LGPL, please contact SIM to acquire a Professional Edition License.
  *
  *  Systems in Motion, Prof Brochs gate 6, N-7030 Trondheim, NORWAY
@@ -17,14 +17,18 @@
  *
  **************************************************************************/
 
+/* $Id$ */
+
 #ifndef SO@GUI@_INTERNALDEFS_H
 #define SO@GUI@_INTERNALDEFS_H
 
-// *************************************************************************
+/* ********************************************************************** */
 
 #ifdef __FILE__
 #define SO@GUI@_STUB_FILE __FILE__
 #else
+// FIXME: avoid this case by redefining the compilation rules to define the
+// current filename in some variable.  [20010919 larsa]
 #define SO@GUI@_STUB_FILE ((char *)0L)
 #endif
 
@@ -44,51 +48,78 @@
 #endif
 #endif
 
-// SO@GUI@_STUB(): this is the method which prints out stub
-// information. Used where there is functionality missing.
-
 #if SO@GUI@_DEBUG
 
-#include <stdio.h> // fprintf()
+#include <stdio.h> // sprintf()
+#include <Inventor/errors/SoDebugError.h>
 
-// This stupid thing is here to silence some compilers that complain on
-// constant if-expressions.
-inline int _not_null( const void * arg ) { return (arg != NULL) ? 1 : 0; }
+/*
+  This stupid thing is here to silence some compilers that complain on
+  constant if-expressions.
+*/
+
+inline int so@gui@_not_null(const void * arg) { return (arg != NULL) ? 1 : 0; }
+
+/*
+  SO@GUI@_STUB(): a macro that prints out stub information.
+  Used where there is functionality missing.
+*/
 
 #define SO@GUI@_STUB() \
   do { \
-    (void)fprintf(stderr, "STUB: functionality not yet completed"); \
-    if ( _not_null(SO@GUI@_STUB_FILE) ) { \
-      (void)fprintf(stderr, " at %s", SO@GUI@_STUB_FILE); \
-      if ( _not_null((void *)SO@GUI@_STUB_LINE) ) \
-        (void)fprintf(stderr, ":line %u", SO@GUI@_STUB_LINE); \
-      if ( _not_null(SO@GUI@_STUB_FUNC) ) \
-        (void)fprintf(stderr, ":[%s]", SO@GUI@_STUB_FUNC); \
-    } \
-    (void)fprintf(stderr, "\n"); \
+    char identifier[80]; \
+    sprintf(identifier, "%s:%u [%s]", \
+      so@gui@_not_null(SO@GUI@_STUB_FILE) ? SO@GUI@_STUB_FILE : "", \
+      so@gui@_not_null((void *)SO@GUI@_STUB_LINE) ? SO@GUI@_STUB_LINE : 0, \
+      so@gui@_not_null(SO@GUI@_STUB_FUNC) ? SO@GUI@_STUB_FUNC : ""); \
+    SoDebugError::postWarning(identifier, \
+                              "STUB: functionality not yet completed"); \
   } while (0)
+
+/*
+  SO@GUI@_STUB_ONCE(): a macro that prints out stub information, but only on
+  the first pass.  Used where there is functionality missing that may be
+  called hundreds of times.
+*/
 
 #define SO@GUI@_STUB_ONCE() \
   do { \
     static int first = 1; \
     if ( first ) { \
+      char identifier[80]; \
       first = 0; \
-      (void)fprintf(stderr, "STUB: functionality not yet completed (first and last warning)"); \
-      if ( _not_null(SO@GUI@_STUB_FILE) ) { \
-        (void)fprintf(stderr, " at %s", SO@GUI@_STUB_FILE); \
-        if ( _not_null((void *)SO@GUI@_STUB_LINE) ) \
-          (void)fprintf(stderr, ":line %u", SO@GUI@_STUB_LINE); \
-        if ( _not_null(SO@GUI@_STUB_FUNC) ) \
-          (void)fprintf(stderr, ":[%s]", SO@GUI@_STUB_FUNC); \
-      } \
-      (void)fprintf(stderr, "\n"); \
+      sprintf(identifier, "%s:%u [%s]", \
+        so@gui@_not_null(SO@GUI@_STUB_FILE) ? SO@GUI@_STUB_FILE : "", \
+        so@gui@_not_null((void *)SO@GUI@_STUB_LINE) ? SO@GUI@_STUB_LINE : 0, \
+        so@gui@_not_null(SO@GUI@_STUB_FUNC) ? SO@GUI@_STUB_FUNC : ""); \
+      SoDebugError::postWarning(identifier, \
+                                "STUB: functionality not yet completed " \
+                                "(first and last warning)"); \
     } \
+  } while (0)
+
+/*
+  SO@GUI@_OBSOLETED(): a macro that prints out information about an obsoleted
+  function still being in use.
+*/
+
+#define SO@GUI@_OBSOLETED() \
+  do { \
+    char identifier[80]; \
+    sprintf(identifier, "%s:%u [%s]", \
+      so@gui@_not_null(SO@GUI@_STUB_FILE) ? SO@GUI@_STUB_FILE : "", \
+      so@gui@_not_null((void *)SO@GUI@_STUB_LINE) ? SO@GUI@_STUB_LINE : 0, \
+      so@gui@_not_null(SO@GUI@_STUB_FUNC) ? SO@GUI@_STUB_FUNC : ""); \
+    SoDebugError::post(identifier, \
+                       "OBSOLETED: functionality no longer supported"); \
   } while (0)
 
 #else /* !SO@GUI@_DEBUG */
 
-#define SO@GUI@_STUB() do { } while (0)
+/* snub the stubs */
+#define SO@GUI@_STUB()      do { } while (0)
 #define SO@GUI@_STUB_ONCE() do { } while (0)
+#define SO@GUI@_OBSOLETED() do { } while (0)
 
 #endif /* !SO@GUI@_DEBUG */
 
@@ -107,6 +138,6 @@ inline int _not_null( const void * arg ) { return (arg != NULL) ? 1 : 0; }
 #define bindtextdomain(Package, Directory)
 #endif /* HAVE_GETTEXT && ENABLE_NLS */
 
-// *************************************************************************
+/* ********************************************************************** */
 
-#endif // ! SO@GUI@_INTERNALDEFS_H
+#endif /* ! SO@GUI@_INTERNALDEFS_H */
