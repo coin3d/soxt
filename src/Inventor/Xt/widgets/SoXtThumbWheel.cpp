@@ -589,15 +589,28 @@ set_values(
   if ( newcw->core.height != curcw->core.height )
     redisplay = True;
 
-  if ( newcw->core.sensitive != curcw->core.sensitive )
-    redisplay = True;
-
-  if ( newcw->thumbwheel.value != curcw->thumbwheel.value )
-    redisplay = True;
-
   if ( newcw->thumbwheel.refresh != False ) {
     newcw->thumbwheel.refresh = False;
     redisplay = True;
+  }
+
+  if ( newcw->core.sensitive != curcw->core.sensitive )
+    expose( new_widget, NULL, NULL );
+
+  if ( newcw->thumbwheel.value != curcw->thumbwheel.value ) {
+    int pixmap = 0;
+    SoXtThumbWheelWidget wheel = (SoXtThumbWheelWidget) newcw;
+    if ( wheel->core.sensitive ) {
+      pixmap = ((SoAnyThumbWheel *) wheel->thumbwheel.thumbwheel)->
+        GetBitmapForValue( wheel->thumbwheel.value, SoAnyThumbWheel::ENABLED );
+    } else {
+      pixmap =
+        ((SoAnyThumbWheel *) wheel->thumbwheel.thumbwheel)->
+          GetBitmapForValue( wheel->thumbwheel.value,
+                             SoAnyThumbWheel::DISABLED );
+    }
+    if ( pixmap != wheel->thumbwheel.currentpixmap )
+      expose( new_widget, NULL, NULL );
   }
 
   return redisplay;
@@ -853,7 +866,7 @@ SoXtThumbWheelSetValue(
   }
 
   if ( pixmap != wheel->thumbwheel.currentpixmap )
-    XtVaSetValues( w, XmNrefresh, True, NULL );
+    expose( w, NULL, NULL );
 } // SoXtThumbWheelSetValue()
 
 /*!
