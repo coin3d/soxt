@@ -140,7 +140,7 @@ if test x"$sim_ac_x11_avail" = xyes; then
   ])
 fi
 
-SIM_CHECK_OPENGL([
+SIM_AC_CHECK_OPENGL([
   SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_gl_cppflags"
   SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_gl_ldflags"
   SOXT_EXTRA_LIBS="$sim_ac_gl_libs $SOXT_EXTRA_LIBS"
