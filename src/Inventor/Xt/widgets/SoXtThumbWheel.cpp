@@ -719,7 +719,6 @@ Roll(
     SoAnyThumbWheel::ENABLED );
 
   if ( pixmap != widget->thumbwheel.currentpixmap ) {
-    SoDebugError::postInfo( "", "update" );
     XCopyArea( XtDisplay(widget), widget->thumbwheel.pixmaps[pixmap],
       XtWindow(widget), widget->thumbwheel.context,
       0, 0, widget->core.width, widget->core.height, 0, 0 );
