@@ -46,19 +46,9 @@ static const char rcsid[] =
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoBasic.h>
 
-/*
-  SOXT_THUMBWHEELTEST
-  - for enabling the testcode for the thumbwheel widget in development.
-  Be aware; it is disabled for a reason...
-
-  [bash$ CPPFLAGS="-DSOXT_THUMBWHEELTEST" ../../src/SoXt/configure]
-*/
-
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
-#ifdef SOXT_THUMBWHEELTEST
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
-#endif // SOXT_THUMBWHEELTEST
 #include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
 
 #include <Inventor/Xt/viewers/SoAnyFullViewer.h>
@@ -363,20 +353,30 @@ SoXtFullViewer::buildBottomTrim( // virtual
     XmNleftOffset, 5,
     NULL );
 
-#ifdef SOXT_THUMBWHEELTEST
-  // add right thumb wheel
+  // add bottom thumb wheel
   Widget wheel = XtVaCreateManagedWidget( "BottomWheel",
-    soXtThumbWheelWidgetClass, trim,
+    soxtThumbWheelWidgetClass, trim,
     XmNorientation, XmHORIZONTAL,
+    XmNshadowType, XmSHADOW_OUT,
+    XmNhighlightThickness, 2,
+    XmNshadowThickness, 2,
+    XmNtraversalOn, False,
     XmNleftAttachment, XmATTACH_WIDGET,
     XmNleftWidget, label2,
+    XmNleftOffset, 2,
     XmNtopAttachment, XmATTACH_FORM,
     XmNtopOffset, 2,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNbottomOffset, 2,
-    XmNheight, 90,
+    XmNwidth, 90,
     NULL );
-#endif // SOXT_THUMBWHEELTEST
+
+  XtAddCallback( wheel,
+    XmNarmCallback, SoXtFullViewer::bottomWheelStartCB, this );
+  XtAddCallback( wheel,
+    XmNdisarmCallback, SoXtFullViewer::bottomWheelFinishCB, this );
+  XtAddCallback( wheel,
+    XmNvalueChangedCallback, SoXtFullViewer::bottomWheelMotionCB, this );
 
   Widget label3 = XtVaCreateManagedWidget( "Dolly", xmLabelWidgetClass,
     trim, XmNtopAttachment, XmATTACH_FORM,
@@ -412,11 +412,14 @@ SoXtFullViewer::buildLeftTrim( // virtual
     NULL );
   XtManageChild( this->appButtonsForm );
 
-#ifdef SOXT_THUMBWHEELTEST
   // add right thumb wheel
   Widget wheel = XtVaCreateManagedWidget( "LeftWheel",
-    soXtThumbWheelWidgetClass, trim,
+    soxtThumbWheelWidgetClass, trim,
     XmNorientation, XmVERTICAL,
+    XmNshadowType, XmSHADOW_OUT,
+    XmNhighlightThickness, 2,
+    XmNshadowThickness, 2,
+    XmNtraversalOn, False,
     XmNleftAttachment, XmATTACH_FORM,
     XmNleftOffset, 2,
     XmNrightAttachment, XmATTACH_FORM,
@@ -425,7 +428,13 @@ SoXtFullViewer::buildLeftTrim( // virtual
     XmNbottomOffset, 2,
     XmNheight, 90,
     NULL );
-#endif // SOXT_THUMBWHEELTEST
+
+  XtAddCallback( wheel,
+    XmNarmCallback, SoXtFullViewer::leftWheelStartCB, this );
+  XtAddCallback( wheel,
+    XmNdisarmCallback, SoXtFullViewer::leftWheelFinishCB, this );
+  XtAddCallback( wheel,
+    XmNvalueChangedCallback, SoXtFullViewer::leftWheelMotionCB, this );
 
   return trim;
 } // buildLeftTrim()
@@ -449,11 +458,14 @@ SoXtFullViewer::buildRightTrim( // virtual
   Widget buttonForm = this->buildViewerButtons( trim );
   XtManageChild( buttonForm );
 
-#ifdef SOXT_THUMBWHEELTEST
   // add right thumb wheel
   Widget wheel = XtVaCreateManagedWidget( "RightWheel",
-    soXtThumbWheelWidgetClass, trim,
+    soxtThumbWheelWidgetClass, trim,
     XmNorientation, XmVERTICAL,
+    XmNshadowType, XmSHADOW_OUT,
+    XmNhighlightThickness, 2,
+    XmNshadowThickness, 2,
+    XmNtraversalOn, False,
     XmNleftAttachment, XmATTACH_FORM,
     XmNleftOffset, 2,
     XmNrightAttachment, XmATTACH_FORM,
@@ -462,7 +474,13 @@ SoXtFullViewer::buildRightTrim( // virtual
     XmNbottomOffset, 2,
     XmNheight, 90,
     NULL );
-#endif // SOXT_THUMBWHEELTEST
+
+  XtAddCallback( wheel,
+    XmNarmCallback, SoXtFullViewer::rightWheelStartCB, this );
+  XtAddCallback( wheel,
+    XmNdisarmCallback, SoXtFullViewer::rightWheelFinishCB, this );
+  XtAddCallback( wheel,
+    XmNvalueChangedCallback, SoXtFullViewer::rightWheelMotionCB, this );
 
   return trim;
 } // buildRightTrim()
@@ -927,6 +945,17 @@ SoXtFullViewer::leftWheelStart( // virtual
 */
 
 void
+SoXtFullViewer::leftWheelStartCB( // static
+  Widget,
+  XtPointer,
+  XtPointer )
+{
+} // leftWheelStartCB()
+
+/*!
+*/
+
+void
 SoXtFullViewer::leftWheelMotion( // virtual
   float value )
 {
@@ -937,11 +966,33 @@ SoXtFullViewer::leftWheelMotion( // virtual
 */
 
 void
+SoXtFullViewer::leftWheelMotionCB( // static
+  Widget,
+  XtPointer,
+  XtPointer )
+{
+} // leftWheelMotionCB()
+
+/*!
+*/
+
+void
 SoXtFullViewer::leftWheelFinish( // virtual
   void )
 {
   this->interactiveCountDec();
 } // leftWheelFinished()
+
+/*!
+*/
+
+void
+SoXtFullViewer::leftWheelFinishCB( // static
+  Widget,
+  XtPointer,
+  XtPointer )
+{
+} // leftWheelFinishCB()
 
 /*!
 */
@@ -969,6 +1020,18 @@ SoXtFullViewer::bottomWheelStart( // virtual
 */
 
 void
+SoXtFullViewer::bottomWheelStartCB( // static
+  Widget w,
+  XtPointer client_data,
+  XtPointer call_data )
+{
+  ((SoXtFullViewer *) client_data)->bottomWheelStart();
+} // bottomWheelStart()
+
+/*!
+*/
+
+void
 SoXtFullViewer::bottomWheelMotion( // virtual
   float value )
 {
@@ -979,11 +1042,35 @@ SoXtFullViewer::bottomWheelMotion( // virtual
 */
 
 void
+SoXtFullViewer::bottomWheelMotionCB( // static
+  Widget w,
+  XtPointer client_data,
+  XtPointer call_data )
+{
+  ((SoXtFullViewer *) client_data)->bottomWheelMotion( 0.0f );
+} // bottomWheelStart()
+
+/*!
+*/
+
+void
 SoXtFullViewer::bottomWheelFinish( // virtual
   void )
 {
   this->interactiveCountDec();
 } // bottomWheelFinish()
+
+/*!
+*/
+
+void
+SoXtFullViewer::bottomWheelFinishCB( // static
+  Widget w,
+  XtPointer client_data,
+  XtPointer call_data )
+{
+  ((SoXtFullViewer *) client_data)->bottomWheelFinish();
+} // bottomWheelStart()
 
 /*!
 */
@@ -1011,6 +1098,17 @@ SoXtFullViewer::rightWheelStart( // virtual
 */
 
 void
+SoXtFullViewer::rightWheelStartCB(
+  Widget,
+  XtPointer,
+  XtPointer )
+{
+} // rightWheelStartCB()
+
+/*!
+*/
+
+void
 SoXtFullViewer::rightWheelMotion( // virtual
   float value )
 {
@@ -1021,11 +1119,33 @@ SoXtFullViewer::rightWheelMotion( // virtual
 */
 
 void
+SoXtFullViewer::rightWheelMotionCB(
+  Widget,
+  XtPointer,
+  XtPointer )
+{
+} // rightWheelMotionCB()
+
+/*!
+*/
+
+void
 SoXtFullViewer::rightWheelFinish( // virtual
   void )
 {
   this->interactiveCountDec();
 } // rightWheelFinish()
+
+/*!
+*/
+
+void
+SoXtFullViewer::rightWheelFinishCB(
+  Widget,
+  XtPointer,
+  XtPointer )
+{
+} // rightWheelFinishCB()
 
 /*!
 */

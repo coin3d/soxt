@@ -90,18 +90,32 @@ protected:
   virtual Widget makeSubPreferences( Widget parent );
   void setPrefSheetString( const char * title );
 
+#define WIDGET_CB(name) static void name( Widget, XtPointer, XtPointer )
+
   virtual void leftWheelStart(void);
+  WIDGET_CB( leftWheelStartCB );
   virtual void leftWheelMotion( float value );
+  WIDGET_CB( leftWheelMotionCB );
   virtual void leftWheelFinish(void);
+  WIDGET_CB( leftWheelFinishCB );
   float getLeftWheelValue(void) const;
+
   virtual void bottomWheelStart(void);
+  static void bottomWheelStartCB( Widget, XtPointer, XtPointer );
   virtual void bottomWheelMotion( float value );
+  static void bottomWheelMotionCB( Widget, XtPointer, XtPointer );
   virtual void bottomWheelFinish(void);
+  static void bottomWheelFinishCB( Widget, XtPointer, XtPointer );
   float getBottomWheelValue(void) const;
+
   virtual void rightWheelStart(void);
+  WIDGET_CB( rightWheelStartCB );
   virtual void rightWheelMotion( float value );
+  WIDGET_CB( rightWheelMotionCB );
   virtual void rightWheelFinish(void);
+  WIDGET_CB( rightWheelFinishCB );
   float getRightWheelValue(void) const;
+#undef WIDGET_CB
 
   void setLeftWheelString( const char * const name );
   void setBottomWheelString( const char * const name );
@@ -170,6 +184,10 @@ private:
     Pixmap view_all, view_all_ins;
     Pixmap seek, seek_ins;
   } pixmaps;
+
+  struct {
+    Widget leftwheel, bottomwheel, rightwheel;
+  } labels;
 
 private:
   void selectedViewing(void);
