@@ -963,7 +963,7 @@ SoXt::sensorQueueChanged( // static, private
   void * ) // user )
 {
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXt::sensorQueueChanged", "called" );
+  SoDebugError::postInfo( "SoXt::sensorQueueChanged", "start" );
 #endif // SOXT_DEBUG
   SoSensorManager * sensormanager = SoDB::getSensorManager();
 
@@ -1068,8 +1068,21 @@ SoXt::selectBestVisual( // static
   Colormap & colormap,
   int & depth )
 {
-  if ( dpy == NULL )
+  if ( dpy == NULL ) {
      dpy = XOpenDisplay( NULL );
+#if SOXT_DEBUG && 0
+     // This is _extremely_ useful for debugging X errors: activate
+     // this code (flip the "0" above to "1"), recompile libSoXt, then
+     // run the application code in a debugger with a breakpoint set
+     // at _XError. Now you can backtrace to the exact source location
+     // of the failing X request.
+     if (dpy) {
+       SoDebugError::postInfo( "SoXt::selectBestVisual",
+         "Turning on X synchronization." );
+       XSynchronize( dpy, True );
+     }
+#endif // SOXT_DEBUG
+  }
   if ( dpy == NULL ) {
     SoDebugError::postInfo( "SoXt::selectBestVisual",
       "Failed to open display." );
