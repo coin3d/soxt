@@ -57,6 +57,7 @@ SoXtGLWidget::SoXtGLWidget( // protected
 : inherited( parent, name, inParent )
 , waitForExpose( TRUE )
 , drawToFrontBuffer( FALSE )
+, glxWidget( NULL )
 {
   this->glLockLevel = 0;
   this->borderwidth = 0; // SOXT_BORDER_WIDTH;
