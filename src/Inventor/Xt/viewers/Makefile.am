@@ -1,5 +1,5 @@
 
-INCLUDES = -I$(top_srcdir)/src -I$(top_builddir)/src
+INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 LIBS =
 
 noinst_LTLIBRARIES = libSoXtViewers.la
@@ -19,6 +19,14 @@ libSoXtViewersinc_HEADERS = \
 	$(top_builddir)/src/Inventor/Xt/viewers/SoXtViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFullViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtExaminerViewer.h
+
+############################################################################
+
+SoXtViewer.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.h.in
+	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/viewers/SoXtViewer.h )
+
+SoXtViewer.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.cpp.in
+	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/viewers/SoXtViewer.cpp )
 
 ############################################################################
 

@@ -2,9 +2,7 @@
 
 SUBDIRS = common devices viewers widgets
 
-############################################################################
-
-INCLUDES = -I$(top_srcdir)/src -I$(top_builddir)/src
+INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 
 lib_LTLIBRARIES = libSoXt.la
 
@@ -35,6 +33,14 @@ libSoXtinc_HEADERS = \
 
 ############################################################################
 
+SoXtRenderArea.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.h.in
+	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtRenderArea.h )
+
+SoXtRenderArea.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.cpp.in
+	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtRenderArea.cpp )
+
+############################################################################
+
 install-libSoXtincHEADERS: $(libSoXtinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libSoXtincdir)
@@ -53,3 +59,4 @@ uninstall-libSoXtincHEADERS:
 	  rm -f $(DESTDIR)$(libSoXtincdir)/$$f; \
 	done
 
+############################################################################

@@ -103,9 +103,7 @@ uGUI = @uGUI@
 
 SUBDIRS = common devices viewers widgets
 
-############################################################################
-
-INCLUDES = -I$(top_srcdir)/src -I$(top_builddir)/src
+INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 
 lib_LTLIBRARIES = libSoXt.la
 
@@ -139,7 +137,7 @@ libSoXtinc_HEADERS = \
 subdir = src/Inventor/Xt
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../../config.h
-CONFIG_CLEAN_FILES =  SoXtRenderArea.h SoXtRenderArea.cpp
+CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES)
 
 
@@ -171,9 +169,7 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDF
 DIST_SOURCES =  $(libSoXt_la_SOURCES)
 HEADERS =  $(libSoXtinc_HEADERS)
 
-DIST_COMMON =  $(libSoXtinc_HEADERS) Makefile.am Makefile.in \
-$(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.cpp.in \
-$(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.h.in
+DIST_COMMON =  $(libSoXtinc_HEADERS) Makefile.am Makefile.in
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -196,10 +192,6 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
-SoXtRenderArea.h: $(top_builddir)/config.status $(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.h.in
-	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-SoXtRenderArea.cpp: $(top_builddir)/config.status $(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.cpp.in
-	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 mostlyclean-libLTLIBRARIES:
 
@@ -484,6 +476,14 @@ maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
 ############################################################################
 
+SoXtRenderArea.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.h.in
+	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtRenderArea.h )
+
+SoXtRenderArea.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyRenderArea.cpp.in
+	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtRenderArea.cpp )
+
+############################################################################
+
 install-libSoXtincHEADERS: $(libSoXtinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libSoXtincdir)
@@ -501,6 +501,8 @@ uninstall-libSoXtincHEADERS:
 	  echo " rm -f $(DESTDIR)$(libSoXtincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libSoXtincdir)/$$f; \
 	done
+
+############################################################################
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

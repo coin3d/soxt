@@ -99,7 +99,7 @@ sim_ac_conf_cmd = @sim_ac_conf_cmd@
 uGUI = @uGUI@
 
 
-INCLUDES = -I$(top_srcdir)/src -I$(top_builddir)/src
+INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 LIBS = 
 
 noinst_LTLIBRARIES = libSoXtViewers.la
@@ -124,7 +124,7 @@ libSoXtViewersinc_HEADERS = \
 subdir = src/Inventor/Xt/viewers
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../../../config.h
-CONFIG_CLEAN_FILES =  SoXtViewer.h SoXtViewer.cpp
+CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(noinst_LTLIBRARIES)
 
 
@@ -153,9 +153,7 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDF
 DIST_SOURCES =  $(libSoXtViewers_la_SOURCES)
 HEADERS =  $(libSoXtViewersinc_HEADERS)
 
-DIST_COMMON =  $(libSoXtViewersinc_HEADERS) Makefile.am Makefile.in \
-$(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.cpp.in \
-$(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.h.in
+DIST_COMMON =  $(libSoXtViewersinc_HEADERS) Makefile.am Makefile.in
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -178,10 +176,6 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
-SoXtViewer.h: $(top_builddir)/config.status $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.h.in
-	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-SoXtViewer.cpp: $(top_builddir)/config.status $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.cpp.in
-	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 mostlyclean-noinstLTLIBRARIES:
 
@@ -378,6 +372,14 @@ all-redirect all-am all install-strip installdirs mostlyclean-generic \
 distclean-generic clean-generic maintainer-clean-generic clean \
 mostlyclean distclean maintainer-clean
 
+
+############################################################################
+
+SoXtViewer.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.h.in
+	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/viewers/SoXtViewer.h )
+
+SoXtViewer.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.cpp.in
+	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/viewers/SoXtViewer.cpp )
 
 ############################################################################
 

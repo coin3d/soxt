@@ -1,5 +1,5 @@
 
-INCLUDES = -I$(top_srcdir)/src -I$(top_builddir)/src
+INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 LIBS =
 
 noinst_LTLIBRARIES = libSoXtDevices.la
