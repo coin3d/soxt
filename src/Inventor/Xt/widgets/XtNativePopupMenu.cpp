@@ -580,14 +580,11 @@ XtNativePopupMenu::removeMenuItem(
 #endif // SOXT_DEBUG
     return;
   }
-  // if (rec->parent == NULL) {
-#if SOXT_DEBUG
-  //   SoDebugError::postInfo("XtNativePopupMenu::RemoveMenu", "item not attached");
-#endif // SOXT_DEBUG
-  //   return;
-  // }
-  // rec->parent->removeItem(rec->itemid);
-  // rec->parent = NULL;
+  int idx = this->items->find(rec);
+  assert(idx != -1);
+  this->items->removeFast(idx);
+  delete rec;
+  this->dirty = TRUE;
 } // removeMenuItem()
 
 // *************************************************************************
@@ -608,7 +605,7 @@ XtNativePopupMenu::popUp(Widget inside, int x, int y)
   // FIXME: build menu
   if (this->dirty) {
     if (this->popup != (Widget) NULL) {
-      // destroy existing menu
+      // FIXME: destroy existing menu widget hierarchy
     }
     this->popup = this->build(inside);
   }
