@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <X11/X.h>
 
@@ -41,7 +43,7 @@ SoXtInputFocus::SoXtInputFocus(
 /*!
 */
 
-SoXtInputFocus::~SoXtInputFocus(
+SoXtInputFocus::~SoXtInputFocus( // virtual
   void )
 {
 } // ~SoXtInputfocus()
@@ -99,6 +101,7 @@ SoXtInputFocus::translateEvent( // virtual
 
 // *************************************************************************
 
-// To shut up nagging compilers...
+#if SOXT_DEBUG
 static const char * getSoXtInputFocusRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
 

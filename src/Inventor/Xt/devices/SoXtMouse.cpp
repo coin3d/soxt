@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <X11/X.h>
 
@@ -53,7 +55,7 @@ SoXtMouse::SoXtMouse(
 /*!
 */
 
-SoXtMouse::~SoXtMouse(
+SoXtMouse::~SoXtMouse( // virtual
   void )
 {
   delete this->locationEvent;
@@ -214,6 +216,7 @@ SoXtMouse::makeButtonEvent( // private
 
 // *************************************************************************
 
-// To shut up nagging compilers...
+#if SOXT_DEBUG
 static const char * getSoXtMouseRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
 

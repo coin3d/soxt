@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <X11/X.h>
 
@@ -51,7 +53,7 @@ SoXtSpaceball::SoXtSpaceball(
 /*!
 */
 
-SoXtSpaceball::~SoXtSpaceball(
+SoXtSpaceball::~SoXtSpaceball( // virtual
   void )
 {
 } // ~SoXtSpaceball()
@@ -181,6 +183,7 @@ SoXtSpaceball::isFocusToWindow(
 
 // *************************************************************************
 
-// To shut up nagging compilers...
+#if SOXT_DEBUG
 static const char * getSoXtSpaceballRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
 

@@ -1,5 +1,6 @@
 ############################################################################
-##
+## SoXt/src/Inventor/Xt/devices/Makefile.am
+## $Id$
 
 noinst_LTLIBRARIES = libSoXtDevices.la
 

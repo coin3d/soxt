@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <assert.h>
 
@@ -33,13 +35,27 @@ static const char rcsid[] =
 
 // *************************************************************************
 
+/*!
+*/
+
 SoXtDevice::SoXtDevice(
   void )
 : size( 0, 0 )
 {
 } // SoXtDevice()
 
+/*!
+*/
+
+SoXtDevice::~SoXtDevice( // virtual
+  void )
+{
+} // ~SoXtDevice()
+
 // *************************************************************************
+
+/*!
+*/
 
 void
 SoXtDevice::setWindowSize(
@@ -47,6 +63,9 @@ SoXtDevice::setWindowSize(
 {
   this->size = size;
 } // setWindowSize()
+
+/*!
+*/
 
 const SbVec2s
 SoXtDevice::getWindowSize(
@@ -56,6 +75,9 @@ SoXtDevice::getWindowSize(
 } // getWindowSize()
 
 // *************************************************************************
+
+/*!
+*/
 
 void
 SoXtDevice::setEventPosition(
@@ -74,10 +96,7 @@ SoXtDevice::setEventPosition(
 
 // *************************************************************************
 
-// To shut up nagging compilers...
-const char *
-getSoXtDeviceRCSId(void)
-{
-  return rcsid;
-} // getSoXtDeviceRCSId()
+#if SOXT_DEBUG
+const char * getSoXtDeviceRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
 

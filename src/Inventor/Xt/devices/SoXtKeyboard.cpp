@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <X11/X.h>
 
@@ -48,11 +50,13 @@ SoXtKeyboard::SoXtKeyboard(
 /*!
 */
 
-SoXtKeyboard::~SoXtKeyboard(
+SoXtKeyboard::~SoXtKeyboard( // virtual
   void )
 {
   delete this->keyboardEvent;
 } // ~SoXtKeyboard()
+
+// *************************************************************************
 
 /*!
 */
@@ -78,6 +82,8 @@ SoXtKeyboard::disable( // virtual
 {
   SOXT_STUB();
 } // disable()
+
+// *************************************************************************
 
 /*!
 */
@@ -117,21 +123,24 @@ SoXtKeyboard::makeKeyboardEvent( // private
   this->keyboardEvent->setState( state );
 
   char keybuf[8];
-  int keybufusage;
   KeySym keysym;
 
   SoKeyboardEvent::Key key = SoKeyboardEvent::ANY;
 
-  keybufusage = XLookupString( event, keybuf, 8, &keysym, NULL );
+  int keybufusage = XLookupString( event, keybuf, 8, &keysym, NULL );
 
   if ( keybufusage == 1 ) {
-    char cap = toupper( keybuf[0] );
-    if ( cap >= 'A' && cap <= 'Z' )
+    char cap = keybuf[0];
+    if ( cap >= 'A' && cap <= 'Z' ) {
       key = (SoKeyboardEvent::Key)
-        ((int) SoKeyboardEvent::A +  (cap - 'A'));
-    else if ( cap >= '0' && cap <= '9' )
+        ((int) SoKeyboardEvent::A + (cap - 'A'));
+    } else if ( cap >= 'a' && cap <= 'z' ) {
+      key = (SoKeyboardEvent::Key)
+        ((int) SoKeyboardEvent::A + (cap - 'a'));
+    } else if ( cap >= '0' && cap <= '9' ) {
       key = (SoKeyboardEvent::Key)
         ((int) SoKeyboardEvent::NUMBER_0 + (cap - '0'));
+    }
   } 
 
   if ( key == SoKeyboardEvent::ANY ) {
@@ -265,5 +274,7 @@ SoXtKeyboard::makeKeyboardEvent( // private
 // *************************************************************************
 
 // To shut up nagging compilers...
+#if SOXT_DEBUG
 static const char * getSoXtKeyboardRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
 
