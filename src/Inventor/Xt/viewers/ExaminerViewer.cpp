@@ -17,6 +17,10 @@
  *
  **************************************************************************/
 
+// Class documentation in common/viewers/SoGuiExaminerViewer.cpp.in.
+
+// *************************************************************************
+
 #include <string.h>
 #include <stdlib.h> // atoi()
 
@@ -43,7 +47,6 @@
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXtResource.h>
-#include <Inventor/Xt/SoXtCursor.h>
 #include <Inventor/Xt/widgets/SoXtPopupMenu.h>
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
 
@@ -57,14 +60,6 @@
 #include <Inventor/Xt/common/pixmaps/ortho.xpm>
 #include <Inventor/Xt/common/pixmaps/perspective.xpm>
 #endif // HAVE_LIBXPM
-
-// *************************************************************************
-
-/*!
-  \class SoXtExaminerViewer Inventor/Xt/viewers/SoXtExaminerViewer.h
-  \brief The SoXtExaminerViewer class is the most used viewer component.
-  \ingroup components viewers
-*/
 
 // *************************************************************************
 
@@ -166,137 +161,6 @@ SoXtExaminerViewer::~SoXtExaminerViewer()
 {
   this->genericDestructor();
   delete [] this->prefparts;
-}
-
-// *************************************************************************
-
-/*!
-  Stops the model from spin-animating.
-*/
-
-void
-SoXtExaminerViewer::leftWheelStart(void)
-{
-  if (this->isAnimating())
-    this->stopAnimating();
-  inherited::leftWheelStart();
-}
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtExaminerViewer::leftWheelMotion(float value)
-{
-  inherited::leftWheelMotion(
-    this->rotXWheelMotion(value, this->getLeftWheelValue()));
-}
-
-/*!
-  Stops the model from spin-animating.
-*/
-
-void
-SoXtExaminerViewer::bottomWheelStart(void)
-{
-  if (this->isAnimating())
-    this->stopAnimating();
-  inherited::bottomWheelStart();
-}
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtExaminerViewer::bottomWheelMotion(float value)
-{
-  inherited::bottomWheelMotion(
-    this->rotYWheelMotion(value, this->getBottomWheelValue()));
-}
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtExaminerViewer::rightWheelMotion(float value)
-{
-  this->zoom(this->getRightWheelValue() - value);
-  inherited::rightWheelMotion(value);
-}
-
-// *************************************************************************
-
-// Documented in superclass.  This method overridden from parent class
-// to make sure the mouse pointer cursor is updated.
-void
-SoXtExaminerViewer::setViewing(SbBool enable)
-{
-  if ((this->isViewing() && enable) || (!this->isViewing() && !enable)) {
-#if SOXT_DEBUG
-    SoDebugError::postWarning("SoXtFullViewer::setViewing",
-                              "current state already %s", enable ? "TRUE" : "FALSE");
-#endif // SOXT_DEBUG
-    return;
-  }
-
-  this->setMode(enable ?
-                        SoXtExaminerViewer::EXAMINE :
-                        SoXtExaminerViewer::INTERACT);
-  inherited::setViewing(enable);
-}
-
-// *************************************************************************
-
-/*!
-  \internal
-
-  Set cursor graphics according to mode.
-*/
-
-void
-SoXtExaminerViewer::setCursorRepresentation(int mode)
-{
-  // FIXME: remember to set up / change the cursor gfx whenever needed
-  // (we need to overload setCursorEnabled(), for instance). 20000426 mortene.
-
-
-  // FIXME: with the new So@Gui@Cursor class, this has actually become
-  // a possibly generic method for all So* toolkits. Move to common
-  // code. 20011125 mortene.
-
-  if (!this->isCursorEnabled()) {
-    this->setComponentCursor(SoXtCursor::getBlankCursor());
-    return;
-  }
-
-  switch (mode) {
-  case SoXtExaminerViewer::INTERACT:
-    this->setComponentCursor(SoXtCursor(SoXtCursor::DEFAULT));
-    break;
-
-  case SoXtExaminerViewer::EXAMINE:
-  case SoXtExaminerViewer::DRAGGING:
-    this->setComponentCursor(SoXtCursor::getRotateCursor());
-    break;
-
-  case SoXtExaminerViewer::ZOOMING:
-    this->setComponentCursor(SoXtCursor::getZoomCursor());
-    break;
-
-  case SoXtExaminerViewer::WAITING_FOR_SEEK:
-    this->setComponentCursor(SoXtCursor(SoXtCursor::CROSSHAIR));
-    break;
-
-  case SoXtExaminerViewer::WAITING_FOR_PAN:
-  case SoXtExaminerViewer::PANNING:
-    this->setComponentCursor(SoXtCursor::getPanCursor());
-    break;
-
-  default: assert(0); break;
-  }
 }
 
 // *************************************************************************
@@ -846,20 +710,6 @@ SoXtExaminerViewer::rotaxesoverlaytoggledCB(Widget,
 {
   SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
   viewer->rotaxesoverlaytoggled();
-}
-
-/*!
-  Invoked when first mapped.
-*/
-void
-SoXtExaminerViewer::afterRealizeHook(void)
-{
-#if SOXT_DEBUG && 0
-  SoDebugError::postInfo("SoXtExaminerViewer::afterRealizeHook",
-                         "[invoked]");
-#endif // SOXT_DEBUG
-  inherited::afterRealizeHook();
-  this->setCursorRepresentation(this->currentmode);
 }
 
 // *************************************************************************
