@@ -22,6 +22,12 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+/*!
+  \class SoXtComponent Inventor/Xt/SoXtComponent.h
+  \brief The SoXtComponent class is the base class for all SoXt components.
+
+*/
+
 #include <assert.h>
 #include <string.h>
 
@@ -142,22 +148,18 @@ SoXtComponent::SoXtComponent( // protected
       XmNdepth, depth,
       NULL );
 
+#if SOXT_DEBUG
     XtEventHandler editres_hook = (XtEventHandler) _XEditResCheckMessages;
     XtAddEventHandler( this->parent, (EventMask) 0, True, editres_hook, NULL );
+#endif // SOXT_DEBUG
 
     this->embedded = FALSE;
   } else {
     this->parent = parent;
     this->embedded = TRUE;
   }
-  if ( parent ) {
-    if ( parent == SoXt::getTopLevelWidget() )
-      this->embedded = FALSE;
-// FIXME: decide on this issue
-//    else if ( XtIsShell(parent) )
-//      this->embedded = FALSE;
-  }
-
+  if ( parent && XtIsShell( parent ) )
+    this->embedded = FALSE;
 } // SoXtComponent()
 
 /*!
@@ -195,8 +197,10 @@ SoXtComponent::~SoXtComponent( // virtual
 // *************************************************************************
 
 /*!
-  This method shows the component.  topLevelShell widgets will be realized
-  and mapped.  non-toplevel components will just be managed.
+  This method realizes the component.
+
+  topLevelShell widgets will be realized and mapped.
+  non-toplevel components will just be managed.
 */
 
 void
@@ -223,8 +227,10 @@ SoXtComponent::show( // virtual
 } // show()
 
 /*!
-  This method hides the component.  topLevelShell widgets will be unmapped
-  and destroyed.  non-toplevel components will just be unmanaged.
+  This method hides the component.
+
+  topLevelShell widgets will be unrealized.
+  non-toplevel components will just be unmanaged.
 */
 
 void
@@ -248,17 +254,26 @@ SoXtComponent::hide( // virtual
 
 /*!
   This method returns TRUE if component is shown, and FALSE if it is hidden.
+
+  This method is not implemented.
 */
 
 SbBool
 SoXtComponent::isVisible(
   void )
 {
+//  tracking calls to show/hide is not the answer - use X calls to see if
+//  mapped.
   SOXT_STUB();
   return TRUE;
 } // isVisible()
 
+// *************************************************************************
+
 /*!
+  This method returns the base widget of the component.
+
+  \sa SoXtComponent::getBaseWidget()
 */
 
 Widget
@@ -269,6 +284,9 @@ SoXtComponent::getWidget(
 } // getWidget()
 
 /*!
+  This method returns the base widget of the component.
+
+  \sa SoXtComponent::getBaseWidget()
 */
 
 Widget
@@ -279,6 +297,9 @@ SoXtComponent::baseWidget(
 } // baseWidget()
 
 /*!
+  This method returns the base widget of the component.
+
+  \sa SoXtComponent::getBaseWidget()
 */
 
 Widget
@@ -289,7 +310,7 @@ SoXtComponent::getBaseWidget(
 } // getBaseWidget()
 
 /*!
-  This method returns wether the component was created as a toplevel shell
+  This method returns whether the component was created as a toplevel shell
   or not.
 */
 
@@ -317,7 +338,7 @@ SoXtComponent::getShellWidget(
   This method returns the parent widget of the component widget.
   If the component created its own toplevel shell, this method returns the
   the shell widget.  If the component is embedded, this method returns the
-  widget given in the \a parent argument of the SoXtComponent constructor.
+  widget given in the \a parent argument of the constructor.
 */
 
 Widget      
@@ -330,22 +351,38 @@ SoXtComponent::getParentWidget(
 // *************************************************************************
 
 /*!
+  This method sets the size of the component.
+
+  The method assumes the caller knows what he is doing.
 */
 
 void    
 SoXtComponent::setSize(
   const SbVec2s size )
 {
-  if ( this->isTopLevelShell() || (this->parent && XtIsShell(this->parent)) ) {
-    if ( size[0] != -1 )
-      XtVaSetValues( this->getShellWidget(), XmNwidth, size[0], NULL );
-    if ( size[1] != -1 )
-      XtVaSetValues( this->getShellWidget(), XmNheight, size[1], NULL );
-  }
   this->size = size;
+  Widget widget;
+  if ( this->isTopLevelShell() )
+    widget = this->getShellWidget();
+  else
+    widget = this->getBaseWidget();
+  if ( ! widget )
+    return;
+
+  int argc = 0;
+  Arg args[2];
+  if ( size[0] != -1 )
+    XtSetArg( args[argc++], XmNwidth, size[0] );
+  if ( size[1] != -1 )
+    XtSetArg( args[argc++], XmNheight, size[1] );
+  XtSetValues( widget, args, argc );
 } // setSize()
 
 /*!
+  This method returns the size of the component.
+
+  The size that is returned is a cached size value, not a value fetched
+  from the GUI system.
 */
 
 SbVec2s   
@@ -359,7 +396,7 @@ SoXtComponent::getSize(
   This method tries to resize the component window, using \a size as the
   minimum requirements.
 
-  This method is not part of the Open Inventor API.
+  This method is not part of the Open Inventor SoXt API.
 */
 
 void
@@ -388,6 +425,11 @@ Display *
 SoXtComponent::getDisplay(
   void )
 {
+#if SOXT_DEBUG
+  if ( ! this->getBaseWidget() )
+    SoDebugError::postInfo( "SoXtComponent::getDisplay",
+      "component has no base widget" );
+#endif // SOXT_DEBUG
   return this->getBaseWidget() ?
     XtDisplay( this->getBaseWidget() ) : (Display *) NULL;
 } // getDisplay()
@@ -395,6 +437,10 @@ SoXtComponent::getDisplay(
 // *************************************************************************
 
 /*!
+  This method sets the title of the component.
+
+  The title will appear on the window title bar, if the component manages
+  its own window.
 */
 
 void      
@@ -408,28 +454,35 @@ SoXtComponent::setTitle(
     this->title = strcpy( new char [strlen(title)+1], title );
   }
 
-  if ( this->isTopLevelShell() ) {
-    Widget shell = this->getShellWidget();
-    if ( shell ) {
-      XtVaSetValues( shell,
-        XmNtitle, this->title,
-        NULL );
-    }
-  }
+  Widget shell = this->isTopLevelShell() ?
+    this->getShellWidget() : (Widget) NULL;
+  if ( ! shell )
+    return;
+  XtVaSetValues( shell,
+    XmNtitle, this->title,
+    NULL );
 } // setTitle()
 
 /*!
+  This method returns the title of the component.
+
+  If a title has been set, that title will be returned.
+  If no title has been set, the default title is returned.
 */
 
 const char *
 SoXtComponent::getTitle(
   void ) const
 {
-  // FIXME: use SoXtResource to see if title is set
+  // FIXME: use SoXtResource to see if title is set?
   return this->title ? this->title : this->getDefaultTitle();
 }
 
 /*!
+  This method sets the title of the icon representation of the window.
+
+  The title will appear on the window icon, if the component manages its
+  own window.
 */
 
 void      
@@ -442,24 +495,27 @@ SoXtComponent::setIconTitle(
     delete [] this->iconTitle;
     this->iconTitle = strcpy( new char [strlen(title)+1], title );
   }
-  // If the component has a parent, set the parent's icon title, otherwise
-  // set our widget's icon title
-  if (parent || widget) {
-    // FIXME: doesn't work if the widget is already realized. 20000324 mortene.
-     XtVaSetValues(parent ? parent : widget,
-                   XtNiconName, this->iconTitle,
-                   0, 0);
-  }
+  Widget shell = this->isTopLevelShell() ?
+    this->getShellWidget() : (Widget) NULL;
+  if ( ! shell )
+    return;
+  XtVaSetValues( shell,
+    XtNiconName, this->iconTitle,
+    NULL );
 }
 
 /*!
+  This method returns the icon title for the component.
+
+  If an icon title has been set, that icon title is returned.
+  If no icon title has been set, the default icon title is returned.
 */
 
 const char * 
 SoXtComponent::getIconTitle(
   void ) const
 {
-  // FIXME: use SoXtResource to see if iconName is set
+  // FIXME: use SoXtResource to see if iconName is set?
   return this->iconTitle ? this->iconTitle : this->getDefaultIconTitle();
 } // getIconTitle()
 
@@ -467,6 +523,12 @@ SoXtComponent::getIconTitle(
 
 /*!
   This method adds window close callbacks to the Component window.
+
+  Note that window close callback invokation has not been implemented yet.
+
+  \sa SoXtComponent::addWindowCloseCallback()
+  \sa SoXtComponent::removeWindowCloseCallback()
+  \sa SoXtComponent::invokeWindowCloseCallback()
 */
 
 void
@@ -478,7 +540,13 @@ SoXtComponent::setWindowCloseCallback(
 } // setWindowCloseAction()
 
 /*!
+  This method adds a close callback for the component window.
+
   This method is not standard for Open Inventor.
+
+  \sa SoXtComponent::setWindowCloseCallback()
+  \sa SoXtComponent::removeWindowCloseCallback()
+  \sa SoXtComponent::invokeWindowCloseCallback()
 */
 
 void
@@ -495,7 +563,13 @@ SoXtComponent::addWindowCloseCallback(
 } // addWindowCloseCallback()
 
 /*!
+  This method removes a close callback for the component window.
+
   This method is not standard for Open Inventor.
+
+  \sa SoXtComponent::addWindowCloseCallback()
+  \sa SoXtComponent::setWindowCloseCallback()
+  \sa SoXtComponent::invokeWindowCloseCallback()
 */
 
 void
@@ -522,7 +596,13 @@ SoXtComponent::removeWindowCloseCallback(
 } // removeWindowCloseCallback()
 
 /*!
+  This method invokes the close callbacks for the component window.
+
   This method is not standard for Open Inventor.
+
+  \sa SoXtComponent::addWindowCloseCallback()
+  \sa SoXtComponent::setWindowCloseCallback()
+  \sa SoXtComponent::removeWindowCloseCallback()
 */
 
 void
@@ -543,8 +623,8 @@ SoXtComponent::invokeWindowCloseCallbacks( // protected
 // *************************************************************************
 
 /*!
-  This method returns the SoXtComponent object \a widget is registered
-  for.
+  This method returns a pointer to the SoXtComponent object which the
+  \a widget argument is registered for.
 */
 
 SoXtComponent *
@@ -559,6 +639,7 @@ SoXtComponent::getComponent( // static
 } // getComponent()
 
 /*!
+  This method returns the name of the component.
 */
 
 const char *
@@ -569,6 +650,7 @@ SoXtComponent::getWidgetName(
 } // getWidgetName()
 
 /*!
+  This method returns the class name of the component.
 */
 
 const char *
@@ -579,6 +661,7 @@ SoXtComponent::getClassName(
 } // getClassName()
 
 /*!
+  This method sets the base widget of the component.
 */
 
 void
@@ -590,9 +673,11 @@ SoXtComponent::setBaseWidget( // protected
     XtVaSetValues( this->widget, XtNwidth, this->size[0], NULL );
   if ( this->size[1] != -1 )
     XtVaSetValues( this->widget, XtNheight, this->size[1], NULL );
+  // register widget?
 } // setBaseWidget()
 
 /*!
+  This method sets the class name of the widget.
 */
 
 void
@@ -618,14 +703,16 @@ SoXtComponent::windowCloseAction( // virtual, protected
   void )
 {
   if ( this->getShellWidget() == SoXt::getTopLevelWidget() ) {
-    exit( 0 );
+    XtAppSetExitFlag( SoXt::getAppContext() );
   } else {
     this->hide();
   }
 } // windowCloseAction()
 
 /*!
-  Hook called when window is realized.
+  This method is a hook that is called when the component is realized.
+
+  Invocation of this hook is not implemented yet.
 */
 
 void
@@ -651,10 +738,13 @@ SoXtComponent::afterRealizeHook( // virtual, protected
   }
 } // afterRealizeHook()
 
+// *************************************************************************
+
 /*!
   This method returns the default name for the component widget.
-  It should be overloaded by SoXtComponent-derived classes so the topmost
-  widget in the component gets a proper name.
+
+  It should be overloaded by SoXtComponent-derived classes so the
+  topmost widget in the component gets a proper name.
 */
 
 const char *
@@ -666,8 +756,9 @@ SoXtComponent::getDefaultWidgetName( // virtual, protected
 } // getDefaultWidgetName()
 
 /*!
-  This method returns the default window title for the component.  It
-  should be overloaded by SoXtComponent-derived classes so the window
+  This method returns the default window title for the component.
+
+  It should be overloaded by SoXtComponent-derived classes so the window
   and popup menu will get a proper title.
 */
 
@@ -681,6 +772,7 @@ SoXtComponent::getDefaultTitle( // virtual, protected
 
 /*!
   This method returns the default title for icons for the component window.
+
   It should be overloaded by SoXtComponent-derived classes so icons will
   get proper titles.
 */
@@ -696,10 +788,15 @@ SoXtComponent::getDefaultIconTitle( // virtual, protected
 // *************************************************************************
 
 /*!
-  This method registers the widget as part of the component.  All components
-  should at least register it's base widget.  This database is used by the
-  SoXtResource class.
+  This method registers the widget as part of the component.
+
+  All components should at least register it's base widget.  This database
+  is used by the SoXtResource class.
+
+  \sa SoXtComponent::unregisterWidget()
 */
+
+// FIXME: Should base widgets get registered when setBaseWidget is called?
 
 void
 SoXtComponent::registerWidget( // protected
@@ -715,6 +812,8 @@ SoXtComponent::registerWidget( // protected
 
 /*!
   This method unregisters \a widget.
+
+  \sa SoXtComponent::registerWidget()
 */
 
 void
@@ -736,6 +835,12 @@ SoXtComponent::unregisterWidget( // protected
 // *************************************************************************
 
 /*!
+  This method adds a callback that will be invoked when the components
+  visibility changes.
+
+  Callback invocation is not implemented yet.
+
+  \sa SoXtComponent::removeVisibilityChangeCallback()
 */
 
 void
@@ -751,6 +856,10 @@ SoXtComponent::addVisibilityChangeCallback( // protected
 } // addVisibilityChangeCallback()
 
 /*!
+  This method removes a callback from the list of callbacks that are to be
+  invoked when the component visibility changes.
+  
+  \sa SoXtComponent::addVisibilityChangeCallback()
 */
 
 void
@@ -778,6 +887,12 @@ SoXtComponent::removeVisibilityChangeCallback( // protected
 } // removeVisibilityChangeCallback()
 
 /*!
+  This method invokes all the visibility-change callbacks.
+
+  This method is not part of the Open Inventor API.
+
+  \sa SoXtComponent::addVisibilityChangeCallback()
+  \sa SoXtComponent::removeVisibilityChangeCallback()
 */
 
 void
@@ -806,17 +921,23 @@ SoXtComponent::invokeVisibilityChangeCallbacks( // protected
   If no card is found, an error dialog will appear.
 
   This method is not implemented yet.
+
+  \sa SoXtViewer::openViewerHelpCard()
 */
 
 void
 SoXtComponent::openHelpCard( // protected
   const char * name )
 {
-  SoXt::createSimpleErrorDialog( this->getWidget(), "Not Supported",
-    "Sorry.  Help cards are not supported by SoXt yet." );
+  SoXt::createSimpleErrorDialog( this->getWidget(),
+    "Not Implemented",
+    "Help Card functionality is not implemented yet." );
 } // openHelpCard()
 
+// *************************************************************************
+
 /*!
+  This function is not implemented yet.
 */
 
 char *
