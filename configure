@@ -20375,7 +20375,7 @@ echo $ECHO_N "checking for the dl library... $ECHO_C" >&6
   # At least under FreeBSD, dlopen() et al is part of the C library.
   # On HP-UX, dlopen() might reside in a library "svld" instead of "dl".
   for sim_ac_dl_libcheck in "" "-ldl" "-lsvld"; do
-    if ! $sim_ac_dl_avail; then
+    if $sim_ac_dl_avail; then :; else
       LIBS="$sim_ac_dl_libcheck $sim_ac_save_libs"
       cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
@@ -22525,7 +22525,7 @@ fi
 
   sim_ac_glchk_hit=false
   for sim_ac_tmp_outerloop in barebones withpthreads; do
-    if ! $sim_ac_glchk_hit; then
+    if $sim_ac_glchk_hit; then :; else
 
       sim_ac_oglchk_pthreadslib=""
       if test "$sim_ac_tmp_outerloop" = "withpthreads"; then
@@ -22576,7 +22576,7 @@ if test x"$with_pthread" != xno; then
 echo $ECHO_N "checking for POSIX threads... $ECHO_C" >&6
   # At least under FreeBSD, we link to pthreads library with -pthread.
   for sim_ac_pthreads_libcheck in "-lpthread" "-pthread"; do
-    if ! $sim_ac_pthread_avail; then
+    if $sim_ac_pthread_avail; then :; else
       LIBS="$sim_ac_pthreads_libcheck $sim_ac_save_libs"
       cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
@@ -22703,7 +22703,7 @@ fi
 echo $ECHO_N "checking for OpenGL library dev-kit... $ECHO_C" >&6
       # Mac OS X uses nada (only LDFLAGS), which is why "" was set first
       for sim_ac_ogl_libcheck in "" $sim_ac_ogl_first $sim_ac_ogl_second; do
-        if ! $sim_ac_glchk_hit; then
+        if $sim_ac_glchk_hit; then :; else
           LIBS="$sim_ac_ogl_libcheck $sim_ac_oglchk_pthreadslib $sim_ac_save_libs"
           cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
@@ -23719,7 +23719,7 @@ echo "${ECHO_T}no" >&6
 fi
 
 
-  if ! test "X$sim_ac_coin_configcmd" = "Xfalse"; then
+  if test "X$sim_ac_coin_configcmd" != "Xfalse"; then
     test -n "$CONFIG" &&
       $sim_ac_coin_configcmd --alternate=$CONFIG >/dev/null 2>/dev/null &&
       sim_ac_coin_configcmd="$sim_ac_coin_configcmd --alternate=$CONFIG"
@@ -23810,7 +23810,7 @@ fi
 echo "$as_me:$LINENO: result: $sim_cv_coin_avail" >&5
 echo "${ECHO_T}$sim_cv_coin_avail" >&6
     sim_ac_coin_avail=$sim_cv_coin_avail
-    if ! $sim_ac_coin_avail; then
+    if $sim_ac_coin_avail; then :; else
       { echo "$as_me:$LINENO: WARNING:
 Compilation and/or linking with the Coin main library SDK failed, for
 unknown reason. If you are familiar with configure-based configuration
