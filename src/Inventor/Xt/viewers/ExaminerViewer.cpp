@@ -48,7 +48,6 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXtResource.h>
 #include <Inventor/Xt/SoXtCursor.h>
-#include <Inventor/Xt/viewers/SoAnyExaminerViewer.h>
 #include <Inventor/Xt/widgets/SoXtPopupMenu.h>
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
 
@@ -116,7 +115,6 @@ SoXtExaminerViewer::SoXtExaminerViewer(
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type)
 : inherited(parent, name, embed, flag, type, FALSE)
-, common(new SoAnyExaminerViewer(this))
 {
   this->constructor(TRUE);
 } // SoXtExaminerViewer()
@@ -133,7 +131,6 @@ SoXtExaminerViewer::SoXtExaminerViewer(// protected
   SoXtViewer::Type type,
   SbBool build)
 : inherited(parent, name, embed, flag, type, FALSE)
-, common(new SoAnyExaminerViewer(this))
 {
   this->constructor(build);
 } // SoXtExaminerViewer()
@@ -146,6 +143,8 @@ void
 SoXtExaminerViewer::constructor(// private
   const SbBool build)
 {
+  this->genericConstructor();
+
 //  this->prefshell = this->prefsheet = (Widget) NULL;
   this->prefparts = NULL;
   this->numprefparts = 0;
@@ -170,10 +169,9 @@ SoXtExaminerViewer::constructor(// private
   The destructor.
 */
 
-SoXtExaminerViewer::~SoXtExaminerViewer(
-  void)
+SoXtExaminerViewer::~SoXtExaminerViewer()
 {
-  delete this->common;
+  this->genericDestructor();
   delete [] this->prefparts;
 } // ~SoXtExaminerViewer()
 
@@ -190,7 +188,7 @@ SbBool
 SoXtExaminerViewer::processSoEvent(// virtual
   const SoEvent * const event)
 {
-  if (common->processSoEvent(event)) return TRUE;
+  if (this->processGenericSoEvent(event)) return TRUE;
   if (inherited::processSoEvent(event)) return TRUE;
   return FALSE;
 } // processSoEvent()
@@ -221,8 +219,8 @@ void
 SoXtExaminerViewer::leftWheelStart(// virtual, protected
   void)
 {
-  if (common->isAnimating())
-    common->stopAnimating();
+  if (this->isAnimating())
+    this->stopAnimating();
   inherited::leftWheelStart();
 } // leftWheelStart()
 
@@ -235,7 +233,7 @@ SoXtExaminerViewer::leftWheelMotion(// virtual, protected
   float value)
 {
   inherited::leftWheelMotion(
-    common->rotXWheelMotion(value, this->getLeftWheelValue()));
+    this->rotXWheelMotion(value, this->getLeftWheelValue()));
 } // leftWheelMotion()
 
 /*!
@@ -246,8 +244,8 @@ void
 SoXtExaminerViewer::bottomWheelStart(// virtual, protected
   void)
 {
-  if (common->isAnimating())
-    common->stopAnimating();
+  if (this->isAnimating())
+    this->stopAnimating();
   inherited::bottomWheelStart();
 } // bottomWheelStart()
 
@@ -260,7 +258,7 @@ SoXtExaminerViewer::bottomWheelMotion(// virtual, protected
   float value)
 {
   inherited::bottomWheelMotion(
-    common->rotYWheelMotion(value, this->getBottomWheelValue()));
+    this->rotYWheelMotion(value, this->getBottomWheelValue()));
 } // bottomWheelMotion()
 
 /*!
@@ -271,7 +269,7 @@ void
 SoXtExaminerViewer::rightWheelMotion(// virtual, protected
   float value)
 {
-  common->zoom(this->getRightWheelValue() - value);
+  this->zoom(this->getRightWheelValue() - value);
   inherited::rightWheelMotion(value);
 } // rightWheelMotion()
 
@@ -340,9 +338,9 @@ SoXtExaminerViewer::setViewing(SbBool enable)
     return;
   }
 
-  this->common->setMode(enable ?
-                        SoAnyExaminerViewer::EXAMINE :
-                        SoAnyExaminerViewer::INTERACT);
+  this->setMode(enable ?
+                        SoXtExaminerViewer::EXAMINE :
+                        SoXtExaminerViewer::INTERACT);
   inherited::setViewing(enable);
 }
 
@@ -371,25 +369,25 @@ SoXtExaminerViewer::setCursorRepresentation(int mode)
   }
 
   switch (mode) {
-  case SoAnyExaminerViewer::INTERACT:
+  case SoXtExaminerViewer::INTERACT:
     this->setComponentCursor(SoXtCursor(SoXtCursor::DEFAULT));
     break;
 
-  case SoAnyExaminerViewer::EXAMINE:
-  case SoAnyExaminerViewer::DRAGGING:
+  case SoXtExaminerViewer::EXAMINE:
+  case SoXtExaminerViewer::DRAGGING:
     this->setComponentCursor(SoXtCursor::getRotateCursor());
     break;
 
-  case SoAnyExaminerViewer::ZOOMING:
+  case SoXtExaminerViewer::ZOOMING:
     this->setComponentCursor(SoXtCursor::getZoomCursor());
     break;
 
-  case SoAnyExaminerViewer::WAITING_FOR_SEEK:
+  case SoXtExaminerViewer::WAITING_FOR_SEEK:
     this->setComponentCursor(SoXtCursor(SoXtCursor::CROSSHAIR));
     break;
 
-  case SoAnyExaminerViewer::WAITING_FOR_PAN:
-  case SoAnyExaminerViewer::PANNING:
+  case SoXtExaminerViewer::WAITING_FOR_PAN:
+  case SoXtExaminerViewer::PANNING:
     this->setComponentCursor(SoXtCursor::getPanCursor());
     break;
 
@@ -551,12 +549,12 @@ SoXtExaminerViewer::setSeekMode(
   }
 #endif // SOXT_DEBUG
 
-  if (common->isAnimating())
-    common->stopAnimating();
+  if (this->isAnimating())
+    this->stopAnimating();
   inherited::setSeekMode(enable);
-  this->common->setMode(enable ?
-                         SoAnyExaminerViewer::WAITING_FOR_SEEK :
-                         SoAnyExaminerViewer::EXAMINE);
+  this->setMode(enable ?
+                         SoXtExaminerViewer::WAITING_FOR_SEEK :
+                         SoXtExaminerViewer::EXAMINE);
 } // setSeekMode()
 
 // *************************************************************************
@@ -574,11 +572,11 @@ SoXtExaminerViewer::actualRedraw(// virtual
   SoDebugError::postInfo("SoXtDebugError::actualRedraw()", "[invoked]");
 #endif // SOXT_DEBUG
 
-  common->actualRedraw();               // spinanimation preparation
+  this->actualRedraw();               // spinanimation preparation
   inherited::actualRedraw();            // actual scene rendering
-  if (common->isFeedbackVisible())    // extra dingbats
-    common->drawAxisCross();
-  if (common->isAnimating())          // animation
+  if (this->isFeedbackVisible())    // extra dingbats
+    this->drawAxisCross();
+  if (this->isAnimating())          // animation
     this->scheduleRedraw();
 } // actualRedraw()
 
@@ -592,7 +590,7 @@ void
 SoXtExaminerViewer::setAnimationEnabled(
   const SbBool enable)
 {
-  common->setAnimationEnabled(enable);
+  this->setGenericAnimationEnabled(enable);
   if (this->spinanimtoggle) {
     Boolean enabled = False;
     XtVaGetValues(this->spinanimtoggle,
@@ -609,61 +607,6 @@ SoXtExaminerViewer::setAnimationEnabled(
   FIXME: write doc
 */
 
-SbBool
-SoXtExaminerViewer::isAnimationEnabled(
-  void) const
-{
-  return common->isAnimationEnabled();
-} // isAnimationEnabled()
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtExaminerViewer::stopAnimating(
-  void)
-{
-  common->stopAnimating();
-} // stopAnimating()
-
-/*!
-  FIXME: write doc
-*/
-
-SbBool
-SoXtExaminerViewer::isAnimating(
-  void) const
-{
-  return common->isAnimating();
-} // isAnimating()
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtExaminerViewer::setFeedbackVisibility(
-  const SbBool enable)
-{
-  common->setFeedbackVisibility(enable);
-} // setFeedbackVisibility()
-
-/*!
-  FIXME: write doc
-*/
-
-SbBool
-SoXtExaminerViewer::isFeedbackVisible(
-  void) const
-{
-  return common->isFeedbackVisible();
-} // isFeedbackVisible()
-
-/*!
-  FIXME: write doc
-*/
-
 void
 SoXtExaminerViewer::setFeedbackSize(
   const int size)
@@ -674,19 +617,8 @@ SoXtExaminerViewer::setFeedbackSize(
     XmTextSetString(this->axessizefield, buf);
     XmTextSetCursorPosition(this->axessizefield, (long) strlen(buf));
   }
-  common->setFeedbackSize(size);
+  this->setFeedbackSize(size);
 } // setFeedbackSize()
-
-/*!
-  FIXME: write doc
-*/
-
-int
-SoXtExaminerViewer::getFeedbackSize(
-  void) const
-{
-  return common->getFeedbackSize();
-} // getFeedbackSize()
 
 // *************************************************************************
 
@@ -764,19 +696,20 @@ SoXtExaminerViewer::createSpinAnimPrefSheetGuts(
   Widget form = XtVaCreateManagedWidget("spinanimguts",
     xmFormWidgetClass, parent, NULL);
 
-  this->spinanimtoggle = XtVaCreateManagedWidget("spinanimtoggle",
-    xmToggleButtonWidgetClass, form,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      "enable spin animation", strlen("enable spin animation") + 1,
-    XmNset, common->isAnimationEnabled(),
-    NULL);
+  this->spinanimtoggle =
+    XtVaCreateManagedWidget("spinanimtoggle",
+                            xmToggleButtonWidgetClass, form,
+                            XmNtopAttachment, XmATTACH_FORM,
+                            XmNleftAttachment, XmATTACH_FORM,
+                            XmNbottomAttachment, XmATTACH_FORM,
+                            XtVaTypedArg,
+                            XmNlabelString, XmRString,
+                            "enable spin animation", strlen("enable spin animation") + 1,
+                            XmNset, this->isAnimationEnabled(),
+                            NULL);
 
   XtAddCallback(this->spinanimtoggle, XmNvalueChangedCallback,
-    SoXtExaminerViewer::spinanimtoggledCB, (XtPointer) this);
+                SoXtExaminerViewer::spinanimtoggledCB, (XtPointer) this);
 
   return form;
 } // createSpinAnimPrefSheetGuts()
@@ -1096,7 +1029,7 @@ SoXtExaminerViewer::afterRealizeHook(// virtual, protected
                          "[invoked]");
 #endif // SOXT_DEBUG
   inherited::afterRealizeHook();
-  this->setCursorRepresentation(this->common->currentmode);
+  this->setCursorRepresentation(this->currentmode);
 } // afterRealizeHook()
 
 // *************************************************************************
