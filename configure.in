@@ -154,9 +154,12 @@ SIM_AC_CHECK_OPENGL([
 if test x"${with_inventor+set}" = x"set"; then
   # check for SGI or TGS Open Inventor
   SIM_CHECK_INVENTOR([
+    CPPFLAGS="$CPPFLAGS $sim_ac_oiv_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_oiv_ldflags"
+    LIBS="$sim_ac_oiv_libs $LIBS"
     SOXT_EXTRA_CPPFLAGS="$sim_ac_oiv_cppflags $SOXT_EXTRA_CPPFLAGS"
     SOXT_EXTRA_LDFLAGS="$sim_ac_oiv_ldflags $SOXT_EXTRA_LDFLAGS"
-    SOXT_EXTRA_LIBS="$sim_ac_oiv_wlibs $SOXT_EXTRA_LIBS"
+    SOXT_EXTRA_LIBS="$sim_ac_oiv_libs $SOXT_EXTRA_LIBS"
   ], AC_MSG_ERROR([couldn't compile and link against Open Inventor]))
 else
   # check for Coin library and its dependencies
@@ -172,7 +175,13 @@ fi
 
 # Check for the availability of this node (it is used in the hidden
 # line rendering), which is not part of older Inventor implementations.
-SIM_HAVE_SOPOLYGONOFFSET
+
+# check for availability of features which may not be part of some
+# Open Inventor versions/implementations
+
+SIM_AC_HAVE_SOPOLYGONOFFSET
+
+SIM_AC_HAVE_SOMOUSEBUTTONEVENT_BUTTONS
 
 SIM_CHECK_MOTIF([
   SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_motif_cppflags"
