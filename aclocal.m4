@@ -864,6 +864,46 @@ CXXFLAGS=$_save_cxxflags
 unset _accept_result _save_cxxflags
 ])
 
+# Usage:
+#   SIM_AC_CHECK_VAR_FUNCTIONNAME
+#
+# Side-Effects:
+#   config.h:
+#     HAVE_VAR___PRETTY_FUNCTION__   (1 if exists)
+#     HAVE_VAR___FUNCTION__          (always 0 if __PRETTY_FUNCTION__ exists)
+#
+# Authors:
+#   Lars J. Aas <larsa@sim.no>
+#
+
+AC_DEFUN([SIM_AC_CHECK_VAR_FUNCTIONNAME],
+[AC_CACHE_CHECK([for function name variable],
+  sim_cv_var_functionname, [
+  AC_TRY_COMPILE(
+    [#include <stdio.h>],
+    [(void)printf("%s\n",__PRETTY_FUNCTION__)],
+    [sim_cv_var_functionname=__PRETTY_FUNCTION__],
+    [sim_cv_var_functionname=none])
+  if test x"$sim_cv_pretty_function" = x"none"; then
+    AC_TRY_COMPILE(
+      [#include <stdio.h>],
+      [(void)printf("%s\n",__FUNCTION__)],
+      [sim_cv_var_functionname=__FUNCTION__],
+      [sim_cv_var_functionname=none])
+  fi
+])
+
+if test x"$sim_cv_var_functionname" = x"__PRETTY_FUNCTION__"; then
+  AC_DEFINE([HAVE_VAR___PRETTY_FUNCTION__], 1,
+    [Define this to true if the __PRETTY_FUNCTION__ variable contains the current function name])
+fi
+
+if test x"$sim_cv_var_functionname" = x"__FUNCTION__"; then
+  AC_DEFINE([HAVE_VAR___FUNCTION__], 1,
+    [Define this to true if the __FUNCTION__ variable contains the current function name])
+fi
+])
+
 dnl Usage:
 dnl  SIM_CHECK_DL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 dnl

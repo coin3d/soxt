@@ -37,6 +37,14 @@
 /* Define this to use libXpm */
 #undef HAVE_LIBXPM
 
+/* Define this to true if the __FUNCTION__ variable contains the current
+   function name */
+#undef HAVE_VAR___FUNCTION__
+
+/* Define this to true if the __PRETTY_FUNCTION__ variable contains the
+   current function name */
+#undef HAVE_VAR___PRETTY_FUNCTION__
+
 /* Define this to use OpenGL widget from <X11/GLw/GLwDrawA.h> */
 #undef HAVE_X11_GLW_GLWDRAWA_H
 
