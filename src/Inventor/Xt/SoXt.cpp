@@ -111,6 +111,10 @@ public:
 
   static SbPList * eventhandlers;
   static String fallbackresources[];
+
+  static int SOXT_XSYNC;
+  static int (*previous_handler)(Display * d, XErrorEvent * ee);
+  static int X11Errorhandler(Display * d, XErrorEvent * ee);
 };
 
 Display * SoXtP::display = NULL;
@@ -126,8 +130,26 @@ SbPList * SoXtP::eventhandlers = NULL;
 char * SoXtP::appname = NULL;
 char * SoXtP::appclass = NULL;
 
+int SoXtP::SOXT_XSYNC = -1; // "-1" signifies "uninitialized"
+int (*SoXtP::previous_handler)(Display *, XErrorEvent *) = NULL;
+
 static Atom WM_PROTOCOLS = 0;
 static Atom WM_DELETE_WINDOW = 0;
+
+// *************************************************************************
+
+int
+SoXtP::X11Errorhandler(Display * d, XErrorEvent * ee)
+{
+  SoDebugError::post("SoXtP::X11Errorhandler",
+                     "Detected internal bug. %s",
+                     SoXtP::SOXT_XSYNC == 1 ? "" :
+                     "Set environment variable SOXT_XSYNC to \"1\" and "
+                     "re-run the application in a debugger with a breakpoint "
+                     "set on _XError to get a valid backtrace.");
+  SoXtP::previous_handler(d, ee);
+  return -1; // shouldn't get here, the system handler will normally exit
+}
 
 // *************************************************************************
 
@@ -144,6 +166,8 @@ SoXt::getVersionInfo(// static
   int * const minor,
   int * const micro)
 {
+  // FIXME: this is generic code, move to SoGuiCommon.cpp.in. 20011220 mortene.
+
   if (major) *major = SOXT_MAJOR_VERSION;
   if (minor) *minor = SOXT_MINOR_VERSION;
   if (micro) *micro = SOXT_MICRO_VERSION;
@@ -194,6 +218,10 @@ SoXt::init(int & argc, char ** argv,
            const char * const appName,
            const char * const appClass)
 {
+  assert(SoXtP::previous_handler == NULL && "call SoXt::init() only once!");
+  // Intervene upon X11 errors.
+  SoXtP::previous_handler = XSetErrorHandler(SoXtP::X11Errorhandler);
+
   // FIXME: as far as I can see, no SoXt::init() method in InventorXt
   // matches the signature of this constructor. So we should probably
   // mark this as SoXt/Coin-only (but look over InventorXt again).
@@ -290,6 +318,11 @@ void
 SoXt::init(// static
   Widget toplevel)
 {
+  // Intervene upon X11 errors.
+  if (SoXtP::previous_handler == NULL) {
+    SoXtP::previous_handler = XSetErrorHandler(SoXtP::X11Errorhandler);
+  }
+
 #if SOXT_DEBUG
   setbuf(stdout, NULL);
   setbuf(stderr, NULL);
@@ -1118,11 +1151,10 @@ SoXt::selectBestVisual(// static
   // "1"), then rerun the application code in a debugger with a
   // breakpoint set at _XError. Now you can backtrace to the exact
   // source location of the failing X request.
-  static int SOXT_XSYNC = -1;
-  if (SOXT_XSYNC == -1) {
+  if (SoXtP::SOXT_XSYNC == -1) {
     const char * env = SoAny::si()->getenv("SOXT_XSYNC");
-    SOXT_XSYNC = env ? atoi(env) : 0;
-    if (SOXT_XSYNC) {
+    SoXtP::SOXT_XSYNC = env ? atoi(env) : 0;
+    if (SoXtP::SOXT_XSYNC) {
       SoDebugError::postInfo("SoXt::selectBestVisual",
                              "Turning on X synchronization.");
       XSynchronize(dpy, True);
@@ -1138,10 +1170,10 @@ SoXt::selectBestVisual(// static
     return;
   }
 
-#if SOXT_DEBUG && 0
+#if SOXT_DEBUG && 0 // debug
   SoDebugError::postInfo("SoXt::selectBestVisual",
-    "we're beyond the default visual");
-#endif // SOXT_DEBUG
+                         "we're beyond the default visual");
+#endif // debug
 
   static struct {
     int depth;

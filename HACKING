@@ -18,5 +18,14 @@ some hints common to all GUI interface toolkits.
         <URL:http://www.rahul.net/kenton/perrors.html>
 
 
-(FIXME: use and describe XSynchronize(), XSetErrorHandler().
-20011202 mortene.)
+  In SoXt, we've written some support code to automatically call
+
+        XSynchronize(<display>,True)
+
+  ..if the SOXT_XSYNC environment variable is set to "1".
+
+  So to debug X11 errors in SoXt, set SOXT_XSYNC=1 in your
+  environment, then load your SoXt-based application in a debugger,
+  set a breakpoint on main(), execute the application, then set a
+  breakpoint on _XError, then continue execution. When the application
+  now fails, you should be able to get a sensible backtrace.
