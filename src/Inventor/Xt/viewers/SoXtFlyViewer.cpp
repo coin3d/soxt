@@ -19,6 +19,8 @@
 
 #include <assert.h>
 
+#include <Xm/Xm.h>
+
 #include <Inventor/errors/SoDebugError.h>
 
 #include <Inventor/Xt/SoXtBasic.h>
@@ -72,9 +74,18 @@ SoXtFlyViewer::constructor( // private
   this->prefparts = NULL;
   this->numprefparts = 0;
 
+  this->setClassName( this->getDefaultWidgetName() );
+
   if ( build ) {
-    Widget base = inherited::buildWidget( this->getParentWidget() );
-    this->setBaseWidget( base );
+    Widget viewer = inherited::buildWidget( this->getParentWidget() );
+    XtVaSetValues( viewer,
+      XmNleftAttachment, XmATTACH_FORM,
+      XmNtopAttachment, XmATTACH_FORM,
+      XmNrightAttachment, XmATTACH_FORM,
+      XmNbottomAttachment, XmATTACH_FORM,
+      NULL );
+    this->setBaseWidget( viewer );
+    // extra resources
   }
 } // constructor()
 
@@ -86,7 +97,7 @@ SoXtFlyViewer::~SoXtFlyViewer(
   void )
 {
   delete [] this->prefparts;
-  delete common;
+  delete this->common;
 } // ~SoXtFlyViewer()
 
 // *************************************************************************

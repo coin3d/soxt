@@ -81,9 +81,19 @@ SoXtWalkViewer::constructor(
   this->tiltwheel = NULL;
   this->heightwheel = NULL;
   this->heightvalue = 0.0f;
+
+  this->setClassName( this->getDefaultWidgetName() );
   if ( build ) {
-    Widget base = this->buildWidget( this->getParentWidget() );
-    this->setBaseWidget( base );
+    Widget viewer = this->buildWidget( this->getParentWidget() );
+    XtVaSetValues( viewer,
+      XmNleftAttachment, XmATTACH_FORM,
+      XmNtopAttachment, XmATTACH_FORM,
+      XmNrightAttachment, XmATTACH_FORM,
+      XmNbottomAttachment, XmATTACH_FORM,
+      NULL );
+    this->setBaseWidget( viewer );
+
+    // resources
   }
 } // constructor()
 

@@ -112,7 +112,7 @@ SoXtExaminerViewer::constructor( // private
   this->spindetecttimerId = 0;
   this->spindetecttimerActive = FALSE;
 
-  this->setClassName( "SoXtExaminerViewer" );
+  this->setClassName( this->getDefaultWidgetName() );
   this->camerabutton = (Widget) NULL;
 
   if ( build ) {
@@ -961,6 +961,7 @@ SoXtExaminerViewer::createFramedRotAxisPrefSheetGuts(
     xmLabelGadgetClass, frame,
     XmNchildType, XmFRAME_TITLE_CHILD,
     XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
+    XtVaTypedArg,
       XmNlabelString, XmRString,
       "Rotation Point Axes Settings", strlen( "Rotation Point Axes Settings" ) + 1,
     NULL );
