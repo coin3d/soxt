@@ -12,6 +12,9 @@
 /* Define to enable Linux Joystick driver support */
 #undef HAVE_JOYSTICK_LINUX
 
+/* define this if -lXmu can be used */
+#undef HAVE_LIBXMU
+
 /* Define this to use libXpm */
 #undef HAVE_LIBXPM
 

@@ -32,19 +32,9 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-#include <assert.h>
-
-#include <X11/Intrinsic.h>
-#include <X11/StringDefs.h>
-#include <X11/Xmu/Editres.h>
-#include <X11/Xmu/StdCmap.h>
-#include <X11/Xmu/Atoms.h>
-#include <Xm/Xm.h>
-#include <Xm/Protocols.h>
-#include <Xm/MessageB.h>
-#include <Xm/Form.h>
-#include <Xm/Label.h>
-#include <Xm/PushB.h>
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SoDB.h>
@@ -62,9 +52,22 @@ static const char rcsid[] =
 #include <Inventor/Xt/devices/SoXtDevice.h>
 #include <Inventor/Xt/SoXtComponent.h>
 
-#if HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
+#include <X11/Intrinsic.h>
+#include <X11/StringDefs.h>
+#ifdef HAVE_LIBXMU
+#include <X11/Xmu/Editres.h>
+#include <X11/Xmu/StdCmap.h>
+#include <X11/Xmu/Atoms.h>
+#endif HAVE_LIBXMU
+#include <Xm/Xm.h>
+#include <Xm/Protocols.h>
+#include <Xm/MessageB.h>
+#include <Xm/Form.h>
+#include <Xm/Label.h>
+#include <Xm/PushB.h>
+
+#include <assert.h>
+#include <stdlib.h>
 
 // *************************************************************************
 
@@ -289,10 +292,12 @@ SoXt::init(// static
 
   XtAddEventHandler(toplevel, (EventMask) 0, True, wm_close_handler, NULL);
 
+#ifdef HAVE_LIBXMU
 #if SOXT_DEBUG
   XtEventHandler editres_hook = (XtEventHandler) _XEditResCheckMessages;
   XtAddEventHandler(toplevel, (EventMask) 0, True, editres_hook, NULL);
 #endif // SOXT_DEBUG
+#endif // HAVE_LIBXMU
 } // init()
 
 // *************************************************************************
@@ -1162,6 +1167,7 @@ SoXt::selectBestVisual(// static
       int numcmaps;
       XStandardColormap * stdcolormaps = NULL;
 
+#ifdef HAVE_LIBXMU
       if (XmuLookupStandardColormap(dpy, vinfo.screen, vinfo.visualid,
              vinfo.depth, XA_RGB_DEFAULT_MAP, False, True)
         && XGetRGBColormaps(dpy, RootWindow(dpy, vinfo.screen),
@@ -1186,6 +1192,11 @@ SoXt::selectBestVisual(// static
           dpy, RootWindow(dpy, vinfo.screen), vinfo.visual, AllocNone);
       }
       XtFree((char *) stdcolormaps);
+#else
+      SoDebugError::postInfo("SoXt::selectBestVisual",
+        "SoXt does not support detecting best visual/colormap without the Xmu library (yet)");
+      exit(1);
+#endif /* ! HAVE_LIBXMU */
       return;
     }
   }

@@ -24,16 +24,9 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-#include <assert.h>
-#include <string.h>
-
-#include <X11/Xlib.h>
-#include <X11/Intrinsic.h>
-#include <X11/IntrinsicP.h>
-#include <X11/Xmu/Editres.h>
-#include <Xm/Xm.h>
-#include <Xm/Form.h>
-#include <Xm/MessageB.h>
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #include <Inventor/misc/SoBasic.h>
 #include <Inventor/SoLists.h>
@@ -61,6 +54,20 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXtMaterialList.h>
 #include <Inventor/Xt/SoXtMaterialEditor.h>
 #include <Inventor/Xt/SoXtPrintDialog.h>
+
+#include <X11/Xlib.h>
+#include <X11/Intrinsic.h>
+#include <X11/IntrinsicP.h>
+#ifdef HAVE_LIBXMU
+#include <X11/Xmu/Editres.h>
+#endif // HAVE_LIBXMU
+
+#include <Xm/Xm.h>
+#include <Xm/Form.h>
+#include <Xm/MessageB.h>
+
+#include <assert.h>
+#include <string.h>
 
 // *************************************************************************
 
@@ -214,10 +221,12 @@ SoXtComponent::SoXtComponent(// protected
       XmNdepth, depth,
       NULL);
 
+#ifdef HAVE_LIBXMU
 #if SOXT_DEBUG
     XtEventHandler editres_hook = (XtEventHandler) _XEditResCheckMessages;
     XtAddEventHandler(this->parent, (EventMask) 0, True, editres_hook, NULL);
 #endif // SOXT_DEBUG
+#endif // HAVE_LIBXMU
 
     this->embedded = FALSE;
   } else {

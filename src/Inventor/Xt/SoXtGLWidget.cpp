@@ -28,16 +28,6 @@ static const char rcsid[] =
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <assert.h>
-
-#include <Xm/Xm.h>
-#include <Xm/Form.h>
-#include <Xm/DrawingA.h>
-#include <X11/IntrinsicP.h>
-#include <X11/Xatom.h>
-#include <X11/Xutil.h>
-#include <X11/Xmu/StdCmap.h>
-
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoBasic.h>
 #include <Inventor/SbViewportRegion.h>
@@ -49,6 +39,19 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/SoXtGLWidget.h>
 #include <Inventor/Xt/SoAny.h>
+
+#include <Xm/Xm.h>
+#include <Xm/Form.h>
+#include <Xm/DrawingA.h>
+#include <X11/IntrinsicP.h>
+#include <X11/Xatom.h>
+#include <X11/Xutil.h>
+#ifdef HAVE_LIBXMU
+#include <X11/Xmu/StdCmap.h>
+#endif // HAVE_LIBXMU
+
+#include <assert.h>
+#include <stdlib.h>
 
 // *************************************************************************
 
@@ -842,6 +845,12 @@ SoXtGLWidget::buildWidget(// protected
     XtAppError(SoXt::getAppContext(), "SoXtGLWidget::buildWidget()");
   }
 
+#ifndef HAVE_LIBXMU
+  SoDebugError::post("SoXtGLWidget::buildWidget",
+    "SoXt does not support detecting best visual/colormap without the Xmu library (yet)");
+  exit(1);
+#else // HAVE_LIBXMU
+
   Colormap colors = (Colormap) NULL;
   XStandardColormap * cmaps = NULL;
   int nmaps = 0;
@@ -902,6 +911,7 @@ SoXtGLWidget::buildWidget(// protected
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtGLWidget::buildWidget", "[exit]");
 #endif // SOXT_DEBUG
+#endif // HAVE_LIBXMU
   return this->glxManager;
 } // buildWidget()
 

@@ -177,6 +177,7 @@ if test x"$sim_ac_x11_avail" = xyes; then
     SOGUI_EXTRA_LIBS="$sim_ac_x11shmem_libs $SOGUI_EXTRA_LIBS"
   ])
   SIM_AC_CHECK_X11MU([
+    AC_DEFINE([HAVE_LIBXMU],, [define this if -lXmu can be used])
     SOGUI_EXTRA_LIBS="$sim_ac_x11mu_libs $SOGUI_EXTRA_LIBS"
   ])
   SIM_AC_CHECK_X11XID([
@@ -421,6 +422,7 @@ AC_CONFIG_SUBDIRS(data)
 # generate the makefiles and config files.
 
 AC_OUTPUT([
+	soxt-$CONFIG.cfg:src/Inventor/Xt/common/sogui.cfg.in
 	Makefile
 	src/Makefile
 	src/Inventor/Makefile
