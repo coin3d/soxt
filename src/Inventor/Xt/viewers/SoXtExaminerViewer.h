@@ -41,11 +41,6 @@ public:
       SoXtViewer::Type type = BROWSER );
   ~SoXtExaminerViewer(void);
 
-protected:
-  SoXtExaminerViewer( Widget parent, const char * name,
-      SbBool inParent, SoXtFullViewer::BuildFlag flags,
-      SoXtViewer::Type type, SbBool build );
-
   void setAnimationEnabled( const SbBool enable );
   SbBool isAnimationEnabled(void) const;
 
@@ -57,6 +52,12 @@ protected:
 
   void setFeedbackSize( const int size );
   int getFeedbackSize(void) const;
+
+protected:
+  SoXtExaminerViewer( Widget parent, const char * name,
+      SbBool inParent, SoXtFullViewer::BuildFlag flags,
+      SoXtViewer::Type type, SbBool build );
+
 
   virtual void setCamera( SoCamera * camera );
 
