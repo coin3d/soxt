@@ -58,71 +58,59 @@ libSoXtViewers_la_SOURCES = \
 	SoXtCollisionViewer.h
 
 ############################################################################
-##
+#
 
 SoXtViewer.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiViewer.h.in
-	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/viewers/SoXtViewer.h )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoXtViewer.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoGuiViewer.cpp.in
-	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/viewers/SoXtViewer.cpp )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyFullViewer.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.h.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/viewers/SoAnyFullViewer.h )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyFullViewer.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/viewers/SoAnyFullViewer.cpp )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyExaminerViewer.h: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.h.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/viewers/SoAnyExaminerViewer.h )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyExaminerViewer.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/viewers/SoAnyExaminerViewer.cpp )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyPlaneViewer.h: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyPlaneViewer.h.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/viewers/SoAnyPlaneViewer.h )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyPlaneViewer.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyPlaneViewer.cpp.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/viewers/SoAnyPlaneViewer.cpp )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyConstrainedViewer.h: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyConstrainedViewer.h.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/viewers/SoAnyConstrainedViewer.h )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyConstrainedViewer.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyConstrainedViewer.cpp.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/viewers/SoAnyConstrainedViewer.cpp )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyFlyViewer.h: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyFlyViewer.h.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/viewers/SoAnyFlyViewer.h )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyFlyViewer.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyFlyViewer.cpp.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/viewers/SoAnyFlyViewer.cpp )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyWalkViewer.h: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyWalkViewer.h.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/viewers/SoAnyWalkViewer.h )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyWalkViewer.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyWalkViewer.cpp.in
-	@( cd $(top_builddir); \
-	   $(MAKE) src/Inventor/Xt/viewers/SoAnyWalkViewer.cpp )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 ############################################################################
 ##
