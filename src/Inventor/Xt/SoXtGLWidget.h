@@ -28,12 +28,12 @@
 
 // *************************************************************************
 
-enum GLModes {
-  SO_GLX_RGB      = 0x01,
-  SO_GLX_DOUBLE   = 0x02,
-  SO_GLX_ZBUFFER  = 0x04,
-  SO_GLX_OVERLAY  = 0x08,
-  SO_GLX_STEREO   = 0x10
+enum GLModes {           // should we keep these?
+  SO_GL_RGB      = 0x01, SO_GLX_RGB      = SO_GL_RGB,
+  SO_GL_DOUBLE   = 0x02, SO_GLX_DOUBLE   = SO_GL_DOUBLE,
+  SO_GL_ZBUFFER  = 0x04, SO_GLX_ZBUFFER  = SO_GL_ZBUFFER,
+  SO_GL_OVERLAY  = 0x08, SO_GLX_OVERLAY  = SO_GL_OVERLAY,
+  SO_GL_STEREO   = 0x10, SO_GLX_STEREO   = SO_GL_STEREO
 };
 
 class SoXtGLWidget : public SoXtComponent {
@@ -49,6 +49,7 @@ public:
   GLXContext getNormalContext(void);
   GLXContext getOverlayContext(void);
   Widget getNormalWidget(void);
+  Widget getGLWidget(void);
   Widget getOverlayWidget(void);
   virtual void setNormalVisual( XVisualInfo * visual );
   XVisualInfo * getNormalVisual(void);
@@ -74,7 +75,10 @@ protected:
   virtual void sizeChanged( const SbVec2s size );
   virtual void widgetChanged( Widget widget );
   void setGlxSize( const SbVec2s size );
+  void setGLSize( const SbVec2s size );
   const SbVec2s getGlxSize(void) const;
+  const SbVec2s getGLSize(void) const;
+  float getGLAspectRatio(void) const;
   static void eventHandler( Widget, SoXtGLWidget *, XAnyEvent *, Boolean *);
   void setStereoBuffer( SbBool enable );
   SbBool isStereoBuffer(void);
@@ -103,12 +107,14 @@ protected:
 
 protected:
   int glLockLevel;
-
   void glInit(void);
   void glLock(void);
   void glUnlock(void);
   void glSwapBuffers(void);
-  void glReshape( int width, int height );
+  void glFlushBuffer(void);
+  virtual void glReshape( int width, int height );
+  virtual void glRender(void);
+
   static void glWidgetEventHandler( Widget widget, XtPointer data,
       XEvent * event, Boolean * dispatch );
 

@@ -50,9 +50,9 @@ public:
   void setSize( const SbVec2s size );
   SbVec2s getSize(void);
   Display * getDisplay(void);
-  void setTitle( const char * title );
+  void setTitle( const char * const title );
   const char * getTitle(void) const;
-  void setIconTitle( const char * title );
+  void setIconTitle( const char * const title );
   const char * getIconTitle(void) const;
 
   void setWindowCloseCallback(
@@ -68,7 +68,7 @@ protected:
       SbBool buildInsideParent = TRUE );
 
   void setBaseWidget( Widget widget );
-  void setClassName( const char * name );
+  void setClassName( const char * const name );
   virtual void windowCloseAction(void);
   virtual void afterRealizeHook(void);
 
@@ -93,6 +93,8 @@ private:
   Widget widget;
   char * widgetName;
   char * widgetClass;
+  char * title;
+  char * iconTitle;
 
   SbVec2s size;
 
