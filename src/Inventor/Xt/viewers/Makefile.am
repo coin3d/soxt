@@ -1,5 +1,6 @@
 ############################################################################
-##
+## SoXt/src/Inventor/Xt/viewers/Makefile.am
+## $Id$
 
 noinst_LTLIBRARIES = libSoXtViewers.la
 

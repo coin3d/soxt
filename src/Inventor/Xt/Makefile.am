@@ -1,34 +1,36 @@
 ############################################################################
+## SoXt/src/Inventor/Xt/Makefile.am
+## $Id$
 
 lib_LTLIBRARIES = libSoXt.la
 
-SUBDIRS = devices widgets viewers
+SUBDIRS = devices widgets sliders viewers
 
-INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
-VPATH = .:@srcdir@
-SHELL = /bin/sh
+INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src -I$(top_builddir)/data
 
 BUILT_SOURCES = \
 	SoXtBasic.h \
 	SoXtRenderArea.h \
 	SoXtRenderArea.cpp
 
+noinst_DATA = $(BUILT_SOURCES)
+
 ############################################################################
 ##
 
-libSoXtVPATH = . $(srcdir)
-
-.cpp.lo:
-	@( source='$<'; \
-	for dir in $(libSoXtVPATH); do \
-	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
-	done; \
-	eval "$(CXXDEPMODE)"; \
-	: $${depmode=none}; \
-	source="$$source" \
-	object='$@' libtool=no \
-	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
-	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
+# libSoXtVPATH = . $(srcdir)
+# 
+# .cpp.lo:
+# 	@( source='$<'; \
+# 	for dir in $(libSoXtVPATH); do \
+# 	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
+# 	done; \
+# 	eval "$(CXXDEPMODE)"; \
+# 	: $${depmode=none}; \
+# 	source="$$source" \
+# 	object='$@' libtool=no \
+# 	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
+# 	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
 
 libSoXt_la_SOURCES = \
 	$(BUILT_SOURCES) \
@@ -68,20 +70,36 @@ libSoXt_la_SOURCES = \
 
 libSoXt_la_LIBADD = \
 	devices/libSoXtDevices.la \
-	viewers/libSoXtViewers.la \
-	widgets/libSoXtWidgets.la
+	widgets/libSoXtWidgets.la \
+	sliders/libSoXtSliderSets.la \
+	viewers/libSoXtViewers.la
 
 ############################################################################
 ##
 
+SoXt.cpp: SoXtBasic.h
+SoXtClipboard.cpp: SoXtBasic.h
+SoXtComponent.cpp: SoXtBasic.h
+SoXtDirectionalLightEditor.cpp: SoXtBasic.h
+SoXtGLWidget.cpp: SoXtBasic.h
+SoXtLightSliderSet.cpp: SoXtBasic.h
+SoXtMaterialEditor.cpp: SoXtBasic.h
+SoXtMaterialList.cpp: SoXtBasic.h
+SoXtMaterialSliderSet.cpp: SoXtBasic.h
+SoXtPrintDialog.cpp: SoXtBasic.h
+SoXtResource.cpp: SoXtBasic.h
+SoXtSliderSet.cpp: SoXtBasic.h
+SoXtSliderSetBase.cpp: SoXtBasic.h
+SoXtTransformSliderSet.cpp: SoXtBasic.h
+
 SoXtBasic.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiBasic.h.in
-	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtBasic.h )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoXtRenderArea.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.h.in
-	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtRenderArea.h )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoXtRenderArea.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.cpp.in
-	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtRenderArea.cpp )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 ############################################################################
 ##
