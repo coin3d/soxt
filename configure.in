@@ -165,8 +165,15 @@ AC_LANG_CPLUSPLUS
 if test "${with_inventor+set}" = set; then
   SIM_AC_CHECK_OPENGL([
     SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_gl_cppflags"
+    SOXT_EXTRA_CFLAGS="$SOXT_EXTRA_CFLAGS $sim_ac_gl_cflags"
+    SOXT_EXTRA_CXXFLAGS="$SOXT_EXTRA_CXXFLAGS $sim_ac_gl_cxxflags"
     SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_gl_ldflags"
     SOXT_EXTRA_LIBS="$sim_ac_gl_libs $SOXT_EXTRA_LIBS"
+    CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
+    CFLAGS="$CFLAGS $sim_ac_gl_cflags"
+    CXXFLAGS="$CXXFLAGS $sim_ac_gl_cxxflags"
+    LDFLAGS="$LDFLAGS $sim_ac_gl_ldflags"
+    LIBS="$sim_ac_gl_libs $LIBS"
   ], [AC_MSG_ERROR(needs an OpenGL-compatible development system installation)])
 
   SIM_AC_CHECK_GLU([

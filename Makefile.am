@@ -24,6 +24,7 @@ BUILT_SOURCES = \
 	src/Inventor/@Gui@/SoAnyMaterialList.h \
 	src/Inventor/@Gui@/SoAnyMaterialList.cpp \
 	src/Inventor/@Gui@/SoAnyMaterialListBuiltins.cpp \
+	src/Inventor/@Gui@/common/gl.h \
 	src/Inventor/@Gui@/viewers/So@Gui@Viewer.h \
 	src/Inventor/@Gui@/viewers/So@Gui@Viewer.cpp \
 	src/Inventor/@Gui@/viewers/SoAnyFullViewer.h \
@@ -108,6 +109,13 @@ src/Inventor/@Gui@/SoAnyMaterialListBuiltins.cpp: \
   $(srcdir)/src/Inventor/@Gui@/common/SoAnyMaterialListBuiltins.cpp.in
 	@./config.status \
 	  --file=$@:src/Inventor/@Gui@/common/SoAnyMaterialListBuiltins.cpp.in
+
+src/Inventor/@Gui@/common/gl.h: $(srcdir)/src/Inventor/@Gui@/common/gl.h.in
+	@if test -d src/Inventor/@Gui@/common; then :; else \
+	  echo " mkdir src/Inventor/@Gui@/common"; \
+	  mkdir src/Inventor/@Gui@/common; \
+	fi
+	@./config.status --file=$@:src/Inventor/@Gui@/common/gl.h.in
 
 src/Inventor/@Gui@/viewers/So@Gui@Viewer.h: \
   $(srcdir)/src/Inventor/@Gui@/common/SoGuiViewer.h.in
