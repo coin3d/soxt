@@ -167,8 +167,8 @@ SoXtComponent::setTitle(
   }
   // If the component has a parent, set the parent's title, otherwise
   // set our widget's title
-  // FIXME - probably doesn't work if the widget is already realized
   if (parent || widget) {
+    // FIXME: doesn't work if the widget is already realized. 20000324 mortene.
      XtVaSetValues(parent ? parent : widget,
                    XmNtitle, this->title,
                    0, 0);
@@ -194,8 +194,8 @@ SoXtComponent::setIconTitle(
   }
   // If the component has a parent, set the parent's icon title, otherwise
   // set our widget's icon title
-  // FIXME - probably doesn't work if the widget is already realized
   if (parent || widget) {
+    // FIXME: doesn't work if the widget is already realized. 20000324 mortene.
      XtVaSetValues(parent ? parent : widget,
                    XtNiconName, this->iconTitle,
                    0, 0);
