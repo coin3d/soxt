@@ -257,7 +257,7 @@ SoXtMouse::makeButtonEvent( // private
 
   SbTime stamp;
   stamp.setMsecValue( event->time );
-  this->locationEvent->setTime( stamp );
+  this->buttonEvent->setTime( stamp );
 
   return this->buttonEvent;
 } // makeButtonEvent()
