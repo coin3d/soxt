@@ -643,13 +643,13 @@ SoXtPopupMenu::traverseBuild(
       if ( sub->pos == j && sub->parent == menu ) {
 //        fprintf( stderr, "%s%s {\n", pre, sub->name );
         Widget submenu = XmCreatePulldownMenu( parent, sub->name, NULL, 0 );
-        XmString temp = XmStringCreateLocalized( sub->title );
         sub->menu = XtVaCreateManagedWidget( sub->name,
           xmCascadeButtonGadgetClass, parent,
           XmNsubMenuId, submenu,
-          XmNlabelString, temp,
+          XtVaTypedArg,
+            XmNlabelString, XmRString,
+            sub->title, strlen(sub->title)+1,
           NULL );
-        XmStringFree( temp );
         this->traverseBuild( submenu, sub, indent + 2 );
 //        fprintf( stderr, "%s}\n", pre );
         break;
@@ -670,6 +670,9 @@ SoXtPopupMenu::traverseBuild(
             item->item = XtVaCreateManagedWidget( item->title,
               xmToggleButtonGadgetClass, parent,
               XmNsensitive, (item->flags & ITEM_ENABLED) ? True : False,
+              XtVaTypedArg,
+                XmNlabelString, XmRString,
+                item->title, strlen(item->title)+1,
               NULL );
             XtAddCallback( item->item, XmNvalueChangedCallback,
                 SoXtPopupMenu::itemSelectionCallback, this );
