@@ -4,7 +4,7 @@
 
 include common/Makefile.common
 
-SUBDIRS = devices editors nodes viewers widgets .
+SUBDIRS = devices editors engines nodes viewers widgets .
 
 DEFAULT_INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src -I$(top_builddir)/data
 
@@ -38,6 +38,7 @@ nodist_libSoXt_la_SOURCES = \
 libSoXt_la_LIBADD = \
 	devices/libSoXtDevices.la \
 	editors/libSoXtEditors.la \
+	engines/libSoGuiEngines.la \
 	nodes/libSoGuiNodes.la \
 	viewers/libSoXtViewers.la \
 	widgets/libSoXtWidgets.la
