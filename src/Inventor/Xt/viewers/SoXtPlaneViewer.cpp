@@ -32,6 +32,7 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
+#include <Inventor/Xt/SoXtResource.h>
 #include <Inventor/Xt/viewers/SoAnyPlaneViewer.h>
 #include <Inventor/Xt/widgets/SoXtPopupMenu.h>
 
@@ -88,15 +89,17 @@ SoXtPlaneViewer::constructor(
   this->prefparts = NULL;
   this->numprefparts = 0;
 
-  this->setLeftWheelString( "Trans Y" );
-  this->setBottomWheelString( "Trans X" );
-  this->setRightWheelString( "Dolly" );
   this->setClassName( this->getDefaultWidgetName() );
-  this->setTitle( "Plane Viewer" );
 
   if ( build ) {
     Widget viewer = this->buildWidget( this->getParentWidget() );
     this->setBaseWidget( viewer );
+
+    SoXtResource rsc( this->getRightWheelLabelWidget() );
+    char * dollyString = NULL;
+    rsc.getResource( "dollyString", XmRString, dollyString );
+    if ( dollyString != NULL )
+      this->setRightWheelString( dollyString );
   }
 } // constructor()
 
@@ -136,11 +139,19 @@ SoXtPlaneViewer::setCamera( // virtual
   } else if ( camera->isOfType( SoPerspectiveCamera::getClassTypeId() ) ) {
     pixmap = this->pixmaps.perspective;
     pixmap_ins = this->pixmaps.perspective_ins;
-    this->setRightWheelString( "Dolly" );
+    SoXtResource rsc( this->getRightWheelLabelWidget() );
+    char * dollyString = NULL;
+    rsc.getResource( "dollyString", XmRString, dollyString );
+    if ( dollyString != NULL )
+      this->setRightWheelString( dollyString );
   } else if ( camera->isOfType( SoOrthographicCamera::getClassTypeId() ) ) {
     pixmap = this->pixmaps.ortho;
     pixmap_ins = this->pixmaps.ortho_ins;
-    this->setRightWheelString( "Zoom" );
+    SoXtResource rsc( this->getRightWheelLabelWidget() );
+    char * zoomString = NULL;
+    rsc.getResource( "zoomString", XmRString, zoomString );
+    if ( zoomString != NULL )
+      this->setRightWheelString( zoomString );
   } else {
     SoDebugError::postWarning( "SoXtExaminerViewer::setCamera",
       "unknown camera type - got no pixmap" );
