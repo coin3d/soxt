@@ -4,7 +4,7 @@
 
 lib_LTLIBRARIES = libSoXt.la
 
-SUBDIRS = devices widgets sliders viewers
+SUBDIRS = devices widgets viewers
 
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src -I$(top_builddir)/data
 
@@ -52,6 +52,7 @@ libSoXt_la_SOURCES = \
 	SoXtIcons.h \
 	SoXtIcons.cpp \
 	SoXtLightSliderSet.h \
+	SoXtLightSliderSet.cpp \
 	SoXtMaterialEditor.h \
 	SoXtMaterialEditor.cpp \
 	SoXtMaterialList.h \
@@ -73,7 +74,6 @@ libSoXt_la_SOURCES = \
 libSoXt_la_LIBADD = \
 	devices/libSoXtDevices.la \
 	widgets/libSoXtWidgets.la \
-	sliders/libSoXtSliderSets.la \
 	viewers/libSoXtViewers.la
 
 ############################################################################

@@ -17,17 +17,33 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
+
+#include <assert.h>
+
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#include <Xm/Form.h>
 
 #include <Inventor/errors/SoDebugError.h>
 
 #include <soxtdefs.h>
+#include <Inventor/Xt/SoXtResource.h>
+#include <Inventor/Xt/sliders/SoXtSliderSetModule.h>
+
 #include <Inventor/Xt/SoXtLightSliderSet.h>
 
 /*!
   \class SoXtLightSliderSet Inventor/Xt/SoXtLightSliderSet.h
-  \brief The SoXtLightSliderSet class is yet to be documented.
+  \brief The SoXtLightSliderSet class is a component for modifying light
+  nodes.
+
+  This component is designed for editing SoLight nodes.
+  One slider is created for adjusting the intensity of the light,
+  while another slider set is created for adjusting the light color.
 */
 
 // *************************************************************************
@@ -36,11 +52,11 @@ static const char rcsid[] =
 */
 
 SoXtLightSliderSet::SoXtLightSliderSet(
-  Widget parent,
+  const Widget parent,
   const char * const name,
-  SbBool inParent,
-  SoNode * node )
-: inherited( parent, name, inParent, node )
+  const SbBool embed,
+  SoNode * const node )
+: inherited( parent, name, embed, node, FALSE )
 {
   this->constructor( TRUE );
 } // SoXtLightSliderSet()
@@ -49,24 +65,30 @@ SoXtLightSliderSet::SoXtLightSliderSet(
 */
 
 SoXtLightSliderSet::SoXtLightSliderSet( // protected
-  Widget parent,
+  const Widget parent,
   const char * const name,
-  SbBool inParent,
-  SoNode * node,
-  SbBool build )
-: inherited( parent, name, inParent, node )
+  const SbBool embed,
+  SoNode * const node,
+  const SbBool build )
+: inherited( parent, name, embed, node, FALSE )
 {
   this->constructor( build );
 } // SoXtLightSliderSet()
 
 /*!
+  Common code for all constructors.
 */
 
 void
-SoXtLightSliderSet::constructor( // protected
-  SbBool build )
+SoXtLightSliderSet::constructor( // private
+  const SbBool build )
 {
-  SOXT_STUB();
+  if ( build ) {
+    this->setClassName( "SoXtLightSliderSet" );
+    Widget sliderset = this->buildWidget( this->getParentWidget() );
+    this->setBaseWidget( sliderset );
+    this->fitSize( SbVec2s( 300, 0 ) );
+  }
 } // constructor()
 
 /*!
@@ -84,10 +106,49 @@ SoXtLightSliderSet::~SoXtLightSliderSet(
 
 Widget
 SoXtLightSliderSet::buildWidget( // protected
-  Widget parent )
+  const Widget parent )
 {
-  SOXT_STUB();
-  return (Widget) NULL;
+  return inherited::buildWidget( parent );
 } // buildWidget()
 
 // *************************************************************************
+
+/*!
+*/
+
+const char *
+SoXtLightSliderSet::getDefaultWidgetName( // virtual, protected
+  void ) const
+{
+  static const char defaultWidgetName[] = "SoXtLightSliderSet";
+  return defaultWidgetName;
+} // getDefaultWidgetName()
+
+/*!
+*/
+
+const char *
+SoXtLightSliderSet::getDefaultTitle( // virtual, protected
+  void ) const
+{
+  static const char defaultTitle[] = "Light Editor";
+  return defaultTitle;
+} // getDefaultTitle()
+
+/*!
+*/
+
+const char *
+SoXtLightSliderSet::getDefaultIconTitle( // virtual, protected
+  void ) const
+{
+  static const char defaultIconTitle[] = "Light Editor";
+  return defaultIconTitle;
+} // getDefaultIconTitle()
+
+// *************************************************************************
+
+#if SOXT_DEBUG
+static const char * getSoXtLightSliderSetRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
+

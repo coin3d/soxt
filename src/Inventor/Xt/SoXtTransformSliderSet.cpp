@@ -17,12 +17,20 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
+
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#include <Xm/Form.h>
 
 #include <Inventor/errors/SoDebugError.h>
 
 #include <soxtdefs.h>
+#include <Inventor/Xt/SoXtResource.h>
+
 #include <Inventor/Xt/SoXtTransformSliderSet.h>
 
 /*!
@@ -38,9 +46,9 @@ static const char rcsid[] =
 SoXtTransformSliderSet::SoXtTransformSliderSet(
   Widget parent,
   const char * const name,
-  SbBool inParent,
+  const SbBool embed,
   SoNode * const node )
-: inherited( parent, name, inParent, node )
+: inherited( parent, name, embed, node, FALSE )
 {
   this->constructor( TRUE );
 } // SoXtTransformSliderSet()
@@ -51,10 +59,10 @@ SoXtTransformSliderSet::SoXtTransformSliderSet(
 SoXtTransformSliderSet::SoXtTransformSliderSet( // protected
   Widget parent,
   const char * const name,
-  SbBool inParent,
+  const SbBool embed,
   SoNode * const node,
-  SbBool build )
-: inherited( parent, name, inParent, node )
+  const SbBool build )
+: inherited( parent, name, embed, node, FALSE )
 {
   this->constructor( build );
 } // SoXtTransformSliderSet()
@@ -63,10 +71,16 @@ SoXtTransformSliderSet::SoXtTransformSliderSet( // protected
 */
 
 void
-SoXtTransformSliderSet::constructor( // protected
+SoXtTransformSliderSet::constructor( // private
   SbBool build )
 {
-  SOXT_STUB();
+  if ( build ) {
+    SoDebugError::postInfo( "", "getWidgetName = %s", this->getWidgetName() );
+    this->setClassName( this->getWidgetName() );
+    Widget sliderset = this->buildWidget( this->getParentWidget() );
+    this->setBaseWidget( sliderset );
+    this->fitSize( SbVec2s( 300, 0 ) );
+  }
 } // constructor()
 
 /*!
@@ -75,8 +89,19 @@ SoXtTransformSliderSet::constructor( // protected
 SoXtTransformSliderSet::~SoXtTransformSliderSet(
   void )
 {
-  SOXT_STUB();
 } // ~SoXtTransformSliderSet()
+
+// *************************************************************************
+
+/*!
+*/
+
+Widget
+SoXtTransformSliderSet::buildWidget( // protected
+  Widget parent )
+{
+  return inherited::buildWidget( parent );
+} // buildWidget()
 
 // *************************************************************************
 
@@ -115,15 +140,7 @@ SoXtTransformSliderSet::getDefaultIconTitle( // virtual, protected
 
 // *************************************************************************
 
-/*!
-*/
+#if SOXT_DEBUG
+static const char * getSoXtTransformSliderSetRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
 
-Widget
-SoXtTransformSliderSet::buildWidget( // protected
-  Widget parent )
-{
-  SOXT_STUB();
-  return (Widget) NULL;
-} // buildWidget()
-
-// *************************************************************************

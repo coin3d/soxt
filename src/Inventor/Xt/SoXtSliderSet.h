@@ -24,23 +24,52 @@
 
 #include <Inventor/Xt/SoXtSliderSetBase.h>
 
+class SoXtSlider;
+struct SoXtSliderSetClosure;
+
 // *************************************************************************
 
 class SOXT_DLL_EXPORT SoXtSliderSet : public SoXtSliderSetBase {
   typedef SoXtSliderSetBase inherited;
 
 public:
-  void updateLayout(void);
+  SoXtSliderSet(
+    const Widget parent,
+    const char * const name,
+    const SbBool embed,
+    SoNode * const node );
+
+  virtual void setNode( SoNode * node );
 
 protected:
   SoXtSliderSet(
-    Widget parent,
+    const Widget parent,
     const char * const name,
-    SbBool inParent,
-    SoNode * const node );
+    const SbBool embed,
+    SoNode * const node,
+    const SbBool build );
   ~SoXtSliderSet(void);
 
-  Widget _parentShellWidget;
+  Widget buildWidget( Widget parent );
+
+private:
+  void constructor( const SbBool build );
+
+  void buildSliderModule( const Widget rowcolumn );
+  void buildSliderSet( const Widget rowcolumn );
+
+  void folding( SoXtSliderSetClosure * closure, Widget button );
+  static void folding_cb( Widget, XtPointer, XtPointer );
+  void style( SoXtSliderSetClosure * closure );
+  static void style_cb( Widget, XtPointer, XtPointer );
+  void slider( SoXtSliderSetClosure * closure, char * title, float value );
+  static void slider_cb( void * closure, char * title, float value );
+
+private:
+  int numSliders;
+  SoXtSlider ** sliders;
+
+  SbPList * closures;
 
 }; // class SoXtSliderSet
 

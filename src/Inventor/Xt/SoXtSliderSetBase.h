@@ -35,23 +35,18 @@ public:
   virtual void setNode( SoNode * node );
   SoNode * getNode(void) const;
 
-  virtual void getLayoutSize( int & width, int & height );
   virtual void show(void);
 
 protected:
   SoXtSliderSetBase(
-    Widget parent = NULL,
+    const Widget parent = NULL,
     const char * const name = NULL,
-    SbBool inParent = TRUE,
-    SoNode * const newEditNode = NULL );
-  ~SoXtSliderSetBase(void);
+    const SbBool embed = TRUE,
+    SoNode * const node = NULL );
+  virtual ~SoXtSliderSetBase(void);
 
-  Widget widget;
-  int _layoutWidth;
-  int _layoutHeight;
-  SoNode * _editNode;
-  int _numSubComponents;
-  SoXtSliderSetBase ** _subComponentArray;
+private:
+  SoNode * node;
 
 }; // class SoXtSliderSetBase
 

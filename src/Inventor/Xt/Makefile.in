@@ -106,7 +106,7 @@ uGUI = @uGUI@
 
 lib_LTLIBRARIES = libSoXt.la
 
-SUBDIRS = devices widgets sliders viewers
+SUBDIRS = devices widgets viewers
 
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src -I$(top_builddir)/data
 
@@ -154,6 +154,7 @@ libSoXt_la_SOURCES = \
 	SoXtIcons.h \
 	SoXtIcons.cpp \
 	SoXtLightSliderSet.h \
+	SoXtLightSliderSet.cpp \
 	SoXtMaterialEditor.h \
 	SoXtMaterialEditor.cpp \
 	SoXtMaterialList.h \
@@ -176,7 +177,6 @@ libSoXt_la_SOURCES = \
 libSoXt_la_LIBADD = \
 	devices/libSoXtDevices.la \
 	widgets/libSoXtWidgets.la \
-	sliders/libSoXtSliderSets.la \
 	viewers/libSoXtViewers.la
 
 
@@ -221,15 +221,14 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libSoXt_la_LDFLAGS = 
 libSoXt_la_DEPENDENCIES =  devices/libSoXtDevices.la \
-widgets/libSoXtWidgets.la sliders/libSoXtSliderSets.la \
-viewers/libSoXtViewers.la
+widgets/libSoXtWidgets.la viewers/libSoXtViewers.la
 am_libSoXt_la_OBJECTS =  SoXtRenderArea.lo SoAnyMaterialList.lo \
 SoAnyMaterialListBuiltins.lo SoXt.lo SoXtClipboard.lo SoXtComponent.lo \
 SoXtCursors.lo SoXtDirectionalLightEditor.lo SoXtGLWidget.lo \
-SoXtIcons.lo SoXtMaterialEditor.lo SoXtMaterialList.lo \
-SoXtMaterialSliderSet.lo SoXtPrintDialog.lo SoXtRenderAreaExtra.lo \
-SoXtResource.lo SoXtSliderSet.lo SoXtSliderSetBase.lo \
-SoXtTransformSliderSet.lo
+SoXtIcons.lo SoXtLightSliderSet.lo SoXtMaterialEditor.lo \
+SoXtMaterialList.lo SoXtMaterialSliderSet.lo SoXtPrintDialog.lo \
+SoXtRenderAreaExtra.lo SoXtResource.lo SoXtSliderSet.lo \
+SoXtSliderSetBase.lo SoXtTransformSliderSet.lo
 libSoXt_la_OBJECTS =  $(am_libSoXt_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -252,11 +251,12 @@ $(DEPDIR)/SoAnyMaterialListBuiltins.Plo $(DEPDIR)/SoXt.Plo \
 $(DEPDIR)/SoXtClipboard.Plo $(DEPDIR)/SoXtComponent.Plo \
 $(DEPDIR)/SoXtCursors.Plo $(DEPDIR)/SoXtDirectionalLightEditor.Plo \
 $(DEPDIR)/SoXtGLWidget.Plo $(DEPDIR)/SoXtIcons.Plo \
-$(DEPDIR)/SoXtMaterialEditor.Plo $(DEPDIR)/SoXtMaterialList.Plo \
-$(DEPDIR)/SoXtMaterialSliderSet.Plo $(DEPDIR)/SoXtPrintDialog.Plo \
-$(DEPDIR)/SoXtRenderArea.Plo $(DEPDIR)/SoXtRenderAreaExtra.Plo \
-$(DEPDIR)/SoXtResource.Plo $(DEPDIR)/SoXtSliderSet.Plo \
-$(DEPDIR)/SoXtSliderSetBase.Plo $(DEPDIR)/SoXtTransformSliderSet.Plo
+$(DEPDIR)/SoXtLightSliderSet.Plo $(DEPDIR)/SoXtMaterialEditor.Plo \
+$(DEPDIR)/SoXtMaterialList.Plo $(DEPDIR)/SoXtMaterialSliderSet.Plo \
+$(DEPDIR)/SoXtPrintDialog.Plo $(DEPDIR)/SoXtRenderArea.Plo \
+$(DEPDIR)/SoXtRenderAreaExtra.Plo $(DEPDIR)/SoXtResource.Plo \
+$(DEPDIR)/SoXtSliderSet.Plo $(DEPDIR)/SoXtSliderSetBase.Plo \
+$(DEPDIR)/SoXtTransformSliderSet.Plo
 DIST_COMMON =  $(libSoXtinc_HEADERS) Makefile.am Makefile.in
 
 
@@ -426,6 +426,7 @@ maintainer-clean-tags:
 @AMDEP@include $(DEPDIR)/SoXtDirectionalLightEditor.Plo
 @AMDEP@include $(DEPDIR)/SoXtGLWidget.Plo
 @AMDEP@include $(DEPDIR)/SoXtIcons.Plo
+@AMDEP@include $(DEPDIR)/SoXtLightSliderSet.Plo
 @AMDEP@include $(DEPDIR)/SoXtMaterialEditor.Plo
 @AMDEP@include $(DEPDIR)/SoXtMaterialList.Plo
 @AMDEP@include $(DEPDIR)/SoXtMaterialSliderSet.Plo

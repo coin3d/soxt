@@ -17,12 +17,15 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <Inventor/errors/SoDebugError.h>
 
 #include <soxtdefs.h>
+
 #include <Inventor/Xt/SoXtSliderSetBase.h>
 
 /*!
@@ -38,11 +41,11 @@ static const char rcsid[] =
 SoXtSliderSetBase::SoXtSliderSetBase( // protected
   Widget parent,
   const char * const name,
-  SbBool inParent,
+  SbBool embed,
   SoNode * const node )
-: inherited( parent, name )
+: inherited( parent, name, embed )
 {
-  SOXT_STUB();
+  this->node = node;
 } // SoXtSliderSetBase()
 
 /*!
@@ -51,42 +54,32 @@ SoXtSliderSetBase::SoXtSliderSetBase( // protected
 SoXtSliderSetBase::~SoXtSliderSetBase( // protected
   void )
 {
-  SOXT_STUB();
 } // ~SoXtSliderSetBase()
 
 // *************************************************************************
 
 /*!
+  This method sets the node the slider set is attached to.
 */
 
 void
 SoXtSliderSetBase::setNode( // virtual
   SoNode * node )
 {
-  SOXT_STUB();
+  this->node = node;
 } // setNode()
 
 /*!
+  This method returns the node the sliderset is attached to, or NULL if there
+  is no node attached.
 */
 
 SoNode *
 SoXtSliderSetBase::getNode(
   void ) const
 {
-  SOXT_STUB();
-  return (SoNode *) NULL;
+  return this->node;
 } // getNode()
-
-/*!
-*/
-
-void
-SoXtSliderSetBase::getLayoutSize( // virtual
-  int & width,
-  int & height )
-{
-  SOXT_STUB();
-} // getLayoutSize()
 
 /*!
 */
@@ -95,7 +88,12 @@ void
 SoXtSliderSetBase::show( // virtual
   void )
 {
-  SOXT_STUB();
+  inherited::show();
 } // show()
 
 // *************************************************************************
+
+#if SOXT_DEBUG
+static const char * getSoXtSliderSetBaseRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
+

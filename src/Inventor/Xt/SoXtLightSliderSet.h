@@ -31,23 +31,28 @@ class SOXT_DLL_EXPORT SoXtLightSliderSet : public SoXtSliderSet {
 
 public:
   SoXtLightSliderSet(
-    Widget parent = NULL,
+    const Widget parent = NULL,
     const char * const name = NULL,
-    SbBool inParent = TRUE,
-    SoNode * node = NULL );
+    const SbBool embed = TRUE,
+    SoNode * const node = NULL );
   ~SoXtLightSliderSet(void);
 
 protected:
   SoXtLightSliderSet(
-    Widget parent,
+    const Widget parent,
     const char * const name,
-    SbBool inParent,
-    SoNode * node,
-    SbBool build );
-
-  void constructor( SbBool build );
+    const SbBool embed,
+    SoNode * const node,
+    const SbBool build );
 
   Widget buildWidget( Widget parent );
+
+  virtual const char * getDefaultWidgetName(void) const;
+  virtual const char * getDefaultTitle(void) const;
+  virtual const char * getDefaultIconTitle(void) const;
+
+private:
+  void constructor( const SbBool build );
 
 }; // class SoXtLightSliderSet
 

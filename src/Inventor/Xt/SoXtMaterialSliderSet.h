@@ -33,17 +33,26 @@ public:
   SoXtMaterialSliderSet(
     Widget parent = NULL,
     const char * const name = NULL,
-    SbBool inParent = TRUE,
-    SoNode * const node = NULL,
-    SbBool build = TRUE );
-
+    SbBool embed = TRUE,
+    SoNode * const node = NULL );
   ~SoXtMaterialSliderSet(void);
 
 protected:
-
-  void constructor( SbBool build );
+  SoXtMaterialSliderSet(
+    Widget parent,
+    const char * const name,
+    SbBool embed,
+    SoNode * const node,
+    SbBool build);
 
   Widget buildWidget( Widget parent );
+
+  virtual const char * getDefaultWidgetName(void) const;
+  virtual const char * getDefaultTitle(void) const;
+  virtual const char * getDefaultIconTitle(void) const;
+
+private:
+  void constructor( SbBool build );
 
 }; // class SoXtMaterialSliderSet
 

@@ -17,12 +17,15 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <Inventor/errors/SoDebugError.h>
 
 #include <soxtdefs.h>
+
 #include <Inventor/Xt/SoXtMaterialSliderSet.h>
 
 /*!
@@ -38,12 +41,25 @@ static const char rcsid[] =
 SoXtMaterialSliderSet::SoXtMaterialSliderSet(
   Widget parent,
   const char * const name,
-  SbBool inParent,
+  SbBool embed,
+  SoNode * const node )
+: inherited( parent, name, embed, node, FALSE )
+{
+  this->constructor( TRUE );
+} // SoXtMaterialSliderSet()
+
+/*!
+*/
+
+SoXtMaterialSliderSet::SoXtMaterialSliderSet( // protected
+  Widget parent,
+  const char * const name,
+  SbBool embed,
   SoNode * const node,
   SbBool build )
-: inherited( parent, name, inParent, node )
+: inherited( parent, name, embed, node, FALSE )
 {
-  SOXT_STUB();
+  this->constructor( build );
 } // SoXtMaterialSliderSet()
 
 /*!
@@ -52,7 +68,6 @@ SoXtMaterialSliderSet::SoXtMaterialSliderSet(
 SoXtMaterialSliderSet::~SoXtMaterialSliderSet(
   void )
 {
-  SOXT_STUB();
 } // ~SoXtMaterialSliderSet()
 
 // *************************************************************************
@@ -64,7 +79,12 @@ void
 SoXtMaterialSliderSet::constructor(
   SbBool build )
 {
-  SOXT_STUB();
+  if ( build ) {
+    this->setClassName( "SoXtMaterialSliderSet" );
+    Widget sliderset = this->buildWidget( this->getParentWidget() );
+    this->setBaseWidget( sliderset );
+    this->fitSize( SbVec2s( 300, 0 ) );
+  }
 } // constructor()
 
 /*!
@@ -74,8 +94,47 @@ Widget
 SoXtMaterialSliderSet::buildWidget(
   Widget parent )
 {
-  SOXT_STUB();
-  return (Widget) NULL;
+  return inherited::buildWidget( parent );
 } // buildWidget()
 
 // *************************************************************************
+
+/*!
+*/
+
+const char *
+SoXtMaterialSliderSet::getDefaultWidgetName( // virtual, protected
+  void ) const
+{
+  static const char defaultWidgetName[] = "SoXtMaterialSliderSet";
+  return defaultWidgetName;
+} // getDefaultWidgetName()
+
+/*!
+*/
+
+const char *
+SoXtMaterialSliderSet::getDefaultTitle( // virtual, protected
+  void ) const
+{
+  static const char defaultTitle[] = "Material Sliders";
+  return defaultTitle;
+} // getDefaultTitle()
+
+/*!
+*/
+
+const char *
+SoXtMaterialSliderSet::getDefaultIconTitle( // virtual, protected
+  void ) const
+{
+  static const char defaultIconTitle[] = "Material Sliders";
+  return defaultIconTitle;
+} // getDefaultIconTitle()
+
+// *************************************************************************
+
+#if SOXT_DEBUG
+static const char * getSoXtMaterialSliderSetRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
+
