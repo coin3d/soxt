@@ -48,6 +48,7 @@ static const char rcsid[] =
 #endif // HAVE_LIBXPM
 
 #include <X11/cursorfont.h>
+#include <X11/keysym.h>
 
 // *************************************************************************
 
@@ -252,17 +253,42 @@ SoXtExaminerViewer::processEvent(
     break;
 
   case KeyPress:
-    switch ( ((XKeyPressedEvent *) event)->keycode ) {
-    default:
-      break;
-    } // switch ( ((XKeyPressedEvent *) event)->keycode )
+    {
+      unsigned int estate = ((XKeyEvent *)event)->state;
+      KeySym keysym = 0;
+      char keybuf[8];
+      int keybuflen =
+        XLookupString( (XKeyEvent *) event, keybuf, 8, &keysym, NULL );
+
+      switch ( keysym ) {
+      case XK_Control_L:
+      case XK_Control_R:
+        estate |= ControlMask;
+        break;
+      default:
+        break;
+      } // switch ( keysym )
+      this->setModeFromState( estate );
+    }
     break;
 
   case KeyRelease:
-    switch ( ((XKeyReleasedEvent *) event)->keycode ) {
-    default:
-      break;
-    } // switch ( ((XKeyReleasedEvent *) event)->keycode )
+    {
+      unsigned int estate = ((XKeyEvent *)event)->state;
+      KeySym keysym = 0;
+      char keybuf[8];
+      int keybuflen =
+        XLookupString( (XKeyEvent *) event, keybuf, 8, &keysym, NULL );
+      switch ( keysym ) {
+      case XK_Control_L:
+      case XK_Control_R:
+        estate &= ~ControlMask;
+        break;
+      default:
+        break;
+      } // switch ( keysym )
+      this->setModeFromState( estate );
+    }
     break;
 
   default:
@@ -426,7 +452,7 @@ SoXtExaminerViewer::setCursorRepresentation(const ViewerMode mode)
 
   Display * display = this->getDisplay();
 
-  switch (mode) {
+  switch ( mode ) {
   case EXAMINE:
   case DRAGGING:
     this->cursor = XCreateFontCursor( display, XC_hand2 );
@@ -455,10 +481,19 @@ SoXtExaminerViewer::setCursorRepresentation(const ViewerMode mode)
 
 // *************************************************************************
 
+/*!
+  \internal
+*/
+
 void
 SoXtExaminerViewer::setModeFromState(
   const unsigned int state )
 {
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXtExaminerViewer::setModeFromState",
+    "state = %08x", state );
+#endif // SOXT_DEBUG
+
   ViewerMode mode = EXAMINE;
 
   const unsigned int maskedstate =
@@ -496,6 +531,10 @@ SoXtExaminerViewer::setModeFromState(
   this->setMode( mode );
 } // setModeFromState()
 
+/*!
+  \internal
+*/
+
 void
 SoXtExaminerViewer::setMode(
   const ViewerMode mode )
@@ -531,6 +570,10 @@ SoXtExaminerViewer::setMode(
 } // setMode()
 
 // *************************************************************************
+
+/*!
+  \internal
+*/
 
 void
 SoXtExaminerViewer::spindetecttimerCB( // static
@@ -575,7 +618,7 @@ SoXtExaminerViewer::createViewerButtons( // virtual
 
   buttonlist->append( this->camerabutton );
 
-#ifdef HAVE_LIBXPM
+#if HAVE_LIBXPM
   this->camerapixmaps.ortho =
     createPixmapFromXpmData( this->camerabutton, ortho_xpm );
   this->camerapixmaps.ortho_ins =
@@ -584,7 +627,7 @@ SoXtExaminerViewer::createViewerButtons( // virtual
     createPixmapFromXpmData( this->camerabutton, perspective_xpm );
   this->camerapixmaps.perspective_ins =
     createInsensitivePixmapFromXpmData( this->camerabutton, perspective_xpm );
-#endif
+#endif // HAVE_LIBXPM
 
 } // createViewerButtons()
 
@@ -676,7 +719,7 @@ SoXtExaminerViewer::setCamera( // virtual
     XmNlabelInsensitivePixmap, pixmap_ins,
     XmNselectInsensitivePixmap, pixmap_ins,
     NULL );
-#endif
+#endif // HAVE_LIBXPM
   XtVaSetValues( this->camerabutton,
     XmNwidth, 30, XmNheight, 30, NULL );
   XtManageChild( this->camerabutton );
@@ -694,8 +737,8 @@ SoXtExaminerViewer::setSeekMode(
 {
 #if SOXT_DEBUG
   if ( enable == this->isSeekMode() ) {
-    SoDebugError::postWarning("SoWtExaminerViewer::setSeekMode",
-      "seek mode already %sset", enable ? "" : "un");
+    SoDebugError::postWarning( "SoXtExaminerViewer::setSeekMode",
+      "seek mode already %sset", enable ? "" : "un" );
     return;
   }
 #endif // SOXT_DEBUG
@@ -710,34 +753,34 @@ SoXtExaminerViewer::setSeekMode(
 
 void SoXtExaminerViewer::setAnimationEnabled( const SbBool enable ) {
   common->setAnimationEnabled( enable );
-}
+} // setAnimationEnabled()
 
 SbBool SoXtExaminerViewer::isAnimationEnabled(void) const {
   return common->isAnimationEnabled();
-}
+} // isAnimationEnabled()
 
 void SoXtExaminerViewer::stopAnimating(void) {
   common->stopAnimating();
-}
+} // stopAnimating()
 
 SbBool SoXtExaminerViewer::isAnimating(void) const {
   return common->isAnimating();
-}
+} // isAnimating()
 
 void SoXtExaminerViewer::setFeedbackVisibility( const SbBool enable ) {
   common->setFeedbackVisibility( enable );
-}
+} // setFeedbackVisibility()
 
 SbBool SoXtExaminerViewer::isFeedbackVisible(void) const {
   return common->isFeedbackVisible();
-}
+} // isFeedbackVisible()
 
 void SoXtExaminerViewer::setFeedbackSize( const int size ) {
   common->setFeedbackSize( size );
-}
+} // setFeedbackSize()
 
 int SoXtExaminerViewer::getFeedbackSize(void) const {
   return common->getFeedbackSize();
-}
+} // getFeedbackSize()
 
 // *************************************************************************
