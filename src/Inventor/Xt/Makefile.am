@@ -23,33 +23,22 @@ DISTCLEANFILES = \
 lib_LTLIBRARIES = libSoXt.la
 
 libSoXt_la_SOURCES = \
-	So@Gui@.cpp \
-	So@Gui@Clipboard.h \
-	So@Gui@Clipboard.cpp \
-	So@Gui@Component.cpp \
-	So@Gui@DirectionalLightEditor.h \
-	So@Gui@DirectionalLightEditor.cpp \
-	So@Gui@GLWidget.cpp \
-	So@Gui@Icons.h \
-	So@Gui@Icons.cpp \
-	So@Gui@LightSliderSet.h \
-	So@Gui@LightSliderSet.cpp \
-	So@Gui@MaterialEditor.h \
-	So@Gui@MaterialEditor.cpp \
-	So@Gui@MaterialList.h \
-	So@Gui@MaterialList.cpp \
-	So@Gui@MaterialSliderSet.h \
-	So@Gui@MaterialSliderSet.cpp \
-	So@Gui@PrintDialog.h \
-	So@Gui@PrintDialog.cpp \
-	So@Gui@Resource.h \
-	So@Gui@Resource.cpp \
-	So@Gui@SliderSet.h \
-	So@Gui@SliderSet.cpp \
-	So@Gui@SliderSetBase.h \
-	So@Gui@SliderSetBase.cpp \
-	So@Gui@TransformSliderSet.h \
-	So@Gui@TransformSliderSet.cpp
+	SoXt.cpp \
+	SoXtComponent.cpp \
+	SoXtGLWidget.cpp \
+	SoXtLightSliderSet.h \
+	SoXtLightSliderSet.cpp \
+	SoXtMaterialSliderSet.h \
+	SoXtMaterialSliderSet.cpp \
+	SoXtSliderSet.h \
+	SoXtSliderSet.cpp \
+	SoXtSliderSetBase.h \
+	SoXtSliderSetBase.cpp \
+	SoXtTransformSliderSet.h \
+	SoXtTransformSliderSet.cpp \
+	SoXtResource.h \
+	SoXtResource.cpp \
+	SoXtMaterialList.cpp
 
 nodist_libSoXt_la_SOURCES = \
 	$(SoGui_src_Inventor_Gui_BuiltFiles) \
@@ -66,30 +55,26 @@ libSoXt_la_LDFLAGS = \
 
 ############################################################################
 
-SoXtincdir = $(includedir)/Inventor/@Gui@
+SoXtincdir = $(includedir)/Inventor/Xt
 
 SoXtinc_HEADERS = \
-	So@Gui@Clipboard.h \
-	So@Gui@DirectionalLightEditor.h \
-	So@Gui@Icons.h \
-	So@Gui@LightSliderSet.h \
-	So@Gui@MaterialEditor.h \
-	So@Gui@MaterialList.h \
-	So@Gui@MaterialSliderSet.h \
-	So@Gui@PrintDialog.h \
-	So@Gui@Resource.h \
-	So@Gui@SliderSet.h \
-	So@Gui@SliderSetBase.h \
-	So@Gui@TransformSliderSet.h
+	SoXtLightSliderSet.h \
+	SoXtMaterialSliderSet.h \
+	SoXtResource.h \
+	SoXtSliderSet.h \
+	SoXtSliderSetBase.h \
+	SoXtTransformSliderSet.h
 
 nodist_SoXtinc_HEADERS = \
-	So@Gui@.h \
-	So@Gui@Basic.h \
-	So@Gui@Cursor.h \
-	So@Gui@Component.h \
-	So@Gui@Object.h \
-	So@Gui@GLWidget.h \
-	So@Gui@RenderArea.h
+	SoXt.h \
+	SoXtBasic.h \
+	SoXtObject.h \
+	SoXtCursor.h \
+	SoXtComponent.h \
+	SoXtGLWidget.h \
+	SoXtRenderArea.h \
+	SoXtMaterialList.h
+
 
 install-SoXtincHEADERS: $(SoXtinc_HEADERS)
 	@$(NORMAL_INSTALL)
