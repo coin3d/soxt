@@ -10,11 +10,8 @@
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
 
-SHELL = @SHELL@
-
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
-VPATH = @srcdir@
 prefix = @prefix@
 exec_prefix = @exec_prefix@
 
@@ -98,11 +95,21 @@ lGUI = @lGUI@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 uGUI = @uGUI@
 
+############################################################################
+
+
+noinst_LTLIBRARIES = libSoXtDevices.la
 
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 LIBS = 
+VPATH = .:@srcdir@
+SHELL = /bin/sh
 
-noinst_LTLIBRARIES = libSoXtDevices.la
+BUILT_SOURCES = 
+
+############################################################################
+
+libSoXtDevicesVPATH = . $(srcdir)
 
 libSoXtDevices_la_SOURCES = \
 	SoXtDevice.h \
@@ -116,6 +123,8 @@ libSoXtDevices_la_SOURCES = \
 	SoXtSpaceball.h \
 	SoXtSpaceball.cpp
 
+
+############################################################################
 
 libSoXtDevicesincdir = $(includedir)/Inventor/Xt/devices
 
@@ -284,12 +293,6 @@ maintainer-clean-depend:
 @AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(CXXCOMPILE) -c -o $@ $<
 
-.cpp.lo:
-@AMDEP@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
-@AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(LTCXXCOMPILE) -c -o $@ $<
-
 info-am:
 info: info-am
 dvi-am:
@@ -327,6 +330,7 @@ distclean-generic:
 
 maintainer-clean-generic:
 	-rm -f Makefile.in
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 mostlyclean-am:  mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
 		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
 		mostlyclean-generic
@@ -370,7 +374,17 @@ distclean-generic clean-generic maintainer-clean-generic clean \
 mostlyclean distclean maintainer-clean
 
 
-############################################################################
+.cpp.lo:
+	@( source='$<'; \
+	for dir in $(libSoXtDevicesVPATH); do \
+	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
+	done; \
+	eval "$(CXXDEPMODE)"; \
+	: ${depmod=none}; \
+	source="$$source" \
+	object='$@' libtool=no \
+	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
+	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
 
 install-libSoXtDevicesincHEADERS: $(libSoXtDevicesinc_HEADERS)
 	@$(NORMAL_INSTALL)

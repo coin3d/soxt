@@ -1,8 +1,31 @@
+############################################################################
+##
+
+noinst_LTLIBRARIES = libSoXtDevices.la
 
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 LIBS =
+VPATH = .:@srcdir@
+SHELL = /bin/sh
 
-noinst_LTLIBRARIES = libSoXtDevices.la
+BUILT_SOURCES =
+
+############################################################################
+## Build rule that accommodates for poor VPATH support
+
+libSoXtDevicesVPATH = . $(srcdir)
+
+.cpp.lo:
+	@( source='$<'; \
+	for dir in $(libSoXtDevicesVPATH); do \
+	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
+	done; \
+	eval "$(CXXDEPMODE)"; \
+	: ${depmod=none}; \
+	source="$$source" \
+	object='$@' libtool=no \
+	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
+	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
 
 libSoXtDevices_la_SOURCES = \
 	SoXtDevice.h \
@@ -16,6 +39,9 @@ libSoXtDevices_la_SOURCES = \
 	SoXtSpaceball.h \
 	SoXtSpaceball.cpp
 
+############################################################################
+## Header file installation information.
+
 libSoXtDevicesincdir = $(includedir)/Inventor/Xt/devices
 
 libSoXtDevicesinc_HEADERS = \
@@ -24,8 +50,6 @@ libSoXtDevicesinc_HEADERS = \
 	SoXtKeyboard.h \
 	SoXtMouse.h \
 	SoXtSpaceball.h
-
-############################################################################
 
 install-libSoXtDevicesincHEADERS: $(libSoXtDevicesinc_HEADERS)
 	@$(NORMAL_INSTALL)
