@@ -47,6 +47,46 @@
 
 // *************************************************************************
 
+struct SoXtDeviceHandlerInfo {
+  Widget widget;
+  SoXtEventHandler * handler;
+  XtPointer closure;
+  Window window;
+};
+
+// *************************************************************************
+
+class SoXtDeviceP {
+public:
+  SoXtDeviceP(void);
+  ~SoXtDeviceP();
+
+  SbVec2s size;
+  SbPList * handlers;
+};
+
+SoXtDeviceP::SoXtDeviceP(void)
+{
+  this->size = SbVec2s(0, 0);
+  this->handlers = NULL;
+}
+
+SoXtDeviceP::~SoXtDeviceP()
+{
+  if (this->handlers) {
+    for (int i = 0; i < this->handlers->getLength(); i++) {
+      SoXtDeviceHandlerInfo * info =
+        (SoXtDeviceHandlerInfo *) (*this->handlers)[i];
+      delete info;
+    }
+    delete this->handlers;
+  }
+}
+
+#define PRIVATE(p) (p->pimpl)
+
+// *************************************************************************
+
 SOXT_OBJECT_ABSTRACT_SOURCE(SoXtDevice);
 
 /*!
@@ -68,23 +108,14 @@ SoXtDevice::initClasses(void)
 
 // *************************************************************************
 
-struct SoXtDeviceHandlerInfo {
-  Widget widget;
-  SoXtEventHandler * handler;
-  XtPointer closure;
-  Window window;
-};
-
-// *************************************************************************
-
 /*!
   Constructor.  Protected to only enable invocation from derived device
   classes.
 */
 
 SoXtDevice::SoXtDevice(void)
-  : size(0, 0), handlers(NULL)
 {
+  PRIVATE(this) = new SoXtDeviceP;
 }
 
 /*!
@@ -93,14 +124,7 @@ SoXtDevice::SoXtDevice(void)
 
 SoXtDevice::~SoXtDevice()
 {
-  if (this->handlers) {
-    for (int i = 0; i < this->handlers->getLength(); i++) {
-      SoXtDeviceHandlerInfo * info =
-        (SoXtDeviceHandlerInfo *) (*this->handlers)[i];
-      delete info;
-    }
-    delete this->handlers;
-  }
+  delete PRIVATE(this);
 }
 
 // *************************************************************************
@@ -137,7 +161,7 @@ SoXtDevice::~SoXtDevice()
 void
 SoXtDevice::setWindowSize(const SbVec2s size)
 {
-  this->size = size;
+  PRIVATE(this)->size = size;
 }
 
 /*!
@@ -147,7 +171,7 @@ SoXtDevice::setWindowSize(const SbVec2s size)
 const SbVec2s
 SoXtDevice::getWindowSize(void) const
 {
-  return this->size;
+  return PRIVATE(this)->size;
 }
 
 // *************************************************************************
@@ -163,11 +187,11 @@ SoXtDevice::setEventPosition(SoEvent * event,
                              int y) const
 {
   assert(event != NULL);
-  SbVec2s position(x, this->size[1] - y - 1);
+  SbVec2s position(x, PRIVATE(this)->size[1] - y - 1);
   event->setPosition(position);
 #if 0 // SOXT_DEBUG
   SoDebugError::postInfo("SoXtDevice::setEventPosition",
-    "position = (%d, %d)", position[0], position[1]);
+                         "position = (%d, %d)", position[0], position[1]);
 #endif // 0 was SOXT_DEBUG
 }
 
@@ -183,14 +207,14 @@ SoXtDevice::addEventHandler(Widget widget,
                             XtPointer closure,
                             Window window)
 {
-  if (this->handlers == NULL)
-    this->handlers = new SbPList;
+  if (PRIVATE(this)->handlers == NULL)
+    PRIVATE(this)->handlers = new SbPList;
   SoXtDeviceHandlerInfo * info = new SoXtDeviceHandlerInfo;
   info->widget = widget;
   info->handler = handler;
   info->closure = closure;
   info->window = window;
-  this->handlers->append(info);
+  PRIVATE(this)->handlers->append(info);
 }
 
 /*!
@@ -202,14 +226,14 @@ SoXtDevice::removeEventHandler(Widget widget,
                                SoXtEventHandler * handler,
                                XtPointer closure)
 {
-  if (this->handlers) {
-    for (int i = 0; i < this->handlers->getLength(); i++) {
+  if (PRIVATE(this)->handlers) {
+    for (int i = 0; i < PRIVATE(this)->handlers->getLength(); i++) {
       SoXtDeviceHandlerInfo * info =
-        (SoXtDeviceHandlerInfo *) (*this->handlers)[i];
+        (SoXtDeviceHandlerInfo *) (*PRIVATE(this)->handlers)[i];
       if ((info->widget == widget) && (info->handler == handler) &&
            (info->closure == closure)) {
         delete info;
-        this->handlers->remove(i);
+        PRIVATE(this)->handlers->remove(i);
         return;
       }
     }
@@ -227,11 +251,11 @@ SoXtDevice::removeEventHandler(Widget widget,
 void
 SoXtDevice::invokeHandlers(XEvent * const event)
 {
-  if (this->handlers) {
+  if (PRIVATE(this)->handlers) {
     Boolean dispatch = False;
-    for (int i = 0; i < this->handlers->getLength(); i++) {
+    for (int i = 0; i < PRIVATE(this)->handlers->getLength(); i++) {
       SoXtDeviceHandlerInfo * info =
-        (SoXtDeviceHandlerInfo *) (*this->handlers)[i];
+        (SoXtDeviceHandlerInfo *) (*PRIVATE(this)->handlers)[i];
       info->handler(info->widget, info->closure, event, &dispatch);
     }
   }

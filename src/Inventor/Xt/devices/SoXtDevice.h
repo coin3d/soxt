@@ -62,10 +62,8 @@ protected:
   void invokeHandlers(XEvent * const event);
 
 private:
-  SbVec2s size;
-
-  SbPList * handlers;
-
+  class SoXtDeviceP * pimpl;
+  friend class SoXtDeviceP;
 };
 
 // *************************************************************************
