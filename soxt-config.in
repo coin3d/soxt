@@ -22,7 +22,7 @@ EOF
 while test $# -gt 0; do
   case $1 in
     --cppflags)
-      # Note: if we for some reason changes this so "includedir" is
+      # NOTE: if we for some reason changes this so "includedir" is
       # not first, we need to fix up the examples/ and ivexamples/
       # configure.in scripts, as they shift off the first argument.
       echo -I@includedir@ @SOXT_EXTRA_CPPFLAGS@
@@ -67,7 +67,7 @@ while test $# -gt 0; do
         walkviewer)       exit 0 ;;
         flyviewer)        exit 0 ;;
         materiallist)     exit 0 ;;
-        *) exit 1 ;;
+        *)                exit 1 ;;
       esac
       ;;
     --build)
@@ -76,10 +76,10 @@ while test $# -gt 0; do
       shift
       set -x
       @CXX@ \
-        ${CPPFLAGS} @SOXT_EXTRA_CPPFLAGS@ \
-        ${LDFLAGS} @SOXT_EXTRA_LDFLAGS@ \
+        ${CPPFLAGS} -I@includedir@ @SOXT_EXTRA_CPPFLAGS@ \
+        ${LDFLAGS} -L@libdir@ @SOXT_EXTRA_LDFLAGS@ \
         -o ${program} $@ \
-        ${LIBS} @SOXT_EXTRA_LIBS@
+        ${LIBS} -lSoXt @SOXT_EXTRA_LIBS@
       set +x
       ;;
     *)

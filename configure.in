@@ -313,6 +313,34 @@ SIM_EXPAND_DIR_VARS
 AC_CONFIG_SUBDIRS(data)
 
 # **************************************************************************
+# Remove redundant options from certain option lists.
+# We add the first argument ourselves to shift it off because it's added
+# again inside soqt-config.in
+
+SIM_AC_UNIQIFY_LIST(SOXT_EXTRA_CPPFLAGS, -I$includedir $SOXT_EXTRA_CPPFLAGS)
+set : $SOXT_EXTRA_CPPFLAGS
+shift
+shift
+SOXT_EXTRA_CPPFLAGS=$@
+
+SIM_AC_UNIQIFY_LIST(SOXT_EXTRA_LDFLAGS, -L$libdir $SOXT_EXTRA_LDFLAGS)
+set : $SOXT_EXTRA_LDFLAGS
+shift
+shift
+SOXT_EXTRA_LDFLAGS=$@
+
+SIM_AC_UNIQIFY_LIST(SOXT_EXTRA_LIBS, -lSoXt $SOXT_EXTRA_LIBS)
+set : $SOXT_EXTRA_LIBS
+shift
+shift
+SOXT_EXTRA_LIBS=$@
+
+# We don't have to do shift magic on these:
+SIM_AC_UNIQIFY_LIST(CPPFLAGS, $CPPFLAGS)
+SIM_AC_UNIQIFY_LIST(LDFLAGS, $LDFLAGS)
+SIM_AC_UNIQIFY_LIST(LIBS, $LIBS)
+
+# **************************************************************************
 # generate the makefiles and config files.
 
 AC_OUTPUT([

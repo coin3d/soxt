@@ -4776,6 +4776,8 @@ EOF
     iv_version=`echo $iv_version | sed 's/.$//'`
     rm -f conftest.c
     sim_ac_oiv_libs="inv${iv_version}.lib"
+    sim_ac_oiv_enter="#include <SoWinEnterScope.h>"
+    sim_ac_oiv_leave="#include <SoWinLeaveScope.h>"
   else
     sim_ac_oiv_libs="-lInventor -limage"
   fi
@@ -4788,18 +4790,19 @@ EOF
   LDFLAGS="$sim_ac_oiv_ldflags $LDFLAGS"
   LIBS="$sim_ac_oiv_libs $LIBS"
 
-  echo "configure:4319: checking for Open Inventor developer kit" >&5
+  echo "configure:4321: checking for Open Inventor developer kit" >&5
 echo $ECHO_N "checking for Open Inventor developer kit... $ECHO_C" >&6
 if test "${sim_cv_lib_oiv_avail+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 4325 "configure"
+#line 4327 "configure"
 #include "confdefs.h"
 #ifdef __cplusplus
 extern "C" void exit (int);
 #endif
-#include <Inventor/SoDB.h>
+$sim_ac_oiv_enter
+                  #include <Inventor/SoDB.h>
 int
 main ()
 {
@@ -4808,7 +4811,7 @@ SoDB::init();
   return 0;
 }
 EOF
-if { (eval echo configure:4339: \"$ac_link\") >&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:4342: \"$ac_link\") >&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   sim_cv_lib_oiv_avail=yes
 else
   echo "configure: failed program was:" >&5
@@ -4817,7 +4820,7 @@ else
 fi
 rm -f conftest*
 fi
-echo "configure:4348: result: $sim_cv_lib_oiv_avail" >&5
+echo "configure:4351: result: $sim_cv_lib_oiv_avail" >&5
 echo "${ECHO_T}$sim_cv_lib_oiv_avail" >&6
 
   if test x"$sim_cv_lib_oiv_avail" = xyes; then
@@ -4880,7 +4883,7 @@ if $sim_ac_coin_desired; then
 
   # Extract the first word of "coin-config", so it can be a program name with args.
 set dummy coin-config; ac_word=$2
-echo "configure:4400: checking for $ac_word" >&5
+echo "configure:4403: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_path_sim_ac_coin_configcmd+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -4907,10 +4910,10 @@ esac
 fi
 sim_ac_coin_configcmd=$ac_cv_path_sim_ac_coin_configcmd
 if test -n "$sim_ac_coin_configcmd"; then
-  echo "configure:4426: result: $sim_ac_coin_configcmd" >&5
+  echo "configure:4429: result: $sim_ac_coin_configcmd" >&5
 echo "${ECHO_T}$sim_ac_coin_configcmd" >&6
 else
-  echo "configure:4429: result: no" >&5
+  echo "configure:4432: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
 
@@ -4920,7 +4923,7 @@ fi
     sim_ac_coin_libs=`$sim_ac_coin_configcmd --libs`
     sim_ac_coin_datadir=`$sim_ac_coin_configcmd --datadir`
     sim_ac_coin_version=`$sim_ac_coin_configcmd --version`
-    echo "configure:4438: checking whether libCoin is available" >&5
+    echo "configure:4441: checking whether libCoin is available" >&5
 echo $ECHO_N "checking whether libCoin is available... $ECHO_C" >&6
 if test "${sim_cv_coin_avail+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -4932,7 +4935,7 @@ else
       LDFLAGS="$LDFLAGS $sim_ac_coin_ldflags"
       LIBS="$sim_ac_coin_libs $LIBS"
       cat >conftest.$ac_ext <<EOF
-#line 4450 "configure"
+#line 4453 "configure"
 #include "confdefs.h"
 #ifdef __cplusplus
 extern "C" void exit (int);
@@ -4946,7 +4949,7 @@ SoDB::init();
   return 0;
 }
 EOF
-if { (eval echo configure:4464: \"$ac_link\") >&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:4467: \"$ac_link\") >&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   sim_cv_coin_avail=true
 else
   echo "configure: failed program was:" >&5
@@ -4959,7 +4962,7 @@ rm -f conftest*
       LIBS=$sim_ac_save_libs
 
 fi
-echo "configure:4476: result: $sim_cv_coin_avail" >&5
+echo "configure:4479: result: $sim_cv_coin_avail" >&5
 echo "${ECHO_T}$sim_cv_coin_avail" >&6
     sim_ac_coin_avail=$sim_cv_coin_avail
   else
@@ -4987,13 +4990,13 @@ fi
 # Check for the availability of this node (it is used in the hidden
 # line rendering), which is not part of older Inventor implementations.
 
-echo "configure:4498: checking for the SoPolygonOffset node" >&5
+echo "configure:4501: checking for the SoPolygonOffset node" >&5
 echo $ECHO_N "checking for the SoPolygonOffset node... $ECHO_C" >&6
 if test "${sim_cv_sopolygonoffset+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 4504 "configure"
+#line 4507 "configure"
 #include "confdefs.h"
 #ifdef __cplusplus
 extern "C" void exit (int);
@@ -5007,7 +5010,7 @@ SoPolygonOffset * p = new SoPolygonOffset;
   return 0;
 }
 EOF
-if { (eval echo configure:4518: \"$ac_link\") >&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:4521: \"$ac_link\") >&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   sim_cv_sopolygonoffset=yes
 else
   echo "configure: failed program was:" >&5
@@ -5016,7 +5019,7 @@ else
 fi
 rm -f conftest*
 fi
-echo "configure:4527: result: $sim_cv_sopolygonoffset" >&5
+echo "configure:4530: result: $sim_cv_sopolygonoffset" >&5
 echo "${ECHO_T}$sim_cv_sopolygonoffset" >&6
 
 if test x"$sim_cv_sopolygonoffset" = xyes; then
@@ -5054,13 +5057,13 @@ if test x"$with_motif" != xno; then
   LDFLAGS="$sim_ac_motif_ldflags $LDFLAGS"
   LIBS="$sim_ac_motif_libs $LIBS"
 
-  echo "configure:4555: checking for a Motif development environment" >&5
+  echo "configure:4558: checking for a Motif development environment" >&5
 echo $ECHO_N "checking for a Motif development environment... $ECHO_C" >&6
 if test "${sim_cv_lib_motif_avail+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 4561 "configure"
+#line 4564 "configure"
 #include "confdefs.h"
 #ifdef __cplusplus
 extern "C" void exit (int);
@@ -5074,7 +5077,7 @@ XmUpdateDisplay(0L);
   return 0;
 }
 EOF
-if { (eval echo configure:4575: \"$ac_link\") >&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:4578: \"$ac_link\") >&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   sim_cv_lib_motif_avail=yes
 else
   echo "configure: failed program was:" >&5
@@ -5083,7 +5086,7 @@ else
 fi
 rm -f conftest*
 fi
-echo "configure:4584: result: $sim_cv_lib_motif_avail" >&5
+echo "configure:4587: result: $sim_cv_lib_motif_avail" >&5
 echo "${ECHO_T}$sim_cv_lib_motif_avail" >&6
 
   if test x"$sim_cv_lib_motif_avail" = xyes; then
@@ -5101,13 +5104,13 @@ echo "${ECHO_T}$sim_cv_lib_motif_avail" >&6
   fi
 fi
 
-echo "configure:4598: checking Linux Joystick device driver" >&5
+echo "configure:4601: checking Linux Joystick device driver" >&5
 echo $ECHO_N "checking Linux Joystick device driver... $ECHO_C" >&6
 if test "${sim_cv_joystick_linux+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 4604 "configure"
+#line 4607 "configure"
 #include "confdefs.h"
 #ifdef __cplusplus
 extern "C" void exit (int);
@@ -5115,7 +5118,7 @@ extern "C" void exit (int);
 #include <linux/joystick.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:4612: \"$ac_try\") >&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:4615: \"$ac_try\") >&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   sim_cv_joystick_linux=true
@@ -5127,7 +5130,7 @@ else
 fi
 rm -f conftest*
 fi
-echo "configure:4624: result: $sim_cv_joystick_linux" >&5
+echo "configure:4627: result: $sim_cv_joystick_linux" >&5
 echo "${ECHO_T}$sim_cv_joystick_linux" >&6
 
 sim_ac_joystick_linux_avail=$sim_cv_joystick_linux
@@ -5139,12 +5142,12 @@ if test "${with_linux_joystick_device+set}" = set; then
 else
   : ${sim_cv_joystick_linux_device=/dev/js0}
 fi
-  echo "configure:4635: checking Linux Joystick device handle" >&5
+  echo "configure:4638: checking Linux Joystick device handle" >&5
 echo $ECHO_N "checking Linux Joystick device handle... $ECHO_C" >&6
 if test "${sim_cv_joystick_linux_device+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 fi
-echo "configure:4640: result: $sim_cv_joystick_linux_device" >&5
+echo "configure:4643: result: $sim_cv_joystick_linux_device" >&5
 echo "${ECHO_T}$sim_cv_joystick_linux_device" >&6
   sim_ac_joystick_linux_device=$sim_cv_joystick_linux_device
 
@@ -5185,14 +5188,14 @@ fi # test "x${with_test_code+set}" = "xset")
 # --with-ivexamples is a silent option
 sim_ac_want_ivexamples=false
 if test x"${with_ivexamples+set}" = x"set"; then
-  echo "configure:4672: checking for ivexamples directory" >&5
+  echo "configure:4675: checking for ivexamples directory" >&5
 echo $ECHO_N "checking for ivexamples directory... $ECHO_C" >&6
   if test -f ${srcdir}/ivexamples/configure.in; then
-    echo "configure:4675: result: found" >&5
+    echo "configure:4678: result: found" >&5
 echo "${ECHO_T}found" >&6
     sim_ac_want_ivexamples=true
   else
-    echo "configure:4679: result: not found" >&5
+    echo "configure:4682: result: not found" >&5
 echo "${ECHO_T}not found" >&6
     { echo "configure: error: can't use '--with-ivexamples' when ivexamples/ doesn't exist" >&2; exit 1; }
   fi
@@ -5201,14 +5204,14 @@ fi
 # --with-devcode is a silent option
 sim_ac_want_devcode=false
 if test x"${with_devcode+set}" = x"set"; then
-  echo "configure:4687: checking for devcode directory" >&5
+  echo "configure:4690: checking for devcode directory" >&5
 echo $ECHO_N "checking for devcode directory... $ECHO_C" >&6
   if test -f ${srcdir}/devcode/configure.in; then
-    echo "configure:4690: result: found" >&5
+    echo "configure:4693: result: found" >&5
 echo "${ECHO_T}found" >&6
     sim_ac_want_devcode=true
   else
-    echo "configure:4694: result: not found" >&5
+    echo "configure:4697: result: not found" >&5
 echo "${ECHO_T}not found" >&6
     { echo "configure: error: can't use '--with-devcode' when devcode/ doesn't exist" >&2; exit 1; }
   fi
@@ -5319,7 +5322,7 @@ if test x"$with_doxygen" != xno; then
 
   # Extract the first word of "doxygen", so it can be a program name with args.
 set dummy doxygen; ac_word=$2
-echo "configure:4785: checking for $ac_word" >&5
+echo "configure:4788: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_path_sim_ac_doxygen_exe+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -5346,10 +5349,10 @@ esac
 fi
 sim_ac_doxygen_exe=$ac_cv_path_sim_ac_doxygen_exe
 if test -n "$sim_ac_doxygen_exe"; then
-  echo "configure:4811: result: $sim_ac_doxygen_exe" >&5
+  echo "configure:4814: result: $sim_ac_doxygen_exe" >&5
 echo "${ECHO_T}$sim_ac_doxygen_exe" >&6
 else
-  echo "configure:4814: result: no" >&5
+  echo "configure:4817: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
 
@@ -5368,7 +5371,7 @@ fi
 
   # Extract the first word of "perl", so it can be a program name with args.
 set dummy perl; ac_word=$2
-echo "configure:4829: checking for $ac_word" >&5
+echo "configure:4832: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_path_sim_ac_perl_exe+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -5395,10 +5398,10 @@ esac
 fi
 sim_ac_perl_exe=$ac_cv_path_sim_ac_perl_exe
 if test -n "$sim_ac_perl_exe"; then
-  echo "configure:4855: result: $sim_ac_perl_exe" >&5
+  echo "configure:4858: result: $sim_ac_perl_exe" >&5
 echo "${ECHO_T}$sim_ac_perl_exe" >&6
 else
-  echo "configure:4858: result: no" >&5
+  echo "configure:4861: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
 
@@ -5437,6 +5440,112 @@ infodir="`eval echo $infodir`"
 mandir="`eval echo $mandir`"
 
 subdirs="$subdirs data"
+
+# **************************************************************************
+# Remove redundant options from certain option lists.
+# We add the first argument ourselves to shift it off because it's added
+# again inside soqt-config.in
+
+sim_ac_uniqued_list=
+for sim_ac_item in -I$includedir $SOXT_EXTRA_CPPFLAGS; do
+  if test x"$sim_ac_uniqued_list" = x; then
+    sim_ac_uniqued_list="$sim_ac_item"
+  else
+    sim_ac_unique=true
+    for sim_ac_uniq in $sim_ac_uniqued_list; do
+      test x"$sim_ac_item" = x"$sim_ac_uniq" && sim_ac_unique=false
+    done
+    $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
+  fi
+done
+SOXT_EXTRA_CPPFLAGS=$sim_ac_uniqued_list
+
+set : $SOXT_EXTRA_CPPFLAGS
+shift
+shift
+SOXT_EXTRA_CPPFLAGS=$@
+
+sim_ac_uniqued_list=
+for sim_ac_item in -L$libdir $SOXT_EXTRA_LDFLAGS; do
+  if test x"$sim_ac_uniqued_list" = x; then
+    sim_ac_uniqued_list="$sim_ac_item"
+  else
+    sim_ac_unique=true
+    for sim_ac_uniq in $sim_ac_uniqued_list; do
+      test x"$sim_ac_item" = x"$sim_ac_uniq" && sim_ac_unique=false
+    done
+    $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
+  fi
+done
+SOXT_EXTRA_LDFLAGS=$sim_ac_uniqued_list
+
+set : $SOXT_EXTRA_LDFLAGS
+shift
+shift
+SOXT_EXTRA_LDFLAGS=$@
+
+sim_ac_uniqued_list=
+for sim_ac_item in -lSoXt $SOXT_EXTRA_LIBS; do
+  if test x"$sim_ac_uniqued_list" = x; then
+    sim_ac_uniqued_list="$sim_ac_item"
+  else
+    sim_ac_unique=true
+    for sim_ac_uniq in $sim_ac_uniqued_list; do
+      test x"$sim_ac_item" = x"$sim_ac_uniq" && sim_ac_unique=false
+    done
+    $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
+  fi
+done
+SOXT_EXTRA_LIBS=$sim_ac_uniqued_list
+
+set : $SOXT_EXTRA_LIBS
+shift
+shift
+SOXT_EXTRA_LIBS=$@
+
+# We don't have to do shift magic on these:
+
+sim_ac_uniqued_list=
+for sim_ac_item in $CPPFLAGS; do
+  if test x"$sim_ac_uniqued_list" = x; then
+    sim_ac_uniqued_list="$sim_ac_item"
+  else
+    sim_ac_unique=true
+    for sim_ac_uniq in $sim_ac_uniqued_list; do
+      test x"$sim_ac_item" = x"$sim_ac_uniq" && sim_ac_unique=false
+    done
+    $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
+  fi
+done
+CPPFLAGS=$sim_ac_uniqued_list
+
+sim_ac_uniqued_list=
+for sim_ac_item in $LDFLAGS; do
+  if test x"$sim_ac_uniqued_list" = x; then
+    sim_ac_uniqued_list="$sim_ac_item"
+  else
+    sim_ac_unique=true
+    for sim_ac_uniq in $sim_ac_uniqued_list; do
+      test x"$sim_ac_item" = x"$sim_ac_uniq" && sim_ac_unique=false
+    done
+    $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
+  fi
+done
+LDFLAGS=$sim_ac_uniqued_list
+
+sim_ac_uniqued_list=
+for sim_ac_item in $LIBS; do
+  if test x"$sim_ac_uniqued_list" = x; then
+    sim_ac_uniqued_list="$sim_ac_item"
+  else
+    sim_ac_unique=true
+    for sim_ac_uniq in $sim_ac_uniqued_list; do
+      test x"$sim_ac_item" = x"$sim_ac_uniq" && sim_ac_unique=false
+    done
+    $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
+  fi
+done
+LIBS=$sim_ac_uniqued_list
 
 # **************************************************************************
 # generate the makefiles and config files.
