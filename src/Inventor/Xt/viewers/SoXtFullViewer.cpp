@@ -58,6 +58,7 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
+#include <Inventor/Xt/SoXtResource.h>
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
 #include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
 
@@ -345,6 +346,12 @@ SoXtFullViewer::buildWidget( // protected
     NULL );
   this->registerWidget( this->viewerbase );
 
+  char * titleString = NULL;
+  SoXtResource rsc( this->viewerbase );
+  rsc.getResource( "title", XmRString, titleString );
+  if ( titleString != NULL )
+    this->setTitle( titleString );
+
   this->buildDecoration( this->viewerbase );
   
   this->canvas = inherited::buildWidget( this->viewerbase );
@@ -358,7 +365,6 @@ SoXtFullViewer::buildWidget( // protected
       XmNrightAttachment, XmATTACH_FORM,
       XmNrightOffset, 30,
       NULL );
-  this->setBorder( FALSE );
 
   XtManageChild( this->canvas );
   this->setBaseWidget( this->viewerbase );
@@ -602,9 +608,11 @@ SoXtFullViewer::setViewing( // virtual
   }
 
   XtSetMappedWhenManaged( this->viewerbuttons.view, True );
-  SoDebugError::postInfo( "", "yo!" );
+
+//  SoDebugError::postInfo( "", "yo!" );
   XtUnrealizeWidget( this->viewerbuttons.view );
-  SoDebugError::postInfo( "", "yo!!" );
+//  SoDebugError::postInfo( "", "yo!!" );
+
   XtVaSetValues( this->viewerbuttons.view,
                  XmNset, enable ? True : False,
                  XmNsensitive, enable ? False : True,
