@@ -185,6 +185,20 @@ SoXtPlaneViewer::~SoXtPlaneViewer(
   delete [] this->buttons;
 } // ~SoXtPlaneViewer()
 
+// ************************************************************************
+
+/*!
+  FIXME: write doc
+*/
+
+Widget
+SoXtPlaneViewer::buildWidget(Widget parent)
+{
+  // FIXME: is there _really_ nothing to do here? See for instance
+  // what is done in SoQtPlaneViewer. 20020113 mortene.
+  return inherited::buildWidget(parent);
+}
+
 // *************************************************************************
 
 /*!

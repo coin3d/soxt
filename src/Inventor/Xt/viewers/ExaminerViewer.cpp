@@ -1000,6 +1000,15 @@ SoXtExaminerViewer::afterRealizeHook(// virtual, protected
 
 // *************************************************************************
 
+Widget
+SoXtExaminerViewer::makeSubPreferences(Widget parent)
+{
+  // FIXME: not activated in SoXtFullViewer yet. 20020111 mortene.
+//    return inherited::makeSubPreferences(parent);
+  return NULL;
+}
+
+
 #if SOXT_DEBUG
 static const char * getSoXtExaminerViewerRCSId(void) { return rcsid; }
 #endif // SOXT_DEBUG
