@@ -113,6 +113,7 @@ test -d src/Inventor/Xt || mkdir src/Inventor/Xt
 
 AC_OUTPUT([
 Makefile
+soxt-config
 src/Inventor/Xt/Makefile
 src/Inventor/Xt/SoXtRenderArea.h:src/Inventor/Xt/common/SoAnyRenderArea.h.in
 src/Inventor/Xt/SoXtRenderArea.cpp:src/Inventor/Xt/common/SoAnyRenderArea.cpp.in

@@ -3774,7 +3774,7 @@ cat >$CONFIG_STATUS <<EOF
 
 # Files that config.status was made for.
 config_files="\\
-    Makefile src/Inventor/Xt/Makefile
+    Makefile soxt-config src/Inventor/Xt/Makefile
     src/Inventor/Xt/SoXtRenderArea.h:src/Inventor/Xt/common/SoAnyRenderArea.h.in
     src/Inventor/Xt/SoXtRenderArea.cpp:src/Inventor/Xt/common/SoAnyRenderArea.cpp.in
     src/Inventor/Xt/common/Makefile src/Inventor/Xt/devices/Makefile
@@ -3830,6 +3830,7 @@ do
     echo "\$ac_cs_usage"; exit 0 ;;
   # Handling of arguments.
   'Makefile' ) CONFIG_FILES="\$CONFIG_FILES Makefile" ;;
+  'soxt-config' ) CONFIG_FILES="\$CONFIG_FILES soxt-config" ;;
   'src/Inventor/Xt/Makefile' ) CONFIG_FILES="\$CONFIG_FILES src/Inventor/Xt/Makefile" ;;
   'src/Inventor/Xt/SoXtRenderArea.h' ) CONFIG_FILES="\$CONFIG_FILES src/Inventor/Xt/SoXtRenderArea.h:src/Inventor/Xt/common/SoAnyRenderArea.h.in" ;;
   'src/Inventor/Xt/SoXtRenderArea.cpp' ) CONFIG_FILES="\$CONFIG_FILES src/Inventor/Xt/SoXtRenderArea.cpp:src/Inventor/Xt/common/SoAnyRenderArea.cpp.in" ;;
