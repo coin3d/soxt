@@ -20,7 +20,22 @@
 static const char rcsid[] =
   "$Id$";
 
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <assert.h>
+
+#if HAVE_LIBXPM
+#include <X11/xpm.h>
+#include "icons/pick.xpm"
+#include "icons/view.xpm"
+#include "icons/help.xpm"
+#include "icons/home.xpm"
+#include "icons/set_home.xpm"
+#include "icons/view_all.xpm"
+#include "icons/seek.xpm"
+#endif // HAVE_LIBXPM
 
 #include <Xm/Xm.h>
 #include <Xm/Form.h>
@@ -40,6 +55,7 @@ static const char rcsid[] =
 */
 
 #include <Inventor/Xt/SoXtBasic.h>
+#include <Inventor/Xt/SoXt.h>
 #ifdef SOXT_THUMBWHEELTEST
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
 #endif // SOXT_THUMBWHEELTEST
@@ -59,6 +75,7 @@ enum DefaultViewerButtons {
 };
 
 #define VIEWERBUTTON(button) ((Widget) ((*this->viewerButtonsList)[button]))
+
 
 // *************************************************************************
 
@@ -99,6 +116,14 @@ SoXtFullViewer::SoXtFullViewer( // protected
   this->setClassName( "SoXtFullViewer" );
 
   this->prefmenu = NULL;
+
+  pixmaps.pick = 0;
+  pixmaps.view = 0;
+  pixmaps.help = 0;
+  pixmaps.home = 0;
+  pixmaps.set_home = 0;
+  pixmaps.view_all = 0;
+  pixmaps.seek = 0;
 
   if ( build != FALSE )
     this->buildWidget( parent );
@@ -463,7 +488,20 @@ SoXtFullViewer::setViewing( // virtual
                  XmNset, enable ? True : False, NULL );
   XtVaSetValues( VIEWERBUTTON(INTERACT_BUTTON),
                  XmNset, enable ? False : True, NULL );
+/*
+  FIXME: desensitize seek button on view mode changes
+  - neither of the following lines manages to preserve the layout of
+    the viewer buttons row when changing seek button sensitivity - WTFIGO?
+
+Alt 1:
   XtSetSensitive( VIEWERBUTTON(SEEK_BUTTON), enable ? True : False );
+
+Alt 2:
+  XtVaSetValues( VIEWERBUTTON(SEEK_BUTTON),
+    XmNsensitive, enable ? True : False,
+    XmNwidth, 30, XmNheight, 30,
+    NULL );
+*/
 } // setViewing()
 
 /*!
@@ -582,44 +620,70 @@ SoXtFullViewer::buildViewerButtons(
   Widget parent )
 {
   Widget form = XtVaCreateManagedWidget( "ViewerButtons",
-      xmFormWidgetClass, parent,
-      XmNleftAttachment, XmATTACH_FORM,
-      XmNtopAttachment, XmATTACH_FORM,
-      XmNrightAttachment, XmATTACH_FORM,
-      NULL );
+      xmFormWidgetClass, parent, NULL );
 
   this->createViewerButtons( form, this->viewerButtonsList );
 
-  for ( int i = 1; i < this->viewerButtonsList->getLength(); i++ ) {
-    Widget button = (Widget) (*this->viewerButtonsList)[i];
-    if ( i == 0 ) {
-      XtVaSetValues( button,
-         XmNleftOffset, 0,
-         XmNtopOffset, 0,
-         XmNrightOffset, 0,
-         XmNbottomOffset, 0,
-         XmNleftAttachment, XmATTACH_FORM,
-         XmNtopAttachment, XmATTACH_FORM,
-         XmNrightAttachment, XmATTACH_FORM,
-         XmNwidth, 30, XmNheight, 30,
-         NULL );
-    } else {
-      XtVaSetValues( button,
-         XmNleftOffset, 0,
-         XmNtopOffset, 0,
-         XmNrightOffset, 0,
-         XmNbottomOffset, 0,
-         XmNleftAttachment, XmATTACH_FORM,
-         XmNtopAttachment, XmATTACH_WIDGET,
-         XmNtopWidget, (Widget) (*this->viewerButtonsList)[i-1],
-         XmNrightAttachment, XmATTACH_FORM,
-         XmNwidth, 30, XmNheight, 30,
-         NULL );
-    }
-  }
+  const int buttons = this->viewerButtonsList->getLength();
 
+  XtVaSetValues( form,
+    XmNx, 0, XmNy, 0,
+    XmNleftAttachment, XmATTACH_POSITION,
+    XmNtopAttachment, XmATTACH_POSITION,
+//    XmNbackground, 0x00a00000,
+    XmNwidth, 30,
+    XmNheight, buttons * 30,
+    XmNfractionBase, buttons,
+    NULL );
+
+  for ( int i = 0; i < this->viewerButtonsList->getLength(); i++ ) {
+    Widget button = (Widget) (*this->viewerButtonsList)[i];
+    XtVaSetValues( button,
+       XmNwidth, 30, XmNheight, 30,
+       XmNleftAttachment, XmATTACH_POSITION,
+       XmNtopAttachment, XmATTACH_POSITION,
+       XmNleftPosition, 0, XmNtopPosition, i,
+       NULL );
+  }
   return form;
 } // buildViewerButtons()
+
+// *************************************************************************
+
+/*
+  Internal utility function.
+  Use
+*/
+
+#if HAVE_LIBXPM
+static
+Pixmap
+ButtonPixmap(
+  Widget button,
+  char ** xpm )
+{
+  Pixel bg;
+  XtVaGetValues( button, XmNbackground, &bg, NULL );
+  Display * dpy = SoXt::getDisplay();
+  XImage * image;
+  int error = XpmCreateImageFromData( dpy, xpm, &image, NULL, NULL );
+  if ( error != XpmSuccess ) return 0;
+  for ( int x = 0; x < image->width; x++ ) {
+    for ( int y = 0; y < image->height; y++ ) {
+      Pixel pixel = XGetPixel( image, x, y );
+      if ( pixel == 0 ) // black background must be translated
+        XPutPixel( image, x, y, bg );
+    }
+  }
+  const int width = 24, height = 24;
+  Drawable draw = RootWindow( dpy, DefaultScreen(dpy) );
+  Pixmap retval = XCreatePixmap( dpy, draw, width, height, image->depth );
+  GC gc = XCreateGC( dpy, draw, 0, NULL );
+  XPutImage( dpy, retval, gc, image, 0, 0, 0, 0, width, height );
+  XDestroyImage( image );
+  return retval;
+} // ButtonPixmap()
+#endif // HAVE_LIBXPM
 
 /*!
 */
@@ -630,6 +694,7 @@ SoXtFullViewer::createViewerButtons(
   SbPList * buttonlist )
 {
   assert( buttonlist != NULL );
+
   int viewerbutton;
   for ( viewerbutton = 0; viewerbutton <= SEEK_BUTTON; viewerbutton++ ) {
     XtCallbackProc proc = NULL;
@@ -676,6 +741,7 @@ SoXtFullViewer::createViewerButtons(
         XmNshadowType, XmSHADOW_OUT,
         XmNhighlightThickness, 2,
         XmNshadowThickness, 2,
+        XmNtraversalOn, False,
         XmNwidth, 30,
         XmNheight, 30,
         NULL );
@@ -687,8 +753,52 @@ SoXtFullViewer::createViewerButtons(
       }
     } else {
       button = XtVaCreateManagedWidget( label,
-        xmPushButtonWidgetClass, parent, NULL );
+        xmPushButtonWidgetClass, parent,
+        XmNshadowType, XmSHADOW_OUT,
+        XmNhighlightThickness, 2,
+        XmNshadowThickness, 2,
+        XmNtraversalOn, False,
+        XmNwidth, 30,
+        XmNheight, 30,
+        NULL );
     }
+#if HAVE_LIBXPM
+    Pixmap pixmap;
+    switch ( viewerbutton ) {
+    case INTERACT_BUTTON:
+      pixmap = pixmaps.pick = ButtonPixmap( button, pick_xpm );
+      break;
+    case EXAMINE_BUTTON:
+      pixmap = pixmaps.view = ButtonPixmap( button, view_xpm );
+      break;
+    case HELP_BUTTON:
+      pixmap = pixmaps.help = ButtonPixmap( button, help_xpm );
+      break;
+    case HOME_BUTTON:
+      pixmap = pixmaps.home = ButtonPixmap( button, home_xpm );
+      break;
+    case SET_HOME_BUTTON:
+      pixmap = pixmaps.set_home = ButtonPixmap( button, set_home_xpm );
+      break;
+    case VIEW_ALL_BUTTON:
+      pixmap = pixmaps.view_all = ButtonPixmap( button, view_all_xpm );
+      break;
+    case SEEK_BUTTON:
+      pixmap = pixmaps.seek = ButtonPixmap( button, seek_xpm );
+      break;
+    default:
+      assert( 0 && "impossible" );
+      break;
+    } // switch ( viewerbutton )
+    XtVaSetValues( button,
+      XmNlabelType, XmPIXMAP,
+      XmNlabelPixmap, pixmap,
+      XmNlabelInsensitivePixmap, pixmap,
+      XmNselectPixmap, pixmap,
+      XmNselectInsensitivePixmap, pixmap,
+      NULL );
+#endif // HAVE_LIBXPM
+
     if ( proc != NULL ) {
       if ( viewerbutton == INTERACT_BUTTON || viewerbutton == EXAMINE_BUTTON ) {
         XtAddCallback( button, XmNdisarmCallback, proc, this );
@@ -1089,6 +1199,13 @@ void
 SoXtFullViewer::seekbuttonClicked(
   void )
 {
+  if ( ! this->isViewing() ) {
+#if SOXT_DEBUG
+    SoDebugError::postInfo( "SoXtFullViewer::seekbuttonClicked",
+      "seek button should not be enabled in interaction mode!" );
+#endif // SOXT_DEBUG
+    return;
+  }
   this->setSeekMode(this->isSeekMode() ? FALSE : TRUE);
 } // seekbuttonClicked()
 

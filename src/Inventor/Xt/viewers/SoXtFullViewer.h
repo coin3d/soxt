@@ -157,6 +157,17 @@ private:
   SbVec2f zoomrange;
 
 private:
+  struct {
+    Pixmap help;
+    Pixmap home;
+    Pixmap pick;
+    Pixmap seek;
+    Pixmap set_home;
+    Pixmap view;
+    Pixmap view_all;
+  } pixmaps;
+
+private:
   void selectedViewing(void);
   void selectedDecoration(void);
   void selectedHeadlight(void);
