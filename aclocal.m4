@@ -2658,7 +2658,9 @@ fi
 #  the variable $sim_ac_oivxt_avail is set to "yes" if the Xt glue
 #  library for the Open Inventor development system is found.
 #
-# Author: Morten Eriksen, <mortene@sim.no>.
+# Authors:
+#   Morten Eriksen, <mortene@sim.no>.
+#   Lars J. Aas, <larsa@sim.no>.
 #
 
 AC_DEFUN([SIM_CHECK_OIV_XT], [
@@ -2798,8 +2800,13 @@ EOF
   fi
   rm -f conftest.c
   tgs_version=`echo $tgs_version_line | cut -c22-24`
+  tgs_suffix=
+  if test x"${enable_inventor_debug+set}" = xset &&
+     test x"${enable_inventor_debug}" = xyes; then
+    tgs_suffix=d
+  fi
   if test x"$tgs_version" != xTGS; then
-    sim_ac_inventor_chk_libs="$sim_ac_inventor_chk_libs -linv$tgs_version"
+    sim_ac_inventor_chk_libs="$sim_ac_inventor_chk_libs -linv$tgs_version$tgs_suffix"
     tgs_version_string=`echo $tgs_version | sed 's/\(.\)\(.\)\(.\)/\1.\2.\3/g'`
     AC_MSG_RESULT([TGS Open Inventor v$tgs_version_string])
   else
