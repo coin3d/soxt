@@ -12,7 +12,14 @@ else
 EXAMPLEDIR =
 endif
 
-SUBDIRS = . src/Inventor/Xt $(TESTDIR) $(EXAMPLEDIR)
+if BUILD_IV_EXAMPLES
+IVEXAMPLEDIR = ivexamples
+else
+IVEXAMPLEDIR = 
+endif
+
+SUBDIRS = . src/Inventor/Xt $(TESTDIR) $(EXAMPLEDIR) $(IVEXAMPLEDIR)
+
 SUFFIXES = .h .cpp .in .lo .o
 
 bin_SCRIPTS = soxt-config

@@ -8,8 +8,9 @@ dnl ************************************************************************
 dnl * accommodate for changes in the CVS repository structure...
 
 sim_ac_cvs_syncproblem=false;
+sim_ac_examples_check_file=${srcdir}/examples/configure.in
 
-if test ! -f ${srcdir}/examples/ChangeLog; then
+if test ! -f $sim_ac_examples_check_file; then
   if test "x${with_auto_cvs_update+set}" = "xset"; then
     echo "Trying to honor the --with-auto-cvs-update option."
     sim_ac_save_cwd="`pwd`"
@@ -27,7 +28,7 @@ if test ! -f ${srcdir}/examples/ChangeLog; then
   fi
 fi
 
-if test ! -f ${srcdir}/examples/ChangeLog; then
+if test ! -f $sim_ac_examples_check_file; then
   echo ""
   echo "  You appear to have an old setup of the SoXt source repository."
   echo "  Parts of it have changed structurally, and you need to do the"
@@ -175,7 +176,15 @@ dnl ************************************************************************
 dnl * --with-test-code is a silent option
 AM_CONDITIONAL(BUILD_TESTS, test "x${with_test_code+set}" = "xset")
 
+
+sim_ac_ivexamples_available=no
+if test -f ${srcdir}/ivexamples/configure.in; then
+  sim_ac_ivexamples_available=yes
+fi
+
 AM_CONDITIONAL(BUILD_EXAMPLES, true)
+AM_CONDITIONAL(BUILD_IV_EXAMPLES, test x"$sim_ac_ivexamples_available" = xyes)
+
 
 dnl ************************************************************************
 
@@ -220,7 +229,12 @@ AC_SUBST(SOXT_EXTRA_CPPFLAGS)
 AC_SUBST(SOXT_EXTRA_LDFLAGS)
 AC_SUBST(SOXT_EXTRA_LIBS)
 
-AC_CONFIG_SUBDIRS(examples)
+
+sim_ac_subconfig=examples
+if test x"$sim_ac_ivexamples_available" = xyes; then
+  sim_ac_subconfig="$sim_ac_subconfig ivexamples"
+fi
+AC_CONFIG_SUBDIRS($sim_ac_subconfig)
 
 
 dnl ************************************************************************

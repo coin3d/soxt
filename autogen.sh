@@ -14,7 +14,7 @@ GUI=Xt
 PROJECT=So$GUI
 
 MACRODIR=conf-macros
-SUBPROJECTS="$MACRODIR examples/components"
+SUBPROJECTS="$MACRODIR examples"
 
 echo "Checking the installed configuration tools..."
 
