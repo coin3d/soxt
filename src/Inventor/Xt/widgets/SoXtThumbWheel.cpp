@@ -711,6 +711,8 @@ Arm(
   widget->thumbwheel.armed = True;
 
   SoXtThumbWheelCallbackData data = {
+    SoXtCR_ARM,
+    e,
     widget->thumbwheel.value,
     widget->thumbwheel.value,
     0 // no movement on arm action
@@ -725,7 +727,7 @@ Arm(
 void
 Disarm(
   Widget w,
-  XEvent *,
+  XEvent * e,
   String *,
   Cardinal * )
 {
@@ -734,6 +736,8 @@ Disarm(
   widget->thumbwheel.armed = False;
 
   SoXtThumbWheelCallbackData data = {
+    SoXtCR_DISARM,
+    e,
     widget->thumbwheel.value,
     widget->thumbwheel.value,
     0 // no movement on disarm
@@ -797,6 +801,8 @@ Roll(
   }
 
   struct SoXtThumbWheelCallbackData data = {
+    SoXtCR_MOVE,
+    e,
     widget->thumbwheel.value,
     widget->thumbwheel.prev_value,
     pos - widget->thumbwheel.prev_position
