@@ -513,6 +513,7 @@ DISTCLEANFILES = \
 
 
 EXTRA_DIST = \
+	so@gui@.m4 \
 	build/so@gui@.spec.in \
 	$(SoGuiCommonDistFiles)
 

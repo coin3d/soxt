@@ -37,6 +37,7 @@ DISTCLEANFILES = \
 	$(SoGui_BuiltMetaFiles)
 
 EXTRA_DIST = \
+	so@gui@.m4 \
 	build/so@gui@.spec.in \
 	$(SoGuiCommonDistFiles)
 
