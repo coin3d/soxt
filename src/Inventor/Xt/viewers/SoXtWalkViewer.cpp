@@ -219,7 +219,7 @@ SoXtWalkViewer::processEvent( // virtual, protected
     if ( bevent->button == 3 && this->isPopupMenuEnabled() ) {
       if ( ! this->prefmenu )
         this->buildPopupMenu();
-      this->prefmenu->PopUp( this->getParentWidget(),
+      this->prefmenu->popUp( this->getParentWidget(),
         bevent->x_root, bevent->y_root );
       return;
     }

@@ -395,7 +395,7 @@ SoXtPlaneViewer::processEvent(
         int y = ((XButtonEvent *) event)->y_root;
         if ( ! this->prefmenu )
           this->buildPopupMenu();
-        this->prefmenu->PopUp( this->getGLWidget(), x, y );
+        this->prefmenu->popUp( this->getGLWidget(), x, y );
         return;
       }
     }
