@@ -121,7 +121,7 @@ protected:
 
   virtual void openViewerHelpCard(void);
 
-  Widget getThumbwheel( int num );
+  Widget getThumbWheel( int num );
 
   enum {
     LEFTDECORATION,
@@ -274,6 +274,10 @@ private:
 
   SOXT_WIDGET_CALLBACK( increaseInteractiveCount );
   SOXT_WIDGET_CALLBACK( decreaseInteractiveCount );
+
+  Widget incspeedbutton, decspeedbutton;
+  SOXT_WIDGET_CALLBACK( speedInc );
+  SOXT_WIDGET_CALLBACK( speedDec );
 
 private:
   SoAnyFullViewer * const common;

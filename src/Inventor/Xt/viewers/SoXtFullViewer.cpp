@@ -1524,9 +1524,8 @@ SoXtFullViewer::createDefaultPrefSheetParts( // protected
     num++;
   if ( (widgets[num] = this->createFramedStereoPrefSheetGuts( form )) )
     num++;
-  // speed settings is for walk + fly viewers
-  if ( (widgets[num] = this->createFramedSpeedPrefSheetGuts( form )) )
-    num++;
+  // NOTE: SpeedPrefs is set up on SoXtFullViewer level, but is only used
+  // by WalkViewer and FlyViewer, so it is not included as default...
 } // createDefaultPrefSheetParts()
 
 /*!
@@ -2282,9 +2281,43 @@ SoXtFullViewer::createSpeedPrefSheetGuts( // protected
 {
   Widget form = XtVaCreateManagedWidget( "speedform",
     xmFormWidgetClass, parent, NULL );
-#if SOXT_DEBUG
-  SOXT_STUB();
-#endif // SOXT_DEBUG
+
+  XmString labelstring = SoXt::encodeString( "Viewer speed: " );
+  Widget label = XtVaCreateManagedWidget( "speedlabel",
+    xmLabelWidgetClass, form,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  labelstring = SoXt::encodeString( "increase" );
+  this->incspeedbutton = XtVaCreateManagedWidget( "incbutton",
+    xmPushButtonWidgetClass, form,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, label,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  XtAddCallback( this->incspeedbutton, XmNactivateCallback,
+    SoXtFullViewer::speedIncCB, (XtPointer) this );
+
+  labelstring = SoXt::encodeString( "decrease" );
+  this->decspeedbutton = XtVaCreateManagedWidget( "decbutton",
+    xmPushButtonWidgetClass, form,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, this->incspeedbutton,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  XtAddCallback( this->decspeedbutton, XmNactivateCallback,
+    SoXtFullViewer::speedDecCB, (XtPointer) this );
+
   return form;
 } // createSpeedPrefSheetGuts()
 
@@ -3133,5 +3166,40 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 
   this->setCameraZoom( value );
 } // zoomvaluechanged()
+
+// *************************************************************************
+
+/*!
+*/
+
+Widget
+SoXtFullViewer::getThumbWheel(
+  int num )
+{
+  assert( num >= FIRSTDECORATION && num <= LASTDECORATION );
+  return this->wheels[num];
+} // getThumbWheel()
+
+// *************************************************************************
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtFullViewer,
+  speedInc )
+{
+  SOXT_STUB_ONCE();
+} // speedInc()
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtFullViewer,
+  speedDec )
+{
+  SOXT_STUB_ONCE();
+} // speedDec()
 
 // *************************************************************************
