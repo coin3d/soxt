@@ -48,6 +48,10 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/devices/SoXtMouse.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 /*
   FIXME: implement BUTTON_MOTION filtering
 */
@@ -216,28 +220,23 @@ SoXtMouse::makeButtonEvent( // private
   delete this->buttonEvent;
   this->buttonEvent = new SoMouseButtonEvent;
   this->buttonEvent->setState( state );
+
+  SoMouseButtonEvent::Button button = SoMouseButtonEvent::ANY;
+
   switch ( event->button ) {
-  case 1: // left button
-    this->buttonEvent->setButton( SoMouseButtonEvent::BUTTON1 );
-    break;
-  case 2: // midbutton
-    this->buttonEvent->setButton( SoMouseButtonEvent::BUTTON2 );
-    break;
-  case 3: // right button
-    this->buttonEvent->setButton( SoMouseButtonEvent::BUTTON3 );
-    break;
-#if 0 // FIXME: disabled until it's enabled again through autoconf test
-  case 4: // wheel up
-    this->buttonEvent->setButton( SoMouseButtonEvent::BUTTON4 );
-    break;
-  case 5: // wheel down
-    this->buttonEvent->setButton( SoMouseButtonEvent::BUTTON5 );
-    break;
-#endif
+  case 1: button = SoMouseButtonEvent::BUTTON1; break;
+  case 2: button = SoMouseButtonEvent::BUTTON2; break;
+  case 3: button = SoMouseButtonEvent::BUTTON3; break;
+#ifdef HAVE_SOMOUSEBUTTONEVENT_BUTTONS
+  case 4: button = SoMouseButtonEvent::BUTTON4; break;
+  case 5: button = SoMouseButtonEvent::BUTTON5; break;
+#endif // HAVE_SOMOUSEBUTTONEVENT_BUTTONS
   default:
-    this->buttonEvent->setButton( SoMouseButtonEvent::ANY );
     break;
   } // switch ( event->button )
+
+  this->buttonEvent->setButton( button );
+
   this->setEventPosition( this->buttonEvent, event->x, event->y );
 
   this->buttonEvent->setShiftDown(
