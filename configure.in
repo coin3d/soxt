@@ -111,7 +111,7 @@ SIM_COMPILER_WARNINGS
 # **************************************************************************
 # Search for and set up stuff we depend on.
 
-SIM_CHECK_DL([
+SIM_AC_CHECK_DL([
   SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_dl_cppflags"
   SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_dl_ldflags"
   SOXT_EXTRA_LIBS="$sim_ac_dl_libs $SOXT_EXTRA_LIBS"
