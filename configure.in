@@ -133,7 +133,7 @@ AC_SUBST(SUFFIX)
 # **************************************************************************
 
 SIM_AC_MATHLIB_READY_IFELSE(,[
-  SIM_AC_CHECK_MATHLIB(SOXT_EXTRA_LIBS="SOXT_EXTRA_LIBS $sim_ac_libm",
+  SIM_AC_CHECK_MATHLIB(SOGUI_EXTRA_LIBS="SOGUI_EXTRA_LIBS $sim_ac_libm",
                        AC_MSG_ERROR(could not find a way to use math library))
 ])
 
@@ -141,20 +141,20 @@ SIM_AC_MATHLIB_READY_IFELSE(,[
 # Search for and set up stuff we depend on.
 
 SIM_AC_CHECK_DL([
-  SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_dl_cppflags"
-  SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_dl_ldflags"
-  SOXT_EXTRA_LIBS="$sim_ac_dl_libs $SOXT_EXTRA_LIBS"
+  SOGUI_EXTRA_CPPFLAGS="$SOGUI_EXTRA_CPPFLAGS $sim_ac_dl_cppflags"
+  SOGUI_EXTRA_LDFLAGS="$SOGUI_EXTRA_LDFLAGS $sim_ac_dl_ldflags"
+  SOGUI_EXTRA_LIBS="$sim_ac_dl_libs $SOGUI_EXTRA_LIBS"
 ])
 
 SIM_AC_CHECK_X11([
-  SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_x11_cppflags"
-  SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_x11_ldflags"
-  SOXT_EXTRA_LIBS="$sim_ac_x11_libs $SOXT_EXTRA_LIBS"
+  SOGUI_EXTRA_CPPFLAGS="$SOGUI_EXTRA_CPPFLAGS $sim_ac_x11_cppflags"
+  SOGUI_EXTRA_LDFLAGS="$SOGUI_EXTRA_LDFLAGS $sim_ac_x11_ldflags"
+  SOGUI_EXTRA_LIBS="$sim_ac_x11_libs $SOGUI_EXTRA_LIBS"
 ])
 
 if test x"$sim_ac_x11_avail" = xyes; then
   SIM_AC_CHECK_LIBXPM([
-    SOXT_EXTRA_LIBS="$sim_ac_xpm_libs $SOXT_EXTRA_LIBS"
+    SOGUI_EXTRA_LIBS="$sim_ac_xpm_libs $SOGUI_EXTRA_LIBS"
     AC_DEFINE(HAVE_LIBXPM, 1, [Define this to use libXpm])
     sim_ac_xpm_status="Yes"
     SIM_AC_CONFIGURATION_SETTING([Xpm Library], [Yes])
@@ -164,21 +164,21 @@ if test x"$sim_ac_x11_avail" = xyes; then
       [Without libXpm support you will not get graphics on the viewer buttons.])
   ])
   SIM_AC_CHECK_X11SHMEM([
-    SOXT_EXTRA_LIBS="$sim_ac_x11shmem_libs $SOXT_EXTRA_LIBS"
+    SOGUI_EXTRA_LIBS="$sim_ac_x11shmem_libs $SOGUI_EXTRA_LIBS"
   ])
   SIM_AC_CHECK_X11MU([
-    SOXT_EXTRA_LIBS="$sim_ac_x11mu_libs $SOXT_EXTRA_LIBS"
+    SOGUI_EXTRA_LIBS="$sim_ac_x11mu_libs $SOGUI_EXTRA_LIBS"
   ])
   SIM_AC_CHECK_X11XID([
-    SOXT_EXTRA_LIBS="$sim_ac_x11mu_libs $SOXT_EXTRA_LIBS"
+    SOGUI_EXTRA_LIBS="$sim_ac_x11mu_libs $SOGUI_EXTRA_LIBS"
   ])
   # Open Group Motif depends on the Xp printing library (at least
   # on some platforms).
   SIM_AC_CHECK_X11_XP([
-    SOXT_EXTRA_LIBS="$sim_ac_xp_libs $SOXT_EXTRA_LIBS"
+    SOGUI_EXTRA_LIBS="$sim_ac_xp_libs $SOGUI_EXTRA_LIBS"
   ])
   SIM_AC_CHECK_X_INTRINSIC([
-    SOXT_EXTRA_LIBS="$sim_ac_xt_libs $SOXT_EXTRA_LIBS"
+    SOGUI_EXTRA_LIBS="$sim_ac_xt_libs $SOGUI_EXTRA_LIBS"
   ])
 else
   AC_MSG_ERROR(need to able to compile and link against X11 libraries)
@@ -186,11 +186,11 @@ fi
 
 if test "${with_inventor+set}" = set; then
   SIM_AC_CHECK_OPENGL([
-    SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_gl_cppflags"
-    SOXT_EXTRA_CFLAGS="$SOXT_EXTRA_CFLAGS $sim_ac_gl_cflags"
-    SOXT_EXTRA_CXXFLAGS="$SOXT_EXTRA_CXXFLAGS $sim_ac_gl_cxxflags"
-    SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_gl_ldflags"
-    SOXT_EXTRA_LIBS="$sim_ac_gl_libs $SOXT_EXTRA_LIBS"
+    SOGUI_EXTRA_CPPFLAGS="$SOGUI_EXTRA_CPPFLAGS $sim_ac_gl_cppflags"
+    SOGUI_EXTRA_CFLAGS="$SOGUI_EXTRA_CFLAGS $sim_ac_gl_cflags"
+    SOGUI_EXTRA_CXXFLAGS="$SOGUI_EXTRA_CXXFLAGS $sim_ac_gl_cxxflags"
+    SOGUI_EXTRA_LDFLAGS="$SOGUI_EXTRA_LDFLAGS $sim_ac_gl_ldflags"
+    SOGUI_EXTRA_LIBS="$sim_ac_gl_libs $SOGUI_EXTRA_LIBS"
     CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
     CFLAGS="$CFLAGS $sim_ac_gl_cflags"
     CXXFLAGS="$CXXFLAGS $sim_ac_gl_cxxflags"
@@ -199,9 +199,9 @@ if test "${with_inventor+set}" = set; then
   ], [AC_MSG_ERROR(needs an OpenGL-compatible development system installation)])
 
   SIM_AC_CHECK_GLU([
-    SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
-    SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_glu_ldflags"
-    SOXT_EXTRA_LIBS="$sim_ac_glu_libs $SOXT_EXTRA_LIBS"
+    SOGUI_EXTRA_CPPFLAGS="$SOGUI_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
+    SOGUI_EXTRA_LDFLAGS="$SOGUI_EXTRA_LDFLAGS $sim_ac_glu_ldflags"
+    SOGUI_EXTRA_LIBS="$sim_ac_glu_libs $SOGUI_EXTRA_LIBS"
   ], [AC_MSG_ERROR(needs the OpenGL utility library)])
 
   # check for SGI or TGS Open Inventor
@@ -211,11 +211,11 @@ if test "${with_inventor+set}" = set; then
     CXXFLAGS="$CXXFLAGS $sim_ac_inventor_cxxflags"
     LDFLAGS="$LDFLAGS $sim_ac_inventor_ldflags"
     LIBS="$sim_ac_inventor_libs $LIBS"
-    SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_inventor_cppflags"
-    SOXT_EXTRA_CFLAGS="$SOXT_EXTRA_CFLAGS $sim_ac_inventor_cflags"
-    SOXT_EXTRA_CXXFLAGS="$SOXT_EXTRA_CXXFLAGS $sim_ac_inventor_cxxflags"
-    SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_inventor_ldflags"
-    SOXT_EXTRA_LIBS="$sim_ac_inventor_libs $SOXT_EXTRA_LIBS"
+    SOGUI_EXTRA_CPPFLAGS="$SOGUI_EXTRA_CPPFLAGS $sim_ac_inventor_cppflags"
+    SOGUI_EXTRA_CFLAGS="$SOGUI_EXTRA_CFLAGS $sim_ac_inventor_cflags"
+    SOGUI_EXTRA_CXXFLAGS="$SOGUI_EXTRA_CXXFLAGS $sim_ac_inventor_cxxflags"
+    SOGUI_EXTRA_LDFLAGS="$SOGUI_EXTRA_LDFLAGS $sim_ac_inventor_ldflags"
+    SOGUI_EXTRA_LIBS="$sim_ac_inventor_libs $SOGUI_EXTRA_LIBS"
   ], [AC_MSG_ERROR([couldn't compile and link against Open Inventor])])
 
   SIM_AC_CONFIGURATION_SETTING([Open Inventor brand], [SGI/TGS Inventor])
@@ -224,12 +224,12 @@ else
 
   SIM_AC_CHECK_HEADER_GL([
     CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
-    SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_gl_cppflags"
+    SOGUI_EXTRA_CPPFLAGS="$SOGUI_EXTRA_CPPFLAGS $sim_ac_gl_cppflags"
   ], [AC_MSG_ERROR([could not detect a gl.h header file])])
 
   SIM_AC_CHECK_HEADER_GLU([
     CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
-    SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
+    SOGUI_EXTRA_CPPFLAGS="$SOGUI_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
   ], [AC_MSG_ERROR([could not detect a glu.h header file])])
 
   # check for Coin library and its dependencies
@@ -237,9 +237,9 @@ else
     CPPFLAGS="$CPPFLAGS $sim_ac_coin_cppflags"
     LDFLAGS="$LDFLAGS $sim_ac_coin_ldflags"
     LIBS="$sim_ac_coin_libs $LIBS"
-    SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_coin_cppflags"
-    SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_coin_ldflags"
-    SOXT_EXTRA_LIBS="$sim_ac_coin_libs $SOXT_EXTRA_LIBS"
+    SOGUI_EXTRA_CPPFLAGS="$SOGUI_EXTRA_CPPFLAGS $sim_ac_coin_cppflags"
+    SOGUI_EXTRA_LDFLAGS="$SOGUI_EXTRA_LDFLAGS $sim_ac_coin_ldflags"
+    SOGUI_EXTRA_LIBS="$sim_ac_coin_libs $SOGUI_EXTRA_LIBS"
   ], [AC_MSG_ERROR([couldn't compile and link against Coin])])
 
   SIM_AC_CONFIGURATION_SETTING([Open Inventor brand], [Coin])
@@ -284,9 +284,9 @@ SIM_AC_CHECK_JOYSTICK_LINUX([
 AM_CONDITIONAL(HAVE_JOYSTICK_LINUX, $sim_ac_joystick_linux_avail)
 
 SIM_CHECK_MOTIF([
-  SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_motif_cppflags"
-  SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_motif_ldflags"
-  SOXT_EXTRA_LIBS="$sim_ac_motif_libs $SOXT_EXTRA_LIBS"
+  SOGUI_EXTRA_CPPFLAGS="$SOGUI_EXTRA_CPPFLAGS $sim_ac_motif_cppflags"
+  SOGUI_EXTRA_LDFLAGS="$SOGUI_EXTRA_LDFLAGS $sim_ac_motif_ldflags"
+  SOGUI_EXTRA_LIBS="$sim_ac_motif_libs $SOGUI_EXTRA_LIBS"
 ], AC_MSG_ERROR([couldn't compile and link with Motif]))
 
 # **************************************************************************
@@ -405,32 +405,32 @@ SIM_AC_ISO8601_DATE(soxt_configure_date)
 AC_SUBST(soxt_configure_date)
 
 # soxt-config
-AC_SUBST(SOXT_EXTRA_CPPFLAGS)
-AC_SUBST(SOXT_EXTRA_LDFLAGS)
-AC_SUBST(SOXT_EXTRA_LIBS)
+AC_SUBST(SOGUI_EXTRA_CPPFLAGS)
+AC_SUBST(SOGUI_EXTRA_LDFLAGS)
+AC_SUBST(SOGUI_EXTRA_LIBS)
 
 # **************************************************************************
 # Remove redundant options from certain option lists.
 # We add the first argument ourselves to shift it off because it's added
 # again inside soxt-config.in
 
-SIM_AC_UNIQIFY_LIST(SOXT_EXTRA_CPPFLAGS, -I$includedir $SOXT_EXTRA_CPPFLAGS)
-set : $SOXT_EXTRA_CPPFLAGS
+SIM_AC_UNIQIFY_LIST(SOGUI_EXTRA_CPPFLAGS, -I$includedir $SOGUI_EXTRA_CPPFLAGS)
+set : $SOGUI_EXTRA_CPPFLAGS
 shift
 shift
-SOXT_EXTRA_CPPFLAGS=$@
+SOGUI_EXTRA_CPPFLAGS=$@
 
-SIM_AC_UNIQIFY_LIST(SOXT_EXTRA_LDFLAGS, -L$libdir $SOXT_EXTRA_LDFLAGS)
-set : $SOXT_EXTRA_LDFLAGS
+SIM_AC_UNIQIFY_LIST(SOGUI_EXTRA_LDFLAGS, -L$libdir $SOGUI_EXTRA_LDFLAGS)
+set : $SOGUI_EXTRA_LDFLAGS
 shift
 shift
-SOXT_EXTRA_LDFLAGS=$@
+SOGUI_EXTRA_LDFLAGS=$@
 
-SIM_AC_UNIQIFY_LIST(SOXT_EXTRA_LIBS, -lSoXt $SOXT_EXTRA_LIBS)
-set : $SOXT_EXTRA_LIBS
+SIM_AC_UNIQIFY_LIST(SOGUI_EXTRA_LIBS, -lSoXt $SOGUI_EXTRA_LIBS)
+set : $SOGUI_EXTRA_LIBS
 shift
 shift
-SOXT_EXTRA_LIBS=$@
+SOGUI_EXTRA_LIBS=$@
 
 # We don't have to do shift magic on these:
 SIM_AC_UNIQIFY_LIST(CPPFLAGS, $CPPFLAGS)
