@@ -30,6 +30,11 @@ extern "C" {
 
 /* ********************************************************************** */
 
+struct SoXtThumbWheelCallbackData {
+  float current;
+  float previous;
+};
+
 extern WidgetClass soxtThumbWheelWidgetClass;
 
 typedef struct _SoXtThumbWheelRec *       SoXtThumbWheelWidget;

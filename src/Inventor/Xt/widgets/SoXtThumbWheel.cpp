@@ -718,6 +718,7 @@ Roll(
     break;
   } // switch ( widget->thumbwheel.orientation )
 
+  float oldval = widget->thumbwheel.value;
   widget->thumbwheel.value =
     ((SoAnyThumbWheel *) widget->thumbwheel.thumbwheel)->
       CalculateValue( widget->thumbwheel.arm_value,
@@ -736,8 +737,12 @@ Roll(
     widget->thumbwheel.currentpixmap = pixmap;
   }
 
-  XtCallCallbackList( w, widget->thumbwheel.valuechanged_callback,
-                      &(widget->thumbwheel.value) );
+  struct SoXtThumbWheelCallbackData data = {
+    widget->thumbwheel.value,
+    oldval
+  };
+
+  XtCallCallbackList( w, widget->thumbwheel.valuechanged_callback, &data );
 } // Roll()
 
 /*!
