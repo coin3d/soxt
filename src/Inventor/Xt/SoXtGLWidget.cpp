@@ -186,6 +186,18 @@ SoXtGLWidget::getColorMapSize(void)
   return PRIVATE(this)->normalcolormapsize;
 }
 
+GLXContext
+SoXtGLWidget::getNormalContext(void)
+{
+  return PRIVATE(this)->normalcontext;
+}
+
+GLXContext
+SoXtGLWidget::getOverlayContext(void)
+{
+  return PRIVATE(this)->overlaycontext;
+}
+
 /*!
   This method returns the Window associated with the normal GL context.
 */
