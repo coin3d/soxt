@@ -1,0 +1,43 @@
+comp.windows.x #133457                                                                                                    (1)+-(1)
+Path: news.teledanmark.no!news01.chello.no!uio.no!news.tele.dk!news.tele.dk!small.news.tele.dk!newsfeed.media.kyoto-u.       \-[1]--[1]
++     ac.jp!diablo.efnet.com!efnet.com!cyclone.bc.net!news-in.mts.net!news1.mts.net.POSTED!rugger.nodomain.ca!not-for-
++     mail
+From: kbr@pangea.ca (Kip Rugger)
+Newsgroups: comp.windows.x
+Subject: Re: Stopping XtAppMainLoop ?
+Organization: No thanks
+Lines: 24
+Message-ID: <b9m0cn$b1$1@rugger.nodomain.ca>
+References: <3EBD9DEB.11826374@istop.com>
+Date: 11 May 2003 12:13:59 -0500
+NNTP-Posting-Host: 142.161.8.231
+X-Complaints-To: admin@mts.net
+X-Trace: news1.mts.net 1052673485 142.161.8.231 (Sun, 11 May 2003 12:18:05 CDT)
+NNTP-Posting-Date: Sun, 11 May 2003 12:18:05 CDT
+X-Received-Date: Sun, 11 May 2003 19:18:09 MET DST (news01.chello.no)
+Xref: news.teledanmark.no comp.windows.x:133457
+
+JF Mezei  <jfmezei.spamnot@istop.com> wrote:
+>Is there a way, from inside a callback funtion to signal to XtAppMainLoop that
+>it should end ?
+>
+>All of the example programs I have seen so far have the callback itself
+>perform the "exit()". But I'd like to know if it is possible to have the
+>mainline code continue after the XtAppMainLoop completes.
+
+XtAppSetExitFlag.
+
+There is a small problem with it, however, since it does not exit
+immediately after callbacks that are not called as a result of an event
+delivery (timer, signal, io).  I usually use it as follows:
+
+void
+terminate(Widget w)
+{
+        XClientMessageEvent cm = { type: ClientMessage, format: 32 };
+
+        XtAppSetExitFlag(XtWidgetToApplicationContext(w));
+        cm.display = XtDisplay(w), cm.window = XtWindow(w);
+        XPutBackEvent(cm.display, (XEvent *)&cm);
+}
+
