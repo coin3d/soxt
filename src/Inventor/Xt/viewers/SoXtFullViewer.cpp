@@ -52,9 +52,9 @@ static const char rcsid[] =
 #include <Xm/TextF.h>
 #include <Xm/Scale.h>
 
-#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoBasic.h>
-#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
 
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
@@ -1788,6 +1788,8 @@ SoXtFullViewer::createSeekDistPrefSheetGuts( // protected
 // *************************************************************************
 
 /*!
+  This method creates and lays out the widgets in the Zoom preferences sheet
+  frame.
 */
 
 Widget
@@ -1801,92 +1803,96 @@ SoXtFullViewer::createZoomPrefSheetGuts( // protected
     xmFormWidgetClass, parent,
     NULL );
 
-  Widget line1 = XtVaCreateManagedWidget( "line 1",
-    xmFormWidgetClass, form,
+  this->zoomfrom = XtVaCreateManagedWidget( "from",
+    xmTextFieldWidgetClass, form,
     XmNtopAttachment, XmATTACH_FORM,
     XmNleftAttachment, XmATTACH_FORM,
-    XmNrightAttachment, XmATTACH_FORM,
+    XmNwidth, 50,
     NULL );
 
-  XmString labelstring;
-  labelstring = SoXt::encodeString( "Camera zoom: " );
-  Widget label1 = XtVaCreateManagedWidget( "label1",
-    xmLabelWidgetClass, line1,
+  char buf[16];
+  sprintf( buf, "%.1f", this->zoomrange[0] );
+  XmTextSetString( this->zoomfrom, buf );
+  XmTextSetCursorPosition( this->zoomfrom, strlen(buf) );
+
+  XtAddCallback( this->zoomfrom, XmNactivateCallback,
+    SoXtFullViewer::zoomfromchangedCB, (XtPointer) this );
+  XtAddCallback( this->zoomfrom, XmNlosingFocusCallback,
+    SoXtFullViewer::zoomfromchangedCB, (XtPointer) this );
+
+  this->zoomvalue = XtVaCreateManagedWidget( "zoomvalue",
+    xmTextFieldWidgetClass, form,
     XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNwidth, 60,
+    NULL );
+
+  sprintf( buf, "%.1f", this->getCameraZoom() );
+  XmTextSetString( this->zoomvalue, buf );
+  XmTextSetCursorPosition( this->zoomvalue, strlen(buf) );
+
+  XtAddCallback( this->zoomvalue, XmNactivateCallback,
+    SoXtFullViewer::zoomvaluechangedCB, (XtPointer) this );
+  XtAddCallback( this->zoomvalue, XmNlosingFocusCallback,
+    SoXtFullViewer::zoomvaluechangedCB, (XtPointer) this );
+
+  XmString labelstring = SoXt::encodeString( " Value: " );
+  Widget valuelabel = XtVaCreateManagedWidget( "valuelabel",
+    xmLabelWidgetClass, form,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_WIDGET,
+    XmNrightWidget, zoomvalue,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNlabelString, labelstring,
     NULL );
   XtFree( (char *) labelstring );
 
-  Widget zoomscale = XtVaCreateManagedWidget( "scale",
-    xmScaleWidgetClass, line1,
+  this->zoomto = XtVaCreateManagedWidget( "to",
+    xmTextFieldWidgetClass, form,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_WIDGET,
+    XmNrightWidget, valuelabel,
+    XmNwidth, 50,
+    NULL );
+
+  sprintf( buf, "%.1f", this->zoomrange[1] );
+  XmTextSetString( this->zoomto, buf );
+  XmTextSetCursorPosition( this->zoomto, strlen(buf) );
+
+  XtAddCallback( this->zoomto, XmNactivateCallback,
+    SoXtFullViewer::zoomtochangedCB, (XtPointer) this );
+  XtAddCallback( this->zoomto, XmNlosingFocusCallback,
+    SoXtFullViewer::zoomtochangedCB, (XtPointer) this );
+
+  this->zoomslider = XtVaCreateManagedWidget( "zoomslider",
+    xmScaleWidgetClass, form,
     XmNtopAttachment, XmATTACH_FORM,
     XmNtopOffset, 6,
     XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, label1,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNbottomOffset, 6,
+    XmNleftWidget, this->zoomfrom,
+    XmNrightAttachment, XmATTACH_WIDGET,
+    XmNrightWidget, this->zoomto,
     XmNorientation, XmHORIZONTAL,
-    XmNwidth, 120,
+    XmNminimum, 0,
+    XmNmaximum, 1000,
+    XmNdecimalPoints, 1,
+    XmNshowValue, False,
     NULL );
 
-  Widget zoominput = XtVaCreateManagedWidget( "zoominput",
-    xmTextFieldWidgetClass, line1,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, zoomscale,
-    XmNleftOffset, 2,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNwidth, 80,
-    NULL );
+  float zoomvalue = this->getCameraZoom();
+  if ( zoomvalue == 0.0f || (this->zoomrange[0] == this->zoomrange[1]) ) {
+    XmScaleSetValue( this->zoomslider, 0 );
+  } else {
+    float normalized = (zoomvalue - this->zoomrange[0]) /
+      (this->zoomrange[1] - this->zoomrange[0]);
+    int scaledval = (int) (sqrt(normalized) * 1000.0f);
+    XmScaleSetValue( this->zoomslider, scaledval );
+  }
 
-  Widget line2 = XtVaCreateManagedWidget( "line 2",
-    xmFormWidgetClass, form,
-    XmNtopAttachment, XmATTACH_WIDGET,
-    XmNtopWidget, line1,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNrightAttachment, XmATTACH_FORM,
-    NULL );
-
-  labelstring = SoXt::encodeString( "Zoom slider ranges from " );
-  Widget rangelabel = XtVaCreateManagedWidget( "rangelabel",
-    xmLabelWidgetClass, line2,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNlabelString, labelstring,
-    NULL );
-  XtFree( (char *) labelstring );
-
-  Widget from = XtVaCreateManagedWidget( "from",
-    xmTextFieldWidgetClass, line2,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, rangelabel,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNwidth, 80,
-    NULL );
-
-  labelstring = SoXt::encodeString( " to " );
-  Widget tolabel = XtVaCreateManagedWidget( "rangelabel",
-    xmLabelWidgetClass, line2,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, from,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNlabelString, labelstring,
-    NULL );
-  XtFree( (char *) labelstring );
-
-  Widget to = XtVaCreateManagedWidget( "to",
-    xmTextFieldWidgetClass, line2,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, tolabel,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNwidth, 80,
-    NULL );
+  XtAddCallback( this->zoomslider, XmNvalueChangedCallback,
+    SoXtFullViewer::zoomsliderchangedCB, (XtPointer) this );
+  XtAddCallback( this->zoomslider, XmNdragCallback,
+    SoXtFullViewer::zoomsliderchangedCB, (XtPointer) this );
 
   return form;
 } // createZoomPrefSheetGuts()
@@ -1906,10 +1912,9 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
   XmString labelstring;
 
   Widget form = XtVaCreateManagedWidget( "clippingprefs",
-    xmFormWidgetClass, parent,
-    NULL );
+    xmFormWidgetClass, parent, NULL );
 
-  labelstring = SoXt::encodeString( "automatic" );
+  labelstring = SoXt::encodeString( "auto" );
   this->autocliptoggle = XtVaCreateManagedWidget( "autocliptoggle",
     xmToggleButtonWidgetClass, form,
     XmNleftAttachment, XmATTACH_FORM,
@@ -2712,5 +2717,211 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
     XmNset, this->isStereoViewing() ? True : False,
     NULL );
 } // stereotoggled()
+
+// *************************************************************************
+
+/*!
+  This method returns the current camera zoom value (degrees in field of
+  view) or 0.0f if "zoom" has no meaning (no camera or a non-perspective
+  camera).
+*/
+
+float
+SoXtFullViewer::getCameraZoom(
+  void )
+{
+  SoCamera * const camera = this->getCamera();
+  if ( ! camera ) {
+#if SOXT_DEBUG
+    SoDebugError::postInfo( "SoXtFullViewer::getCameraZoom",
+      "no camera!" );
+#endif // SOXT_DEBUG
+    return 0.0f;
+  }
+
+  if ( ! camera->isOfType( SoPerspectiveCamera::getClassTypeId() ) ) {
+#if SOXT_DEBUG
+    SoDebugError::postInfo( "SoXtFullViewer::getCameraZoom",
+      "not using a perspective camera!" );
+#endif // SOXT_DEBUG
+    return 0.0f;
+  }
+
+  SOXT_STUB_ONCE();
+  return 2.0f;
+} // getCameraZoom()
+
+/*!
+*/
+
+void
+SoXtFullViewer::setCameraZoom(
+  float zoom )
+{
+  SoCamera * const camera = this->getCamera();
+  if ( ! camera ) {
+#if SOXT_DEBUG
+    SoDebugError::postInfo( "SoXtFullViewer::setCameraZoom",
+      "no camera!" );
+#endif // SOXT_DEBUG
+    return;
+  }
+
+  if ( ! camera->isOfType( SoPerspectiveCamera::getClassTypeId() ) ) {
+#if SOXT_DEBUG
+    SoDebugError::postInfo( "SoXtFullViewer::getCameraZoom",
+      "not using a perspective camera!" );
+#endif // SOXT_DEBUG
+    return;
+  }
+
+  SOXT_STUB_ONCE();
+} // setCameraZoom()
+
+// *************************************************************************
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtFullViewer,
+  zoomfromchanged )
+{
+  float value = atof( XmTextGetString( this->zoomfrom ) );
+  if ( value < 0.1f )
+    value = 0.1f;
+  else if ( value > this->zoomrange[1] )
+    value = this->zoomrange[1];
+  this->zoomrange[0] = value;
+
+  char buf[16];
+  sprintf( buf, "%.1f", value );
+  XmTextSetString( this->zoomfrom, buf );
+  XmTextSetCursorPosition( this->zoomfrom, strlen(buf) );
+
+  float zoom = this->getCameraZoom();
+  if ( zoom < this->zoomrange[0] ) {
+    zoom = this->zoomrange[0];
+    this->setCameraZoom( zoom );
+    sprintf( buf, "%.1f", zoom );
+    XmTextSetString( this->zoomvalue, buf );
+    XmTextSetCursorPosition( this->zoomvalue, strlen(buf) );
+  } else if ( zoom > this->zoomrange[1] ) {
+    zoom = this->zoomrange[1];
+    this->setCameraZoom( zoom );
+    sprintf( buf, "%.1f", zoom );
+    XmTextSetString( this->zoomvalue, buf );
+    XmTextSetCursorPosition( this->zoomvalue, strlen(buf) );
+  }
+
+  if ( this->zoomrange[0] == this->zoomrange[1] ) {
+    XmScaleSetValue( this->zoomslider, 0 );
+  } else {
+    float normalized = (zoom - this->zoomrange[0]) /
+      (this->zoomrange[1] - this->zoomrange[0]);
+    int scaledval = (int) (sqrt(normalized) * 1000.0f);
+    XmScaleSetValue( this->zoomslider, scaledval );
+  }
+} // zoomfromchanged()
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtFullViewer,
+  zoomsliderchanged )
+{
+  int intval = 0;
+  XmScaleGetValue( this->zoomslider, &intval );
+
+  float expval = (float) (intval * intval) / 1000000.0f;
+  float realval =
+    ((this->zoomrange[1] - this->zoomrange[0]) * expval) + this->zoomrange[0];
+
+  float curzoom = this->getCameraZoom();
+  if ( curzoom != realval ) {
+    char buf[16];
+    sprintf( buf, "%.1f", realval );
+    XmTextSetString( this->zoomvalue, buf );
+    XmTextSetCursorPosition( this->zoomvalue, strlen(buf) );
+    this->setCameraZoom( realval );
+  }
+} // zoomsliderchanged()
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtFullViewer,
+  zoomtochanged )
+{
+  float value = atof( XmTextGetString( this->zoomto ) );
+  if ( value > 180.0f )
+    value = 180.0f;
+  else if ( value < this->zoomrange[0] )
+    value = this->zoomrange[0];
+
+  char buf[16];
+  sprintf( buf, "%.1f", value );
+  XmTextSetString( this->zoomto, buf );
+  XmTextSetCursorPosition( this->zoomto, strlen(buf) );
+
+  this->zoomrange[1] = value;
+  float zoom = this->getCameraZoom();
+  if ( zoom < this->zoomrange[0] ) {
+    zoom = this->zoomrange[0];
+    this->setCameraZoom( zoom );
+    sprintf( buf, "%.1f", zoom );
+    XmTextSetString( this->zoomvalue, buf );
+    XmTextSetCursorPosition( this->zoomvalue, strlen(buf) );
+    this->setCameraZoom( value );
+  } else if ( zoom > this->zoomrange[1] ) {
+    zoom = this->zoomrange[1];
+    this->setCameraZoom( zoom );
+    sprintf( buf, "%.1f", zoom );
+    XmTextSetString( this->zoomvalue, buf );
+    XmTextSetCursorPosition( this->zoomvalue, strlen(buf) );
+    this->setCameraZoom( value );
+  }
+
+  if ( this->zoomrange[0] == this->zoomrange[1] ) {
+    XmScaleSetValue( this->zoomslider, 0 );
+  } else {
+    float normalized = (zoom - this->zoomrange[0]) /
+      (this->zoomrange[1] - this->zoomrange[0]);
+    int scaledval = (int) (sqrt(normalized) * 1000.0f);
+    XmScaleSetValue( this->zoomslider, scaledval );
+  }
+} // zoomtochanged()
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtFullViewer,
+  zoomvaluechanged )
+{
+  float value = atof( XmTextGetString( this->zoomvalue ) );
+  if ( value < this->zoomrange[0] )
+    value = this->zoomrange[0];
+  else if ( value > this->zoomrange[1] )
+    value = this->zoomrange[1];
+
+  char buf[16];
+  sprintf( buf, "%.1f", value );
+  XmTextSetString( this->zoomvalue, buf );
+  XmTextSetCursorPosition( this->zoomvalue, strlen(buf) );
+
+  if ( this->zoomrange[0] == this->zoomrange[1] ) {
+    XmScaleSetValue( this->zoomslider, 0 );
+  } else {
+    float normalized = (value - this->zoomrange[0]) /
+      (this->zoomrange[1] - this->zoomrange[0]);
+    int scaledval = (int) (sqrt(normalized) * 1000.0f);
+    XmScaleSetValue( this->zoomslider, scaledval );
+  }
+
+  this->setCameraZoom( value );
+} // zoomvaluechanged()
 
 // *************************************************************************

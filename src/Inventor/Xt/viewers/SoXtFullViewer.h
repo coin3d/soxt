@@ -189,8 +189,6 @@ private:
   Widget viewerButtonsForm;
   SbPList * viewerButtonsList;
 
-  SbVec2f zoomrange;
-
 private:
   struct {
     Widget pick, view, help, home, set_home, view_all, seek;
@@ -246,6 +244,16 @@ private:
   SOXT_WIDGET_CALLBACK( seekdistancechanged );
   SOXT_WIDGET_CALLBACK( percenttoggled );
   SOXT_WIDGET_CALLBACK( absolutetoggled );
+
+  SbVec2f zoomrange;
+  Widget zoomfrom, zoomslider, zoomto, zoomvalue;
+  SOXT_WIDGET_CALLBACK( zoomfromchanged );
+  SOXT_WIDGET_CALLBACK( zoomtochanged );
+  SOXT_WIDGET_CALLBACK( zoomsliderchanged );
+  SOXT_WIDGET_CALLBACK( zoomvaluechanged );
+
+  void setCameraZoom( float zoom );
+  float getCameraZoom(void);
 
   // clipping preferences widgets
   Widget autocliptoggle, nearwheel, farwheel, nearvalue, farvalue;
