@@ -83,6 +83,9 @@ OBJDUMP = @OBJDUMP@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SOXT_BINARY_AGE = @SOXT_BINARY_AGE@
+SOXT_EXTRA_CPPFLAGS = @SOXT_EXTRA_CPPFLAGS@
+SOXT_EXTRA_LDFLAGS = @SOXT_EXTRA_LDFLAGS@
+SOXT_EXTRA_LIBS = @SOXT_EXTRA_LIBS@
 SOXT_INTERFACE_AGE = @SOXT_INTERFACE_AGE@
 SOXT_MAJOR_VERSION = @SOXT_MAJOR_VERSION@
 SOXT_MICRO_VERSION = @SOXT_MICRO_VERSION@
@@ -481,7 +484,7 @@ maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
 	done; \
 	eval "$(CXXDEPMODE)"; \
-	: ${depmode=none}; \
+	: $${depmode=none}; \
 	source="$$source" \
 	object='$@' libtool=no \
 	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
