@@ -32,6 +32,7 @@ static const char rcsid[] =
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 
+#include <soxtdefs.h>
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtResource.h>
@@ -40,8 +41,10 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/viewers/SoXtPlaneViewer.h>
 
+#if HAVE_LIBXPM
 #include <Inventor/Xt/common/pixmaps/ortho.xpm>
 #include <Inventor/Xt/common/pixmaps/perspective.xpm>
+#endif // HAVE_LIBXPM
 
 // *************************************************************************
 

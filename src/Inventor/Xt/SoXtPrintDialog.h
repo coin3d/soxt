@@ -36,7 +36,7 @@ class SoXtPrintDialog;
 
 typedef void SoXtPrintDialogCB( void * userdata, SoXtPrintDialog * dialog );
 
-class SoXtPrintDialog : public SoXtComponent {
+class SOXT_DLL_EXPORT SoXtPrintDialog : public SoXtComponent {
   typedef SoXtComponent inherited;
 
 public:

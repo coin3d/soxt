@@ -26,6 +26,7 @@ static const char rcsid[] =
 
 #include <Inventor/misc/SoBasic.h>
 
+#include <soxtdefs.h>
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/devices/SoXtInputFocus.h>
 

@@ -22,18 +22,18 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+#include <ctype.h> // toupper()
+
 #include <X11/X.h>
+#include <X11/keysym.h>
 
 #include <Inventor/misc/SoBasic.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/errors/SoDebugError.h>
 
+#include <soxtdefs.h>
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/devices/SoXtKeyboard.h>
-
-#include <X11/keysym.h>
-
-#include <ctype.h> // toupper()
 
 // *************************************************************************
 

@@ -28,11 +28,13 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbLinear.h>
 
+#include <Inventor/Xt/SoXtBasic.h>
+
 class SbPList;
 
 // *************************************************************************
 
-class SoXt {
+class SOXT_DLL_EXPORT SoXt {
 public:
   static void getVersionInfo( int * const major = NULL,
       int * const minor = NULL, int * const micro = NULL );

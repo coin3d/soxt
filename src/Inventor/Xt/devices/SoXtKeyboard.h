@@ -30,7 +30,7 @@ class SoKeyboardEvent;
 
 // *************************************************************************
 
-class SoXtKeyboard : public SoXtDevice {
+class SOXT_DLL_EXPORT SoXtKeyboard : public SoXtDevice {
   typedef SoXtDevice inherited;
 
 public:

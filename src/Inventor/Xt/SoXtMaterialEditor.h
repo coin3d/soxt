@@ -32,7 +32,7 @@ class SoVRMLMaterial;
 typedef void SoXtMaterialEditorCB( void * userdata,
   const SoMaterial * material );
 
-class SoXtMaterialEditor : public SoXtComponent {
+class SOXT_DLL_EXPORT SoXtMaterialEditor : public SoXtComponent {
   typedef SoXtComponent inherited;
 
 public:

@@ -26,11 +26,13 @@
 
 #include <Inventor/SbLinear.h>
 
+#include <Inventor/Xt/SoXtBasic.h>
+
 class SoEvent;
 
 // *************************************************************************
 
-class SoXtDevice {
+class SOXT_DLL_EXPORT SoXtDevice {
 public:
   virtual ~SoXtDevice(void);
 

@@ -28,9 +28,11 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbColor.h>
 
+#include <Inventor/Xt/SoXtBasic.h>
+
 // *************************************************************************
 
-class SoXtResource {
+class SOXT_DLL_EXPORT SoXtResource {
 public:
   SoXtResource( const Widget widget );
   ~SoXtResource(void);

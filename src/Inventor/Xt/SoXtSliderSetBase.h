@@ -28,7 +28,7 @@ class SoNode;
 
 // *************************************************************************
 
-class SoXtSliderSetBase : public SoXtComponent {
+class SOXT_DLL_EXPORT SoXtSliderSetBase : public SoXtComponent {
   typedef SoXtComponent inherited;
 
 public:

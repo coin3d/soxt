@@ -26,6 +26,7 @@
 
 #include <Inventor/SoLists.h>
 
+#include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
 
 // *************************************************************************
@@ -33,7 +34,7 @@
 struct MenuRecord;
 struct ItemRecord;
 
-class SoXtPopupMenu : public SoAnyPopupMenu {
+class SOXT_DLL_EXPORT SoXtPopupMenu : public SoAnyPopupMenu {
   typedef SoAnyPopupMenu inherited;
 
 public:

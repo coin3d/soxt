@@ -24,6 +24,7 @@ static const char rcsid[] =
 
 #include <assert.h>
 
+#include <soxtdefs.h>
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/viewers/SoXtCollisionViewer.h>
 

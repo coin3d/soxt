@@ -26,7 +26,7 @@ class SoAnyWalkViewer;
 
 // *************************************************************************
 
-class SoXtWalkViewer : public SoXtConstrainedViewer {
+class SOXT_DLL_EXPORT SoXtWalkViewer : public SoXtConstrainedViewer {
   typedef SoXtConstrainedViewer inherited;
   friend class SoAnyWalkViewer;
 

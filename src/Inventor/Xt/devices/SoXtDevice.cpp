@@ -31,6 +31,7 @@ static const char rcsid[] =
 #include <Inventor/misc/SoBasic.h>
 #include <Inventor/events/SoEvent.h>
 
+#include <soxtdefs.h>
 #include <Inventor/Xt/devices/SoXtDevice.h>
 
 // *************************************************************************

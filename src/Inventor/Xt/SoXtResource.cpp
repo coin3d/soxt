@@ -31,7 +31,7 @@ static const char rcsid[] =
 #include <Inventor/SoLists.h>
 #include <Inventor/errors/SoDebugError.h>
 
-#include <Inventor/Xt/SoXtBasic.h>
+#include <soxtdefs.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtComponent.h>
 

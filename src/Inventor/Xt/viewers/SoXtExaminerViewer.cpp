@@ -47,14 +47,15 @@ static const char rcsid[] =
 #include <Inventor/projectors/SbSphereSheetProjector.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 
+#include <soxtdefs.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXtResource.h>
 #include <Inventor/Xt/viewers/SoAnyExaminerViewer.h>
-#include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
-
 #include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
+
+#include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
 
 #if HAVE_LIBXPM
 #include <Inventor/Xt/common/pixmaps/ortho.xpm>

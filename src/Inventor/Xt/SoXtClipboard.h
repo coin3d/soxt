@@ -22,12 +22,14 @@
 #ifndef SOXT_CLIPBOARD_H
 #define SOXT_CLIPBOARD_H
 
-// FIXME: this is not compatible with SGI/TGS Inventor. 20000528 mortene.
-#include <Inventor/system/inttypes.h>
-
 #include <X11/Xatom.h>
 #include <X11/Intrinsic.h>
+
+// FIXME: this is not compatible with SGI/TGS Inventor. 20000528 mortene.
+#include <Inventor/system/inttypes.h>
 #include <Inventor/SbBasic.h>
+
+#include <Inventor/Xt/SoXtBasic.h>
 
 class SbDict;
 class SoByteStream;
@@ -48,7 +50,7 @@ typedef void SoXtClipboardImportCB(
 
 #define _XA_CLIPBOARD_ ((Atom) 0)
 
-class SoXtClipboard {
+class SOXT_DLL_EXPORT SoXtClipboard {
 public:
   SoXtClipboard( Widget widget, Atom selection = _XA_CLIPBOARD_ );
   ~SoXtClipboard(void);

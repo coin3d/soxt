@@ -28,6 +28,7 @@ static const char rcsid[] =
 
 #include <Inventor/SoSceneManager.h>
 
+#include <soxtdefs.h>
 #include <Inventor/Xt/devices/SoXtMouse.h>
 #include <Inventor/Xt/devices/SoXtKeyboard.h>
 

@@ -26,7 +26,7 @@ class SoAnyConstrainedViewer;
 
 // *************************************************************************
 
-class SoXtConstrainedViewer : public SoXtFullViewer {
+class SOXT_DLL_EXPORT SoXtConstrainedViewer : public SoXtFullViewer {
   typedef SoXtFullViewer inherited;
   friend class SoAnyConstrainedViewer;
 

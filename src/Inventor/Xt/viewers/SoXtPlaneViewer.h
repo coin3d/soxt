@@ -29,7 +29,7 @@ class SoAnyPlaneViewer;
 
 // *************************************************************************
 
-class SoXtPlaneViewer : public SoXtFullViewer {
+class SOXT_DLL_EXPORT SoXtPlaneViewer : public SoXtFullViewer {
   typedef SoXtFullViewer inherited;
   friend class SoAnyPlaneViewer;
 

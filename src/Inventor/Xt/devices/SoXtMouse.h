@@ -31,7 +31,7 @@ class SoMouseButtonEvent;
 
 // *************************************************************************
 
-class SoXtMouse : public SoXtDevice {
+class SOXT_DLL_EXPORT SoXtMouse : public SoXtDevice {
   typedef SoXtDevice inherited;
 
 public:

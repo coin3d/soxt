@@ -30,7 +30,7 @@ class SoMaterial;
 
 typedef void SoXtMaterialListCB( void * user, const SoMaterial * material );
 
-class SoXtMaterialList : public SoXtComponent {
+class SOXT_DLL_EXPORT SoXtMaterialList : public SoXtComponent {
   typedef SoXtComponent inherited;
 
 public:

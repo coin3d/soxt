@@ -30,7 +30,7 @@ class SoAnyExaminerViewer;
 
 // *************************************************************************
 
-class SoXtExaminerViewer : public SoXtFullViewer {
+class SOXT_DLL_EXPORT SoXtExaminerViewer : public SoXtFullViewer {
   typedef SoXtFullViewer inherited;
   friend class SoAnyExaminerViewer;
 

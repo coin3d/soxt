@@ -28,7 +28,7 @@
 
 // *************************************************************************
 
-class SoXtSpaceball : public SoXtDevice {
+class SOXT_DLL_EXPORT SoXtSpaceball : public SoXtDevice {
   typedef SoXtDevice inherited;
 
 public:

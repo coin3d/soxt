@@ -60,13 +60,14 @@ static const char rcsid[] =
 #include <Inventor/Xt/common/pixmaps/seek.xpm>
 #endif // HAVE_LIBXPM
 
+#include <soxtdefs.h>
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtResource.h>
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
 #include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
-
 #include <Inventor/Xt/viewers/SoAnyFullViewer.h>
+
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
 
 enum DefaultViewerButtons {
@@ -83,6 +84,12 @@ enum DefaultViewerButtons {
 };
 
 #define VIEWERBUTTON(button) ((Widget) ((*this->viewerButtonWidgets)[button]))
+
+/*!
+  \class SoXtFullViewer Inventor/Xt/SoXtFullViewer.h
+  \brief The SoXtFullViewer class adds GUI decorations to the viewer
+  component.
+*/
 
 // *************************************************************************
 

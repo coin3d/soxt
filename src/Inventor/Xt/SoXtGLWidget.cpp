@@ -39,7 +39,7 @@ static const char rcsid[] =
 #include <Inventor/misc/SoBasic.h>
 #include <Inventor/SbViewportRegion.h>
 
-#include <Inventor/Xt/SoXtBasic.h>
+#include <soxtdefs.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtResource.h>
 #include <Inventor/Xt/SoXtGLWidget.h>

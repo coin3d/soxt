@@ -26,7 +26,7 @@
 
 // *************************************************************************
 
-class SoXtSliderSet : public SoXtSliderSetBase {
+class SOXT_DLL_EXPORT SoXtSliderSet : public SoXtSliderSetBase {
   typedef SoXtSliderSetBase inherited;
 
 public:

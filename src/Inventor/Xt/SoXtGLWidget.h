@@ -36,7 +36,7 @@ enum GLModes {           // should we keep these?
   SO_GL_STEREO   = 0x10, SO_GLX_STEREO   = SO_GL_STEREO
 };
 
-class SoXtGLWidget : public SoXtComponent {
+class SOXT_DLL_EXPORT SoXtGLWidget : public SoXtComponent {
   typedef SoXtComponent inherited;
 
 public:

@@ -24,6 +24,8 @@
 
 #include <Inventor/SbBasic.h>
 
+#include <Inventor/Xt/SoXtBasic.h>
+
 class SoXtViewer;
 class SoXtCollisionViewer;
 
@@ -32,7 +34,7 @@ class SoXtCollisionViewer;
 typedef void SoXtCollisionViewerCB(
   void * userdata, SoXtCollisionViewer * viewer );
 
-class SoXtCollisionViewer {
+class SOXT_DLL_EXPORT SoXtCollisionViewer {
 public:
   SoXtCollisionViewer( SoXtViewer * const viewer );
   ~SoXtCollisionViewer(void);

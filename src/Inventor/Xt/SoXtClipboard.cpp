@@ -20,7 +20,7 @@
 static const char rcsid[] =
   "$Id$";
 
-#include <Inventor/Xt/SoXtBasic.h>
+#include <soxtdefs.h>
 #include <Inventor/Xt/SoXtClipboard.h>
 
 // *************************************************************************

@@ -28,6 +28,7 @@ static const char rcsid[] =
 
 #include <Inventor/errors/SoDebugError.h>
 
+#include <soxtdefs.h>
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/widgets/SoAnyThumbWheel.h>
 #include <Inventor/Xt/widgets/SoXtThumbWheelP.h>

@@ -26,11 +26,13 @@
 
 #include <Inventor/SbBasic.h>
 
+#include <Inventor/Xt/SoXtBasic.h>
+
 class SoXtSliderSetModule;
 
 // *************************************************************************
 
-class SoXtSlider {
+class SOXT_DLL_EXPORT SoXtSlider {
 public:
   SoXtSlider( const Widget parent, SoXtSliderSetModule * const sliderset );
   ~SoXtSlider(void);

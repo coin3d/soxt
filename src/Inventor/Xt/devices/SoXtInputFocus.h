@@ -26,7 +26,7 @@
 
 // *************************************************************************
 
-class SoXtInputFocus : public SoXtDevice {
+class SOXT_DLL_EXPORT SoXtInputFocus : public SoXtDevice {
   typedef SoXtDevice inherited;
 
 public:

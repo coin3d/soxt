@@ -26,7 +26,7 @@ class SoAnyFlyViewer;
 
 // *************************************************************************
 
-class SoXtFlyViewer : public SoXtConstrainedViewer {
+class SOXT_DLL_EXPORT  SoXtFlyViewer : public SoXtConstrainedViewer {
   typedef SoXtConstrainedViewer inherited;
   friend class SoAnyFlyViewer;
 
