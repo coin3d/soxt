@@ -396,15 +396,15 @@ SoXtFullViewer::isPopupMenuEnabled(
   return this->popupEnabled;
 } // isPopupMenuEnabled()
 
-/*!
-  FIXME: write doc
-*/
 
+/*!
+  Set title of popup menu.
+*/
 void
 SoXtFullViewer::setPopupMenuString(
   const char * const title )
 {
-  SOXT_STUB();
+  this->common->setPopupMenuString( str );
 } // setPopupMenuString()
 
 
@@ -1319,7 +1319,7 @@ SoXtFullViewer::buildPopupMenu(
   void )
 {
   if ( this->prefmenu == NULL )
-    this->prefmenu = common->setupStandardPopupMenu();
+    this->prefmenu = this->common->setupStandardPopupMenu();
 } // buildPopupMenu()
 
 /*!
