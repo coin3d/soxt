@@ -265,12 +265,20 @@ SoXtPopupMenu::SetMenuItemEnabled(
   int itemid,
   SbBool enabled )
 {
-//  inherited::SetMenuItemEnabled( itemid, enabled );
   ItemRecord * rec = this->getItemRecord( itemid );
-  if ( rec == NULL )
+  if ( rec == NULL ) {
+#if SOXT_DEBUG
+    SoDebugError::postInfo( "SoXtPopupMenu::SetMenuItemEnabled",
+      "no such menu item" );
+#endif // SOXT_DEBUG
     return;
-  rec->flags |= ITEM_ENABLED;
-//  rec->parent->setItemEnabled( rec->itemid, enabled ? true : false );
+  }
+  if ( enabled )
+    rec->flags |= ITEM_ENABLED;
+  else
+    rec->flags &= ~ITEM_ENABLED;
+  if ( rec->item != (Widget) NULL )
+    XtVaSetValues( rec->item, XmNsensitive, enabled ? True : False, NULL );
 } // SetMenuItemEnabled()
 
 /*!
@@ -659,6 +667,7 @@ SoXtPopupMenu::traverseBuild(
           } else {
             item->item = XtVaCreateManagedWidget( item->title,
               xmToggleButtonGadgetClass, parent,
+              XmNsensitive, (item->flags & ITEM_ENABLED) ? True : False,
               NULL );
             XtAddCallback( item->item, XmNvalueChangedCallback,
                 SoXtPopupMenu::itemSelectionCallback, this );
@@ -754,7 +763,7 @@ SoXtPopupMenu::createItemRecord(
   ItemRecord * rec = new ItemRecord;
   rec->itemid = -1;
   rec->pos = -1;
-  rec->flags = 0;
+  rec->flags = 0 | ITEM_ENABLED;
   rec->name = strcpy( new char [strlen(name)+1], name );
   rec->title = strcpy( new char [strlen(name)+1], name );
   rec->item = (Widget) NULL;
