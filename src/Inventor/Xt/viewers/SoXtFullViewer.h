@@ -136,12 +136,6 @@ protected:
   char * popupTitle;
   SbBool popupEnabled;
 
-  // The prefmenu variable replaces these protected variables from
-  // Inventor:
-//    Widget popupWidget;
-//    Widget * popupToggleWidgets;
-//    Widget * drawStyleWidgets;
-//    Widget * bufferStyleWidgets;
   SoAnyPopupMenu * prefmenu;
 
 protected: // preference sheet routines
@@ -253,9 +247,9 @@ private:
   SOXT_WIDGET_CALLBACK( absolutetoggled );
 
   // clipping preferences widgets
-  Widget autoclipplanes, nearwheel, farwheel, nearvalue, farvalue;
+  Widget autocliptoggle, nearwheel, farwheel, nearvalue, farvalue;
 
-  SOXT_WIDGET_CALLBACK( autoclipplanestoggled );
+  SOXT_WIDGET_CALLBACK( autocliptoggled );
   SOXT_WIDGET_CALLBACK( nearwheelvaluechanged );
   SOXT_WIDGET_CALLBACK( farwheelvaluechanged );
   SOXT_WIDGET_CALLBACK( nearvaluechanged );

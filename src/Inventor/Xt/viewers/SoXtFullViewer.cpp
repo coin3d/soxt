@@ -1888,14 +1888,20 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
     xmFormWidgetClass, parent,
     NULL );
 
-  labelstring = SoXt::encodeString( "non-automatic" );
-  this->autoclipplanes = XtVaCreateManagedWidget( "auto",
+  labelstring = SoXt::encodeString( "automatic" );
+  this->autocliptoggle = XtVaCreateManagedWidget( "autocliptoggle",
     xmToggleButtonWidgetClass, form,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
+    XmNset, this->isAutoClipping() ? True : False,
     XmNlabelString, labelstring,
     NULL );
   XtFree( (char *) labelstring );
+
+  XtAddCallback( this->autocliptoggle, XmNvalueChangedCallback,
+    SoXtFullViewer::autocliptoggledCB, (XtPointer) this );
+
+  SoCamera * const camera = this->getCamera();
 
   this->farvalue = XtVaCreateManagedWidget( "farvalue",
     xmTextFieldWidgetClass, form,
@@ -1904,7 +1910,24 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
     XmNbottomAttachment, XmATTACH_FORM,
     XmNbottomOffset, 2,
     XmNwidth, 100,
+    XmNsensitive, this->isAutoClipping() ? False : True,
+    XmNeditable, this->isAutoClipping() ? False : True,
+    XmNcursorPositionVisible, this->isAutoClipping() ? False : True,
     NULL );
+
+  float fardistance = 0.002f;
+  if ( camera != NULL )
+    fardistance = camera->farDistance.getValue();
+
+  char buf[16];
+  sprintf( buf, "%g", fardistance );
+  XmTextSetString( this->farvalue, buf );
+  XmTextSetCursorPosition( this->farvalue, strlen(buf) );
+
+  XtAddCallback( this->farvalue, XmNactivateCallback,
+    SoXtFullViewer::farvaluechangedCB, (XtPointer) this );
+  XtAddCallback( this->farvalue, XmNlosingFocusCallback,
+    SoXtFullViewer::farvaluechangedCB, (XtPointer) this );
 
   this->farwheel = XtVaCreateManagedWidget( "farwheel",
     soxtThumbWheelWidgetClass, form,
@@ -1917,9 +1940,20 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
     XmNbottomAttachment, XmATTACH_WIDGET,
     XmNbottomWidget, this->farvalue,
     XmNbottomOffset, 2,
-    XmNorientation, XmHORIZONTAL,
     XmNheight, 28,
+    XmNsensitive, this->isAutoClipping() ? False : True,
+    XmNorientation, XmHORIZONTAL,
     NULL );
+
+  XtAddCallback( this->farwheel, XmNvalueChangedCallback,
+    SoXtFullViewer::farwheelvaluechangedCB, (XtPointer) this );
+  XtAddCallback( this->farwheel, XmNarmCallback,
+    SoXtFullViewer::increaseInteractiveCountCB, (XtPointer) this );
+  XtAddCallback( this->farwheel, XmNdisarmCallback,
+    SoXtFullViewer::decreaseInteractiveCountCB, (XtPointer) this );
+
+  SoDebugError::postInfo( "...", "setting value to %g", fardistance );
+  SoXtThumbWheelSetValue( this->farwheel, fardistance );
 
   labelstring = SoXt::encodeString( "Far plane:" );
   Widget farlabel = XtVaCreateManagedWidget( "farlabel",
@@ -1935,6 +1969,10 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
     NULL );
   XtFree( (char *) labelstring );
 
+  float neardistance = 0.001f;
+  if ( camera != NULL )
+    neardistance = camera->nearDistance.getValue();
+
   this->nearvalue = XtVaCreateManagedWidget( "nearvalue",
     xmTextFieldWidgetClass, form,
     XmNrightAttachment, XmATTACH_WIDGET,
@@ -1943,7 +1981,19 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
     XmNbottomAttachment, XmATTACH_OPPOSITE_WIDGET,
     XmNbottomWidget, this->farvalue,
     XmNwidth, 100,
+    XmNsensitive, this->isAutoClipping() ? False : True,
+    XmNeditable, this->isAutoClipping() ? False : True,
+    XmNcursorPositionVisible, this->isAutoClipping() ? False : True,
     NULL );
+
+  sprintf( buf, "%g", neardistance );
+  XmTextSetString( this->nearvalue, buf );
+  XmTextSetCursorPosition( this->nearvalue, strlen(buf) );
+
+  XtAddCallback( this->nearvalue, XmNactivateCallback,
+    SoXtFullViewer::nearvaluechangedCB, (XtPointer) this );
+  XtAddCallback( this->nearvalue, XmNlosingFocusCallback,
+    SoXtFullViewer::nearvaluechangedCB, (XtPointer) this );
 
   this->nearwheel = XtVaCreateManagedWidget( "nearwheel",
     soxtThumbWheelWidgetClass, form,
@@ -1955,9 +2005,19 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
     XmNrightOffset, 2,
     XmNbottomAttachment, XmATTACH_OPPOSITE_WIDGET,
     XmNbottomWidget, this->farwheel,
+    XmNsensitive, this->isAutoClipping() ? False : True,
     XmNorientation, XmHORIZONTAL,
     XmNheight, 28,
     NULL );
+
+  SoXtThumbWheelSetValue( this->nearwheel, neardistance );
+
+  XtAddCallback( this->nearwheel, XmNvalueChangedCallback,
+    SoXtFullViewer::nearwheelvaluechangedCB, (XtPointer) this );
+  XtAddCallback( this->nearwheel, XmNarmCallback,
+    SoXtFullViewer::increaseInteractiveCountCB, (XtPointer) this );
+  XtAddCallback( this->nearwheel, XmNdisarmCallback,
+    SoXtFullViewer::decreaseInteractiveCountCB, (XtPointer) this );
 
   labelstring = SoXt::encodeString( "Near plane:" );
   Widget nearlabel = XtVaCreateManagedWidget( "nearlabel",
@@ -1971,35 +2031,6 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
     XmNlabelString, labelstring,
     NULL );
   XtFree( (char *) labelstring );
-
-  // hooks
-
-  XtAddCallback( this->autoclipplanes, XmNvalueChangedCallback,
-    SoXtFullViewer::autoclipplanestoggledCB, (XtPointer) this );
-
-  XtAddCallback( this->nearwheel, XmNvalueChangedCallback,
-    SoXtFullViewer::nearwheelvaluechangedCB, (XtPointer) this );
-  XtAddCallback( this->nearwheel, XmNarmCallback,
-    SoXtFullViewer::increaseInteractiveCountCB, (XtPointer) this );
-  XtAddCallback( this->nearwheel, XmNdisarmCallback,
-    SoXtFullViewer::decreaseInteractiveCountCB, (XtPointer) this );
-
-  XtAddCallback( this->farwheel, XmNvalueChangedCallback,
-    SoXtFullViewer::farwheelvaluechangedCB, (XtPointer) this );
-  XtAddCallback( this->farwheel, XmNarmCallback,
-    SoXtFullViewer::increaseInteractiveCountCB, (XtPointer) this );
-  XtAddCallback( this->farwheel, XmNdisarmCallback,
-    SoXtFullViewer::decreaseInteractiveCountCB, (XtPointer) this );
-
-  XtAddCallback( this->nearvalue, XmNactivateCallback,
-    SoXtFullViewer::nearvaluechangedCB, (XtPointer) this );
-  XtAddCallback( this->nearvalue, XmNlosingFocusCallback,
-    SoXtFullViewer::nearvaluechangedCB, (XtPointer) this );
-
-  XtAddCallback( this->farvalue, XmNactivateCallback,
-    SoXtFullViewer::farvaluechangedCB, (XtPointer) this );
-  XtAddCallback( this->farvalue, XmNlosingFocusCallback,
-    SoXtFullViewer::farvaluechangedCB, (XtPointer) this );
 
   return form;
 } // createClippingPrefSheetGuts()
@@ -2092,15 +2123,44 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 
 SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   SoXtFullViewer,
-  autoclipplanestoggled )
+  autocliptoggled )
 {
-  Boolean set = False;
-  XtVaGetValues( this->autoclipplanes, XmNset, &set, NULL );
-  XtVaSetValues( this->nearwheel, XmNsensitive, set, NULL );
-  XtVaSetValues( this->farwheel, XmNsensitive, set, NULL );
-  XtVaSetValues( this->nearvalue, XmNsensitive, set, XmNeditable, set, NULL );
-  XtVaSetValues( this->farvalue, XmNsensitive, set, XmNeditable, set, NULL );
-} // autoclipplanestoggled()
+  Boolean enable = False;
+  XtVaGetValues( this->autocliptoggle, XmNset, &enable, NULL );
+  this->setAutoClipping( enable ? TRUE : FALSE );
+
+  XtVaSetValues( this->nearwheel,
+    XmNsensitive, enable ? False : True,
+    NULL );
+  XtVaSetValues( this->farwheel,
+    XmNsensitive, enable ? False : True,
+    NULL );
+  XtVaSetValues( this->nearvalue,
+    XmNsensitive, enable ? False : True,
+    XmNeditable, enable ? False : True,
+    XmNcursorPositionVisible, enable ? False : True,
+    NULL );
+  XtVaSetValues( this->farvalue,
+    XmNsensitive, enable ? False : True,
+    XmNeditable, enable ? False : True,
+    XmNcursorPositionVisible, enable ? False : True,
+    NULL );
+
+  SoCamera * const camera = this->getCamera();
+  if ( ! camera ) {
+#if SOXT_DEBUG
+    SoDebugError::postInfo( "SoXtFullViewer::autocliptoggled", "no camera" );
+#endif // SOXT_DEBUG
+    return;
+  }
+
+  if ( ! enable ) {
+    float nearval = SoXtThumbWheelGetValue( this->nearwheel );
+    float farval = SoXtThumbWheelGetValue( this->farwheel );
+    camera->nearDistance = nearval;
+    camera->farDistance = farval;
+  }
+} // autocliptoggled()
 
 /*!
 */
@@ -2111,21 +2171,16 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 {
   assert( this->nearwheel != NULL && this->farwheel != NULL );
 
-  float val = 0.0f;
-  XtVaGetValues( this->nearwheel, XmNvalue, &val, NULL );
+  float val = SoXtThumbWheelGetValue( this->nearwheel );
+  float farval = SoXtThumbWheelGetValue( this->farwheel );
   
   if ( val < 0.001f ) {
     val = 0.001f;
-    XtVaSetValues( this->nearwheel, XmNvalue, &val, NULL );
-  }
-
-  float farval = 0.0f;
-  XtVaGetValues( this->farwheel, XmNvalue, &farval, NULL );
-  if ( val >= farval ) {
+    SoXtThumbWheelSetValue( this->nearwheel, val );
+  } else if ( val >= farval ) {
     val = farval - 0.001f;
-    XtVaSetValues( this->nearwheel, XmNvalue, &val, NULL );
+    SoXtThumbWheelSetValue( this->nearwheel, val );
   }
-
 
   char valuestring[32];
   sprintf( valuestring, "%.3f", val );
@@ -2154,18 +2209,12 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 {
   assert( this->nearwheel != NULL && this->farwheel != NULL );
 
-  float val = 0.0f;
-  XtVaGetValues( this->farwheel, XmNvalue, &val, NULL );
-
-  float nearval = 0.0f;
-  XtVaGetValues( this->nearwheel, XmNvalue, &nearval, NULL );
-
-  if ( nearval < 0.001f )
-    nearval = 0.001f;
+  float val = SoXtThumbWheelGetValue( this->farwheel );
+  float nearval = SoXtThumbWheelGetValue( this->nearwheel );
 
   if ( val <= nearval ) {
     val = nearval + 0.001f;
-    XtVaSetValues( this->farwheel, XmNvalue, &val, NULL );
+    SoXtThumbWheelSetValue( this->farwheel, val );
   }
 
   char valuestring[32];
@@ -2182,7 +2231,6 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
     return;
   }
 
-  // FIXME: cut off at 0.0? And against near clipping value? 990223 mortene.
   cam->farDistance = val;
 } // farwheelvaluechanged()
 
@@ -2193,7 +2241,23 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   SoXtFullViewer,
   nearvaluechanged )
 {
-  SOXT_STUB();
+  float val = atof( XmTextGetString( this->nearvalue ) );
+  float farval = SoXtThumbWheelGetValue( this->farwheel );
+  if ( val >= farval )
+    val = farval - 0.001f;
+  SoXtThumbWheelSetValue( this->nearwheel, val );
+  char buf[16];
+  sprintf( buf, "%g", val );
+  XmTextSetString( this->nearvalue, buf );
+  XmTextSetCursorPosition( this->nearvalue, strlen(buf) );
+
+  SoCamera * const camera = this->getCamera();
+  if ( ! camera ) {
+    SoDebugError::postInfo( "SoXtFullViewer::nearvaluechanged",
+      "no camera!" );
+    return;
+  }
+  camera->nearDistance = val;
 } // nearvaluechanged()
 
 /*!
@@ -2203,7 +2267,23 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   SoXtFullViewer,
   farvaluechanged )
 {
-  SOXT_STUB();
+  float nearval = SoXtThumbWheelGetValue( this->nearwheel );
+  float val = atof( XmTextGetString( this->farvalue ) );
+  if ( val <= nearval )
+    val = nearval + 0.001f;
+  SoXtThumbWheelSetValue( this->farwheel, val );
+  char buf[16];
+  sprintf( buf, "%g", val );
+  XmTextSetString( this->farvalue, buf );
+  XmTextSetCursorPosition( this->farvalue, strlen(buf) );
+
+  SoCamera * const camera = this->getCamera();
+  if ( ! camera ) {
+    SoDebugError::postInfo( "SoXtFullViewer::nearvaluechanged",
+      "no camera!" );
+    return;
+  }
+  camera->farDistance = val;
 } // farvaluechanged()
 
 // *************************************************************************
