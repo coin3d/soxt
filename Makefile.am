@@ -21,13 +21,7 @@ BUILT_SOURCES = \
 	src/Inventor/Xt/SoXtRenderArea.h \
 	src/Inventor/Xt/SoXtRenderArea.cpp \
 	src/Inventor/Xt/viewers/SoXtViewer.h \
-	src/Inventor/Xt/viewers/SoXtViewer.cpp \
-	examples/components/renderarea.cpp \
-	examples/components/examinerviewer.cpp \
-	examples/components/planeviewer.cpp \
-	examples/components/walkviewer.cpp \
-	examples/components/flyviewer.cpp \
-	examples/nodes/selection.cpp
+	src/Inventor/Xt/viewers/SoXtViewer.cpp
 
 soxt-config: soxt-config.in
 
@@ -53,29 +47,5 @@ src/Inventor/Xt/viewers/SoXtViewer.h: \
 src/Inventor/Xt/viewers/SoXtViewer.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyViewer.cpp.in
 	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyViewer.cpp.in $(top_builddir)/config.status
-
-examples/components/renderarea.cpp: \
-  $(top_srcdir)/examples/components/renderarea.cpp.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@ ./config.status
-
-examples/components/examinerviewer.cpp: \
-  $(top_srcdir)/examples/components/examinerviewer.cpp.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@ ./config.status
-
-examples/components/planeviewer.cpp: \
-  $(top_srcdir)/examples/components/planeviewer.cpp.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@ ./config.status
-
-examples/components/walkviewer.cpp: \
-  $(top_srcdir)/examples/components/walkviewer.cpp.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@ ./config.status
-
-examples/components/flyviewer.cpp: \
-  $(top_srcdir)/examples/components/flyviewer.cpp.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@ ./config.status
-
-examples/nodes/selection.cpp: \
-  $(top_srcdir)/examples/nodes/selection.cpp.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@ ./config.status
 
 ############################################################################
