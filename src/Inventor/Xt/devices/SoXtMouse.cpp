@@ -225,8 +225,13 @@ SoXtMouse::makeButtonEvent( // private
 
   switch ( event->button ) {
   case 1: button = SoMouseButtonEvent::BUTTON1; break;
+#if 0
   case 2: button = SoMouseButtonEvent::BUTTON2; break;
   case 3: button = SoMouseButtonEvent::BUTTON3; break;
+#else
+  case 3: button = SoMouseButtonEvent::BUTTON2; break;
+  case 2: button = SoMouseButtonEvent::BUTTON3; break;
+#endif
 #ifdef HAVE_SOMOUSEBUTTONEVENT_BUTTONS
   case 4: button = SoMouseButtonEvent::BUTTON4; break;
   case 5: button = SoMouseButtonEvent::BUTTON5; break;
