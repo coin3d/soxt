@@ -170,6 +170,7 @@ SoXtComponent::SoXtComponent( // protected
   this->firstRealize = TRUE;
   this->widget = NULL;
   this->visibility_state = FALSE;
+  this->fullscreen = FALSE;
 
   this->close_callbacks = NULL;
   this->visibility_callbacks = NULL;
@@ -1133,6 +1134,25 @@ SoXtComponent::event_handler(
   SoXtComponent * component = (SoXtComponent *) closure;
   *dispatch = component->eventHandler( widget, event );
 } // event_handler()
+
+/*!
+  Toggle full screen mode for this component.
+*/
+void 
+SoXtComponent::goFullScreen(const SbBool onoff)
+{
+  if (onoff == this->fullscreen) return;
+  SOXT_STUB();
+}
+
+/*!
+  Returns if this widget/component is in full screen mode.
+*/
+SbBool 
+SoXtComponent::isFullScreen(void) const
+{
+  return this->fullscreen;
+}
 
 // *************************************************************************
 

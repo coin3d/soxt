@@ -45,8 +45,11 @@ public:
 
   virtual void show(void);
   virtual void hide(void);
-  SbBool isVisible(void);
 
+  SbBool isFullScreen(void) const;
+  void goFullScreen(const SbBool onoff);
+
+  SbBool isVisible(void);
   Widget getWidget(void) const;
   Widget baseWidget(void) const;
   Widget getBaseWidget(void) const;
@@ -133,7 +136,7 @@ private:
 
   SbPList * close_callbacks;
   SbPList * visibility_callbacks;
-  SbBool visibility_state;
+  SbBool visibility_state, fullscreen;
 
   static void event_handler( Widget, XtPointer, XEvent *, Boolean * );
 
