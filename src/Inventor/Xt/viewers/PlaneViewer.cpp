@@ -365,19 +365,6 @@ SoXtPlaneViewer::getDefaultIconTitle(
   FIXME: write doc
 */
 
-SbBool
-SoXtPlaneViewer::processSoEvent(// virtual, protected
-  const SoEvent * const event)
-{
-  if (this->processGenericSoEvent(event))
-    return TRUE;
-  return inherited::processSoEvent(event);
-} // processSoEvent()
-
-/*!
-  FIXME: write doc
-*/
-
 void
 SoXtPlaneViewer::processEvent(
   XAnyEvent * event)

@@ -178,40 +178,6 @@ SoXtExaminerViewer::~SoXtExaminerViewer()
 // *************************************************************************
 
 /*!
-  Translating events into SoEvent events and working with them makes the
-  code more portable, so that is the purpose of this method.
-
-  This method is not part of the original InventorXt API.
-*/
-
-SbBool
-SoXtExaminerViewer::processSoEvent(// virtual
-  const SoEvent * const event)
-{
-  if (this->processGenericSoEvent(event)) return TRUE;
-  if (inherited::processSoEvent(event)) return TRUE;
-  return FALSE;
-} // processSoEvent()
-
-/*!
-  This method handles X events in the way they should be handled especially
-  for examiner viewer components.
-*/
-
-void
-SoXtExaminerViewer::processEvent(
-  XAnyEvent * event)
-{
-// if (SoXtViewer::processCommonEvents(event))
-//   return; // handled in SoXtViewer
-
-  inherited::processEvent(event);
-  return;
-} // processEvent()
-
-// *************************************************************************
-
-/*!
   Stops the model from spin-animating.
 */
 
