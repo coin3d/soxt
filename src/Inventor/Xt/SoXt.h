@@ -32,9 +32,9 @@ class SoXt {
 public:
 
   static Widget init( const char * const appName,
-      const char * className = "SoXt" );
+      const char * const className = "SoXt" );
   static Widget init( int & argc, char ** argv, const char * const appName,
-      const char * className = "SoXt" );
+      const char * const className = "SoXt" );
   static void init( Widget toplevel );
 
   static void mainLoop(void);

@@ -205,6 +205,7 @@ void
 SoXtFullViewer::setViewing( // virtual
   SbBool enable )
 {
+  inherited::setViewing( enable );
   COIN_STUB();
 }
 
@@ -269,6 +270,7 @@ SoXtFullViewer::eventFilter( // virtual
   XAnyEvent * event )
 {
   COIN_STUB();
+  return FALSE;
 } // eventFilter()
 
 Widget

@@ -97,6 +97,7 @@ SoXt::dispatchEvent( // static
   XEvent * event )
 {
   COIN_STUB();
+  return False;
 } // dispatchEvent()
 
 // *************************************************************************
@@ -187,6 +188,7 @@ SoXt::getShellWidget( // static
   Widget widget )
 {
   COIN_STUB();
+  return (Widget) NULL;
 } // getShellWidget()
 
 // *************************************************************************
@@ -264,6 +266,7 @@ SoXt::getwidget( // static
   unsigned int what )
 {
   COIN_STUB();
+  return (Widget) NULL;
 } // getwidget()
 
 // *************************************************************************

@@ -154,6 +154,7 @@ SoXtSpaceball::exists( // static
   Display * display )
 {
   COIN_STUB();
+  return FALSE;
 } // exists()
 
 /*!
@@ -174,6 +175,7 @@ SoXtSpaceball::isFocusToWindow(
   void ) const
 {
   COIN_STUB();
+  return FALSE;
 } // isFocusToWindow()
 
 // *************************************************************************

@@ -28,7 +28,11 @@
 #include <X11/Xutil.h>
 #include <X11/Xmu/StdCmap.h>
 
+#ifndef HAVE_X11_GLW_GLWMDRAWA_H
 #include <GL/GLwMDrawA.h>
+#else // HAVE_X11_GLW_GLWMDRAWA_H
+#include <X11/GLw/GLwMDrawA.h>
+#endif // HAVE_X11_GLW_GLWMDRAWA_H
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoBasic.h>
@@ -100,6 +104,7 @@ SoXtGLWidget::getOverlayWindow(
   void )
 {
   COIN_STUB();
+  return (Window) NULL;
 } // getOverlayWindow()
 
 GLXContext
@@ -128,6 +133,7 @@ SoXtGLWidget::getOverlayWidget(
   void )
 {
   COIN_STUB();
+  return (Widget) NULL;
 } // getOverlayWidget()
 
 void
@@ -142,6 +148,7 @@ SoXtGLWidget::getNormalVisual(
   void )
 {
   COIN_STUB();
+  return (XVisualInfo *) NULL;
 } // setNormalVisual()
 
 void
@@ -156,6 +163,7 @@ SoXtGLWidget::getOverlayVisual(
   void )
 {
   COIN_STUB();
+  return (XVisualInfo *) NULL;
 } // getOverlayVisual()
 
 void
@@ -206,6 +214,7 @@ SoXtGLWidget::isDrawToFrontBufferEnable(
   void ) const
 {
   COIN_STUB();
+  return FALSE;
 } // isDrawToFrontBufferEnable()
 
 void
@@ -371,6 +380,7 @@ SoXtGLWidget::isStereoBuffer( // protected
   void )
 {
   COIN_STUB();
+  return FALSE;
 } // isStereoBuffer()
 
 SbBool
@@ -378,6 +388,7 @@ SoXtGLWidget::isRGBMode( // protected
   void )
 {
   COIN_STUB();
+  return TRUE;
 } // isRGBMode()
 
 int
@@ -385,6 +396,7 @@ SoXtGLWidget::getDisplayListShareGroup( // protected
   GLXContext context )
 {
   COIN_STUB();
+  return 0;
 } // getDisplayListShareGroup()
 
 Widget

@@ -92,6 +92,7 @@ SoXtComponent::isVisible(
   void )
 {
   COIN_STUB();
+  return TRUE;
 } // isVisible()
 
 Widget
@@ -113,6 +114,7 @@ SoXtComponent::isTopLevelShell(
   void ) const
 {
   COIN_STUB();
+  return FALSE;
 } // isTopLevelShell()
 
 Widget
@@ -120,6 +122,7 @@ SoXtComponent::getShellWidget(
   void ) const
 {
   COIN_STUB();
+  return (Widget) NULL;
 } // getShellWidget()
 
 Widget      
@@ -203,6 +206,7 @@ SoXtComponent::getComponent( // static
   Widget widget )
 {
   COIN_STUB();
+  return NULL;
 } // getComponent()
 
 const char *
@@ -321,6 +325,7 @@ SoXtComponent::getlabel( // static, protected
   unsigned int what )
 {
   COIN_STUB();
+  return "(null)";
 } // getlabel()
 
 // *************************************************************************

@@ -33,6 +33,7 @@ SoXtExaminerViewer::SoXtExaminerViewer(
 : inherited( parent, name, inParent, flag, type, TRUE )
 {
   this->constructor( TRUE );
+  this->setViewing( FALSE );
 } // SoXtExaminerViewer()
 
 SoXtExaminerViewer::SoXtExaminerViewer( // protected
