@@ -337,7 +337,12 @@ SoXtFullViewer::buildWidget( // protected
   Widget parent )
 {
   this->viewerbase = XtVaCreateManagedWidget( this->getClassName(),
-    xmFormWidgetClass, parent, NULL );
+    xmFormWidgetClass, parent,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    NULL );
   this->registerWidget( this->viewerbase );
 
   this->buildDecoration( this->viewerbase );
@@ -391,12 +396,12 @@ void
 SoXtFullViewer::buildDecoration( // virtual
   Widget parent )
 {
-  this->decorform[BOTTOMDECORATION] = this->buildBottomTrim( parent );
-  XtManageChild( this->decorform[BOTTOMDECORATION] );
   this->decorform[LEFTDECORATION]   = this->buildLeftTrim( parent );
-  XtManageChild( this->decorform[LEFTDECORATION] );
   this->decorform[RIGHTDECORATION]  = this->buildRightTrim( parent );
-  XtManageChild( this->decorform[RIGHTDECORATION] );
+  this->decorform[BOTTOMDECORATION] = this->buildBottomTrim( parent );
+//  XtManageChild( this->decorform[LEFTDECORATION] );
+//  XtManageChild( this->decorform[RIGHTDECORATION] );
+//  XtManageChild( this->decorform[BOTTOMDECORATION] );
 } // buildDecorations()
 
 /*!
@@ -419,28 +424,21 @@ SoXtFullViewer::buildBottomTrim( // virtual
   const char * string;
 
   string = this->wheelstrings[LEFTDECORATION].getString();
-  this->wheellabels[LEFTDECORATION] = XtVaCreateManagedWidget( "Roty",
+  this->wheellabels[LEFTDECORATION] = XtVaCreateManagedWidget( "LeftWheelLabel",
     xmLabelWidgetClass, trim,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNleftOffset, 5,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      string, strlen(string) + 1,
     NULL );
 
-  string = this->wheelstrings[BOTTOMDECORATION].getString();
-  this->wheellabels[BOTTOMDECORATION] = XtVaCreateManagedWidget( "Rotx",
+  this->wheellabels[BOTTOMDECORATION] = XtVaCreateManagedWidget( "BottomWheelLabel",
     xmLabelWidgetClass, trim,
     XmNleftAttachment, XmATTACH_WIDGET,
     XmNleftWidget, this->wheellabels[LEFTDECORATION],
     XmNtopAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNleftOffset, 5,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      string, strlen(string) + 1,
     NULL );
 
   // add bottom thumb wheel
@@ -468,17 +466,13 @@ SoXtFullViewer::buildBottomTrim( // virtual
   XtAddCallback( this->wheels[BOTTOMDECORATION],
     XmNvalueChangedCallback, SoXtFullViewer::bottomWheelMotionCB, this );
 
-  string = this->wheelstrings[RIGHTDECORATION].getString();
   this->wheellabels[RIGHTDECORATION] =
-    XtVaCreateManagedWidget( "rightwheellabel",
+    XtVaCreateManagedWidget( "RightWheelLabel",
     xmLabelWidgetClass, trim,
     XmNtopAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_FORM,
     XmNrightOffset, 5,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      string, strlen(string) + 1,
     NULL );
 
   return trim;
@@ -496,8 +490,8 @@ SoXtFullViewer::buildLeftTrim( // virtual
       xmFormWidgetClass, parent,
       XmNleftAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_FORM,
-      XmNbottomAttachment, XmATTACH_WIDGET,
-      XmNbottomWidget, this->decorform[BOTTOMDECORATION],
+      XmNbottomAttachment, XmATTACH_FORM,
+      XmNbottomOffset, 30,
       XmNrightAttachment, XmATTACH_OPPOSITE_FORM,
       XmNrightOffset, -30,
       NULL );
@@ -551,14 +545,13 @@ SoXtFullViewer::buildRightTrim( // virtual
       xmFormWidgetClass, parent,
       XmNtopAttachment, XmATTACH_FORM,
       XmNrightAttachment, XmATTACH_FORM,
-      XmNbottomAttachment, XmATTACH_WIDGET,
-      XmNbottomWidget, this->decorform[BOTTOMDECORATION],
+      XmNbottomAttachment, XmATTACH_FORM,
+      XmNbottomOffset, 30,
       XmNleftAttachment, XmATTACH_OPPOSITE_FORM,
       XmNleftOffset, -30,
       NULL );
 
-  Widget buttonForm = this->buildViewerButtons( trim );
-  XtManageChild( buttonForm );
+  this->buildViewerButtons( trim );
 
   // add right thumb wheel
   this->wheels[RIGHTDECORATION] = XtVaCreateManagedWidget( "RightWheel",
@@ -608,23 +601,30 @@ SoXtFullViewer::setViewing( // virtual
     this->prefmenu->SetMenuItemEnabled( SEEK_ITEM, enable );
   }
 
-  XtUnmanageChild( this->viewerbuttons.view );
-  XtSetSensitive( this->viewerbuttons.view, enable ? False : True );
+  XtSetMappedWhenManaged( this->viewerbuttons.view, True );
+  SoDebugError::postInfo( "", "yo!" );
+  XtUnrealizeWidget( this->viewerbuttons.view );
+  SoDebugError::postInfo( "", "yo!!" );
   XtVaSetValues( this->viewerbuttons.view,
                  XmNset, enable ? True : False,
+                 XmNsensitive, enable ? False : True,
                  XmNwidth, 30,
                  XmNheight, 30,
                  NULL );
-  XtManageChild( this->viewerbuttons.view );
+  XtRealizeWidget( this->viewerbuttons.view );
+  XtMapWidget( this->viewerbuttons.view );
 
-  XtUnmanageChild( this->viewerbuttons.pick );
-  XtSetSensitive( this->viewerbuttons.pick, enable ? True : False );
+  XtSetMappedWhenManaged( this->viewerbuttons.pick, True );
+  XtUnrealizeWidget( this->viewerbuttons.pick );
+//  XtSetSensitive( this->viewerbuttons.pick, enable ? True : False );
   XtVaSetValues( this->viewerbuttons.pick,
                  XmNset, enable ? False : True,
+                 XmNsensitive, enable ? True : False,
                  XmNwidth, 30,
                  XmNheight, 30,
                  NULL );
-  XtManageChild( this->viewerbuttons.pick );
+  XtRealizeWidget( this->viewerbuttons.pick );
+  XtMapWidget( this->viewerbuttons.pick );
 
   XtUnmanageChild( this->viewerbuttons.seek );
   XtSetSensitive( this->viewerbuttons.seek,
@@ -750,29 +750,31 @@ Widget
 SoXtFullViewer::buildViewerButtons(
   Widget parent )
 {
-  Widget form = XtVaCreateManagedWidget( "ViewerButtons",
-      xmFormWidgetClass, parent, NULL );
+//  Widget form = XtVaCreateManagedWidget( "ViewerButtons",
+//      xmFormWidgetClass, parent, NULL );
 
-  this->createViewerButtons( form, this->viewerButtonsList );
+  this->createViewerButtons( parent, this->viewerButtonsList );
 
   const int buttons = this->viewerButtonsList->getLength();
 
-  XtVaSetValues( form,
-    XmNx, 0, XmNy, 0,
-    XmNleftAttachment, XmATTACH_POSITION,
-    XmNtopAttachment, XmATTACH_POSITION,
-    XmNwidth, 30,
-    XmNheight, buttons * 30,
-    XmNfractionBase, buttons,
-    NULL );
+//  XtVaSetValues( form,
+//    XmNx, 0, XmNy, 0,
+//    XmNleftAttachment, XmATTACH_POSITION,
+//    XmNtopAttachment, XmATTACH_POSITION,
+//    XmNwidth, 30,
+//    XmNheight, buttons * 30,
+//    XmNfractionBase, buttons,
+//    NULL );
 
   for ( int i = 0; i < this->viewerButtonsList->getLength(); i++ ) {
     Widget button = (Widget) (*this->viewerButtonsList)[i];
     XtVaSetValues( button,
-       XmNwidth, 30, XmNheight, 30,
-       XmNleftAttachment, XmATTACH_POSITION,
-       XmNtopAttachment, XmATTACH_POSITION,
-       XmNleftPosition, 0, XmNtopPosition, i,
+       XmNleftAttachment, XmATTACH_FORM,
+       XmNtopAttachment, XmATTACH_FORM,
+       XmNtopOffset, i * 30,
+       XmNrightAttachment, XmATTACH_FORM,
+       XmNwidth, 30,
+       XmNheight, 30,
        NULL );
   }
 
@@ -794,7 +796,7 @@ SoXtFullViewer::buildViewerButtons(
                  NULL );
   XtManageChild( this->viewerbuttons.pick );
 
-  return form;
+  return parent;
 } // buildViewerButtons()
 
 // *************************************************************************
@@ -933,6 +935,7 @@ SoXtFullViewer::createViewerButtons(
         XmNwidth, 30,
         XmNheight, 30,
         NULL );
+      XtSetMappedWhenManaged( button, True );
       if ( viewerbutton == EXAMINE_BUTTON ) {
         XtVaSetValues( button, XmNset, this->isViewing() ? True : False, NULL );
       }
@@ -949,6 +952,7 @@ SoXtFullViewer::createViewerButtons(
         XmNwidth, 30,
         XmNheight, 30,
         NULL );
+      XtSetMappedWhenManaged( button, True );
     }
 
     switch ( viewerbutton ) {
@@ -1020,7 +1024,8 @@ SoXtFullViewer::createViewerButtons(
       XmNlabelInsensitivePixmap, pixmap_ins,
       XmNselectPixmap, pixmap,
       XmNselectInsensitivePixmap, pixmap_ins,
-      XmNwidth, 30, XmNheight, 30,
+      XmNwidth, 30,
+      XmNheight, 30,
       NULL );
 #endif // HAVE_LIBXPM
 
@@ -1334,6 +1339,16 @@ SoXtFullViewer::setLeftWheelString(
 } // setLeftWheelString()
 
 /*!
+*/
+
+Widget
+SoXtFullViewer::getLeftWheelLabelWidget( // protected
+  void ) const
+{
+  return this->wheellabels[LEFTDECORATION];
+} // getLeftWheelLabelWidget()
+
+/*!
   This method sets the label text that is displayed to the left og the
   bottom decoration thumb wheel.
 */
@@ -1356,6 +1371,16 @@ SoXtFullViewer::setBottomWheelString(
 } // setBottomWheelString()
 
 /*!
+*/
+
+Widget
+SoXtFullViewer::getBottomWheelLabelWidget( // protected
+  void ) const
+{
+  return this->wheellabels[BOTTOMDECORATION];
+} // getBottomWheelLabelWidget()
+
+/*!
   This method sets the label text that is displayed under the right decoration
   thumb wheel.
 */
@@ -1376,6 +1401,16 @@ SoXtFullViewer::setRightWheelString(
         string, strlen(string) + 1,
       NULL );
 } // setRightWheelString()
+
+/*!
+*/
+
+Widget
+SoXtFullViewer::getRightWheelLabelWidget( // protected
+  void ) const
+{
+  return this->wheellabels[RIGHTDECORATION];
+} // getRightWheelLabelWidget()
 
 // *************************************************************************
 

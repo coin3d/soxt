@@ -44,7 +44,7 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtBasic.h>
-
+#include <Inventor/Xt/SoXtResource.h>
 #include <Inventor/Xt/viewers/SoAnyExaminerViewer.h>
 #include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
 
@@ -115,13 +115,16 @@ SoXtExaminerViewer::constructor( // private
   this->setClassName( "SoXtExaminerViewer" );
   this->setTitle( "Examiner Viewer" );
   this->camerabutton = (Widget) NULL;
-  this->setLeftWheelString( "Rot Y" );
-  this->setBottomWheelString( "Rot X" );
-  this->setRightWheelString( "Dolly" );
 
   if ( build ) {
     Widget viewer = this->buildWidget( this->getParentWidget() );
     this->setBaseWidget( viewer );
+
+    char * dollyString = NULL;
+    SoXtResource rsc( this->getRightWheelLabelWidget() );
+    if ( rsc.getResource( "dollyString", XmRString, dollyString ) &&
+         dollyString != NULL )
+      this->setRightWheelString( dollyString );
   }
 
   this->mapped = FALSE;
@@ -707,11 +710,19 @@ SoXtExaminerViewer::setCamera( // virtual
   } else if ( camera->isOfType( SoPerspectiveCamera::getClassTypeId() ) ) {
     pixmap = this->camerapixmaps.perspective;
     pixmap_ins = this->camerapixmaps.perspective_ins;
-    this->setRightWheelString( "Dolly" );
+    SoXtResource rsc( this->getRightWheelLabelWidget() );
+    char * dollyString = NULL;
+    if ( rsc.getResource( "dollyString", XmRString, dollyString ) &&
+         dollyString != NULL )
+      this->setRightWheelString( dollyString );
   } else if ( camera->isOfType( SoOrthographicCamera::getClassTypeId() ) ) {
     pixmap = this->camerapixmaps.ortho;
     pixmap_ins = this->camerapixmaps.ortho_ins;
-    this->setRightWheelString( "Zoom" );
+    SoXtResource rsc( this->getRightWheelLabelWidget() );
+    char * zoomString = NULL;
+    if ( rsc.getResource( "zoomString", XmRString, zoomString ) &&
+         zoomString != NULL )
+      this->setRightWheelString( zoomString );
   } else {
     SoDebugError::postWarning( "SoXtExaminerViewer::setCamera",
       "unknown camera type - got no pixmap" );

@@ -116,8 +116,11 @@ protected:
   void setRightWheelValue( const float value );
 
   void setLeftWheelString( const char * const name );
+  Widget getLeftWheelLabelWidget(void) const;
   void setBottomWheelString( const char * const name );
+  Widget getBottomWheelLabelWidget(void) const;
   void setRightWheelString( const char * const name );
+  Widget getRightWheelLabelWidget(void) const;
 
   virtual void openViewerHelpCard(void);
 
