@@ -187,6 +187,7 @@ SoXtGLWidget::SoXtGLWidget( // protected
 , drawToFrontBuffer( FALSE )
 , glxWidget( NULL )
 {
+  this->currentIsNormal = TRUE;
   this->glLockLevel = 0;
   this->doubleBuffer = TRUE;
   this->normalContext = NULL;
@@ -567,17 +568,10 @@ SoXtGLWidget::widgetChanged( // virtual, protected
 // *************************************************************************
 
 /*!
+  \fn void SoXtGLWidget::setGlxSize( const SbVec2s size )
   This method sets the Glx size.
-
   \sa setGLSize
 */
-
-void
-SoXtGLWidget::setGlxSize( // protected
-  const SbVec2s size )
-{
-  this->setGLSize( size );
-} // setGlxSize()
 
 /*!
   This methid sets the size of the GL widget.
@@ -599,17 +593,10 @@ SoXtGLWidget::setGLSize( // protected
 } // setGLSize()
 
 /*!
+  \fn const SbVec2s SoXtGLWidget::getGlxSize( void ) const
   This method returns the size of the Glx area.
-
   \sa getGLSize
 */
-
-const SbVec2s
-SoXtGLWidget::getGlxSize( // protected
-  void ) const
-{
-  return this->getGLSize();
-} // getGlxSize()
 
 /*!
   This method returns the size of the GL area.
@@ -877,6 +864,20 @@ SoXtGLWidget::getGLWidget( // protected
 
 // *************************************************************************
 
+void
+SoXtGLWidget::setOverlayRender(
+  const SbBool enable )
+{
+  this->currentIsNormal = enable ? FALSE : TRUE;
+} // setOverlayRender()
+
+SbBool
+SoXtGLWidget::isOverlayRender(
+  void ) const
+{
+  return this->currentIsNormal ? FALSE : TRUE;
+} // isOverlayRender()
+
 /*!
   This method locks the GL context.
 
@@ -967,6 +968,7 @@ SoXtGLWidget::glInit( // virtual
   XtVaGetValues( this->glxWidget, XmNwidth, &width, XmNheight, &height, NULL );
   this->glReshape( width, height );
 
+  this->setOverlayRender( FALSE );
   glLock();
   glEnable( GL_DEPTH_TEST );
   glUnlock();

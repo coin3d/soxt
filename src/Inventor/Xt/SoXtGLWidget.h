@@ -81,13 +81,19 @@ protected:
   virtual void initOverlayGraphic(void);
   virtual void sizeChanged( const SbVec2s size );
   virtual void widgetChanged( Widget widget );
-  void setGlxSize( const SbVec2s size );
+
   void setGLSize( const SbVec2s size );
-  const SbVec2s getGlxSize(void) const;
   const SbVec2s getGLSize(void) const;
   float getGLAspectRatio(void) const;
+
+  // old aliases
+  void setGlxSize( const SbVec2s size ) { this->setGLSize( size ); }
+  const SbVec2s getGlxSize(void) const { return this->getGLSize(); }
+  float getGlxAspectRatio(void) const { return this->getGLAspectRatio(); }
+
   void setStereoBuffer( SbBool enable );
   SbBool isStereoBuffer(void);
+
   SbBool isRGBMode(void);
   int getDisplayListShareGroup( GLXContext context );
 
@@ -118,6 +124,10 @@ protected:
   static void eventHandler( Widget, void *, XEvent *, Boolean * );
 
 protected:
+  SbBool currentIsNormal;
+  void setOverlayRender( const SbBool enable );
+  SbBool isOverlayRender(void) const;
+
   int glLockLevel;
   void glLock(void);
   void glUnlock(void);
