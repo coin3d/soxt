@@ -153,6 +153,38 @@ priority the item has.
 
     Reported by Lars J. Aas
 
+    Update 2003-03-10 larsa:
+
+    This minimal example program opens up correctly when built without
+    Motif like this:
+      gcc -L/usr/X11R6/lib -o testwin testwin.cpp -lXt -lX11
+    but not when built like this:
+      gcc -L/usr/X11R6/lib -o testwin testwin.cpp -lXm -lXt -lX11
+
+    // ---------------------------------------------------------------------
+    #include <X11/Intrinsic.h>
+    #include <X11/StringDefs.h>
+    #include <X11/Shell.h>
+
+    int
+    main(int argc, char ** argv)
+    {
+      Display * display = XOpenDisplay(NULL);
+      XtAppContext context;
+      Widget toplevel = XtVaOpenApplication(&context, "SoXt", NULL, 0, &argc, argv,
+                                            NULL, topLevelShellWidgetClass, NULL);
+      XtVaSetValues(toplevel,
+        XtNtitle, "TestWin",
+        XtNwidth, 400,
+        XtNheight, 300,
+        NULL);
+      XtRealizeWidget(toplevel);
+      XtAppMainLoop(context);
+    }
+    // ---------------------------------------------------------------------
+
+    Could it be an Open Motif bug on my system?
+
 ========================================================================
 
 016 Crash with embedded SoXtExaminerViewer.
