@@ -57,6 +57,7 @@ public:
 
   void setSize( const SbVec2s size );
   SbVec2s getSize(void);
+  void fitSize( const SbVec2s size );
 
   const char * getWidgetName(void) const;
   const char * getClassName(void) const;

@@ -37,7 +37,9 @@ static const char rcsid[] =
 #include <Inventor/errors/SoDebugError.h>
 
 #include <soxtdefs.h>
+#include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
+
 #include <Inventor/Xt/SoXtComponent.h>
 
 // *************************************************************************
@@ -86,6 +88,7 @@ SoXtComponent::SoXtComponent( // protected
   this->widgetName = NULL;
   this->widgetClass = NULL;
   this->firstRealize = TRUE;
+  this->widget = NULL;
 
   this->size = SbVec2s( -1, -1 );
 
@@ -116,8 +119,6 @@ SoXtComponent::SoXtComponent( // protected
     }
     assert( dpy != NULL );
 
-    XSync( dpy, False );
-    SoDebugError::postInfo( "", "creating shell" );
     this->parent = XtVaAppCreateShell(
       SoXt::getAppName(), // didn't work
       SoXt::getAppClass(),
@@ -127,8 +128,6 @@ SoXtComponent::SoXtComponent( // protected
       XmNcolormap, colormap,
       XmNdepth, depth,
       NULL );
-    XSync( dpy, False );
-    SoDebugError::postInfo( "", "shell created" );
 
     XtEventHandler editres_hook = (XtEventHandler) _XEditResCheckMessages;
     XtAddEventHandler( this->parent, (EventMask) 0, True, editres_hook, NULL );
@@ -295,6 +294,8 @@ SoXtComponent::getParentWidget(
   return this->parent;
 } // getParentWidget()
 
+// *************************************************************************
+
 /*!
 */
 
@@ -302,11 +303,11 @@ void
 SoXtComponent::setSize(
   const SbVec2s size )
 {
-  if ( this->isTopLevelShell() ) {
-    XtVaSetValues( this->getShellWidget(),
-      XmNwidth, size[0],
-      XmNheight, size[1],
-      NULL );
+  if ( this->isTopLevelShell() || (this->parent && XtIsShell(this->parent)) ) {
+    if ( size[0] != -1 )
+      XtVaSetValues( this->getShellWidget(), XmNwidth, size[0], NULL );
+    if ( size[1] != -1 )
+      XtVaSetValues( this->getShellWidget(), XmNheight, size[1], NULL );
   }
   this->size = size;
 } // setSize()
@@ -320,6 +321,31 @@ SoXtComponent::getSize(
 {
   return this->size;
 } // getSize()
+
+/*!
+  This method tries to resize the component window, using \a size as the
+  minimum requirements.
+
+  This method is not part of the Open Inventor API.
+*/
+
+void
+SoXtComponent::fitSize(
+  const SbVec2s size )
+{
+  if ( this->isTopLevelShell() || (this->parent && XtIsShell(this->parent)) ) {
+    XtWidgetGeometry geometry;
+    XtQueryGeometry( this->getBaseWidget(), NULL, &geometry );
+    this->size[0] = SoXtMax( (short) geometry.width, size[0] );
+    this->size[1] = SoXtMax( (short) geometry.height, size[1] );
+    XtVaSetValues( this->getShellWidget(),
+      XmNwidth, this->size[0],
+      XmNheight, this->size[1],
+      NULL );
+  }
+} // fitSize()
+
+// *************************************************************************
 
 /*!
   This method returns the display the component is sent to.
@@ -461,8 +487,9 @@ SoXtComponent::setBaseWidget( // protected
 {
   this->widget = widget;
   if ( this->size[0] != -1 )
-    XtVaSetValues( this->widget,
-        XtNwidth, this->size[0], XtNheight, this->size[1], NULL );
+    XtVaSetValues( this->widget, XtNwidth, this->size[0], NULL );
+  if ( this->size[1] != -1 )
+    XtVaSetValues( this->widget, XtNheight, this->size[1], NULL );
 } // setBaseWidget()
 
 /*!
