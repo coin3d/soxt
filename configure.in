@@ -216,6 +216,15 @@ SIM_CHECK_MOTIF([
   SOXT_EXTRA_LIBS="$sim_ac_motif_libs $SOXT_EXTRA_LIBS"
 ], AC_MSG_ERROR([couldn't compile and link with Motif]))
 
+SIM_AC_CHECK_JOYSTICK_LINUX([
+  AC_DEFINE(HAVE_JOYSTICK_LINUX, ,
+    [Define to enable Linux Joystick driver support])
+  AC_DEFINE_UNQUOTED(SOXT_LINUX_JOYSTICK_DEVICE,
+    "$sim_ac_joystick_linux_device",
+    [Define this to device handle to fallback on])
+])
+AM_CONDITIONAL(HAVE_JOYSTICK_LINUX, $sim_ac_joystick_linux_avail)
+
 CXXFLAGS="$CXXFLAGS -DSOXT_INTERNAL=1"
 
 # **************************************************************************
