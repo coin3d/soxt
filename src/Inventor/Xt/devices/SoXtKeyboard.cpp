@@ -90,7 +90,7 @@ SoXtKeyboard::~SoXtKeyboard(// virtual
 // *************************************************************************
 
 /*!
-  This method is not implemented.
+  FIXME: doc
 */
 
 void
@@ -104,7 +104,7 @@ SoXtKeyboard::enable(// virtual
 } // enable()
 
 /*!
-  This methid is not implemented.
+  FIXME: doc
 */
 
 void
