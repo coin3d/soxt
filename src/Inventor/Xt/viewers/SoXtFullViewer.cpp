@@ -50,7 +50,7 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtResource.h>
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
-#include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
+#include <Inventor/Xt/widgets/SoXtPopupMenu.h>
 
 #include <Inventor/Xt/viewers/SoAnyFullViewer.h>
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
@@ -214,7 +214,7 @@ enum DefaultViewerButtons {
 */
 
 /*!
-  \var SoAnyPopupMenu * SoXtFullViewer::prefmenu
+  \var SoXtPopupMenu * SoXtFullViewer::prefmenu
 
   The popup menu manager object.
 */

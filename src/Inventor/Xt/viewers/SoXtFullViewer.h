@@ -25,7 +25,7 @@
 #include <Inventor/Xt/viewers/SoXtViewer.h>
 
 class SoAnyFullViewer;
-class SoAnyPopupMenu;
+class SoXtPopupMenu;
 
 // *************************************************************************
 
@@ -130,7 +130,7 @@ protected:
   char * popupTitle;
   SbBool popupEnabled;
 
-  SoAnyPopupMenu * prefmenu;
+  SoXtPopupMenu * prefmenu;
 
   virtual SbBool processSoEvent(const SoEvent * const event);
 

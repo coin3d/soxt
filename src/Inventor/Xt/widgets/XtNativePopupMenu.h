@@ -27,15 +27,15 @@
 #include <Inventor/SoLists.h>
 
 #include <Inventor/Xt/SoXtBasic.h>
-#include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
+#include <Inventor/Xt/widgets/SoXtPopupMenu.h>
 
 // *************************************************************************
 
 struct MenuRecord;
 struct ItemRecord;
 
-class XtNativePopupMenu : public SoAnyPopupMenu {
-  typedef SoAnyPopupMenu inherited;
+class XtNativePopupMenu : public SoXtPopupMenu {
+  typedef SoXtPopupMenu inherited;
 
 public:
   XtNativePopupMenu(void);
