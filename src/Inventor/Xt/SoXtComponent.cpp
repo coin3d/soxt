@@ -37,6 +37,7 @@ static const char rcsid[] =
 
 #include <X11/Xlib.h>
 #include <X11/Intrinsic.h>
+#include <X11/IntrinsicP.h>
 #include <X11/Xmu/Editres.h>
 #include <Xm/Xm.h>
 #include <Xm/Form.h>
@@ -115,6 +116,7 @@ SoXtComponent::SoXtComponent( // protected
   this->widgetClass = NULL;
   this->firstRealize = TRUE;
   this->widget = NULL;
+  this->visibility_state = FALSE;
 
   this->close_callbacks = NULL;
   this->visibility_callbacks = NULL;
@@ -170,6 +172,10 @@ SoXtComponent::SoXtComponent( // protected
   }
   if ( parent && XtIsShell( parent ) )
     this->embedded = FALSE;
+
+  if ( XtIsShell( this->parent ) )
+    XtInsertEventHandler( this->parent, (EventMask) StructureNotifyMask, False,
+      SoXtComponent::event_handler, (XtPointer) this, XtListTail );
 } // SoXtComponent()
 
 /*!
@@ -272,10 +278,7 @@ SbBool
 SoXtComponent::isVisible(
   void )
 {
-//  tracking calls to show/hide is not the answer - use X calls to see if
-//  mapped.
-  SOXT_STUB();
-  return TRUE;
+  return this->visibility_state;
 } // isVisible()
 
 // *************************************************************************
@@ -390,6 +393,7 @@ SoXtComponent::setSize(
     argc++;
   }
   XtSetValues( widget, args, argc );
+  this->sizeChanged( size );
 } // setSize()
 
 /*!
@@ -428,6 +432,21 @@ SoXtComponent::fitSize(
       NULL );
   }
 } // fitSize()
+
+/*!
+  Since SoXtComponent doesn't manage any internal widgets, this default
+  implementation does nothing.
+
+  Derived components should implement this to resize internal widgets and
+  pass the [modified] size down to the parent class afterwards.
+*/
+
+void
+SoXtComponent::sizeChanged( // virtual
+  const SbVec2s )
+{
+  // empty
+} // sizeChanged()
 
 // *************************************************************************
 
@@ -682,12 +701,27 @@ void
 SoXtComponent::setBaseWidget( // protected
   Widget widget )
 {
+  const EventMask events = StructureNotifyMask | VisibilityChangeMask;
+
+//  ExposureMask | VisibilityChangeMask | ResizeRedirectMask |
+//    FocusChangeMask;
+//    EnterWindowMask | LeaveWindowMask |
+
+  if ( this->widget ) {
+    // remove event handler
+  }
+
   this->widget = widget;
+
+  // really resize widget?  after all, size has been touched...
   if ( this->size[0] != -1 )
     XtVaSetValues( this->widget, XtNwidth, this->size[0], NULL );
   if ( this->size[1] != -1 )
     XtVaSetValues( this->widget, XtNheight, this->size[1], NULL );
   // register widget?
+
+  XtInsertEventHandler( this->widget, events, False,
+    SoXtComponent::event_handler, (XtPointer) this, XtListTail );
 } // setBaseWidget()
 
 /*!
@@ -961,6 +995,90 @@ SoXtComponent::getlabel( // static, protected
   SOXT_STUB();
   return "(null)";
 } // getlabel()
+
+// *************************************************************************
+
+/*!
+*/
+
+Boolean
+SoXtComponent::eventHandler( // protected, virtual
+  Widget widget,
+  XEvent * event )
+{
+  if ( widget == this->widget ) { // base widget
+#if SOXT_DEBUG && 0
+    SoDebugError::postInfo( "SoXtComponent::eventHandler",
+      "base widget event (%d)", event->type );
+#endif // SOXT_DEBUG
+    if ( event->type == ConfigureNotify ) {
+      XConfigureEvent * conf = (XConfigureEvent *) event;
+      if ( this->size != SbVec2s( conf->width, conf->height ) ) {
+        this->size = SbVec2s( conf->width, conf->height );
+        this->sizeChanged( this->size );
+      }
+    } else if ( event->type == MapNotify ) {
+      Dimension width = 0, height = 0;
+      XtVaGetValues( this->getBaseWidget(),
+        XmNwidth, &width,
+        XmNheight, &height,
+        NULL );
+      this->size = SbVec2s( width, height );
+      this->sizeChanged( this->size );
+    } else if ( event->type == VisibilityNotify ) {
+//    SoDebugError::postInfo( "SoXtComponent::eventHandler", "Visibility" );
+      XVisibilityEvent * visibility = (XVisibilityEvent *) event;
+      SbBool newvisibility = TRUE;
+      if ( visibility->state == VisibilityFullyObscured )
+        newvisibility = FALSE;
+      if ( this->visibility_state != newvisibility ) {
+        this->visibility_state = newvisibility;
+        this->invokeVisibilityChangeCallbacks( this->visibility_state );
+      }
+    }
+  } else if ( this->isTopLevelShell() && widget == this->getShellWidget() ) {
+#if SOXT_DEBUG && 0
+    SoDebugError::postInfo( "SoXtComponent::eventHandler",
+      "shell widget event (%d)", event->type );
+#endif // SOXT_DEBUG
+
+    if ( event->type == ConfigureNotify ) {
+      XConfigureEvent * conf = (XConfigureEvent *) event;
+      if ( this->size != SbVec2s( conf->width, conf->height ) ) {
+        this->size = SbVec2s( conf->width, conf->height );
+        XtVaSetValues( this->getBaseWidget(),
+          XmNwidth, this->size[0],
+          XmNheight, this->size[1],
+          NULL );
+        this->sizeChanged( this->size );
+      }
+    }
+  } else {
+#if SOXT_DEBUG && 0
+    SoDebugError::postInfo( "SoXtComponent::eventHandler",
+      "[removing] event handler for unknown widget" );
+#endif // SOXT_DEBUG
+  }
+  return True;
+} // eventHandler()
+
+/*!
+  This static callback invokes SoXtComponent::eventHandler.
+
+  \sa eventHandler
+*/
+
+void
+SoXtComponent::event_handler(
+  Widget widget,
+  XtPointer closure,
+  XEvent * event,
+  Boolean * dispatch )
+{
+  assert( closure != NULL );
+  SoXtComponent * component = (SoXtComponent *) closure;
+  *dispatch = component->eventHandler( widget, event );
+} // event_handler()
 
 // *************************************************************************
 

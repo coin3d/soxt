@@ -58,6 +58,7 @@ public:
   void setSize( const SbVec2s size );
   SbVec2s getSize(void);
   void fitSize( const SbVec2s size );
+  virtual void sizeChanged( const SbVec2s size );
 
   const char * getWidgetName(void) const;
   const char * getClassName(void) const;
@@ -108,6 +109,8 @@ protected:
 
   SbBool firstRealize;
 
+  virtual Boolean eventHandler( Widget widget, XEvent * event );
+
 private:
   Widget parent;
   Widget widget;
@@ -126,6 +129,9 @@ private:
 
   SbPList * close_callbacks;
   SbPList * visibility_callbacks;
+  SbBool visibility_state;
+
+  static void event_handler( Widget, XtPointer, XEvent *, Boolean * );
 
 }; // class SoXtComponent
 
