@@ -121,6 +121,10 @@ SIM_CHECK_X11([
 ])
 
 if test x"$sim_ac_x11_avail" = xyes; then
+  SIM_CHECK_LIBXPM([
+    SOXT_EXTRA_LIBS="$sim_ac_xpm_libs $SOXT_EXTRA_LIBS"
+    AC_DEFINE(HAVE_LIBXPM, 1, [Define this to use libXpm])
+  ])
   SIM_CHECK_X11SHMEM([
     SOXT_EXTRA_LIBS="$sim_ac_x11shmem_libs $SOXT_EXTRA_LIBS"
   ])

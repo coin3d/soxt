@@ -1148,8 +1148,6 @@ else
 fi
 ])
 
-
-
 dnl Usage:
 dnl  SIM_CHECK_X_INTRINSIC([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 dnl
@@ -1189,6 +1187,39 @@ else
   ifelse($2, , :, $2)
 fi
 ])
+
+dnl ************************************************************************
+dnl SIM_CHECK_LIBXPM( IF-FOUND, IF-NOT-FOUND )
+dnl
+dnl Authors:
+dnl   Lars J. Aas <larsa@sim.no>
+
+AC_DEFUN(SIM_CHECK_LIBXPM,
+[AC_PREREQ([2.14.1])
+
+sim_ac_xpm_avail=no
+sim_ac_xpm_libs="-lXpm"
+
+AC_CACHE_CHECK([whether libXpm is available],
+  sim_cv_lib_xpm_avail,
+  [sim_ac_save_libs=$LIBS
+  LIBS="$sim_ac_xpm_libs $LIBS"
+  AC_TRY_LINK([#include <X11/xpm.h>],
+              [(void)XpmLibraryVersion();],
+              sim_cv_lib_xpm_avail=yes,
+              sim_cv_lib_xpm_avail=no)
+  LIBS="$sim_ac_save_libs"
+  ])
+
+if test x"$sim_cv_lib_xpm_avail" = xyes; then
+  sim_ac_xpm_avail=yes
+  ifelse([$1], , :, [$1])
+else
+  LIBS=$sim_ac_save_libs
+  ifelse([$2], , :, [$2])
+fi
+])
+
 
 dnl Usage:
 dnl  SIM_CHECK_OPENGL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])

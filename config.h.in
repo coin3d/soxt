@@ -5,6 +5,7 @@
 #undef SOXT_MICRO_VERSION
 #undef SOXT_VERSION
 #undef HAVE_SOPOLYGONOFFSET
+#undef HAVE_LIBXPM
 
 /* Define this to use OpenGL widget from <GL/GLwDrawA.h> */
 #undef HAVE_GL_GLWDRAWA_H
@@ -32,6 +33,9 @@
 
 /* Define if you have the `socket' library (-lsocket). */
 #undef HAVE_LIBSOCKET
+
+/* Define this to use libXpm */
+#undef HAVE_LIBXPM
 
 /* Define this to use OpenGL widget from <X11/GLw/GLwDrawA.h> */
 #undef HAVE_X11_GLW_GLWDRAWA_H
