@@ -26,15 +26,17 @@
 
 #include <Inventor/Xt/SoXtComponent.h>
 
-// *************************************************************************
-
 enum GLModes {           // should we keep these?
   SO_GL_RGB      = 0x01, SO_GLX_RGB      = SO_GL_RGB,
   SO_GL_DOUBLE   = 0x02, SO_GLX_DOUBLE   = SO_GL_DOUBLE,
   SO_GL_ZBUFFER  = 0x04, SO_GLX_ZBUFFER  = SO_GL_ZBUFFER,
   SO_GL_OVERLAY  = 0x08, SO_GLX_OVERLAY  = SO_GL_OVERLAY,
-  SO_GL_STEREO   = 0x10, SO_GLX_STEREO   = SO_GL_STEREO
+  SO_GL_STEREO   = 0x10, SO_GLX_STEREO   = SO_GL_STEREO,
+  SO_GL_DEFAULT_MODE =
+    (SO_GL_RGB | SO_GL_DOUBLE | SO_GL_ZBUFFER)
 };
+
+// *************************************************************************
 
 class SOXT_DLL_API SoXtGLWidget : public SoXtComponent {
   SOXT_OBJECT_ABSTRACT_HEADER(SoXtGLWidget, SoXtComponent);
