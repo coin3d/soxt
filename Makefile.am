@@ -2,13 +2,7 @@
 ## SoXt/Makefile.am
 ## $Id$
 
-if BUILD_TESTS
-TESTDIR = test-code
-else
-TESTDIR =
-endif
-
-SUBDIRS = . data src/Inventor/Xt $(TESTDIR)
+SUBDIRS = . data src/Inventor/Xt
 
 SUFFIXES = .h .cpp .in .lo .o
 

@@ -192,22 +192,6 @@ CXXFLAGS="$CXXFLAGS -DSOXT_INTERNAL=1"
 
 # **************************************************************************
 
-# --with-test-code is a silent option
-AM_CONDITIONAL(BUILD_TESTS, test "${with_test_code+set}" = set)
-
-# --with-ivexamples is a silent option
-sim_ac_want_ivexamples=false
-if test x"${with_ivexamples+set}" = x"set"; then
-  AC_MSG_CHECKING([for ivexamples directory])
-  if test -f ${srcdir}/ivexamples/configure.in; then
-    AC_MSG_RESULT([found])
-    sim_ac_want_ivexamples=true
-  else
-    AC_MSG_RESULT([not found])
-    AC_MSG_ERROR([can't use '--with-ivexamples' when ivexamples/ doesn't exist])
-  fi
-fi
-
 # --with-devcode is a silent option
 sim_ac_want_devcode=false
 if test x"${with_devcode+set}" = x"set"; then
@@ -224,8 +208,6 @@ fi
 SIM_AC_SOGUI_STATIC_DEFAULTS
 
 AM_CONDITIONAL(BUILD_DEVCODE, $sim_ac_want_devcode)
-AM_CONDITIONAL(BUILD_EXAMPLES, $sim_ac_want_examples)
-AM_CONDITIONAL(BUILD_IV_EXAMPLES, $sim_ac_want_ivexamples)
 
 # **************************************************************************
 # Variable substitutions for using libSoXt in the generic code.
@@ -244,6 +226,8 @@ AC_SUBST(gui)
 AC_SUBST(WIDGET)
 AC_SUBST(EVENT)
 AC_SUBST(COMPONENTHEADER)
+
+SIM_EXPAND_DIR_VARS
 
 # **************************************************************************
 # Section for Doxygen
@@ -274,15 +258,10 @@ AC_SUBST(SOXT_DOC_HTML)
 AC_SUBST(SOXT_DOC_MAN)
 
 soxt_build_dir=`pwd`
-cd $srcdir
-soxt_src_dir=`pwd`
-cd $soxt_build_dir
-soxt_data_dir=/usr/local/share/Coin
-test x"$exec_prefix" != xNONE && soxt_data_dir=$exec_prefix/share/Coin
+soxt_src_dir=`cd $srcdir; pwd`
 
 AC_SUBST(soxt_src_dir)
 AC_SUBST(soxt_build_dir)
-AC_SUBST(soxt_data_dir)
 
 if test x"$want_html" != xno -o x"$want_man" != xno; then
   SIM_AC_DOXYGEN_TOOL(,
@@ -305,15 +284,13 @@ fi
 SIM_AC_ISO8601_DATE(soxt_configure_date)
 AC_SUBST(soxt_configure_date)
 
-# **************************************************************************
-# Configure the submodule with the examples.
-
 # soxt-config
 AC_SUBST(SOXT_EXTRA_CPPFLAGS)
 AC_SUBST(SOXT_EXTRA_LDFLAGS)
 AC_SUBST(SOXT_EXTRA_LIBS)
 
-SIM_EXPAND_DIR_VARS
+# **************************************************************************
+# Configure the submodule with the data.
 
 AC_CONFIG_SUBDIRS(data)
 
@@ -355,9 +332,6 @@ AC_OUTPUT([
 	src/Inventor/Xt/devices/Makefile
 	src/Inventor/Xt/widgets/Makefile
 	src/Inventor/Xt/viewers/Makefile
-	test-code/Makefile
-	test-code/bugs/Makefile
-	test-code/components/Makefile
 	build/soxt.spec
 	build/soxt.doxygen
 ], [

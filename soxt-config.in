@@ -27,7 +27,7 @@ cppflags="-I@includedir@ @SOXT_EXTRA_CPPFLAGS@"
 ldflags="-L@libdir@ @SOXT_EXTRA_LDFLAGS@"
 libs="-lSoXt @SOXT_EXTRA_LIBS@"
 
-datadir="@soxt_data_dir@"
+datadir="@datadir@"
 
 while test $# -gt 0
 do
