@@ -104,18 +104,18 @@ echo "Running automake (generating the Makefile.in files)..."
 echo "[ignore any \"directory should not contain '/'\" warning]"
 automake
 
-AMBUGFIXES=`find . \( -name Makefile.in.diff -a -not -path "./examples/*" -a -not -path "./ivexamples/*" \)`
+AMBUGFIXES=`find . \( -name Makefile.in.diff \) | egrep -v '^\./(examples|ivexamples)'`
+
 fixmsg=0
 for bugfix in $AMBUGFIXES; do
   if test $fixmsg -eq 0; then
     echo "[correcting automake bugs]"
     fixmsg=1
   fi
-  patch --no-backup-if-mismatch -p0 < $bugfix
+  patch -p0 < $bugfix
 done
 
 echo "Running autoconf (generating ./configure)..."
 autoconf
 
 echo "Done: Now run './configure' and 'make install' to build $PROJECT."
-
