@@ -48,7 +48,24 @@ AC_CANONICAL_SYSTEM
 
 BUILD_WITH_MSVC=false  # no support for building under MSWin (yet?)
 
+# cross_compiling: On MKS, configure will open a window when trying to run 
+# the executable a.out in the cross-compilation test because it is not 
+# named *.exe, halting the configure script until it has been closed, even 
+# resulting in a faulty conclusion for the test (cross_compiling=yes).  
+# By setting the $cross_compiling variable to yes in advance, this test is 
+# skipped.  We are of course not cross-compiling, so we correct the variable 
+# afterwards.  2003-06-25 larsa
+
+case $build in
+*-mks ) cross_compiling=yes ;;
+esac
+
 AC_PROG_CC
+
+case $build in
+*-mks ) cross_compiling=no ;;
+esac
+
 AC_PROG_CPP
 AC_PROG_CXX
 AC_PROG_CXXCPP
