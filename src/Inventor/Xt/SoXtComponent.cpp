@@ -121,8 +121,7 @@ Widget
 SoXtComponent::getShellWidget(
   void ) const
 {
-  SOXT_STUB();
-  return (Widget) NULL;
+  return SoXt::getShellWidget(this->parent);
 } // getShellWidget()
 
 Widget      

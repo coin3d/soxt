@@ -213,8 +213,12 @@ Widget
 SoXt::getShellWidget( // static
   Widget widget )
 {
-  if ( XtIsTopLevelShell( SoXt::mainWidget ) )
-    return SoXt::mainWidget;
+  Widget p = widget;
+  while ( p != (Widget) NULL ) {
+    if ( XtIsShell(p) )
+      return p;
+    p = XtParent(p);
+  }
   SOXT_STUB();
   return (Widget) NULL;
 } // getShellWidget()
