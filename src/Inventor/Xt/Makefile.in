@@ -394,21 +394,16 @@ DISTCLEANFILES = \
 lib_LTLIBRARIES = libSoXt.la
 
 libSoXt_la_SOURCES = \
+	SoXtInternal.cpp SoXtInternal.h \
 	SoXt.cpp \
 	SoXtComponent.cpp \
 	SoXtGLWidget.cpp \
-	SoXtLightSliderSet.h \
-	SoXtLightSliderSet.cpp \
-	SoXtMaterialSliderSet.h \
-	SoXtMaterialSliderSet.cpp \
-	SoXtSliderSet.h \
-	SoXtSliderSet.cpp \
-	SoXtSliderSetBase.h \
-	SoXtSliderSetBase.cpp \
-	SoXtTransformSliderSet.h \
-	SoXtTransformSliderSet.cpp \
-	SoXtResource.h \
-	SoXtResource.cpp \
+	SoXtLightSliderSet.cpp SoXtLightSliderSet.h \
+	SoXtMaterialSliderSet.cpp SoXtMaterialSliderSet.h \
+	SoXtSliderSet.cpp SoXtSliderSet.h \
+	SoXtSliderSetBase.cpp SoXtSliderSetBase.h \
+	SoXtTransformSliderSet.cpp SoXtTransformSliderSet.h \
+	SoXtResource.cpp SoXtResource.h \
 	SoXtMaterialList.cpp
 
 
@@ -459,10 +454,10 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 
 libSoXt_la_DEPENDENCIES = devices/libSoXtDevices.la \
 	widgets/libSoXtWidgets.la viewers/libSoXtViewers.la
-am_libSoXt_la_OBJECTS = SoXt.lo SoXtComponent.lo SoXtGLWidget.lo \
-	SoXtLightSliderSet.lo SoXtMaterialSliderSet.lo SoXtSliderSet.lo \
-	SoXtSliderSetBase.lo SoXtTransformSliderSet.lo SoXtResource.lo \
-	SoXtMaterialList.lo
+am_libSoXt_la_OBJECTS = SoXtInternal.lo SoXt.lo SoXtComponent.lo \
+	SoXtGLWidget.lo SoXtLightSliderSet.lo SoXtMaterialSliderSet.lo \
+	SoXtSliderSet.lo SoXtSliderSetBase.lo SoXtTransformSliderSet.lo \
+	SoXtResource.lo SoXtMaterialList.lo
 @BUILD_METAFILES_TRUE@nodist_libSoXt_la_OBJECTS = SoAny.lo \
 @BUILD_METAFILES_TRUE@	So@Gui@Cursor.lo So@Gui@Object.lo \
 @BUILD_METAFILES_TRUE@	So@Gui@Common.lo So@Gui@GLWidgetCommon.lo \
@@ -515,6 +510,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoAnyMaterialListBuiltins.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoXt.Plo $(DEPDIR)/SoXtComponent.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoXtGLWidget.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoXtInternal.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoXtLightSliderSet.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoXtMaterialList.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoXtMaterialSliderSet.Plo \
@@ -656,6 +652,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXt.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtComponent.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtGLWidget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtInternal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtLightSliderSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtMaterialList.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtMaterialSliderSet.Plo@am__quote@

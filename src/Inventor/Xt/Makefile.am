@@ -23,21 +23,16 @@ DISTCLEANFILES = \
 lib_LTLIBRARIES = libSoXt.la
 
 libSoXt_la_SOURCES = \
+	SoXtInternal.cpp SoXtInternal.h \
 	SoXt.cpp \
 	SoXtComponent.cpp \
 	SoXtGLWidget.cpp \
-	SoXtLightSliderSet.h \
-	SoXtLightSliderSet.cpp \
-	SoXtMaterialSliderSet.h \
-	SoXtMaterialSliderSet.cpp \
-	SoXtSliderSet.h \
-	SoXtSliderSet.cpp \
-	SoXtSliderSetBase.h \
-	SoXtSliderSetBase.cpp \
-	SoXtTransformSliderSet.h \
-	SoXtTransformSliderSet.cpp \
-	SoXtResource.h \
-	SoXtResource.cpp \
+	SoXtLightSliderSet.cpp SoXtLightSliderSet.h \
+	SoXtMaterialSliderSet.cpp SoXtMaterialSliderSet.h \
+	SoXtSliderSet.cpp SoXtSliderSet.h \
+	SoXtSliderSetBase.cpp SoXtSliderSetBase.h \
+	SoXtTransformSliderSet.cpp SoXtTransformSliderSet.h \
+	SoXtResource.cpp SoXtResource.h \
 	SoXtMaterialList.cpp
 
 nodist_libSoXt_la_SOURCES = \
