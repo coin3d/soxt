@@ -30,7 +30,7 @@ static const char rcsid[] =
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 
-#include <Inventor/Xt/common/soguidefs.h> // SOGUI_STUB()
+#include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/devices/SoXtMouse.h>
 
 /*
@@ -72,7 +72,7 @@ SoXtMouse::enable( // virtual
   XtPointer, // data,
   Window ) // window )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // enable()
 
 /*!
@@ -84,7 +84,7 @@ SoXtMouse::disable( // virtual
   XtEventHandler, // func,
   XtPointer ) // data )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // disable()
 
 // *************************************************************************
@@ -118,7 +118,7 @@ SoXtMouse::translateEvent( // virtual
   case LeaveNotify:
     // should we make location-events for these?
     do {
-      SOGUI_STUB();
+      SOXT_STUB();
     } while ( FALSE );
     break;
 
@@ -194,9 +194,5 @@ SoXtMouse::makeButtonEvent( // private
 // *************************************************************************
 
 // To shut up nagging compilers...
-const char *
-getSoXtMouseRCSId(void)
-{
-  return rcsid;
-} // getSoXtMouseRCSId()
+static const char * getSoXtMouseRCSId(void) { return rcsid; }
 

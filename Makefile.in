@@ -115,6 +115,7 @@ SUFFIXES = .h .cpp .in .lo .o
 bin_SCRIPTS = soxt-config
 
 BUILT_SOURCES = \
+	src/Inventor/Xt/SoXtBasic.h \
 	src/Inventor/Xt/SoXtRenderArea.h \
 	src/Inventor/Xt/SoXtRenderArea.cpp \
 	src/Inventor/Xt/viewers/SoXtViewer.h \
@@ -123,6 +124,8 @@ BUILT_SOURCES = \
 	src/Inventor/Xt/viewers/SoAnyFullViewer.cpp \
 	src/Inventor/Xt/viewers/SoAnyExaminerViewer.h \
 	src/Inventor/Xt/viewers/SoAnyExaminerViewer.cpp \
+	src/Inventor/Xt/viewers/SoAnyPlaneViewer.h \
+	src/Inventor/Xt/viewers/SoAnyPlaneViewer.cpp \
 	src/Inventor/Xt/widgets/SoAnyThumbWheel.h \
 	src/Inventor/Xt/widgets/SoAnyThumbWheel.cpp \
 	src/Inventor/Xt/widgets/SoAnyPopupMenu.h \
@@ -495,53 +498,95 @@ soxt-config: soxt-config.in
 
 ############################################################################
 
+src/Inventor/Xt/SoXtBasic.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoGuiBasic.h.in
+	@CONFIG_HEADERS=$@:SoXtBasic.h.in CONFIG_FILES=$(top_srcdir)/SoXtBasic.h.in:src/Inventor/Xt/common/SoGuiBasic.h.in ./config.status
+	@echo "removing $(top_srcdir)/SoXtBasic.h.in (temporary file)"
+	@rm $(top_srcdir)/SoXtBasic.h.in
+
 src/Inventor/Xt/SoXtRenderArea.h: \
   $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.h.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoGuiRenderArea.h.in ./config.status
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoGuiRenderArea.h.in \
+	./config.status
 
 src/Inventor/Xt/SoXtRenderArea.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.cpp.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoGuiRenderArea.cpp.in ./config.status
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoGuiRenderArea.cpp.in \
+	./config.status
 
 src/Inventor/Xt/viewers/SoXtViewer.h: \
   $(top_srcdir)/src/Inventor/Xt/common/SoGuiViewer.h.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoGuiViewer.h.in ./config.status
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoGuiViewer.h.in \
+	./config.status
 
 src/Inventor/Xt/viewers/SoXtViewer.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoGuiViewer.cpp.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoGuiViewer.cpp.in $(top_builddir)/config.status
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoGuiViewer.cpp.in \
+	$(top_builddir)/config.status
 
 src/Inventor/Xt/viewers/SoAnyFullViewer.h: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.h.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyFullViewer.h.in ./config.status
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyFullViewer.h.in \
+	./config.status
 
 src/Inventor/Xt/viewers/SoAnyFullViewer.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyFullViewer.cpp.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyFullViewer.cpp.in $(top_builddir)/config.status
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyFullViewer.cpp.in \
+	$(top_builddir)/config.status
 
 src/Inventor/Xt/viewers/SoAnyExaminerViewer.h: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.h.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyExaminerViewer.h.in ./config.status
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyExaminerViewer.h.in \
+	./config.status
 
 src/Inventor/Xt/viewers/SoAnyExaminerViewer.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyExaminerViewer.cpp.in $(top_builddir)/config.status
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyExaminerViewer.cpp.in \
+	$(top_builddir)/config.status
+
+src/Inventor/Xt/viewers/SoAnyPlaneViewer.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyPlaneViewer.h.in
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyPlaneViewer.h.in \
+	./config.status
+
+src/Inventor/Xt/viewers/SoAnyPlaneViewer.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyPlaneViewer.cpp.in
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyPlaneViewer.cpp.in \
+	$(top_builddir)/config.status
 
 src/Inventor/Xt/widgets/SoAnyThumbWheel.h: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.h.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyThumbWheel.h.in $(top_builddir)/config.status
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyThumbWheel.h.in \
+	$(top_builddir)/config.status
 
 src/Inventor/Xt/widgets/SoAnyThumbWheel.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.cpp.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyThumbWheel.cpp.in $(top_builddir)/config.status
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyThumbWheel.cpp.in \
+	$(top_builddir)/config.status
 
 src/Inventor/Xt/widgets/SoAnyPopupMenu.h: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyPopupMenu.h.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyPopupMenu.h.in $(top_builddir)/config.status
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyPopupMenu.h.in \
+	$(top_builddir)/config.status
 
 src/Inventor/Xt/widgets/SoAnyPopupMenu.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyPopupMenu.cpp.in
-	@CONFIG_HEADERS= CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyPopupMenu.cpp.in $(top_builddir)/config.status
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyPopupMenu.cpp.in \
+	$(top_builddir)/config.status
 
 ############################################################################
 

@@ -30,7 +30,7 @@ static const char rcsid[] =
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/sensors/SoSensorManager.h>
 
-#include <common/soguidefs.h> // SOGUI_STUB()
+#include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
 
 // *************************************************************************
@@ -102,14 +102,14 @@ SoXt::nextEvent( // static
   XtAppContext context,
   XEvent * event )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // nextEvent()
 
 Boolean
 SoXt::dispatchEvent( // static
   XEvent * event )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
   return False;
 } // dispatchEvent()
 
@@ -215,7 +215,7 @@ SoXt::getShellWidget( // static
 {
   if ( XtIsTopLevelShell( SoXt::mainWidget ) )
     return SoXt::mainWidget;
-  SOGUI_STUB();
+  SOXT_STUB();
   return (Widget) NULL;
 } // getShellWidget()
 
@@ -228,7 +228,7 @@ SoXt::createSimpleErrorDialog( // static
   char * string1,
   char * string2 )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // createSimpleErrorDialog()
 
 void
@@ -238,7 +238,7 @@ SoXt::getPopupArgs( // static
   ArgList args,
   int * n )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // getPopupArgs()
 
 // *************************************************************************
@@ -248,7 +248,7 @@ SoXt::registerColormapLoad( // static
   Widget widget,
   Widget shell )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // registerColormapLoad()
 
 void
@@ -256,7 +256,7 @@ SoXt::addColormapToShell( // static
   Widget widget,
   Widget shell )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // addColormapToShell()
 
 void
@@ -264,7 +264,7 @@ SoXt::removeColormapFromShell( // static
   Widget widget,
   Widget shell )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // removeColormapFromShell()
 
 // *************************************************************************
@@ -276,7 +276,7 @@ SoXt::addExtensionEventHandler( // static
   XtEventHandler proc,
   XtPointer clientData )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // addExtensionEventHandler()
 
 void
@@ -286,14 +286,14 @@ SoXt::removeExtensionEventHandler( // static
   XtEventHandler proc,
   XtPointer clientData )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // removeExtensionEventHandler()
 
 Widget
 SoXt::getwidget( // static
   unsigned int what )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
   return (Widget) NULL;
 } // getwidget()
 
@@ -306,7 +306,7 @@ SoXt::getExtensionEventHandler( // static
   XtEventHandler & proc,
   XtPointer & clientData )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // getExtensionEventHandler()
 
 // *************************************************************************

@@ -24,8 +24,7 @@ static const char rcsid[] =
 
 #include <Inventor/misc/SoBasic.h>
 
-#include <Inventor/Xt/common/soguidefs.h> // SOGUI_STUB()
-
+#include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/devices/SoXtInputFocus.h>
 
 // *************************************************************************
@@ -57,7 +56,7 @@ SoXtInputFocus::enable( // virtual
   XtPointer, // data,
   Window ) // window )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // enable()
 
 /*!
@@ -69,7 +68,7 @@ SoXtInputFocus::disable( // virtual
   XtEventHandler, // func,
   XtPointer ) // data )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // disable()
 
 /*!
@@ -85,7 +84,7 @@ SoXtInputFocus::translateEvent( // virtual
   case FocusIn:
   case FocusOut:
     do {
-      SOGUI_STUB();
+      SOXT_STUB();
     } while ( FALSE );
     // return SoEvent here
     break;
@@ -101,9 +100,5 @@ SoXtInputFocus::translateEvent( // virtual
 // *************************************************************************
 
 // To shut up nagging compilers...
-const char *
-getSoXtInputFocusRCSId(void)
-{
-  return rcsid;
-} // getSoXtInputFocusRCSId()
+static const char * getSoXtInputFocusRCSId(void) { return rcsid; }
 

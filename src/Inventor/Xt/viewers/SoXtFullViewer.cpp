@@ -38,12 +38,12 @@ static const char rcsid[] =
   [bash$ CPPFLAGS="-DSOXT_THUMBWHEELTEST" ../../src/SoXt/configure]
 */
 
+#include <Inventor/Xt/SoXtBasic.h>
 #ifdef SOXT_THUMBWHEELTEST
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
 #endif // SOXT_THUMBWHEELTEST
 #include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
 
-#include <Inventor/Xt/common/soguidefs.h> // SOGUI_STUB()
 #include <Inventor/Xt/viewers/SoAnyFullViewer.h>
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
 
@@ -241,7 +241,7 @@ void
 SoXtFullViewer::layoutAppPushButtons(
   Widget parent )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // layoutAppPushButtons()
 
 // *************************************************************************
@@ -539,7 +539,7 @@ SoXtFullViewer::eventFilter( // virtual
   SoDebugError::postInfo( "SoXtFullViewer::eventFilter",
     "widget = 0x%08x, event->type = %d", widget, event->type );
 //  inherited::eventFilter( widget, event );
-  SOGUI_STUB();
+  SOXT_STUB();
   // catch close events
   // activate popupmenu
   return FALSE;
@@ -616,7 +616,7 @@ void
 SoXtFullViewer::buildPopupMenu(
   void )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // buildPopupMenu()
 
 /*!
@@ -626,7 +626,7 @@ Widget
 SoXtFullViewer::makeSubPreferences(
   Widget parent )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
   return (Widget) NULL;
 } // makeSubPreferences()
 
@@ -649,7 +649,7 @@ void
 SoXtFullViewer::leftWheelMotion( // virtual
   float value )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // leftWheelMotion()
 
 /*!
@@ -691,7 +691,7 @@ void
 SoXtFullViewer::bottomWheelMotion( // virtual
   float value )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // bottomWheelMode()
 
 /*!
@@ -733,7 +733,7 @@ void
 SoXtFullViewer::rightWheelMotion( // virtual
   float value )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // rightWheelMotion()
 
 /*!
@@ -753,7 +753,7 @@ float
 SoXtFullViewer::getRightWheelValue(
   void ) const
 {
-  SOGUI_STUB();
+  SOXT_STUB();
   return 0.0f;
 } // getRightWheelValue()
 

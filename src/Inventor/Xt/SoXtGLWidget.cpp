@@ -54,7 +54,7 @@
 #include <Inventor/misc/SoBasic.h>
 #include <Inventor/SbViewportRegion.h>
 
-#include <common/soguidefs.h> // SOGUI_STUB()
+#include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtGLWidget.h>
 
@@ -134,7 +134,7 @@ Window
 SoXtGLWidget::getOverlayWindow(
   void )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
   return (Window) NULL;
 } // getOverlayWindow()
 
@@ -163,7 +163,7 @@ Widget
 SoXtGLWidget::getOverlayWidget(
   void )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
   return (Widget) NULL;
 } // getOverlayWidget()
 
@@ -249,7 +249,7 @@ void
 SoXtGLWidget::redrawOverlay( // virtual, protected
   void )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // redrawOverlay()
 
 void
@@ -303,14 +303,14 @@ void
 SoXtGLWidget::initGraphic( // virtual, protected
   void )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // initGraphic()
 
 void
 SoXtGLWidget::initOverlayGraphic( // virtual, protected
   void )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // initOverlayGraphic()
 
 void
@@ -324,7 +324,7 @@ void
 SoXtGLWidget::widgetChanged( // virtual, protected
   Widget widget )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // widgetChanged()
 
 // *************************************************************************
@@ -392,14 +392,14 @@ void
 SoXtGLWidget::setStereoBuffer( // protected
   SbBool enable )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // setStereoBuffer()
 
 SbBool
 SoXtGLWidget::isStereoBuffer( // protected
   void )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
   return FALSE;
 } // isStereoBuffer()
 
@@ -407,7 +407,7 @@ SbBool
 SoXtGLWidget::isRGBMode( // protected
   void )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
   return TRUE;
 } // isRGBMode()
 
@@ -415,7 +415,7 @@ int
 SoXtGLWidget::getDisplayListShareGroup( // protected
   GLXContext context )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
   return 0;
 } // getDisplayListShareGroup()
 

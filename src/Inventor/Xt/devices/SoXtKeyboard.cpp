@@ -25,7 +25,7 @@ static const char rcsid[] =
 #include <Inventor/misc/SoBasic.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 
-#include <Inventor/Xt/common/soguidefs.h> // SOGUI_STUB()
+#include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/devices/SoXtKeyboard.h>
 
 // *************************************************************************
@@ -59,7 +59,7 @@ SoXtKeyboard::enable( // virtual
   XtPointer, // data,
   Window ) // window )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // enable()
 
 /*!
@@ -71,7 +71,7 @@ SoXtKeyboard::disable( // virtual
   XtEventHandler, // func,
   XtPointer ) // data )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // disable()
 
 /*!
@@ -87,7 +87,7 @@ SoXtKeyboard::translateEvent( // virtual
   case KeyPress:
   case KeyRelease:
     do {
-      SOGUI_STUB();
+      SOXT_STUB();
     } while ( FALSE );
     // return SoEvent * here
     // return this->makeKeyboardEvent( event ); ??
@@ -110,16 +110,12 @@ SoXtKeyboard::makeKeyboardEvent( // private
   XKeyEvent *, //  event,
   SoButtonEvent::State ) // state )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
   return (SoKeyboardEvent *) NULL;
 } // makeKeyboardEvent()
 
 // *************************************************************************
 
 // To shut up nagging compilers...
-const char *
-getSoXtKeyboardRCSId(void)
-{
-  return rcsid;
-} // getSoXtKeyboardRCSId()
+static const char * getSoXtKeyboardRCSId(void) { return rcsid; }
 

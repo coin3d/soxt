@@ -1,5 +1,9 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
 
+#undef SOXT_MAJOR_VERSION
+#undef SOXT_MINOR_VERSION
+#undef SOXT_MICRO_VERSION
+#undef SOXT_VERSION
 #undef HAVE_SOPOLYGONOFFSET
 
 /* Define this to use OpenGL widget from <GL/GLwDrawA.h> */

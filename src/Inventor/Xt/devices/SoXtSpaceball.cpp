@@ -24,7 +24,7 @@ static const char rcsid[] =
 
 #include <Inventor/misc/SoBasic.h>
 
-#include <Inventor/Xt/common/soguidefs.h> // SOGUI_STUB()
+#include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/devices/SoXtSpaceball.h>
 
 // *************************************************************************
@@ -66,7 +66,7 @@ SoXtSpaceball::enable( // virtual
   XtPointer, // data,
   Window ) // window )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // enable()
 
 /*!
@@ -78,7 +78,7 @@ SoXtSpaceball::disable( // virtual
   XtEventHandler, // func,
   XtPointer ) // data )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // disable()
 
 /*!
@@ -93,7 +93,7 @@ SoXtSpaceball::translateEvent( // virtual
   // events we should handle:
   case ClientMessage: // ???
     do {
-      SOGUI_STUB();
+      SOXT_STUB();
     } while ( FALSE );
     // return SoEvent * here
     break;
@@ -154,7 +154,7 @@ SbBool
 SoXtSpaceball::exists( // static
   Display * ) // display )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
   return FALSE;
 } // exists()
 
@@ -165,7 +165,7 @@ void
 SoXtSpaceball::setFocusToWindow(
   SbBool ) // flag )
 {
-  SOGUI_STUB();
+  SOXT_STUB();
 } // setFocusToWindow()
 
 /*!
@@ -175,16 +175,12 @@ SbBool
 SoXtSpaceball::isFocusToWindow(
   void ) const
 {
-  SOGUI_STUB();
+  SOXT_STUB();
   return FALSE;
 } // isFocusToWindow()
 
 // *************************************************************************
 
 // To shut up nagging compilers...
-const char *
-getSoXtSpaceballRCSId(void)
-{
-  return rcsid;
-} // getSoXtSpaceballRCSId()
+static const char * getSoXtSpaceballRCSId(void) { return rcsid; }
 

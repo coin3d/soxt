@@ -9,6 +9,7 @@ VPATH = .:@srcdir@
 SHELL = /bin/sh
 
 BUILT_SOURCES = \
+	SoXtBasic.h \
 	SoXtRenderArea.h \
 	SoXtRenderArea.cpp
 
@@ -46,6 +47,9 @@ libSoXt_la_LIBADD = \
 
 ############################################################################
 ##
+
+SoXtBasic.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiBasic.h.in
+	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtBasic.h )
 
 SoXtRenderArea.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.h.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/Xt/SoXtRenderArea.h )
