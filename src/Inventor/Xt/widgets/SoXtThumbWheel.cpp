@@ -314,20 +314,116 @@ dirty_pixmaps(
   \internal
 */
 
-/*
-static
 inline
 unsigned long
-from32to16bit(
-  unsigned long the32bitcolor )
+fromABCtoC5B6A5(
+  unsigned long source )
 {
-  unsigned long the16bitcolor = 0;
-  the16bitcolor |= (the32bitcolor >>  3) & 0x001f;
-  the16bitcolor |= (the32bitcolor >>  5) & 0x07e0;
-  the16bitcolor |= (the32bitcolor >>  8) & 0xf800;
-  return the16bitcolor;
-} // to16bit()
+  unsigned long target  = (source >> 19) & 0x001f; // A
+                target |= (source >>  5) & 0x07e0; // B
+  return        target |  (source <<  8) & 0xf800; // C
+} // ()
+
+inline
+unsigned long
+fromABCtoA5B6C5(
+  unsigned long source )
+{
+  unsigned long target  = (source >> 3) & 0x001f; // C
+                target |= (source >> 5) & 0x07e0; // B
+  return        target |  (source >> 8) & 0xf800; // A
+} // ()
+
+inline
+unsigned long
+fromABCtoCBA(
+  unsigned long source )
+{
+  unsigned long target  = (source >> 16);            // A
+                target |= (source)       &   0xff00; // B
+  return        target |  (source << 16) & 0xff0000; // C
+} // fromABCtoCBA()
+
+/*!
+  \internal
 */
+
+static enum _rgb_target_mode {
+  UNKNOWN,
+  R5G6B5,
+  B5G6R5,
+  RGBA,
+  ABGR,
+  CUSTOM
+} rgb_target_mode = UNKNOWN;
+static Display * rgb_dpy = NULL;
+static Colormap rgb_colormap = 0;
+
+#define PIXEL_CACHE_SIZE 32
+
+inline
+unsigned long
+abgr2pixel(
+  unsigned long abgr )
+{
+  switch ( rgb_target_mode ) {
+  case R5G6B5:   return fromABCtoC5B6A5( abgr );
+  case B5G6R5:   return fromABCtoA5B6C5( abgr );
+  case RGBA:     return fromABCtoCBA( abgr ) << 8;
+  case ABGR:     return abgr;
+  default:       break;
+  }
+ 
+  static unsigned long fallback = 0;
+  static unsigned long prevabgr = 0xffffffff;
+
+  if ( abgr == prevabgr )
+    return fallback;
+  prevabgr = abgr;
+
+  static unsigned long cache[PIXEL_CACHE_SIZE * 2];
+  static int cached = 0;
+  // try some caching and approximation stuff here...
+  const unsigned long abgrreduced = abgr & 0x00fcfcfc;
+  for ( int i = cached - 1; i > 0; i-- ) {
+    if ( cache[i] == abgrreduced ) {
+//      SoDebugError::postInfo( "", "lifted from special-purpose cache" );
+      return (fallback = cache[i+PIXEL_CACHE_SIZE]);
+    }
+  }
+
+  // lookup pixel
+  static XColor cdata, ign;
+  cdata.red   = (abgr << 8) & 0xff00;
+  cdata.green = (abgr     ) & 0xff00;
+  cdata.blue  = (abgr >> 8) & 0xff00;
+  if ( XAllocColor( rgb_dpy, rgb_colormap, &cdata ) ) {
+    fallback = cdata.pixel;
+  } else {
+    static char colorname[16];
+    sprintf( colorname, "rgb:%02x/%02x/%02x",
+                        cdata.red >> 8, cdata.green >> 8, cdata.blue >> 8 );
+    if ( XLookupColor( rgb_dpy, rgb_colormap, colorname, &cdata, &ign ) ) {
+      if ( XAllocColor( rgb_dpy, rgb_colormap, &cdata ) ) {
+        fallback = cdata.pixel;
+      } else if ( XAllocColor( rgb_dpy, rgb_colormap, &ign ) ) {
+        fallback = ign.pixel;
+      } else {
+        return (fallback = 0);
+      }
+    }
+  }
+  if ( cached == PIXEL_CACHE_SIZE ) {
+    cached--;
+    memmove( &cache[1], &cache[0],
+             (sizeof(unsigned long) * PIXEL_CACHE_SIZE * 2) - 1 );
+  }
+  cache[cached + PIXEL_CACHE_SIZE] = fallback;
+  cache[cached] = abgrreduced;
+  cached++;
+
+  return fallback;
+} // rgb2pixel()
 
 /*!
   \internal
@@ -369,7 +465,7 @@ init_pixmaps(
   Screen * screen = XtScreen( shell );
 
   Colormap colormap = 0;
-  Visual * visual = 0;
+  Visual * visual = (Visual *) NULL;
   int depth = 0;
 
   XtVaGetValues( shell,
@@ -378,6 +474,36 @@ init_pixmaps(
     XmNdepth, &depth,
     NULL );
   assert( visual != (Visual *) NULL && colormap != 0 );
+
+  rgb_dpy = dpy;
+  rgb_colormap = colormap;
+
+  if (        visual->red_mask   == 0x000000ff &&
+              visual->green_mask == 0x0000ff00 &&
+              visual->blue_mask  == 0x00ff0000 ) {
+    SoDebugError::postInfo( "", "ABGR" );
+    rgb_target_mode = ABGR;
+  } else if ( visual->red_mask   == 0xff000000 &&
+              visual->green_mask == 0x00ff0000 &&
+              visual->blue_mask  == 0x0000ff00 ) {
+    SoDebugError::postInfo( "", "RGBA" );
+    rgb_target_mode = RGBA;
+  } else if ( visual->red_mask   == 0x0000001f &&
+              visual->green_mask == 0x000007e0 &&
+              visual->blue_mask  == 0x0000f800 ) {
+    SoDebugError::postInfo( "", "B5G6R5" );
+    rgb_target_mode = B5G6R5;
+  } else if ( visual->red_mask   == 0x0000f800 &&
+              visual->green_mask == 0x000007e0 &&
+              visual->blue_mask  == 0x0000001f ) {
+    SoDebugError::postInfo( "", "R5G6B5" );
+    rgb_target_mode = R5G6B5;
+  } else if ( visual->red_mask   != 0x00000000 &&
+              visual->green_mask != 0x00000000 &&
+              visual->blue_mask  != 0x00000000 ) {
+    // analyze masks for custom rotate+mask converter
+    rgb_target_mode = CUSTOM;
+  }
 
   Pixel normal = widget->core.background_pixel;
   Pixel light = widget->primitive.top_shadow_color;
@@ -392,7 +518,7 @@ init_pixmaps(
 
   unsigned long * const rgbdata = new unsigned long [ diameter * thickness ];
   assert( rgbdata != NULL );
-  wheel->SetGraphicsByteOrder( SoAnyThumbWheel::RGBA );
+  wheel->SetGraphicsByteOrder( SoAnyThumbWheel::ABGR );
 
   int frame = 0;
   for ( frame = widget->thumbwheel.numpixmaps - 1; frame > 0; frame-- ) {
@@ -484,87 +610,19 @@ init_pixmaps(
     if ( widget->core.depth > 8 ) {
       // lets do this the hard way and waste some resources :(
       XColor cdata, ign;
-      char colorname[16];
-      unsigned long prevrgb = 0;
-      unsigned long prev = black;
       if ( widget->thumbwheel.orientation == XmHORIZONTAL ) {
         for ( x = 0; x < wheelwidth; x++ ) {
           for ( y = 0; y < wheelheight; y++ ) {
-            if ( rgbdata[(y*wheelwidth)+x] != prevrgb ) {
-              cdata.red   = ((rgbdata[(y*wheelwidth)+x] >>  8) & 0xff) |
-                            ((rgbdata[(y*wheelwidth)+x] >>  0) & 0xff00);
-              cdata.green = ((rgbdata[(y*wheelwidth)+x] >> 16) & 0xff) |
-                            ((rgbdata[(y*wheelwidth)+x] >>  8) & 0xff00);
-              cdata.blue  = ((rgbdata[(y*wheelwidth)+x] >> 24) & 0xff) |
-                            ((rgbdata[(y*wheelwidth)+x] >> 16) & 0xff00);
-              if ( XAllocColor( dpy, colormap, &cdata ) ) {
-                prev = cdata.pixel;
-                prevrgb = rgbdata[(y*wheelwidth)+x];
-              } else {
-                char colorname[16];
-//                SoDebugError::postInfo( "", "the hard way" );
-                sprintf( colorname, "rgb:%02x/%02x/%02x", cdata.red >> 8,
-                  cdata.green >> 8, cdata.blue >> 8 );
-                if ( XLookupColor( dpy, colormap, colorname, &cdata, &ign ) ) {
-                  if ( XAllocColor( dpy, colormap, &cdata ) ) {
-                    prev = cdata.pixel;
-                    prevrgb = rgbdata[(y*wheelwidth)+x];
-//                    SoDebugError::postInfo( "", "success for %s", colorname );
-                  } else if ( XAllocColor( dpy, colormap, &ign ) ) {
-                    prev = ign.pixel;
-                    prevrgb = rgbdata[(y*wheelwidth)+x];
-//                    SoDebugError::postInfo( "", "ok for %s", colorname );
-//                  } else {
-//                    SoDebugError::postInfo( "", "lookup failed for %s", colorname );
-                  }
-//                } else {
-//                  SoDebugError::postInfo( "", "lookup failed for %s", colorname );
-                }
-              }
-//            } else {
-//              SoDebugError::postInfo( "", "cached." );
-            }
-            XPutPixel( img, x + lpadding, y + tpadding, prev );
+            XPutPixel( img, x + lpadding, y + tpadding,
+                       abgr2pixel( rgbdata[(y * wheelwidth) + x] ) );
           }
         }
       } else {
         for ( y = 0; y < wheelheight; y++ ) {
+          const int offset = y * wheelwidth;
           for ( x = 0; x < wheelwidth; x++ ) {
-            if ( rgbdata[(y*wheelwidth)+x] != prevrgb ) {
-              cdata.red   = ((rgbdata[(y*wheelwidth)+x] >>  8) & 0xff) |
-                            ((rgbdata[(y*wheelwidth)+x] >>  0) & 0xff00);
-              cdata.green = ((rgbdata[(y*wheelwidth)+x] >> 16) & 0xff) |
-                            ((rgbdata[(y*wheelwidth)+x] >>  8) & 0xff00);
-              cdata.blue  = ((rgbdata[(y*wheelwidth)+x] >> 24) & 0xff) |
-                            ((rgbdata[(y*wheelwidth)+x] >> 16) & 0xff00);
-              if ( XAllocColor( dpy, colormap, &cdata ) ) {
-                prevrgb = rgbdata[(y*wheelwidth)+x];
-                prev = cdata.pixel;
-              } else {
-                char colorname[16];
-//                SoDebugError::postInfo( "", "the hard way" );
-                sprintf( colorname, "rgb:%02x/%02x/%02x", cdata.red >> 8,
-                  cdata.green >> 8, cdata.blue >> 8 );
-                if ( XLookupColor( dpy, colormap, colorname, &cdata, &ign ) ) {
-                  if ( XAllocColor( dpy, colormap, &cdata ) ) {
-//                    SoDebugError::postInfo( "", "success for %s", colorname );
-                    prev = cdata.pixel;
-                    prevrgb = rgbdata[(y*wheelwidth)+x];
-                  } else if ( XAllocColor( dpy, colormap, &ign ) ) {
-//                    SoDebugError::postInfo( "", "ok for %s", colorname );
-                    prev = ign.pixel;
-                    prevrgb = rgbdata[(y*wheelwidth)+x];
-//                  } else {
-//                    SoDebugError::postInfo( "", "lookup failed for %s", colorname );
-                  }
-//                } else {
-//                  SoDebugError::postInfo( "", "lookup failed for %s", colorname );
-                }
-              }
-//            } else {
-//              SoDebugError::postInfo( "", "cached.\n" );
-            }
-            XPutPixel( img, x + lpadding, y + tpadding, prev );
+            XPutPixel( img, x + lpadding, y + tpadding,
+                       abgr2pixel( rgbdata[offset + x] ) );
           }
         }
       }
