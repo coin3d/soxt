@@ -22,6 +22,10 @@
 #ifndef SOXT_POPUPMENU_H
 #define SOXT_POPUPMENU_H
 
+#include <X11/Intrinsic.h>
+
+#include <Inventor/SoLists.h>
+
 #include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
 
 // *************************************************************************
@@ -29,21 +33,52 @@
 struct MenuRecord;
 struct ItemRecord;
 
-class SoXtPopupMenu {
+class SoXtPopupMenu : public SoAnyPopupMenu {
+  typedef SoAnyPopupMenu inherited;
+
 public:
-  SoXtPopupMenu( SoAnyPopupMenu * handler );
+  SoXtPopupMenu(void);
   ~SoXtPopupMenu(void);
 
-  SOANY_POPUPMENU_INTERFACE
+  int NewMenu( char * name, int menuid = -1 );
+  int GetMenu( char * name );
+  void SetMenuTitle( int id, char * title );
+  char * GetMenuTitle( int id );
+
+  int NewMenuItem( char * name, int itemid = -1 );
+  int GetMenuItem( char * name );
+  void SetMenuItemTitle( int itemid, char * title );
+  char * GetMenuItemTitle( int itemid );
+  void SetMenuItemEnabled( int itemid, SbBool enabled );
+  SbBool GetMenuItemEnabled( int itemid );
+  void SetMenuItemMarked( int itemid, SbBool marked );
+  SbBool GetMenuItemMarked( int itemid );
+
+  void AddMenu( int menuid, int submenuid, int pos = -1 );
+  void AddMenuItem( int menuid, int itemid, int pos = -1 );
+  void AddSeparator( int menuid, int pos = -1 );
+  void RemoveMenu( int menuid );
+  void RemoveMenuItem( int itemid );
+
+  void PopUp( Widget inside, int x, int y );
 
 protected:
   MenuRecord * getMenuRecord( int menuid );
   ItemRecord * getItemRecord( int itemid );
+  MenuRecord * createMenuRecord( char * name );
+  ItemRecord * createItemRecord( char * name );
+
+  Widget build( Widget parent );
+  Widget traverseBuild( Widget parent, MenuRecord *  menu, int indent );
+
+  void itemSelection( Widget w, XtPointer call );
+  static void itemSelectionCallback( Widget, XtPointer client, XtPointer call );
 
 private:
-  SoAnyPopupMenu * handler;
   SbPList * menus;
   SbPList * items;
+  Widget popup;
+  SbBool dirty;
 
 }; // class SoXtPopupMenu
 
