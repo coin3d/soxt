@@ -44,6 +44,9 @@ static const char rcsid[] =
 #if HAVE_LIBXPM
 #include <Inventor/Xt/common/pixmaps/ortho.xpm>
 #include <Inventor/Xt/common/pixmaps/perspective.xpm>
+#include <Inventor/Xt/common/pixmaps/x.xpm>
+#include <Inventor/Xt/common/pixmaps/y.xpm>
+#include <Inventor/Xt/common/pixmaps/z.xpm>
 #endif // HAVE_LIBXPM
 
 // *************************************************************************
@@ -173,8 +176,8 @@ SoXtPlaneViewer::setCamera( // virtual
     pixmap_ins = this->pixmaps.ortho_ins;
   }
 
-  XtUnmanageChild( this->buttons.camera );
 #if HAVE_LIBXPM
+  XtUnmanageChild( this->buttons.camera );
   XtVaSetValues( this->buttons.camera,
     XmNlabelType, XmPIXMAP,
     XmNlabelPixmap, pixmap,
@@ -182,10 +185,10 @@ SoXtPlaneViewer::setCamera( // virtual
     XmNlabelInsensitivePixmap, pixmap_ins,
     XmNselectInsensitivePixmap, pixmap_ins,
     NULL );
-#endif // HAVE_LIBXPM
   XtVaSetValues( this->buttons.camera,
     XmNwidth, 30, XmNheight, 30, NULL );
   XtManageChild( this->buttons.camera );
+#endif // HAVE_LIBXPM
 
   inherited::setCamera( camera );
 } // setCamera()
@@ -224,13 +227,8 @@ SoXtPlaneViewer::createViewerButtons( // virtual, protected
     XmNheight, 30,
     XtVaTypedArg,
       XmNlabelString, XmRString,
-      "X", strlen( "X" ) + 1,
+      "X", 2, // strlen( "X" ) + 1,
     NULL );
-
-  buttonlist->append( this->buttons.x );
-
-  XtAddCallback( this->buttons.x, XmNactivateCallback,
-    SoXtPlaneViewer::xbuttonCB, (XtPointer) this );
 
   this->buttons.y = XtVaCreateManagedWidget( "ybutton",
     xmPushButtonWidgetClass, parent,
@@ -242,13 +240,8 @@ SoXtPlaneViewer::createViewerButtons( // virtual, protected
     XmNheight, 30,
     XtVaTypedArg,
       XmNlabelString, XmRString,
-      "Y", strlen( "Y" ) + 1,
+      "Y", 2, // strlen( "Y" ) + 1,
     NULL );
-
-  buttonlist->append( this->buttons.y );
-
-  XtAddCallback( this->buttons.y, XmNactivateCallback,
-    SoXtPlaneViewer::ybuttonCB, (XtPointer) this );
 
   this->buttons.z = XtVaCreateManagedWidget( "zbutton",
     xmPushButtonWidgetClass, parent,
@@ -260,10 +253,41 @@ SoXtPlaneViewer::createViewerButtons( // virtual, protected
     XmNheight, 30,
     XtVaTypedArg,
       XmNlabelString, XmRString,
-      "Z", strlen( "Z" ) + 1,
+      "Z", 2, // strlen( "Z" ) + 1,
     NULL );
 
+#if HAVE_LIBXPM
+  Pixmap xbutton = createPixmapFromXpmData( this->buttons.x, x_xpm );
+  if ( xbutton )
+    XtVaSetValues( this->buttons.x,
+      XmNlabelType, XmPIXMAP,
+      XmNlabelPixmap, xbutton,
+      NULL );
+
+  Pixmap ybutton = createPixmapFromXpmData( this->buttons.y, y_xpm );
+  if ( ybutton )
+    XtVaSetValues( this->buttons.y,
+      XmNlabelType, XmPIXMAP,
+      XmNlabelPixmap, ybutton,
+      NULL );
+
+  zbutton = createPixmapFromXpmData( this->buttons.y, z_xpm );
+  if ( zbutton )
+    XtVaSetValues( this->buttons.z,
+      XmNlabelType, XmPIXMAP,
+      XmNlabelPixmap, zbutton,
+      NULL );
+#endif // HAVE_LIBXPM
+
+  buttonlist->append( this->buttons.x );
+  buttonlist->append( this->buttons.y );
   buttonlist->append( this->buttons.z );
+
+  XtAddCallback( this->buttons.x, XmNactivateCallback,
+    SoXtPlaneViewer::xbuttonCB, (XtPointer) this );
+
+  XtAddCallback( this->buttons.y, XmNactivateCallback,
+    SoXtPlaneViewer::ybuttonCB, (XtPointer) this );
 
   XtAddCallback( this->buttons.z, XmNactivateCallback,
     SoXtPlaneViewer::zbuttonCB, (XtPointer) this );
