@@ -58,6 +58,8 @@ AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 BUILD_DEVCODE_FALSE = @BUILD_DEVCODE_FALSE@
 BUILD_DEVCODE_TRUE = @BUILD_DEVCODE_TRUE@
+BUILD_HTMLHELP_FALSE = @BUILD_HTMLHELP_FALSE@
+BUILD_HTMLHELP_TRUE = @BUILD_HTMLHELP_TRUE@
 BUILD_HTMLPAGES_FALSE = @BUILD_HTMLPAGES_FALSE@
 BUILD_HTMLPAGES_TRUE = @BUILD_HTMLPAGES_TRUE@
 BUILD_LIBRARY_FALSE = @BUILD_LIBRARY_FALSE@
@@ -125,6 +127,7 @@ RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 SOGUI_DOC_HTML = @SOGUI_DOC_HTML@
+SOGUI_DOC_HTML_HELP = @SOGUI_DOC_HTML_HELP@
 SOGUI_DOC_MAN = @SOGUI_DOC_MAN@
 SOGUI_EXTRA_CFLAGS = @SOGUI_EXTRA_CFLAGS@
 SOGUI_EXTRA_CPPFLAGS = @SOGUI_EXTRA_CPPFLAGS@
@@ -175,6 +178,7 @@ host_cpu = @host_cpu@
 host_os = @host_os@
 host_vendor = @host_vendor@
 htmldir = @htmldir@
+htmlhelpdir = @htmlhelpdir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
@@ -191,10 +195,12 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sim_ac_coin_configcmd = @sim_ac_coin_configcmd@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
+sim_ac_hhc_exe = @sim_ac_hhc_exe@
 sim_ac_mks_make = @sim_ac_mks_make@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sogui_build_dir = @sogui_build_dir@
 sogui_html_dir = @sogui_html_dir@
+sogui_html_help_dir = @sogui_html_help_dir@
 sogui_man_dir = @sogui_man_dir@
 sogui_src_dir = @sogui_src_dir@
 soxt_configure_date = @soxt_configure_date@
@@ -481,6 +487,10 @@ SoGuiCommonDistFiles = \
   src/Inventor/@Gui@/common/devices/SoGuiSpaceball.cpp.in \
   src/Inventor/@Gui@/common/devices/SoGuiSpaceball.h.in \
   src/Inventor/@Gui@/common/devices/SoGuiSpaceballP.h.in \
+  src/Inventor/@Gui@/common/docs/doxygen/header.html \
+  src/Inventor/@Gui@/common/docs/doxygen/footer.html \
+  src/Inventor/@Gui@/common/docs/doxygen/stylesheet.css \
+  src/Inventor/@Gui@/common/docs/doxygen/Coin_logo.png \
   src/Inventor/@Gui@/common/editors/ColorEditor.h.in \
   src/Inventor/@Gui@/common/editors/ColorEditor.cpp.in \
   src/Inventor/@Gui@/common/editors/MaterialEditor.h.in \
@@ -857,7 +867,7 @@ distcleancheck_listfiles = find . -type f -print
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/./src/Inventor/Xt/common $(distdir)/build $(distdir)/cfg $(distdir)/docs $(distdir)/src/Inventor/@Gui@/common $(distdir)/src/Inventor/@Gui@/common/devices $(distdir)/src/Inventor/@Gui@/common/editors $(distdir)/src/Inventor/@Gui@/common/engines $(distdir)/src/Inventor/@Gui@/common/nodes $(distdir)/src/Inventor/@Gui@/common/pixmaps $(distdir)/src/Inventor/@Gui@/common/viewers $(distdir)/src/Inventor/@Gui@/common/widgets $(distdir)/src/Inventor/Xt/common
+	$(mkinstalldirs) $(distdir)/./src/Inventor/Xt/common $(distdir)/build $(distdir)/cfg $(distdir)/docs $(distdir)/src/Inventor/@Gui@/common $(distdir)/src/Inventor/@Gui@/common/devices $(distdir)/src/Inventor/@Gui@/common/docs/doxygen $(distdir)/src/Inventor/@Gui@/common/editors $(distdir)/src/Inventor/@Gui@/common/engines $(distdir)/src/Inventor/@Gui@/common/nodes $(distdir)/src/Inventor/@Gui@/common/pixmaps $(distdir)/src/Inventor/@Gui@/common/viewers $(distdir)/src/Inventor/@Gui@/common/widgets $(distdir)/src/Inventor/Xt/common
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
