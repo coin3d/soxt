@@ -191,12 +191,10 @@ SoXt::init(// static
   can be used as a shell for the main component.
 */
 
-Widget
-SoXt::init(// static
-  int & argc,
-  char ** argv,
-  const char * const appName,
-  const char * const appClass)
+Widget  // static
+SoXt::init(int & argc, char ** argv,
+           const char * const appName,
+           const char * const appClass)
 {
   // FIXME: as far as I can see, no SoXt::init() method in InventorXt
   // matches the signature of this constructor. So we should probably
@@ -487,24 +485,20 @@ SoXt::getTopLevelWidget(// static
 /*!
   This function returns the application name, given to SoXt::init.
 */
-
-const char *
-SoXt::getAppName(// static
-  void)
+const char * // static
+SoXt::getAppName(void)
 {
   return SoXtP::appname;
-} // getAppName()
+}
 
 /*!
   This function returns the application class, given to SoXt::init.
 */
-
-const char *
-SoXt::getAppClass(// static
-  void)
+const char *  // static
+SoXt::getAppClass(void)
 {
   return SoXtP::appclass;
-} // getAppClass()
+}
 
 // *************************************************************************
 
@@ -622,10 +616,8 @@ SoXt::getWidgetSize(// static
 /*!
   This function returns the shell of the given \a widget.
 */
-
-Widget
-SoXt::getShellWidget(// static
-  Widget widget)
+Widget  // static
+SoXt::getShellWidget(const Widget widget)
 {
   Widget p = widget;
   while (p != (Widget) NULL) {
@@ -663,13 +655,11 @@ close_dialog_cb(
   display over the given \a parent widget.  Placement is not implemented at
   the moment.
 */
-
-void
-SoXt::createSimpleErrorDialog(// static
-  Widget parent,
-  const char * title,
-  const char * string1,
-  const char * string2)
+void  // static
+SoXt::createSimpleErrorDialog(Widget parent,
+                              const char * title,
+                              const char * string1,
+                              const char * string2)
 {
   Arg args[10];
   int argc = 0;
@@ -933,20 +923,6 @@ SoXt::getExtensionEventHandler(// static, protected
     }
   }
 } // getExtensionEventHandler()
-
-// *************************************************************************
-
-/*!
-  This function is not implemented.
-*/
-
-Widget
-SoXt::getwidget(// static
-  unsigned int what)
-{
-  SOXT_STUB();
-  return (Widget) NULL;
-} // getwidget()
 
 // *************************************************************************
 

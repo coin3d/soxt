@@ -1,7 +1,7 @@
 # **************************************************************************
 # SoXt/configure.in
 
-AC_INIT(src/Inventor/Xt/SoXt.h)
+AC_INIT(src/Inventor/Xt/SoXt.cpp)
 AC_CONFIG_AUX_DIR(cfg)
 
 # **************************************************************************

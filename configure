@@ -260,7 +260,7 @@ SHELL=${CONFIG_SHELL-/bin/sh}
 # only ac_max_sed_lines should be used.
 : ${ac_max_here_lines=38}
 
-ac_unique_file="src/Inventor/Xt/SoXt.h"
+ac_unique_file="src/Inventor/Xt/SoXt.cpp"
 ac_subdirs_all="$ac_subdirs_all data"
 
 # Initialize some variables set by options.
