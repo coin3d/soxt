@@ -322,9 +322,6 @@ SoXtKeyboard::makeKeyboardEvent( // private
   this->keyboardEvent->setAltDown(
     (event->state & Mod1Mask) ? TRUE : FALSE );
 
-  fprintf(stderr,"key: %d, %c\n",
-          this->keyboardEvent->getKey(), this->keyboardEvent->getPrintableCharacter());
-
   return this->keyboardEvent;
 } // makeKeyboardEvent()
 
