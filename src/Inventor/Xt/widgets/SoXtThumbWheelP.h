@@ -17,13 +17,61 @@
  *
  **************************************************************************/
 
-//  $Id$
+/*  $Id$  */
 
 #ifndef SOXT_THUMBWHEEL_H_PRIVATE
 #define SOXT_THUMBWHEEL_H_PRIVATE
 
-// *************************************************************************
+#ifdef SOXT_THUMBWHEELTEST
 
-// *************************************************************************
+#include <Xm/PrimitiveP.h>
 
-#endif // ! SOXT_THUMBWHEEL_H_PRIVATE
+#include <Inventor/Xt/widgets/SoXtThumbWheel.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+/* ********************************************************************** */
+
+typedef struct {
+  XmNorientation orientation;
+  Boolean enabled;
+  
+} SoXtThumbWheelClassPart;
+
+typedef struct _SoXtThumbWheelClassRec {
+  CoreClassPart            core_class;
+  XmPrimitiveClassPart     primitive_class;
+  SoXtThumbWheelClassPart  thumbwheel_class;
+} SoXtThumbWheelClassRec;
+
+/* ********************************************************************** */
+
+typedef struct {
+  /* resources */
+  int dummy;
+
+  /* private data */
+
+} SoXtThumbWheelPart;
+
+typedef struct _SoXtThumbwheelRec {
+  CorePart            core;
+  XmPrimitivePart     primitive;
+  SoXtThumbWheelPart  thumbwheel;
+} SoXtThumbWheelRec;
+
+/* ********************************************************************** */
+
+extern SoXtThumbWheelWidgetClass soXtThumbWheelWidgetClass;
+
+/* ********************************************************************** */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
+
+#endif // SOXT_THUMBWHEELTEST
+
+#endif /* ! SOXT_THUMBWHEEL_H_PRIVATE */

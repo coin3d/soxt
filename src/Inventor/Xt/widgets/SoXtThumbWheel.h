@@ -17,12 +17,36 @@
  *
  **************************************************************************/
 
-//  $Id$
+/*  $Id$  */
 
 #ifndef SOXT_THUMBWHEEL_H
 #define SOXT_THUMBWHEEL_H
 
-// *************************************************************************
-// *************************************************************************
+#ifdef SOXT_THUMBWHEELTEST
 
-#endif // ! SOXT_THUMBWHEEL_H
+#include <Xm/Xm.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+/* ********************************************************************** */
+
+extern WidgetClass soXtThumbWheelWidgetClass;
+
+typedef struct _SoXtThumbWheelRec *       SoXtThumbWheelWidget;
+typedef struct _SoXtThumbWheelClassRec *  SoXtThumbWheelWidgetClass;
+
+#ifndef SoXtIsThumbWheel
+#define SoXtIsThumbWheel(w) XtIsSubclass(w, soXtThumbWheelWidgetClass)
+#endif /* ! SoXtIsThumbWheel */
+
+/* ********************************************************************** */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
+
+#endif // SOXT_THUMBWHEELTEST
+
+#endif /* ! SOXT_THUMBWHEEL_H */
