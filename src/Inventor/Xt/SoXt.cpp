@@ -319,6 +319,9 @@ SoXt::timerSensorCB( // static, private
   XtPointer closure,
   XtIntervalId * id )
 {
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXt::timerSensorCB", "called" );
+#endif // SOXT_DEBUG
   SoDB::getSensorManager()->processTimerQueue();
   SoXt::sensorQueueChanged( NULL );
   SoXt::timerSensorId = 0;
@@ -333,24 +336,30 @@ SoXt::delaySensorCB( // static, private
   XtPointer closure,
   XtIntervalId * id )
 {
-  SoDB::getSensorManager()->processDelayQueue(FALSE);
-  SoXt::sensorQueueChanged( NULL );
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXt::delaySensorCB", "called" );
+#endif // SOXT_DEBUG
   SoXt::delaySensorId = 0;
   SoXt::delaySensorActive = FALSE;
+  SoDB::getSensorManager()->processDelayQueue( FALSE );
+  SoXt::sensorQueueChanged( NULL );
 } // delaySensorCB()
 
 /*!
 */
 
-void
+Boolean
 SoXt::idleSensorCB( // static, private
-  XtPointer closure,
-  XtIntervalId * id )
+  XtPointer closure )
 {
-  SoDB::getSensorManager()->processDelayQueue(TRUE);
-  SoXt::sensorQueueChanged( NULL );
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXt::idleSensorCB", "called" );
+#endif // SOXT_DEBUG
   SoXt::idleSensorId = 0;
   SoXt::idleSensorActive = FALSE;
+  SoDB::getSensorManager()->processDelayQueue(TRUE);
+  SoXt::sensorQueueChanged( NULL );
+  return True;
 } // idleSensorCB()
 
 // *************************************************************************
@@ -362,19 +371,28 @@ SoXt::idleSensorCB( // static, private
 
 void
 SoXt::sensorQueueChanged( // static, private
-  void * user )
+  void * ) // user )
 {
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXt::sensorQueueChanged", "called" );
+#endif // SOXT_DEBUG
   SoSensorManager * sensormanager = SoDB::getSensorManager();
 
   SbTime timevalue;
   if ( sensormanager->isTimerSensorPending( timevalue ) ) {
     SbTime interval = timevalue - SbTime::getTimeOfDay();
-    if ( SoXt::timerSensorActive )
-      XtRemoveTimeOut( SoXt::timerSensorId );
-    SoXt::timerSensorId = XtAppAddTimeOut( SoXt::getAppContext(),
+    if ( ! SoXt::timerSensorActive ) {
+      SoXt::timerSensorId = XtAppAddTimeOut( SoXt::getAppContext(),
                               interval.getMsecValue(),
                               SoXt::timerSensorCB, NULL );
-    SoXt::timerSensorActive = TRUE;
+      SoXt::timerSensorActive = TRUE;
+    } else {
+      XtRemoveTimeOut( SoXt::timerSensorId );
+      SoXt::timerSensorId = XtAppAddTimeOut( SoXt::getAppContext(),
+                              interval.getMsecValue(),
+                              SoXt::timerSensorCB, NULL );
+      SoXt::timerSensorActive = TRUE;
+    }
   } else if ( SoXt::timerSensorActive ) {
     XtRemoveTimeOut( SoXt::timerSensorId );
     SoXt::timerSensorId = 0;
@@ -383,20 +401,21 @@ SoXt::sensorQueueChanged( // static, private
 
   if ( sensormanager->isDelaySensorPending() ) {
     if ( ! SoXt::idleSensorActive ) {
-      SoXt::idleSensorId = XtAppAddTimeOut( SoXt::getAppContext(), 1,
-                               SoXt::idleSensorCB, NULL );
+      SoXt::idleSensorId =
+        XtAppAddWorkProc( SoXt::getAppContext(), SoXt::idleSensorCB, NULL );
       SoXt::idleSensorActive = TRUE;
     }
 
     if ( ! SoXt::delaySensorActive ) {
-      SoXt::delaySensorId = XtAppAddTimeOut( SoXt::getAppContext(),
-                                SoDB::getDelaySensorTimeout().getMsecValue(),
-                                SoXt::delaySensorCB, NULL );
+      unsigned long timeout = SoDB::getDelaySensorTimeout().getMsecValue();
+      SoXt::delaySensorId =
+        XtAppAddTimeOut( SoXt::getAppContext(), timeout,
+                         SoXt::delaySensorCB, NULL );
       SoXt::delaySensorActive = TRUE;
     }
   } else {
     if ( SoXt::idleSensorActive ) {
-      XtRemoveTimeOut( SoXt::idleSensorId );
+      XtRemoveWorkProc( SoXt::idleSensorId );
       SoXt::idleSensorId = 0;
       SoXt::idleSensorActive = FALSE;
     }

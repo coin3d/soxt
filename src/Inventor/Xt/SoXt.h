@@ -91,7 +91,7 @@ private:
   static XtIntervalId delaySensorId;
   static SbBool delaySensorActive;
 
-  static void idleSensorCB( XtPointer, XtIntervalId * );
+  static Boolean idleSensorCB( XtPointer );
   static XtIntervalId idleSensorId;
   static SbBool idleSensorActive;
 
