@@ -118,7 +118,6 @@ private:
   void constructor( const SbBool build );
 
   void setCursorRepresentation( int mode );
-  void setModeFromState( const unsigned int state );
 
   Widget camerabutton;
   struct {

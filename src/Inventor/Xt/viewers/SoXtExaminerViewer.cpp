@@ -209,78 +209,6 @@ SoXtExaminerViewer::processEvent(
 
   inherited::processEvent( event );
   return;
-
-/*
-  SbVec2s canvassize = this->getGLSize();
-  mousepos[1] = canvassize[1] - mousepos[1];
-
-  switch ( event->type ) {
-
-  case ButtonPress:
-    common->lastmouseposition = norm_mousepos;
-    common->lastspinposition = norm_mousepos;
-
-    this->interactiveCountInc();
-
-    if ( this->mode == WAITING_FOR_SEEK ) {
-      this->seekToPoint( mousepos );
-    }
-
-    break;
-
-  case ButtonRelease:
-    if ( ((XButtonEvent *)event)->button != Button1 &&
-
-  case MotionNotify:
-    // XPointerMovedEvent
-    break;
-
-  case KeyPress:
-    {
-      unsigned int estate = ((XKeyEvent *)event)->state;
-      KeySym keysym = 0;
-      char keybuf[8];
-      int keybuflen =
-        XLookupString( (XKeyEvent *) event, keybuf, 8, &keysym, NULL );
-
-      switch ( keysym ) {
-      case XK_Control_L:
-      case XK_Control_R:
-        estate |= ControlMask;
-        break;
-      default:
-        break;
-      } // switch ( keysym )
-      this->setModeFromState( estate );
-    }
-    break;
-
-  case KeyRelease:
-    {
-      unsigned int estate = ((XKeyEvent *)event)->state;
-      KeySym keysym = 0;
-      char keybuf[8];
-      int keybuflen =
-        XLookupString( (XKeyEvent *) event, keybuf, 8, &keysym, NULL );
-      switch ( keysym ) {
-      case XK_Control_L:
-      case XK_Control_R:
-        estate &= ~ControlMask;
-        break;
-      default:
-        break;
-      } // switch ( keysym )
-      this->setModeFromState( estate );
-    }
-    break;
-
-  default:
-    break;
-
-  } // switch ( event )
-
-  common->lastmouseposition = norm_mousepos;
-*/
 } // processEvent()
 
 // *************************************************************************
@@ -471,58 +399,6 @@ SoXtExaminerViewer::setCursorRepresentation( int mode )
   XRecolorCursor( display, this->cursor, &redcol, &whitecol );
 #endif
 } // setCursorRepresentation()
-
-// *************************************************************************
-
-/*!
-  \internal
-*/
-
-void
-SoXtExaminerViewer::setModeFromState(
-  const unsigned int state )
-{
-#if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXtExaminerViewer::setModeFromState",
-    "state = %08x", state );
-#endif // SOXT_DEBUG
-
-  SoAnyExaminerViewer::ViewerMode mode = SoAnyExaminerViewer::EXAMINE;
-
-  const unsigned int maskedstate =
-    state & (Button1Mask | Button2Mask | ControlMask);
-
-  switch ( maskedstate ) {
-  case 0:
-    mode = SoAnyExaminerViewer::EXAMINE;
-    break;
-
-  case Button1Mask:
-    mode = SoAnyExaminerViewer::DRAGGING;
-    break;
-
-  case Button2Mask:
-  case (Button1Mask | ControlMask):
-    mode = SoAnyExaminerViewer::PANNING;
-    break;
-
-  case ControlMask:
-    mode = SoAnyExaminerViewer::WAITING_FOR_PAN;
-    break;
-
-  case (Button2Mask | ControlMask):
-  case (Button1Mask | Button2Mask):
-  case (Button1Mask | Button2Mask | ControlMask):
-    mode = SoAnyExaminerViewer::ZOOMING;
-    break;
-
-  default:
-    assert(0);
-    break;
-  }
-
-  this->common->setMode( mode );
-} // setModeFromState()
 
 // *************************************************************************
 
