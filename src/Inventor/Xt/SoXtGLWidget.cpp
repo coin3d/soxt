@@ -340,6 +340,21 @@ SoXtGLWidget::getOverlayVisual(
   return PRIVATE(this)->overlayvisual;
 } // getOverlayVisual()
 
+// FIXME: make doc in SoQtGLWidget valid for this also. 20011116 mortene.
+void
+SoXtGLWidget::setOverlayPlanes(const SbBool onoff)
+{
+  SOWIN_STUB();
+}
+
+// FIXME: make doc in SoQtGLWidget valid for this also. 20011116 mortene.
+SbBool
+SoXtGLWidget::isOverlayPlanes(void) const
+{
+  SOWIN_STUB();
+  return FALSE;
+}
+
 /*!
   This method sets whether double buffering is to be used or not.
 */
