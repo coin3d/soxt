@@ -124,8 +124,10 @@ static void initialize( Widget, Widget, ArgList, Cardinal * );
 static void destroy( Widget );
 static void resize( Widget );
 static void expose( Widget, XExposeEvent *, Region );
+/*
 static XtGeometryResult query_geometry(
          Widget, XtWidgetGeometry *, XtWidgetGeometry * );
+*/
 static Boolean set_values( Widget, Widget, Widget, ArgList, Cardinal * );
 static void realize( Widget, XtValueMask *, XSetWindowAttributes * );
 
@@ -163,7 +165,8 @@ SoXtThumbWheelClassRec soxtThumbWheelClassRec = {
     XtVersion,                             // version
     NULL,                                  // callback offsets
     defaultTranslations,                   // tm_table
-    (XtGeometryHandler) query_geometry,    // query_geometry
+    NULL,
+ // (XtGeometryHandler) query_geometry,    // query_geometry
     (XtStringProc) NULL,                   // display_accelerator
     (XtPointer) NULL,                      // extension
   },
@@ -372,7 +375,7 @@ init_pixmaps(
     XmNcolormap, &colormap,
     XmNdepth, &depth,
     NULL );
-  assert( visual != NULL && colormap != NULL );
+  assert( visual != (Visual *) NULL && colormap != 0 );
 
   Pixel normal = widget->core.background_pixel;
   Pixel light = widget->primitive.top_shadow_color;
@@ -663,6 +666,7 @@ resize(
 /*!
 */
 
+/*
 static
 XtGeometryResult
 query_geometry(
@@ -674,6 +678,7 @@ query_geometry(
   SOXT_STUB();
   return foo;
 } // query_geometry()
+*/
 
 /*!
 */
