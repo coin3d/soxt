@@ -218,10 +218,18 @@ if test "${with_inventor+set}" = set; then
   ], [AC_MSG_ERROR([couldn't compile and link against Open Inventor])])
 
   SIM_AC_CONFIGURATION_SETTING([Open Inventor brand], [SGI/TGS Inventor])
+
 else
 
-  # since the OpenGL test isn't run in this path
-  AC_CHECK_HEADERS([GL/gl.h OpenGL/gl.h GL/glu.h OpenGL/glu.h])
+  SIM_AC_CHECK_HEADER_GL([
+    CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
+    SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_gl_cppflags"
+  ], [AC_MSG_ERROR([could not detect a gl.h header file])])
+
+  SIM_AC_CHECK_HEADER_GLU([
+    CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
+    SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
+  ], [AC_MSG_ERROR([could not detect a glu.h header file])])
 
   # check for Coin library and its dependencies
   SIM_AC_HAVE_COIN_IFELSE([
@@ -381,7 +389,7 @@ if test x"$want_html" != xno -o x"$want_man" != xno; then
 fi
 
 # **************************************************************************
-# For the soqt.spec RPM specification file.
+# For the soxt.spec RPM specification file.
 
 SIM_AC_ISO8601_DATE(soxt_configure_date)
 AC_SUBST(soxt_configure_date)
@@ -394,7 +402,7 @@ AC_SUBST(SOXT_EXTRA_LIBS)
 # **************************************************************************
 # Remove redundant options from certain option lists.
 # We add the first argument ourselves to shift it off because it's added
-# again inside soqt-config.in
+# again inside soxt-config.in
 
 SIM_AC_UNIQIFY_LIST(SOXT_EXTRA_CPPFLAGS, -I$includedir $SOXT_EXTRA_CPPFLAGS)
 set : $SOXT_EXTRA_CPPFLAGS
