@@ -47,6 +47,17 @@ typedef void * XPContext;
 
 // *************************************************************************
 
+class SoXtSpaceballP {
+public:
+  int events;
+  float rotationFactor;
+  float translationFactor;
+};
+
+#define PRIVATE(p) (p->pimpl)
+
+// *************************************************************************
+
 SOXT_OBJECT_SOURCE(SoXtSpaceball);
 
 // *************************************************************************
@@ -71,20 +82,10 @@ SOXT_OBJECT_SOURCE(SoXtSpaceball);
 
 SoXtSpaceball::SoXtSpaceball(int events)
 {
-  this->events = events;
-  this->rotationFactor = 1.0f;
-  this->translationFactor = 1.0f;
-}
-
-/*!
-  Alternative constructor, for using a spaceball device attached to
-  a given display.
-*/
-
-SoXtSpaceball::SoXtSpaceball(Display *, // display,
-                             int events)
-{
-  this->events = events;
+  PRIVATE(this) = new SoXtSpaceballP;
+  PRIVATE(this)->events = events;
+  PRIVATE(this)->rotationFactor = 1.0f;
+  PRIVATE(this)->translationFactor = 1.0f;
 }
 
 /*!
@@ -93,6 +94,7 @@ SoXtSpaceball::SoXtSpaceball(Display *, // display,
 
 SoXtSpaceball::~SoXtSpaceball()
 {
+  delete PRIVATE(this);
 }
 
 // *************************************************************************
@@ -137,7 +139,7 @@ SoXtSpaceball::translateEvent(XAnyEvent * event)
 void
 SoXtSpaceball::setRotationScaleFactor(float factor)
 {
-  this->rotationFactor = factor;
+  PRIVATE(this)->rotationFactor = factor;
 }
 
 /*!
@@ -147,7 +149,7 @@ SoXtSpaceball::setRotationScaleFactor(float factor)
 float
 SoXtSpaceball::getRotationScaleFactor(void) const
 {
-  return this->rotationFactor;
+  return PRIVATE(this)->rotationFactor;
 }
 
 /*!
@@ -157,7 +159,7 @@ SoXtSpaceball::getRotationScaleFactor(void) const
 void
 SoXtSpaceball::setTranslationScaleFactor(float factor)
 {
-  this->translationFactor = factor;
+  PRIVATE(this)->translationFactor = factor;
 }
 
 /*!
@@ -167,20 +169,18 @@ SoXtSpaceball::setTranslationScaleFactor(float factor)
 float
 SoXtSpaceball::getTranslationScaleFactor(void) const
 {
-  return this->translationFactor;
+  return PRIVATE(this)->translationFactor;
 }
 
 // *************************************************************************
 
 /*!
-  This method checks to see if a spaceball device is available on \a display.
+  This method checks to see if a spaceball device is available.
 */
-
 SbBool
-SoXtSpaceball::exists(Display * display)
+SoXtSpaceball::exists(void)
 {
-  if (display == NULL)
-    display = SoXt::getDisplay();
+  Display * display = SoXt::getDisplay();
   assert(display != NULL);
   Atom SpaceballAtom = XInternAtom(display, XI_SPACEBALL, True);
   if (SpaceballAtom == None)
