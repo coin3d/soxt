@@ -1551,8 +1551,8 @@ $sim_ac_cvs_problem && echo "" && echo "Aborting..." && exit 1
 # Library versioning. For information about our versioning strategy, see the
 # document ``HACKING'' in the Coin CVS module.
 
-SOXT_MAJOR_VERSION=0
-SOXT_MINOR_VERSION=5
+SOXT_MAJOR_VERSION=1
+SOXT_MINOR_VERSION=1
 SOXT_MICRO_VERSION=0
 SOXT_INTERFACE_AGE=0
 SOXT_BINARY_AGE=0
@@ -12952,10 +12952,14 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
-  if $sim_ac_coin_configcmd; then
+
+  if ! test "X$sim_ac_coin_configcmd" = "Xfalse"; then
     test -n "$CONFIG" &&
       $sim_ac_coin_configcmd --alternate=$CONFIG >/dev/null 2>/dev/null &&
       sim_ac_coin_configcmd="$sim_ac_coin_configcmd --alternate=$CONFIG"
+  fi
+
+  if $sim_ac_coin_configcmd; then
     sim_ac_coin_version=`$sim_ac_coin_configcmd --version`
     sim_ac_coin_cppflags=`$sim_ac_coin_configcmd --cppflags`
     sim_ac_coin_cflags=`$sim_ac_coin_configcmd --cflags 2>/dev/null`
