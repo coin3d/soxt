@@ -22,6 +22,16 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+/*!
+  \class SoXt Inventor/Xt/SoXt.h
+  \brief The SoXt class provides initialization and run-time management
+  functions for the SoXt library.
+
+  All methods in SoXt are static methods.
+*/
+
+// *************************************************************************
+
 #include <assert.h>
 
 #include <X11/Intrinsic.h>
@@ -31,6 +41,10 @@ static const char rcsid[] =
 #include <X11/Xmu/Atoms.h>
 #include <Xm/Xm.h>
 #include <Xm/Protocols.h>
+#include <Xm/MessageB.h>
+#include <Xm/Form.h>
+#include <Xm/Label.h>
+#include <Xm/PushB.h>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SoDB.h>
@@ -43,6 +57,30 @@ static const char rcsid[] =
 #include <soxtdefs.h>
 
 #include <Inventor/Xt/SoXt.h>
+
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+// *************************************************************************
+
+/*!
+  \mainpage
+
+  SoXt is an Xt/Motif glue library for Coin.  It can also be used
+  on top of Open Inventor, and is designed to be source code
+  compatible with SGI's InventorXt library (which is a goal that
+  is still way off).  You will need either Motif
+  (<a href="http://www.opengroup.org/openmotif/">Open Motif</a>)
+  or <a href="http://www.lesstif.org/">Lesstif</a> to use SoXt.
+
+  SoXt is in alpha release, meaning that it is buggy and lacks
+  functionality.  In other words, hope for the best but expect the
+  worst.
+
+  The corresponding documentation for Coin is
+  located at http://www.coin3d.org/coin-docs/
+*/
 
 // *************************************************************************
 // the static SoXt:: variables
@@ -94,12 +132,17 @@ const char *
 SoXt::getVersionString( // static
   void )
 {
-  return SOXT_VERSION;
+  static const char version[] = SOXT_VERSION;
+  return version;
 } // getVersionString()
 
 // *************************************************************************
 
 /*!
+  This function initializes the SoXt library.
+
+  The returned Widget is a toplevel shell widget for the application, which
+  can be used as a shell for the main component.
 */
 
 Widget
@@ -113,6 +156,10 @@ SoXt::init( // static
 } // init()
 
 /*!
+  This function initializes the SoXt library.
+
+  The returned Widget is a toplevel shell widget for the application, which
+  can be used as a shell for the main component.
 */
 
 Widget
@@ -152,12 +199,15 @@ SoXt::init( // static
       SoXt::fallback_resources, topLevelShellWidgetClass,
       NULL );
   }
+  if ( appName )
+    XtVaSetValues( toplevel, XmNtitle, SoXt::appName, NULL );
 
   SoXt::init( toplevel );
   return toplevel;
 } // init()
 
-/*!
+/*
+  \internal
 */
 
 static
@@ -180,14 +230,18 @@ wm_close_handler(
       if ( WM_DELETE_WINDOW == None ) WM_DELETE_WINDOW = (Atom) -1;
     }
     if ( event->message_type == WM_PROTOCOLS &&
-         event->data.l[0] == WM_DELETE_WINDOW ) {
+         (unsigned) event->data.l[0] == WM_DELETE_WINDOW ) {
       XtAppSetExitFlag( SoXt::getAppContext() );
       *dispatch = False;
     }
   }
-} // exit_handler()
+} // wm_close_handler()
 
 /*!
+  This function initializes the SoXt library.
+
+  It should be called for applications that want to create the toplevel
+  shell widget themselves.
 */
 
 void
@@ -222,7 +276,9 @@ SoXt::init( // static
 // *************************************************************************
 
 /*
-  Internal function for translating type code to event name.
+  This is a function for translating X11 event type id to event name.
+
+  \internal
 */
 
 static const char *
@@ -259,8 +315,8 @@ _eventName(
 
 /*!
   This function should be used instead of XtAppMainLoop().  The current
-  implementation is no different, but in the future we will add support
-  for input device extensions in this event dispatch loop.
+  implementation is no different than the standard event loop, but in the
+  future it will add support for input device extensions.
 
   If you need your own event dispatching loop, base your code on this one,
   and use SoXt::dispatchEvent() when appropriate.
@@ -290,7 +346,7 @@ SoXt::mainLoop( // static
 } // mainLoop()
 
 /*!
-  This method calls XtAppNextEvent() to fill in the event structure with
+  This function calls XtAppNextEvent() to fill in the event structure with
   the next event for the given context.
 */
 
@@ -331,6 +387,7 @@ SoXt::dispatchEvent( // static
 // *************************************************************************
 
 /*!
+  This function returns the Xt Application Context for the application.
 */
 
 XtAppContext
@@ -341,6 +398,7 @@ SoXt::getAppContext( // static
 } // getAppContext()
 
 /*!
+  This function returns the X Display of the application.
 */
 
 Display *
@@ -351,6 +409,7 @@ SoXt::getDisplay( // static
 } // getDisplay()
 
 /*!
+  This function returns the toplevel shell for the application.
 */
 
 Widget
@@ -363,6 +422,7 @@ SoXt::getTopLevelWidget( // static
 // *************************************************************************
 
 /*!
+  This function returns the application name, given to SoXt::init.
 */
 
 const char *
@@ -373,6 +433,7 @@ SoXt::getAppName( // static
 } // getAppName()
 
 /*!
+  This function returns the application class, given to SoXt::init.
 */
 
 const char *
@@ -385,6 +446,7 @@ SoXt::getAppClass( // static
 // *************************************************************************
 
 /*!
+  This function realizes the given \a widget.
 */
 
 void
@@ -399,6 +461,7 @@ SoXt::show( // static
 } // show()
 
 /*!
+  This function hides the given \a widget.
 */
 
 void
@@ -417,7 +480,8 @@ SoXt::hide( // static
 /*!
   Create and return a localized string from \a string.
 
-  The caller is responsible for freeing the returned XmString.
+  The caller is responsible for freeing the returned XmString by using
+  XmStringFree() or just plain XtFree( (char *) string ).
 */
 
 XmString
@@ -448,6 +512,7 @@ SoXt::decodeString( // static
 // *************************************************************************
 
 /*!
+  This function resizes the widget to the given \a size.
 */
 
 void
@@ -455,27 +520,44 @@ SoXt::setWidgetSize( // static
   Widget widget,
   const SbVec2s size )
 {
+  if ( ! widget ) {
+#if SOXT_DEBUG
+    SoDebugError::postInfo( "SoXt::setWidgetSize", "called with no widget" );
+#endif // SOXT_DEBUG
+    return;
+  }
   XtVaSetValues( widget,
-    XtNwidth, (Dimension) size[0],
-    XtNheight, (Dimension) size[1],
+    XmNwidth, size[0],
+    XmNheight, size[1],
     NULL );
 } // setWidgetSize()
 
 /*!
+  This function returns the size of the given widget.
 */
 
 SbVec2s
 SoXt::getWidgetSize( // static
   Widget widget )
 {
-  int w = 0, h = 0;
-  XtVaGetValues( widget, XtNwidth, &w, XtNheight, &h, NULL );
-  return SbVec2s( w, h );
+  if ( ! widget ) {
+#if SOXT_DEBUG
+    SoDebugError::postInfo( "SoXt::getWidgetSize", "called with no widget" );
+#endif // SOXT_DEBUG
+    return SbVec2s( 0, 0 );
+  }
+  Dimension width, height;
+  XtVaGetValues( widget,
+    XtNwidth, &width,
+    XtNheight, &height,
+    NULL );
+  return SbVec2s( width, height );
 } // getWidgetSize()
 
 // *************************************************************************
 
 /*!
+  This function returns the shell of the given \a widget.
 */
 
 Widget
@@ -488,27 +570,144 @@ SoXt::getShellWidget( // static
       return p;
     p = XtParent(p);
   }
+#if SOXT_DEBUG
+  SoDebugError::postInfo( "SoXt::getShellWidget",
+    "couldn't find shell for widget at %p", widget );
+#endif // SOXT_DEBUG
   return (Widget) NULL;
 } // getShellWidget()
 
 // *************************************************************************
 
+/*
+  Internal callback.
+*/
+
+static
+void
+close_dialog_cb(
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  Widget dialogshell = (Widget) closure;
+  XtPopdown( dialogshell );
+  XtDestroyWidget( dialogshell );
+} // close_dialog_cb()
+
 /*!
+  This function creates a simple error dialog window and places it on the
+  display over the given \a parent widget.  Placement is not implemented at
+  the moment.
 */
 
 void
 SoXt::createSimpleErrorDialog( // static
-  Widget widget,
+  Widget parent,
   char * title,
   char * string1,
   char * string2 )
 {
-  SOXT_STUB();
+  Arg args[10];
+  int argc = 0;
+
+  Display * dpy = SoXt::getDisplay();
+  Visual * vis;
+  Colormap cmap;
+  int depth;
+
+  if ( ! title ) title = "";
+  if ( ! string1 ) string1 = "";
+
+  SoXt::selectBestVisual( dpy, vis, cmap, depth );
+
+  Widget errdialog = XtVaCreatePopupShell( "errordialog",
+    topLevelShellWidgetClass, parent,
+    XmNvisual, vis,
+    XmNcolormap, cmap,
+    XmNdepth, depth,
+    XtVaTypedArg,
+      XmNtitle, XmRString,
+      title, strlen(title)+1,
+    XmNresizable, False,
+    NULL );
+
+  Widget root = XtVaCreateManagedWidget( "root",
+    xmFormWidgetClass, errdialog,
+    NULL );
+
+  Widget label1 = XtVaCreateManagedWidget( "label1",
+    xmLabelWidgetClass, root,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNleftOffset, 20,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNtopOffset, 10,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNrightOffset, 20,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      string1, strlen(string1),
+    NULL );
+
+  Widget label2 = (Widget) NULL;
+  if ( string2 != NULL ) {
+    label2 = XtVaCreateManagedWidget( "label2",
+      xmLabelWidgetClass, root,
+      XmNleftAttachment, XmATTACH_FORM,
+      XmNleftOffset, 20,
+      XmNtopAttachment, XmATTACH_WIDGET,
+      XmNtopWidget, label1,
+      XmNtopOffset, 5,
+      XmNrightAttachment, XmATTACH_FORM,
+      XmNrightOffset, 20,
+      XtVaTypedArg,
+        XmNlabelString, XmRString,
+        string2, strlen(string2),
+      NULL );
+  }
+
+  Widget close = XtVaCreateManagedWidget( "close",
+    xmPushButtonWidgetClass, root,
+    XmNtopAttachment, XmATTACH_WIDGET,
+    XmNtopWidget, string2 ? label2 : label1,
+    XmNtopOffset, 5,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNrightOffset, 10,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNbottomOffset, 10,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      " Close ", 5,
+    NULL );
+
+  XtAddCallback( close, XmNactivateCallback, close_dialog_cb, errdialog );
+
+  XtPopup( errdialog, XtGrabNone );
+
+  Dimension width = 0;
+  Dimension height = 0;
+  XtVaGetValues( root,
+    XmNwidth, &width,
+    XmNheight, &height,
+    NULL );
+  XtVaSetValues( errdialog,
+    XmNheight, height,
+    XmNwidth, width,
+    XmNminHeight, height,
+    XmNmaxHeight, height,
+    XmNminWidth, width,
+    NULL );
+
 } // createSimpleErrorDialog()
 
 // *************************************************************************
 
 /*!
+  This function should add the necessary arguments to the \a args argument
+  list so the popup shell gets the same visual and colormap as the rest
+  of the application.
+
+  This function is not implemented.
 */
 
 void
@@ -518,11 +717,11 @@ SoXt::getPopupArgs( // static
   ArgList args,
   int * n )
 {
-  
   SOXT_STUB();
 } // getPopupArgs()
 
 /*!
+  This function is not implemented.
 */
 
 void
@@ -534,6 +733,7 @@ SoXt::registerColormapLoad( // static
 } // registerColormapLoad()
 
 /*!
+  This function is not implemented.
 */
 
 void
@@ -545,6 +745,7 @@ SoXt::addColormapToShell( // static
 } // addColormapToShell()
 
 /*!
+  This function is not implemented.
 */
 
 void
@@ -565,6 +766,11 @@ typedef struct _EventHandlerInfo {
 } EventHandlerInfo;
 
 /*!
+  This function adds an extension event handler to the application, which
+  will be considered in the SoXt::mainLoop event dispatching loop.
+
+  \sa SoXt::removeExtensionEventHandler
+  \sa SoXt::getExtensionEventHandler
 */
 
 void
@@ -597,6 +803,10 @@ SoXt::addExtensionEventHandler( // static
 } // addExtensionEventHandler()
 
 /*!
+  This method removes an extension event handler.
+
+  \sa SoXt::addExtensionEventHandler
+  \sa SoXt::getExtensionEventHandler
 */
 
 void
@@ -630,6 +840,10 @@ SoXt::removeExtensionEventHandler( // static
 } // removeExtensionEventHandler()
 
 /*!
+  This method returns the extension event handler for the given \a event.
+
+  \sa SoXt::addExtensionEventHandler
+  \sa SoXt::removeExtensionEventHandler
 */
 
 void
@@ -660,6 +874,7 @@ SoXt::getExtensionEventHandler( // static, protected
 // *************************************************************************
 
 /*!
+  This function is not implemented.
 */
 
 Widget
@@ -673,6 +888,7 @@ SoXt::getwidget( // static
 // *************************************************************************
 
 /*!
+  \internal
 */
 
 void
@@ -690,6 +906,7 @@ SoXt::timerSensorCB( // static, private
 } // timerSensorCB()
 
 /*!
+  \internal
 */
 
 void
@@ -707,6 +924,7 @@ SoXt::delaySensorCB( // static, private
 } // delaySensorCB()
 
 /*!
+  \internal
 */
 
 Boolean
@@ -743,24 +961,22 @@ SoXt::sensorQueueChanged( // static, private
   if ( sensormanager->isTimerSensorPending( timevalue ) ) {
     SbTime interval = timevalue - SbTime::getTimeOfDay();
 
-#if SOXT_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoXt::sensorQueueChanged",
-                           "interval: %f (msec: %d)",
-                           interval.getValue(),
-                           interval.getMsecValue());
+#if SOXT_DEBUG && 0
+    SoDebugError::postInfo( "SoXt::sensorQueueChanged",
+      "interval: %f (msec: %d)", interval.getValue(),
+      interval.getMsecValue());
 #endif // debug
 
     // On a system with some load, the interval value can easily get
     // negative. For Xt, this means it will never trigger -- which
     // causes all kinds of problems. Setting it to 0 will make it
     // trigger more-or-less immediately.
-    if (interval.getValue() < 0.0) interval.setValue(0.0);
+    if ( interval.getValue() < 0.0 ) interval.setValue(0.0);
 
     if ( SoXt::timerSensorActive ) XtRemoveTimeOut( SoXt::timerSensorId );
 
     SoXt::timerSensorId = XtAppAddTimeOut( SoXt::getAppContext(),
-                            interval.getMsecValue(),
-                            SoXt::timerSensorCB, NULL );
+      interval.getMsecValue(), SoXt::timerSensorCB, NULL );
     SoXt::timerSensorActive = TRUE;
 
   } else if ( SoXt::timerSensorActive ) {
@@ -779,8 +995,8 @@ SoXt::sensorQueueChanged( // static, private
     if ( ! SoXt::delaySensorActive ) {
       unsigned long timeout = SoDB::getDelaySensorTimeout().getMsecValue();
       SoXt::delaySensorId =
-        XtAppAddTimeOut( SoXt::getAppContext(), timeout,
-                         SoXt::delaySensorCB, NULL );
+        XtAppAddTimeOut( SoXt::getAppContext(), timeout, SoXt::delaySensorCB,
+          NULL );
       SoXt::delaySensorActive = TRUE;
     }
   } else {
@@ -799,7 +1015,7 @@ SoXt::sensorQueueChanged( // static, private
 
 // *************************************************************************
 
-/*!
+/*
   \internal
 */
 
@@ -832,12 +1048,13 @@ _visualClassName(
   "Beyond the Default Visual", by John Cwikla
     http://www.motifzone.com/tmd/articles/DefaultVisual/DefaultVisual.html
 
+  This function is not standard for the SGI SoXt API.
 */
 
 void
 SoXt::selectBestVisual( // static
-  Display *& dpy,
-  Visual *& visual,
+  Display * & dpy,
+  Visual * & visual,
   Colormap & colormap,
   int & depth )
 {
@@ -932,7 +1149,8 @@ SoXt::selectBestVisual( // static
   \var SoXt::fallback_resources
 
   This is an array of X resources.
-  They are not in use yet - the implementation is purely experimental.
+  They are not really in use yet - the implementation is mostly experimental,
+  and resource names will change in the future.
 */
 
 String
