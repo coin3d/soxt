@@ -35,7 +35,7 @@ class SOXT_DLL_EXPORT SoXtPlaneViewer : public SoXtFullViewer {
 
 public:
   SoXtPlaneViewer(
-    Widget parent,
+    Widget parent = NULL,
     const char * const name = NULL,
     SbBool embed = TRUE,
     SoXtFullViewer::BuildFlag flag = BUILD_ALL,
