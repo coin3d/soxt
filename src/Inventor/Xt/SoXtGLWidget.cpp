@@ -228,25 +228,6 @@ SoXtGLWidget::getOverlayWindow(void)
 }
 
 /*!
-  This method returns the normal GL context.
-*/
-GLXContext
-SoXtGLWidget::getNormalContext(void)
-{
-  return PRIVATE(this)->normalcontext;
-}
-
-/*!
-  This method returns the GL context for the overlay planes.
-*/
-
-GLXContext
-SoXtGLWidget::getOverlayContext(void)
-{
-  return PRIVATE(this)->overlaycontext;
-}
-
-/*!
   This method returns the Widget associated with the normal GL
   context.
 */
@@ -537,7 +518,7 @@ SoXtGLWidgetP::initNormalContext(void)
   
   this->normalcontext =
     glXCreateContext(display, visual, 
-                     share ? share->getNormalContext() : None, 
+                     share ? PRIVATE(share)->normalcontext : None, 
                      GL_TRUE);
   if (! this->normalcontext) {
     SoDebugError::postInfo("SoXtGLWidget::glInit",
