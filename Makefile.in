@@ -563,7 +563,7 @@ SoQt_ExtraBuiltMetaFiles = \
 
 @BUILD_HTMLPAGES_TRUE@HTMLDIR = html
 
-SUBDIRS = . $(LIBDIRS) man $(HTMLDIR) test-code
+SUBDIRS = . $(LIBDIRS) man $(HTMLDIR)
 
 
 ############################################################################
@@ -619,7 +619,7 @@ DIST_COMMON = README $(dist_acdata_DATA) \
 	aclocal.m4 cfg/config.guess cfg/config.sub cfg/depcomp \
 	cfg/install-sh cfg/ltmain.sh cfg/missing cfg/mkinstalldirs \
 	configure configure.ac
-DIST_SUBDIRS = . src man html test-code
+DIST_SUBDIRS = . src man html
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
