@@ -27,7 +27,7 @@ static const char rcsid[] =
 /*!
   \class SoXtMaterialEditor Inventor/Xt/SoXtMaterialEditor.h
   \brief The SoXtMaterialEditor class is yet to be documented.
-  \ingroup editors
+  \ingroup components editors
 
   This class is not implemented yet.
 */
