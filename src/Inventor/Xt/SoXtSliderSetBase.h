@@ -17,7 +17,7 @@
  *
  **************************************************************************/
 
-// $Id$
+//  $Id$
 
 #ifndef SOXT_SLIDERSETBASE_H
 #define SOXT_SLIDERSETBASE_H
@@ -41,9 +41,9 @@ public:
 protected:
   SoXtSliderSetBase(
     Widget parent = NULL,
-    const char * name = NULL,
+    const char * const name = NULL,
     SbBool inParent = TRUE,
-    SoNode * newEditNode = NULL );
+    SoNode * const newEditNode = NULL );
   ~SoXtSliderSetBase(void);
 
   Widget widget;
@@ -52,8 +52,6 @@ protected:
   SoNode * _editNode;
   int _numSubComponents;
   SoXtSliderSetBase ** _subComponentArray;
-
-private:
 
 }; // class SoXtSliderSetBase
 

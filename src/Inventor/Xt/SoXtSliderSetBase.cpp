@@ -20,9 +20,15 @@
 static const char rcsid[] =
   "$Id$";
 
-#include <Inventor/Xt/SoXtBasic.h>
+#include <Inventor/errors/SoDebugError.h>
 
+#include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXtSliderSetBase.h>
+
+/*!
+  \class SoXtSliderSetBase Inventor/Xt/SoXtSliderSetBase.h
+  \brief The SoXtSliderSetBase class is yet to be documented.
+*/
 
 // *************************************************************************
 
@@ -33,9 +39,10 @@ SoXtSliderSetBase::SoXtSliderSetBase( // protected
   Widget parent,
   const char * name,
   SbBool inParent,
-  SoNode * newEditNode )
+  SoNode * node )
 : inherited( parent, name )
 {
+  SOXT_STUB();
 } // SoXtSliderSetBase()
 
 /*!
@@ -44,6 +51,7 @@ SoXtSliderSetBase::SoXtSliderSetBase( // protected
 SoXtSliderSetBase::~SoXtSliderSetBase( // protected
   void )
 {
+  SOXT_STUB();
 } // ~SoXtSliderSetBase()
 
 // *************************************************************************
