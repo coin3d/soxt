@@ -417,7 +417,10 @@ init_pixmaps(SoXtThumbWheelWidget widget)
                 XmNcolormap, &colormap,
                 XmNdepth, &depth,
                 NULL);
-  assert(visual != (Visual *) NULL && colormap != 0);
+  assert(visual != (Visual *) NULL);
+
+  if ( colormap == 0 )
+    colormap = DefaultColormapOfScreen(screen);
 
 #if 0 // debug
   SoDebugError::postInfo("init_pixmaps", "depth == %d", depth);
