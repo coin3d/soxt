@@ -7854,7 +7854,7 @@ echo "$as_me: error: Could not find the doxygen tool -- see http://www.stack.nl/
   fi
 fi
 
-  sim_ac_doxygen_our_version=1.1.5
+  sim_ac_doxygen_our_version=1.2.1
   if test x"$sim_ac_doxygen_avail" != x"$sim_ac_doxygen_our_version"; then
     { echo "$as_me:7859: WARNING: You are not using Doxygen version $sim_ac_doxygen_our_version" >&5
 echo "$as_me: WARNING: You are not using Doxygen version $sim_ac_doxygen_our_version" >&2;}
