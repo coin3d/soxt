@@ -17,83 +17,61 @@
  *
  **************************************************************************/
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <ctype.h> // toupper()
 
 #include <X11/X.h>
 #include <X11/keysym.h>
 
-#include <Inventor/misc/SoBasic.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/errors/SoDebugError.h>
 
-#include <soxtdefs.h>
-#include <Inventor/Xt/SoXtBasic.h>
-
 #include <Inventor/Xt/devices/SoXtKeyboard.h>
-
-#if HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
+#include <Inventor/Xt/devices/SoGuiKeyboardP.h>
 
 // *************************************************************************
 
-/*!
-  \class SoXtKeyboard Inventor/Xt/devices/SoXtKeyboard.h
-  \brief The SoXtKeyboard class glues Xt/Motif keyboard interaction together
-  with the Open Inventor scene graph.
-  \ingroup devices
-
-  All components derived from the SoXtRenderArea have got an SoXtKeyboard 
-  device attached by default.
-*/
+class SoXtKeyboardP : public SoGuiKeyboardP {
+};
 
 // *************************************************************************
 
-SOXT_OBJECT_SOURCE(SoXtKeyboard);
-
-// *************************************************************************
-
-/*!
-  \enum SoXtKeyboard::KeyboardEvents
-
-  Enumeration over supported event types.
-*/
-
-// *************************************************************************
-
-/*!
-  Public constructor.
-*/
 SoXtKeyboard::SoXtKeyboard(int events)
 {
-  this->eventmask = events;
-  this->kbdevent = new SoKeyboardEvent;
+  PRIVATE(this) = new SoXtKeyboardP;
+  PRIVATE(this)->eventmask = events;
 }
 
-/*!
-  Destructor.
-*/
 SoXtKeyboard::~SoXtKeyboard()
 {
-  delete this->kbdevent;
+  delete PRIVATE(this);
 }
 
 // *************************************************************************
 
 // Doc in superclass.
 void
-SoXtKeyboard::enable(Widget widget, SoXtEventHandler * handler,
-                     XtPointer closure)
+SoXtKeyboard::enable(Widget widget, SoXtEventHandler * handler, XtPointer closure)
 {
-  XtAddEventHandler(widget, this->eventmask, FALSE, handler, closure);
+  // FIXME: should explicitly convert eventmask to bitmask with X11/Xt
+  // bitflag values, just in case either our or X11's enum values
+  // should ever change (yeah, I know, slim chance, but still.. that'd
+  // be better design). 20020625 mortene.
+  XtAddEventHandler(widget, PRIVATE(this)->eventmask, FALSE, handler, closure);
 }
 
 // Doc in superclass.
 void
-SoXtKeyboard::disable(Widget widget, SoXtEventHandler * handler,
-                      XtPointer closure)
+SoXtKeyboard::disable(Widget widget, SoXtEventHandler * handler, XtPointer closure)
 {
-  XtRemoveEventHandler(widget, this->eventmask, FALSE, handler, closure);
+  // FIXME: should explicitly convert eventmask to bitmask with X11/Xt
+  // bitflag values, just in case either our or X11's enum values
+  // should ever change (yeah, I know, slim chance, but still.. that'd
+  // be better design). 20020625 mortene.
+  XtRemoveEventHandler(widget, PRIVATE(this)->eventmask, FALSE, handler, closure);
 }
 
 // *************************************************************************
@@ -266,30 +244,28 @@ makeKeyboardEvent(XKeyEvent * event, SoKeyboardEvent * sokeybevent)
 
 // *************************************************************************
 
-/*!
-  This method translates between X events and Open Inventor events.
-
-  If the X event is a keyboard event, an event of the type SoKeyboardEvent
-  is returned.  Otherwise, NULL is returned.
-*/
 const SoEvent *
 SoXtKeyboard::translateEvent(XAnyEvent * event)
 {
   XKeyEvent * ke;
 
+  // We don't check versus the current eventmask, as those flags has
+  // been passed on to X11 -- so we shouldn't receive any other events
+  // here than those requested.
+
   switch (event->type) {
   case KeyPress:
   case KeyRelease:
     ke = (XKeyEvent *)event;
-    this->kbdevent->setState(event->type == KeyPress ?
-                             SoButtonEvent::DOWN : SoButtonEvent::UP);
-    this->setEventPosition(this->kbdevent, ke->x, ke->y);
-    makeKeyboardEvent(ke, this->kbdevent);
+    PRIVATE(this)->kbdevent->setState(event->type == KeyPress ?
+                                      SoButtonEvent::DOWN : SoButtonEvent::UP);
+    this->setEventPosition(PRIVATE(this)->kbdevent, ke->x, ke->y);
+    makeKeyboardEvent(ke, PRIVATE(this)->kbdevent);
     break;
   default:
     return NULL;
   }
-  return this->kbdevent;
+  return PRIVATE(this)->kbdevent;
 }
 
 // *************************************************************************

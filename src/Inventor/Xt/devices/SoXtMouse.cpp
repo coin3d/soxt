@@ -17,105 +17,72 @@
  *
  **************************************************************************/
 
-#include <X11/X.h>
+// Class documentation in common code file.
 
-#if SOXT_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // SOXT_DEBUG
-#include <Inventor/misc/SoBasic.h>
-#include <Inventor/events/SoLocation2Event.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
-
-#include <soxtdefs.h>
-#include <Inventor/Xt/SoXtBasic.h>
-
-#include <Inventor/Xt/devices/SoXtMouse.h>
+// *************************************************************************
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-// *************************************************************************
+#include <X11/X.h>
 
-/*!
-  \class SoXtMouse Inventor/Xt/devices/SoXtMouse.h
-  \brief The SoXtMouse class is the glue between Xt/Motif mouse handling
-  and mouse interaction in the Inventor scene graph.
-  \ingroup devices
-*/
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
 
-// *************************************************************************
-
-SOXT_OBJECT_SOURCE(SoXtMouse);
+#include <Inventor/Xt/devices/SoXtMouse.h>
+#include <Inventor/Xt/devices/SoGuiMouseP.h>
+#include <soxtdefs.h>
 
 // *************************************************************************
 
-/*
-  FIXME: implement BUTTON_MOTION filtering
-*/
+class SoXtMouseP : public SoGuiMouseP {
+public:
+  SoXtMouseP(SoXtMouse * p) : SoGuiMouseP(p) { }
+
+  SoLocation2Event * makeLocationEvent(XMotionEvent * event);
+  SoMouseButtonEvent * makeButtonEvent(XButtonEvent * event, SoButtonEvent::State state);
+};
 
 // *************************************************************************
 
-/*!
-  \enum SoXtMouse::MouseEvents
-
-  Enumeration over supported mouse events.
-*/
-
-// *************************************************************************
-
-/*!
-  Public constructor.
-*/
-
+// Doc in common code file.
 SoXtMouse::SoXtMouse(int events)
 {
-  this->eventmask = events;
-  this->locationevent = NULL;
-  this->buttonevent = NULL;
+  PRIVATE(this) = new SoXtMouseP(this);
+  PRIVATE(this)->eventmask = events;
 }
 
-/*!
-  Destructor.
-*/
-
+// Doc in common code file.
 SoXtMouse::~SoXtMouse()
 {
-  delete this->locationevent;
-  delete this->buttonevent;
+  delete PRIVATE(this);
 }
 
 // *************************************************************************
 
 // Doc in superclass.
 void
-SoXtMouse::enable(Widget widget, SoXtEventHandler * handler,
-                  XtPointer closure)
+SoXtMouse::enable(Widget widget, SoXtEventHandler * handler, void * closure)
 {
-  XtAddEventHandler(widget, this->eventmask, FALSE, handler, closure);
+  // FIXME: should explicitly convert eventmask to bitmask with X11/Xt
+  // bitflag values, just in case either our or X11's enum values
+  // should ever change (yeah, I know, slim chance, but still.. that'd
+  // be better design). 20020625 mortene.
+  XtAddEventHandler(widget, PRIVATE(this)->eventmask, FALSE, handler, closure);
 }
 
 // Doc in superclass.
 void
-SoXtMouse::disable(Widget widget, SoXtEventHandler * handler,
-                   XtPointer closure)
+SoXtMouse::disable(Widget widget, SoXtEventHandler * handler, void * closure)
 {
-  XtRemoveEventHandler(widget, this->eventmask, FALSE, handler, closure);
+  XtRemoveEventHandler(widget, PRIVATE(this)->eventmask, FALSE, handler, closure);
 }
 
 // *************************************************************************
 
-// FIXME: there's better doc in SoQtMouse::translateEvent(). 20011220 mortene.
-/*!
-  This method translates from X mouse events to Open Inventor events.
-
-  If \a event is an X pointer motion event, an SoLocation2Event object is
-  returned.
-  If \a event is an X mouse button event, an SoMouseButtonEvent object is
-  returned.
-  If \a event is not an X mouse event, NULL is returned.
-*/
-
+// Doc in common code file.
 const SoEvent *
 SoXtMouse::translateEvent(XAnyEvent * event)
 {
@@ -126,21 +93,23 @@ SoXtMouse::translateEvent(XAnyEvent * event)
 
   // events we should catch:
   case ButtonPress:
-    if (! (this->eventmask & SoXtMouse::BUTTON_PRESS)) break;
+    if (! (PRIVATE(this)->eventmask & SoXtMouse::BUTTON_PRESS)) break;
     state = SoButtonEvent::DOWN;
-    soevent = this->makeButtonEvent((XButtonEvent *) event, state);
+    soevent = PRIVATE(this)->makeButtonEvent((XButtonEvent *) event, state);
     break;
 
   case ButtonRelease:
-    if (! (this->eventmask & SoXtMouse::BUTTON_RELEASE)) break;
+    if (! (PRIVATE(this)->eventmask & SoXtMouse::BUTTON_RELEASE)) break;
     state = SoButtonEvent::UP;
-    soevent = this->makeButtonEvent((XButtonEvent *) event, state);
+    soevent = PRIVATE(this)->makeButtonEvent((XButtonEvent *) event, state);
     break;
 
   case MotionNotify:
-    if (! (this->eventmask & SoXtMouse::POINTER_MOTION)) break;
-    soevent = this->makeLocationEvent((XMotionEvent *) event);
+    if (! (PRIVATE(this)->eventmask & SoXtMouse::POINTER_MOTION)) break;
+    soevent = PRIVATE(this)->makeLocationEvent((XMotionEvent *) event);
     break;
+
+    //  FIXME: implement BUTTON_MOTION filtering. larsa.
 
   case EnterNotify:
   case LeaveNotify:
@@ -153,7 +122,6 @@ SoXtMouse::translateEvent(XAnyEvent * event)
   // events we should ignore:
   default:
     break;
-
   }
 
   return (SoEvent *) soevent;
@@ -161,21 +129,18 @@ SoXtMouse::translateEvent(XAnyEvent * event)
 
 // *************************************************************************
 
-/*!
-  This method translates from X motion events to Open Inventor
-  SoLocation2Event events.
-*/
-
+// This method translates from X motion events to Open Inventor
+// SoLocation2Event events.
 SoLocation2Event *
-SoXtMouse::makeLocationEvent(XMotionEvent * event)
+SoXtMouseP::makeLocationEvent(XMotionEvent * event)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtMouse::makeLocationEvent",
-                         "pointer at (%d, %d)", event->x, this->getWindowSize()[1] - event->y);
+                         "pointer at (%d, %d)", event->x, PUBLIC(this)->getWindowSize()[1] - event->y);
 #endif // 0 was SOXT_DEBUG
   delete this->locationevent;
   this->locationevent = new SoLocation2Event;
-  this->setEventPosition(this->locationevent, event->x, event->y);
+  PUBLIC(this)->setEventPosition(this->locationevent, event->x, event->y);
 
   this->locationevent->setShiftDown((event->state & ShiftMask) ? TRUE : FALSE);
   this->locationevent->setCtrlDown((event->state & ControlMask) ? TRUE : FALSE);
@@ -188,14 +153,10 @@ SoXtMouse::makeLocationEvent(XMotionEvent * event)
   return this->locationevent;
 }
 
-/*!
-  This method translates from X button events (mouse/pointer) to
-  Open Inventor SoMouseButtonEvent events.
-*/
-
+// This method translates from X button events (mouse/pointer) to
+// Open Inventor SoMouseButtonEvent events.
 SoMouseButtonEvent *
-SoXtMouse::makeButtonEvent(XButtonEvent * event,
-                           SoButtonEvent::State state)
+SoXtMouseP::makeButtonEvent(XButtonEvent * event, SoButtonEvent::State state)
 {
 #if 0 // SOXT_DEBUG
   SoDebugError::postInfo("SoXtMouse::makeButtonEvent",
@@ -221,7 +182,7 @@ SoXtMouse::makeButtonEvent(XButtonEvent * event,
 
   this->buttonevent->setButton(button);
 
-  this->setEventPosition(this->buttonevent, event->x, event->y);
+  PUBLIC(this)->setEventPosition(this->buttonevent, event->x, event->y);
 
   this->buttonevent->setShiftDown((event->state & ShiftMask) ? TRUE : FALSE);
   this->buttonevent->setCtrlDown((event->state & ControlMask) ? TRUE : FALSE);
