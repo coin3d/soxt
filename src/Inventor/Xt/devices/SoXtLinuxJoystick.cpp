@@ -40,16 +40,15 @@ static const char rcsid[] =
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#ifndef HAVE_JOYSTICK_LINUX
-#error Trying to compile unsupported device.
-#endif // HAVE_JOYSTICK_LINUX
-
 #include <assert.h>
 #include <unistd.h>
 #include <stdlib.h>
+
+#ifdef HAVE_JOYSTICK_LINUX
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <linux/joystick.h>
+#endif // HAVE_JOYSTICK_LINUX
 
 #include <X11/Intrinsic.h>
 
@@ -128,6 +127,7 @@ SoXtLinuxJoystick::enable( // virtual
   XtPointer closure,
   Window window )
 {
+#ifdef HAVE_JOYSTICK_LINUX
   if ( ! SoXtLinuxJoystick::enabled ) {
     const char * devpathname = SoXtLinuxJoystick::getDevicePathName();
     this->joydev = open( devpathname, O_RDONLY | O_NONBLOCK );
@@ -184,6 +184,7 @@ SoXtLinuxJoystick::enable( // virtual
   }
 
   this->addEventHandler( widget, handler, closure, window );
+#endif // HAVE_JOYSTICK_LINUX
 } // enable()
 
 /*!
@@ -196,7 +197,9 @@ SoXtLinuxJoystick::disable( // virtual
   XtEventHandler handler,
   XtPointer closure )
 {
+#ifdef HAVE_JOYSTICK_LINUX
   this->removeEventHandler( widget, handler, closure );
+#endif // HAVE_JOYSTICK_LINUX
 } // disable()
 
 // *************************************************************************
@@ -213,6 +216,7 @@ const SoEvent *
 SoXtLinuxJoystick::translateEvent(
   XAnyEvent * xevent )
 {
+#ifdef HAVE_JOYSTICK_LINUX
   switch ( xevent->type ) {
   case soxt6dofDeviceButtonPressedEvent:
     return this->makeButtonEvent( (SoXt6dofDeviceButtonEvent *) xevent,
@@ -225,6 +229,7 @@ SoXtLinuxJoystick::translateEvent(
   default:
     break;
   }
+#endif // HAVE_JOYSTICK_LINUX
   return (SoEvent *) NULL;
 } // translateEvent()
 
@@ -289,6 +294,7 @@ SbBool
 SoXtLinuxJoystick::exists( // static
   void )
 {
+#ifdef HAVE_JOYSTICK_LINUX
   if ( SoXtLinuxJoystick::enabled )
     return TRUE;
   const char * jsdevicepath = SoXtLinuxJoystick::getDevicePathName();
@@ -297,6 +303,9 @@ SoXtLinuxJoystick::exists( // static
     return FALSE;
   close( joydev );
   return TRUE;
+#else // ! HAVE_JOYSTICK_LINUX
+  return FALSE;
+#endif // ! HAVE_JOYSTICK_LINUX
 } // exists()
 
 // *************************************************************************
@@ -421,6 +430,7 @@ SoXtLinuxJoystick::input( // private
   int * source,
   XtInputId * id )
 {
+#ifdef HAVE_JOYSTICK_LINUX
   struct js_event event;
 
   int button = -1;
@@ -529,6 +539,7 @@ SoXtLinuxJoystick::input( // private
 
     this->invokeHandlers( (XEvent *) &xevent );
   }
+#endif // HAVE_JOYSTICK_LINUX
 } // input()
 
 /*!
