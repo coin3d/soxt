@@ -96,6 +96,7 @@ const SoEvent *
 SoXtMouse::translateEvent( // virtual
   XAnyEvent * event )
 {
+  SoEvent * soevent = (SoEvent *) NULL;
   SoButtonEvent::State state = SoButtonEvent::UNKNOWN;
 
   switch ( event->type ) {
@@ -104,15 +105,19 @@ SoXtMouse::translateEvent( // virtual
   case ButtonPress:
     if ( ! (this->events & SoXtMouse::BUTTON_PRESS) ) break;
     state = SoButtonEvent::DOWN;
+    soevent = this->makeButtonEvent( (XButtonEvent *) event, state );
+    break;
+
   case ButtonRelease:
     if ( ! (this->events & SoXtMouse::BUTTON_RELEASE) ) break;
-    if ( state == SoButtonEvent::UNKNOWN )
-      state = SoButtonEvent::UP;
-    return this->makeButtonEvent( (XButtonEvent *) event, state );
+    state = SoButtonEvent::UP;
+    soevent = this->makeButtonEvent( (XButtonEvent *) event, state );
+    break;
 
   case MotionNotify:
     if ( ! (this->events & SoXtMouse::POINTER_MOTION) ) break;
-    return this->makeLocationEvent( (XMotionEvent *) event );
+    soevent = this->makeLocationEvent( (XMotionEvent *) event );
+    break;
 
   case EnterNotify:
   case LeaveNotify:
@@ -128,7 +133,7 @@ SoXtMouse::translateEvent( // virtual
 
   } // switch ( event->type )
 
-  return (SoEvent *) NULL;
+  return (SoEvent *) soevent;
 } // translateEvent()
 
 // *************************************************************************
@@ -147,6 +152,14 @@ SoXtMouse::makeLocationEvent( // private
   delete this->locationEvent;
   this->locationEvent = new SoLocation2Event;
   this->setEventPosition( this->locationEvent, event->x, event->y );
+
+  this->locationEvent->setShiftDown(
+    (event->state & ShiftMask) ? TRUE : FALSE );
+  this->locationEvent->setCtrlDown(
+    (event->state & ControlMask) ? TRUE : FALSE );
+  this->locationEvent->setAltDown(
+    (event->state & Mod1Mask) ? TRUE : FALSE );
+
   return this->locationEvent;
 } // makeLocationEvent()
 
@@ -188,6 +201,14 @@ SoXtMouse::makeButtonEvent( // private
     break;
   } // switch ( event->button )
   this->setEventPosition( this->buttonEvent, event->x, event->y );
+
+  this->buttonEvent->setShiftDown(
+    (event->state & ShiftMask) ? TRUE : FALSE );
+  this->buttonEvent->setCtrlDown(
+    (event->state & ControlMask) ? TRUE : FALSE );
+  this->buttonEvent->setAltDown(
+    (event->state & Mod1Mask) ? TRUE : FALSE );
+
   return this->buttonEvent;
 } // makeButtonEvent()
 
