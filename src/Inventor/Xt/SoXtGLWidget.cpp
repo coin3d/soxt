@@ -75,7 +75,7 @@ SoXtGLWidget::SoXtGLWidget( // protected
   SbBool inParent,
   int glModes,
   SbBool buildNow )
-: inherited( parent, name, inParent ), waitForExpose( TRUE )
+  : inherited( parent, name, inParent ), waitForExpose( TRUE ), drawToFrontBuffer( FALSE )
 {
   this->glLockLevel = 0;
   this->borderwidth = 0; // SOXT_BORDER_WIDTH;
@@ -235,15 +235,14 @@ void
 SoXtGLWidget::setDrawToFrontBufferEnable(
   SbBool enable )
 {
-  SOGUI_STUB();
+  this->drawToFrontBuffer = enable;
 } // setDrawToFrontBufferEnable()
 
 SbBool
 SoXtGLWidget::isDrawToFrontBufferEnable(
   void ) const
 {
-  SOGUI_STUB();
-  return FALSE;
+  return this->drawToFrontBuffer;
 } // isDrawToFrontBufferEnable()
 
 void
