@@ -62,6 +62,12 @@ protected:
   virtual void actualRedraw(void);
   virtual void rightWheelMotion( float value );
 
+  virtual void leftWheel2Start(void);
+  virtual void leftWheel2Motion( float value );
+  virtual void leftWheel2Finish(void);
+  float getLeftWheel2Value(void) const;
+  void setLeftWheel2String( char * string );
+
   virtual Widget buildLeftTrim( Widget parent );
   virtual void createPrefSheet(void);
   virtual void openViewerHelpCard(void);
@@ -70,6 +76,15 @@ private:
   void constructor( SbBool build );
 
   SoAnyWalkViewer * const common;
+  Widget prefshell, prefsheet, * prefparts;
+  int numprefparts;
+
+  Widget tiltwheel, heightwheel;
+  float heightvalue;
+
+  SOXT_WIDGET_CALLBACK( wheelarmed );
+  SOXT_WIDGET_CALLBACK( wheelchanged );
+  SOXT_WIDGET_CALLBACK( wheeldisarmed );
 
 }; // class SoXtWalkViewer
 
