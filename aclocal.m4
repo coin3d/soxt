@@ -8008,9 +8008,25 @@ fi
 AC_DEFUN([SIM_AC_CHECK_X11], [
 AC_REQUIRE([AC_PATH_XTRA])
 
+sim_ac_enable_darwin_x11=true
+
+case $host_os in
+  darwin* ) 
+    AC_ARG_ENABLE([darwin-x11],
+      AC_HELP_STRING([--enable-darwin-x11],
+                     [enable X11 on Darwin [[default=--disable-darwin-x11]]]),
+      [case "${enableval}" in
+        yes | true) sim_ac_enable_darwin_x11=true ;;
+        no | false) sim_ac_enable_darwin_x11=false ;;
+        *) SIM_AC_ENABLE_ERROR([--enable-darwin-x11]) ;;
+      esac],
+      [sim_ac_enable_darwin_x11=false])
+  ;;
+esac
+
 sim_ac_x11_avail=no
 
-if test x"$no_x" != xyes; then
+if test x"$no_x" != xyes -a x"$sim_ac_enable_darwin_x11" = xtrue; then
   #  *** DEBUG ***
   #  Keep this around, as it can be handy when testing on new systems.
   # echo "X_CFLAGS: $X_CFLAGS"
@@ -8471,19 +8487,35 @@ if test x"$with_opengl" != x"no"; then
     fi
   fi
 
+  # On Mac OS X, GL is part of the optional X11 fraemwork
+  case $host_os in
+  darwin*)
+    AC_REQUIRE([SIM_AC_CHECK_X11])
+    if test x$sim_ac_enable_darwin_x11 = xtrue; then
+      sim_ac_gl_darwin_x11=/usr/X11R6
+      if test -d $sim_ac_gl_darwin_x11; then
+        sim_ac_gl_cppflags=-I$sim_ac_gl_darwin_x11/include
+      fi
+    fi
+    ;;
+  esac
+
   CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
 
-  SIM_AC_CHECK_HEADER_SILENT([OpenGL/gl.h], [
-    sim_ac_gl_header_avail=true
-    sim_ac_gl_header=OpenGL/gl.h
-    AC_DEFINE([HAVE_OPENGL_GL_H], 1, [define if the GL header should be included as OpenGL/gl.h])
-  ], [
+  # Mac OS X framework (no X11, -framework OpenGL) 
+  if test x$sim_ac_enable_darwin_x11 = xfalse; then
+    SIM_AC_CHECK_HEADER_SILENT([OpenGL/gl.h], [
+      sim_ac_gl_header_avail=true
+      sim_ac_gl_header=OpenGL/gl.h
+      AC_DEFINE([HAVE_OPENGL_GL_H], 1, [define if the GL header should be included as OpenGL/gl.h])
+    ])
+  else
     SIM_AC_CHECK_HEADER_SILENT([GL/gl.h], [
       sim_ac_gl_header_avail=true
       sim_ac_gl_header=GL/gl.h
       AC_DEFINE([HAVE_GL_GL_H], 1, [define if the GL header should be included as GL/gl.h])
     ])
-  ])
+  fi
 
   CPPFLAGS="$sim_ac_gl_save_CPPFLAGS"
   if $sim_ac_gl_header_avail; then
@@ -8528,20 +8560,36 @@ if test x"$with_opengl" != x"no"; then
     fi
   fi
 
+  # On Mac OS X, GL is part of the optional X11 fraemwork
+  case $host_os in
+  darwin*)
+    AC_REQUIRE([SIM_AC_CHECK_X11])
+    if test x$sim_ac_enable_darwin_x11 = xtrue; then
+      sim_ac_gl_darwin_x11=/usr/X11R6
+      if test -d $sim_ac_gl_darwin_x11; then
+        sim_ac_gl_cppflags=-I$sim_ac_gl_darwin_x11/include
+      fi
+    fi
+    ;;
+  esac
+
   CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
 
-  SIM_AC_CHECK_HEADER_SILENT([OpenGL/glu.h], [
-    sim_ac_glu_header_avail=true
-    sim_ac_glu_header=OpenGL/glu.h
-    AC_DEFINE([HAVE_OPENGL_GLU_H], 1, [define if the GLU header should be included as OpenGL/glu.h])
-  ], [
+  # Mac OS X framework (no X11, -framework OpenGL) 
+  if test x$sim_ac_enable_darwin_x11 = xfalse; then
+    SIM_AC_CHECK_HEADER_SILENT([OpenGL/glu.h], [
+      sim_ac_glu_header_avail=true
+      sim_ac_glu_header=OpenGL/glu.h
+      AC_DEFINE([HAVE_OPENGL_GLU_H], 1, [define if the GLU header should be included as OpenGL/glu.h])
+    ])
+  else
     SIM_AC_CHECK_HEADER_SILENT([GL/glu.h], [
       sim_ac_glu_header_avail=true
       sim_ac_glu_header=GL/glu.h
       AC_DEFINE([HAVE_GL_GLU_H], 1, [define if the GLU header should be included as GL/glu.h])
     ])
-  ])
-
+  fi
+ 
   CPPFLAGS="$sim_ac_glu_save_CPPFLAGS"
   if $sim_ac_glu_header_avail; then
     if test x"$sim_ac_glu_cppflags" = x""; then
@@ -8585,19 +8633,35 @@ if test x"$with_opengl" != x"no"; then
     fi
   fi
 
+  # On Mac OS X, GL is part of the optional X11 fraemwork
+  case $host_os in
+  darwin*)
+    AC_REQUIRE([SIM_AC_CHECK_X11])
+    if test x$sim_ac_enable_darwin_x11 = xtrue; then
+      sim_ac_gl_darwin_x11=/usr/X11R6
+      if test -d $sim_ac_gl_darwin_x11; then
+        sim_ac_gl_cppflags=-I$sim_ac_gl_darwin_x11/include
+      fi
+    fi
+    ;;
+  esac
+
   CPPFLAGS="$CPPFLAGS $sim_ac_glext_cppflags"
 
-  SIM_AC_CHECK_HEADER_SILENT([OpenGL/glext.h], [
-    sim_ac_glext_header_avail=true
-    sim_ac_glext_header=OpenGL/glext.h
-    AC_DEFINE([HAVE_OPENGL_GLEXT_H], 1, [define if the GLEXT header should be included as OpenGL/glext.h])
-  ], [
-    SIM_AC_CHECK_HEADER_SILENT([GL/gl.h], [
+  # Mac OS X framework (no X11, -framework OpenGL) 
+  if test x$sim_ac_enable_darwin_x11 = xfalse; then
+    SIM_AC_CHECK_HEADER_SILENT([OpenGL/glext.h], [
+      sim_ac_glext_header_avail=true
+      sim_ac_glext_header=OpenGL/glext.h
+      AC_DEFINE([HAVE_OPENGL_GLEXT_H], 1, [define if the GLEXT header should be included as OpenGL/glext.h])
+    ])
+  else
+    SIM_AC_CHECK_HEADER_SILENT([GL/glext.h], [
       sim_ac_glext_header_avail=true
       sim_ac_glext_header=GL/glext.h
       AC_DEFINE([HAVE_GL_GLEXT_H], 1, [define if the GLEXT header should be included as GL/glext.h])
     ])
-  ])
+  fi
 
   CPPFLAGS="$sim_ac_glext_save_CPPFLAGS"
   if $sim_ac_glext_header_avail; then
@@ -8684,8 +8748,16 @@ if test x"$with_opengl" != xno; then
   sim_ac_use_framework_option=false;
   case $host_os in
   darwin*)
-    if test x"$GCC" = x"yes"; then
+    AC_REQUIRE([SIM_AC_CHECK_X11])
+    if test x"$GCC" = x"yes" -a x$sim_ac_enable_darwin_x11 = xfalse; then
       SIM_AC_CC_COMPILER_OPTION([-framework OpenGL], [sim_ac_use_framework_option=true])
+    else
+      # On Mac OS X, OpenGL is installed as part of the optional X11 SDK.
+      sim_ac_gl_darwin_x11=/usr/X11R6
+      if test -d $sim_ac_gl_darwin_x11; then
+        sim_ac_ogl_cppflags=-I$sim_ac_gl_darwin_x11/include
+        sim_ac_ogl_ldflags=-L$sim_ac_gl_darwin_x11/lib
+      fi
     fi
     ;;
   esac
