@@ -349,32 +349,6 @@ SoXtPlaneViewer::createViewerButtons(Widget parent,
   FIXME: write doc
 */
 void
-SoXtPlaneViewer::processEvent(XAnyEvent * event)
-{
-  if (SoXtViewer::processCommonEvents(event))
-    return;
-
-  if (event->type == ButtonPress) {
-    // SoDebugError::postInfo("", "button %d", ((XButtonEvent *) event)->button);
-    if (((XButtonEvent *) event)->button == 3) {
-      if (this->isPopupMenuEnabled()) {
-        int x = ((XButtonEvent *) event)->x_root;
-        int y = ((XButtonEvent *) event)->y_root;
-        if (! this->prefmenu)
-          this->buildPopupMenu();
-        this->prefmenu->popUp(this->getGLWidget(), x, y);
-        return;
-      }
-    }
-  }
-
-  inherited::processEvent(event);
-}
-
-/*!
-  FIXME: write doc
-*/
-void
 SoXtPlaneViewer::openViewerHelpCard(void)
 {
   this->openHelpCard("SoXtPlaneViewer.help");

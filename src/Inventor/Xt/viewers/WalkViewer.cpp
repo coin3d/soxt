@@ -164,16 +164,13 @@ SoXtWalkViewer::getDefaultIconTitle(void) const
 void
 SoXtWalkViewer::processEvent(XAnyEvent * event)
 {
-  if (this->processCommonEvents(event))
-    return;
-
   if (this->isViewing() && event->type == ButtonPress) {
     XButtonEvent * bevent = (XButtonEvent *) event;
     if (bevent->button == 3 && this->isPopupMenuEnabled()) {
       if (! this->prefmenu)
         this->buildPopupMenu();
       this->prefmenu->popUp(this->getParentWidget(),
-        bevent->x_root, bevent->y_root);
+                            bevent->x_root, bevent->y_root);
       return;
     }
   }
