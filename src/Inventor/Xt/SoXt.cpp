@@ -38,12 +38,13 @@
   href="http://www.lesstif.org/">Lesstif</a> installed on your system
   to use %SoXt.
 
-  %SoXt is still in alpha mode, meaning that it is buggy and lacks
-  functionality.  In other words, hope for the best but expect the
-  worst.
-
   The corresponding documentation for Coin is located 
   <a href="http://doc.coin3d.org/Coin/">here</a>.
+
+  See also the documentation of the <a
+  href="http://doc.coin3d.org/SoQt/">SoQt</a> library for elaborate
+  information on how a binding library such as this fits within a
+  development system, and what features it offers.
 */
 
 // *************************************************************************
