@@ -17,11 +17,6 @@
  *
  **************************************************************************/
 
-#if SOXT_DEBUG
-static const char rcsid[] =
-  "$Id$";
-#endif // SOXT_DEBUG
-
 #include <string.h>
 #include <stdlib.h> // atoi()
 
@@ -497,32 +492,6 @@ SoXtExaminerViewer::setCamera(SoCamera * camera)
   SoDebugError::postInfo("SoXtExaminerViewer::setCamera", "[exit]");
 #endif // SOXT_DEBUG
 } // setCamera()
-
-// *************************************************************************
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtExaminerViewer::setSeekMode(
-  SbBool enable)
-{
-#if SOXT_DEBUG
-  if (enable == this->isSeekMode()) {
-    SoDebugError::postWarning("SoXtExaminerViewer::setSeekMode",
-      "seek mode already %sset", enable ? "" : "un");
-    return;
-  }
-#endif // SOXT_DEBUG
-
-  if (this->isAnimating())
-    this->stopAnimating();
-  inherited::setSeekMode(enable);
-  this->setMode(enable ?
-                         SoXtExaminerViewer::WAITING_FOR_SEEK :
-                         SoXtExaminerViewer::EXAMINE);
-} // setSeekMode()
 
 // *************************************************************************
 
@@ -1008,8 +977,3 @@ SoXtExaminerViewer::makeSubPreferences(Widget parent)
 //    return inherited::makeSubPreferences(parent);
   return NULL;
 }
-
-
-#if SOXT_DEBUG
-static const char * getSoXtExaminerViewerRCSId(void) { return rcsid; }
-#endif // SOXT_DEBUG
