@@ -4663,6 +4663,42 @@ fi
 AC_SUBST(DSUFFIX)
 ])
 
+# Usage:
+#   SIM_AC_COMPILER_OPTIMIZATION
+#
+# Description:
+#   Let the user decide if optimization should be attempted turned off
+#   by stripping off an "-O[0-9]" option.
+# 
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+#
+# FIXME: this is pretty much just a dirty hack. Unfortunately, this
+# seems to be the best we can do without fixing Autoconf to behave
+# properly wrt setting optimization options. 20011021 mortene.
+# 
+# Author: Morten Eriksen, <mortene@sim.no>.
+# 
+
+AC_DEFUN([SIM_AC_COMPILER_OPTIMIZATION], [
+AC_ARG_ENABLE(
+  [optimization],
+  AC_HELP_STRING([--enable-optimization],
+                 [allow compilers to make optimized code [[default=yes]]]),
+  [case "${enableval}" in
+    yes) sim_ac_enable_optimization=true ;;
+    no)  sim_ac_enable_optimization=false ;;
+    *) AC_MSG_ERROR(bad value "${enableval}" for --enable-optimization) ;;
+  esac],
+  [sim_ac_enable_optimization=true])
+
+if $sim_ac_enable_optimization; then
+  :
+else
+  CFLAGS="`echo $CFLAGS | sed 's/-O[[0-9]]*[[ ]]*//'`"
+  CXXFLAGS="`echo $CXXFLAGS | sed 's/-O[[0-9]]*[[ ]]*//'`"
+fi
+])
 
 # Usage:
 #   SIM_COMPILER_WARNINGS
