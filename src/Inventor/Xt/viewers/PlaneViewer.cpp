@@ -107,8 +107,6 @@ SoXtPlaneViewerP::SoXtPlaneViewerButtons[] = {
 #define PUBLIC(ptr) (ptr->pub)
 #define PRIVATE(ptr) (ptr->pimpl)
 
-#define THIS (PRIVATE(this))
-
 SoXtPlaneViewerP::SoXtPlaneViewerP(SoXtPlaneViewer * publ)
   : SoGuiPlaneViewerP(publ)
 {
@@ -127,10 +125,6 @@ SoXtPlaneViewerP::constructor(SbBool build)
   const int buttons = sizeof(SoXtPlaneViewerButtons) / sizeof(SoXtViewerButton);
   this->buttons = new SoXtViewerButton[buttons];
   memcpy(this->buttons, SoXtPlaneViewerButtons, sizeof(SoXtPlaneViewerButtons));
-
-  this->prefshell = this->prefsheet = (Widget) NULL;
-  this->prefparts = NULL;
-  this->numprefparts = 0;
 
   PUBLIC(this)->setClassName(PUBLIC(this)->getDefaultWidgetName());
 
@@ -302,25 +296,6 @@ SoXtPlaneViewer::createViewerButtons(Widget parent,
   PRIVATE(this)->pixmaps.perspective_ins =
     SoXtInternal::createPixmapFromXpm(PRIVATE(this)->buttons[3].bwidget, perspective_xpm, TRUE);
 #endif // HAVE_LIBXPM
-}
-
-// *************************************************************************
-
-// Documented in superclass.
-void
-SoXtPlaneViewer::createPrefSheet(void)
-{
-  if (! this->prefshell) {
-    PRIVATE(this)->prefparts = new Widget [ 16 ];
-    this->createPrefSheetShellAndForm(this->prefshell, this->prefsheet);
-    this->createDefaultPrefSheetParts(PRIVATE(this)->prefparts,
-                                      PRIVATE(this)->numprefparts,
-                                      this->prefsheet);
-    // add parts specific for derived viewer
-  }
-  this->layoutPartsAndMapPrefSheet(PRIVATE(this)->prefparts,
-                                   PRIVATE(this)->numprefparts,
-                                   this->prefsheet, this->prefshell);
 }
 
 // *************************************************************************

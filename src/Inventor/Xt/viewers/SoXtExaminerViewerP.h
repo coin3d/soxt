@@ -42,24 +42,6 @@ public:
   void camerabuttonClicked(void);
   static void camerabuttonCB(Widget, XtPointer, XtPointer);
 
-  Widget createFramedSpinAnimPrefSheetGuts(Widget parent);
-  Widget createSpinAnimPrefSheetGuts(Widget parent);
-  Widget spinanimtoggle;
-  void spinanimtoggled(void);
-  static void spinanimtoggledCB(Widget, XtPointer, XtPointer);
-
-  Widget createRotAxisPrefSheetGuts(Widget parent);
-  Widget createFramedRotAxisPrefSheetGuts(Widget parent);
-  Widget rotpointaxestoggle, rotaxesoverlaytoggle, axessizewheel, axessizefield;
-  void rotpointtoggled(void);
-  static void rotpointtoggledCB(Widget, XtPointer, XtPointer);
-  void rotaxesoverlaytoggled(void);
-  static void rotaxesoverlaytoggledCB(Widget, XtPointer, XtPointer);
-  void axeswheelmoved(int ticks);
-  static void axeswheelmovedCB(Widget, XtPointer, XtPointer);
-  void axesfieldchanged(void);
-  static void axesfieldchangedCB(Widget, XtPointer, XtPointer);
-
   void constructor(const SbBool build);
 
   Widget camerabutton;
@@ -68,9 +50,6 @@ public:
     Pixmap perspective, perspective_ins;
     Pixmap nocam, nocam_ins;
   } camerapixmaps;
-
-  Widget * prefparts;
-  int numprefparts;
 };
 
 // ************************************************************************

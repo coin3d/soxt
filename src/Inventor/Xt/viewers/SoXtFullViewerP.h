@@ -57,7 +57,6 @@ public:
   void selectedViewing(void);
   void selectedDecoration(void);
   void selectedHeadlight(void);
-  void selectedPrefs(void);
   void copyviewSelected(void);
   void pasteviewSelected(void);
 
@@ -71,61 +70,8 @@ public:
 
   void seekbuttonClicked(void);
 
-  void prefSheetDestroy(void);
-  static void prefSheetDestroyCB(Widget, XtPointer, XtPointer);
-  static void seekPrefSheetFieldCB(Widget, XtPointer, XtPointer);
-  static void seekPrefSheetToggle1CB(Widget, XtPointer, XtPointer);
-  void seekPrefSheetToggle2(void);
-  static void seekPrefSheetToggle2CB(Widget, XtPointer, XtPointer);
-
-  Widget seektimefield;
-  Widget pointtoggle, objecttoggle;
-  void seektimechanged(void);
-  static void seektimechangedCB(Widget, XtPointer, XtPointer);
-  void pointtoggled(void);
-  static void pointtoggledCB(Widget, XtPointer, XtPointer);
-  void objecttoggled(void);
-  static void objecttoggledCB(Widget, XtPointer, XtPointer);
-  Widget seekdistancefield;
-  Widget percenttoggle, absolutetoggle;
-  void seekdistancechanged(void);
-  static void seekdistancechangedCB(Widget, XtPointer, XtPointer);
-  void percenttoggled(void);
-  static void percenttoggledCB(Widget, XtPointer, XtPointer);
-  void absolutetoggled(void);
-  static void absolutetoggledCB(Widget, XtPointer, XtPointer);
-
-  SbVec2f zoomrange;
-  Widget zoomfrom, zoomslider, zoomto, zoomvalue;
-  void zoomfromchanged(void);
-  static void zoomfromchangedCB(Widget, XtPointer, XtPointer);
-  void zoomtochanged(void);
-  static void zoomtochangedCB(Widget, XtPointer, XtPointer);
-  void zoomsliderchanged(void);
-  static void zoomsliderchangedCB(Widget, XtPointer, XtPointer);
-  void zoomvaluechanged(void);
-  static void zoomvaluechangedCB(Widget, XtPointer, XtPointer);
-
   void setCameraZoom(float zoom);
   float getCameraZoom(void);
-
-  // clipping preferences widgets
-  Widget autocliptoggle, nearwheel, farwheel, nearvalue, farvalue;
-
-  void autocliptoggled(void);
-  static void autocliptoggledCB(Widget, XtPointer, XtPointer);
-  void nearwheelvaluechanged(void);
-  static void nearwheelvaluechangedCB(Widget, XtPointer, XtPointer);
-  void farwheelvaluechanged(void);
-  static void farwheelvaluechangedCB(Widget, XtPointer, XtPointer);
-  void nearvaluechanged(void);
-  static void nearvaluechangedCB(Widget, XtPointer, XtPointer);
-  void farvaluechanged(void);
-  static void farvaluechangedCB(Widget, XtPointer, XtPointer);
-
-  Widget stereotoggle;
-  void stereotoggled(void);
-  static void stereotoggledCB(Widget, XtPointer, XtPointer);
 
   static void increaseInteractiveCountCB(Widget, XtPointer, XtPointer);
   static void decreaseInteractiveCountCB(Widget, XtPointer, XtPointer);
@@ -164,9 +110,6 @@ public:
   struct {
     Widget leftwheel, bottomwheel, rightwheel;
   } labels;
-
-  float seekdistance;
-  SbBool seekdistaspercentage;
 };
 
 // ************************************************************************

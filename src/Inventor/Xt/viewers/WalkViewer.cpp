@@ -92,10 +92,6 @@ SoXtWalkViewer::SoXtWalkViewer(Widget parent,
 void
 SoXtWalkViewer::constructor(SbBool build)
 {
-  this->prefparts = NULL;
-  this->prefshell = NULL;
-  this->prefsheet = NULL;
-  this->numprefparts = 0;
   this->heightwheel = NULL;
   this->heightvalue = 0.0f;
 
@@ -257,23 +253,6 @@ SoXtWalkViewer::buildLeftTrim(Widget parent)
                 SoXtWalkViewer::wheelchangedCB, (XtPointer) this);
 
   return form;
-}
-
-// Documented in superclass.
-void
-SoXtWalkViewer::createPrefSheet(void)
-{
-  if (! this->prefshell) {
-    this->prefparts = new Widget [ 16 ];
-    this->createPrefSheetShellAndForm(this->prefshell, this->prefsheet);
-    this->createDefaultPrefSheetParts(this->prefparts, this->numprefparts,
-                                      this->prefsheet);
-    this->prefparts[this->numprefparts] =
-      this->createFramedSpeedPrefSheetGuts(this->prefsheet);
-    if (this->prefparts[this->numprefparts] != NULL) this->numprefparts++;
-  }
-  this->layoutPartsAndMapPrefSheet(this->prefparts, this->numprefparts,
-                                   this->prefsheet, this->prefshell);
 }
 
 // Documented in superclass.

@@ -45,9 +45,6 @@ public:
   
   static void buttonCB(Widget, XtPointer, XtPointer);
 
-  Widget prefshell, prefsheet, * prefparts;
-  int numprefparts;
-
   struct {
     Pixmap ortho, ortho_ins;
     Pixmap perspective, perspective_ins;
