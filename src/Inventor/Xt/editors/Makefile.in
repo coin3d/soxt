@@ -590,11 +590,28 @@ DISTCLEANFILES = \
 
 
 ############################################################################
-
-# libSoXtEditors_la_SOURCES =
-nodist_libSoXtEditors_la_SOURCES = \
+RegularSources = 
+BuiltSources = \
 	$(SoGui_src_Inventor_Gui_editors_BuiltFiles) \
 	$(SoGui_src_Inventor_Gui_editors_BuiltMetaFiles)
+
+LinkHackSources = \
+	all-editors-cpp.cpp
+
+@HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
+
+@HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_FALSE@NoDistSources = $(BuiltSources)
+@HACKING_COMPACT_BUILD_TRUE@NoDistSources = 
+@HACKING_COMPACT_BUILD_FALSE@ExtraSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_TRUE@ExtraSources = $(RegularSources)
+
+libSoXtEditors_la_SOURCES = \
+	$(BuildSources)
+
+
+nodist_libSoXtEditors_la_SOURCES = \
+	$(NoDistSources)
 
 
 
@@ -616,13 +633,24 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 
 libSoXtEditors_la_LDFLAGS =
 libSoXtEditors_la_LIBADD =
-am__objects_1 = So@Gui@ColorEditor.lo So@Gui@MaterialEditor.lo
-nodist_libSoXtEditors_la_OBJECTS = $(am__objects_1) $(am__objects_2)
-libSoXtEditors_la_OBJECTS = $(nodist_libSoXtEditors_la_OBJECTS)
+am__libSoXtEditors_la_SOURCES_DIST = all-editors-cpp.cpp
+am__objects_1 = all-editors-cpp.lo
+am__objects_2 =
+@HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
+am_libSoXtEditors_la_OBJECTS = $(am__objects_3)
+am__objects_4 = So@Gui@ColorEditor.lo So@Gui@MaterialEditor.lo
+am__objects_6 = $(am__objects_4) $(am__objects_5)
+@HACKING_COMPACT_BUILD_TRUE@am__objects_7 =
+@HACKING_COMPACT_BUILD_FALSE@am__objects_7 = $(am__objects_6)
+nodist_libSoXtEditors_la_OBJECTS = $(am__objects_7)
+libSoXtEditors_la_OBJECTS = $(am_libSoXtEditors_la_OBJECTS) \
+	$(nodist_libSoXtEditors_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/So@Gui@ColorEditor.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/So@Gui@MaterialEditor.Plo
+@AMDEP_TRUE@	./$(DEPDIR)/So@Gui@MaterialEditor.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-editors-cpp.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -638,12 +666,12 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES =
+DIST_SOURCES = $(am__libSoXtEditors_la_SOURCES_DIST)
 HEADERS = $(SoXtEditorsinc_HEADERS) $(nodist_SoXtEditorsinc_HEADERS)
 
 DIST_COMMON = $(SoXtEditorsinc_HEADERS) \
 	$(srcdir)/../common/Makefile.common Makefile.am Makefile.in
-SOURCES = $(nodist_libSoXtEditors_la_SOURCES)
+SOURCES = $(libSoXtEditors_la_SOURCES) $(nodist_libSoXtEditors_la_SOURCES)
 
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -675,6 +703,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/So@Gui@ColorEditor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/So@Gui@MaterialEditor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-editors-cpp.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

@@ -22,18 +22,34 @@ DISTCLEANFILES = \
 
 lib_LTLIBRARIES = libSoXt.la
 
-libSoXt_la_SOURCES = \
-	SoXtInternal.cpp SoXtInternal.h \
+RegularSources = \
+	SoXtInternal.cpp \
 	SoXt.cpp \
 	SoXtComponent.cpp \
-	SoXtComponentP.h \
 	SoXtGLWidget.cpp \
-	SoXtGLWidgetP.h \
-	SoXtResource.cpp SoXtResource.h
-
-nodist_libSoXt_la_SOURCES = \
+	SoXtResource.cpp
+BuiltSources = \
 	$(SoGui_src_Inventor_Gui_BuiltFiles) \
 	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
+
+LinkHackSources = \
+	all-soxt-cpp.cpp
+
+if HACKING_COMPACT_BUILD
+BuildSources = $(LinkHackSources)
+NoDistSources =
+ExtraSources = $(RegularSources)
+else
+BuildSources = $(RegularSources)
+NoDistSources = $(BuiltSources)
+ExtraSources = $(LinkHackSources)
+endif
+
+libSoXt_la_SOURCES = \
+	$(BuildSources)
+
+nodist_libSoXt_la_SOURCES = \
+	$(NoDistSources)
 
 libSoXt_la_LIBADD = \
 	devices/libSoXtDevices.la \

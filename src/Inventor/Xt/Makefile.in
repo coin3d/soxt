@@ -592,19 +592,35 @@ DISTCLEANFILES = \
 ############################################################################
 lib_LTLIBRARIES = libSoXt.la
 
-libSoXt_la_SOURCES = \
-	SoXtInternal.cpp SoXtInternal.h \
+RegularSources = \
+	SoXtInternal.cpp \
 	SoXt.cpp \
 	SoXtComponent.cpp \
-	SoXtComponentP.h \
 	SoXtGLWidget.cpp \
-	SoXtGLWidgetP.h \
-	SoXtResource.cpp SoXtResource.h
+	SoXtResource.cpp
+
+BuiltSources = \
+	$(SoGui_src_Inventor_Gui_BuiltFiles) \
+	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
+
+
+LinkHackSources = \
+	all-soxt-cpp.cpp
+
+@HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
+
+@HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_FALSE@NoDistSources = $(BuiltSources)
+@HACKING_COMPACT_BUILD_TRUE@NoDistSources = 
+@HACKING_COMPACT_BUILD_FALSE@ExtraSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_TRUE@ExtraSources = $(RegularSources)
+
+libSoXt_la_SOURCES = \
+	$(BuildSources)
 
 
 nodist_libSoXt_la_SOURCES = \
-	$(SoGui_src_Inventor_Gui_BuiltFiles) \
-	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
+	$(NoDistSources)
 
 
 libSoXt_la_LIBADD = \
@@ -651,15 +667,25 @@ libSoXt_la_DEPENDENCIES = devices/libSoXtDevices.la \
 	editors/libSoXtEditors.la engines/libSoGuiEngines.la \
 	nodes/libSoGuiNodes.la viewers/libSoXtViewers.la \
 	widgets/libSoXtWidgets.la
-am_libSoXt_la_OBJECTS = SoXtInternal.lo SoXt.lo SoXtComponent.lo \
-	SoXtGLWidget.lo SoXtResource.lo
-am__objects_1 =
-am__objects_2 = SoAny.lo So@Gui@Cursor.lo So@Gui@Object.lo \
+am__libSoXt_la_SOURCES_DIST = SoXtInternal.cpp SoXt.cpp \
+	SoXtComponent.cpp SoXtGLWidget.cpp SoXtResource.cpp \
+	all-soxt-cpp.cpp
+am__objects_1 = all-soxt-cpp.lo
+am__objects_2 = SoXtInternal.lo SoXt.lo SoXtComponent.lo SoXtGLWidget.lo \
+	SoXtResource.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
+am_libSoXt_la_OBJECTS = $(am__objects_3)
+am__objects_4 =
+am__objects_5 = SoAny.lo So@Gui@Cursor.lo So@Gui@Object.lo \
 	So@Gui@Common.lo So@Gui@ComponentCommon.lo \
-	So@Gui@GLWidgetCommon.lo So@Gui@RenderArea.lo $(am__objects_1)
-@BUILD_METAFILES_TRUE@am__objects_3 =
-@BUILD_METAFILES_FALSE@am__objects_3 =
-nodist_libSoXt_la_OBJECTS = $(am__objects_2) $(am__objects_3)
+	So@Gui@GLWidgetCommon.lo So@Gui@RenderArea.lo $(am__objects_4)
+@BUILD_METAFILES_TRUE@am__objects_6 =
+@BUILD_METAFILES_FALSE@am__objects_6 =
+am__objects_7 = $(am__objects_5) $(am__objects_6)
+@HACKING_COMPACT_BUILD_TRUE@am__objects_8 =
+@HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
+nodist_libSoXt_la_OBJECTS = $(am__objects_8)
 libSoXt_la_OBJECTS = $(am_libSoXt_la_OBJECTS) \
 	$(nodist_libSoXt_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -674,7 +700,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoXtComponent.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoXtGLWidget.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoXtInternal.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoXtResource.Plo
+@AMDEP_TRUE@	./$(DEPDIR)/SoXtResource.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-soxt-cpp.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -690,7 +717,7 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libSoXt_la_SOURCES)
+DIST_SOURCES = $(am__libSoXt_la_SOURCES_DIST)
 HEADERS = $(SoXtinc_HEADERS) $(nodist_SoXtinc_HEADERS)
 
 
@@ -763,6 +790,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoXtGLWidget.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoXtInternal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoXtResource.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-soxt-cpp.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

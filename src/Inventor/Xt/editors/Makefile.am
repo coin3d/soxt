@@ -20,11 +20,29 @@ DISTCLEANFILES = \
 
 ############################################################################
 
-# libSoXtEditors_la_SOURCES =
-
-nodist_libSoXtEditors_la_SOURCES = \
+RegularSources =
+BuiltSources = \
 	$(SoGui_src_Inventor_Gui_editors_BuiltFiles) \
 	$(SoGui_src_Inventor_Gui_editors_BuiltMetaFiles)
+LinkHackSources = \
+	all-editors-cpp.cpp
+
+if HACKING_COMPACT_BUILD
+BuildSources = $(LinkHackSources)
+NoDistSources =
+ExtraSources = $(RegularSources)
+else
+BuildSources = $(RegularSources)
+NoDistSources = $(BuiltSources)
+ExtraSources = $(LinkHackSources)
+endif
+
+libSoXtEditors_la_SOURCES = \
+	$(BuildSources)
+
+nodist_libSoXtEditors_la_SOURCES = \
+	$(NoDistSources)
+
 
 ############################################################################
 
