@@ -627,8 +627,14 @@ clean_pixmaps(
   if ( widget->thumbwheel.pixmaps == NULL )
     return;
   int i;
+#if 0
+  // FIXME: this code causes a crash when running under Ivy on
+  // SGI IRIX 6.5 (but not when an application is run "stand-alone",
+  // strangely enough). So, we prefer a memory leak to a crash...
+  // 20000707 mortene.
   for ( i = 0; i < widget->thumbwheel.numpixmaps; i++ )
     XFreePixmap( XtDisplay(widget), widget->thumbwheel.pixmaps[i] );
+#endif // FIXME
   delete [] widget->thumbwheel.pixmaps;
   widget->thumbwheel.pixmaps = NULL;
   widget->thumbwheel.numpixmaps = 0;
