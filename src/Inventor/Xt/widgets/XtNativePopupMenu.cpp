@@ -603,15 +603,15 @@ XtNativePopupMenu::popUp(Widget inside, int x, int y)
   }
   this->dirty = FALSE;
 
-  Widget toplevel = inside;
-  while (!XtIsShell(toplevel)) { toplevel = XtParent(toplevel); }
-
-  Dimension shellx = 0, shelly = 0;
-  XtVaGetValues(toplevel, XmNx, &shellx, XmNy, &shelly, NULL);
-
+  // Find global mouse pointer coordinates.
+  Display * display = XtDisplay(inside);
   XButtonEvent pos;
-  pos.x_root = x + shellx + 2;
-  pos.y_root = y + shelly + 2;
+  Window dummyarg;
+  Bool b = XTranslateCoordinates(display,
+                                 XtWindow(inside),
+                                 DefaultRootWindow(display),
+                                 x, y, &pos.x_root, &pos.y_root, &dummyarg);
+  assert(b == True); // or we've got a bug
 
   XmMenuPosition(this->popup, &pos);
   XtManageChild(this->popup);
