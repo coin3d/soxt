@@ -17,18 +17,9 @@
  *
  **************************************************************************/
 
-#if SOXT_DEBUG
-static const char rcsid[] =
-  "$Id$";
-#endif // SOXT_DEBUG
-
 // *************************************************************************
 
-/*!
-  \class SoXtComponent Inventor/Xt/SoXtComponent.h
-  \brief The SoXtComponent class is the base class for all SoXt components.
-  \ingroup components
-*/
+// Class documentation in common/SoGuiComponentCommon.cpp.in.
 
 // *************************************************************************
 
@@ -130,17 +121,9 @@ SbDict * SoXtComponentP::cursordict = NULL;
 
 SOXT_OBJECT_ABSTRACT_SOURCE(SoXtComponent);
 
-/*!
-  \internal
-  This function initializes the type system for all the component classes.
-  It is called indirectly when calling SoXt::init().
-
-  \sa SoXt::init, SoXtDevice::initClasses
-*/
-
+// documented in common/SoGuiComponentCommon.cpp.in.
 void
-SoXtComponent::initClasses(
-  void)
+SoXtComponent::initClasses(void)
 {
   SoXtComponent::initClass();
   SoXtGLWidget::initClass();
@@ -158,7 +141,7 @@ SoXtComponent::initClasses(
   SoXtMaterialSliderSet::initClass();
   SoXtTransformSliderSet::initClass();
   SoXtMaterialList::initClass();
-} // initClasses()
+}
 
 // *************************************************************************
 
@@ -180,34 +163,9 @@ struct SoXtComponentVisibilityCallbackInfo {
 
 // *************************************************************************
 
-/*!
-  This is a protected constructor, used only by derived classes.
-
-  The \a parent argument is the parent widget of the component.  If you
-  don't supply a parent, the main window (the one given to or returned
-  from SoXt::init()) is used (and the \a embed argument is set to FALSE).
-
-  The \a name argument is the name of the component.  It will decide which
-  X resources the component will use, so be careful with what you set it
-  to.  If you don't supply one, the name will default to something, depending
-  on the inheritance hierarchy.  If you supply a name and don't set up your
-  own X resources, the component will at the least be full of bogus labels.
-
-  The \a embed argument tells wether the component should be embedded in
-  the \a parent widget or should create its own shell.  This flag is only
-  checked if the \a parent widget argument is specified (not NULL).
-
-  If you create a non-embedded component, the component will create its
-  own shell, which will be of the topLevelShellWidgetClass type.  If you
-  embed the component, the component will create an XmFormWidgetClass
-  type widget inside the \a parent widget, which you can get the handle
-  og by calling SoXtComponent::getBaseWidget().  You do not need (nor
-  should you) create an empty form widget for the component in other
-  words.
-*/
-
+// documented in common/SoGuiComponentCommon.cpp.in.
 SoXtComponent::SoXtComponent(const Widget parent,
-                             const char * const name,
+                             const char * const name, // decides X resources to use
                              const SbBool embed) // protected
 {
   PRIVATE(this) = new SoXtComponentP(this);
@@ -269,14 +227,10 @@ SoXtComponent::SoXtComponent(const Widget parent,
   if (XtIsShell(PRIVATE(this)->parent))
     XtInsertEventHandler(PRIVATE(this)->parent, (EventMask) StructureNotifyMask, False,
       SoXtComponent::event_handler, (XtPointer) this, XtListTail);
-} // SoXtComponent()
+}
 
-/*!
-  The destructor.
-*/
-
-SoXtComponent::~SoXtComponent(// virtual
-  void)
+// documented in common/SoGuiComponentCommon.cpp.in.
+SoXtComponent::~SoXtComponent()
 {
   delete [] PRIVATE(this)->widgetname;
   delete [] PRIVATE(this)->widgetclass;
@@ -303,20 +257,13 @@ SoXtComponent::~SoXtComponent(// virtual
   }
 
   delete PRIVATE(this);
-} // ~SoXtComponent()
+}
 
 // *************************************************************************
 
-/*!
-  This method realizes the component.
-
-  topLevelShell widgets will be realized and mapped.
-  non-toplevel components will just be managed.
-*/
-
+// documented in common/SoGuiComponentCommon.cpp.in.
 void
-SoXtComponent::show(// virtual
-  void)
+SoXtComponent::show(void)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtComponent::show", "[enter]");
@@ -335,18 +282,11 @@ SoXtComponent::show(// virtual
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtComponent::show", "[exit]");
 #endif // SOXT_DEBUG
-} // show()
+}
 
-/*!
-  This method hides the component.
-
-  topLevelShell widgets will be unrealized.
-  non-toplevel components will just be unmanaged.
-*/
-
+// documented in common/SoGuiComponentCommon.cpp.in.
 void
-SoXtComponent::hide(// virtual
-  void)
+SoXtComponent::hide(void)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtComponent::hide", "[enter]");
@@ -361,115 +301,50 @@ SoXtComponent::hide(// virtual
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtComponent::hide", "[exit]");
 #endif // SOXT_DEBUG
-} // hide()
+}
 
-/*!
-  This method returns TRUE if component is shown, and FALSE if it is hidden.
-
-  This method is not implemented.
-*/
-
+// documented in common/SoGuiComponentCommon.cpp.in.
 SbBool
-SoXtComponent::isVisible(
-  void)
+SoXtComponent::isVisible(void)
 {
   return PRIVATE(this)->visibilitystate;
-} // isVisible()
+}
 
 // *************************************************************************
 
-/*!
-  This method returns the base widget of the component.
-
-  \sa SoXtComponent::getBaseWidget()
-*/
-
+// documented in common/SoGuiComponentCommon.cpp.in.
 Widget
-SoXtComponent::getWidget(
-  void) const
+SoXtComponent::getWidget(void) const
 {
   return this->getBaseWidget();
-} // getWidget()
+}
 
-/*!
-  This method returns the base widget of the component.
-
-  \sa SoXtComponent::getBaseWidget()
-*/
-
+// documented in common/SoGuiComponentCommon.cpp.in.
 Widget
-SoXtComponent::baseWidget(
-  void) const
-{
-  return this->getBaseWidget();
-} // baseWidget()
-
-/*!
-  This method returns the base widget of the component.
-
-  \sa SoXtComponent::getBaseWidget()
-*/
-
-Widget
-SoXtComponent::getBaseWidget(
-  void) const
+SoXtComponent::getBaseWidget(void) const
 {
   return PRIVATE(this)->widget;
-} // getBaseWidget()
+}
 
-/*!
-  This method returns whether the component was created as a toplevel shell
-  or not.
-*/
-
+// documented in common/SoGuiComponentCommon.cpp.in.
 SbBool
-SoXtComponent::isTopLevelShell(
-  void) const
+SoXtComponent::isTopLevelShell(void) const
 {
   return PRIVATE(this)->embedded ? FALSE : TRUE;
-} // isTopLevelShell()
+}
 
-/*!
-  This method returns the shell widget of the component, but only if it was
-  created as a toplevel shell.  This method will return NULL for embedded
-  components.
-*/
-
+// documented in common/SoGuiComponentCommon.cpp.in.
 Widget
-SoXtComponent::getShellWidget(
-  void) const
-{
-  return this->isTopLevelShell() ? PRIVATE(this)->parent : (Widget) NULL;
-} // getShellWidget()
-
-/*!
-  This method returns the parent widget of the component widget.  If
-  the component created its own toplevel shell, this method returns
-  the the shell widget.
-
-  If the component is embedded, this method returns the widget given
-  in the \a parent argument of the constructor.
-*/
-// FIXME: ^^^ this last statement doesn't seem valid -- investigate.
-// 20011012 mortene.
-Widget
-SoXtComponent::getParentWidget(
-  void) const
+SoXtComponent::getParentWidget(void) const
 {
   return PRIVATE(this)->parent;
-} // getParentWidget()
+}
 
 // *************************************************************************
 
-/*!
-  This method sets the size of the component.
-
-  The method assumes the caller knows what he is doing.
-*/
-
+// documented in common/SoGuiComponentCommon.cpp.in.
 void
-SoXtComponent::setSize(
-  const SbVec2s size)
+SoXtComponent::setSize(const SbVec2s size)
 {
   PRIVATE(this)->size = size;
   Widget widget;
@@ -492,19 +367,14 @@ SoXtComponent::setSize(
   }
   XtSetValues(widget, args, argc);
   this->sizeChanged(size);
-} // setSize()
+}
 
-/*!
-  This method returns the size of the component.
-
-  The size that is returned is a cached size value, not a value fetched
-  from the GUI system.
-*/
+// documented in common/SoGuiComponentCommon.cpp.in.
 SbVec2s
 SoXtComponent::getSize(void) const
 {
   return PRIVATE(this)->size;
-} // getSize()
+}
 
 /*!
   This method tries to resize the component window, using \a size as the
@@ -512,10 +382,8 @@ SoXtComponent::getSize(void) const
 
   This method is not part of the Open Inventor SoXt API.
 */
-
 void
-SoXtComponent::fitSize(
-  const SbVec2s size)
+SoXtComponent::fitSize(const SbVec2s size)
 {
   if (this->isTopLevelShell() || (PRIVATE(this)->parent && XtIsShell(PRIVATE(this)->parent))) {
     XtWidgetGeometry geometry;
@@ -523,18 +391,14 @@ SoXtComponent::fitSize(
     PRIVATE(this)->size[0] = SoXtMax((short) geometry.width, size[0]);
     PRIVATE(this)->size[1] = SoXtMax((short) geometry.height, size[1]);
     XtVaSetValues(this->getShellWidget(),
-      XmNwidth, PRIVATE(this)->size[0],
-      XmNheight, PRIVATE(this)->size[1],
-      NULL);
+                  XmNwidth, PRIVATE(this)->size[0],
+                  XmNheight, PRIVATE(this)->size[1],
+                  NULL);
   }
-} // fitSize()
+}
 
-/*!
-  Called internally from within the SoXt library when the widget
-  embedded in a component changes it size. that is usually triggered
-  by end-user interaction.
-*/
-void         // virtual
+// documented in common/SoGuiComponentCommon.cpp.in.
+void
 SoXtComponent::sizeChanged(const SbVec2s & size)
 {
   // Since SoXtComponent doesn't manage any internal widgets, this
@@ -550,10 +414,8 @@ SoXtComponent::sizeChanged(const SbVec2s & size)
 /*!
   This method returns the display the component is sent to.
 */
-
 Display *
-SoXtComponent::getDisplay(
-  void)
+SoXtComponent::getDisplay(void)
 {
 #if SOXT_DEBUG
   if (! this->getBaseWidget())
@@ -562,20 +424,13 @@ SoXtComponent::getDisplay(
 #endif // SOXT_DEBUG
   return this->getBaseWidget() ?
     XtDisplay(this->getBaseWidget()) : (Display *) NULL;
-} // getDisplay()
+}
 
 // *************************************************************************
 
-/*!
-  This method sets the title of the component.
-
-  The title will appear on the window title bar, if the component manages
-  its own window.
-*/
-
+// documented in common/SoGuiComponentCommon.cpp.in.
 void
-SoXtComponent::setTitle(
-  const char * const title)
+SoXtComponent::setTitle(const char * const title)
 {
   if (PRIVATE(this)->title && strlen(PRIVATE(this)->title) >= strlen(title)) {
     strcpy(PRIVATE(this)->title, (char *) title);
@@ -591,33 +446,19 @@ SoXtComponent::setTitle(
   XtVaSetValues(shell,
     XmNtitle, PRIVATE(this)->title,
     NULL);
-} // setTitle()
+}
 
-/*!
-  This method returns the title of the component.
-
-  If a title has been set, that title will be returned.
-  If no title has been set, the default title is returned.
-*/
-
+// documented in common/SoGuiComponentCommon.cpp.in.
 const char *
-SoXtComponent::getTitle(
-  void) const
+SoXtComponent::getTitle(void) const
 {
   // FIXME: use SoXtResource to see if title is set?
   return PRIVATE(this)->title ? PRIVATE(this)->title : this->getDefaultTitle();
 }
 
-/*!
-  This method sets the title of the icon representation of the window.
-
-  The title will appear on the window icon, if the component manages its
-  own window.
-*/
-
+// documented in common/SoGuiComponentCommon.cpp.in.
 void
-SoXtComponent::setIconTitle(
-  const char * const title)
+SoXtComponent::setIconTitle(const char * const title)
 {
   if (PRIVATE(this)->icontitle && strlen(PRIVATE(this)->icontitle) >= strlen(title)) {
     strcpy(PRIVATE(this)->icontitle, (char *) title);
@@ -630,37 +471,21 @@ SoXtComponent::setIconTitle(
   if (! shell)
     return;
   XtVaSetValues(shell,
-    XtNiconName, PRIVATE(this)->icontitle,
-    NULL);
+                XtNiconName, PRIVATE(this)->icontitle,
+                NULL);
 }
 
-/*!
-  This method returns the icon title for the component.
-
-  If an icon title has been set, that icon title is returned.
-  If no icon title has been set, the default icon title is returned.
-*/
-
+// documented in common/SoGuiComponentCommon.cpp.in.
 const char *
-SoXtComponent::getIconTitle(
-  void) const
+SoXtComponent::getIconTitle(void) const
 {
   // FIXME: use SoXtResource to see if iconName is set?
   return PRIVATE(this)->icontitle ? PRIVATE(this)->icontitle : this->getDefaultIconTitle();
-} // getIconTitle()
+}
 
 // *************************************************************************
 
-/*!
-  This method adds window close callbacks to the Component window.
-
-  Note that window close callback invokation has not been implemented yet.
-
-  \sa SoXtComponent::addWindowCloseCallback()
-  \sa SoXtComponent::removeWindowCloseCallback()
-  \sa SoXtComponent::invokeWindowCloseCallback()
-*/
-
+// documented in common/SoGuiComponentCommon.cpp.in.
 void
 SoXtComponent::setWindowCloseCallback(
   SoXtComponentCB * const callback,
@@ -739,6 +564,9 @@ void
 SoXtComponent::invokeWindowCloseCallbacks(// protected
   void) const
 {
+  // FIXME: close callbacks never actually invoked from anywhere?
+  // 20020503 mortene.
+
   if (PRIVATE(this)->closecbs == NULL)
     return;
   const int num = PRIVATE(this)->closecbs->getLength();
@@ -880,53 +708,6 @@ SoXtComponent::afterRealizeHook(// virtual, protected
     }
   }
 } // afterRealizeHook()
-
-// *************************************************************************
-
-/*!
-  This method returns the default name for the component widget.
-
-  It should be overloaded by SoXtComponent-derived classes so the
-  topmost widget in the component gets a proper name.
-*/
-
-const char *
-SoXtComponent::getDefaultWidgetName(// virtual, protected
-  void) const
-{
-  static const char defaultWidgetName[] = "SoXtComponent";
-  return defaultWidgetName;
-} // getDefaultWidgetName()
-
-/*!
-  This method returns the default window title for the component.
-
-  It should be overloaded by SoXtComponent-derived classes so the window
-  and popup menu will get a proper title.
-*/
-
-const char *
-SoXtComponent::getDefaultTitle(// virtual, protected
-  void) const
-{
-  static const char defaultTitle[] = "Xt Component";
-  return defaultTitle;
-} // getDefaultTitle()
-
-/*!
-  This method returns the default title for icons for the component window.
-
-  It should be overloaded by SoXtComponent-derived classes so icons will
-  get proper titles.
-*/
-
-const char *
-SoXtComponent::getDefaultIconTitle(// virtual, protected
-  void) const
-{
-  static const char defaultIconTitle[] = "Xt Component";
-  return defaultIconTitle;
-} // getDefaultIconTitle()
 
 // *************************************************************************
 
@@ -1278,7 +1059,3 @@ SoXtComponent::setWidgetCursor(Widget w, const SoXtCursor & cursor)
 }
 
 // *************************************************************************
-
-#if SOXT_DEBUG
-static const char * getSoXtComponentRCSId(void) { return rcsid; }
-#endif // SOXT_DEBUG
