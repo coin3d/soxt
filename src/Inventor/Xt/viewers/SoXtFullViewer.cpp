@@ -1087,6 +1087,17 @@ SoXtFullViewer::getLeftWheelValue(
   return this->wheelvalues[LEFTDECORATION];
 } // getLeftWheelValue()
 
+/*!
+*/
+
+void
+SoXtFullViewer::setLeftWheelValue(
+  const float value )
+{
+  this->wheelvalues[LEFTDECORATION] = value;
+  SoXtThumbWheelSetValue( this->wheels[LEFTDECORATION], value );
+} // setLeftWheelValue()
+
 // *************************************************************************
 
 /*!
@@ -1160,6 +1171,17 @@ SoXtFullViewer::getBottomWheelValue(
   return this->wheelvalues[BOTTOMDECORATION];
 } // getBottomWheelValue()
 
+/*!
+*/
+
+void
+SoXtFullViewer::setBottomWheelValue(
+  const float value )
+{
+  this->wheelvalues[BOTTOMDECORATION] = value;
+  SoXtThumbWheelSetValue( this->wheels[BOTTOMDECORATION], value );
+} // setBottomWheelValue()
+
 // *************************************************************************
 
 /*!
@@ -1232,6 +1254,17 @@ SoXtFullViewer::getRightWheelValue(
 {
   return this->wheelvalues[RIGHTDECORATION];
 } // getRightWheelValue()
+
+/*!
+*/
+
+void
+SoXtFullViewer::setRightWheelValue(
+  const float value )
+{
+  this->wheelvalues[RIGHTDECORATION] = value;
+  SoXtThumbWheelSetValue( this->wheels[RIGHTDECORATION], value );
+} // setRightWheelValue()
 
 // *************************************************************************
 

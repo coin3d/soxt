@@ -95,6 +95,7 @@ protected:
   virtual void leftWheelFinish(void);
   SOXT_WIDGET_CALLBACK( leftWheelFinish );
   float getLeftWheelValue(void) const;
+  void setLeftWheelValue( const float value );
 
   virtual void bottomWheelStart(void);
   SOXT_WIDGET_CALLBACK( bottomWheelStart );
@@ -103,6 +104,7 @@ protected:
   virtual void bottomWheelFinish(void);
   SOXT_WIDGET_CALLBACK( bottomWheelFinish );
   float getBottomWheelValue(void) const;
+  void setBottomWheelValue( const float value );
 
   virtual void rightWheelStart(void);
   SOXT_WIDGET_CALLBACK( rightWheelStart );
@@ -111,6 +113,7 @@ protected:
   virtual void rightWheelFinish(void);
   SOXT_WIDGET_CALLBACK( rightWheelFinish );
   float getRightWheelValue(void) const;
+  void setRightWheelValue( const float value );
 
   void setLeftWheelString( const char * const name );
   void setBottomWheelString( const char * const name );
