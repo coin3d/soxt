@@ -42,7 +42,9 @@ EXTRA_DIST = \
 if BUILD_LIBRARY
 
 acdatadir = $(datadir)/aclocal
-dist_acdata_DATA = so@gui@.m4
+# Don't replace "xt" with "@gui@" here, as it will pøkk up
+# for ``make dist''.
+dist_acdata_DATA = soxt.m4
 
 cfgdatadir = $(datadir)/Coin/conf
 cfgdata_DATA = so@gui@-@CONFIG@.cfg
