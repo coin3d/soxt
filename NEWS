@@ -4,7 +4,12 @@ NEWS
 This file contains a history log of user-visible changes in the SoXt
 library.
 
+* 2000-09-21 larsa:
+
+	Public license change from QPL to GNU LGPL.
+
 * 2000-06-26 larsa:
+
 	SoXt has now support for the Linux Joystick driver, which means
 	you can connect e.g. a Spaceball 4000 FLX to your serial port
 	and get Motion3/SpaceballButton events sent into the scene graph.
@@ -12,6 +17,7 @@ library.
 	the driver.
 
 * 2000-05-22 larsa:
+
 	SoXt no longer uses the GLw/GLwM widget from SGI / Mesa, but
 	uses it's own integrated SoXtGLArea widget based on the SGI
 	sources.  Maybe not an improvement for those who have the GL
