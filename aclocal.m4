@@ -4829,20 +4829,22 @@ AC_ARG_ENABLE(
   [enable_warnings=yes])
 
 if test x"$enable_warnings" = x"yes"; then
-  if test x"$GCC" = x"yes"; then
-    SIM_AC_CC_COMPILER_OPTION([-W -Wall -Wno-unused],
-                              [CFLAGS="$CFLAGS -W -Wall -Wno-unused"])
-    SIM_AC_CC_COMPILER_OPTION([-Wno-multichar],
-                              [CFLAGS="$CFLAGS -Wno-multichar"])
-  fi
 
-  if test x"$GXX" = x"yes"; then
-    SIM_AC_CXX_COMPILER_OPTION([-W -Wall -Wno-unused],
-                               [CXXFLAGS="$CXXFLAGS -W -Wall -Wno-unused"])
-    SIM_AC_CXX_COMPILER_OPTION([-Wno-multichar],
-                               [CXXFLAGS="$CXXFLAGS -Wno-multichar"])
-  fi
+  for sim_ac_try_warning_option in \
+    "-W" "-Wall" "-Wno-unused" "-Wno-multichar" "-Woverloaded-virtual"; do
 
+    if test x"$GCC" = x"yes"; then
+      SIM_AC_CC_COMPILER_OPTION([$sim_ac_try_warning_option],
+                                [CFLAGS="$CFLAGS $sim_ac_try_warning_option"])
+    fi
+  
+    if test x"$GXX" = x"yes"; then
+      SIM_AC_CXX_COMPILER_OPTION([$sim_ac_try_warning_option],
+                                 [CXXFLAGS="$CXXFLAGS $sim_ac_try_warning_option"])
+    fi
+
+  done
+    
   case $host in
   *-*-irix*) 
     ### Turn on all warnings ######################################
@@ -6405,7 +6407,9 @@ if test x"$with_pthread" != xno; then
 
   # FIXME: should investigate and document the exact meaning of
   # the _REENTRANT flag. larsa's commit message mentions
-  # "glibc-doc/FAQ.threads.html".
+  # "glibc-doc/FAQ.threads.html". Also, kintel points to the
+  # comp.programming.thrads FAQ, which has an entry on the
+  # _REENTRANT define.
   #
   # Preferably, it should only be set up when really needed
   # (as detected by some other configure check).

@@ -270,6 +270,7 @@ fi
 # Check for miscellaneous "optional" Open Inventor features.
 
 SIM_AC_HAVE_INVENTOR_NODE(SoPolygonOffset)
+SIM_AC_HAVE_INVENTOR_VRMLNODE(SoVRMLMaterial)
 
 SIM_AC_HAVE_INVENTOR_FEATURE(
   [for SoKeyboardEvent::DELETE enum],
