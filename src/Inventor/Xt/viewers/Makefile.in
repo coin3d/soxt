@@ -409,10 +409,6 @@ nodist_libSoXtViewers_la_SOURCES = \
 	$(SoGui_src_Inventor_Gui_viewers_BuiltMetaFiles)
 
 
-EXTRA_libSoXtViewers_la_SOURCES = \
-	SoNativeFlyViewer.cpp
-
-
 
 ############################################################################
 SoXtViewersincdir = $(includedir)/Inventor/@Gui@/viewers
@@ -485,8 +481,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoAnyExaminerViewer.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoAnyFullViewer.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoAnyPlaneViewer.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoAnyWalkViewer.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoNativeFlyViewer.Plo
+@AMDEP_TRUE@	$(DEPDIR)/SoAnyWalkViewer.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -504,12 +499,11 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libSoXtViewers_la_SOURCES) \
-	$(EXTRA_libSoXtViewers_la_SOURCES)
+DIST_SOURCES = $(libSoXtViewers_la_SOURCES)
 HEADERS = $(SoXtViewersinc_HEADERS) $(nodist_SoXtViewersinc_HEADERS)
 
 DIST_COMMON = $(SoXtViewersinc_HEADERS) Makefile.am Makefile.in
-SOURCES = $(libSoXtViewers_la_SOURCES) $(EXTRA_libSoXtViewers_la_SOURCES) $(nodist_libSoXtViewers_la_SOURCES)
+SOURCES = $(libSoXtViewers_la_SOURCES) $(nodist_libSoXtViewers_la_SOURCES)
 
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -590,7 +584,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAnyFullViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAnyPlaneViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAnyWalkViewer.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNativeFlyViewer.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf $(DEPDIR)

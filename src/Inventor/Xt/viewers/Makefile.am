@@ -35,9 +35,6 @@ nodist_libSoXtViewers_la_SOURCES = \
 	$(SoGui_src_Inventor_Gui_viewers_BuiltFiles) \
 	$(SoGui_src_Inventor_Gui_viewers_BuiltMetaFiles)
 
-EXTRA_libSoXtViewers_la_SOURCES = \
-	SoNativeFlyViewer.cpp
-
 ############################################################################
 
 SoXtViewersincdir = $(includedir)/Inventor/@Gui@/viewers
