@@ -58,6 +58,8 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtObject.h>
+#include <Inventor/Xt/devices/SoXtDevice.h>
+#include <Inventor/Xt/SoXtComponent.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -205,6 +207,16 @@ SoXt::init( // static
 
   SoXt::init( toplevel );
   return toplevel;
+} // init()
+
+// documented in common/SoGuiObject.cpp.in
+void
+SoXtObject::init( // static
+  void )
+{
+  SoXtObject::initClass();
+  SoXtDevice::initClasses();
+  SoXtComponent::initClasses();
 } // init()
 
 /*
