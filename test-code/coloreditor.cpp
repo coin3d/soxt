@@ -25,6 +25,7 @@ main(int argc, char ** argv)
   viewer->setSceneGraph(makescene());
   SoXtColorEditor * editor = new SoXtColorEditor;
   editor->attach(&(material->diffuseColor));
+  editor->setCurrentSliders(SoXtColorEditor::RGB_HSV);
   viewer->show();
   editor->show();
   SoXt::show(w);
