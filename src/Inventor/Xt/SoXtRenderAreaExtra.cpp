@@ -17,8 +17,10 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
 
 #include <assert.h>
 
@@ -67,3 +69,8 @@ SoXtRenderArea::processEvent( // virtual, protected
 } // processEvent()
 
 // *************************************************************************
+
+#if SOXT_DEBUG
+static const char * getSoXtRenderAreaExtraRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
+
