@@ -113,7 +113,6 @@ SoXtExaminerViewer::constructor( // private
   this->spindetecttimerActive = FALSE;
 
   this->setClassName( "SoXtExaminerViewer" );
-  this->setTitle( "Examiner Viewer" );
   this->camerabutton = (Widget) NULL;
 
   if ( build ) {
