@@ -184,39 +184,6 @@ SoXtPlaneViewerP::findButton(Widget widget) const
   return -1;
 }
 
-// *************************************************************************
-
-// Documented in common/viewers/SoGuiPlaneViewer.cpp.in.
-SoXtPlaneViewer::SoXtPlaneViewer(Widget parent,
-                                 const char * const name,
-                                 SbBool embed,
-                                 SoXtFullViewer::BuildFlag flag,
-                                 SoXtViewer::Type type)
-  : inherited(parent, name, embed, flag, type, FALSE)
-{
-  PRIVATE(this) = new SoXtPlaneViewerP(this);
-  PRIVATE(this)->constructor(TRUE);
-}
-
-// Documented in common/viewers/SoGuiPlaneViewer.cpp.in.
-SoXtPlaneViewer::SoXtPlaneViewer(Widget parent,
-                                 const char * const name,
-                                 SbBool embed,
-                                 SoXtFullViewer::BuildFlag flag,
-                                 SoXtViewer::Type type,
-                                 SbBool build)
-  : inherited(parent, name, embed, flag, type, FALSE)
-{
-  PRIVATE(this) = new SoXtPlaneViewerP(this);
-  PRIVATE(this)->constructor(build);
-}
-
-// Documented in common/viewers/SoGuiPlaneViewer.cpp.in.
-SoXtPlaneViewer::~SoXtPlaneViewer()
-{
-  delete PRIVATE(this);
-}
-
 // ************************************************************************
 
 // Documented in superclass.
