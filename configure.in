@@ -11,7 +11,7 @@ AC_CONFIG_AUX_DIR(cfg)
 cat >reconfigure <<END_OF_SCRIPT
 #! /bin/sh
 echo $0 $@
-exec $0 $@
+$0 $@
 END_OF_SCRIPT
 chmod 755 reconfigure
 
@@ -75,6 +75,19 @@ AM_CONFIG_HEADER(config.h)
 
 AM_DISABLE_STATIC
 AM_MAINTAINER_MODE
+
+case "$host_os" in
+  irix*)
+    if test x"${AR+set}" != x"set"; then
+      AR="CC -ar"
+      AR_FLAGS=
+      export AR AR_FLAGS
+      echo "overriding the libtool '\$AR' setting with 'CC -ar'"
+    fi
+    ;;
+  *) ;;
+esac
+
 AC_PROG_LIBTOOL
 
 # **************************************************************************

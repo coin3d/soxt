@@ -129,6 +129,12 @@ echo "Running aclocal..."
   aclocal -I $MACRODIR
 )
 
+# generate configure
+echo "Running autoconf..."
+( ( $verbose && set -x;
+  autoconf
+) 3>&1 1>&2 2>&3 | grep -v 'AR_FLAGS$' ) 3>&1 1>&2 2>&3
+
 # generate config.h.in
 echo "Running autoheader..."
 ( ( $verbose && set -x;
@@ -140,10 +146,4 @@ echo "Running automake..."
 ( ( $verbose && set -x;
   automake $AUTOMAKE_ADD
 ) 3>&1 1>&2 2>&3 | egrep -v 'directory should not| installing ' ) 3>&1 1>&2 2>&3
-
-# generate configure
-echo "Running autoconf..."
-( $verbose && set -x;
-  autoconf
-)
 
