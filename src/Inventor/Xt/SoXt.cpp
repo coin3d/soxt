@@ -70,6 +70,7 @@
 #include <soxtdefs.h>
 
 #include <Inventor/Xt/SoXt.h>
+#include <Inventor/Xt/SoGuiP.h>
 #include <Inventor/Xt/SoXtObject.h>
 #include <Inventor/Xt/devices/SoXtDevice.h>
 #include <Inventor/Xt/SoXtComponent.h>
@@ -97,7 +98,7 @@
 
 // The private data for the SoXt class.
 
-class SoXtP {
+class SoXtP : public SoGuiP {
 public:
   static Display * display;
   static XtAppContext xtappcontext;
@@ -195,8 +196,8 @@ SoXtP::X11Errorhandler(Display * d, XErrorEvent * ee)
 
 // init()-method documented in common/SoGuiCommon.cpp.in.
 Widget
-SoXt::internal_init(int & argc, char ** argv,
-                    const char * appname, const char * appclass)
+SoXt::init(int & argc, char ** argv,
+           const char * appname, const char * appclass)
 {
   assert(SoXtP::previous_handler == NULL && "call SoXt::init() only once!");
   // Intervene upon X11 errors.
@@ -218,7 +219,7 @@ SoXt::internal_init(int & argc, char ** argv,
 
   Display * display = XOpenDisplay(NULL);
   if (display == NULL) {
-    SoDebugError::postInfo("SoXt::internal_init", "Failed to open display.");
+    SoDebugError::postInfo("SoXt::init", "Failed to open display.");
     // FIXME: invoke the fatal error handler. 20011220 mortene.
     exit(-1);
   }
@@ -232,7 +233,7 @@ SoXt::internal_init(int & argc, char ** argv,
     const char * env = SoAny::si()->getenv("SOXT_XSYNC");
     SoXtP::SOXT_XSYNC = env ? atoi(env) : 0;
     if (SoXtP::SOXT_XSYNC) {
-      SoDebugError::postInfo("SoXt::internal_init", "Turning on X synchronization.");
+      SoDebugError::postInfo("SoXt::init", "Turning on X synchronization.");
       XSynchronize(display, True);
     }
   }
@@ -254,7 +255,7 @@ SoXt::internal_init(int & argc, char ** argv,
                                    NULL);
   }
   else {
-    SoDebugError::postInfo("SoXt::internal_init", "default toplevel! (error)");
+    SoDebugError::postInfo("SoXt::init", "default toplevel! (error)");
     // FIXME: if we get here, a segfault comes up later for me on
     // embla.trh.sim.no, at least. 20020117 mortene.
     toplevel = XtVaOpenApplication(&tempcontext, SoXtP::appclass, NULL, 0,
@@ -263,7 +264,7 @@ SoXt::internal_init(int & argc, char ** argv,
                                    NULL);
   }
   if (appname) { XtVaSetValues(toplevel, XmNtitle, SoXtP::appname, NULL); }
-  SoXt::internal_init(toplevel);
+  SoXt::init(toplevel);
   return toplevel;
 }
 
@@ -292,7 +293,7 @@ wm_close_handler(Widget widget, XtPointer user, XEvent * e, Boolean * dispatch)
 
 // init()-method documented in common/SoGuiCommon.cpp.in.
 void
-SoXt::internal_init(Widget toplevel)
+SoXt::init(Widget toplevel)
 {
   // Intervene upon X11 errors.
   if (SoXtP::previous_handler == NULL) {
@@ -313,7 +314,7 @@ SoXt::internal_init(Widget toplevel)
   SoInteraction::init();
   SoXtObject::init();
 
-  SoDB::getSensorManager()->setChangedCallback(SoXt::sensorQueueChanged, NULL);
+  SoDB::getSensorManager()->setChangedCallback(SoGuiP::sensorQueueChanged, NULL);
 
   XtAppSetFallbackResources(SoXt::getAppContext(), SoXtP::fallbackresources);
 
@@ -874,7 +875,7 @@ SoXtP::timerSensorCB(XtPointer closure, XtIntervalId * id)
   SoXtP::timersensorid = 0;
   SoXtP::timersensoractive = FALSE;
   SoDB::getSensorManager()->processTimerQueue();
-  SoXt::sensorQueueChanged(NULL);
+  SoGuiP::sensorQueueChanged(NULL);
 }
 
 // private
@@ -887,7 +888,7 @@ SoXtP::delaySensorCB(XtPointer closure, XtIntervalId * id)
   SoXtP::delaysensorid = 0;
   SoXtP::delaysensoractive = FALSE;
   SoDB::getSensorManager()->processDelayQueue(FALSE);
-  SoXt::sensorQueueChanged(NULL);
+  SoGuiP::sensorQueueChanged(NULL);
 }
 
 // private
@@ -900,21 +901,19 @@ SoXtP::idleSensorCB(XtPointer closure)
   SoXtP::idlesensorid = 0;
   SoXtP::idlesensoractive = FALSE;
   SoDB::getSensorManager()->processDelayQueue(TRUE);
-  SoXt::sensorQueueChanged(NULL);
+  SoGuiP::sensorQueueChanged(NULL);
   return True;
 }
 
 // *************************************************************************
 
-/*!
-  This callback handles events from sensors in the scene graph, needed
-  to deal with scene interaction.
-*/
+// This callback handles events from sensors in the scene graph,
+// needed to deal with scene interaction.
 void
-SoXt::sensorQueueChanged(void *)
+SoGuiP::sensorQueueChanged(void *)
 {
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo("SoXt::sensorQueueChanged", "start");
+  SoDebugError::postInfo("SoGuiP::sensorQueueChanged", "start");
 #endif // SOXT_DEBUG
   SoSensorManager * sensormanager = SoDB::getSensorManager();
 
@@ -923,7 +922,7 @@ SoXt::sensorQueueChanged(void *)
     SbTime interval = timevalue - SbTime::getTimeOfDay();
 
 #if SOXT_DEBUG && 0
-    SoDebugError::postInfo("SoXt::sensorQueueChanged",
+    SoDebugError::postInfo("SoGuiP::sensorQueueChanged",
                            "interval: %f (msec: %d)", interval.getValue(),
                            interval.getMsecValue());
 #endif // debug
