@@ -12,7 +12,9 @@ BUILT_SOURCES = \
 	SoAnyPopupMenu.h \
 	SoAnyPopupMenu.cpp \
 	SoAnyThumbWheel.h \
-	SoAnyThumbWheel.cpp
+	SoAnyThumbWheel.cpp \
+	SoAnyStateStack.h \
+	SoAnyStateStack.cpp
 
 ############################################################################
 ## 
@@ -33,6 +35,9 @@ libSoXtWidgetsVPATH = . $(srcdir)
 
 libSoXtWidgets_la_SOURCES = \
 	$(BUILT_SOURCES) \
+	SoXtGLArea.h \
+	SoXtGLAreaP.h \
+	SoXtGLArea.cpp \
 	SoXtPopupMenu.h \
 	SoXtPopupMenu.cpp \
 	SoXtThumbWheel.h \
@@ -57,13 +62,23 @@ SoAnyThumbWheel.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.cpp.in
 	@( cd $(top_builddir); \
 	   $(MAKE) src/Inventor/Xt/widgets/SoAnyThumbWheel.cpp )
 
+SoAnyStateStack.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyStateStack.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/widgets/SoAnyStateStack.h )
+
+SoAnyStateStack.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyStateStack.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/widgets/SoAnyStateStack.cpp )
+
 ############################################################################
 
 libSoXtWidgetsincdir = $(includedir)/Inventor/Xt/widgets
 
 libSoXtWidgetsinc_HEADERS = \
+	SoXtThumbWheel.h \
 	SoXtThumbWheelP.h \
-	SoXtThumbWheel.h
+	SoXtGLArea.h \
+	SoXtGLAreaP.h
 
 install-libSoXtWidgetsincHEADERS: $(libSoXtWidgetsinc_HEADERS)
 	@$(NORMAL_INSTALL)

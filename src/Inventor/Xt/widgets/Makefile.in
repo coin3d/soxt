@@ -112,7 +112,9 @@ BUILT_SOURCES = \
 	SoAnyPopupMenu.h \
 	SoAnyPopupMenu.cpp \
 	SoAnyThumbWheel.h \
-	SoAnyThumbWheel.cpp
+	SoAnyThumbWheel.cpp \
+	SoAnyStateStack.h \
+	SoAnyStateStack.cpp
 
 
 ############################################################################
@@ -121,6 +123,9 @@ libSoXtWidgetsVPATH = . $(srcdir)
 
 libSoXtWidgets_la_SOURCES = \
 	$(BUILT_SOURCES) \
+	SoXtGLArea.h \
+	SoXtGLAreaP.h \
+	SoXtGLArea.cpp \
 	SoXtPopupMenu.h \
 	SoXtPopupMenu.cpp \
 	SoXtThumbWheel.h \
@@ -133,8 +138,10 @@ libSoXtWidgets_la_SOURCES = \
 libSoXtWidgetsincdir = $(includedir)/Inventor/Xt/widgets
 
 libSoXtWidgetsinc_HEADERS = \
+	SoXtThumbWheel.h \
 	SoXtThumbWheelP.h \
-	SoXtThumbWheel.h
+	SoXtGLArea.h \
+	SoXtGLAreaP.h
 
 subdir = src/Inventor/Xt/widgets
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -153,7 +160,7 @@ X_PRE_LIBS = @X_PRE_LIBS@
 libSoXtWidgets_la_LDFLAGS = 
 libSoXtWidgets_la_LIBADD = 
 am_libSoXtWidgets_la_OBJECTS =  SoAnyPopupMenu.lo SoAnyThumbWheel.lo \
-SoXtPopupMenu.lo SoXtThumbWheel.lo
+SoAnyStateStack.lo SoXtGLArea.lo SoXtPopupMenu.lo SoXtThumbWheel.lo
 libSoXtWidgets_la_OBJECTS =  $(am_libSoXtWidgets_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -176,7 +183,8 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 GZIP_ENV = --best
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAnyPopupMenu.Plo \
-$(DEPDIR)/SoAnyThumbWheel.Plo $(DEPDIR)/SoXtPopupMenu.Plo \
+$(DEPDIR)/SoAnyStateStack.Plo $(DEPDIR)/SoAnyThumbWheel.Plo \
+$(DEPDIR)/SoXtGLArea.Plo $(DEPDIR)/SoXtPopupMenu.Plo \
 $(DEPDIR)/SoXtThumbWheel.Plo
 SOURCES = $(libSoXtWidgets_la_SOURCES)
 OBJECTS = $(am_libSoXtWidgets_la_OBJECTS)
@@ -272,7 +280,9 @@ distdir: $(DISTFILES)
 	done
 
 @AMDEP@include $(DEPDIR)/SoAnyPopupMenu.Plo
+@AMDEP@include $(DEPDIR)/SoAnyStateStack.Plo
 @AMDEP@include $(DEPDIR)/SoAnyThumbWheel.Plo
+@AMDEP@include $(DEPDIR)/SoXtGLArea.Plo
 @AMDEP@include $(DEPDIR)/SoXtPopupMenu.Plo
 @AMDEP@include $(DEPDIR)/SoXtThumbWheel.Plo
 
@@ -403,6 +413,14 @@ SoAnyThumbWheel.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.h.in
 SoAnyThumbWheel.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.cpp.in
 	@( cd $(top_builddir); \
 	   $(MAKE) src/Inventor/Xt/widgets/SoAnyThumbWheel.cpp )
+
+SoAnyStateStack.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyStateStack.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/widgets/SoAnyStateStack.h )
+
+SoAnyStateStack.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyStateStack.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/widgets/SoAnyStateStack.cpp )
 
 install-libSoXtWidgetsincHEADERS: $(libSoXtWidgetsinc_HEADERS)
 	@$(NORMAL_INSTALL)
