@@ -5355,14 +5355,14 @@ sim_ac_save_ldflags=$LDFLAGS
 LIBS="$sim_ac_x11mu_libs $LIBS"
 
 AC_CACHE_CHECK(
-  [whether the X11 miscellaneous utilities is available],
+  [whether the X11 miscellaneous utilities library is available],
   sim_cv_lib_x11mu_avail,
   [AC_TRY_LINK([#include <X11/Xlib.h>
                 #include <X11/Xmu/Xmu.h>
                 #include <X11/Xmu/StdCmap.h>],
                [(void)XmuAllStandardColormaps(0L);],
                [sim_cv_lib_x11mu_avail=yes],
-               [sim_cv_lib_x11mu_avail=no])])
+               [sim_cv_lib_x11mu_avail=maybe])])
 
 if test x"$sim_cv_lib_x11mu_avail" = xyes; then
   sim_ac_x11mu_avail=yes
@@ -5372,7 +5372,7 @@ else
     CPPFLAGS="-I/usr/contrib/X11R6/include $CPPFLAGS"
     LDFLAGS="-L/usr/contrib/X11R6/lib $LDFLAGS"
     AC_CACHE_CHECK(
-      [whether the X11 miscellaneous utilities is available],
+      [once more whether the X11 miscellaneous utilities library is available],
       sim_cv_lib_x11mu_contrib_avail,
       [AC_TRY_LINK([#include <X11/Xlib.h>
                     #include <X11/Xmu/Xmu.h>
