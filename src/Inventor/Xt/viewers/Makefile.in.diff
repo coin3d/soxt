@@ -1,6 +1,6 @@
 --- src/Inventor/Xt/viewers/Makefile.in	Mon Feb  7 21:37:10 2000
 +++ src/Inventor/Xt/viewers/Makefile.in.corrected	Mon Feb  7 21:44:36 2000
-@@ -147,7 +147,8 @@
+@@ -155,7 +155,8 @@
  HEADERS =  $(libSoXtViewersinc_HEADERS)
  
  DIST_COMMON =  $(libSoXtViewersinc_HEADERS) Makefile.am Makefile.in \
@@ -10,7 +10,7 @@
  
  
  DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-@@ -169,9 +170,9 @@
+@@ -178,9 +179,9 @@
  	cd $(top_builddir) \
  	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
  
