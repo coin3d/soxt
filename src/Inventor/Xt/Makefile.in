@@ -68,6 +68,7 @@ AS = @AS@
 AWK = @AWK@
 CC = @CC@
 COMPONENTHEADER = @COMPONENTHEADER@
+CONFIG = @CONFIG@
 CPP = @CPP@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
@@ -104,6 +105,7 @@ SOXT_MICRO_VERSION = @SOXT_MICRO_VERSION@
 SOXT_MINOR_VERSION = @SOXT_MINOR_VERSION@
 SOXT_VERSION = @SOXT_VERSION@
 STRIP = @STRIP@
+SUFFIX = @SUFFIX@
 VERSION = @VERSION@
 WIDGET = @WIDGET@
 X_CFLAGS = @X_CFLAGS@
@@ -125,7 +127,7 @@ lib_LTLIBRARIES = libSoXt.la
 
 SUBDIRS = devices widgets viewers
 
-INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src -I$(top_builddir)/data
+INCLUDES = -I$(top_srcdir)/src -I$(top_builddir)/data
 
 BUILT_SOURCES = \
 	SoAny.h \
@@ -218,7 +220,7 @@ libSoXtinc_HEADERS = \
 
 subdir = src/Inventor/Xt
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = $(top_builddir)/config.h
+CONFIG_HEADER = $(top_builddir)/src/config.h
 CONFIG_CLEAN_FILES =
 LTLIBRARIES = $(lib_LTLIBRARIES)
 
@@ -236,7 +238,7 @@ am_libSoXt_la_OBJECTS = SoAny.lo So@Gui@Cursors.lo So@Gui@Object.lo \
 libSoXt_la_OBJECTS = $(am_libSoXt_la_OBJECTS)
 
 DEFS = @DEFS@
-DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
+DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)/src
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@

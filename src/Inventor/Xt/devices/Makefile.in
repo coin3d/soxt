@@ -68,6 +68,7 @@ AS = @AS@
 AWK = @AWK@
 CC = @CC@
 COMPONENTHEADER = @COMPONENTHEADER@
+CONFIG = @CONFIG@
 CPP = @CPP@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
@@ -104,6 +105,7 @@ SOXT_MICRO_VERSION = @SOXT_MICRO_VERSION@
 SOXT_MINOR_VERSION = @SOXT_MINOR_VERSION@
 SOXT_VERSION = @SOXT_VERSION@
 STRIP = @STRIP@
+SUFFIX = @SUFFIX@
 VERSION = @VERSION@
 WIDGET = @WIDGET@
 X_CFLAGS = @X_CFLAGS@
@@ -123,7 +125,7 @@ soxt_src_dir = @soxt_src_dir@
 
 noinst_LTLIBRARIES = libSoXtDevices.la
 
-INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
+INCLUDES = -I$(top_srcdir)/src
 LIBS = 
 
 BUILT_SOURCES = 
@@ -159,7 +161,7 @@ libSoXtDevicesinc_HEADERS = \
 
 subdir = src/Inventor/Xt/devices
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = $(top_builddir)/config.h
+CONFIG_HEADER = $(top_builddir)/src/config.h
 CONFIG_CLEAN_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 
@@ -171,7 +173,7 @@ am_libSoXtDevices_la_OBJECTS = So@Gui@Device.lo So@Gui@InputFocus.lo \
 libSoXtDevices_la_OBJECTS = $(am_libSoXtDevices_la_OBJECTS)
 
 DEFS = @DEFS@
-DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
+DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)/src
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp

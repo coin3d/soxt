@@ -64,7 +64,7 @@ AC_PROG_CXXCPP
 AC_LANG(C++)
 
 AM_INIT_AUTOMAKE(SoXt, $SOXT_VERSION)
-AM_CONFIG_HEADER(config.h)
+AM_CONFIG_HEADER([src/config.h])
 
 AM_DISABLE_STATIC
 AM_MAINTAINER_MODE
@@ -108,6 +108,26 @@ SIM_AC_COMPILE_DEBUG(
   [CPPFLAGS="$CPPFLAGS -DSOXT_DEBUG=0"])
 CPPFLAGS="$CPPFLAGS -DSOXT_INTERNAL"
 SIM_COMPILER_WARNINGS
+
+# *******************************************************************
+# Configure an alternate installation?
+
+AC_ARG_WITH(
+  [alternate],
+  [AC_HELP_STRING([--with-alternate=string],
+                  [specify name of alternate configuration])],
+  [CONFIG=$withval],
+  [CONFIG=default])
+
+AC_ARG_WITH(
+  [suffix],
+  [AC_HELP_STRING([--with-suffix=string],
+                  [specify lirary name suffix (e.g. "_g")])],
+  [SUFFIX=$withval],
+  [SUFFIX=])
+
+AC_SUBST(CONFIG)
+AC_SUBST(SUFFIX)
 
 # **************************************************************************
 
@@ -372,11 +392,6 @@ AC_SUBST(SOXT_EXTRA_LDFLAGS)
 AC_SUBST(SOXT_EXTRA_LIBS)
 
 # **************************************************************************
-# Configure the submodule with the data.
-
-AC_CONFIG_SUBDIRS(data)
-
-# **************************************************************************
 # Remove redundant options from certain option lists.
 # We add the first argument ourselves to shift it off because it's added
 # again inside soqt-config.in
@@ -405,22 +420,29 @@ SIM_AC_UNIQIFY_LIST(LDFLAGS, $LDFLAGS)
 SIM_AC_UNIQIFY_LIST(LIBS, $LIBS)
 
 # **************************************************************************
+# Configure the submodule with the data.
+
+AC_CONFIG_SUBDIRS(data)
+
+# **************************************************************************
 # generate the makefiles and config files.
 
 AC_OUTPUT([
 	Makefile
-	soxt-config
+	soxt-$CONFIG.cfg:soxt.cfg.in
+	src/Makefile
+	src/Inventor/Makefile
 	src/Inventor/Xt/Makefile
 	src/Inventor/Xt/devices/Makefile
 	src/Inventor/Xt/widgets/Makefile
 	src/Inventor/Xt/viewers/Makefile
 	build/soxt.spec
 	build/soxt.doxygen
-], [
-	chmod a+x soxt-config
 ])
 
 SIM_AC_CONFIGURATION_SETTING([Installation Prefix], [$prefix])
+
+# **************************************************************************
 
 SIM_AC_CONFIGURATION_SUMMARY
 

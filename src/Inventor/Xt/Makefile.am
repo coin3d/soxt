@@ -6,7 +6,7 @@ lib_LTLIBRARIES = libSoXt.la
 
 SUBDIRS = devices widgets viewers
 
-INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src -I$(top_builddir)/data
+INCLUDES = -I$(top_srcdir)/src -I$(top_builddir)/data
 
 BUILT_SOURCES = \
 	SoAny.h \

@@ -6,7 +6,7 @@
 
 noinst_LTLIBRARIES = libSoXtWidgets.la
 
-INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
+INCLUDES = -I$(top_srcdir)/src
 LIBS =
 
 BUILT_SOURCES = \

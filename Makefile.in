@@ -68,6 +68,7 @@ AS = @AS@
 AWK = @AWK@
 CC = @CC@
 COMPONENTHEADER = @COMPONENTHEADER@
+CONFIG = @CONFIG@
 CPP = @CPP@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
@@ -104,6 +105,7 @@ SOXT_MICRO_VERSION = @SOXT_MICRO_VERSION@
 SOXT_MINOR_VERSION = @SOXT_MINOR_VERSION@
 SOXT_VERSION = @SOXT_VERSION@
 STRIP = @STRIP@
+SUFFIX = @SUFFIX@
 VERSION = @VERSION@
 WIDGET = @WIDGET@
 X_CFLAGS = @X_CFLAGS@
@@ -127,10 +129,10 @@ SUFFIXES = .h .cpp .in .lo .o
 
 
 ############################################################################
-SUBDIRS = . data src/Inventor/Xt
+SUBDIRS = . data src
 
 BUILT_SOURCES = \
-	so@gui@defs.h \
+	src/so@gui@defs.h \
 	src/Inventor/@Gui@/SoAny.h \
 	src/Inventor/@Gui@/SoAny.cpp \
 	src/Inventor/@Gui@/So@Gui@Basic.h \
@@ -165,31 +167,34 @@ BUILT_SOURCES = \
 
 
 acdatadir = $(datadir)/aclocal
-acdata_DATA = cfg/m4/so@gui@.m4
+acdata_DATA = so@gui@.m4
 
-bin_SCRIPTS = so@gui@-config
+cfgdatadir = $(datadir)/Coin/conf
+cfgdata_DATA = soxt-@CONFIG@.cfg
+
+dist_bin_SCRIPTS = so@gui@-config
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = soxt-config build/soxt.spec build/soxt.doxygen
-SCRIPTS = $(bin_SCRIPTS)
+CONFIG_HEADER = $(top_builddir)/src/config.h
+CONFIG_CLEAN_FILES = soxt-$CONFIG.cfg build/soxt.spec build/soxt.doxygen
+SCRIPTS = $(dist_bin_SCRIPTS)
 
 DIST_SOURCES =
-DATA = $(acdata_DATA)
+DATA = $(acdata_DATA) $(cfgdata_DATA)
 
 
 RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	uninstall-info-recursive all-recursive install-data-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
-DIST_COMMON = README ./stamp-h.in AUTHORS COPYING ChangeLog INSTALL \
-	Makefile.am Makefile.in NEWS TODO aclocal.m4 cfg/config.guess \
-	cfg/config.sub cfg/depcomp cfg/install-sh cfg/ltmain.sh \
-	cfg/missing cfg/mkinstalldirs config.h.in configure \
-	configure.in soxt-config.in
+DIST_COMMON = README $(dist_bin_SCRIPTS) AUTHORS COPYING ChangeLog \
+	INSTALL Makefile.am Makefile.in NEWS TODO aclocal.m4 \
+	cfg/config.guess cfg/config.sub cfg/depcomp cfg/install-sh \
+	cfg/ltmain.sh cfg/missing cfg/mkinstalldirs configure \
+	configure.in soxt.cfg.in
 DIST_SUBDIRS = $(SUBDIRS)
-all: $(BUILT_SOURCES) config.h
+all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
 .SUFFIXES:
@@ -218,41 +223,16 @@ $(srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(srcdir)/configure.in $(ACLOCAL_M4)
 
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ configure.in cfg/m4/changesonly.m4 cfg/m4/check_be.m4 cfg/m4/check_dl.m4 cfg/m4/check_inventor.m4 cfg/m4/check_jpeglib.m4 cfg/m4/check_linkstyle.m4 cfg/m4/check_mac.m4 cfg/m4/check_mathlib.m4 cfg/m4/check_motif.m4 cfg/m4/check_nprintf.m4 cfg/m4/check_oggvorbis.m4 cfg/m4/check_openal.m4 cfg/m4/check_opengl.m4 cfg/m4/check_pnglib.m4 cfg/m4/check_pthread.m4 cfg/m4/check_qt.m4 cfg/m4/check_tifflib.m4 cfg/m4/check_ungif.m4 cfg/m4/check_x11.m4 cfg/m4/check_zlib.m4 cfg/m4/coin.m4 cfg/m4/compile_debug.m4 cfg/m4/compile_exceptions.m4 cfg/m4/compile_functionname.m4 cfg/m4/compile_profiling.m4 cfg/m4/compile_rtti.m4 cfg/m4/compile_symbols.m4 cfg/m4/compile_warnings.m4 cfg/m4/compiler_capabilities.m4 cfg/m4/configuration_summary.m4 cfg/m4/cvschanges.m4 cfg/m4/dates.m4 cfg/m4/dime.m4 cfg/m4/doxygen_detection.m4 cfg/m4/errors.m4 cfg/m4/expand_dir_vars.m4 cfg/m4/general.m4 cfg/m4/gettext.m4 cfg/m4/guile.m4 cfg/m4/lcmessage.m4 cfg/m4/libtool.m4 cfg/m4/linux_api.m4 cfg/m4/macro_quoting.m4 cfg/m4/misc_compiler.m4 cfg/m4/modifierlist.m4 cfg/m4/msvccc.m4 cfg/m4/network.m4 cfg/m4/path_conversion.m4 cfg/m4/profit.m4 cfg/m4/progtest.m4 cfg/m4/reconfigure.m4 cfg/m4/simage.m4 cfg/m4/smallchange.m4 cfg/m4/sobe.m4 cfg/m4/sockets.m4 cfg/m4/sogtk.m4 cfg/m4/sogui.m4 cfg/m4/soqt.m4 cfg/m4/sowin.m4 cfg/m4/soxt.m4 cfg/m4/uniqify.m4
 	cd $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
-config.h: stamp-h
-	@if test ! -f $@; then \
-		rm -f stamp-h; \
-		$(MAKE) stamp-h; \
-	else :; fi
-stamp-h: $(srcdir)/config.h.in $(top_builddir)/config.status
-	@rm -f stamp-h stamp-hT
-	@echo timestamp > stamp-hT 2> /dev/null
-	cd $(top_builddir) \
-	  && CONFIG_FILES= CONFIG_HEADERS=config.h \
-	     $(SHELL) ./config.status
-	@mv stamp-hT stamp-h
-$(srcdir)/config.h.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/./stamp-h.in
-	@if test ! -f $@; then \
-		rm -f $(srcdir)/./stamp-h.in; \
-		$(MAKE) $(srcdir)/./stamp-h.in; \
-	else :; fi
-$(srcdir)/./stamp-h.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	@rm -f $(srcdir)/./stamp-h.in $(srcdir)/./stamp-h.inT
-	@echo timestamp > $(srcdir)/./stamp-h.inT 2> /dev/null
-	cd $(top_srcdir) && $(AUTOHEADER)
-	@mv $(srcdir)/./stamp-h.inT $(srcdir)/./stamp-h.in
-
-distclean-hdr:
-	-rm -f config.h
-soxt-config: $(top_builddir)/config.status soxt-config.in
-	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
+soxt-$CONFIG.cfg: $(top_builddir)/config.status soxt.cfg.in
+	cd $(top_builddir) && CONFIG_FILES=$@:soxt.cfg.in CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
 build/soxt.spec: $(top_builddir)/config.status $(top_srcdir)/build/soxt.spec.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
 build/soxt.doxygen: $(top_builddir)/config.status $(top_srcdir)/build/soxt.doxygen.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
-install-binSCRIPTS: $(bin_SCRIPTS)
+install-dist_binSCRIPTS: $(dist_bin_SCRIPTS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(bindir)
-	@list='$(bin_SCRIPTS)'; for p in $$list; do \
+	@list='$(dist_bin_SCRIPTS)'; for p in $$list; do \
 	  f="`echo $$p|sed '$(transform)'`"; \
 	  if test -f $$p; then \
 	    echo " $(INSTALL_SCRIPT) $$p $(DESTDIR)$(bindir)/$$f"; \
@@ -263,9 +243,9 @@ install-binSCRIPTS: $(bin_SCRIPTS)
 	  else :; fi; \
 	done
 
-uninstall-binSCRIPTS:
+uninstall-dist_binSCRIPTS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(bin_SCRIPTS)'; for p in $$list; do \
+	@list='$(dist_bin_SCRIPTS)'; for p in $$list; do \
 	  f="`echo $$p|sed '$(transform)'`"; \
 	  echo " rm -f $(DESTDIR)$(bindir)/$$f"; \
 	  rm -f $(DESTDIR)$(bindir)/$$f; \
@@ -287,6 +267,23 @@ uninstall-acdataDATA:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(acdatadir)/$$f"; \
 	  rm -f $(DESTDIR)$(acdatadir)/$$f; \
+	done
+install-cfgdataDATA: $(cfgdata_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(cfgdatadir)
+	@list='$(cfgdata_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(cfgdatadir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(cfgdatadir)/$$f; \
+	done
+
+uninstall-cfgdataDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(cfgdata_DATA)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(cfgdatadir)/$$f"; \
+	  rm -f $(DESTDIR)$(cfgdatadir)/$$f; \
 	done
 
 # This directory's subdirectories are mostly independent; you can cd
@@ -355,7 +352,7 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	       END { for (i in files) print i; }'`; \
 	mkid -fID $$unique $(LISP)
 
-TAGS: tags-recursive $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
+TAGS: tags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
@@ -370,8 +367,8 @@ TAGS: tags-recursive $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
 	  done | \
 	  $(AWK) '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
-	test -z "$(ETAGS_ARGS)config.h.in$$unique$(LISP)$$tags" \
-	  || etags $(ETAGS_ARGS) $$tags config.h.in $$unique $(LISP)
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || etags $(ETAGS_ARGS) $$tags  $$unique $(LISP)
 
 GTAGS:
 	here=`CDPATH=: && cd $(top_builddir) && pwd` \
@@ -463,10 +460,10 @@ distcheck: dist
 	  sed 'h;s/./=/g;p;x;p;x'
 check-am: all-am
 check: check-recursive
-all-am: Makefile $(SCRIPTS) $(DATA) config.h all-local
+all-am: Makefile $(SCRIPTS) $(DATA) all-local
 installdirs: installdirs-recursive
 installdirs-am:
-	$(mkinstalldirs) $(DESTDIR)$(bindir) $(DESTDIR)$(acdatadir)
+	$(mkinstalldirs) $(DESTDIR)$(bindir) $(DESTDIR)$(acdatadir) $(DESTDIR)$(cfgdatadir)
 
 install: install-recursive
 install-exec: install-exec-recursive
@@ -501,7 +498,7 @@ dist-all: distdir
 	-chmod -R a+w $(distdir) >/dev/null 2>&1; rm -rf $(distdir)
 distclean: distclean-recursive
 	-rm -f config.status config.cache config.log
-distclean-am: clean-am distclean-generic distclean-hdr distclean-libtool \
+distclean-am: clean-am distclean-generic distclean-libtool \
 	distclean-tags
 
 dvi: dvi-recursive
@@ -512,9 +509,10 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-acdataDATA
+install-data-am: install-acdataDATA install-cfgdataDATA \
+	install-dist_binSCRIPTS
 
-install-exec-am: install-binSCRIPTS
+install-exec-am:
 
 install-info: install-info-recursive
 
@@ -530,29 +528,32 @@ mostlyclean: mostlyclean-recursive
 
 mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
-uninstall-am: uninstall-acdataDATA uninstall-binSCRIPTS \
-	uninstall-info-am
+uninstall-am: uninstall-acdataDATA uninstall-cfgdataDATA \
+	uninstall-dist_binSCRIPTS uninstall-info-am
 
 uninstall-info: uninstall-info-recursive
 
 .PHONY: $(RECURSIVE_TARGETS) GTAGS all all-am all-local check check-am \
 	clean clean-generic clean-libtool clean-recursive dist dist-all \
-	distcheck distclean distclean-generic distclean-hdr \
-	distclean-libtool distclean-recursive distclean-tags distdir \
-	dvi dvi-am dvi-recursive info info-am info-recursive install \
-	install-acdataDATA install-am install-binSCRIPTS install-data \
-	install-data-am install-data-recursive install-exec \
-	install-exec-am install-exec-recursive install-info \
-	install-info-am install-info-recursive install-man \
+	distcheck distclean distclean-generic distclean-libtool \
+	distclean-recursive distclean-tags distdir dvi dvi-am \
+	dvi-recursive info info-am info-recursive install \
+	install-acdataDATA install-am install-cfgdataDATA install-data \
+	install-data-am install-data-recursive install-dist_binSCRIPTS \
+	install-exec install-exec-am install-exec-recursive \
+	install-info install-info-am install-info-recursive install-man \
 	install-recursive install-strip installcheck installcheck-am \
 	installdirs installdirs-am installdirs-recursive \
 	maintainer-clean maintainer-clean-generic \
 	maintainer-clean-recursive mostlyclean mostlyclean-generic \
 	mostlyclean-libtool mostlyclean-recursive tags tags-recursive \
 	uninstall uninstall-acdataDATA uninstall-am \
-	uninstall-binSCRIPTS uninstall-info-am uninstall-info-recursive \
-	uninstall-recursive
+	uninstall-cfgdataDATA uninstall-dist_binSCRIPTS \
+	uninstall-info-am uninstall-info-recursive uninstall-recursive
 
+
+soxt-@CONFIG@.cfg: $(srcdir)/soxt.cfg.in Makefile config.status
+	@$(SHELL) config.status --file=$@:soxt.cfg.in
 
 all-local: built-sources
 
@@ -561,8 +562,8 @@ all-local: built-sources
 
 built-sources: $(BUILT_SOURCES)
 
-so@gui@defs.h: $(srcdir)/so@gui@defs.h.in
-	@./config.status --file=$@
+src/so@gui@defs.h: $(srcdir)/src/Inventor/Xt/common/soguidefs.h.in
+	@./config.status --file=$@:src/Inventor/Xt/common/soguidefs.h.in
 
 src/Inventor/@Gui@/So@Gui@Basic.h: \
   $(srcdir)/src/Inventor/@Gui@/common/SoGuiBasic.h.in

@@ -8,10 +8,10 @@ SUFFIXES = .h .cpp .in .lo .o
 
 ############################################################################
 
-SUBDIRS = . data src/Inventor/Xt
+SUBDIRS = . data src
 
 BUILT_SOURCES = \
-	so@gui@defs.h \
+	src/so@gui@defs.h \
 	src/Inventor/@Gui@/SoAny.h \
 	src/Inventor/@Gui@/SoAny.cpp \
 	src/Inventor/@Gui@/So@Gui@Basic.h \
@@ -45,9 +45,15 @@ BUILT_SOURCES = \
 	src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp
 
 acdatadir = $(datadir)/aclocal
-acdata_DATA = cfg/m4/so@gui@.m4
+acdata_DATA = so@gui@.m4
 
-bin_SCRIPTS = so@gui@-config
+cfgdatadir = $(datadir)/Coin/conf
+cfgdata_DATA = soxt-@CONFIG@.cfg
+
+soxt-@CONFIG@.cfg: $(srcdir)/soxt.cfg.in Makefile config.status
+	@$(SHELL) config.status --file=$@:soxt.cfg.in
+
+dist_bin_SCRIPTS = so@gui@-config
 
 all-local: built-sources
 
@@ -56,8 +62,8 @@ all-local: built-sources
 
 built-sources: $(BUILT_SOURCES)
 
-so@gui@defs.h: $(srcdir)/so@gui@defs.h.in
-	@./config.status --file=$@
+src/so@gui@defs.h: $(srcdir)/src/Inventor/Xt/common/soguidefs.h.in
+	@./config.status --file=$@:src/Inventor/Xt/common/soguidefs.h.in
 
 src/Inventor/@Gui@/So@Gui@Basic.h: \
   $(srcdir)/src/Inventor/@Gui@/common/SoGuiBasic.h.in
