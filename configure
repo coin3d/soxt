@@ -4876,7 +4876,7 @@ fi
 
 if $sim_ac_coin_desired; then
   sim_ac_path=$PATH
-  test -z $sim_ac_coin_extrapath ||   ## search in --with-coin path
+  test -z "$sim_ac_coin_extrapath" || ## search in --with-coin path
     sim_ac_path=$sim_ac_coin_extrapath/bin:$sim_ac_path
   test x"$prefix" = xNONE ||          ## search in --prefix path
     sim_ac_path=$sim_ac_path:$prefix/bin
