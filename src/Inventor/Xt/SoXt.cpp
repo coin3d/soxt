@@ -86,6 +86,7 @@ static const char rcsid[] =
 
 #include <assert.h>
 #include <stdlib.h>
+#include <limits.h>
 
 // *************************************************************************
 
@@ -130,7 +131,8 @@ SbPList * SoXtP::eventhandlers = NULL;
 char * SoXtP::appname = NULL;
 char * SoXtP::appclass = NULL;
 
-int SoXtP::SOXT_XSYNC = -1; // "-1" signifies "uninitialized"
+#define ENVVAR_NOT_INITED INT_MAX
+int SoXtP::SOXT_XSYNC = ENVVAR_NOT_INITED;
 int (*SoXtP::previous_handler)(Display *, XErrorEvent *) = NULL;
 
 static Atom WM_PROTOCOLS = 0;
@@ -141,12 +143,35 @@ static Atom WM_DELETE_WINDOW = 0;
 int
 SoXtP::X11Errorhandler(Display * d, XErrorEvent * ee)
 {
+  // Include misc information on the Display to aid further debugging
+  // on our end upon bugreports.
+
+  SbString depthsstr = "";
+  int num;
+  int * depths = XListDepths(d, DefaultScreen(d), &num);
+  if ((depths != NULL) && (num > 0)) {
+    depthsstr = "(Available Display depths are:";
+    for (int i=0; i < num; i++) {
+      depthsstr += ' ';
+      depthsstr += SbString(depths[i]);
+    }
+    depthsstr += ". Default depth is ";
+    depthsstr += SbString(DefaultDepth(d, DefaultScreen(d)));
+    depthsstr += ".)";
+    XFree(depths);
+  }
+
+  // Then the instructions:
+
   SoDebugError::post("SoXtP::X11Errorhandler",
-                     "Detected internal bug. %s",
+                     "Detected internal SoXt bug. %s %s",
                      SoXtP::SOXT_XSYNC == 1 ? "" :
                      "Set environment variable SOXT_XSYNC to \"1\" and "
                      "re-run the application in a debugger with a breakpoint "
-                     "set on _XError to get a valid backtrace.");
+                     "set on _XError to get a valid backtrace. Then please "
+                     "forward the following information in an e-mail to "
+                     "<coin-bugs@coin3d.org> along with the backtrace. ",
+                     depthsstr.getString());
   SoXtP::previous_handler(d, ee);
   return -1; // shouldn't get here, the system handler will normally exit
 }
@@ -1151,7 +1176,7 @@ SoXt::selectBestVisual(// static
   // "1"), then rerun the application code in a debugger with a
   // breakpoint set at _XError. Now you can backtrace to the exact
   // source location of the failing X request.
-  if (SoXtP::SOXT_XSYNC == -1) {
+  if (SoXtP::SOXT_XSYNC == ENVVAR_NOT_INITED) {
     const char * env = SoAny::si()->getenv("SOXT_XSYNC");
     SoXtP::SOXT_XSYNC = env ? atoi(env) : 0;
     if (SoXtP::SOXT_XSYNC) {
