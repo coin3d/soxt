@@ -66,6 +66,9 @@ public:
   void setQuadBufferStereo(const SbBool enable);
   SbBool isQuadBufferStereo(void) const;
 
+  SbBool hasOverlayGLArea(void) const;
+  SbBool hasNormalGLArea(void) const;
+
 protected:
   SoXtGLWidget(
     Widget parent = NULL,
@@ -90,9 +93,12 @@ protected:
   void setGlxSize( const SbVec2s size ) { this->setGLSize( size ); }
   const SbVec2s getGlxSize(void) const { return this->getGLSize(); }
   float getGlxAspectRatio(void) const { return this->getGLAspectRatio(); }
-
-  void setStereoBuffer( SbBool enable );
-  SbBool isStereoBuffer(void);
+  void setStereoBuffer(SbBool flag) {
+    this->setQuadBufferStereo(flag);
+  }
+  SbBool isStereoBuffer(void) const {
+    return this->isQuadBufferStereo();
+  }
 
   SbBool isRGBMode(void);
   int getDisplayListShareGroup( GLXContext context );
@@ -124,19 +130,17 @@ protected:
   static void eventHandler( Widget, void *, XEvent *, Boolean * );
 
 protected:
-  SbBool currentIsNormal;
-  void setOverlayRender( const SbBool enable );
-  SbBool isOverlayRender(void) const;
+  void initNormalContext(void);
 
-  int glLockLevel;
-  void glLock(void);
-  void glUnlock(void);
+  void glLockNormal(void);
+  void glUnlockNormal(void);
+  void glLockOverlay(void);
+  void glUnlockOverlay(void);
+
   void glSwapBuffers(void);
   void glFlushBuffer(void);
 
-  virtual void glInit(void);
-  virtual void glReshape( int width, int height );
-  virtual void glRender(void);
+  virtual SbBool glScheduleRedraw(void);
 
 private:
   SbVec2s glSize; // cached GL widget size

@@ -163,18 +163,6 @@ SOXT_OBJECT_ABSTRACT_SOURCE(SoXtGLWidget);
   Whether double buffering is used or not.
 */
 
-/*!
-  \var int SoXtGLWidget::glLockLevel
-
-  Integer that tracks the lock/unlock calls.
-*/
-
-/*!
-  \var SbBool SoXtGLWidget::currentIsNormal
-
-  Whether locked GL context is normal or overlay context.
-*/
-
 // *************************************************************************
 
 /*!
@@ -192,8 +180,6 @@ SoXtGLWidget::SoXtGLWidget( // protected
 , drawToFrontBuffer( FALSE )
 , glxWidget( NULL )
 {
-  this->currentIsNormal = TRUE;
-  this->glLockLevel = 0;
   this->doubleBuffer = TRUE;
   this->normalContext = NULL;
   this->overlayContext = NULL;
@@ -280,7 +266,6 @@ Window
 SoXtGLWidget::getOverlayWindow(
   void )
 {
-  SOXT_STUB();
   return (Window) NULL;
 } // getOverlayWindow()
 
@@ -325,7 +310,6 @@ Widget
 SoXtGLWidget::getOverlayWidget(
   void )
 {
-  SOXT_STUB();
   return (Widget) NULL;
 } // getOverlayWidget()
 
@@ -498,12 +482,15 @@ SoXtGLWidget::processEvent( // virtual, protected
 {
   switch ( event->type ) {
   case MapNotify:
-    this->glInit();
+    this->initNormalContext();
+    this->initGraphic();
     break;
 
   case Expose:
-    this->glRender();
     this->waitForExpose = FALSE; // Gets flipped from TRUE on first expose.
+    if (!this->glScheduleRedraw()) {
+      this->redraw();
+    }
     break;
 
   case ConfigureNotify:
@@ -511,7 +498,7 @@ SoXtGLWidget::processEvent( // virtual, protected
       Dimension width, height;
       XtVaGetValues( this->glxWidget,
           XmNwidth, &width, XmNheight, &height, NULL );
-      this->glReshape( width, height );
+      this->glSize = SbVec2s( width, height );
     }
     break;
 
@@ -527,8 +514,32 @@ void
 SoXtGLWidget::initGraphic( // virtual, protected
   void )
 {
-  SOXT_STUB();
+  assert( this->glxWidget != (Widget) NULL );
+
+  glLockNormal();
+  Dimension width, height;
+  XtVaGetValues( this->glxWidget, XmNwidth, &width, XmNheight, &height, NULL );
+  this->glSize = SbVec2s(width, height);
+  glEnable( GL_DEPTH_TEST );
+  glUnlockNormal();
 } // initGraphic()
+
+void 
+SoXtGLWidget::initNormalContext(void)
+{
+  assert( this->glxWidget != (Widget) NULL );
+  XVisualInfo * visual;
+  Display * display = SoXt::getDisplay();
+  XtVaGetValues( this->glxWidget, SoXtNvisualInfo, &visual, NULL );
+
+  this->normalContext = glXCreateContext( display, visual, None, GL_TRUE );
+  if ( ! this->normalContext ) {
+    SoDebugError::postInfo( "SoXtGLWidget::glInit",
+      "glXCreateContext() returned NULL" );
+    XtAppError( SoXt::getAppContext(), "no context" );
+  }
+}
+
 
 /*!
   This method initializes the overlay graphics.
@@ -538,9 +549,41 @@ void
 SoXtGLWidget::initOverlayGraphic( // virtual, protected
   void )
 {
-  SOXT_STUB();
+  // should be empty
 } // initOverlayGraphic()
 
+/*!
+  Will be called whenever scene graph needs to be redrawn().
+  If this method return FALSE, redraw() will be called immediately.
+
+  Default method simply returns FALSE. Overload this method to
+  schedule a redraw and return TRUE if you're trying to do The Right
+  Thing.  
+*/
+SbBool 
+SoXtGLWidget::glScheduleRedraw(void)
+{
+  return FALSE;
+}
+
+/*!
+  Should return TRUE if an overlay GL drawing area exists.
+*/
+SbBool 
+SoXtGLWidget::hasOverlayGLArea(void) const 
+{
+  return ((SoXtGLWidget*)this)->getOverlayWidget() != 0;
+}
+
+/*!
+  Should return TRUE if a normal GL drawing area exists.
+*/
+SbBool 
+SoXtGLWidget::hasNormalGLArea(void) const 
+{
+  return ((SoXtGLWidget*)this)->getNormalWidget() != 0;
+}
+ 
 /*!
   This method is invoked when the GL widget component changes size.
 */
@@ -642,29 +685,6 @@ SoXtGLWidget::getGLAspectRatio(
 // *************************************************************************
 
 /*!
-  This method sets whether stereo should be used or not.
-*/
-
-void
-SoXtGLWidget::setStereoBuffer( // protected
-  SbBool enable )
-{
-  SOXT_STUB();
-} // setStereoBuffer()
-
-/*!
-  This method returns whether stereo viewing is enabled or not.
-*/
-
-SbBool
-SoXtGLWidget::isStereoBuffer( // protected
-  void )
-{
-  SOXT_STUB();
-  return FALSE;
-} // isStereoBuffer()
-
-/*!
   This method returns whether the GL context is in RGB mode or not.
 */
 
@@ -672,7 +692,6 @@ SbBool
 SoXtGLWidget::isRGBMode( // protected
   void )
 {
-  SOXT_STUB();
   return TRUE;
 } // isRGBMode()
 
@@ -881,32 +900,30 @@ SoXtGLWidget::getGLWidget( // protected
 // *************************************************************************
 
 /*!
-  This method makes redering go to the normal context or the overlay context.
+  This method locks the GL context.
+
+  On systems that use GL context locking and unlocking, this method will
+  lock the GL context.  On other systems, only makeCurrent will be run.
+
+  This method is an SoXt extension.
 */
 
 void
-SoXtGLWidget::setOverlayRender(
-  const SbBool enable )
+SoXtGLWidget::glLockNormal(void)
 {
-  this->currentIsNormal = enable ? FALSE : TRUE;
-} // setOverlayRender()
+  assert( this->glxWidget != (Widget) NULL );
+  glXMakeCurrent( SoXt::getDisplay(), XtWindow( this->glxWidget ),
+                  this->normalContext );
+} // glLockNormal()
 
 /*!
-  This method returns whether rendering is set for the normal context or the
-  overlay context.
+  This method unlocks the GL context.
 */
 
-SbBool
-SoXtGLWidget::isOverlayRender(
-  void ) const
+void
+SoXtGLWidget::glUnlockNormal(void)
 {
-#if SOXT_DEBUG
-  if ( this->glLockLevel == 0 ) {
-    SoDebugError::postWarning( "SoXtGLWidget::isOverlayRender", "GL not locked" );
-  }
-#endif
-  return this->currentIsNormal ? FALSE : TRUE;
-} // isOverlayRender()
+} // glUnlockNormal()
 
 /*!
   This method locks the GL context.
@@ -918,28 +935,18 @@ SoXtGLWidget::isOverlayRender(
 */
 
 void
-SoXtGLWidget::glLock(
-  void )
+SoXtGLWidget::glLockOverlay(void)
 {
-  assert( this->glxWidget != (Widget) NULL );
-  this->glLockLevel++;
-  assert( this->glLockLevel < 10 && "must be programming error" );
-  glXMakeCurrent( SoXt::getDisplay(), XtWindow( this->glxWidget ),
-                  this->normalContext );
-} // glLock()
+} // glLockOverlay()
 
 /*!
   This method unlocks the GL context.
 */
 
 void
-SoXtGLWidget::glUnlock(
-  void )
+SoXtGLWidget::glUnlockOverlay(void)
 {
-  assert( this->glxWidget != (Widget) NULL );
-  this->glLockLevel--;
-  assert( this->glLockLevel >= 0 && "programming error" );
-} // glUnlock()
+} // glUnlockOverlay()
 
 /*!
   This method swaps the GL buffers.
@@ -950,7 +957,6 @@ SoXtGLWidget::glSwapBuffers(
   void )
 {
   assert( this->doubleBuffer != FALSE );
-  assert( this->glLockLevel > 0 );
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo( "SoXtGLWidget::glSwapBuffers", "called" );
 #endif // SOXT_DEBUG
@@ -966,68 +972,9 @@ SoXtGLWidget::glFlushBuffer(
   void )
 {
   assert( this->glxWidget != (Widget) NULL );
-  assert( this->glLockLevel > 0 );
   // nothing to do...
   glFlush();
 } // glFlushBuffer()
-
-// *************************************************************************
-
-/*!
-  This method is invoked on initialization of the GL context.
-*/
-
-void
-SoXtGLWidget::glInit( // virtual
-  void )
-{
-  assert( this->glxWidget != (Widget) NULL );
-  XVisualInfo * visual;
-  Display * display = SoXt::getDisplay();
-  XtVaGetValues( this->glxWidget, SoXtNvisualInfo, &visual, NULL );
-
-  this->normalContext = glXCreateContext( display, visual, None, GL_TRUE );
-  if ( ! this->normalContext ) {
-    SoDebugError::postInfo( "SoXtGLWidget::glInit",
-      "glXCreateContext() returned NULL" );
-    XtAppError( SoXt::getAppContext(), "no context" );
-  }
-  glXMakeCurrent( display, XtWindow( this->glxWidget ), this->normalContext );
-
-  Dimension width, height;
-  XtVaGetValues( this->glxWidget, XmNwidth, &width, XmNheight, &height, NULL );
-  this->glReshape( width, height );
-
-  this->setOverlayRender( FALSE );
-  glLock();
-  glEnable( GL_DEPTH_TEST );
-  glUnlock();
-} // glInit()
-
-/*!
-  This method is invoked when the GL context is reshaped.
-*/
-
-void
-SoXtGLWidget::glReshape( // virtual
-  int width,
-  int height )
-{
-//  SoDebugError::postInfo( "SoXtGLWidget::glReshape", "[invoked]" );
-  this->glSize = SbVec2s( width, height );
-} // glReshape()
-
-/*!
-  This method is invoked on expose events, when the GL area needs to be
-  redrawn.
-*/
-
-void
-SoXtGLWidget::glRender( // virtual
-  void )
-{
-  // do nothing - SoXtRenderArea overloads
-} // glRender()
 
 // *************************************************************************
 
