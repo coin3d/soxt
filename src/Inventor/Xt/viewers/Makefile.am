@@ -53,7 +53,9 @@ libSoXtViewers_la_SOURCES = \
 	SoXtFlyViewer.cpp \
 	SoXtFlyViewer.h \
 	SoXtWalkViewer.cpp \
-	SoXtWalkViewer.h
+	SoXtWalkViewer.h \
+	SoXtCollisionViewer.cpp \
+	SoXtCollisionViewer.h
 
 ############################################################################
 ##
@@ -134,7 +136,8 @@ libSoXtViewersinc_HEADERS = \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtPlaneViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtConstrainedViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFlyViewer.h \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtWalkViewer.h
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtWalkViewer.h \
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtCollisionViewer.h
 
 install-libSoXtViewersincHEADERS: $(libSoXtViewersinc_HEADERS)
 	@$(NORMAL_INSTALL)

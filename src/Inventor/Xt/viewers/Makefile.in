@@ -144,7 +144,9 @@ libSoXtViewers_la_SOURCES = \
 	SoXtFlyViewer.cpp \
 	SoXtFlyViewer.h \
 	SoXtWalkViewer.cpp \
-	SoXtWalkViewer.h
+	SoXtWalkViewer.h \
+	SoXtCollisionViewer.cpp \
+	SoXtCollisionViewer.h
 
 
 ############################################################################
@@ -158,7 +160,8 @@ libSoXtViewersinc_HEADERS = \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtPlaneViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtConstrainedViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFlyViewer.h \
-	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtWalkViewer.h
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtWalkViewer.h \
+	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtCollisionViewer.h
 
 subdir = src/Inventor/Xt/viewers
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -180,7 +183,8 @@ am_libSoXtViewers_la_OBJECTS =  SoXtViewer.lo SoAnyFullViewer.lo \
 SoAnyExaminerViewer.lo SoAnyPlaneViewer.lo SoAnyConstrainedViewer.lo \
 SoAnyFlyViewer.lo SoAnyWalkViewer.lo SoXtViewerExtra.lo \
 SoXtFullViewer.lo SoXtExaminerViewer.lo SoXtPlaneViewer.lo \
-SoXtConstrainedViewer.lo SoXtFlyViewer.lo SoXtWalkViewer.lo
+SoXtConstrainedViewer.lo SoXtFlyViewer.lo SoXtWalkViewer.lo \
+SoXtCollisionViewer.lo
 libSoXtViewers_la_OBJECTS =  $(am_libSoXtViewers_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -205,11 +209,11 @@ depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAnyConstrainedViewer.Plo \
 $(DEPDIR)/SoAnyExaminerViewer.Plo $(DEPDIR)/SoAnyFlyViewer.Plo \
 $(DEPDIR)/SoAnyFullViewer.Plo $(DEPDIR)/SoAnyPlaneViewer.Plo \
-$(DEPDIR)/SoAnyWalkViewer.Plo $(DEPDIR)/SoXtConstrainedViewer.Plo \
-$(DEPDIR)/SoXtExaminerViewer.Plo $(DEPDIR)/SoXtFlyViewer.Plo \
-$(DEPDIR)/SoXtFullViewer.Plo $(DEPDIR)/SoXtPlaneViewer.Plo \
-$(DEPDIR)/SoXtViewer.Plo $(DEPDIR)/SoXtViewerExtra.Plo \
-$(DEPDIR)/SoXtWalkViewer.Plo
+$(DEPDIR)/SoAnyWalkViewer.Plo $(DEPDIR)/SoXtCollisionViewer.Plo \
+$(DEPDIR)/SoXtConstrainedViewer.Plo $(DEPDIR)/SoXtExaminerViewer.Plo \
+$(DEPDIR)/SoXtFlyViewer.Plo $(DEPDIR)/SoXtFullViewer.Plo \
+$(DEPDIR)/SoXtPlaneViewer.Plo $(DEPDIR)/SoXtViewer.Plo \
+$(DEPDIR)/SoXtViewerExtra.Plo $(DEPDIR)/SoXtWalkViewer.Plo
 SOURCES = $(libSoXtViewers_la_SOURCES)
 OBJECTS = $(am_libSoXtViewers_la_OBJECTS)
 
@@ -311,6 +315,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoAnyFullViewer.Plo
 @AMDEP@include $(DEPDIR)/SoAnyPlaneViewer.Plo
 @AMDEP@include $(DEPDIR)/SoAnyWalkViewer.Plo
+@AMDEP@include $(DEPDIR)/SoXtCollisionViewer.Plo
 @AMDEP@include $(DEPDIR)/SoXtConstrainedViewer.Plo
 @AMDEP@include $(DEPDIR)/SoXtExaminerViewer.Plo
 @AMDEP@include $(DEPDIR)/SoXtFlyViewer.Plo
