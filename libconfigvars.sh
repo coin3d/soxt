@@ -4,14 +4,20 @@
 ############################################################################
 # Source Substitutions:
 
-GUI="Xt"
-lGUI="xt"
-uGUI="XT"
 WIDGET="Widget"
 EVENT="XAnyEvent *"
 COMPONENTHEADER=""
 
-export GUI lGUI uGUI WIDGET EVENT COMPONENTHEADER
+# new
+Gui=Xt
+gui=xt
+
+# old, to be removed
+GUI="Xt"
+lGUI="xt"
+uGUI="XT"
+
+export Gui gui GUI lGUI uGUI WIDGET EVENT COMPONENTHEADER
 
 ############################################################################
 # Build Conditionals:
@@ -26,7 +32,7 @@ HAVE_MATERIALSLIDERSET=false
 HAVE_TRANSFORMSLIDERSET=false
 HAVE_DIRECTIONALLIGHTEDITOR=false
 HAVE_MATERIALEDITOR=false
-HAVE_MATERIALLIST=false
+HAVE_MATERIALLIST=true
 HAVE_PRINTDIALOG=false
 
 export HAVE_RENDERAREA HAVE_EXAMINERVIEWER
