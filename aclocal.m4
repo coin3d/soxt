@@ -1357,20 +1357,22 @@ AC_CACHE_CHECK([for a GL widget], sim_cv_motif_glwidget, [
   sim_cv_motif_glwidget=UNKNOWN
   for lib in GLwM GLw MesaGLwM MesaGLw; do
     if test "x$sim_cv_motif_glwidget" = "xUNKNOWN"; then
-      LIBS="$SAVELIBS -l$lib"
+      LIBS="-l$lib $SAVELIBS"
       AC_TRY_LINK([
         #include <X11/Intrinsic.h>
         extern WidgetClass glwMDrawingAreaWidgetClass;
-        ],WidgetClass w = glwMDrawingAreaWidgetClass,
+        ],
+        [Widget glxManager; Widget glxWidget = XtVaCreateManagedWidget("GLWidget", glwMDrawingAreaWidgetClass, glxManager, NULL);],
         sim_cv_motif_glwidget="glwMDrawingAreaWidgetClass GLwMDrawA.h $lib",
         sim_cv_motif_glwidget=UNKNOWN)
     fi
     if test "x$sim_cv_motif_glwidget" = "xUNKNOWN"; then
-      LIBS="$SAVELIBS -l$lib"
+      LIBS="-l$lib $SAVELIBS"
       AC_TRY_LINK([
         #include <X11/Intrinsic.h>
         extern WidgetClass glwDrawingAreaWidgetClass;
-      ],WidgetClass w = glwDrawingAreaWidgetClass,
+        ],
+        [Widget glxManager; Widget glxWidget = XtVaCreateManagedWidget("GLWidget", glwDrawingAreaWidgetClass, glxManager, NULL);],
         sim_cv_motif_glwidget="glwDrawingAreaWidgetClass GLwDrawA.h $lib",
         sim_cv_motif_glwidget=UNKNOWN)
     fi
@@ -1401,7 +1403,7 @@ else
   if test "x$sim_cv_motif_glwidget_hdrloc" = "xUNKNOWN"; then
     ifelse($2, , :, $2)
   else
-    if test "x$glwidget_header" = "xGLwDrawA.h"; then
+    if test "x$sim_ac_motif_glwidget_header" = "xGLwDrawA.h"; then
       if test "x$sim_cv_motif_glwidget_hdrloc" = "xGL"; then
         AC_DEFINE(HAVE_GL_GLWDRAWA_H, ,
           [Define this to use OpenGL widget from <GL/GLwDrawA.h>])
@@ -1422,7 +1424,7 @@ else
     AC_DEFINE_UNQUOTED(XT_GLWIDGET, $sim_ac_motif_glwidget_class,
       [Define this to the Xt/Motif OpenGL widget class to use])
 
-    LIBS="$LIBS -l$sim_ac_motif_glwidget_library"
+    LIBS="-l$sim_ac_motif_glwidget_library $LIBS"
 
     ifelse($1, , :, $1)
   fi
