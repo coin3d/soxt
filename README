@@ -1,8 +1,52 @@
 README
 ======
 
-This module is a set of Xt/Motif GUI components for using Coin.  Work has
-just begun, so it is only SoXtRenderArea that is really usable at this
-time.
+SoXt is an open source implementation of the SGI InventorXt library, which
+is a GUI binding for using Open Inventor with Xt/Motif.  While SoXt has
+been designed for use with Coin, it is also possible to compile it against
+Open Inventor from SGI or TGS.  A goal is to eventually become 100% source
+code compatible with the InventorXt library, which is still a bit off.
+
+Installing SoXt is a matter of running the configure script with the right
+options, getting it to pass all its tests, and run "make install" afterwards.
+These two phases has each a set of common problems which will be gathered
+and described below.
+
+
+The Configure Phase (running SoXt/configure)
+--------------------------------------------
+
+* configure immediately tells you it can't find the source files
+
+  My guess is that you are trying to run configure from a separate build
+  directory, and you have started SoXt/configure with a relative pathname
+  that traverses some symbolic link.  Configure doesn't handle that, so
+  you can either cd into your build directory using the hard path, or you
+  can use the absolute pathname for SoXt/configure
+
+* configure doesn't find Coin (or coin-config)
+
+  To detect Coin, configure looks for the script called coin-config, which
+  is installed in bin/ where you installed Coin.  You do probably not have
+  that bin-directory in your PATH variable, so configure won't find where
+  it is.  The solution is to either add {Coin-prefix}/bin to $PATH, or you
+  can run SoXt/configure with the "--with-coin={Coin-prefix}" option.
+
+
+The Build Phase
+---------------
+
+* compilation fails because the _source_ file isn't found by the compiler
+
+  Weird - I thought this problem was fixed.  Anyways, it's your make
+  program's fault.  It uses $VPATH to find the source files, but doesn't
+  prefix the file path when a rule uses $<.  You have three options.
+  You can install GNU make (gmake on some systems) and use that instead of
+  your system's faulty make.  You can also build the library in the
+  source directory instead of in a separate directory.  A third solution
+  is to use "lndir" to create a duplicate directory structure with symlinks
+  to all the files in the source directory, and run configure and make in
+  the duplicate instead.  Be aware that lndir might fail to work if you don't
+  write absolute path-names to both of its arguments.
 
 
