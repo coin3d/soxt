@@ -94,32 +94,20 @@ SoXtMouse::~SoXtMouse(// virtual
 
 // *************************************************************************
 
-/*!
-  This method is not implemented yet.
-*/
-
+// Doc in superclass.
 void
-SoXtMouse::enable(// virtual
-  Widget, // widget,
-  XtEventHandler, // func,
-  XtPointer, // data,
-  Window) // window)
+SoXtMouse::enable(Widget widget, XtEventHandler handler,
+                     XtPointer closure, Window window)
 {
-  SOXT_STUB();
-} // enable()
+  XtAddEventHandler(widget, this->events, FALSE, handler, closure);
+}
 
-/*!
-  This method is not implemented yet.
-*/
-
+// Doc in superclass.
 void
-SoXtMouse::disable(// virtual
-  Widget, // widget,
-  XtEventHandler, // func,
-  XtPointer) // data)
+SoXtMouse::disable(Widget widget, XtEventHandler handler, XtPointer closure)
 {
-  SOXT_STUB();
-} // disable()
+  XtRemoveEventHandler(widget, this->events, FALSE, handler, closure);
+}
 
 // *************************************************************************
 

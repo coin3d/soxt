@@ -89,32 +89,20 @@ SoXtKeyboard::~SoXtKeyboard(// virtual
 
 // *************************************************************************
 
-/*!
-  FIXME: doc
-*/
-
+// Doc in superclass.
 void
-SoXtKeyboard::enable(// virtual
-  Widget, // widget,
-  XtEventHandler, // func,
-  XtPointer, // data,
-  Window) // window)
+SoXtKeyboard::enable(Widget widget, XtEventHandler handler,
+                     XtPointer closure, Window window)
 {
-  SOXT_STUB();
-} // enable()
+  XtAddEventHandler(widget, this->events, FALSE, handler, closure);
+}
 
-/*!
-  FIXME: doc
-*/
-
+// Doc in superclass.
 void
-SoXtKeyboard::disable(// virtual
-  Widget, // widget,
-  XtEventHandler, // func,
-  XtPointer) // data)
+SoXtKeyboard::disable(Widget widget, XtEventHandler handler, XtPointer closure)
 {
-  SOXT_STUB();
-} // disable()
+  XtRemoveEventHandler(widget, this->events, FALSE, handler, closure);
+}
 
 // *************************************************************************
 
