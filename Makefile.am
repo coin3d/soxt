@@ -1,5 +1,4 @@
 ############################################################################
-## SoXt/Makefile.am
 ## $Id$
 
 ACLOCAL_AMFLAGS = -I cfg/m4
@@ -48,10 +47,10 @@ acdatadir = $(datadir)/aclocal
 acdata_DATA = so@gui@.m4
 
 cfgdatadir = $(datadir)/Coin/conf
-cfgdata_DATA = soxt-@CONFIG@.cfg
+cfgdata_DATA = so@gui@-@CONFIG@.cfg
 
-soxt-@CONFIG@.cfg: $(srcdir)/soxt.cfg.in Makefile config.status
-	@$(SHELL) config.status --file=$@:soxt.cfg.in
+so@gui@-@CONFIG@.cfg: Makefile config.status $(srcdir)/src/Inventor/@Gui@/common/sogui.cfg.in
+	@$(SHELL) config.status --file=$@:$(srcdir)/src/Inventor/@Gui@/common/sogui.cfg.in
 
 dist_bin_SCRIPTS = so@gui@-config
 
@@ -62,8 +61,8 @@ all-local: built-sources
 
 built-sources: $(BUILT_SOURCES)
 
-src/so@gui@defs.h: $(srcdir)/src/Inventor/Xt/common/soguidefs.h.in
-	@./config.status --file=$@:src/Inventor/Xt/common/soguidefs.h.in
+src/so@gui@defs.h: $(srcdir)/src/Inventor/@Gui@/common/soguidefs.h.in
+	@./config.status --file=$@:src/Inventor/@Gui@/common/soguidefs.h.in
 
 src/Inventor/@Gui@/So@Gui@Basic.h: \
   $(srcdir)/src/Inventor/@Gui@/common/SoGuiBasic.h.in
@@ -230,4 +229,3 @@ doxygen-docs:
 
 doxygen-doc:
 	@( cd build; @sim_ac_doxygen_exe@ so@gui@.doxygen )
-

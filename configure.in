@@ -422,7 +422,6 @@ AC_CONFIG_SUBDIRS(data)
 
 AC_OUTPUT([
 	Makefile
-	soxt-$CONFIG.cfg:soxt.cfg.in
 	src/Makefile
 	src/Inventor/Makefile
 	src/Inventor/Xt/Makefile
