@@ -548,7 +548,7 @@ SoXtExaminerViewer::setModeFromState(
 
 void
 SoXtExaminerViewer::setMode(
-  ViewerMode mode )
+  const ViewerMode mode )
 {
   switch ( mode ) {
 
