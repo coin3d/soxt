@@ -17,11 +17,6 @@
  *
  **************************************************************************/
 
-#if SOXT_DEBUG
-static const char rcsid[] =
-  "$Id$";
-#endif // SOXT_DEBUG
-
 // *************************************************************************
 
 /*!
@@ -187,7 +182,7 @@ SoXtGLWidget::SoXtGLWidget(// protected
       XmNbottomAttachment, XmATTACH_FORM,
       NULL);
   }
-} // SoXtGLWidget()
+}
 
 /*!
   The destructor.
@@ -200,7 +195,7 @@ SoXtGLWidget::~SoXtGLWidget(// virtual, protected
     SoAny::si()->unregisterGLContext((void *)this);
   }
   delete PRIVATE(this);
-} // ~SoXtGLWidget()
+}
 
 // *************************************************************************
 
@@ -213,7 +208,7 @@ SoXtGLWidget::getOverlayTransparentPixel(
   void)
 {
   return PRIVATE(this)->transparentpixel;
-} // getOverlayTransparentPixel()
+}
 
 /*!
   This method returns the size of the colormap for the overlay planes.
@@ -224,7 +219,7 @@ SoXtGLWidget::getOverlayColorMapSize(
   void)
 {
   return PRIVATE(this)->overlaycolormapsize;
-} // getOverlayColorMapSize()
+}
 
 /*!
   This methos returns the size of the colormap for the normal planes.
@@ -235,7 +230,7 @@ SoXtGLWidget::getColorMapSize(
   void)
 {
   return PRIVATE(this)->normalcolormapsize;
-} // getColorMapSize()
+}
 
 /*!
   This method returns the Window associated with the normal GL context.
@@ -274,7 +269,7 @@ SoXtGLWidget::getOverlayContext(
   void)
 {
   return PRIVATE(this)->overlaycontext;
-} // getOverlayContext()
+}
 
 /*!
   This method returns the Widget associated with the normal GL
@@ -305,7 +300,7 @@ SoXtGLWidget::setNormalVisual(// virtual
   XVisualInfo * visual)
 {
   PRIVATE(this)->normalvisual = visual;
-} // setNormalVisual()
+}
 
 /*!
   This method returns the visual for the normal GL context.
@@ -316,7 +311,7 @@ SoXtGLWidget::getNormalVisual(
   void)
 {
   return PRIVATE(this)->normalvisual;
-} // setNormalVisual()
+}
 
 /*!
   This method sets the visual for the overlay GL context.
@@ -327,7 +322,7 @@ SoXtGLWidget::setOverlayVisual(// virtual
   XVisualInfo * visual)
 {
   PRIVATE(this)->overlayvisual = visual;
-} // setOverlayVisual()
+}
 
 /*!
   This method returns the visual for the overlay GL context.
@@ -338,7 +333,7 @@ SoXtGLWidget::getOverlayVisual(
   void)
 {
   return PRIVATE(this)->overlayvisual;
-} // getOverlayVisual()
+}
 
 // FIXME: make doc in SoQtGLWidget valid for this also. 20011116 mortene.
 void
@@ -397,7 +392,7 @@ SoXtGLWidget::setBorder(const SbBool enable)
         XmNbottomOffset, PRIVATE(this)->borderwidth,
         NULL);
   }
-} // setBorder()
+}
 
 /*!
   This method returns whether the GL area is framed by a border or not.
@@ -407,7 +402,7 @@ SbBool
 SoXtGLWidget::isBorder(void) const
 {
   return PRIVATE(this)->border;
-} // isBorder()
+}
 
 /*!
   This method sets whether rendering will be done to the front buffer
@@ -418,7 +413,7 @@ void
 SoXtGLWidget::setDrawToFrontBufferEnable(const SbBool enable)
 {
   this->drawToFrontBuffer = enable;
-} // setDrawToFrontBufferEnable()
+}
 
 /*!
   This method returns whether rendering will be done to the front buffer
@@ -429,7 +424,7 @@ SbBool
 SoXtGLWidget::isDrawToFrontBufferEnable(void) const
 {
   return this->drawToFrontBuffer;
-} // isDrawToFrontBufferEnable()
+}
 
 /*!
   Enables or disables quad buffer stereo.
@@ -500,7 +495,7 @@ SoXtGLWidget::redrawOverlay(// virtual, protected
   void)
 {
   SOXT_STUB();
-} // redrawOverlay()
+}
 
 /*!
   Any events from the native window system that goes to the OpenGL
@@ -538,7 +533,7 @@ SoXtGLWidget::processEvent(// virtual, protected
 
   } // switch (event->type)
 
-} // processEvent()
+}
 
 /*!
   This method initializes the graphics.
@@ -556,7 +551,7 @@ SoXtGLWidget::initGraphic(// virtual, protected
   PRIVATE(this)->glsize = SbVec2s(width, height);
   glEnable(GL_DEPTH_TEST);
   glUnlockNormal();
-} // initGraphic()
+}
 
 
 // private method that initializes the normal GL context  
@@ -596,7 +591,7 @@ SoXtGLWidget::initOverlayGraphic(// virtual, protected
   void)
 {
   // should be empty
-} // initOverlayGraphic()
+}
 
 /*!
   Will be called whenever scene graph needs to be redrawn().
@@ -652,7 +647,7 @@ void        // virtual, protected
 SoXtGLWidget::widgetChanged(Widget widget)
 {
   SOXT_STUB();
-} // widgetChanged()
+}
 
 // *************************************************************************
 
@@ -679,7 +674,7 @@ SoXtGLWidget::setGLSize(// protected
       XmNheight, height,
       NULL);
   }
-} // setGLSize()
+}
 
 /*!
   \fn const SbVec2s SoXtGLWidget::getGlxSize(void) const
@@ -718,7 +713,7 @@ SoXtGLWidget::getGLAspectRatio(
   Dimension width, height;
   XtVaGetValues(PRIVATE(this)->glxwidget, XmNwidth, &width, XmNheight, &height, NULL);
   return float(width) / float(height);
-} // getGLAspectRatio()
+}
 
 // *************************************************************************
 
@@ -731,7 +726,7 @@ SoXtGLWidget::isRGBMode(// protected
   void)
 {
   return TRUE;
-} // isRGBMode()
+}
 
 /*!
   This method returns the share group for the display lists for the
@@ -744,7 +739,7 @@ SoXtGLWidget::getDisplayListShareGroup(// protected
 {
   SOXT_STUB();
   return 0;
-} // getDisplayListShareGroup()
+}
 
 // *************************************************************************
 
@@ -765,7 +760,7 @@ SoXtGLWidget::eventHandler(// static, protected
   SoXtGLWidget * component = (SoXtGLWidget *) closure;
   component->processEvent((XAnyEvent *) event);
   *dispatch = False;
-} // event_handler()
+}
 
 // NOTE: the strategy applied here for iterating through OpenGL canvas
 // settings is exactly the same as the one applied in Coin's
@@ -925,7 +920,7 @@ SoXtGLWidget::buildWidget(Widget parent)
 #endif // SOXT_DEBUG
 #endif // HAVE_LIBXMU
   return PRIVATE(this)->glxmanager;
-} // buildWidget()
+}
 
 /*!
   This method returns the widget that is managing the GL widget.
@@ -936,7 +931,7 @@ SoXtGLWidget::getGlxMgrWidget(// protected
   void)
 {
   return PRIVATE(this)->glxmanager;
-} // getGlxMgrWidget()
+}
 
 /*!
   This method returns the actual GL widget.
@@ -964,7 +959,7 @@ SoXtGLWidget::glLockNormal(void)
   assert(PRIVATE(this)->glxwidget != (Widget) NULL);
   glXMakeCurrent(SoXt::getDisplay(), XtWindow(PRIVATE(this)->glxwidget),
                  PRIVATE(this)->normalcontext);
-} // glLockNormal()
+}
 
 /*!
   This method unlocks the GL context.
@@ -973,7 +968,7 @@ SoXtGLWidget::glLockNormal(void)
 void
 SoXtGLWidget::glUnlockNormal(void)
 {
-} // glUnlockNormal()
+}
 
 /*!
   This method locks the GL context.
@@ -987,7 +982,7 @@ SoXtGLWidget::glUnlockNormal(void)
 void
 SoXtGLWidget::glLockOverlay(void)
 {
-} // glLockOverlay()
+}
 
 /*!
   This method unlocks the GL context.
@@ -996,7 +991,7 @@ SoXtGLWidget::glLockOverlay(void)
 void
 SoXtGLWidget::glUnlockOverlay(void)
 {
-} // glUnlockOverlay()
+}
 
 /*!
   This method swaps the GL buffers.
@@ -1011,7 +1006,7 @@ SoXtGLWidget::glSwapBuffers(
   SoDebugError::postInfo("SoXtGLWidget::glSwapBuffers", "called");
 #endif // SOXT_DEBUG
   glXSwapBuffers(SoXt::getDisplay(), XtWindow(PRIVATE(this)->glxwidget));
-} // glSwapBuffers()
+}
 
 /*!
   This methid flushes the GL context.
@@ -1024,11 +1019,6 @@ SoXtGLWidget::glFlushBuffer(
   assert(PRIVATE(this)->glxwidget != (Widget) NULL);
   // nothing to do...
   glFlush();
-} // glFlushBuffer()
+}
 
 // *************************************************************************
-
-#if SOXT_DEBUG
-static const char * getSoXtGLWidgetRCSId(void) { return rcsid; }
-#endif // SOXT_DEBUG
-
