@@ -74,21 +74,27 @@ SoXtInternal::createPixmapFromXpm(Widget widget, const char ** xpm, SbBool ghost
 {
   Pixmap pixels = 0;
 #if HAVE_LIBXPM
-
-  Display * dpy = XtDisplay(widget);
-  Screen * screen = XtScreen(widget);
+  Widget shell = widget;
+  while (! XtIsShell(shell) && shell != (Widget) NULL) {
+    shell = XtParent(shell);
+  }
+  assert(shell != (Widget) NULL);
+  Display * dpy = XtDisplay(shell);
 
   XpmAttributes attrs;
+  attrs.visual = NULL;
+  attrs.colormap = 0;
+  attrs.depth = 0;
 
-  attrs.colormap = XDefaultColormapOfScreen(screen);
-  assert(attrs.colormap != 0);
-  attrs.visual = XDefaultVisualOfScreen(screen);
-  assert(attrs.visual != (Visual *)NULL);
-  attrs.depth = XDefaultDepthOfScreen(screen);
+  XtVaGetValues(shell,
+                XmNcolormap, &attrs.colormap,
+                XmNdepth,    &attrs.depth,
+                XmNvisual,   &attrs.visual,
+                NULL);
 
   attrs.valuemask = XpmVisual | XpmColormap | XpmDepth;
 
-  Drawable draw = XRootWindowOfScreen(screen);
+  Drawable draw = RootWindow(dpy, DefaultScreen(dpy));
   Pixmap stencil = 0;
 
   // FIXME: that cast is pretty nasty -- get rid of it. 20020319 mortene.
