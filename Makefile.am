@@ -35,6 +35,7 @@ DISTCLEANFILES = \
 	build/so@gui@.doxygen
 
 EXTRA_DIST = \
+	cfg/m4/doxy4win.pl \
 	build/so@gui@.spec.in \
 	build/so@gui@.doxygen.in \
 	$(SoGuiCommonDistFiles)
