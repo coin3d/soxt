@@ -70,8 +70,9 @@ SoXtPopupMenu::~SoXtPopupMenu(
   void )
 {
   const int numMenus = this->menus->getLength();
+  int i;
 //  QPopupMenu * popup = NULL;
-  for ( int i = 0; i < numMenus; i++ ) {
+  for ( i = 0; i < numMenus; i++ ) {
     MenuRecord * rec = (MenuRecord *) (*this->menus)[i];
 //    if ( rec->menuid == 0 ) popup = rec->menu;
     delete [] rec->name;
@@ -81,7 +82,7 @@ SoXtPopupMenu::~SoXtPopupMenu(
    }
 
   const int numItems = this->items->getLength();
-  for ( int i = 0; i < numItems; i++ ) {
+  for ( i = 0; i < numItems; i++ ) {
     ItemRecord * rec = (ItemRecord *) (*this->items)[i];
     delete [] rec->name;
     delete [] rec->title;
