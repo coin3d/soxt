@@ -24,6 +24,8 @@
 
 #include <Inventor/Xt/viewers/SoXtViewer.h>
 
+class SoAnyPopupMenu;
+
 // *************************************************************************
 
 class SoXtFullViewer : public SoXtViewer {
@@ -65,6 +67,7 @@ protected:
       BuildFlag flag, Type type, SbBool build );
   ~SoXtFullViewer(void);
 
+  virtual void processEvent( XAnyEvent * event );
   virtual SbBool eventFilter( Widget widget, XAnyEvent * event );
 
   Widget buildWidget( Widget parent );
@@ -133,7 +136,7 @@ private:
   Widget decorform[NUMDECORATIONS];
 
   SbString menutitle;
-  // prefmenu
+  SoAnyPopupMenu * prefmenu;
   SbBool menuenabled;
 
   Widget mainlayout;

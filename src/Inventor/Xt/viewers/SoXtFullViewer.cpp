@@ -41,8 +41,10 @@ static const char rcsid[] =
 #ifdef SOXT_THUMBWHEELTEST
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
 #endif // SOXT_THUMBWHEELTEST
+#include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
 
 #include <Inventor/Xt/common/soguidefs.h> // SOGUI_STUB()
+#include <Inventor/Xt/viewers/SoAnyFullViewer.h>
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
 
 enum DefaultViewerButtons {
@@ -53,44 +55,6 @@ enum DefaultViewerButtons {
   SET_HOME_BUTTON,
   VIEW_ALL_BUTTON,
   SEEK_BUTTON
-};
-
-enum MenuIdValues {
-  MENUTITLE_ITEM,
-
-  FUNCTIONS_ITEM,
-  HELP_ITEM,
-  HOME_ITEM,
-  SET_HOME_ITEM,
-  VIEW_ALL_ITEM,
-  SEEK_ITEM,
-  COPY_VIEW_ITEM,
-  PASTE_VIEW_ITEM,
-
-  DRAWSTYLES_ITEM,
-  AS_IS_ITEM,
-  HIDDEN_LINE_ITEM,
-  NO_TEXTURE_ITEM,
-  LOW_RESOLUTION_ITEM,
-  WIREFRAME_ITEM,
-  POINTS_ITEM,
-  BOUNDING_BOX_ITEM,
-  MOVE_SAME_AS_STILL_ITEM,
-  MOVE_NO_TEXTURE_ITEM,
-  MOVE_LOW_RES_ITEM,
-  MOVE_WIREFRAME_ITEM,
-  MOVE_LOW_RES_WIREFRAME_ITEM,
-  MOVE_POINTS_ITEM,
-  MOVE_LOW_RES_POINTS_ITEM,
-  MOVE_BOUNDING_BOX_ITEM,
-  SINGLE_BUFFER_ITEM,
-  DOUBLE_BUFFER_ITEM,
-  INTERACTIVE_BUFFER_ITEM,
-
-  EXAMINING_ITEM,
-  DECORATION_ITEM,
-  HEADLIGHT_ITEM,
-  PREFERENCES_ITEM
 };
 
 // *************************************************************************
@@ -129,6 +93,8 @@ SoXtFullViewer::SoXtFullViewer( // protected
 
   this->setSize( SbVec2s( 500, 390 ) );
   this->setClassName( "SoXtFullViewer" );
+
+  this->prefmenu = SoAnyFullViewer::buildStandardPopupMenu();
 
   if ( build != FALSE )
     this->buildWidget( parent );
@@ -849,5 +815,29 @@ SoXtFullViewer::showDecorationWidgets(
       XmNleftOffset, 0, XmNrightOffset, 0, XmNbottomOffset, 0, NULL );
   }
 } // showDecorationWidgets()
+
+// *************************************************************************
+
+void
+SoXtFullViewer::processEvent(
+  XAnyEvent * event )
+{
+  switch ( event->type ) {
+  case ButtonPress:
+    if ( ((XButtonEvent *) event)->button == 3 ) {
+//      SoDebugError::postInfo( "SoXtFullViewer::processEvent", "yo!" );
+      int x = ((XButtonEvent *) event)->x_root;
+      int y = ((XButtonEvent *) event)->y_root;
+      this->prefmenu->PopUp( this->getGLWidget(), x, y );
+      return;
+    } else {
+//      SoDebugError::postInfo( "button", "%d", ((XButtonEvent *) event)->button );
+    }
+    break;
+  default:
+    break;
+  } // switch ( event->type )
+  inherited::processEvent( event );
+} // processEvent()
 
 // *************************************************************************
