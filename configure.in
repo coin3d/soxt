@@ -93,6 +93,9 @@ dnl * The ld tests generates an a.out file that isn't removed afterwards,
 dnl * which is very annoying for a bloke like me, so we remove it manually...
 rm -f a.out
 
+SIM_RTTI_SUPPORT
+SIM_EXCEPTION_HANDLING
+
 dnl *******************************************************************
 dnl * Search and set up necessary stuff to use Open Inventor with 
 dnl * "native" InventorXt.
@@ -173,6 +176,8 @@ src/Inventor/Xt/widgets/Makefile
 test-code/Makefile
 test-code/widgets/Makefile
 examples/Makefile
+examples/nodes/Makefile
+examples/nodes/selection.cpp
 examples/components/Makefile
 examples/components/renderarea.cpp
 examples/components/examinerviewer.cpp
