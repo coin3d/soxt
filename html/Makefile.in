@@ -171,6 +171,8 @@ SoGui_src_Inventor_Gui_BuiltFiles = \
   $(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidgetCommon.cpp \
   $(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.h \
   $(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.cpp \
+  $(top_builddir)/src/Inventor/@Gui@/So@Gui@ColorEditor.h \
+  $(top_builddir)/src/Inventor/@Gui@/So@Gui@MaterialEditor.h \
   $(SoGui_src_Inventor_Gui_common_BuiltFiles)
 
 
@@ -380,6 +382,8 @@ SoGuiCommonDistFiles = \
   src/Inventor/@Gui@/common/SoGuiGLWidgetCommon.cpp.in \
   src/Inventor/@Gui@/common/SoGuiRenderArea.h.in \
   src/Inventor/@Gui@/common/SoGuiRenderArea.cpp.in \
+  src/Inventor/@Gui@/common/SoGuiColorEditor.h \
+  src/Inventor/@Gui@/common/SoGuiMaterialEditor.h \
   src/Inventor/@Gui@/common/SbGuiList.h \
   src/Inventor/@Gui@/common/SoAny.h.in \
   src/Inventor/@Gui@/common/SoAny.cpp.in \
@@ -685,6 +689,12 @@ $(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.h: $(top_srcdir)/src/Invent
 
 $(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/SoGuiRenderArea.cpp.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/So@Gui@RenderArea.cpp:src/Inventor/@Gui@/common/SoGuiRenderArea.cpp.in )
+
+$(top_builddir)/src/Inventor/@Gui@/So@Gui@ColorEditor.h: $(top_srcdir)/src/Inventor/@Gui@/common/SoGuiColorEditor.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/So@Gui@ColorEditor.h:src/Inventor/@Gui@/common/SoGuiColorEditor.h.in )
+
+$(top_builddir)/src/Inventor/@Gui@/So@Gui@MaterialEditor.h: $(top_srcdir)/src/Inventor/@Gui@/common/SoGuiMaterialEditor.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/So@Gui@MaterialEditor.h:src/Inventor/@Gui@/common/SoGuiMaterialEditor.h.in )
 
 $(top_builddir)/src/Inventor/@Gui@/common/gl.h: $(top_srcdir)/src/Inventor/@Gui@/common/gl.h.in $(top_builddir)/config.status
 	@( cd $(top_builddir); \
