@@ -974,7 +974,7 @@ SoXtFullViewer::leftWheelMotionCB( // static
   XtPointer call_data )
 {
   assert( client_data != NULL && call_data != NULL );
-  float * valueptr = call_data;
+  float * valueptr = (float *) call_data;
   ((SoXtFullViewer *) client_data)->leftWheelMotion( *valueptr );
 } // leftWheelMotionCB()
 
@@ -1056,7 +1056,7 @@ SoXtFullViewer::bottomWheelMotionCB( // static
   XtPointer call_data )
 {
   assert( client_data != NULL && call_data != NULL );
-  float * valueptr = call_data;
+  float * valueptr = (float *) call_data;
   ((SoXtFullViewer *) client_data)->bottomWheelMotion( *valueptr );
 } // bottomWheelStart()
 
@@ -1138,7 +1138,7 @@ SoXtFullViewer::rightWheelMotionCB(
   XtPointer call_data )
 {
   assert( client_data != NULL && call_data != NULL );
-  float * valueptr = call_data;
+  float * valueptr = (float *) call_data;
   ((SoXtFullViewer *) client_data)->rightWheelMotion( *valueptr );
 } // rightWheelMotionCB()
 
