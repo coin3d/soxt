@@ -45,6 +45,9 @@ typedef struct _SoXtThumbWheelClassRec *  SoXtThumbWheelWidgetClass;
 #define XtIsSoXtThumbWheel(w) XtIsSubclass(w, soxtThumbWheelWidgetClass)
 #endif /* ! SoXtIsThumbWheel */
 
+void SoXtThumbWheelSetValue( Widget w, float value );
+float SoXtThumbWheelGetValue( Widget w );
+
 /* ********************************************************************** */
 
 #ifdef __cplusplus

@@ -47,14 +47,15 @@ typedef struct _SoXtThumbWheelClassRec {
 typedef struct _SoXtThumbWheelPart {
   /* resources */
   int orientation;
-  float value;
 //  Pixel sensitive_color; // ABGR format
 //  Pixel insensitive_color; // ABGR format
+  Boolean refresh;
   XtCallbackList arm_callback;
   XtCallbackList disarm_callback;
   XtCallbackList valuechanged_callback;
 
   /* private data */
+  float value;
   GC context;
   Pixmap * pixmaps;
   int numpixmaps; // or null-terminate?
@@ -73,6 +74,9 @@ typedef struct _SoXtThumbWheelRec {
   XmPrimitivePart     primitive;
   SoXtThumbWheelPart  thumbwheel;
 } SoXtThumbWheelRec;
+
+#define XmNrefresh "refresh"
+#define XmCRefresh "refresh"
 
 /* ********************************************************************** */
 

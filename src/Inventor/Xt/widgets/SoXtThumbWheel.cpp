@@ -42,6 +42,8 @@ static const char rcsid[] =
 #define offset( field ) \
   XtOffsetOf( SoXtThumbWheelRec, thumbwheel.field )
 
+static float default_value = 0.0f;
+
 static
 XtResource
 resources[] = {
@@ -56,9 +58,9 @@ resources[] = {
 //    XmRCallProc, (XtPointer) _XmSelectColorDefault
 //  },
   {
-    XmNvalue, XmCValue, XmRFloat,
-    sizeof(float), offset(value),
-    XmRPointer, (XtPointer) NULL
+    XmNrefresh, XmCRefresh, XmRBoolean,
+    sizeof(Boolean), offset(refresh),
+    XmRImmediate, (XtPointer) False
   },
   // insensitiveForeground
   // shadowThickness
@@ -585,6 +587,11 @@ set_values(
   if ( newcw->thumbwheel.value != curcw->thumbwheel.value )
     redisplay = True;
 
+  if ( newcw->thumbwheel.refresh != False ) {
+    newcw->thumbwheel.refresh = False;
+    redisplay = True;
+  }
+
   return redisplay;
 } // set_values()
 
@@ -804,5 +811,41 @@ WheelDown(
   SOXT_STUB();
 #endif // SOXT_DEBUG
 } // WheelDown()
+
+// *************************************************************************
+
+/*!
+*/
+
+void
+SoXtThumbWheelSetValue(
+  Widget w,
+  float value )
+{
+  if ( ! XtIsSoXtThumbWheel(w) ) {
+    SoDebugError::postWarning( "SoXtThumbWheelSetValue",
+      "not a thumbwheel widget" );
+    return;
+  }
+  SoXtThumbWheelWidget wheel = (SoXtThumbWheelWidget) w;
+  wheel->thumbwheel.value = value;
+  XtVaSetValues( w, XmNrefresh, True, NULL );
+} // SoXtThumbWheelSetValue()
+
+/*!
+*/
+
+float
+SoXtThumbWheelGetValue(
+  Widget w )
+{
+  if ( ! XtIsSoXtThumbWheel(w) ) {
+    SoDebugError::postWarning( "SoXtThumbWheelGetValue",
+      "not a thumbwheel widget" );
+    return 0.0f;
+  }
+  SoXtThumbWheelWidget wheel = (SoXtThumbWheelWidget) w;
+  return wheel->thumbwheel.value;
+} // SoXtThumbWheelGetValue()
 
 // *************************************************************************
