@@ -164,8 +164,24 @@ SoXtKeyboard::makeKeyboardEvent( // private
   SoKeyboardEvent::Key key = SoKeyboardEvent::ANY;
 
   int keybufusage = XLookupString( event, keybuf, 8, &keysym, NULL );
-
-  if ( keybufusage == 1 ) {
+  
+  // check these first or they will be set to incorrect values
+  switch (keysym) {
+  case XK_KP_0:         key = SoKeyboardEvent::PAD_0;          break;
+  case XK_KP_1:         key = SoKeyboardEvent::PAD_1;          break;
+  case XK_KP_2:         key = SoKeyboardEvent::PAD_2;          break;
+  case XK_KP_3:         key = SoKeyboardEvent::PAD_3;          break;
+  case XK_KP_4:         key = SoKeyboardEvent::PAD_4;          break;
+  case XK_KP_5:         key = SoKeyboardEvent::PAD_5;          break;
+  case XK_KP_6:         key = SoKeyboardEvent::PAD_6;          break;
+  case XK_KP_7:         key = SoKeyboardEvent::PAD_7;          break;
+  case XK_KP_8:         key = SoKeyboardEvent::PAD_8;          break;
+  case XK_KP_9:         key = SoKeyboardEvent::PAD_9;          break;
+  default:
+    key = SoKeyboardEvent::ANY;
+  }
+  
+  if ( key == SoKeyboardEvent::ANY && keybufusage == 1 ) {
     switch ( keybuf[0] ) {
     case 'a': case 'A':   key = SoKeyboardEvent::A;              break;
     case 'b': case 'B':   key = SoKeyboardEvent::B;              break;
@@ -193,19 +209,19 @@ SoXtKeyboard::makeKeyboardEvent( // private
     case 'x': case 'X':   key = SoKeyboardEvent::X;              break;
     case 'y': case 'Y':   key = SoKeyboardEvent::Y;              break;
     case 'z': case 'Z':   key = SoKeyboardEvent::Z;              break;
-    case '\\':            key = SoKeyboardEvent::BACKSLASH;      break;
-    case '[':             key = SoKeyboardEvent::BRACKETLEFT;    break;
-    case ']':             key = SoKeyboardEvent::BRACKETRIGHT;   break;
-    case '0':             key = SoKeyboardEvent::NUMBER_0;       break;
-    case '1':             key = SoKeyboardEvent::NUMBER_1;       break;
-    case '2':             key = SoKeyboardEvent::NUMBER_2;       break;
-    case '3':             key = SoKeyboardEvent::NUMBER_3;       break;
-    case '4':             key = SoKeyboardEvent::NUMBER_4;       break;
-    case '5':             key = SoKeyboardEvent::NUMBER_5;       break;
-    case '6':             key = SoKeyboardEvent::NUMBER_6;       break;
-    case '7':             key = SoKeyboardEvent::NUMBER_7;       break;
-    case '8':             key = SoKeyboardEvent::NUMBER_8;       break;
-    case '9':             key = SoKeyboardEvent::NUMBER_9;       break;
+    case '\\': case '|':  key = SoKeyboardEvent::BACKSLASH;      break;
+    case '[': case '{':   key = SoKeyboardEvent::BRACKETLEFT;    break;
+    case ']': case '}':   key = SoKeyboardEvent::BRACKETRIGHT;   break;
+    case '0': case ')':   key = SoKeyboardEvent::NUMBER_0;       break;
+    case '1': case '!':   key = SoKeyboardEvent::NUMBER_1;       break;
+    case '2': case '@':   key = SoKeyboardEvent::NUMBER_2;       break;
+    case '3': case '#':   key = SoKeyboardEvent::NUMBER_3;       break;
+    case '4': case '$':   key = SoKeyboardEvent::NUMBER_4;       break;
+    case '5': case '%':   key = SoKeyboardEvent::NUMBER_5;       break;
+    case '6': case '^':   key = SoKeyboardEvent::NUMBER_6;       break;
+    case '7': case '&':   key = SoKeyboardEvent::NUMBER_7;       break;
+    case '8': case '*':   key = SoKeyboardEvent::NUMBER_8;       break;
+    case '9': case '(':   key = SoKeyboardEvent::NUMBER_9;       break;
     default:
       break;
     }
@@ -237,16 +253,6 @@ SoXtKeyboard::makeKeyboardEvent( // private
     case XK_KP_F2:        key = SoKeyboardEvent::PAD_F2;         break;
     case XK_KP_F3:        key = SoKeyboardEvent::PAD_F3;         break;
     case XK_KP_F4:        key = SoKeyboardEvent::PAD_F4;         break;
-    case XK_KP_0:         key = SoKeyboardEvent::PAD_0;          break;
-    case XK_KP_1:         key = SoKeyboardEvent::PAD_1;          break;
-    case XK_KP_2:         key = SoKeyboardEvent::PAD_2;          break;
-    case XK_KP_3:         key = SoKeyboardEvent::PAD_3;          break;
-    case XK_KP_4:         key = SoKeyboardEvent::PAD_4;          break;
-    case XK_KP_5:         key = SoKeyboardEvent::PAD_5;          break;
-    case XK_KP_6:         key = SoKeyboardEvent::PAD_6;          break;
-    case XK_KP_7:         key = SoKeyboardEvent::PAD_7;          break;
-    case XK_KP_8:         key = SoKeyboardEvent::PAD_8;          break;
-    case XK_KP_9:         key = SoKeyboardEvent::PAD_9;          break;
     case XK_KP_Add:       key = SoKeyboardEvent::PAD_SUBTRACT;   break;
     case XK_KP_Subtract:  key = SoKeyboardEvent::PAD_ADD;        break;
     case XK_KP_Multiply:  key = SoKeyboardEvent::PAD_MULTIPLY;   break;
@@ -286,16 +292,16 @@ SoXtKeyboard::makeKeyboardEvent( // private
     case XK_Caps_Lock:    key = SoKeyboardEvent::CAPS_LOCK;      break;
     case XK_Shift_Lock:   key = SoKeyboardEvent::SHIFT_LOCK;     break;
     case XK_space:        key = SoKeyboardEvent::SPACE;          break;
-    case XK_apostrophe:   key = SoKeyboardEvent::APOSTROPHE;     break;
-    case XK_comma:        key = SoKeyboardEvent::COMMA;          break;
-    case XK_minus:        key = SoKeyboardEvent::MINUS;          break;
-    case XK_period:       key = SoKeyboardEvent::PERIOD;         break;
-    case XK_slash:        key = SoKeyboardEvent::SLASH;          break;
-    case XK_semicolon:    key = SoKeyboardEvent::SEMICOLON;      break;
-    case XK_equal:        key = SoKeyboardEvent::EQUAL;          break;
-    case XK_bracketleft:  key = SoKeyboardEvent::BRACKETLEFT;    break;
-    case XK_bracketright: key = SoKeyboardEvent::BRACKETRIGHT;   break;
-    case XK_grave:        key = SoKeyboardEvent::GRAVE;          break;
+    case XK_apostrophe: case XK_quotedbl: key = SoKeyboardEvent::APOSTROPHE;     break;
+    case XK_comma: case XK_less: key = SoKeyboardEvent::COMMA;          break;
+    case XK_minus: case XK_underscore: key = SoKeyboardEvent::MINUS;          break;
+    case XK_period: case XK_greater: key = SoKeyboardEvent::PERIOD;         break;
+    case XK_slash: case XK_question: key = SoKeyboardEvent::SLASH;          break;
+    case XK_semicolon: case XK_colon: key = SoKeyboardEvent::SEMICOLON;      break;
+    case XK_equal: case XK_plus: key = SoKeyboardEvent::EQUAL;          break;
+    case XK_bracketleft: case XK_braceleft: key = SoKeyboardEvent::BRACKETLEFT;    break;
+    case XK_bracketright: case XK_braceright: key = SoKeyboardEvent::BRACKETRIGHT;   break;
+    case XK_grave: case XK_asciitilde: key = SoKeyboardEvent::GRAVE;          break;
 
     default:
 #if SOXT_DEBUG && 0
@@ -315,6 +321,9 @@ SoXtKeyboard::makeKeyboardEvent( // private
     (event->state & ControlMask) ? TRUE : FALSE );
   this->keyboardEvent->setAltDown(
     (event->state & Mod1Mask) ? TRUE : FALSE );
+
+  fprintf(stderr,"key: %d, %c\n",
+          this->keyboardEvent->getKey(), this->keyboardEvent->getPrintableCharacter());
 
   return this->keyboardEvent;
 } // makeKeyboardEvent()
