@@ -1257,11 +1257,6 @@ SoXtComponent::setWidgetCursor(Widget w, const SoXtCursor & cursor)
       XDefineCursor(d, XtWindow(w), c);
       break;
 
-    case SoXtCursor::BLANK:
-      // FIXME: implement. 20011127 mortene.
-      SOXT_STUB();
-      break;
-
     case SoXtCursor::CROSSHAIR:
       // FIXME: plug memory leak. 20011127 mortene.
       c = XCreateFontCursor(d, XC_crosshair);

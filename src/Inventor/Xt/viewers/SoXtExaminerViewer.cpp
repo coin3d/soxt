@@ -363,7 +363,7 @@ SoXtExaminerViewer::setCursorRepresentation(int mode)
   // code. 20011125 mortene.
 
   if (!this->isCursorEnabled()) {
-    this->setComponentCursor(SoXtCursor(SoXtCursor::BLANK));
+    this->setComponentCursor(SoXtCursor::getBlankCursor());
     return;
   }
 
