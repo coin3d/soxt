@@ -1,33 +1,14 @@
 # **************************************************************************
 # SoXt/configure.in
 
-AC_INIT(src/Inventor/Xt/SoXt.h)
+AC_INIT(src/Inventor/Xt/SoXt.h) # any typical file for source archive
 
 # **************************************************************************
 # Apply changes to the CVS repository structure...
 
 sim_ac_cvs_syncproblem=false;
 
-sim_ac_examples_check_file=${srcdir}/examples/configure.in
 sim_ac_data_check_file=${srcdir}/data/configure.in
-
-if test ! -f $sim_ac_examples_check_file; then
-  if test "x${with_auto_cvs_update+set}" = "xset"; then
-    echo "Trying to honor the --with-auto-cvs-update option."
-    sim_ac_save_cwd="`pwd`"
-    cd ${srcdir}
-    if test ! -d ./examples -o ! -f ./CVS/Entries; then
-      AC_MSG_ERROR([something failed horribly - can't do auto-cvs-update])
-    fi
-    grep -v "^D/examples/" CVS/Entries > /tmp/SoXt-CVS-Entries.$$
-    cp /tmp/SoXt-CVS-Entries.$$ CVS/Entries
-    rm /tmp/SoXt-CVS-Entries.$$
-    rm -rf examples
-    cvs co SoXtExamples
-    cd ${sim_ac_save_cwd}
-    echo "Done.  Proceeding..."
-  fi
-fi
 
 if test ! -f $sim_ac_data_check_file; then
   if test "x${with_auto_cvs_update+set}" = "xset"; then
@@ -43,39 +24,21 @@ if test ! -f $sim_ac_data_check_file; then
   fi
 fi
 
-if test ! -f $sim_ac_examples_check_file; then
-  echo ""
-  echo "  You appear to have an old setup of the SoXt source repository."
-  echo "  Parts of it have changed structurally, and you need to do the"
-  echo "  following in the SoXt source directory:"
-  echo ""
-  echo "    \$ grep -v \"^D/examples/\" CVS/Entries > /tmp/SoXt-CVS-Entries"
-  echo "    \$ cp /tmp/SoXt-CVS-Entries CVS/Entries"
-  echo "    \$ rm /tmp/SoXt-CVS-Entries"
-  echo "    \$ rm -rf examples"
-  echo "    \$ cvs co SoXtExamples"
-  echo ""
-  echo "  You can also run configure with the option --with-auto-cvs-update"
-  echo "  to allow the configure script to try to take care of this.  This"
-  echo "  option is very experimental and should not be used if you use"
-  echo "  configure in a way that may be considered \"weird\" in any way."
-  echo ""
-  sim_ac_cvs_syncproblem=true
-fi
-
 if test ! -f $sim_ac_data_check_file; then
-  echo ""
-  echo "  You appear to have an old setup of the SoXt source repository."
-  echo "  Parts of it have changed structurally, and you need to do the"
-  echo "  following in the SoXt source directory:"
-  echo ""
-  echo "    \$ cvs co SoXtData"
-  echo ""
-  echo "  You can also run configure with the option --with-auto-cvs-update"
-  echo "  to allow the configure script to try to take care of this.  This"
-  echo "  option is very experimental and should not be used if you use"
-  echo "  configure in a way that may be considered \"weird\" in any way."
-  echo ""
+  cat <<EOF
+
+  You appear to have an old setup of the SoXt source repository.
+  Parts of it have changed structurally, and you need to do the
+  following in the SoXt source directory:
+
+    $ cvs co SoXtData
+
+  You can also run configure with the option --with-auto-cvs-update
+  to allow the configure script to try to take care of this.  This
+  option is very experimental and should not be used if you use
+  configure in a way that may be considered "weird" in any way.
+
+EOF
   sim_ac_cvs_syncproblem=true
 fi
 
@@ -122,6 +85,8 @@ AC_DEFINE_UNQUOTED(SOXT_MICRO_VERSION, $SOXT_MICRO_VERSION)
 AC_DEFINE_UNQUOTED(SOXT_VERSION, "$SOXT_VERSION")
 
 # **************************************************************************
+
+AC_CANONICAL_SYSTEM
 
 AM_INIT_AUTOMAKE(libSoXt, $SOXT_VERSION)
 AM_CONFIG_HEADER(config.h)
@@ -195,15 +160,11 @@ if test x"${with_inventor+set}" = x"set"; then
   ], AC_MSG_ERROR([couldn't compile and link against Open Inventor]))
 else
   # check for Coin library and its dependencies
-  SIM_CHECK_COIN([
+  SIM_AC_HAVE_COIN_IFELSE([
     SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_coin_cppflags"
     SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_coin_ldflags"
     SOXT_EXTRA_LIBS="$sim_ac_coin_libs $SOXT_EXTRA_LIBS"
-  ],[
-    AC_MSG_ERROR(couldn't compile and link against Coin)
-  ],[
-    default searchprefix
-  ])
+  ], AC_MSG_ERROR(couldn't compile and link against Coin))
 fi
 
 # Check for the availability of this node (it is used in the hidden
@@ -231,17 +192,6 @@ CXXFLAGS="$CXXFLAGS -DSOXT_INTERNAL=1"
 
 # --with-test-code is a silent option
 AM_CONDITIONAL(BUILD_TESTS, false) # test "x${with_test_code+set}" = "xset")
-
-sim_ac_want_examples=true
-AC_ARG_WITH(
-  [examples],
-  AC_HELP_STRING([--without-examples],
-                 [disable compilation of standard examples]),
-  [case "$withval" in
-   no) sim_ac_want_examples=false ;;
-   *)  ;;
-   esac],
-  [])
 
 # --with-ivexamples is a silent option
 sim_ac_want_ivexamples=false
@@ -280,11 +230,7 @@ AM_CONDITIONAL(BUILD_IV_EXAMPLES, $sim_ac_want_ivexamples)
 
 . ${srcdir}/libconfigvars.sh
 
-# old
 AC_SUBST(GUI)
-AC_SUBST(lGUI)
-AC_SUBST(uGUI)
-# new
 AC_SUBST(Gui)
 AC_SUBST(gui)
 AC_SUBST(WIDGET)
@@ -300,7 +246,7 @@ AC_ARG_WITH(
   [case "${withval}" in
     yes) want_html=yes ;;
     no)  want_html=no ;;
-    *) AC_MSG_ERROR(bad value \"${withval}\" for --with-html) ;;
+    *)   AC_MSG_ERROR(bad value "${withval}" for --with-html) ;;
   esac],
   [want_html=no])
 
@@ -310,7 +256,7 @@ AC_ARG_WITH(
   [case "${withval}" in
     yes) want_man=yes ;;
     no)  want_man=no ;;
-    *) AC_MSG_ERROR(bad value \"${withval}\" for --with-man) ;;
+    *)   AC_MSG_ERROR(bad value "${withval}" for --with-man) ;;
   esac],
   [want_man=no])
 
@@ -323,13 +269,16 @@ soxt_build_dir=`pwd`
 cd $srcdir
 soxt_src_dir=`pwd`
 cd $soxt_build_dir
+soxt_data_dir=/usr/local/share/Coin
+test x"$exec_prefix" != xNONE && soxt_data_dir=$exec_prefix/share/Coin
 
 AC_SUBST(soxt_src_dir)
 AC_SUBST(soxt_build_dir)
+AC_SUBST(soxt_data_dir)
 
 if test x"$want_html" != xno -o x"$want_man" != xno; then
   SIM_AC_DOXYGEN_TOOL(,
-    [AC_MSG_ERROR([Could not find the doxygen tool -- see http://www.stack.nl/~dimitri/doxygen/])])
+    AC_MSG_ERROR([Could not find the doxygen tool -- see http://www.stack.nl/~dimitri/doxygen/]))
   sim_ac_doxygen_our_version=1.1.5
   if test x"$sim_ac_doxygen_avail" != x"$sim_ac_doxygen_our_version"; then
     AC_MSG_WARN(You are not using Doxygen version $sim_ac_doxygen_our_version)
@@ -358,15 +307,10 @@ AC_SUBST(SOXT_EXTRA_LIBS)
 
 SIM_EXPAND_DIR_VARS
 
-sim_ac_subconfig="data"
-$sim_ac_want_examples    && sim_ac_subconfig="$sim_ac_subconfig examples"
-$sim_ac_want_devcode     && sim_ac_subconfig="$sim_ac_subconfig devcode"
-$simm_ac_want_ivexamples && sim_ac_subconfig="$sim_ac_subconfig ivexamples"
-
-AC_CONFIG_SUBDIRS($sim_ac_subconfig)
+AC_CONFIG_SUBDIRS(data)
 
 # **************************************************************************
-# finally generate all the makefiles and config files.
+# generate the makefiles and config files.
 
 AC_OUTPUT([
 	Makefile
@@ -381,8 +325,18 @@ AC_OUTPUT([
 	chmod a+x soxt-config
 ])
 
-echo ""
-echo "Now, run 'make install' to build and install So$GUI."
-echo ""
+if test -d ${srcdir}/examples; then
+  cat <<EOF
+
+  ATTENTION:  You can remove the 'examples' directory from So$Gui.  It has
+  been obsoleted by the stand-alone module 'SoGuiExamples'.
+EOF
+fi
+
+cat <<EOF
+
+Now, run 'make install' to build and install So$Gui.
+
+EOF
 
 # **************************************************************************

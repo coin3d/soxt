@@ -62,4 +62,31 @@ The Build Phase
   the duplicate instead.  Be aware that lndir might fail to work if you
   don't write absolute path-names for both of its arguments.
 
+* compilation fail because SoXtBasic.h.in can't be created
+
+  You don't have write permission in the source directory.  This will be
+  fixed in the future.  In the mean time, copy the source hierarchy to
+  somewhere you have write access before building.
+
+
+RUNNING
+=======
+
+[
+Read about configuring the IRIX Xserver to use 24-bit visuals by default
+in question 71 in the comp.sys.sgi.graphics FAQ:
+
+<URL:http://www-viz.tamu.edu/~sgi-faq/faq/html-1/graphics.html>
+]
+
+ENVIRONMENT
+===========
+
+  SOXT_JOYSTICK_DEVICE
+
+  SO_MATERIAL_DIR
+
+  COIN_HOME
+
+  OIVHOME
 

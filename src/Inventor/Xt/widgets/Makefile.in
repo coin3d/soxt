@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4a-SIM-20000531 from Makefile.am
+# Makefile.in generated automatically by automake 1.4a from Makefile.am
 
 # Copyright (C) 1994, 1995-9, 2000 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
@@ -57,8 +57,12 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 
 @SET_MAKE@
+build_alias = @build_alias@
+build_triplet = @build@
 host_alias = @host_alias@
 host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
 AMDEP = @AMDEP@
 AMTAR = @AMTAR@
 AS = @AS@
@@ -99,14 +103,13 @@ VERSION = @VERSION@
 WIDGET = @WIDGET@
 gui = @gui@
 install_sh = @install_sh@
-lGUI = @lGUI@
-sim_ac_conf_cmd = @sim_ac_conf_cmd@
+sim_ac_coin_configcmd = @sim_ac_coin_configcmd@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 soxt_build_dir = @soxt_build_dir@
 soxt_configure_date = @soxt_configure_date@
+soxt_data_dir = @soxt_data_dir@
 soxt_src_dir = @soxt_src_dir@
-uGUI = @uGUI@
 
 ############################################################################
 

@@ -4,7 +4,7 @@
 moduledir=${0%/[^/]*}
 module=${moduledir##*/}
 GUI=`echo $module | cut -c3-`
-cvs2cl=$HOME/store/cvs/cvs2cl/cvs2cl.pl
+cvs2cl=$HOME/code/cvs/src/cvs2cl/cvs2cl.pl
 headerfile=/tmp/$module.header
 
 cd $moduledir
@@ -21,7 +21,6 @@ also out the following ChangeLog files:
   ./conf-macros/ChangeLog
   ./src/Inventor/Xt/common/ChangeLog
   ./data/ChangeLog
-  ./examples/ChangeLog
 
 See http://www.red-bean.com/~kfogel/cvs2cl.shtml for information about the
 cvs2cl script used to generate this file.

@@ -530,8 +530,6 @@ strip @libdir@/libSoXt.so.0.0.0
 @datadir@/Coin/materials/winter/winter.7
 @datadir@/Coin/materials/winter/winter.8
 @datadir@/Coin/materials/winter/winter.9
-# FIXME: kill this m4-file -- should be unnecessary. 20000704 mortene.
-@datadir@/aclocal/modifierlist.m4
 @datadir@/aclocal/soxt.m4
 @includedir@/Inventor/Xt/SoXt.h
 @includedir@/Inventor/Xt/SoXtBasic.h

@@ -9,12 +9,14 @@ SUBDIRS = devices widgets viewers
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src -I$(top_builddir)/data
 
 BUILT_SOURCES = \
-	SoXtBasic.h \
-	SoXtRenderArea.h \
-	SoXtRenderArea.cpp \
+	So@Gui@Basic.h \
+	So@Gui@RenderArea.h \
+	So@Gui@RenderArea.cpp \
 	SoAnyMaterialList.h \
 	SoAnyMaterialList.cpp \
-	SoAnyMaterialListBuiltins.cpp
+	SoAnyMaterialListBuiltins.cpp \
+	SoAnyConversionChain.h \
+	SoAnyConversionChain.cpp
 
 noinst_DATA = $(BUILT_SOURCES)
 
@@ -23,39 +25,39 @@ noinst_DATA = $(BUILT_SOURCES)
 
 libSoXt_la_SOURCES = \
 	$(BUILT_SOURCES) \
-	SoXt.h \
-	SoXt.cpp \
-	SoXtClipboard.h \
-	SoXtClipboard.cpp \
-	SoXtComponent.h \
-	SoXtComponent.cpp \
-	SoXtCursors.h \
-	SoXtCursors.cpp \
-	SoXtDirectionalLightEditor.h \
-	SoXtDirectionalLightEditor.cpp \
-	SoXtGLWidget.h \
-	SoXtGLWidget.cpp \
-	SoXtIcons.h \
-	SoXtIcons.cpp \
-	SoXtLightSliderSet.h \
-	SoXtLightSliderSet.cpp \
-	SoXtMaterialEditor.h \
-	SoXtMaterialEditor.cpp \
-	SoXtMaterialList.h \
-	SoXtMaterialList.cpp \
-	SoXtMaterialSliderSet.h \
-	SoXtMaterialSliderSet.cpp \
-	SoXtPrintDialog.h \
-	SoXtPrintDialog.cpp \
-	SoXtRenderAreaExtra.cpp \
-	SoXtResource.h \
-	SoXtResource.cpp \
-	SoXtSliderSet.h \
-	SoXtSliderSet.cpp \
-	SoXtSliderSetBase.h \
-	SoXtSliderSetBase.cpp \
-	SoXtTransformSliderSet.h \
-	SoXtTransformSliderSet.cpp
+	So@Gui@.h \
+	So@Gui@.cpp \
+	So@Gui@Clipboard.h \
+	So@Gui@Clipboard.cpp \
+	So@Gui@Component.h \
+	So@Gui@Component.cpp \
+	So@Gui@Cursors.h \
+	So@Gui@Cursors.cpp \
+	So@Gui@DirectionalLightEditor.h \
+	So@Gui@DirectionalLightEditor.cpp \
+	So@Gui@GLWidget.h \
+	So@Gui@GLWidget.cpp \
+	So@Gui@Icons.h \
+	So@Gui@Icons.cpp \
+	So@Gui@LightSliderSet.h \
+	So@Gui@LightSliderSet.cpp \
+	So@Gui@MaterialEditor.h \
+	So@Gui@MaterialEditor.cpp \
+	So@Gui@MaterialList.h \
+	So@Gui@MaterialList.cpp \
+	So@Gui@MaterialSliderSet.h \
+	So@Gui@MaterialSliderSet.cpp \
+	So@Gui@PrintDialog.h \
+	So@Gui@PrintDialog.cpp \
+	So@Gui@RenderAreaExtra.cpp \
+	So@Gui@Resource.h \
+	So@Gui@Resource.cpp \
+	So@Gui@SliderSet.h \
+	So@Gui@SliderSet.cpp \
+	So@Gui@SliderSetBase.h \
+	So@Gui@SliderSetBase.cpp \
+	So@Gui@TransformSliderSet.h \
+	So@Gui@TransformSliderSet.cpp
 
 libSoXt_la_LIBADD = \
 	devices/libSoXtDevices.la \
@@ -84,13 +86,13 @@ SoXtSliderSet.cpp: SoXtBasic.h
 SoXtSliderSetBase.cpp: SoXtBasic.h
 SoXtTransformSliderSet.cpp: SoXtBasic.h
 
-SoXtBasic.h: $(srcdir)/common/SoGuiBasic.h.in
+So@Gui@Basic.h: $(srcdir)/common/SoGuiBasic.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoXtRenderArea.h: $(srcdir)/common/SoGuiRenderArea.h.in
+So@Gui@RenderArea.h: $(srcdir)/common/SoGuiRenderArea.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoXtRenderArea.cpp: $(srcdir)/common/SoGuiRenderArea.cpp.in
+So@Gui@RenderArea.cpp: $(srcdir)/common/SoGuiRenderArea.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyMaterialList.h: $(srcdir)/common/SoAnyMaterialList.h.in
@@ -102,29 +104,35 @@ SoAnyMaterialList.cpp: $(srcdir)/common/SoAnyMaterialList.cpp.in
 SoAnyMaterialListBuiltins.cpp: $(srcdir)/common/SoAnyMaterialListBuiltins.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
+SoAnyConversionChain.h: $(srcdir)/common/SoAnyConversionChain.h.in
+	@( cd $(top_builddir); $(MAKE) built-sources )
+
+SoAnyConversionChain.cpp: $(srcdir)/common/SoAnyConversionChain.cpp.in
+	@( cd $(top_builddir); $(MAKE) built-sources )
+
 ############################################################################
 ##
 
-libSoXtincdir = $(includedir)/Inventor/Xt
+libSoXtincdir = $(includedir)/Inventor/@Gui@
 
 libSoXtinc_HEADERS = \
-	SoXt.h \
-	SoXtClipboard.h \
-	SoXtComponent.h \
-	SoXtCursors.h \
-	SoXtDirectionalLightEditor.h \
-	SoXtGLWidget.h \
-	SoXtIcons.h \
-	SoXtLightSliderSet.h \
-	SoXtMaterialEditor.h \
-	SoXtMaterialList.h \
-	SoXtMaterialSliderSet.h \
-	SoXtPrintDialog.h \
-	SoXtResource.h \
-	SoXtSliderSet.h \
-	SoXtSliderSetBase.h \
-	SoXtTransformSliderSet.h \
-	$(top_builddir)/src/Inventor/Xt/SoXtBasic.h \
-	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.h
+	So@Gui@.h \
+	So@Gui@Clipboard.h \
+	So@Gui@Component.h \
+	So@Gui@Cursors.h \
+	So@Gui@DirectionalLightEditor.h \
+	So@Gui@GLWidget.h \
+	So@Gui@Icons.h \
+	So@Gui@LightSliderSet.h \
+	So@Gui@MaterialEditor.h \
+	So@Gui@MaterialList.h \
+	So@Gui@MaterialSliderSet.h \
+	So@Gui@PrintDialog.h \
+	So@Gui@Resource.h \
+	So@Gui@SliderSet.h \
+	So@Gui@SliderSetBase.h \
+	So@Gui@TransformSliderSet.h \
+	$(top_builddir)/src/Inventor/@Gui@/So@Gui@Basic.h \
+	$(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.h
 
 ############################################################################

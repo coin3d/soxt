@@ -1,29 +1,33 @@
 #! /bin/sh
 
 # Regenerate all files which are constructed by the autoconf, automake
-# and libtool tool-chain. Note: only developers should need to use
-# this script.
+# and libtool tool-chain. Note: only developers should need to use this
+# script.
 
 # Authors:
 #   Morten Eriksen <mortene@sim.no>
 #   Lars J. Aas <larsa@sim.no>
 #   Ralph Levien (original autogen.sh picked up from Gnome source archive).
 
-directory=`echo "$0" | sed -e 's/[^\/]*$//g'`;
-cd $directory
-if ! test -f ./autogen.sh; then
+wd=`echo $0 | sed 's,[^\\/]*$,,g'`;
+cd $wd
+if test ! -f autogen.sh; then
   echo "unexpected problem with your shell - bailing out"
   exit 1
 fi
 
-GUI=Xt
+# required autotrio tool versions
+AUTOCONF_VER=2.14a   # CVS development version
+AUTOMAKE_VER=1.4a    # CVS development version
+LIBTOOL_VER=1.3.5
 
+GUI=Xt
 PROJECT=So$GUI
 MACRODIR=conf-macros
 DIE=false
 
-SUBPROJECTS="$MACRODIR data examples"
-SUBPROJECTNAMES="$MACRODIR SoXtData SoXtExamples"
+SUBPROJECTS="$MACRODIR data"
+SUBPROJECTNAMES="$MACRODIR SoXtData"
 AUTOMAKE_ADD=
 
 if test "$1" = "--clean"; then
@@ -48,45 +52,54 @@ fi
 
 echo "Checking the installed configuration tools..."
 
-AUTOCONF_VER=2.14.1-SIM  # Autoconf from CVS @ 2000-01-13.
 if test -z "`autoconf --version | grep \" $AUTOCONF_VER\" 2> /dev/null`"; then
-    echo
-    echo "You must have autoconf version $AUTOCONF_VER installed to"
-    echo "generate configure information and Makefiles for $PROJECT."
-    echo ""
-    echo "The Autoconf version we are using is a development version"
-    echo "\"frozen\" from the CVS repository at 2000-01-13. You can get"
-    echo "it here:"
-    echo ""
-    echo "   ftp://ftp.sim.no/pub/coin/autoconf-2.14.1-coin.tar.gz"
-    echo ""
-    DIE=true
+  cat <<EOF
+
+  Invalid Version of Autoconf
+  ---------------------------
+  You must use the CVS development version of autoconf ($AUTOCONF_VER)
+  to generate configure information and Makefiles for $PROJECT.
+
+  The CVS autoconf repository can be fetched by running the following
+  set of commands:
+
+  $ cvs -d :pserver:anoncvs@subversions.gnu.org:/cvs login    # (no password)
+  $ cvs -d :pserver:anoncvs@subversions.gnu.org:/cvs co autoconf
+
+EOF
+  DIE=true
 fi
 
-AUTOMAKE_VER=1.4a-SIM-20000531  # Automake from CVS
 if test -z "`automake --version | grep \" $AUTOMAKE_VER\" 2> /dev/null`"; then
-    echo
-    echo "You must have automake version $AUTOMAKE_VER installed to"
-    echo "generate configure information and Makefiles for $PROJECT."
-    echo ""
-    echo "The Automake version we are using is a development version"
-    echo "\"frozen\" from the CVS repository at 2000-01-13. You can get"
-    echo "it here:"
-    echo ""
-    echo "   ftp://ftp.sim.no/pub/coin/automake-1.4a-coin.tar.gz"
-    echo ""
-    DIE=true
+  cat <<EOF
+
+  Invalid Version of Automake
+  ---------------------------
+  You must use the CVS development version of automake to ($AUTOMAKE_VER)
+  to generate configure information and Makefiles for $PROJECT.
+
+  The CVS automake repository can be fetched by running the following
+  set of commands:
+
+  $ cvs -d :pserver:anoncvs@anoncvs.cygnus.com:/cvs/automake login
+  $ cvs -d :pserver:anoncvs@anoncvs.cygnus.com:/cvs/automake co automake
+
+EOF
+  DIE=true
 fi
 
-LIBTOOL_VER=1.3.5
 if test -z "`libtool --version | grep \" $LIBTOOL_VER \" 2> /dev/null`"; then
-    echo
-    echo "You must have libtool version $LIBTOOL_VER installed to"
-    echo "generate configure information and Makefiles for $PROJECT."
-    echo ""
-    echo "Get ftp://ftp.gnu.org/pub/gnu/libtool/libtool-1.3.5.tar.gz"
-    echo ""
-    DIE=true
+  cat <<EOF
+
+  Invalid Version of Libtool
+  --------------------------
+  You must have libtool version $LIBTOOL_VER installed to generate
+  configure information and Makefiles for $PROJECT.
+
+  Get ftp://ftp.gnu.org/pub/gnu/libtool/libtool-1.3.5.tar.gz
+
+EOF
+  DIE=true
 fi
 
 set $SUBPROJECTNAMES
@@ -111,7 +124,6 @@ done
 
 $DIE && exit 1
 
-# AG_CRUNCH
 echo "Running aclocal (generating aclocal.m4)..."
 aclocal -I $MACRODIR
 
@@ -136,7 +148,5 @@ done
 echo "Running autoconf (generating ./configure)..."
 autoconf
 
-echo
-echo "Done: Now run './configure' and 'make install' to build $PROJECT."
-echo
+echo "Done."
 

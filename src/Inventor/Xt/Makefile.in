@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4a-SIM-20000531 from Makefile.am
+# Makefile.in generated automatically by automake 1.4a from Makefile.am
 
 # Copyright (C) 1994, 1995-9, 2000 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
@@ -57,8 +57,12 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 
 @SET_MAKE@
+build_alias = @build_alias@
+build_triplet = @build@
 host_alias = @host_alias@
 host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
 AMDEP = @AMDEP@
 AMTAR = @AMTAR@
 AS = @AS@
@@ -99,14 +103,13 @@ VERSION = @VERSION@
 WIDGET = @WIDGET@
 gui = @gui@
 install_sh = @install_sh@
-lGUI = @lGUI@
-sim_ac_conf_cmd = @sim_ac_conf_cmd@
+sim_ac_coin_configcmd = @sim_ac_coin_configcmd@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 soxt_build_dir = @soxt_build_dir@
 soxt_configure_date = @soxt_configure_date@
+soxt_data_dir = @soxt_data_dir@
 soxt_src_dir = @soxt_src_dir@
-uGUI = @uGUI@
 
 ############################################################################
 
@@ -118,12 +121,14 @@ SUBDIRS = devices widgets viewers
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src -I$(top_builddir)/data
 
 BUILT_SOURCES = \
-	SoXtBasic.h \
-	SoXtRenderArea.h \
-	SoXtRenderArea.cpp \
+	So@Gui@Basic.h \
+	So@Gui@RenderArea.h \
+	So@Gui@RenderArea.cpp \
 	SoAnyMaterialList.h \
 	SoAnyMaterialList.cpp \
-	SoAnyMaterialListBuiltins.cpp
+	SoAnyMaterialListBuiltins.cpp \
+	SoAnyConversionChain.h \
+	SoAnyConversionChain.cpp
 
 
 noinst_DATA = $(BUILT_SOURCES)
@@ -132,39 +137,39 @@ noinst_DATA = $(BUILT_SOURCES)
 
 libSoXt_la_SOURCES = \
 	$(BUILT_SOURCES) \
-	SoXt.h \
-	SoXt.cpp \
-	SoXtClipboard.h \
-	SoXtClipboard.cpp \
-	SoXtComponent.h \
-	SoXtComponent.cpp \
-	SoXtCursors.h \
-	SoXtCursors.cpp \
-	SoXtDirectionalLightEditor.h \
-	SoXtDirectionalLightEditor.cpp \
-	SoXtGLWidget.h \
-	SoXtGLWidget.cpp \
-	SoXtIcons.h \
-	SoXtIcons.cpp \
-	SoXtLightSliderSet.h \
-	SoXtLightSliderSet.cpp \
-	SoXtMaterialEditor.h \
-	SoXtMaterialEditor.cpp \
-	SoXtMaterialList.h \
-	SoXtMaterialList.cpp \
-	SoXtMaterialSliderSet.h \
-	SoXtMaterialSliderSet.cpp \
-	SoXtPrintDialog.h \
-	SoXtPrintDialog.cpp \
-	SoXtRenderAreaExtra.cpp \
-	SoXtResource.h \
-	SoXtResource.cpp \
-	SoXtSliderSet.h \
-	SoXtSliderSet.cpp \
-	SoXtSliderSetBase.h \
-	SoXtSliderSetBase.cpp \
-	SoXtTransformSliderSet.h \
-	SoXtTransformSliderSet.cpp
+	So@Gui@.h \
+	So@Gui@.cpp \
+	So@Gui@Clipboard.h \
+	So@Gui@Clipboard.cpp \
+	So@Gui@Component.h \
+	So@Gui@Component.cpp \
+	So@Gui@Cursors.h \
+	So@Gui@Cursors.cpp \
+	So@Gui@DirectionalLightEditor.h \
+	So@Gui@DirectionalLightEditor.cpp \
+	So@Gui@GLWidget.h \
+	So@Gui@GLWidget.cpp \
+	So@Gui@Icons.h \
+	So@Gui@Icons.cpp \
+	So@Gui@LightSliderSet.h \
+	So@Gui@LightSliderSet.cpp \
+	So@Gui@MaterialEditor.h \
+	So@Gui@MaterialEditor.cpp \
+	So@Gui@MaterialList.h \
+	So@Gui@MaterialList.cpp \
+	So@Gui@MaterialSliderSet.h \
+	So@Gui@MaterialSliderSet.cpp \
+	So@Gui@PrintDialog.h \
+	So@Gui@PrintDialog.cpp \
+	So@Gui@RenderAreaExtra.cpp \
+	So@Gui@Resource.h \
+	So@Gui@Resource.cpp \
+	So@Gui@SliderSet.h \
+	So@Gui@SliderSet.cpp \
+	So@Gui@SliderSetBase.h \
+	So@Gui@SliderSetBase.cpp \
+	So@Gui@TransformSliderSet.h \
+	So@Gui@TransformSliderSet.cpp
 
 
 libSoXt_la_LIBADD = \
@@ -180,27 +185,27 @@ libSoXt_la_LDFLAGS = \
 
 ############################################################################
 
-libSoXtincdir = $(includedir)/Inventor/Xt
+libSoXtincdir = $(includedir)/Inventor/@Gui@
 
 libSoXtinc_HEADERS = \
-	SoXt.h \
-	SoXtClipboard.h \
-	SoXtComponent.h \
-	SoXtCursors.h \
-	SoXtDirectionalLightEditor.h \
-	SoXtGLWidget.h \
-	SoXtIcons.h \
-	SoXtLightSliderSet.h \
-	SoXtMaterialEditor.h \
-	SoXtMaterialList.h \
-	SoXtMaterialSliderSet.h \
-	SoXtPrintDialog.h \
-	SoXtResource.h \
-	SoXtSliderSet.h \
-	SoXtSliderSetBase.h \
-	SoXtTransformSliderSet.h \
-	$(top_builddir)/src/Inventor/Xt/SoXtBasic.h \
-	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.h
+	So@Gui@.h \
+	So@Gui@Clipboard.h \
+	So@Gui@Component.h \
+	So@Gui@Cursors.h \
+	So@Gui@DirectionalLightEditor.h \
+	So@Gui@GLWidget.h \
+	So@Gui@Icons.h \
+	So@Gui@LightSliderSet.h \
+	So@Gui@MaterialEditor.h \
+	So@Gui@MaterialList.h \
+	So@Gui@MaterialSliderSet.h \
+	So@Gui@PrintDialog.h \
+	So@Gui@Resource.h \
+	So@Gui@SliderSet.h \
+	So@Gui@SliderSetBase.h \
+	So@Gui@TransformSliderSet.h \
+	$(top_builddir)/src/Inventor/@Gui@/So@Gui@Basic.h \
+	$(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.h
 
 subdir = src/Inventor/Xt
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -219,13 +224,15 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libSoXt_la_DEPENDENCIES =  devices/libSoXtDevices.la \
 widgets/libSoXtWidgets.la viewers/libSoXtViewers.la
-am_libSoXt_la_OBJECTS =  SoXtRenderArea.lo SoAnyMaterialList.lo \
-SoAnyMaterialListBuiltins.lo SoXt.lo SoXtClipboard.lo SoXtComponent.lo \
-SoXtCursors.lo SoXtDirectionalLightEditor.lo SoXtGLWidget.lo \
-SoXtIcons.lo SoXtLightSliderSet.lo SoXtMaterialEditor.lo \
-SoXtMaterialList.lo SoXtMaterialSliderSet.lo SoXtPrintDialog.lo \
-SoXtRenderAreaExtra.lo SoXtResource.lo SoXtSliderSet.lo \
-SoXtSliderSetBase.lo SoXtTransformSliderSet.lo
+am_libSoXt_la_OBJECTS =  So@Gui@RenderArea.lo SoAnyMaterialList.lo \
+SoAnyMaterialListBuiltins.lo SoAnyConversionChain.lo So@Gui@.lo \
+So@Gui@Clipboard.lo So@Gui@Component.lo So@Gui@Cursors.lo \
+So@Gui@DirectionalLightEditor.lo So@Gui@GLWidget.lo So@Gui@Icons.lo \
+So@Gui@LightSliderSet.lo So@Gui@MaterialEditor.lo \
+So@Gui@MaterialList.lo So@Gui@MaterialSliderSet.lo \
+So@Gui@PrintDialog.lo So@Gui@RenderAreaExtra.lo So@Gui@Resource.lo \
+So@Gui@SliderSet.lo So@Gui@SliderSetBase.lo \
+So@Gui@TransformSliderSet.lo
 libSoXt_la_OBJECTS =  $(am_libSoXt_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -243,17 +250,20 @@ DATA =  $(noinst_DATA)
 HEADERS =  $(libSoXtinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/depcomp
-DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAnyMaterialList.Plo \
-$(DEPDIR)/SoAnyMaterialListBuiltins.Plo $(DEPDIR)/SoXt.Plo \
-$(DEPDIR)/SoXtClipboard.Plo $(DEPDIR)/SoXtComponent.Plo \
-$(DEPDIR)/SoXtCursors.Plo $(DEPDIR)/SoXtDirectionalLightEditor.Plo \
-$(DEPDIR)/SoXtGLWidget.Plo $(DEPDIR)/SoXtIcons.Plo \
-$(DEPDIR)/SoXtLightSliderSet.Plo $(DEPDIR)/SoXtMaterialEditor.Plo \
-$(DEPDIR)/SoXtMaterialList.Plo $(DEPDIR)/SoXtMaterialSliderSet.Plo \
-$(DEPDIR)/SoXtPrintDialog.Plo $(DEPDIR)/SoXtRenderArea.Plo \
-$(DEPDIR)/SoXtRenderAreaExtra.Plo $(DEPDIR)/SoXtResource.Plo \
-$(DEPDIR)/SoXtSliderSet.Plo $(DEPDIR)/SoXtSliderSetBase.Plo \
-$(DEPDIR)/SoXtTransformSliderSet.Plo
+DEP_FILES =  @AMDEP@ $(DEPDIR)/So@Gui@.Plo \
+$(DEPDIR)/So@Gui@Clipboard.Plo $(DEPDIR)/So@Gui@Component.Plo \
+$(DEPDIR)/So@Gui@Cursors.Plo \
+$(DEPDIR)/So@Gui@DirectionalLightEditor.Plo \
+$(DEPDIR)/So@Gui@GLWidget.Plo $(DEPDIR)/So@Gui@Icons.Plo \
+$(DEPDIR)/So@Gui@LightSliderSet.Plo $(DEPDIR)/So@Gui@MaterialEditor.Plo \
+$(DEPDIR)/So@Gui@MaterialList.Plo \
+$(DEPDIR)/So@Gui@MaterialSliderSet.Plo $(DEPDIR)/So@Gui@PrintDialog.Plo \
+$(DEPDIR)/So@Gui@RenderArea.Plo $(DEPDIR)/So@Gui@RenderAreaExtra.Plo \
+$(DEPDIR)/So@Gui@Resource.Plo $(DEPDIR)/So@Gui@SliderSet.Plo \
+$(DEPDIR)/So@Gui@SliderSetBase.Plo \
+$(DEPDIR)/So@Gui@TransformSliderSet.Plo \
+$(DEPDIR)/SoAnyConversionChain.Plo $(DEPDIR)/SoAnyMaterialList.Plo \
+$(DEPDIR)/SoAnyMaterialListBuiltins.Plo
 DIST_COMMON =  $(libSoXtinc_HEADERS) Makefile.am Makefile.in
 
 
@@ -432,26 +442,27 @@ distclean-tags:
 
 maintainer-clean-tags:
 
+@AMDEP@include $(DEPDIR)/So@Gui@.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@Clipboard.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@Component.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@Cursors.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@DirectionalLightEditor.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@GLWidget.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@Icons.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@LightSliderSet.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@MaterialEditor.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@MaterialList.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@MaterialSliderSet.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@PrintDialog.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@RenderArea.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@RenderAreaExtra.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@Resource.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@SliderSet.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@SliderSetBase.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@TransformSliderSet.Plo
+@AMDEP@include $(DEPDIR)/SoAnyConversionChain.Plo
 @AMDEP@include $(DEPDIR)/SoAnyMaterialList.Plo
 @AMDEP@include $(DEPDIR)/SoAnyMaterialListBuiltins.Plo
-@AMDEP@include $(DEPDIR)/SoXt.Plo
-@AMDEP@include $(DEPDIR)/SoXtClipboard.Plo
-@AMDEP@include $(DEPDIR)/SoXtComponent.Plo
-@AMDEP@include $(DEPDIR)/SoXtCursors.Plo
-@AMDEP@include $(DEPDIR)/SoXtDirectionalLightEditor.Plo
-@AMDEP@include $(DEPDIR)/SoXtGLWidget.Plo
-@AMDEP@include $(DEPDIR)/SoXtIcons.Plo
-@AMDEP@include $(DEPDIR)/SoXtLightSliderSet.Plo
-@AMDEP@include $(DEPDIR)/SoXtMaterialEditor.Plo
-@AMDEP@include $(DEPDIR)/SoXtMaterialList.Plo
-@AMDEP@include $(DEPDIR)/SoXtMaterialSliderSet.Plo
-@AMDEP@include $(DEPDIR)/SoXtPrintDialog.Plo
-@AMDEP@include $(DEPDIR)/SoXtRenderArea.Plo
-@AMDEP@include $(DEPDIR)/SoXtRenderAreaExtra.Plo
-@AMDEP@include $(DEPDIR)/SoXtResource.Plo
-@AMDEP@include $(DEPDIR)/SoXtSliderSet.Plo
-@AMDEP@include $(DEPDIR)/SoXtSliderSetBase.Plo
-@AMDEP@include $(DEPDIR)/SoXtTransformSliderSet.Plo
 
 mostlyclean-depend:
 
@@ -480,7 +491,7 @@ maintainer-clean-depend:
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/$(top_builddir)/src/Inventor/Xt
+	$(mkinstalldirs) $(distdir)/$(top_builddir)/src/Inventor/@Gui@
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -606,13 +617,13 @@ SoXtSliderSet.cpp: SoXtBasic.h
 SoXtSliderSetBase.cpp: SoXtBasic.h
 SoXtTransformSliderSet.cpp: SoXtBasic.h
 
-SoXtBasic.h: $(srcdir)/common/SoGuiBasic.h.in
+So@Gui@Basic.h: $(srcdir)/common/SoGuiBasic.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoXtRenderArea.h: $(srcdir)/common/SoGuiRenderArea.h.in
+So@Gui@RenderArea.h: $(srcdir)/common/SoGuiRenderArea.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoXtRenderArea.cpp: $(srcdir)/common/SoGuiRenderArea.cpp.in
+So@Gui@RenderArea.cpp: $(srcdir)/common/SoGuiRenderArea.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyMaterialList.h: $(srcdir)/common/SoAnyMaterialList.h.in
@@ -622,6 +633,12 @@ SoAnyMaterialList.cpp: $(srcdir)/common/SoAnyMaterialList.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyMaterialListBuiltins.cpp: $(srcdir)/common/SoAnyMaterialListBuiltins.cpp.in
+	@( cd $(top_builddir); $(MAKE) built-sources )
+
+SoAnyConversionChain.h: $(srcdir)/common/SoAnyConversionChain.h.in
+	@( cd $(top_builddir); $(MAKE) built-sources )
+
+SoAnyConversionChain.cpp: $(srcdir)/common/SoAnyConversionChain.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 ############################################################################
