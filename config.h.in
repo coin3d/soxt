@@ -1,5 +1,11 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
 
+/* Define this to the preferred Xt widget for GL management */
+#undef GLW_WIDGETCLASS
+
+/* Define this if the GLwDrawA.h header is located in GL/ */
+#undef HAVE_GL_GLWDRAWA_H
+
 /* Define this if the GLwMDrawA.h header is located in GL/ */
 #undef HAVE_GL_GLWMDRAWA_H
 
@@ -23,6 +29,9 @@
 
 /* Define if you have the `socket' library (-lsocket). */
 #undef HAVE_LIBSOCKET
+
+/* Define this if the GLwDrawA.h header is located in X11/GLw/ */
+#undef HAVE_X11_GLW_GLWDRAWA_H
 
 /* Define this if the GLwMDrawA.h header is located in X11/GLw/ */
 #undef HAVE_X11_GLW_GLWMDRAWA_H

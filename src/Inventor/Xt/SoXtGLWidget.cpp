@@ -32,11 +32,23 @@
 #include <X11/Xutil.h>
 #include <X11/Xmu/StdCmap.h>
 
-#ifndef HAVE_X11_GLW_GLWMDRAWA_H
+#ifdef HAVE_GL_GLWMDRAWA_H
 #include <GL/GLwMDrawA.h>
-#else // HAVE_X11_GLW_GLWMDRAWA_H
+#else
+#ifdef HAVE_X11_GLW_GLWMDRAWA_H
 #include <X11/GLw/GLwMDrawA.h>
-#endif // HAVE_X11_GLW_GLWMDRAWA_H
+#else
+#ifdef HAVE_GL_GLWDRAWA_H
+#include <GL/GLwDrawA.h>
+#else
+#ifdef HAVE_X11_GLW_GLWDRAWA_H
+#include <X11/GLw/GLwDrawA.h>
+#else
+#error No header file for GL widget defined
+#endif
+#endif
+#endif
+#endif
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoBasic.h>
@@ -45,6 +57,10 @@
 #include <common/soguidefs.h> // SOGUI_STUB()
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtGLWidget.h>
+
+#ifndef GLW_WIDGETCLASS
+#error No define for which GL widget class to use
+#endif
 
 static const int SOXT_BORDER_WIDTH = 2;
 
@@ -466,7 +482,7 @@ SoXtGLWidget::buildWidget( // protected
   }
 
   this->glxWidget = XtVaCreateManagedWidget(
-    "GLWidget", glwMDrawingAreaWidgetClass, this->glxManager,
+    "GLWidget", GLW_WIDGETCLASS, this->glxManager,
     GLwNvisualInfo, visual,
     XtNcolormap, colors,
     XmNleftAttachment,   XmATTACH_FORM,

@@ -1341,26 +1341,52 @@ AC_DEFUN(SIM_CHECK_MOTIF_GLW_HEADER,[
 dnl Autoconf is a developer tool, so don't bother to support older versions.
 AC_PREREQ([2.14.1])
 
-AC_CACHE_CHECK([for location of GLwMDrawA.h header file], sim_cv_header_glw, [
+AC_CACHE_CHECK([location of GL widget header file], sim_cv_header_glw, [
   AC_TRY_CPP([#include <GL/GLwMDrawA.h>],
-              sim_cv_header_glw=GL,
+              sim_cv_header_glw="GL/GLwMDrawA.h",
               sim_cv_header_glw=UNRESOLVED)
   if test x"$sim_cv_header_glw" = xUNRESOLVED; then
     AC_TRY_CPP([#include <X11/GLw/GLwMDrawA.h>],
-               sim_cv_header_glw=X11/GLw,
+               sim_cv_header_glw="X11/GLw/GLwMDrawA.h",
+               sim_cv_header_glw=UNRESOLVED)
+  fi
+  if test x"$sim_cv_header_glw" = xUNRESOLVED; then
+    AC_TRY_CPP([#include <GL/GLwDrawA.h>],
+               sim_cv_header_glw="GL/GLwDrawA.h",
+               sim_cv_header_glw=UNRESOLVED)
+  fi
+  if test x"$sim_cv_header_glw" = xUNRESOLVED; then
+    AC_TRY_CPP([#include <X11/GLw/GLwDrawA.h>],
+               sim_cv_header_glw="X11/GLw/GLwDrawA.h",
                sim_cv_header_glw=UNRESOLVED)
   fi
 ])
 
-if test x"$sim_cv_header_glw" = xGL; then
-  AC_DEFINE(HAVE_GL_GLWMDRAWA_H, 1, [Define this if the GLwMDrawA.h header is located in GL/])
-elif test x"$sim_cv_header_glw" = xX11/GL; then
-  AC_DEFINE(HAVE_X11_GLW_GLWMDRAWA_H, 1, [Define this if the GLwMDrawA.h header is located in X11/GLw/])
+if test x"$sim_cv_header_glw" = "xGL/GLwMDrawA.h"; then
+  AC_DEFINE(HAVE_GL_GLWMDRAWA_H, 1,
+            [Define this if the GLwMDrawA.h header is located in GL/])
+  sim_ac_glwidget=glwMDrawingAreaWidgetClass
+elif test x"$sim_cv_header_glw" = "xX11/GLw/GLwMDrawA.h"; then
+  AC_DEFINE(HAVE_X11_GLW_GLWMDRAWA_H, 1,
+            [Define this if the GLwMDrawA.h header is located in X11/GLw/])
+  sim_ac_glwidget=glwMDrawingAreaWidgetClass
+elif test x"$sim_cv_header_glw" = "xGL/GLwDrawA.h"; then
+  AC_DEFINE(HAVE_GL_GLWDRAWA_H, 1,
+            [Define this if the GLwDrawA.h header is located in GL/])
+  sim_ac_glwidget=glwDrawingAreaWidgetClass
+elif test x"$sim_cv_header_glw" = "xX11/GLw/GLwDrawA.h"; then
+  AC_DEFINE(HAVE_X11_GLW_GLWDRAWA_H, 1,
+            [Define this if the GLwDrawA.h header is located in X11/GLw/])
+  sim_ac_glwidget=glwDrawingAreaWidgetClass
 elif test x"$sim_cv_header_glw" = xUNRESOLVED; then
   AC_MSG_WARN(Could not find GLwMDrawA.h)
+  sim_ac_glwidget=0
 else
   AC_MSG_ERROR([macro programming error])
 fi
+
+AC_DEFINE_UNQUOTED(GLW_WIDGETCLASS, $sim_ac_glwidget,
+          [Define this to the preferred Xt widget for GL management])
 
 if test x"$sim_cv_header_glw" = xUNRESOLVED; then
   ifelse($2, , :, $2)
@@ -1394,15 +1420,32 @@ AC_CACHE_CHECK([for library containing glwMDrawingAreaWidgetClass], sim_cv_lib_g
   SAVELIBS=$LIBS
   LIBS="$SAVELIBS -lMesaGLwM"
   AC_TRY_LINK([ #include <X11/Intrinsic.h>
-                #include <$sim_cv_header_glw/GLwMDrawA.h> ],
+                #include <$sim_cv_header_glw> ],
               [ WidgetClass x = glwMDrawingAreaWidgetClass; ],
                 sim_cv_lib_glw="-lMesaGLwM",
                 sim_cv_lib_glw="UNRESOLVED")
-  if test x"$sim_cv_lib_glw" = xUNRESOLVED; then
+  if test "x$sim_cv_lib_glw" = "xUNRESOLVED"; then
     LIBS="$SAVELIBS -lGLw"
     AC_TRY_LINK([ #include <X11/Intrinsic.h>
-                  #include <$sim_cv_header_glw/GLwMDrawA.h> ],
+                  #include <$sim_cv_header_glw> ],
                 [ WidgetClass x = glwMDrawingAreaWidgetClass; ],
+                  sim_cv_lib_glw="-lGLw",
+                  sim_cv_lib_glw="UNRESOLVED")
+  fi
+dnl fallback on glwDrawingAreaWidgetClass
+  if test "x$sim_cv_lib_glw" = "xUNRESOLVED"; then
+    LIBS="$SAVELIBS -lMesaGLw"
+    AC_TRY_LINK([ #include <X11/Intrinsic.h>
+                  #include <$sim_cv_header_glw> ],
+                [ WidgetClass x = glwDrawingAreaWidgetClass; ],
+                  sim_cv_lib_glw="-lMesaGLw",
+                  sim_cv_lib_glw="UNRESOLVED")
+  fi
+  if test "x$sim_cv_lib_glw" = "xUNRESOLVED"; then
+    LIBS="$SAVELIBS -lGLw"
+    AC_TRY_LINK([ #include <X11/Intrinsic.h>
+                  #include <$sim_cv_header_glw> ],
+                [ WidgetClass x = glwDrawingAreaWidgetClass; ],
                   sim_cv_lib_glw="-lGLw",
                   sim_cv_lib_glw="UNRESOLVED")
   fi
@@ -1410,7 +1453,7 @@ AC_CACHE_CHECK([for library containing glwMDrawingAreaWidgetClass], sim_cv_lib_g
 ])
 
 
-if test x"$sim_cv_lib_glw" = xUNRESOLVED; then
+if test "x$sim_cv_lib_glw" = "xUNRESOLVED"; then
   ifelse($2, , :, $2)
 else
   LIBS="$LIBS $sim_cv_lib_glw"
