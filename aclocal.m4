@@ -1266,7 +1266,7 @@ if test x"$with_motif" != xno; then
   LDFLAGS="$sim_ac_motif_ldflags $LDFLAGS"
   LIBS="$sim_ac_motif_libs $LIBS"
 
-  AC_CACHE_CHECK([for Motif development kit],
+  AC_CACHE_CHECK([for a Motif development environment],
     sim_cv_lib_motif_avail,
     [AC_TRY_LINK([#include <Xm/Xm.h>],
                  [XmUpdateDisplay(0L);],
@@ -1319,192 +1319,115 @@ fi
 ])
 
 dnl ************************************************************************
-dnl Usage:
-dnl  SIM_CHECK_MOTIF_GLW_HEADER([ ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND ]])
 dnl
-dnl This macro detects where the GLwMDrawA.h header file is located.
+dnl SIM_CHECK_MOTIF_GLWIDGET([ ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND ]])
 dnl
-dnl The result is stored as a prefix in $sim_cv_header_glw so you can use
-dnl #include <$sim_cv_header_glw/GLwMDrawA.h> in your sourcecode.
+dnl This macro checks for a GL widget that can be used with Xt/Motif.
 dnl
-dnl Depending on the result, one of the following defines will be set in
-dnl config.h:
-dnl    HAVE_GL_GLWMDRAWA_H         most systems, and default for Mesa
-dnl    HAVE_X11_GWL_GLWMDRAWA_H    e.g. Sparc Solaris
+dnl Variables:
 dnl
-dnl Authors:
-dnl   Lars J. Aas <larsa@sim.no>,
-dnl   Loring Holden <lsh@cs.brown.edu>
+dnl   $sim_cv_motif_glwidget         (cached)  class + header + library
+dnl   $sim_cv_motif_glwidget_hdrloc  (cached)  GL | X11/GLw
 dnl
-
-AC_DEFUN(SIM_CHECK_MOTIF_GLW_HEADER,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
-AC_PREREQ([2.14.1])
-
-AC_CACHE_CHECK([location of GL widget header file], sim_cv_header_glw, [
-  AC_TRY_CPP([#include <GL/GLwMDrawA.h>],
-              sim_cv_header_glw="GL/GLwMDrawA.h",
-              sim_cv_header_glw=UNRESOLVED)
-  if test x"$sim_cv_header_glw" = xUNRESOLVED; then
-    AC_TRY_CPP([#include <X11/GLw/GLwMDrawA.h>],
-               sim_cv_header_glw="X11/GLw/GLwMDrawA.h",
-               sim_cv_header_glw=UNRESOLVED)
-  fi
-  if test x"$sim_cv_header_glw" = xUNRESOLVED; then
-    AC_TRY_CPP([#include <GL/GLwDrawA.h>],
-               sim_cv_header_glw="GL/GLwDrawA.h",
-               sim_cv_header_glw=UNRESOLVED)
-  fi
-  if test x"$sim_cv_header_glw" = xUNRESOLVED; then
-    AC_TRY_CPP([#include <X11/GLw/GLwDrawA.h>],
-               sim_cv_header_glw="X11/GLw/GLwDrawA.h",
-               sim_cv_header_glw=UNRESOLVED)
-  fi
-])
-
-if test x"$sim_cv_header_glw" = "xGL/GLwMDrawA.h"; then
-  AC_DEFINE(HAVE_GL_GLWMDRAWA_H, 1,
-            [Define this if the GLwMDrawA.h header is located in GL/])
-  sim_ac_glwidget=glwMDrawingAreaWidgetClass
-elif test x"$sim_cv_header_glw" = "xX11/GLw/GLwMDrawA.h"; then
-  AC_DEFINE(HAVE_X11_GLW_GLWMDRAWA_H, 1,
-            [Define this if the GLwMDrawA.h header is located in X11/GLw/])
-  sim_ac_glwidget=glwMDrawingAreaWidgetClass
-elif test x"$sim_cv_header_glw" = "xGL/GLwDrawA.h"; then
-  AC_DEFINE(HAVE_GL_GLWDRAWA_H, 1,
-            [Define this if the GLwDrawA.h header is located in GL/])
-  sim_ac_glwidget=glwDrawingAreaWidgetClass
-elif test x"$sim_cv_header_glw" = "xX11/GLw/GLwDrawA.h"; then
-  AC_DEFINE(HAVE_X11_GLW_GLWDRAWA_H, 1,
-            [Define this if the GLwDrawA.h header is located in X11/GLw/])
-  sim_ac_glwidget=glwDrawingAreaWidgetClass
-elif test x"$sim_cv_header_glw" = xUNRESOLVED; then
-  AC_MSG_WARN(Could not find GLwMDrawA.h)
-  sim_ac_glwidget=0
-else
-  AC_MSG_ERROR([macro programming error])
-fi
-
-AC_DEFINE_UNQUOTED(GLW_WIDGETCLASS, $sim_ac_glwidget,
-          [Define this to the preferred Xt widget for GL management])
-
-if test x"$sim_cv_header_glw" = xUNRESOLVED; then
-  ifelse($2, , :, $2)
-else
-  ifelse($1, , :, $1)
-fi
-])
-
-dnl ************************************************************************
-dnl Usage:
-dnl  SIM_CHECK_MOTIF_GLW_LIBRARY([ ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND ]])
+dnl   $sim_ac_motif_glwidget_class             glwMDrawingAreaWidgetClass |
+dnl                                            glwDrawingAreaWidgetClass
+dnl   $sim_ac_motif_glwidget_header            GLwDrawA.h | GLwMDrawA.h
+dnl   $sim_ac_motif_glwidget_library           GLwM | GLw | MesaGLwM | MesaGLw
 dnl
-dnl This macro detects which library you must link with if you are going to
-dnl use the glwMDrawingAreaWidgetClass extension to Xt/Motif.
+dnl   $LIBS += -l$sim_ac_motif_glwidget_library
 dnl
-dnl The result is placed in $sim_cv_lib_glw as either "-lMesaGLwM", "-lGLw",
-dnl or UNRESOLVED.  The library is also appended to $LIBS for the time being.
+dnl Defines:
+dnl
+dnl   XT_GLWIDGET                              $sim_ac_motif_glwidget_class
+dnl   HAVE_GL_GLWDRAWA_H                       #include <GL/GLwDrawA.h>
+dnl   HAVE_GL_GLWMDRAWA_H                      #include <GL/GLwMDrawA.h>
+dnl   HAVE_X11_GWL_GLWDRAWA_H                  #include <X11/GLw/GLwDrawA.h>
+dnl   HAVE_X11_GWL_GLWMDRAWA_H                 #include <X11/GLw/GLwMDrawA.h>
 dnl
 dnl Authors:
 dnl   Lars J. Aas <larsa@sim.no>,
-dnl   Loring Holden <lsh@cs.brown.edu>
+dnl   Loring Holden <lsh@cs.brown.edu>,
+dnl   Morten Eriksen <mortene@sim.no>
 dnl
 
-AC_DEFUN(SIM_CHECK_MOTIF_GLW_LIBRARY,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
-AC_PREREQ([2.14.1])
+AC_DEFUN(SIM_CHECK_MOTIF_GLWIDGET,[
 
-AC_REQUIRE([SIM_CHECK_MOTIF_GLW_HEADER])dnl   must have located header file
-
-AC_CACHE_CHECK([for library containing glwMDrawingAreaWidgetClass], sim_cv_lib_glw, [
+AC_CACHE_CHECK([for a GL widget], sim_cv_motif_glwidget, [
   SAVELIBS=$LIBS
-  LIBS="$SAVELIBS -lMesaGLwM"
-  AC_TRY_LINK([ #include <X11/Intrinsic.h>
-                #include <$sim_cv_header_glw> ],
-              [ WidgetClass x = glwMDrawingAreaWidgetClass; ],
-                sim_cv_lib_glw="-lMesaGLwM",
-                sim_cv_lib_glw="UNRESOLVED")
-  if test "x$sim_cv_lib_glw" = "xUNRESOLVED"; then
-    LIBS="$SAVELIBS -lGLw"
-    AC_TRY_LINK([ #include <X11/Intrinsic.h>
-                  #include <$sim_cv_header_glw> ],
-                [ WidgetClass x = glwMDrawingAreaWidgetClass; ],
-                  sim_cv_lib_glw="-lGLw",
-                  sim_cv_lib_glw="UNRESOLVED")
-  fi
-dnl fallback on glwDrawingAreaWidgetClass
-  if test "x$sim_cv_lib_glw" = "xUNRESOLVED"; then
-    LIBS="$SAVELIBS -lMesaGLw"
-    AC_TRY_LINK([ #include <X11/Intrinsic.h>
-                  #include <$sim_cv_header_glw> ],
-                [ WidgetClass x = glwDrawingAreaWidgetClass; ],
-                  sim_cv_lib_glw="-lMesaGLw",
-                  sim_cv_lib_glw="UNRESOLVED")
-  fi
-  if test "x$sim_cv_lib_glw" = "xUNRESOLVED"; then
-    LIBS="$SAVELIBS -lGLw"
-    AC_TRY_LINK([ #include <X11/Intrinsic.h>
-                  #include <$sim_cv_header_glw> ],
-                [ WidgetClass x = glwDrawingAreaWidgetClass; ],
-                  sim_cv_lib_glw="-lGLw",
-                  sim_cv_lib_glw="UNRESOLVED")
-  fi
+  sim_cv_motif_glwidget=UNKNOWN
+  for lib in GLwM GLw MesaGLwM MesaGLw; do
+    if test "x$sim_cv_motif_glwidget" = "xUNKNOWN"; then
+      LIBS="$SAVELIBS -l$lib"
+      AC_TRY_LINK([
+        #include <X11/Intrinsic.h>
+        extern WidgetClass glwMDrawingAreaWidgetClass;
+        ],WidgetClass w = glwMDrawingAreaWidgetClass,
+        sim_cv_motif_glwidget="glwMDrawingAreaWidgetClass GLwMDrawA.h $lib",
+        sim_cv_motif_glwidget=UNKNOWN)
+    fi
+    if test "x$sim_cv_motif_glwidget" = "xUNKNOWN"; then
+      LIBS="$SAVELIBS -l$lib"
+      AC_TRY_LINK([
+        #include <X11/Intrinsic.h>
+        extern WidgetClass glwDrawingAreaWidgetClass;
+      ],WidgetClass w = glwDrawingAreaWidgetClass,
+        sim_cv_motif_glwidget="glwDrawingAreaWidgetClass GLwDrawA.h $lib",
+        sim_cv_motif_glwidget=UNKNOWN)
+    fi
+  done
   LIBS=$SAVELIBS
-])
+  ])
 
-
-if test "x$sim_cv_lib_glw" = "xUNRESOLVED"; then
+if test "x$sim_cv_motif_glwidget" = "xUNKNOWN"; then
   ifelse($2, , :, $2)
 else
-  LIBS="$LIBS $sim_cv_lib_glw"
-  ifelse($1, , :, $1)
-fi
-])
+  sim_ac_motif_glwidget_class=`echo $sim_cv_motif_glwidget | cut -d" " -f1`
+  sim_ac_motif_glwidget_header=`echo $sim_cv_motif_glwidget | cut -d" " -f2`
+  sim_ac_motif_glwidget_library=`echo $sim_cv_motif_glwidget | cut -d" " -f3`
 
-dnl ************************************************************************
-dnl Usage:
-dnl  SIM_CHECK_MOTIF_GLW([ ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND ]])
-dnl
-dnl This macro detects if you have a complete development system for using
-dnl the Xt/Motif glwMDrawingAreaWidgetClass extension.
-dnl  
-dnl This macro builds directly on SIM_CHECK_MOTIF_GLW_HEADER and
-dnl SIM_CHECK_MOTIF_GLW_LIBRARY - see those macros for side-effects of using
-dnl SIM_CHECK_MOTIF_GLW.
-dnl  
-dnl Authors:
-dnl   Lars J. Aas <larsa@sim.no>,
-dnl   Loring Holden <lsh@cs.brown.edu>
-dnl
+  AC_CACHE_CHECK([the $sim_ac_motif_glwidget_header header location],
+    sim_cv_motif_glwidget_hdrloc, [
+    sim_cv_motif_glwidget_hdrloc=UNKNOWN
+    for location in X11/GLw GL; do
+      if test "x$sim_cv_motif_glwidget_hdrloc" = "xUNKNOWN"; then
+        AC_TRY_CPP([ #include <X11/Intrinsic.h>
+                     #include <$location/$sim_ac_motif_glwidget_header> ],
+          sim_cv_motif_glwidget_hdrloc=$location,
+          sim_cv_motif_glwidget_hdrloc=UNKNOWN)
+      fi
+    done
+    ])
 
-AC_DEFUN(SIM_CHECK_MOTIF_GLW,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
-AC_PREREQ([2.13])
+  if test "x$sim_cv_motif_glwidget_hdrloc" = "xUNKNOWN"; then
+    ifelse($2, , :, $2)
+  else
+    if test "x$glwidget_header" = "xGLwDrawA.h"; then
+      if test "x$sim_cv_motif_glwidget_hdrloc" = "xGL"; then
+        AC_DEFINE(HAVE_GL_GLWDRAWA_H, ,
+          [Define this to use OpenGL widget from <GL/GLwDrawA.h>])
+      else
+        AC_DEFINE(HAVE_X11_GLW_GLWDRAWA_H, ,
+          [Define this to use OpenGL widget from <X11/GLw/GLwDrawA.h>])
+      fi
+    else
+      if test "x$sim_cv_motif_glwidget_hdrloc" = "xGL"; then
+        AC_DEFINE(HAVE_GL_GLWMDRAWA_H, ,
+          [Define this to use OpenGL widget from <GL/GLwMDrawA.h>])
+      else
+        AC_DEFINE(HAVE_X11_GLW_GLWMDRAWA_H, ,
+          [Define this to use OpenGL widget from <X11/GLw/GLwMDrawA.h>])
+      fi
+    fi
 
-sim_ac_save_cppflags=$CPPFLAGS
-sim_ac_save_ldflags=$LDFLAGS
-sim_ac_save_libs=$LIBS
+    AC_DEFINE_UNQUOTED(XT_GLWIDGET, $sim_ac_motif_glwidget_class,
+      [Define this to the Xt/Motif OpenGL widget class to use])
 
-AC_REQUIRE([SIM_CHECK_MOTIF_GLW_HEADER])dnl   must locate header file
-AC_REQUIRE([SIM_CHECK_MOTIF_GLW_LIBRARY])dnl  decide which library to use
+    LIBS="$LIBS -l$sim_ac_motif_glwidget_library"
 
-AC_CACHE_CHECK([for the Xt/Motif GLw development environment], sim_cv_dev_glw,
-[ sim_cv_dev_glw=yes
-  if test x"$sim_cv_header_glw" = xUNRESOLVED; then
-    sim_cv_dev_glw=no
-  elif test x"$sim_cv_lib_glw" = xUNRESOLVED; then
-    sim_cv_dev_glw=no
+    ifelse($1, , :, $1)
   fi
-])
-
-if test x$sim_cv_dev_glw = xyes; then
-  ifelse($1, , :, $1)
-else
-  CPPFLAGS=$sim_ac_save_cppflags
-  LDFLAGS=$sim_ac_save_ldflags
-  LIBS=$sim_ac_save_libs
-  ifelse($2, , :, $2)
 fi
+
 ])
 
 dnl ************************************************************************

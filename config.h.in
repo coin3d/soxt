@@ -1,12 +1,9 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
 
-/* Define this to the preferred Xt widget for GL management */
-#undef GLW_WIDGETCLASS
-
-/* Define this if the GLwDrawA.h header is located in GL/ */
+/* Define this to use OpenGL widget from <GL/GLwDrawA.h> */
 #undef HAVE_GL_GLWDRAWA_H
 
-/* Define this if the GLwMDrawA.h header is located in GL/ */
+/* Define this to use OpenGL widget from <GL/GLwMDrawA.h> */
 #undef HAVE_GL_GLWMDRAWA_H
 
 /* Define if you have the `dnet' library (-ldnet). */
@@ -30,10 +27,10 @@
 /* Define if you have the `socket' library (-lsocket). */
 #undef HAVE_LIBSOCKET
 
-/* Define this if the GLwDrawA.h header is located in X11/GLw/ */
+/* Define this to use OpenGL widget from <X11/GLw/GLwDrawA.h> */
 #undef HAVE_X11_GLW_GLWDRAWA_H
 
-/* Define this if the GLwMDrawA.h header is located in X11/GLw/ */
+/* Define this to use OpenGL widget from <X11/GLw/GLwMDrawA.h> */
 #undef HAVE_X11_GLW_GLWMDRAWA_H
 
 /* Name of package */
@@ -41,6 +38,9 @@
 
 /* Version number of package */
 #undef VERSION
+
+/* Define this to the Xt/Motif OpenGL widget class to use */
+#undef XT_GLWIDGET
 
 /* Define if the X Window System is missing or not being used. */
 #undef X_DISPLAY_MISSING
