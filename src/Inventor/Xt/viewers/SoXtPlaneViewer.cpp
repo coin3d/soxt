@@ -55,7 +55,7 @@ SoXtPlaneViewer::SoXtPlaneViewer(
   SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type )
-: inherited( parent, name ? name : getDefaultWidgetName(), embed, flag, type, FALSE )
+: inherited( parent, name, embed, flag, type, FALSE )
 , common( new SoAnyPlaneViewer( this ) )
 {
   this->constructor( TRUE );
@@ -72,7 +72,7 @@ SoXtPlaneViewer::SoXtPlaneViewer( // protected
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type,
   SbBool build )
-: inherited( parent, name ? name : getDefaultWidgetName(), embed, flag, type, FALSE )
+: inherited( parent, name, embed, flag, type, FALSE )
 , common( new SoAnyPlaneViewer( this ) )
 {
   this->constructor( build );

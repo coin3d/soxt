@@ -86,7 +86,7 @@ protected:
   virtual Widget buildRightTrim( Widget parent );
   Widget buildAppButtonsForm( Widget parent );
   Widget buildViewerButtons( Widget parent );
-  virtual void createViewerButtons( Widget parent, SbPList * buttonlist );
+  virtual void createViewerButtons( Widget parent, SbPList * buttonlist = 0);
 
   virtual void buildPopupMenu(void);
   void setPopupMenuString( const char * const title );
@@ -182,6 +182,9 @@ protected: // preference sheet routines
   Widget prefshell;
   Widget prefsheet;
 
+  // protected for compatibility
+  SbPList * viewerButtonWidgets;
+
 private:
   SbBool decorations;
 
@@ -200,7 +203,6 @@ private:
   void layoutAppPushButtons( Widget parent );
 
   Widget viewerButtonsForm;
-  SbPList * viewerButtonsList;
 
 private:
   struct {

@@ -47,7 +47,7 @@ SoXtWalkViewer::SoXtWalkViewer(
   SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type )
-: inherited( parent, name ? name : getDefaultWidgetName(), embed, flag, type, FALSE )
+: inherited( parent, name, embed, flag, type, FALSE )
 , common( new SoAnyWalkViewer( this ) )
 {
   this->constructor( TRUE );
@@ -63,7 +63,7 @@ SoXtWalkViewer::SoXtWalkViewer( // protected
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type,
   SbBool build )
-: inherited( parent, name ? name : getDefaultWidgetName(), embed, flag, type, FALSE )
+: inherited( parent, name, embed, flag, type, FALSE )
 , common( new SoAnyWalkViewer( this ) )
 {
   this->constructor( build );

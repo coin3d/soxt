@@ -56,7 +56,7 @@ SoXtGLWidget::SoXtGLWidget( // protected
   SbBool embed,
   int glModes,
   SbBool build )
-: inherited( parent, name ? name : getDefaultWidgetName(), embed )
+: inherited( parent, name, embed )
 , waitForExpose( TRUE )
 , drawToFrontBuffer( FALSE )
 , glxWidget( NULL )

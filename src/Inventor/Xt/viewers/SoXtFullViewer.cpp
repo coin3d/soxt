@@ -82,7 +82,7 @@ enum DefaultViewerButtons {
   LAST_BUTTON = SEEK_BUTTON
 };
 
-#define VIEWERBUTTON(button) ((Widget) ((*this->viewerButtonsList)[button]))
+#define VIEWERBUTTON(button) ((Widget) ((*this->viewerButtonWidgets)[button]))
 
 // *************************************************************************
 
@@ -97,7 +97,7 @@ SoXtFullViewer::SoXtFullViewer( // protected
   BuildFlag flags,
   Type type,
   SbBool build )
-: inherited( parent, name ? name : getDefaultWidgetName(), embed, type, FALSE )
+: inherited( parent, name, embed, type, FALSE )
 , popupTitle( NULL )
 , common( new SoAnyFullViewer( this ) )
 {
@@ -121,7 +121,7 @@ SoXtFullViewer::SoXtFullViewer( // protected
   this->decorations = (flags & SoXtFullViewer::BUILD_DECORATION) ? TRUE : FALSE;
 
   this->appButtonsList = new SbPList;
-  this->viewerButtonsList = new SbPList;
+  this->viewerButtonWidgets = new SbPList;
 
   this->setSize( SbVec2s( 500, 390 ) );
   this->setClassName( "SoXtFullViewer" );
@@ -159,7 +159,7 @@ SoXtFullViewer::~SoXtFullViewer( // protected
 {
   delete this->common;
   delete this->appButtonsList;
-  delete this->viewerButtonsList;
+  delete this->viewerButtonWidgets;
 } // ~SoXtFullViewer()
 
 // *************************************************************************
@@ -188,7 +188,7 @@ SoXtFullViewer::setDecoration(
     Dimension curminwidth, curwidth, curminheight, curheight;
     int minwidth = SOXT_VIEWER_MIN_WIDTH;
     int minheight = SOXT_VIEWER_MIN_HEIGHT_BASE +
-       30 * this->viewerButtonsList->getLength();
+       30 * this->viewerButtonWidgets->getLength();
     XtVaGetValues( shell,
       XmNminHeight, &curminheight,
       XmNheight, &curheight,
@@ -401,7 +401,7 @@ SoXtFullViewer::buildWidget( // protected
       XmNheight, &current,
       NULL );
     Dimension minheight =
-      30 + 90 + 30 * this->viewerButtonsList->getLength() + 8;
+      30 + 90 + 30 * this->viewerButtonWidgets->getLength() + 8;
     if ( existing > minheight ) minheight = existing;
     XtVaSetValues( shell,
       XmNminWidth, 300,
@@ -809,11 +809,11 @@ SoXtFullViewer::buildViewerButtons(
     xmFormWidgetClass, parent,
     NULL );
 
-  this->createViewerButtons( form, this->viewerButtonsList );
+  this->createViewerButtons( form, this->viewerButtonWidgets );
 
-  const int buttons = this->viewerButtonsList->getLength();
+  const int buttons = this->viewerButtonWidgets->getLength();
   for ( int i = 0; i < buttons; i++ ) {
-    Widget button = (Widget) (*this->viewerButtonsList)[i];
+    Widget button = (Widget) (*this->viewerButtonWidgets)[i];
     XtVaSetValues( button,
       XmNleftAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_FORM,
@@ -849,6 +849,7 @@ SoXtFullViewer::buildViewerButtons(
   \internal
 */
 
+#ifdef HAVE_LIBXPM
 static const char *
 _xpmErrorString(
   int error )
@@ -863,6 +864,7 @@ _xpmErrorString(
   default:              return "<unknown>";
   } // switch ( error )
 } // _xpmStringError()
+#endif
 
 /*
   \internal
@@ -1031,8 +1033,6 @@ SoXtFullViewer::createViewerButtons(
   Widget parent,
   SbPList * buttonlist )
 {
-  assert( buttonlist != NULL );
-
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo( "SoXtFullViewer::createViewerButtons", "[enter]" );
 #endif // SOXT_DEBUG
@@ -1194,7 +1194,7 @@ SoXtFullViewer::createViewerButtons(
         XtAddCallback( button, XmNactivateCallback, proc, this );
       }
     }
-    buttonlist->append( button );
+    if (buttonlist) buttonlist->append( button );
   }
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo( "SoXtFullViewer::createViewerButtons", "[exit]" );

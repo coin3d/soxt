@@ -43,7 +43,7 @@ SoXtFlyViewer::SoXtFlyViewer( // public
   SbBool embed,
   SoXtFullViewer::BuildFlag flags,
   SoXtViewer::Type type )
-: inherited( parent, name ? name : getDefaultWidgetName(), embed, flags, type, FALSE )
+: inherited( parent, name, embed, flags, type, FALSE )
 , common( new SoAnyFlyViewer( this ) )
 {
   this->constructor( TRUE );
@@ -60,7 +60,7 @@ SoXtFlyViewer::SoXtFlyViewer( // protected
   SoXtFullViewer::BuildFlag flags,
   SoXtViewer::Type type,
   SbBool build )
-: inherited( parent, name ? name : getDefaultWidgetName(), embed, flags, type, FALSE )
+: inherited( parent, name, embed, flags, type, FALSE )
 , common( new SoAnyFlyViewer( this ) )
 {
   this->constructor( build );

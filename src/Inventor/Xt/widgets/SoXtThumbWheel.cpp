@@ -366,8 +366,8 @@ init_pixmaps(
   Display * dpy = XtDisplay( shell );
   Screen * screen = XtScreen( shell );
 
-  Colormap colormap = NULL;
-  Visual * visual = NULL;
+  Colormap colormap = 0;
+  Visual * visual = 0;
   int depth = 0;
 
   XtVaGetValues( shell,

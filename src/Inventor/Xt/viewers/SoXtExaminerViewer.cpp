@@ -73,7 +73,7 @@ SoXtExaminerViewer::SoXtExaminerViewer(
   SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type )
-: inherited( parent, name ? name : getDefaultWidgetName(), embed, flag, type, FALSE )
+: inherited( parent, name, embed, flag, type, FALSE )
 , common( new SoAnyExaminerViewer( this ) )
 {
   this->constructor( TRUE );
@@ -90,7 +90,7 @@ SoXtExaminerViewer::SoXtExaminerViewer( // protected
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type,
   SbBool build )
-: inherited( parent, name ? name : getDefaultWidgetName(), embed, flag, type, FALSE )
+: inherited( parent, name, embed, flag, type, FALSE )
 , common( new SoAnyExaminerViewer( this ) )
 {
   this->constructor( build );
