@@ -85,6 +85,8 @@ OBJDUMP = @OBJDUMP@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SOXT_BINARY_AGE = @SOXT_BINARY_AGE@
+SOXT_DOC_HTML = @SOXT_DOC_HTML@
+SOXT_DOC_MAN = @SOXT_DOC_MAN@
 SOXT_EXTRA_CPPFLAGS = @SOXT_EXTRA_CPPFLAGS@
 SOXT_EXTRA_LDFLAGS = @SOXT_EXTRA_LDFLAGS@
 SOXT_EXTRA_LIBS = @SOXT_EXTRA_LIBS@
@@ -99,6 +101,10 @@ gui = @gui@
 install_sh = @install_sh@
 lGUI = @lGUI@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
+sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
+sim_ac_perl_exe = @sim_ac_perl_exe@
+soxt_build_dir = @soxt_build_dir@
+soxt_src_dir = @soxt_src_dir@
 uGUI = @uGUI@
 
 ############################################################################
