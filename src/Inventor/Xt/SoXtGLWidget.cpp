@@ -42,8 +42,9 @@ static const char rcsid[] =
 #include <soxtdefs.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtResource.h>
-#include <Inventor/Xt/SoXtGLWidget.h>
 #include <Inventor/Xt/widgets/SoXtGLArea.h>
+
+#include <Inventor/Xt/SoXtGLWidget.h>
 
 // *************************************************************************
 
@@ -70,6 +71,7 @@ SoXtGLWidget::SoXtGLWidget( // protected
 
   this->border = FALSE;
   this->borderwidth = 2;
+  this->glSize = SbVec2s( -1, -1 );
 
   if ( build ) {
     Widget glarea = this->buildWidget( this->getParentWidget() );
@@ -401,10 +403,15 @@ void
 SoXtGLWidget::setGLSize( // protected
   const SbVec2s size )
 {
-  assert( this->glxWidget != (Widget) NULL );
-  Dimension width = size[0];
-  Dimension height = size[1];
-  XtVaSetValues( this->glxWidget, XmNwidth, width, XmNheight, height, NULL );
+  this->glSize = size;
+  if ( this->glxWidget != (Widget) NULL ) {
+    Dimension width = size[0];
+    Dimension height = size[1];
+    XtVaSetValues( this->glxWidget,
+      XmNwidth, width,
+      XmNheight, height,
+      NULL );
+  }
 } // setGLSize()
 
 /*!
@@ -424,11 +431,7 @@ const SbVec2s
 SoXtGLWidget::getGLSize( // protected
   void ) const
 {
-  if ( this->glxWidget == (Widget) NULL )
-    return SbVec2s( 0, 0 );
-  Dimension width, height;
-  XtVaGetValues( this->glxWidget, XmNwidth, &width, XmNheight, &height, NULL );
-  return SbVec2s( width, height );
+  return this->glSize;
 } // getGLSize()
 
 /*!
@@ -538,16 +541,16 @@ SoXtGLWidget::buildWidget( // protected
   static int double_good_attrs[] = {
     GLX_RGBA,
     GLX_RED_SIZE, 4, GLX_GREEN_SIZE, 4, GLX_BLUE_SIZE, 4,
-    GLX_DEPTH_SIZE, 16,
     GLX_DOUBLEBUFFER,
+    GLX_DEPTH_SIZE, 1,
     GLX_STENCIL_SIZE, 1,
     None
   };
 
   static int double_poor_attrs[] = {
     GLX_RGBA,
-    GLX_DEPTH_SIZE, 16,
     GLX_DOUBLEBUFFER,
+    GLX_DEPTH_SIZE, 1,
     GLX_STENCIL_SIZE, 1,
     None
   };
@@ -555,14 +558,14 @@ SoXtGLWidget::buildWidget( // protected
   static int single_good_attrs[] = {
     GLX_RGBA,
     GLX_RED_SIZE, 4, GLX_GREEN_SIZE, 4, GLX_BLUE_SIZE, 4,
-    GLX_DEPTH_SIZE, 16,
+    GLX_DEPTH_SIZE, 1,
     GLX_STENCIL_SIZE, 1,
     None
   };
 
   static int single_poor_attrs[] = {
     GLX_RGBA,
-    GLX_DEPTH_SIZE, 16,
+    GLX_DEPTH_SIZE, 1,
     GLX_STENCIL_SIZE, 1,
     None
   };
@@ -783,11 +786,8 @@ SoXtGLWidget::glReshape( // virtual
   int width,
   int height )
 {
-  this->sizeChanged( SbVec2s( width, height ) );
-#if 0 // SOXT_DEBUG
-  SoDebugError::postInfo( "SoXtGLWidget::glReshape",
-      "new size: %dx%d", width, height );
-#endif // 0 was SOXT_DEBUG
+  this->glSize = SbVec2s( width, height );
+  this->sizeChanged( this->glSize );
 } // glReshape()
 
 /*!
