@@ -435,6 +435,42 @@ SoXtGLWidget::isDrawToFrontBufferEnable(void) const
   Enables or disables quad buffer stereo.
 */
 
+/*!  
+  Enables/disables the OpenGL accumulation buffer. Not implemented
+  yet for this toolkit.  
+*/
+void 
+SoXtGLWidget::setAccumulationBuffer(const SbBool enable)
+{
+}
+
+/*!
+  Returns whether the OpenGL accumulation buffer is enabled.
+*/
+SbBool 
+SoXtGLWidget::getAccumulationBuffer(void) const
+{
+  return FALSE;
+}
+
+/*!
+  Enables/disables the OpenGL stencil buffer. Not implemented yet
+  for this toolkit.
+*/
+void 
+SoXtGLWidget::setStencilBuffer(const SbBool enable)
+{
+}
+
+/*!
+  Returns whether the OpenGL stencil buffer is enabled.
+*/
+SbBool 
+SoXtGLWidget::getStencilBuffer(void) const
+{
+  return FALSE;
+}
+
 void 
 SoXtGLWidget::setQuadBufferStereo(const SbBool enable)
 {
