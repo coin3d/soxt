@@ -22,6 +22,16 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtMaterialList Inventor/Xt/SoXtMaterialList.h
+  \brief The SoXtMaterialList class is a component for adding material
+  selection to scene graph editors.
+*/
+
+// *************************************************************************
+
 #include <stdlib.h>
 
 #include <X11/Intrinsic.h>
@@ -44,15 +54,10 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/SoXtMaterialList.h>
 
-/*!
-  \class SoXtMaterialList Inventor/Xt/SoXtMaterialList.h
-  \brief The SoXtMaterialList class is a component for adding material
-  selection to scene graph editors.
-*/
-
 // *************************************************************************
 
 /*!
+  Public constructor.
 */
 
 SoXtMaterialList::SoXtMaterialList(
@@ -66,6 +71,7 @@ SoXtMaterialList::SoXtMaterialList(
 } // SoXtMaterialList()
 
 /*!
+  Protected constructor.
 */
 
 SoXtMaterialList::SoXtMaterialList( // protected
@@ -80,6 +86,7 @@ SoXtMaterialList::SoXtMaterialList( // protected
 } // SoXtMaterialList()
 
 /*!
+  Common constructor code.
 */
 
 void
@@ -98,6 +105,7 @@ SoXtMaterialList::constructor( // private
 } // constructor()
 
 /*!
+  Destructor.
 */
 
 SoXtMaterialList::~SoXtMaterialList(
@@ -109,6 +117,7 @@ SoXtMaterialList::~SoXtMaterialList(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -120,6 +129,7 @@ SoXtMaterialList::addCallback(
 } // addCallback()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -133,6 +143,7 @@ SoXtMaterialList::removeCallback(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -144,6 +155,7 @@ SoXtMaterialList::getDefaultWidgetName( // virtual, protected
 } // getDefaultWidgetName()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -155,6 +167,7 @@ SoXtMaterialList::getDefaultTitle( // virtual, protected
 } // getDefaultTitle()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -168,6 +181,7 @@ SoXtMaterialList::getDefaultIconTitle( // virtual, protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -231,6 +245,7 @@ SoXtMaterialList::buildWidget( // protected
 
 /*!
   \internal
+  FIXME: write doc
 */
 
 void
@@ -280,6 +295,7 @@ SoXtMaterialList::selectionCallback( // private
 
 /*!
   \internal
+  FIXME: write doc
 */
 
 void
@@ -297,6 +313,7 @@ SoXtMaterialList::selection_cb( // static, private
 
 /*!
   \internal
+  FIXME: write doc
 */
 
 void
@@ -326,6 +343,7 @@ SoXtMaterialList::paletteMenuCallback( // private
 
 /*!
   \internal
+  FIXME: write doc
 */
 
 void
