@@ -4809,11 +4809,6 @@ if test x"$no_x" != xyes; then
   # echo "X_LIBS: $X_LIBS"
   # echo "X_EXTRA_LIBS: $X_EXTRA_LIBS"
   # echo
-  # echo "CFLAGS: $CFLAGS"
-  # echo "CPPFLAGS: $CPPFLAGS"
-  # echo "CXXFLAGS: $CXXFLAGS"
-  # echo "LDFLAGS: $LDFLAGS"
-  # echo "LIBS: $LIBS"
   # exit 0
 
   sim_ac_x11_cppflags="$X_CFLAGS"
@@ -5279,8 +5274,6 @@ fi
 #  implementation or the OpenGL-compatible Mesa library. If
 #  it is found, these shell variables are set:
 #
-#    $sim_ac_gl_cflags   (extra flags the compiler needs for OpenGL/Mesa)
-#    $sim_ac_gl_cxxflags (extra flags the compiler needs for OpenGL/Mesa)
 #    $sim_ac_gl_cppflags (extra flags the preprocessor needs for OpenGL/Mesa)
 #    $sim_ac_gl_ldflags  (extra flags the linker needs for OpenGL/Mesa)
 #    $sim_ac_gl_libs     (link libraries the linker needs for OpenGL/Mesa)
@@ -5443,8 +5436,6 @@ fi
 AC_DEFUN(SIM_AC_CHECK_OPENGL, [
 
 sim_ac_gl_cppflags=
-sim_ac_gl_cflags=
-sim_ac_gl_cxxflags=
 sim_ac_gl_ldflags=
 sim_ac_gl_libs=
 sim_ac_gl_avail=no
@@ -5494,8 +5485,6 @@ if test x"$with_opengl" != xno; then
   SIM_AC_CHECK_HEADER_GL(, [AC_MSG_ERROR([could not find gl.h])])
 
   sim_ac_save_cppflags=$CPPFLAGS
-  sim_ac_save_cflags=$CFLAGS
-  sim_ac_save_cxxflags=$CXXFLAGS
   sim_ac_save_ldflags=$LDFLAGS
   sim_ac_save_libs=$LIBS
 
@@ -5594,8 +5583,6 @@ glPointSize(1.0f);
     $1
   else
     CPPFLAGS=$sim_ac_save_cppflags
-    CFLAGS=$sim_ac_save_cflags
-    CXXFLAGS=$sim_ac_save_cxxflags
     LDFLAGS=$sim_ac_save_ldflags
     LIBS=$sim_ac_save_libs
     $2
@@ -6082,8 +6069,6 @@ AC_REQUIRE([SIM_AC_WITH_INVENTOR])
 
 if $sim_ac_want_inventor; then
   sim_ac_save_CPPFLAGS="$CPPFLAGS";
-  sim_ac_save_CFLAGS="$CFLAGS";
-  sim_ac_save_CXXFLAGS="$CXXFLAGS";
   sim_ac_save_LDFLAGS="$LDFLAGS";
   sim_ac_save_LIBS="$LIBS";
 
@@ -6156,8 +6141,6 @@ EOF
   done
 
   CPPFLAGS="$sim_ac_save_CPPFLAGS"
-  CFLAGS="$sim_ac_save_CFLAGS"
-  CXXFLAGS="$sim_ac_save_CXXFLAGS"
   LDFLAGS="$sim_ac_save_LDFLAGS"
   LIBS="$sim_ac_save_LIBS"
 
