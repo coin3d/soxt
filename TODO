@@ -1,11 +1,13 @@
 TODO
 ====
 
-* [larsa:20000206] Write autoconf-tests for Lesstif/Motif, Xm, Xmu, ...
-
-* [larsa:20000206] Create soxt-config script.
+* [larsa:20000206] Improve autoconf-tests for Lesstif/Motif, Xm, Xmu, ...
 
 * [larsa:20000206] Write alternative buildWidget()-code for systems without
-  the Xt/Motif (lesstif) glwMDrawingArea widget.
+  the Xt/Motif/Lesstif-extension glwMDrawingArea widget class.
 
+* [larsa:20000206] Set up configuration of soxt-config script.
+
+* [larsa:20000210] Create conf-macros/soxt.m4 for detecting SoXt development
+  systems.
 

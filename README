@@ -1,0 +1,8 @@
+README
+======
+
+This module is a set of Xt/Motif GUI components for using Coin.  Work has
+just begun, so it is only SoXtRenderArea that is really usable at this
+time.
+
+
