@@ -152,13 +152,8 @@ SoXtFullViewer::setDecoration(
   if ( (this->decorations != enable) && (this->viewerbase != (Widget) NULL) )
     this->showDecorationWidgets( enable );
   this->decorations = enable;
-  if ( this->prefmenu ) {
-#if SOXT_DEBUG && 0
-    SoDebugError::postInfo( "SoXtFullViewer::setDecoration",
-       "setting to %s", enable ? "true" : "false" );
-#endif // SOXT_DEBUG
+  if ( this->prefmenu )
     this->prefmenu->SetMenuItemMarked( DECORATION_ITEM, enable );
-  }
 } // setDecoration()
 
 /*!
@@ -319,10 +314,28 @@ SoXtFullViewer::buildWidget( // protected
 
   XtManageChild( this->canvas );
   this->setBaseWidget( this->viewerbase );
+
+  Widget shell = this->viewerbase;
+  while ( shell && ! XtIsWMShell( shell ) )
+    shell = XtParent( shell );
+  if ( shell ) {
+    int existing = 0;
+    XtVaGetValues( shell, XmNminHeight, &existing, NULL );
+    Dimension minheight =
+      30 + 90 + 30 * this->viewerButtonsList->getLength() + 8;
+    if ( existing > minheight ) minheight = existing;
+    XtVaSetValues( shell,
+      XmNminWidth, 300,
+      XmNminHeight, minheight,
+      NULL );
+  }
   return this->viewerbase;
 } // buildWidget()
 
 // *************************************************************************
+
+/*!
+*/
 
 void
 SoXtFullViewer::buildDecoration( // virtual
@@ -337,6 +350,7 @@ SoXtFullViewer::buildDecoration( // virtual
 } // buildDecorations()
 
 /*!
+  This method created the bottom decoration form.
 */
 
 Widget
@@ -419,6 +433,7 @@ SoXtFullViewer::buildBottomTrim( // virtual
 } // buildBottomTrim()
 
 /*!
+  This method creates the left decoration form.
 */
 
 Widget
@@ -473,6 +488,7 @@ SoXtFullViewer::buildLeftTrim( // virtual
 } // buildLeftTrim()
 
 /*!
+  This method creates the right decoration form.
 */
 
 Widget
