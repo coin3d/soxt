@@ -41,6 +41,7 @@
 #include <Inventor/Xt/widgets/XtNativePopupMenu.h>
 
 #include <Inventor/Xt/viewers/SoXtPlaneViewer.h>
+#include <Inventor/Xt/viewers/SoXtPlaneViewerP.h>
 
 #if HAVE_CONFIG_H
 #include <config.h> // for HAVE_LIBXPM
@@ -60,7 +61,25 @@ static char ** y_xpm = NULL;
 static char ** z_xpm = NULL;
 #endif // !HAVE_LIBXPM
 
-// *************************************************************************
+// ************************************************************************
+
+// SoXtPlaneViewerP "private implementation" class.
+
+#define PUBLIC(ptr) (ptr->pub)
+#define PRIVATE(ptr) (ptr->pimpl)
+
+#define THIS (PRIVATE(this))
+
+SoXtPlaneViewerP::SoXtPlaneViewerP(SoXtPlaneViewer * publ)
+  : SoGuiPlaneViewerP(publ)
+{
+}
+
+SoXtPlaneViewerP::~SoXtPlaneViewerP()
+{
+}
+
+// ************************************************************************
 
 struct SoXtViewerButton {
   char * keyword;
@@ -101,46 +120,35 @@ SoXtPlaneViewer::SoXtPlaneViewerButtons[] = {
 
 // *************************************************************************
 
-/*!
-  Constructor.
-*/
-
-SoXtPlaneViewer::SoXtPlaneViewer(
-  Widget parent,
-  const char * const name,
-  SbBool embed,
-  SoXtFullViewer::BuildFlag flag,
-  SoXtViewer::Type type)
-: inherited(parent, name, embed, flag, type, FALSE)
+// Documented in common/viewers/SoGuiPlaneViewer.cpp.in.
+SoXtPlaneViewer::SoXtPlaneViewer(Widget parent,
+                                 const char * const name,
+                                 SbBool embed,
+                                 SoXtFullViewer::BuildFlag flag,
+                                 SoXtViewer::Type type)
+  : inherited(parent, name, embed, flag, type, FALSE)
 {
+  PRIVATE(this) = new SoXtPlaneViewerP(this);
   this->constructor(TRUE);
-} // SoXtPlaneViewer()
+}
 
-/*!
-  Protected constructor for deriving classes.
-*/
-
-SoXtPlaneViewer::SoXtPlaneViewer(// protected
-  Widget parent,
-  const char * const name,
-  SbBool embed,
-  SoXtFullViewer::BuildFlag flag,
-  SoXtViewer::Type type,
-  SbBool build)
-: inherited(parent, name, embed, flag, type, FALSE)
+// Documented in common/viewers/SoGuiPlaneViewer.cpp.in.
+SoXtPlaneViewer::SoXtPlaneViewer(Widget parent,
+                                 const char * const name,
+                                 SbBool embed,
+                                 SoXtFullViewer::BuildFlag flag,
+                                 SoXtViewer::Type type,
+                                 SbBool build)
+  : inherited(parent, name, embed, flag, type, FALSE)
 {
+  PRIVATE(this) = new SoXtPlaneViewerP(this);
   this->constructor(build);
-} // SoXtPlaneViewer()
-
-/*!
-  Common constructor code.
-*/
+}
 
 void
-SoXtPlaneViewer::constructor(
-  SbBool build)
+SoXtPlaneViewer::constructor(SbBool build)
 {
-  this->commonConstructor(); // generic code
+  PRIVATE(this)->commonConstructor(); // generic code
 
   const int buttons = sizeof(SoXtPlaneViewerButtons) / sizeof(SoXtViewerButton);
   this->buttons = new SoXtViewerButton [ buttons ];
@@ -163,17 +171,13 @@ SoXtPlaneViewer::constructor(
     if (dollyString != NULL)
       this->setRightWheelString(dollyString);
   }
-} // constructor()
+}
 
-/*!
-  Destructor.
-*/
-
-SoXtPlaneViewer::~SoXtPlaneViewer(
-  void)
+// Documented in common/viewers/SoGuiPlaneViewer.cpp.in.
+SoXtPlaneViewer::~SoXtPlaneViewer()
 {
   delete [] this->buttons;
-} // ~SoXtPlaneViewer()
+}
 
 // ************************************************************************
 
@@ -427,11 +431,11 @@ SoXtPlaneViewer::buttonCB(// static, private
   if (idx == -1) {
     SoDebugError::post("SoXtPlaneViewer::buttonCB", "unknown button");
   } else if (strcmp(viewer->buttons[idx].keyword, "x") == 0) {
-    viewer->viewPlaneX();
+    PRIVATE(viewer)->viewPlaneX();
   } else if (strcmp(viewer->buttons[idx].keyword, "y") == 0) {
-    viewer->viewPlaneY();
+    PRIVATE(viewer)->viewPlaneY();
   } else if (strcmp(viewer->buttons[idx].keyword, "z") == 0) {
-    viewer->viewPlaneZ();
+    PRIVATE(viewer)->viewPlaneZ();
   } else if (strcmp(viewer->buttons[idx].keyword, "camera") == 0) {
     viewer->toggleCameraType();
   } else {
