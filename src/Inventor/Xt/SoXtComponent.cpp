@@ -523,7 +523,8 @@ SoXtComponent::invokeWindowCloseCallbacks( // protected
   for ( int i = 0; i < num; i++ ) {
     SoXtWindowCloseCallbackInfo * info =
       (SoXtWindowCloseCallbackInfo *) (*this->close_callbacks)[i];
-    info->callback( info->closure, this );
+    // Cast required for AIX
+    info->callback( info->closure, (SoXtComponent *) this );
   }
 } // invokeWindowCloseCallbacks()
 
