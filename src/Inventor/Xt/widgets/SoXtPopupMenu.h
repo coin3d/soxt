@@ -34,7 +34,7 @@
 struct MenuRecord;
 struct ItemRecord;
 
-class SOXT_DLL_EXPORT SoXtPopupMenu : public SoAnyPopupMenu {
+class SoXtPopupMenu : public SoAnyPopupMenu {
   typedef SoAnyPopupMenu inherited;
 
 public:
