@@ -155,6 +155,17 @@ if $sim_ac_build_library; then
 
 # **************************************************************************
 
+AC_ARG_ENABLE([default-visual],
+  [AC_HELP_STRING([--enable-default-visual], [don't change frmo default visual])],
+  [sim_ac_default_visual=true],
+  [sim_ac_default_visual=false])
+
+if $sim_ac_default_visual; then
+  AC_DEFINE([USE_DEFAULT_VISUAL], [1], [define to only use default visual])
+fi
+
+# **************************************************************************
+
 SIM_AC_RTTI_SUPPORT
 SIM_AC_EXCEPTION_HANDLING
 SIM_AC_CHECK_VAR_FUNCTIONNAME
