@@ -58,6 +58,8 @@ AC_DEFINE_UNQUOTED(SOXT_VERSION, "$SOXT_VERSION",
 AC_CANONICAL_SYSTEM
 
 AC_PROG_CC
+AC_PROG_CXX
+AC_PROG_CPP
 
 AM_INIT_AUTOMAKE(SoXt, $SOXT_VERSION)
 AM_CONFIG_HEADER(config.h)
@@ -65,17 +67,17 @@ AM_CONFIG_HEADER(config.h)
 AM_DISABLE_STATIC
 AM_MAINTAINER_MODE
 
-case "$host_os" in
-  irix*)
-    if test x"${AR+set}" != x"set"; then
-      AR="CC -ar"
-      AR_FLAGS=
-      export AR AR_FLAGS
-      echo "overriding the libtool '\$AR' setting with 'CC -ar'"
-    fi
-    ;;
-  *) ;;
-esac
+# case "$host_os" in
+#   irix*)
+#     if test x"${AR+set}" != x"set"; then
+#       AR="CC -ar"
+#       AR_FLAGS=
+#       export AR AR_FLAGS
+#       echo "overriding the libtool '\$AR' setting with 'CC -ar'"
+#     fi
+#     ;;
+#   *) ;;
+# esac
 
 AC_PROG_LIBTOOL
 
@@ -159,9 +161,6 @@ else
   AC_MSG_ERROR(need to able to compile and link against X11 libraries)
 fi
 
-AC_PROG_CXX
-AC_LANG_CPLUSPLUS
-
 if test "${with_inventor+set}" = set; then
   SIM_AC_CHECK_OPENGL([
     SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_gl_cppflags"
@@ -198,6 +197,10 @@ if test "${with_inventor+set}" = set; then
 
   SIM_AC_CONFIGURATION_SETTING([Open Inventor brand], [SGI/TGS Inventor])
 else
+
+  # since the OpenGL test isn't run in this path
+  AC_CHECK_HEADERS([GL/gl.h OpenGL/gl.h GL/glu.h OpenGL/glu.h])
+
   # check for Coin library and its dependencies
   SIM_AC_HAVE_COIN_IFELSE([
     CPPFLAGS="$CPPFLAGS $sim_ac_coin_cppflags"
