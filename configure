@@ -1584,6 +1584,13 @@ cat >>confdefs.h <<_ACEOF
 #define SOXT_MICRO_VERSION $SOXT_MICRO_VERSION
 _ACEOF
 
+if test x"$SOXT_BETA_VERSION" = x""; then :; else
+
+cat >>confdefs.h <<_ACEOF
+#define SOXT_BETA_VERSION $SOXT_BETA_VERSION
+_ACEOF
+
+fi
 
 cat >>confdefs.h <<_ACEOF
 #define SOXT_VERSION "$SOXT_VERSION"
@@ -4629,7 +4636,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 4632 "configure"' > conftest.$ac_ext
+  echo '#line 4639 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5240,7 +5247,7 @@ fi
 
 
 # Provide some information about the compiler.
-echo "$as_me:5243:" \
+echo "$as_me:5250:" \
      "checking for Fortran 77 compiler version" >&5
 ac_compiler=`set X $ac_compile; echo $2`
 { (eval echo "$as_me:$LINENO: \"$ac_compiler --version </dev/null >&5\"") >&5
@@ -6251,11 +6258,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6254: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6261: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:6258: \$? = $ac_status" >&5
+   echo "$as_me:6265: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -6483,11 +6490,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6486: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6493: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:6490: \$? = $ac_status" >&5
+   echo "$as_me:6497: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -6550,11 +6557,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6553: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6560: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:6557: \$? = $ac_status" >&5
+   echo "$as_me:6564: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8562,7 +8569,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8565 "configure"
+#line 8572 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -8660,7 +8667,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8663 "configure"
+#line 8670 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -10794,11 +10801,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10797: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10804: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:10801: \$? = $ac_status" >&5
+   echo "$as_me:10808: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -10861,11 +10868,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10864: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10871: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:10868: \$? = $ac_status" >&5
+   echo "$as_me:10875: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -12104,7 +12111,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 12107 "configure"
+#line 12114 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12202,7 +12209,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 12205 "configure"
+#line 12212 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13024,11 +13031,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13027: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13034: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:13031: \$? = $ac_status" >&5
+   echo "$as_me:13038: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -13091,11 +13098,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13094: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13101: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:13098: \$? = $ac_status" >&5
+   echo "$as_me:13105: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -15031,11 +15038,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15034: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15041: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15038: \$? = $ac_status" >&5
+   echo "$as_me:15045: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15263,11 +15270,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15266: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15273: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15270: \$? = $ac_status" >&5
+   echo "$as_me:15277: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15330,11 +15337,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15333: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15340: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:15337: \$? = $ac_status" >&5
+   echo "$as_me:15344: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -17342,7 +17349,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17345 "configure"
+#line 17352 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -17440,7 +17447,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17443 "configure"
+#line 17450 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -19270,14 +19277,27 @@ echo "$as_me: WARNING: --enable-exceptions only has effect when using GNU g++" >
 fi
 
 
-echo "$as_me:$LINENO: checking for function name variable" >&5
-echo $ECHO_N "checking for function name variable... $ECHO_C" >&6
-if test "${sim_cv_var_functionname+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
+  ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
-  # __func__ is the identifier used by compilers which are
-  # compliant with the C99 ISO/IEC 9899:1999 standard.
+
+echo "$as_me:$LINENO: checking for function name variable for CPP compiler" >&5
+echo $ECHO_N "checking for function name variable for CPP compiler... $ECHO_C" >&6
+sim_ac_var_functionname=
+
+# * __func__ is the identifier used by compilers which are
+#   compliant with the C99 ISO/IEC 9899:1999 standard.
+#
+# * GCC uses __PRETTY_FUNCTION__
+#
+# * FIXME: why was __FUNCTION__ added? for SGI MIPSpro, perhaps?
+#   20040902 mortene.
+
+for i in "__func__" "__PRETTY_FUNCTION__" "__FUNCTION__"; do
+if test -z "$sim_ac_var_functionname"; then
   cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
@@ -19289,7 +19309,7 @@ cat >>conftest.$ac_ext <<_ACEOF
 int
 main ()
 {
-(void)printf("%s\n",__func__)
+(void)printf("%s\n", $i)
   ;
   return 0;
 }
@@ -19306,17 +19326,58 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_cv_var_functionname=__func__
+  sim_ac_var_functionname=$i
+
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-sim_cv_var_functionname=none
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext
-  if test x"$sim_cv_var_functionname" = x"none"; then
-    # GCC uses __PRETTY_FUNCTION__
-    cat >conftest.$ac_ext <<_ACEOF
+fi
+done
+
+if test -z "$sim_ac_var_functionname"; then
+  echo "$as_me:$LINENO: result: none" >&5
+echo "${ECHO_T}none" >&6
+else
+  echo "$as_me:$LINENO: result: $sim_ac_var_functionname" >&5
+echo "${ECHO_T}$sim_ac_var_functionname" >&6
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_CPP_COMPILER_FUNCTION_NAME_VAR $sim_ac_var_functionname
+_ACEOF
+
+fi
+
+  ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+  ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
+echo "$as_me:$LINENO: checking for function name variable for C compiler" >&5
+echo $ECHO_N "checking for function name variable for C compiler... $ECHO_C" >&6
+sim_ac_var_functionname=
+
+# * __func__ is the identifier used by compilers which are
+#   compliant with the C99 ISO/IEC 9899:1999 standard.
+#
+# * GCC uses __PRETTY_FUNCTION__
+#
+# * FIXME: why was __FUNCTION__ added? for SGI MIPSpro, perhaps?
+#   20040902 mortene.
+
+for i in "__func__" "__PRETTY_FUNCTION__" "__FUNCTION__"; do
+if test -z "$sim_ac_var_functionname"; then
+  cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
 _ACEOF
@@ -19327,7 +19388,7 @@ cat >>conftest.$ac_ext <<_ACEOF
 int
 main ()
 {
-(void)printf("%s\n",__PRETTY_FUNCTION__)
+(void)printf("%s\n", $i)
   ;
   return 0;
 }
@@ -19344,83 +19405,36 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_cv_var_functionname=__PRETTY_FUNCTION__
+  sim_ac_var_functionname=$i
+
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-sim_cv_var_functionname=none
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext
-  fi
-  if test x"$sim_cv_var_functionname" = x"none"; then
-    cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <stdio.h>
-int
-main ()
-{
-(void)printf("%s\n",__FUNCTION__)
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_cv_var_functionname=__FUNCTION__
+fi
+done
+
+if test -z "$sim_ac_var_functionname"; then
+  echo "$as_me:$LINENO: result: none" >&5
+echo "${ECHO_T}none" >&6
 else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
+  echo "$as_me:$LINENO: result: $sim_ac_var_functionname" >&5
+echo "${ECHO_T}$sim_ac_var_functionname" >&6
 
-sim_cv_var_functionname=none
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  fi
-fi
-echo "$as_me:$LINENO: result: $sim_cv_var_functionname" >&5
-echo "${ECHO_T}$sim_cv_var_functionname" >&6
-
-# FIXME: these can probably be contracted to a single test inside a loop.
-# 20010330 mortene.
-
-if test x"$sim_cv_var_functionname" = x"__func__"; then
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_VAR___func__ 1
+cat >>confdefs.h <<_ACEOF
+#define HAVE_C_COMPILER_FUNCTION_NAME_VAR $sim_ac_var_functionname
 _ACEOF
 
 fi
 
-if test x"$sim_cv_var_functionname" = x"__PRETTY_FUNCTION__"; then
+  ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_VAR___PRETTY_FUNCTION__ 1
-_ACEOF
-
-fi
-
-if test x"$sim_cv_var_functionname" = x"__FUNCTION__"; then
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_VAR___FUNCTION__ 1
-_ACEOF
-
-fi
 
 
 
