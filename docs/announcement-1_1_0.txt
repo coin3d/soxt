@@ -1,0 +1,25 @@
+SoXt 1.1.0 Released
+
+We release SoXt 1.1.0 now because it was high time to declare the API
+frozen and have a branch of SoXt that should be considered stable,
+and consequently also have a branch that is to be considered more
+experimental than what the old situation was.
+
+SoXt 1.1.0 is released with some known limitations with regards
+to compatibility with SGI's libSoXt (aka libInventorXt).  We have
+not attempted to be fully feature complete with libSoXt, but we
+have includes compatible versions of the most essential and commonly
+used components.
+
+SoXt 1.1.0 is also released with known bugs, a couple of which are
+quite serious (but very system-specific).  They have been assessed,
+and judged to be fixable without consequences for future binary
+compatibility of the library, so they will hopefully be fixed in
+a subsequent patchlevel release of SoXt 1.1.
+
+The version number has been set to 1.1.0 because this release of
+SoXt has features not found in SoQt 1.0 but which will appear in
+the future SoQt 1.1.  We want to try to keep version numbers and
+feature sets in sync between the various GUI toolkits.
+
+  Lars J
