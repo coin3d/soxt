@@ -90,24 +90,46 @@ static const char rcsid[] =
 */
 
 // *************************************************************************
-// the static SoXt:: variables
 
-Display *     SoXt::display = NULL;
-XtAppContext  SoXt::xtAppContext;
-Widget        SoXt::mainWidget = (Widget) NULL;
-XtIntervalId  SoXt::timerSensorId = 0;
-SbBool        SoXt::timerSensorActive = FALSE;
-XtIntervalId  SoXt::delaySensorId = 0;
-SbBool        SoXt::delaySensorActive = FALSE;
-XtIntervalId  SoXt::idleSensorId = 0;
-SbBool        SoXt::idleSensorActive = FALSE;
-SbPList *     SoXt::eventHandlers = NULL;
+// The private data for the SoXt class.
 
-char *        SoXt::appName = NULL;
-char *        SoXt::appClass = NULL;
+class SoXtP {
+public:
+  static Display * display;
+  static XtAppContext xtappcontext;
+  static Widget mainwidget;
 
-static Atom   WM_PROTOCOLS = 0;
-static Atom   WM_DELETE_WINDOW = 0;
+  static XtIntervalId timersensorid;
+  static SbBool timersensoractive;
+
+  static XtIntervalId delaysensorid;
+  static SbBool delaysensoractive;
+
+  static XtIntervalId idlesensorid;
+  static SbBool idlesensoractive;
+
+  static char * appname;
+  static char * appclass;
+
+  static SbPList * eventhandlers;
+  static String fallbackresources[];
+};
+
+Display * SoXtP::display = NULL;
+XtAppContext SoXtP::xtappcontext;
+Widget SoXtP::mainwidget = (Widget) NULL;
+XtIntervalId SoXtP::timersensorid = 0;
+SbBool SoXtP::timersensoractive = FALSE;
+XtIntervalId SoXtP::delaysensorid = 0;
+SbBool SoXtP::delaysensoractive = FALSE;
+XtIntervalId SoXtP::idlesensorid = 0;
+SbBool SoXtP::idlesensoractive = FALSE;
+SbPList * SoXtP::eventhandlers = NULL;
+char * SoXtP::appname = NULL;
+char * SoXtP::appclass = NULL;
+
+static Atom WM_PROTOCOLS = 0;
+static Atom WM_DELETE_WINDOW = 0;
 
 // *************************************************************************
 
@@ -115,7 +137,7 @@ static Atom   WM_DELETE_WINDOW = 0;
   This method will fill in the integers pointed to by the arguments with the
   corresponding part of the version id.  NULL pointers are ignored.
 
-  This method is not part of the original SoXt API from SGI.
+  This method is not part of the original InventorXt API from SGI.
 */
 
 void
@@ -184,11 +206,11 @@ SoXt::init(// static
   // this Coin-specific init() method. 20010919 mortene.
 
   if (appName)
-    SoXt::appName = strcpy(new char [strlen(appName) + 1], appName);
+    SoXtP::appname = strcpy(new char [strlen(appName) + 1], appName);
   if (appClass)
-    SoXt::appClass = strcpy(new char [strlen(appClass) + 1], appClass);
+    SoXtP::appclass = strcpy(new char [strlen(appClass) + 1], appClass);
 
-  XtAppContext tempcontext; // SoXt::xtAppContext is set later
+  XtAppContext tempcontext; // SoXtP::xtappcontext is set later
 
   Display * display = NULL;
   int depth = 0;
@@ -200,8 +222,8 @@ SoXt::init(// static
   Widget toplevel = (Widget) NULL;
   if (visual) {
     toplevel = XtVaOpenApplication(
-      &tempcontext, SoXt::appClass, NULL, 0, &argc, argv,
-      SoXt::fallback_resources, topLevelShellWidgetClass,
+      &tempcontext, SoXtP::appclass, NULL, 0, &argc, argv,
+      SoXtP::fallbackresources, topLevelShellWidgetClass,
       XmNvisual, visual,
       XmNdepth, depth,
       XmNcolormap, colormap,
@@ -209,12 +231,12 @@ SoXt::init(// static
   } else {
     SoDebugError::postInfo("SoXt::init", "default toplevel! (error)");
     toplevel = XtVaOpenApplication(
-      &tempcontext, SoXt::appClass, NULL, 0, &argc, argv,
-      SoXt::fallback_resources, topLevelShellWidgetClass,
+      &tempcontext, SoXtP::appclass, NULL, 0, &argc, argv,
+      SoXtP::fallbackresources, topLevelShellWidgetClass,
       NULL);
   }
   if (appName)
-    XtVaSetValues(toplevel, XmNtitle, SoXt::appName, NULL);
+    XtVaSetValues(toplevel, XmNtitle, SoXtP::appname, NULL);
 
   SoXt::init(toplevel);
   return toplevel;
@@ -277,9 +299,9 @@ SoXt::init(// static
   setbuf(stderr, NULL);
 #endif // SOXT_DEBUG
 
-  SoXt::mainWidget = toplevel;
-  SoXt::display = XtDisplay(toplevel);
-  SoXt::xtAppContext = XtWidgetToApplicationContext(toplevel);
+  SoXtP::mainwidget = toplevel;
+  SoXtP::display = XtDisplay(toplevel);
+  SoXtP::xtappcontext = XtWidgetToApplicationContext(toplevel);
 
   SoDB::init();
   SoNodeKit::init();
@@ -288,7 +310,7 @@ SoXt::init(// static
 
   SoDB::getSensorManager()->setChangedCallback(SoXt::sensorQueueChanged, NULL);
 
-  XtAppSetFallbackResources(SoXt::getAppContext(), SoXt::fallback_resources);
+  XtAppSetFallbackResources(SoXt::getAppContext(), SoXtP::fallbackresources);
 
   XtAddEventHandler(toplevel, (EventMask) 0, True, wm_close_handler, NULL);
 
@@ -437,19 +459,17 @@ XtAppContext
 SoXt::getAppContext(// static
   void)
 {
-  return SoXt::xtAppContext;
+  return SoXtP::xtappcontext;
 } // getAppContext()
 
 /*!
   This function returns the X Display of the application.
 */
-
-Display *
-SoXt::getDisplay(// static
-  void)
+Display *  // static
+SoXt::getDisplay(void)
 {
-  return SoXt::display;
-} // getDisplay()
+  return SoXtP::display;
+}
 
 /*!
   This function returns the toplevel shell for the application.
@@ -459,7 +479,7 @@ Widget
 SoXt::getTopLevelWidget(// static
   void)
 {
-  return SoXt::mainWidget;
+  return SoXtP::mainwidget;
 } // getTopLevelWidget()
 
 // *************************************************************************
@@ -472,7 +492,7 @@ const char *
 SoXt::getAppName(// static
   void)
 {
-  return SoXt::appName;
+  return SoXtP::appname;
 } // getAppName()
 
 /*!
@@ -483,7 +503,7 @@ const char *
 SoXt::getAppClass(// static
   void)
 {
-  return SoXt::appClass;
+  return SoXtP::appclass;
 } // getAppClass()
 
 // *************************************************************************
@@ -829,20 +849,20 @@ SoXt::addExtensionEventHandler(// static
   info->handler = proc;
   info->data = data;
 
-  if (SoXt::eventHandlers == NULL)
-    SoXt::eventHandlers = new SbPList;
+  if (SoXtP::eventhandlers == NULL)
+    SoXtP::eventhandlers = new SbPList;
 
 #if SOXT_DEBUG
-  const int handlers = SoXt::eventHandlers->getLength();
+  const int handlers = SoXtP::eventhandlers->getLength();
   for (int i = 0; i < handlers; i++) {
-    EventHandlerInfo * query = (EventHandlerInfo *) (*SoXt::eventHandlers)[i];
+    EventHandlerInfo * query = (EventHandlerInfo *) (*SoXtP::eventhandlers)[i];
     if (query->type == type)
       SoDebugError::postWarning("SoXt::addExtensionEventHandler",
         "handler of type %d already exists, shadowing the new handler");
   }
 #endif // SOXT_DEBUG
 
-  SoXt::eventHandlers->append((void *) info);
+  SoXtP::eventhandlers->append((void *) info);
 } // addExtensionEventHandler()
 
 /*!
@@ -859,19 +879,19 @@ SoXt::removeExtensionEventHandler(// static
   XtEventHandler proc,
   XtPointer data)
 {
-  if (SoXt::eventHandlers == NULL) {
+  if (SoXtP::eventhandlers == NULL) {
 #if SOXT_DEBUG
     SoDebugError::postInfo("SoXt::removeExtensionEventHandler",
       "no extension event handlers registered.");
 #endif // SOXT_DEBUG
     return;
   }
-  int handlers = SoXt::eventHandlers->getLength();
+  int handlers = SoXtP::eventhandlers->getLength();
   for (int i = 0; i < handlers; i++) {
-    EventHandlerInfo * info = (EventHandlerInfo *) (*SoXt::eventHandlers)[i];
+    EventHandlerInfo * info = (EventHandlerInfo *) (*SoXtP::eventhandlers)[i];
     if (info->widget == widget && info->type == type &&
          info->handler == proc && info->data == data) {
-      SoXt::eventHandlers->remove(i);
+      SoXtP::eventhandlers->remove(i);
       delete info;
       return;
     }
@@ -900,12 +920,12 @@ SoXt::getExtensionEventHandler(// static, protected
   data = (XtPointer) NULL;
   widget = (Widget) NULL;
 
-  if (SoXt::eventHandlers == NULL)
+  if (SoXtP::eventhandlers == NULL)
     return;
 
-  const int handlers = SoXt::eventHandlers->getLength();
+  const int handlers = SoXtP::eventhandlers->getLength();
   for (int i = 0; i < handlers; i++) {
-    EventHandlerInfo * info = (EventHandlerInfo *) (*SoXt::eventHandlers)[i];
+    EventHandlerInfo * info = (EventHandlerInfo *) (*SoXtP::eventhandlers)[i];
     if (info->type == event->type) {
       widget = info->widget;
       proc = info->handler;
@@ -942,8 +962,8 @@ SoXt::timerSensorCB(// static, private
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXt::timerSensorCB", "called");
 #endif // SOXT_DEBUG
-  SoXt::timerSensorId = 0;
-  SoXt::timerSensorActive = FALSE;
+  SoXtP::timersensorid = 0;
+  SoXtP::timersensoractive = FALSE;
   SoDB::getSensorManager()->processTimerQueue();
   SoXt::sensorQueueChanged(NULL);
 } // timerSensorCB()
@@ -960,8 +980,8 @@ SoXt::delaySensorCB(// static, private
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXt::delaySensorCB", "called");
 #endif // SOXT_DEBUG
-  SoXt::delaySensorId = 0;
-  SoXt::delaySensorActive = FALSE;
+  SoXtP::delaysensorid = 0;
+  SoXtP::delaysensoractive = FALSE;
   SoDB::getSensorManager()->processDelayQueue(FALSE);
   SoXt::sensorQueueChanged(NULL);
 } // delaySensorCB()
@@ -977,8 +997,8 @@ SoXt::idleSensorCB(// static, private
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXt::idleSensorCB", "called");
 #endif // SOXT_DEBUG
-  SoXt::idleSensorId = 0;
-  SoXt::idleSensorActive = FALSE;
+  SoXtP::idlesensorid = 0;
+  SoXtP::idlesensoractive = FALSE;
   SoDB::getSensorManager()->processDelayQueue(TRUE);
   SoXt::sensorQueueChanged(NULL);
   return True;
@@ -1016,42 +1036,42 @@ SoXt::sensorQueueChanged(// static, private
     // trigger more-or-less immediately.
     if (interval.getValue() < 0.0) interval.setValue(0.0);
 
-    if (SoXt::timerSensorActive) XtRemoveTimeOut(SoXt::timerSensorId);
+    if (SoXtP::timersensoractive) XtRemoveTimeOut(SoXtP::timersensorid);
 
-    SoXt::timerSensorId = XtAppAddTimeOut(SoXt::getAppContext(),
+    SoXtP::timersensorid = XtAppAddTimeOut(SoXt::getAppContext(),
       interval.getMsecValue(), SoXt::timerSensorCB, NULL);
-    SoXt::timerSensorActive = TRUE;
+    SoXtP::timersensoractive = TRUE;
 
-  } else if (SoXt::timerSensorActive) {
-    XtRemoveTimeOut(SoXt::timerSensorId);
-    SoXt::timerSensorId = 0;
-    SoXt::timerSensorActive = FALSE;
+  } else if (SoXtP::timersensoractive) {
+    XtRemoveTimeOut(SoXtP::timersensorid);
+    SoXtP::timersensorid = 0;
+    SoXtP::timersensoractive = FALSE;
   }
 
   if (sensormanager->isDelaySensorPending()) {
-    if (! SoXt::idleSensorActive) {
-      SoXt::idleSensorId =
+    if (! SoXtP::idlesensoractive) {
+      SoXtP::idlesensorid =
         XtAppAddWorkProc(SoXt::getAppContext(), SoXt::idleSensorCB, NULL);
-      SoXt::idleSensorActive = TRUE;
+      SoXtP::idlesensoractive = TRUE;
     }
 
-    if (! SoXt::delaySensorActive) {
+    if (! SoXtP::delaysensoractive) {
       unsigned long timeout = SoDB::getDelaySensorTimeout().getMsecValue();
-      SoXt::delaySensorId =
+      SoXtP::delaysensorid =
         XtAppAddTimeOut(SoXt::getAppContext(), timeout, SoXt::delaySensorCB,
           NULL);
-      SoXt::delaySensorActive = TRUE;
+      SoXtP::delaysensoractive = TRUE;
     }
   } else {
-    if (SoXt::idleSensorActive) {
-      XtRemoveWorkProc(SoXt::idleSensorId);
-      SoXt::idleSensorId = 0;
-      SoXt::idleSensorActive = FALSE;
+    if (SoXtP::idlesensoractive) {
+      XtRemoveWorkProc(SoXtP::idlesensorid);
+      SoXtP::idlesensorid = 0;
+      SoXtP::idlesensoractive = FALSE;
     }
-    if (SoXt::delaySensorActive) {
-      XtRemoveTimeOut(SoXt::delaySensorId);
-      SoXt::delaySensorId = 0;
-      SoXt::delaySensorActive = FALSE;
+    if (SoXtP::delaysensoractive) {
+      XtRemoveTimeOut(SoXtP::delaysensorid);
+      SoXtP::delaysensorid = 0;
+      SoXtP::delaysensoractive = FALSE;
     }
   }
 } // sensorQueueChange()
@@ -1208,7 +1228,7 @@ SoXt::selectBestVisual(// static
 // *************************************************************************
 
 /*!
-  \var SoXt::fallback_resources
+  \var SoXtP::fallbackresources
 
   This is an array of X resources.
   They are not really in use yet - the implementation is mostly experimental,
@@ -1216,7 +1236,7 @@ SoXt::selectBestVisual(// static
 */
 
 String
-SoXt::fallback_resources[] =
+SoXtP::fallbackresources[] =
 {
 #define _COMPONENT "*SoXtGLWidget"
   _COMPONENT     ".background:"				"white", // not used

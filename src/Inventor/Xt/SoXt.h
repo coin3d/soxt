@@ -89,39 +89,19 @@ public:
   static const char * getAppName(void);
   static const char * getAppClass(void);
 
-  static void selectBestVisual(
-    Display * & dpy, Visual * & visual, Colormap & cmap, int & depth);
+  static void selectBestVisual(Display * & dpy, Visual * & visual,
+                               Colormap & cmap, int & depth);
 
 protected:
   static void getExtensionEventHandler(XEvent * event, Widget & widget,
-                  XtEventHandler & proc, XtPointer & clientData);
+                                       XtEventHandler & proc,
+                                       XtPointer & clientData);
 
 private:
-  static Display * display;
-  static XtAppContext xtAppContext;
-  static Widget mainWidget;
-
   static void timerSensorCB(XtPointer, XtIntervalId *);
-  static XtIntervalId timerSensorId;
-  static SbBool timerSensorActive;
-
   static void delaySensorCB(XtPointer, XtIntervalId *);
-  static XtIntervalId delaySensorId;
-  static SbBool delaySensorActive;
-
   static Boolean idleSensorCB(XtPointer);
-  static XtIntervalId idleSensorId;
-  static SbBool idleSensorActive;
-
   static void sensorQueueChanged(void * user);
-
-  static char * appName;
-  static char * appClass;
-
-  static SbPList * eventHandlers;
-
-  static String fallback_resources[];
-
 }; // class SoXt
 
 // *************************************************************************
