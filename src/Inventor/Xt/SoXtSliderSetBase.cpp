@@ -47,12 +47,12 @@ SOXT_OBJECT_ABSTRACT_SOURCE(SoXtSliderSetBase);
   Constructor.
 */
 
-SoXtSliderSetBase::SoXtSliderSetBase( // protected
+SoXtSliderSetBase::SoXtSliderSetBase(// protected
   const Widget parent,
   const char * const name,
   const SbBool embed,
-  SoNode * const node )
-: inherited( parent, name, embed )
+  SoNode * const node)
+: inherited(parent, name, embed)
 {
   this->node = node;
 } // SoXtSliderSetBase()
@@ -61,8 +61,8 @@ SoXtSliderSetBase::SoXtSliderSetBase( // protected
   Destructor.
 */
 
-SoXtSliderSetBase::~SoXtSliderSetBase( // protected
-  void )
+SoXtSliderSetBase::~SoXtSliderSetBase(// protected
+  void)
 {
 } // ~SoXtSliderSetBase()
 
@@ -73,8 +73,8 @@ SoXtSliderSetBase::~SoXtSliderSetBase( // protected
 */
 
 void
-SoXtSliderSetBase::setNode( // virtual
-  SoNode * node )
+SoXtSliderSetBase::setNode(// virtual
+  SoNode * node)
 {
   this->node = node;
 } // setNode()
@@ -86,7 +86,7 @@ SoXtSliderSetBase::setNode( // virtual
 
 SoNode *
 SoXtSliderSetBase::getNode(
-  void ) const
+  void) const
 {
   return this->node;
 } // getNode()
@@ -98,9 +98,9 @@ SoXtSliderSetBase::getNode(
 */
 
 void
-SoXtSliderSetBase::getLayoutSize( // virtual
+SoXtSliderSetBase::getLayoutSize(// virtual
   int & width,
-  int & height )
+  int & height)
 {
   SOXT_STUB();
 }
@@ -110,8 +110,8 @@ SoXtSliderSetBase::getLayoutSize( // virtual
 */
 
 void
-SoXtSliderSetBase::show( // virtual
-  void )
+SoXtSliderSetBase::show(// virtual
+  void)
 {
   inherited::show();
 } // show()

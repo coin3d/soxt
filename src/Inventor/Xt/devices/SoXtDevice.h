@@ -41,14 +41,14 @@ class SOXT_DLL_API SoXtDevice : public SoXtObject {
 public:
   virtual ~SoXtDevice(void);
 
-  virtual void enable( Widget widget, XtEventHandler handler,
-      XtPointer closure, Window window = (Window) NULL ) = 0;
-  virtual void disable( Widget widget, XtEventHandler handler,
-      XtPointer closure ) = 0;
+  virtual void enable(Widget widget, XtEventHandler handler,
+      XtPointer closure, Window window = (Window) NULL) = 0;
+  virtual void disable(Widget widget, XtEventHandler handler,
+      XtPointer closure) = 0;
 
-  virtual const SoEvent * translateEvent( XAnyEvent * xevent ) = 0;
+  virtual const SoEvent * translateEvent(XAnyEvent * xevent) = 0;
 
-  void setWindowSize( const SbVec2s size );
+  void setWindowSize(const SbVec2s size);
   const SbVec2s getWindowSize(void) const;
 
   static void initClasses(void);
@@ -56,12 +56,12 @@ public:
 protected:
   SoXtDevice(void);
 
-  void setEventPosition( SoEvent * event, int x, int y ) const;
+  void setEventPosition(SoEvent * event, int x, int y) const;
 
-  void addEventHandler( Widget, XtEventHandler, XtPointer, Window );
-  void removeEventHandler( Widget, XtEventHandler, XtPointer );
+  void addEventHandler(Widget, XtEventHandler, XtPointer, Window);
+  void removeEventHandler(Widget, XtEventHandler, XtPointer);
 
-  void invokeHandlers( XEvent * const event );
+  void invokeHandlers(XEvent * const event);
 
 private:
   SbVec2s size;

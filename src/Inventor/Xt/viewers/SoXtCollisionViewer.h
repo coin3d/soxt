@@ -32,31 +32,31 @@ class SoXtCollisionViewer;
 // *************************************************************************
 
 typedef void SoXtCollisionViewerCB(
-  void * userdata, SoXtCollisionViewer * viewer );
+  void * userdata, SoXtCollisionViewer * viewer);
 
 class SOXT_DLL_API SoXtCollisionViewer {
 public:
-  SoXtCollisionViewer( SoXtViewer * const viewer );
+  SoXtCollisionViewer(SoXtViewer * const viewer);
   ~SoXtCollisionViewer(void);
 
   SoXtViewer * getViewer(void) const;
 
-  void setDistance( const float distance );
+  void setDistance(const float distance);
   float getDistance(void) const;
 
-  void setNumSteps( const int steps );
+  void setNumSteps(const int steps);
   int getNumSteps(void) const;
 
-  void setCollisionDetection( const SbBool value = TRUE );
+  void setCollisionDetection(const SbBool value = TRUE);
   SbBool getCollisionDetection(void) const;
 
-  void setZBufferOptimization( const SbBool value = TRUE );
+  void setZBufferOptimization(const SbBool value = TRUE);
   SbBool getZBufferOptimization(void) const;
   SbBool getZBufferOptimistation(void) const // eh?
     { return this->getZBufferOptimization(); }
 
-  void addCallback( SoXtCollisionViewerCB * func, void * user = NULL );
-  void removeCallback( SoXtCollisionViewerCB * func, void * user = NULL );
+  void addCallback(SoXtCollisionViewerCB * func, void * user = NULL);
+  void removeCallback(SoXtCollisionViewerCB * func, void * user = NULL);
 
 private:
   SoXtViewer * const viewer;

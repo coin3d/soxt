@@ -59,28 +59,28 @@ SoXtWalkViewer::SoXtWalkViewer(
   const char * const name,
   SbBool embed,
   SoXtFullViewer::BuildFlag flag,
-  SoXtViewer::Type type )
-: inherited( parent, name, embed, flag, type, FALSE )
-, common( new SoAnyWalkViewer( this ) )
+  SoXtViewer::Type type)
+: inherited(parent, name, embed, flag, type, FALSE)
+, common(new SoAnyWalkViewer(this))
 {
-  this->constructor( TRUE );
+  this->constructor(TRUE);
 } // SoXtWalkViewer()
 
 /*!
   Protected constructor for derived classes.
 */
 
-SoXtWalkViewer::SoXtWalkViewer( // protected
+SoXtWalkViewer::SoXtWalkViewer(// protected
   Widget parent,
   const char * const name,
   SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type,
-  SbBool build )
-: inherited( parent, name, embed, flag, type, FALSE )
-, common( new SoAnyWalkViewer( this ) )
+  SbBool build)
+: inherited(parent, name, embed, flag, type, FALSE)
+, common(new SoAnyWalkViewer(this))
 {
-  this->constructor( build );
+  this->constructor(build);
 } // SoXtWalkViewer()
 
 /*!
@@ -89,7 +89,7 @@ SoXtWalkViewer::SoXtWalkViewer( // protected
 
 void
 SoXtWalkViewer::constructor(
-  SbBool build )
+  SbBool build)
 {
   this->prefparts = NULL;
   this->prefshell = NULL;
@@ -98,11 +98,11 @@ SoXtWalkViewer::constructor(
   this->heightwheel = NULL;
   this->heightvalue = 0.0f;
 
-  this->setClassName( this->getDefaultWidgetName() );
-  if ( build ) {
-    Widget viewer = this->buildWidget( this->getParentWidget() );
-    this->setBaseWidget( viewer );
-    this->fitSize( SbVec2s( 500, 300 ) );
+  this->setClassName(this->getDefaultWidgetName());
+  if (build) {
+    Widget viewer = this->buildWidget(this->getParentWidget());
+    this->setBaseWidget(viewer);
+    this->fitSize(SbVec2s(500, 300));
     // resources
   }
 } // constructor()
@@ -112,7 +112,7 @@ SoXtWalkViewer::constructor(
 */
 
 SoXtWalkViewer::~SoXtWalkViewer(
-  void )
+  void)
 {
   delete this->common;
 } // ~SoXtWalkViewer()
@@ -124,10 +124,10 @@ SoXtWalkViewer::~SoXtWalkViewer(
 */
 
 void
-SoXtWalkViewer::setViewing( // virtual
-  SbBool enable )
+SoXtWalkViewer::setViewing(// virtual
+  SbBool enable)
 {
-  inherited::setViewing( enable );
+  inherited::setViewing(enable);
 } // setViewing()
 
 /*!
@@ -135,10 +135,10 @@ SoXtWalkViewer::setViewing( // virtual
 */
 
 void
-SoXtWalkViewer::setCamera( // virtual
-  SoCamera * camera )
+SoXtWalkViewer::setCamera(// virtual
+  SoCamera * camera)
 {
-  inherited::setCamera( camera );
+  inherited::setCamera(camera);
 } // setCamera()
 
 /*!
@@ -146,10 +146,10 @@ SoXtWalkViewer::setCamera( // virtual
 */
 
 void
-SoXtWalkViewer::setCursorEnabled( // virtual
-  SbBool enable )
+SoXtWalkViewer::setCursorEnabled(// virtual
+  SbBool enable)
 {
-  inherited::setCursorEnabled( enable );
+  inherited::setCursorEnabled(enable);
 } // setCursorEnabled()
 
 /*!
@@ -157,8 +157,8 @@ SoXtWalkViewer::setCursorEnabled( // virtual
 */
 
 void
-SoXtWalkViewer::setCameraType( // virtual
-  SoType type )
+SoXtWalkViewer::setCameraType(// virtual
+  SoType type)
 {
   SOXT_STUB();
 } // setCameraType()
@@ -170,8 +170,8 @@ SoXtWalkViewer::setCameraType( // virtual
 */
 
 const char *
-SoXtWalkViewer::getDefaultWidgetName( // virtual, protected
-  void ) const
+SoXtWalkViewer::getDefaultWidgetName(// virtual, protected
+  void) const
 {
   static const char defaultWidgetName[] = "SoXtWalkViewer";
   return defaultWidgetName;
@@ -182,8 +182,8 @@ SoXtWalkViewer::getDefaultWidgetName( // virtual, protected
 */
 
 const char *
-SoXtWalkViewer::getDefaultTitle( // virtual, protected
-  void ) const
+SoXtWalkViewer::getDefaultTitle(// virtual, protected
+  void) const
 {
   static const char defaultTitle[] = "Walk Viewer";
   return defaultTitle;
@@ -194,8 +194,8 @@ SoXtWalkViewer::getDefaultTitle( // virtual, protected
 */
 
 const char *
-SoXtWalkViewer::getDefaultIconTitle( // virtual, protected
-  void ) const
+SoXtWalkViewer::getDefaultIconTitle(// virtual, protected
+  void) const
 {
   static const char defaultIconTitle[] = "Walk Viewer";
   return defaultIconTitle;
@@ -208,24 +208,24 @@ SoXtWalkViewer::getDefaultIconTitle( // virtual, protected
 */
 
 void
-SoXtWalkViewer::processEvent( // virtual, protected
-  XAnyEvent * event )
+SoXtWalkViewer::processEvent(// virtual, protected
+  XAnyEvent * event)
 {
-  if ( this->processCommonEvents( event ) )
+  if (this->processCommonEvents(event))
     return;
 
-  if ( this->isViewing() && event->type == ButtonPress ) {
+  if (this->isViewing() && event->type == ButtonPress) {
     XButtonEvent * bevent = (XButtonEvent *) event;
-    if ( bevent->button == 3 && this->isPopupMenuEnabled() ) {
-      if ( ! this->prefmenu )
+    if (bevent->button == 3 && this->isPopupMenuEnabled()) {
+      if (! this->prefmenu)
         this->buildPopupMenu();
-      this->prefmenu->popUp( this->getParentWidget(),
-        bevent->x_root, bevent->y_root );
+      this->prefmenu->popUp(this->getParentWidget(),
+        bevent->x_root, bevent->y_root);
       return;
     }
   }
 
-  inherited::processEvent( event );
+  inherited::processEvent(event);
 } // processEvent()
 
 /*!
@@ -233,10 +233,10 @@ SoXtWalkViewer::processEvent( // virtual, protected
 */
 
 void
-SoXtWalkViewer::setSeekMode( // virtual, protected
-  SbBool enable )
+SoXtWalkViewer::setSeekMode(// virtual, protected
+  SbBool enable)
 {
-  inherited::setSeekMode( enable );
+  inherited::setSeekMode(enable);
 } // setSeekMode()
 
 /*!
@@ -244,8 +244,8 @@ SoXtWalkViewer::setSeekMode( // virtual, protected
 */
 
 void
-SoXtWalkViewer::actualRedraw( // virtual, protected
-  void )
+SoXtWalkViewer::actualRedraw(// virtual, protected
+  void)
 {
   inherited::actualRedraw();
   // add walk viewer gfx here
@@ -256,11 +256,11 @@ SoXtWalkViewer::actualRedraw( // virtual, protected
 */
 
 void
-SoXtWalkViewer::rightWheelMotion( // virtual, protected
-  float value )
+SoXtWalkViewer::rightWheelMotion(// virtual, protected
+  float value)
 {
-  common->dollyCamera( value - this->getRightWheelValue() );
-  inherited::rightWheelMotion( value );
+  common->dollyCamera(value - this->getRightWheelValue());
+  inherited::rightWheelMotion(value);
 } // rightWheelMotion()
 
 // *************************************************************************
@@ -270,14 +270,14 @@ SoXtWalkViewer::rightWheelMotion( // virtual, protected
 */
 
 Widget
-SoXtWalkViewer::buildLeftTrim( // virtual, protected
-  Widget parent )
+SoXtWalkViewer::buildLeftTrim(// virtual, protected
+  Widget parent)
 {
-  Widget form = inherited::buildLeftTrim( parent );
+  Widget form = inherited::buildLeftTrim(parent);
 
 //  this->tiltwheel = this->getLeftThumbWheel();
 
-  Widget label = XtVaCreateManagedWidget( "label",
+  Widget label = XtVaCreateManagedWidget("label",
     xmLabelWidgetClass, form,
     XmNleftAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_FORM,
@@ -286,9 +286,9 @@ SoXtWalkViewer::buildLeftTrim( // virtual, protected
     XtVaTypedArg,
       XmNlabelString, XmRString,
       "H", 2,
-    NULL );
+    NULL);
 
-  this->heightwheel = XtVaCreateManagedWidget( "heightwheel",
+  this->heightwheel = XtVaCreateManagedWidget("heightwheel",
     soxtThumbWheelWidgetClass, form,
     XmNleftAttachment, XmATTACH_FORM,
     XmNleftOffset, 2,
@@ -298,14 +298,14 @@ SoXtWalkViewer::buildLeftTrim( // virtual, protected
     XmNbottomWidget, label,
     XmNheight, 90,
     XmNorientation, XmVERTICAL,
-    NULL );
+    NULL);
 
-  XtAddCallback( this->heightwheel, XmNarmCallback,
-    SoXtWalkViewer::wheelarmedCB, (XtPointer) this );
-  XtAddCallback( this->heightwheel, XmNdisarmCallback,
-    SoXtWalkViewer::wheeldisarmedCB, (XtPointer) this );
-  XtAddCallback( this->heightwheel, XmNvalueChangedCallback,
-    SoXtWalkViewer::wheelchangedCB, (XtPointer) this );
+  XtAddCallback(this->heightwheel, XmNarmCallback,
+    SoXtWalkViewer::wheelarmedCB, (XtPointer) this);
+  XtAddCallback(this->heightwheel, XmNdisarmCallback,
+    SoXtWalkViewer::wheeldisarmedCB, (XtPointer) this);
+  XtAddCallback(this->heightwheel, XmNvalueChangedCallback,
+    SoXtWalkViewer::wheelchangedCB, (XtPointer) this);
 
   return form;
 } // buildLeftTrim()
@@ -315,20 +315,20 @@ SoXtWalkViewer::buildLeftTrim( // virtual, protected
 */
 
 void
-SoXtWalkViewer::createPrefSheet( // virtual, protected
-  void )
+SoXtWalkViewer::createPrefSheet(// virtual, protected
+  void)
 {
-  if ( ! this->prefshell ) {
+  if (! this->prefshell) {
     this->prefparts = new Widget [ 16 ];
-    this->createPrefSheetShellAndForm( this->prefshell, this->prefsheet );
-    this->createDefaultPrefSheetParts( this->prefparts, this->numprefparts,
-      this->prefsheet );
+    this->createPrefSheetShellAndForm(this->prefshell, this->prefsheet);
+    this->createDefaultPrefSheetParts(this->prefparts, this->numprefparts,
+      this->prefsheet);
     this->prefparts[this->numprefparts] =
-      this->createFramedSpeedPrefSheetGuts( this->prefsheet );
-    if ( this->prefparts[this->numprefparts] != NULL ) this->numprefparts++;
+      this->createFramedSpeedPrefSheetGuts(this->prefsheet);
+    if (this->prefparts[this->numprefparts] != NULL) this->numprefparts++;
   }
-  this->layoutPartsAndMapPrefSheet( this->prefparts, this->numprefparts,
-    this->prefsheet, this->prefshell );
+  this->layoutPartsAndMapPrefSheet(this->prefparts, this->numprefparts,
+    this->prefsheet, this->prefshell);
 } // createPrefSheet()
 
 /*!
@@ -336,10 +336,10 @@ SoXtWalkViewer::createPrefSheet( // virtual, protected
 */
 
 void
-SoXtWalkViewer::openViewerHelpCard( // virtual, protected
-  void )
+SoXtWalkViewer::openViewerHelpCard(// virtual, protected
+  void)
 {
-  this->openHelpCard( "SoXtWalkViewer.help" );
+  this->openHelpCard("SoXtWalkViewer.help");
 } // openViewerHelpCard()
 
 // *************************************************************************
@@ -349,8 +349,8 @@ SoXtWalkViewer::openViewerHelpCard( // virtual, protected
 */
 
 void
-SoXtWalkViewer::leftWheel2Start( // virtual, protected
-  void )
+SoXtWalkViewer::leftWheel2Start(// virtual, protected
+  void)
 {
 } // leftWheel2Start()
 
@@ -359,10 +359,10 @@ SoXtWalkViewer::leftWheel2Start( // virtual, protected
 */
 
 void
-SoXtWalkViewer::leftWheel2Motion( // virtual, protected
-  float value )
+SoXtWalkViewer::leftWheel2Motion(// virtual, protected
+  float value)
 {
-  common->elevateCamera( value - this->getLeftWheel2Value() );
+  common->elevateCamera(value - this->getLeftWheel2Value());
   this->heightvalue = value;
 } // rightWheelMotion()
 
@@ -371,8 +371,8 @@ SoXtWalkViewer::leftWheel2Motion( // virtual, protected
 */
 
 void
-SoXtWalkViewer::leftWheel2Finish( // virtual, protected
-  void )
+SoXtWalkViewer::leftWheel2Finish(// virtual, protected
+  void)
 {
 } // leftWheel2Finish()
 
@@ -381,8 +381,8 @@ SoXtWalkViewer::leftWheel2Finish( // virtual, protected
 */
 
 float
-SoXtWalkViewer::getLeftWheel2Value( // virtual, protected
-  void ) const
+SoXtWalkViewer::getLeftWheel2Value(// virtual, protected
+  void) const
 {
   return this->heightvalue;
 } // getLeftWheel2Value()
@@ -393,7 +393,7 @@ SoXtWalkViewer::getLeftWheel2Value( // virtual, protected
 
 void
 SoXtWalkViewer::setLeftWheel2String(
-  char * string )
+  char * string)
 {
   SOXT_STUB();
 } // setLeftWheel2String()
@@ -404,7 +404,7 @@ SoXtWalkViewer::setLeftWheel2String(
 
 void
 SoXtWalkViewer::wheelarmed(
-  void )
+  void)
 {
   this->leftWheel2Start();
 } // wheelarmed()
@@ -414,10 +414,10 @@ SoXtWalkViewer::wheelarmed(
 */
 
 void
-SoXtWalkViewer::wheelarmedCB( // static
+SoXtWalkViewer::wheelarmedCB(// static
   Widget,
   XtPointer closure,
-  XtPointer )
+  XtPointer)
 {
   SoXtWalkViewer * viewer = (SoXtWalkViewer *) closure;
   viewer->wheelarmed();
@@ -429,9 +429,9 @@ SoXtWalkViewer::wheelarmedCB( // static
 
 void
 SoXtWalkViewer::wheelchanged(
-  float value )
+  float value)
 {
-  this->leftWheel2Motion( value );
+  this->leftWheel2Motion(value);
 } // wheelchanged()
 
 /*!
@@ -439,14 +439,14 @@ SoXtWalkViewer::wheelchanged(
 */
 
 void
-SoXtWalkViewer::wheelchangedCB( // static
+SoXtWalkViewer::wheelchangedCB(// static
   Widget,
   XtPointer closure,
-  XtPointer call_data )
+  XtPointer call_data)
 {
   SoXtWalkViewer * viewer = (SoXtWalkViewer *) closure;
   SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
-  viewer->wheelchanged( data->current );
+  viewer->wheelchanged(data->current);
 } // wheelchangedCB()
 
 /*!
@@ -455,7 +455,7 @@ SoXtWalkViewer::wheelchangedCB( // static
 
 void
 SoXtWalkViewer::wheeldisarmed(
-  void )
+  void)
 {
   this->leftWheel2Finish();
 } // wheeldisarmed()
@@ -468,7 +468,7 @@ void
 SoXtWalkViewer::wheeldisarmedCB(
   Widget,
   XtPointer closure,
-  XtPointer )
+  XtPointer)
 {
   SoXtWalkViewer * viewer = (SoXtWalkViewer *) closure;
   viewer->wheeldisarmed();

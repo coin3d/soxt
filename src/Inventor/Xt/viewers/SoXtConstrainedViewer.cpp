@@ -61,22 +61,22 @@ SOXT_OBJECT_ABSTRACT_SOURCE(SoXtConstrainedViewer);
   Protected constructor, used by derived components.
 */
 
-SoXtConstrainedViewer::SoXtConstrainedViewer( // protected
+SoXtConstrainedViewer::SoXtConstrainedViewer(// protected
   Widget parent,
   const char * const name,
   SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type,
-  SbBool build )
-: inherited( parent, name, embed, flag, type, FALSE )
-, common( new SoAnyConstrainedViewer( this ) )
+  SbBool build)
+: inherited(parent, name, embed, flag, type, FALSE)
+, common(new SoAnyConstrainedViewer(this))
 {
-  this->upDirection.setValue( 0, 1, 0 );
-  this->prevUpDirection.setValue( 0, 1, 0 );
+  this->upDirection.setValue(0, 1, 0);
+  this->prevUpDirection.setValue(0, 1, 0);
 //  this->sceneHeight = 1.0f;
-  this->setLeftWheelString( "Tilt" );
-  this->setBottomWheelString( "Rotate" );
-  this->setRightWheelString( "Dolly" );
+  this->setLeftWheelString("Tilt");
+  this->setBottomWheelString("Rotate");
+  this->setRightWheelString("Dolly");
 } // SoXtConstrainedViewer()
 
 /*!
@@ -84,7 +84,7 @@ SoXtConstrainedViewer::SoXtConstrainedViewer( // protected
 */
 
 SoXtConstrainedViewer::~SoXtConstrainedViewer(
-  void )
+  void)
 {
   delete this->common;
 } // ~SoXtConstrainedViewer()
@@ -97,7 +97,7 @@ SoXtConstrainedViewer::~SoXtConstrainedViewer(
 
 void
 SoXtConstrainedViewer::setUpDirection(
-  const SbVec3f & vector )
+  const SbVec3f & vector)
 {
   // adjust camera
   this->upDirection = vector;
@@ -109,7 +109,7 @@ SoXtConstrainedViewer::setUpDirection(
 
 const SbVec3f &
 SoXtConstrainedViewer::getUpDirection(
-  void ) const
+  void) const
 {
   return this->upDirection;
 } // getUpDirection()
@@ -121,11 +121,11 @@ SoXtConstrainedViewer::getUpDirection(
 */
 
 void
-SoXtConstrainedViewer::setCamera( // virtual
-  SoCamera * camera )
+SoXtConstrainedViewer::setCamera(// virtual
+  SoCamera * camera)
 {
   // enforce camera up direction? or get camera up direction?
-  inherited::setCamera( camera );
+  inherited::setCamera(camera);
 } // setCamera()
 
 /*!
@@ -133,8 +133,8 @@ SoXtConstrainedViewer::setCamera( // virtual
 */
 
 void
-SoXtConstrainedViewer::saveHomePosition( // virtual
-  void )
+SoXtConstrainedViewer::saveHomePosition(// virtual
+  void)
 {
   this->prevUpDirection = this->upDirection;
   inherited::saveHomePosition();
@@ -145,8 +145,8 @@ SoXtConstrainedViewer::saveHomePosition( // virtual
 */
 
 void
-SoXtConstrainedViewer::resetToHomePosition( // virtual
-  void )
+SoXtConstrainedViewer::resetToHomePosition(// virtual
+  void)
 {
   // restore upDirection in camera
   this->upDirection = this->prevUpDirection;
@@ -158,8 +158,8 @@ SoXtConstrainedViewer::resetToHomePosition( // virtual
 */
 
 void
-SoXtConstrainedViewer::recomputeSceneSize( // virtual
-  void )
+SoXtConstrainedViewer::recomputeSceneSize(// virtual
+  void)
 {
   // do anything?
   SOXT_STUB();
@@ -173,10 +173,10 @@ SoXtConstrainedViewer::recomputeSceneSize( // virtual
 */
 
 void
-SoXtConstrainedViewer::tiltCamera( // virtual, protected
-  float delta )
+SoXtConstrainedViewer::tiltCamera(// virtual, protected
+  float delta)
 {
-  common->tiltCamera( delta );
+  common->tiltCamera(delta);
 } // tiltCamera()
 
 /*!
@@ -184,11 +184,11 @@ SoXtConstrainedViewer::tiltCamera( // virtual, protected
 */
 
 void
-SoXtConstrainedViewer::bottomWheelMotion( // virtual, protected
-  float value )
+SoXtConstrainedViewer::bottomWheelMotion(// virtual, protected
+  float value)
 {
-  common->rotateCamera( value - this->getBottomWheelValue() );
-  inherited::bottomWheelMotion( value );
+  common->rotateCamera(value - this->getBottomWheelValue());
+  inherited::bottomWheelMotion(value);
 } // bottomWheelMotion()
 
 /*!
@@ -196,11 +196,11 @@ SoXtConstrainedViewer::bottomWheelMotion( // virtual, protected
 */
 
 void
-SoXtConstrainedViewer::leftWheelMotion( // virtual, protected
-  float value )
+SoXtConstrainedViewer::leftWheelMotion(// virtual, protected
+  float value)
 {
-  this->tiltCamera( value - this->getLeftWheelValue() );
-  inherited::leftWheelMotion( value );
+  this->tiltCamera(value - this->getLeftWheelValue());
+  inherited::leftWheelMotion(value);
 } // leftWheelMotion()
 
 /*!
@@ -208,8 +208,8 @@ SoXtConstrainedViewer::leftWheelMotion( // virtual, protected
 */
 
 void
-SoXtConstrainedViewer::changeCameraValues( // virtual, protected
-  SoCamera * camera )
+SoXtConstrainedViewer::changeCameraValues(// virtual, protected
+  SoCamera * camera)
 {
   SOXT_STUB();
 } // changeCameraValues()
@@ -219,8 +219,8 @@ SoXtConstrainedViewer::changeCameraValues( // virtual, protected
 */
 
 void
-SoXtConstrainedViewer::findUpDirection( // protected
-  SbVec2s mousepos )
+SoXtConstrainedViewer::findUpDirection(// protected
+  SbVec2s mousepos)
 {
   SOXT_STUB();
 } // findUpDirection()
@@ -230,8 +230,8 @@ SoXtConstrainedViewer::findUpDirection( // protected
 */
 
 void
-SoXtConstrainedViewer::checkForCameraUpConstrain( // protected
-  void )
+SoXtConstrainedViewer::checkForCameraUpConstrain(// protected
+  void)
 {
   SOXT_STUB();
 } // checkForCamerUpConstrain()
@@ -241,8 +241,8 @@ SoXtConstrainedViewer::checkForCameraUpConstrain( // protected
 */
 
 void
-SoXtConstrainedViewer::computeSeekFinalOrientation( // virtual, protected
-  void )
+SoXtConstrainedViewer::computeSeekFinalOrientation(// virtual, protected
+  void)
 {
   SOXT_STUB();
 } // computeSeekFinalOrientation()

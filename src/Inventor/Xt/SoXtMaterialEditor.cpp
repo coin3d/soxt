@@ -59,8 +59,8 @@ SOXT_OBJECT_SOURCE(SoXtMaterialEditor);
 SoXtMaterialEditor::SoXtMaterialEditor(
   Widget parent,
   const char * name,
-  SbBool embed )
-: inherited( parent, name, embed )
+  SbBool embed)
+: inherited(parent, name, embed)
 {
 } // SoXtMaterialEditor()
 
@@ -68,12 +68,12 @@ SoXtMaterialEditor::SoXtMaterialEditor(
   Constructor.
 */
 
-SoXtMaterialEditor::SoXtMaterialEditor( // protected
+SoXtMaterialEditor::SoXtMaterialEditor(// protected
   Widget parent,
   const char * const name,
   SbBool embed,
-  SbBool build )
-: inherited( parent, name, embed )
+  SbBool build)
+: inherited(parent, name, embed)
 {
 } // SoXtMaterialEditor()
 
@@ -82,7 +82,7 @@ SoXtMaterialEditor::SoXtMaterialEditor( // protected
 */
 
 SoXtMaterialEditor::~SoXtMaterialEditor(
-  void )
+  void)
 {
 } // ~SoXtMaterialEditor()
 
@@ -95,7 +95,7 @@ SoXtMaterialEditor::~SoXtMaterialEditor(
 void
 SoXtMaterialEditor::attach(
   SoMaterial * material,
-  int idx )
+  int idx)
 {
 } // attach()
 
@@ -105,7 +105,7 @@ SoXtMaterialEditor::attach(
 
 void
 SoXtMaterialEditor::attach(
-  SoVRMLMaterial * material )
+  SoVRMLMaterial * material)
 {
 } // attach()
 
@@ -115,7 +115,7 @@ SoXtMaterialEditor::attach(
 
 void
 SoXtMaterialEditor::detach(
-  void )
+  void)
 {
 } // detach()
 
@@ -125,7 +125,7 @@ SoXtMaterialEditor::detach(
 
 SbBool
 SoXtMaterialEditor::isAttached(
-  void )
+  void)
 {
   SOXT_STUB();
   return FALSE;
@@ -138,7 +138,7 @@ SoXtMaterialEditor::isAttached(
 void
 SoXtMaterialEditor::addMaterialChangedCallback(
   SoXtMaterialEditorCB * callback,
-  void * user )
+  void * user)
 {
 } // addMaterialChangedCallback()
 
@@ -149,7 +149,7 @@ SoXtMaterialEditor::addMaterialChangedCallback(
 void
 SoXtMaterialEditor::removeMaterialChangedCallback(
   SoXtMaterialEditorCB * callback,
-  void * user )
+  void * user)
 {
 } // removeMaterialChangedCallback()
 
@@ -159,7 +159,7 @@ SoXtMaterialEditor::removeMaterialChangedCallback(
 
 void
 SoXtMaterialEditor::setUpdateFrequency(
-  SoXtMaterialEditor::UpdateFrequency freq )
+  SoXtMaterialEditor::UpdateFrequency freq)
 {
 } // setUpdateFrequency()
 
@@ -169,7 +169,7 @@ SoXtMaterialEditor::setUpdateFrequency(
 
 SoXtMaterialEditor::UpdateFrequency
 SoXtMaterialEditor::getUpdateFrequency(
-  void ) const
+  void) const
 {
   SOXT_STUB();
   return CONTINUOUS;
@@ -180,8 +180,8 @@ SoXtMaterialEditor::getUpdateFrequency(
 */
 
 void
-SoXtMaterialEditor::show( // virtual
-  void )
+SoXtMaterialEditor::show(// virtual
+  void)
 {
 } // show()
 
@@ -190,8 +190,8 @@ SoXtMaterialEditor::show( // virtual
 */
 
 void
-SoXtMaterialEditor::hide( // virtual
-  void )
+SoXtMaterialEditor::hide(// virtual
+  void)
 {
 } // hide()
 
@@ -201,7 +201,7 @@ SoXtMaterialEditor::hide( // virtual
 
 void
 SoXtMaterialEditor::setMaterial(
-  const SoMaterial & material )
+  const SoMaterial & material)
 {
 } // setMaterial()
 
@@ -211,7 +211,7 @@ SoXtMaterialEditor::setMaterial(
 
 void
 SoXtMaterialEditor::setMaterial(
-  const SoVRMLMaterial & material )
+  const SoVRMLMaterial & material)
 {
 } // setMaterial()
 
@@ -221,7 +221,7 @@ SoXtMaterialEditor::setMaterial(
 
 const SoMaterial &
 SoXtMaterialEditor::getMaterial(
-  void ) const
+  void) const
 {
   SOXT_STUB();
   return *((SoMaterial *) SoMaterial::getClassTypeId().createInstance());
@@ -233,7 +233,7 @@ SoXtMaterialEditor::getMaterial(
 
 SbBool
 SoXtMaterialEditor::isAttachedVRML(
-  void )
+  void)
 {
   return FALSE;
 } // isAttachedVRML()
@@ -245,8 +245,8 @@ SoXtMaterialEditor::isAttachedVRML(
 */
 
 Widget
-SoXtMaterialEditor::buildWidget( // protected
-  Widget parent )
+SoXtMaterialEditor::buildWidget(// protected
+  Widget parent)
 {
   return (Widget) NULL;
 } // buildWidget()
@@ -256,8 +256,8 @@ SoXtMaterialEditor::buildWidget( // protected
 */
 
 const char *
-SoXtMaterialEditor::getDefaultWidgetName( // virtual, protected
-  void ) const
+SoXtMaterialEditor::getDefaultWidgetName(// virtual, protected
+  void) const
 {
   static const char defaultWidgetName[] = "SoXtMaterialEditor";
   return defaultWidgetName;
@@ -268,8 +268,8 @@ SoXtMaterialEditor::getDefaultWidgetName( // virtual, protected
 */
 
 const char *
-SoXtMaterialEditor::getDefaultTitle( // virtual, protected
-  void ) const
+SoXtMaterialEditor::getDefaultTitle(// virtual, protected
+  void) const
 {
   static const char defaultTitle[] = "Material Editor";
   return defaultTitle;
@@ -280,8 +280,8 @@ SoXtMaterialEditor::getDefaultTitle( // virtual, protected
 */
 
 const char *
-SoXtMaterialEditor::getDefaultIconTitle( // virtual, protected
-  void ) const
+SoXtMaterialEditor::getDefaultIconTitle(// virtual, protected
+  void) const
 {
   static const char defaultIconTitle[] = "Material Editor";
   return defaultIconTitle;
@@ -295,7 +295,7 @@ SoXtMaterialEditor::getDefaultIconTitle( // virtual, protected
 
 void
 SoXtMaterialEditor::constructor(
-  SbBool build )
+  SbBool build)
 {
 } // constructor()
 

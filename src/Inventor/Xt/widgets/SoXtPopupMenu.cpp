@@ -74,7 +74,7 @@ struct ItemRecord {
 // *************************************************************************
 
 SoXtPopupMenu::SoXtPopupMenu(
-  void )
+  void)
 {
   this->menus = new SbPList;
   this->items = new SbPList;
@@ -82,23 +82,23 @@ SoXtPopupMenu::SoXtPopupMenu(
   this->popup = (Widget) NULL;
 } // SoXtPopupMenu()
 
-SoXtPopupMenu::~SoXtPopupMenu( // virtual
-  void )
+SoXtPopupMenu::~SoXtPopupMenu(// virtual
+  void)
 {
   const int numMenus = this->menus->getLength();
 //  QPopupMenu * popup = NULL;
   int i;
-  for ( i = 0; i < numMenus; i++ ) {
+  for (i = 0; i < numMenus; i++) {
     MenuRecord * rec = (MenuRecord *) (*this->menus)[i];
-//    if ( rec->menuid == 0 ) popup = rec->menu;
+//    if (rec->menuid == 0) popup = rec->menu;
     delete [] rec->name;
     delete [] rec->title;
-//    if ( rec->parent == NULL ) delete rec->menu; // menu not attached
+//    if (rec->parent == NULL) delete rec->menu; // menu not attached
     delete rec;
   }
 
   const int numItems = this->items->getLength();
-  for ( i = 0; i < numItems; i++ ) {
+  for (i = 0; i < numItems; i++) {
     ItemRecord * rec = (ItemRecord *) (*this->items)[i];
     delete [] rec->name;
     delete [] rec->title;
@@ -117,25 +117,25 @@ SoXtPopupMenu::~SoXtPopupMenu( // virtual
 int
 SoXtPopupMenu::newMenu(
   const char * name,
-  int menuid )
+  int menuid)
 {
   int id = menuid;
-  if ( id == -1 ) {
+  if (id == -1) {
     id = 1;
-    while ( this->getMenuRecord( id ) != NULL ) id++;
+    while (this->getMenuRecord(id) != NULL) id++;
   } else {
-    if ( this->getMenuRecord( id ) != NULL ) {
+    if (this->getMenuRecord(id) != NULL) {
 #if SOXT_DEBUG
-      SoDebugError::postInfo( "SoXtPopupMenu::NewMenu",
-        "requested menuid already taken" );
+      SoDebugError::postInfo("SoXtPopupMenu::NewMenu",
+        "requested menuid already taken");
 #endif // SOXT_DEBUG
       return -1;
     }
   }
   // id contains ok ID
-  MenuRecord * rec = this->createMenuRecord( name );
+  MenuRecord * rec = this->createMenuRecord(name);
   rec->menuid = id;
-  this->menus->append( (void *) rec );
+  this->menus->append((void *) rec);
   return id;
 } // newMenu()
 
@@ -144,12 +144,12 @@ SoXtPopupMenu::newMenu(
 
 int
 SoXtPopupMenu::getMenu(
-  const char * name )
+  const char * name)
 {
   const int numMenus = this->menus->getLength();
   int i;
-  for ( i = 0; i < numMenus; i++ )
-    if ( strcmp( ((MenuRecord *) (*this->menus)[i])->name, name ) == 0 )
+  for (i = 0; i < numMenus; i++)
+    if (strcmp(((MenuRecord *) (*this->menus)[i])->name, name) == 0)
       return ((MenuRecord *) (*this->menus)[i])->menuid;
   return -1;
 } // getMenu()
@@ -160,18 +160,18 @@ SoXtPopupMenu::getMenu(
 void
 SoXtPopupMenu::setMenuTitle(
   int menuid,
-  const char * title )
+  const char * title)
 {
-  MenuRecord * rec = this->getMenuRecord( menuid );
-  if ( rec == NULL ) {
-    SoDebugError::postWarning( "SoXtPopupMenu::SetMenuTitle",
-      "no such menu (%d.title = \"%s\")", menuid, title );
+  MenuRecord * rec = this->getMenuRecord(menuid);
+  if (rec == NULL) {
+    SoDebugError::postWarning("SoXtPopupMenu::SetMenuTitle",
+      "no such menu (%d.title = \"%s\")", menuid, title);
     return;
   }
   delete [] rec->title;
-  rec->title = strcpy( new char [strlen(title)+1], title );
-//  if ( rec->parent )
-//    rec->parent->changeItem( rec->menuid, QString( rec->title ) );
+  rec->title = strcpy(new char [strlen(title)+1], title);
+//  if (rec->parent)
+//    rec->parent->changeItem(rec->menuid, QString(rec->title));
 } // setMenuTitle()
 
 /*!
@@ -179,10 +179,10 @@ SoXtPopupMenu::setMenuTitle(
 
 const char *
 SoXtPopupMenu::getMenuTitle(
-  int menuid )
+  int menuid)
 {
-  MenuRecord * rec = this->getMenuRecord( menuid );
-  if ( rec == NULL )
+  MenuRecord * rec = this->getMenuRecord(menuid);
+  if (rec == NULL)
     return NULL;
   return rec->title;
 } // getMenuTitle()
@@ -195,24 +195,24 @@ SoXtPopupMenu::getMenuTitle(
 int
 SoXtPopupMenu::newMenuItem(
   const char * name,
-  int itemid )
+  int itemid)
 {
   int id = itemid;
-  if ( id == -1 ) {
+  if (id == -1) {
     id = 1;
-    while ( this->getItemRecord( itemid ) != NULL ) id++;
+    while (this->getItemRecord(itemid) != NULL) id++;
   } else {
-    if ( this->getItemRecord( itemid ) != NULL ) {
+    if (this->getItemRecord(itemid) != NULL) {
 #if SOXT_DEBUG
-      SoDebugError::postInfo( "SoXtPopupMenu::NewMenuItem",
-        "requested itemid already taken" );
+      SoDebugError::postInfo("SoXtPopupMenu::NewMenuItem",
+        "requested itemid already taken");
 #endif // SOXT_DEBUG
       return -1;
     }
   }
-  ItemRecord * rec = this->createItemRecord( name );
+  ItemRecord * rec = this->createItemRecord(name);
   rec->itemid = id;
-  this->items->append( rec );
+  this->items->append(rec);
   return id;
 } // newMenuItem()
 
@@ -221,12 +221,12 @@ SoXtPopupMenu::newMenuItem(
 
 int
 SoXtPopupMenu::getMenuItem(
-  const char * name )
+  const char * name)
 {
   const int numItems = this->items->getLength();
   int i;
-  for ( i = 0; i < numItems; i++ )
-    if ( strcmp( ((ItemRecord *) (*this->items)[i])->name, name ) == 0 )
+  for (i = 0; i < numItems; i++)
+    if (strcmp(((ItemRecord *) (*this->items)[i])->name, name) == 0)
       return ((ItemRecord *) (*this->items)[i])->itemid;
   return -1;
 } // getMenuItem()
@@ -237,15 +237,15 @@ SoXtPopupMenu::getMenuItem(
 void
 SoXtPopupMenu::setMenuItemTitle(
   int itemid,
-  const char * title )
+  const char * title)
 {
-  ItemRecord * rec = this->getItemRecord( itemid );
-  if ( rec == NULL )
+  ItemRecord * rec = this->getItemRecord(itemid);
+  if (rec == NULL)
     return;
   delete [] rec->title;
-  rec->title = strcpy( new char [strlen(title)+1], title );
-//  if ( rec->parent )
-//    rec->parent->changeItem( rec->itemid, QString( rec->title ) );
+  rec->title = strcpy(new char [strlen(title)+1], title);
+//  if (rec->parent)
+//    rec->parent->changeItem(rec->itemid, QString(rec->title));
 } // setMenuItemTitle()
 
 /*!
@@ -253,10 +253,10 @@ SoXtPopupMenu::setMenuItemTitle(
 
 const char *
 SoXtPopupMenu::getMenuItemTitle(
-  int itemid )
+  int itemid)
 {
-  ItemRecord * rec = this->getItemRecord( itemid );
-  if ( rec == NULL ) return NULL;
+  ItemRecord * rec = this->getItemRecord(itemid);
+  if (rec == NULL) return NULL;
   return rec->title;
 } // getMenuItemTitle()
 
@@ -264,24 +264,24 @@ SoXtPopupMenu::getMenuItemTitle(
 */
 
 void
-SoXtPopupMenu::setMenuItemEnabled( // virtual
+SoXtPopupMenu::setMenuItemEnabled(// virtual
   int itemid,
-  SbBool enabled )
+  SbBool enabled)
 {
-  ItemRecord * rec = this->getItemRecord( itemid );
-  if ( rec == NULL ) {
+  ItemRecord * rec = this->getItemRecord(itemid);
+  if (rec == NULL) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo( "SoXtPopupMenu::SetMenuItemEnabled",
-      "no such menu item" );
+    SoDebugError::postInfo("SoXtPopupMenu::SetMenuItemEnabled",
+      "no such menu item");
 #endif // SOXT_DEBUG
     return;
   }
-  if ( enabled )
+  if (enabled)
     rec->flags |= ITEM_ENABLED;
   else
     rec->flags &= ~ITEM_ENABLED;
-  if ( rec->item != (Widget) NULL )
-    XtVaSetValues( rec->item, XmNsensitive, enabled ? True : False, NULL );
+  if (rec->item != (Widget) NULL)
+    XtVaSetValues(rec->item, XmNsensitive, enabled ? True : False, NULL);
 } // setMenuItemEnabled()
 
 /*!
@@ -289,35 +289,35 @@ SoXtPopupMenu::setMenuItemEnabled( // virtual
 
 SbBool
 SoXtPopupMenu::getMenuItemEnabled(
-  int itemid )
+  int itemid)
 {
-  ItemRecord * rec = this->getItemRecord( itemid );
-  if ( rec == NULL )
+  ItemRecord * rec = this->getItemRecord(itemid);
+  if (rec == NULL)
     return FALSE;
-  return ( rec->flags & ITEM_ENABLED ) ? TRUE : FALSE;
+  return (rec->flags & ITEM_ENABLED) ? TRUE : FALSE;
 } // getMenuItemEnabled()
 
 /*!
 */
 
 void
-SoXtPopupMenu::_setMenuItemMarked( // virtual
+SoXtPopupMenu::_setMenuItemMarked(// virtual
   int itemid,
-  SbBool marked )
+  SbBool marked)
 {
-  ItemRecord * rec = this->getItemRecord( itemid );
-  if ( rec == NULL )
+  ItemRecord * rec = this->getItemRecord(itemid);
+  if (rec == NULL)
     return;
-  if ( marked )
+  if (marked)
     rec->flags |= ITEM_MARKED;
   else
     rec->flags &= ~ITEM_MARKED;
 
-  if ( rec->item != NULL )
-    XmToggleButtonSetState( rec->item, marked ? True : False, False );
+  if (rec->item != NULL)
+    XmToggleButtonSetState(rec->item, marked ? True : False, False);
 
-  if ( marked )
-    this->setRadioGroupMarkedItem( itemid );
+  if (marked)
+    this->setRadioGroupMarkedItem(itemid);
 } // _setMenuItemMarked()
 
 /*!
@@ -325,10 +325,10 @@ SoXtPopupMenu::_setMenuItemMarked( // virtual
 
 SbBool
 SoXtPopupMenu::getMenuItemMarked(
-  int itemid )
+  int itemid)
 {
-  ItemRecord * rec = this->getItemRecord( itemid );
-  if ( rec == NULL )
+  ItemRecord * rec = this->getItemRecord(itemid);
+  if (rec == NULL)
     return FALSE;
   return (rec->flags & ITEM_MARKED) ? TRUE : FALSE;
 } // getMenuItemMarked()
@@ -342,33 +342,33 @@ void
 SoXtPopupMenu::addMenu(
   int menuid,
   int submenuid,
-  int pos )
+  int pos)
 {
-  MenuRecord * super = this->getMenuRecord( menuid );
-  MenuRecord * sub = this->getMenuRecord( submenuid );
-  if ( super == NULL || sub == NULL ) {
+  MenuRecord * super = this->getMenuRecord(menuid);
+  MenuRecord * sub = this->getMenuRecord(submenuid);
+  if (super == NULL || sub == NULL) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo( "SoXtPopupMenu::AddMenu",
-      "no such menu (super = 0x%08x, sub = 0x%08x)", super, sub );
+    SoDebugError::postInfo("SoXtPopupMenu::AddMenu",
+      "no such menu (super = 0x%08x, sub = 0x%08x)", super, sub);
 #endif // SOXT_DEBUG
     return;
   }
-  if ( pos == -1 ) {
+  if (pos == -1) {
     int max = 0;
     int i;
     const int numItems = this->items->getLength();
-    for ( i = 0; i < numItems; i++ ) {
+    for (i = 0; i < numItems; i++) {
       ItemRecord * rec = (ItemRecord *) (*this->items)[i];
-      if ( rec->parent == super ) {
-        if ( rec->pos >= max )
+      if (rec->parent == super) {
+        if (rec->pos >= max)
           max = rec->pos + 1;
       }
     } 
     const int numMenus = this->menus->getLength();
-    for ( i = 0; i < numMenus; i++ ) {
+    for (i = 0; i < numMenus; i++) {
       MenuRecord * rec = (MenuRecord *) (*this->menus)[i];
-      if ( rec->parent == super ) {
-        if ( rec->pos >= max )
+      if (rec->parent == super) {
+        if (rec->pos >= max)
           max = rec->pos + 1;
       }
     } 
@@ -377,18 +377,18 @@ SoXtPopupMenu::addMenu(
   } else {
     int i;
     const int numItems = this->items->getLength();
-    for ( i = 0; i < numItems; i++ ) {
+    for (i = 0; i < numItems; i++) {
       ItemRecord * rec = (ItemRecord *) (*this->items)[i];
-      if ( rec->parent == super ) {
-        if ( rec->pos >= pos )
+      if (rec->parent == super) {
+        if (rec->pos >= pos)
           rec->pos = rec->pos + 1;
       }
     } 
     const int numMenus = this->menus->getLength();
-    for ( i = 0; i < numMenus; i++ ) {
+    for (i = 0; i < numMenus; i++) {
       MenuRecord * rec = (MenuRecord *) (*this->menus)[i];
-      if ( rec->parent == super ) {
-        if ( rec->pos >= pos )
+      if (rec->parent == super) {
+        if (rec->pos >= pos)
           rec->pos = rec->pos + 1;
       }
     } 
@@ -404,33 +404,33 @@ void
 SoXtPopupMenu::addMenuItem(
   int menuid,
   int itemid,
-  int pos )
+  int pos)
 {
-  MenuRecord * menu = this->getMenuRecord( menuid );
-  ItemRecord * item = this->getItemRecord( itemid );
-  if ( menu == NULL || item == NULL ) {
+  MenuRecord * menu = this->getMenuRecord(menuid);
+  ItemRecord * item = this->getItemRecord(itemid);
+  if (menu == NULL || item == NULL) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo( "SoXtPopupMenu::AddMenuItem",
-      "no such item (menu = 0x%08x, item = 0x%08x)", menu, item );
+    SoDebugError::postInfo("SoXtPopupMenu::AddMenuItem",
+      "no such item (menu = 0x%08x, item = 0x%08x)", menu, item);
 #endif // SOXT_DEBUG
     return;
   }
-  if ( pos == -1 ) {
+  if (pos == -1) {
     int max = 0;
     int i;
     const int numItems = this->items->getLength();
-    for ( i = 0; i < numItems; i++ ) {
+    for (i = 0; i < numItems; i++) {
       ItemRecord * rec = (ItemRecord *) (*this->items)[i];
-      if ( rec->parent == menu ) {
-        if ( rec->pos >= max )
+      if (rec->parent == menu) {
+        if (rec->pos >= max)
           max = rec->pos + 1;
       }
     } 
     const int numMenus = this->menus->getLength();
-    for ( i = 0; i < numMenus; i++ ) {
+    for (i = 0; i < numMenus; i++) {
       MenuRecord * rec = (MenuRecord *) (*this->menus)[i];
-      if ( rec->parent == menu ) {
-        if ( rec->pos >= max )
+      if (rec->parent == menu) {
+        if (rec->pos >= max)
           max = rec->pos + 1;
       }
     } 
@@ -439,18 +439,18 @@ SoXtPopupMenu::addMenuItem(
   } else {
     int i;
     const int numItems = this->items->getLength();
-    for ( i = 0; i < numItems; i++ ) {
+    for (i = 0; i < numItems; i++) {
       ItemRecord * rec = (ItemRecord *) (*this->items)[i];
-      if ( rec->parent == menu ) {
-        if ( rec->pos >= pos )
+      if (rec->parent == menu) {
+        if (rec->pos >= pos)
           rec->pos = rec->pos + 1;
       }
     } 
     const int numMenus = this->menus->getLength();
-    for ( i = 0; i < numMenus; i++ ) {
+    for (i = 0; i < numMenus; i++) {
       MenuRecord * rec = (MenuRecord *) (*this->menus)[i];
-      if ( rec->parent == menu ) {
-        if ( rec->pos >= pos )
+      if (rec->parent == menu) {
+        if (rec->pos >= pos)
           rec->pos = rec->pos + 1;
       }
     } 
@@ -462,32 +462,32 @@ SoXtPopupMenu::addMenuItem(
 void
 SoXtPopupMenu::addSeparator(
   int menuid,
-  int pos )
+  int pos)
 {
-  MenuRecord * menu = this->getMenuRecord( menuid );
-  if ( menu == NULL ) {
-    SoDebugError::postWarning( "SoXtPopupMenu::AddSeparator",
-      "no such menu (%d)", menuid );
+  MenuRecord * menu = this->getMenuRecord(menuid);
+  if (menu == NULL) {
+    SoDebugError::postWarning("SoXtPopupMenu::AddSeparator",
+      "no such menu (%d)", menuid);
     return;
   }
-  ItemRecord * sep = this->createItemRecord( "separator" );
+  ItemRecord * sep = this->createItemRecord("separator");
   sep->flags |= ITEM_SEPARATOR;
-  if ( pos == -1 ) {
+  if (pos == -1) {
     int max = 0;
     int i;
     const int numItems = this->items->getLength();
-    for ( i = 0; i < numItems; i++ ) {
+    for (i = 0; i < numItems; i++) {
       ItemRecord * rec = (ItemRecord *) (*this->items)[i];
-      if ( rec->parent == menu ) {
-        if ( rec->pos >= max )
+      if (rec->parent == menu) {
+        if (rec->pos >= max)
           max = rec->pos + 1;
       }
     } 
     const int numMenus = this->menus->getLength();
-    for ( i = 0; i < numMenus; i++ ) {
+    for (i = 0; i < numMenus; i++) {
       MenuRecord * rec = (MenuRecord *) (*this->menus)[i];
-      if ( rec->parent == menu ) {
-        if ( rec->pos >= max )
+      if (rec->parent == menu) {
+        if (rec->pos >= max)
           max = rec->pos + 1;
       }
     } 
@@ -496,25 +496,25 @@ SoXtPopupMenu::addSeparator(
   } else {
     int i;
     const int numItems = this->items->getLength();
-    for ( i = 0; i < numItems; i++ ) {
+    for (i = 0; i < numItems; i++) {
       ItemRecord * rec = (ItemRecord *) (*this->items)[i];
-      if ( rec->parent == menu ) {
-        if ( rec->pos >= pos )
+      if (rec->parent == menu) {
+        if (rec->pos >= pos)
           rec->pos = rec->pos + 1;
       }
     } 
     const int numMenus = this->menus->getLength();
-    for ( i = 0; i < numMenus; i++ ) {
+    for (i = 0; i < numMenus; i++) {
       MenuRecord * rec = (MenuRecord *) (*this->menus)[i];
-      if ( rec->parent == menu ) {
-        if ( rec->pos >= pos )
+      if (rec->parent == menu) {
+        if (rec->pos >= pos)
           rec->pos = rec->pos + 1;
       }
     } 
     sep->pos = pos;
     sep->parent = menu;
   }
-  this->items->append( sep );
+  this->items->append(sep);
 } // addSeparator()
 
 /*!
@@ -526,28 +526,28 @@ SoXtPopupMenu::addSeparator(
 
 void
 SoXtPopupMenu::removeMenu(
-  int menuid )
+  int menuid)
 {
-  MenuRecord * rec = this->getMenuRecord( menuid );
-  if ( rec == NULL ) {
+  MenuRecord * rec = this->getMenuRecord(menuid);
+  if (rec == NULL) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo( "SoXtPopupMenu::RemoveMenu", "no such menu" );
+    SoDebugError::postInfo("SoXtPopupMenu::RemoveMenu", "no such menu");
 #endif // SOXT_DEBUG
     return;
   }
-  if ( rec->menuid == 0 ) {
+  if (rec->menuid == 0) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo( "SoXtPopupMenu::RemoveMenu", "can't remove root" );
+    SoDebugError::postInfo("SoXtPopupMenu::RemoveMenu", "can't remove root");
 #endif // SOXT_DEBUG
     return;
   }
-//  if ( rec->parent == NULL ) {
+//  if (rec->parent == NULL) {
 //#if SOXT_DEBUG
-//    SoDebugError::postInfo( "SoXtPopupMenu::RemoveMenu", "menu not attached" );
+//    SoDebugError::postInfo("SoXtPopupMenu::RemoveMenu", "menu not attached");
 //#endif // SOXT_DEBUG
 //    return;
 //  }
-//  rec->parent->removeItem( rec->menuid );
+//  rec->parent->removeItem(rec->menuid);
 //  rec->parent = NULL;
 } // removeMenu()
 
@@ -560,22 +560,22 @@ SoXtPopupMenu::removeMenu(
 
 void
 SoXtPopupMenu::removeMenuItem(
-  int itemid )
+  int itemid)
 {
-  ItemRecord * rec = this->getItemRecord( itemid );
-  if ( rec == NULL ) {
+  ItemRecord * rec = this->getItemRecord(itemid);
+  if (rec == NULL) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo( "SoXtPopupMenu::RemoveMenu", "no such item" );
+    SoDebugError::postInfo("SoXtPopupMenu::RemoveMenu", "no such item");
 #endif // SOXT_DEBUG
     return;
   }
-//  if ( rec->parent == NULL ) {
+//  if (rec->parent == NULL) {
 //#if SOXT_DEBUG
-//    SoDebugError::postInfo( "SoXtPopupMenu::RemoveMenu", "item not attached" );
+//    SoDebugError::postInfo("SoXtPopupMenu::RemoveMenu", "item not attached");
 //#endif // SOXT_DEBUG
 //    return;
 //  }
-//  rec->parent->removeItem( rec->itemid );
+//  rec->parent->removeItem(rec->itemid);
 //  rec->parent = NULL;
 } // removeMenuItem()
 
@@ -592,47 +592,47 @@ void
 SoXtPopupMenu::popUp(
   Widget inside,
   int x,
-  int y )
+  int y)
 {
-  MenuRecord * root = this->getMenuRecord( 0 );
-  if ( root == NULL ) {
+  MenuRecord * root = this->getMenuRecord(0);
+  if (root == NULL) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo( "SoXtPopupMenu::PopUp", "no root menu" );
+    SoDebugError::postInfo("SoXtPopupMenu::PopUp", "no root menu");
 #endif // SOXT_DEBUG
     return;
   }
   // FIXME: build menu
-  if ( this->dirty ) {
-    if ( this->popup != (Widget) NULL ) {
+  if (this->dirty) {
+    if (this->popup != (Widget) NULL) {
       // destroy existing menu
     }
-    this->popup = this->build( inside );
+    this->popup = this->build(inside);
   }
   this->dirty = FALSE;
   int x_off = 0, y_off = 0;
 
   Widget parent = inside;
-  while ( parent ) {
+  while (parent) {
     Dimension xoff = 0, yoff = 0;
-    XtVaGetValues( parent,
+    XtVaGetValues(parent,
       XmNx, &xoff,
       XmNy, &yoff,
-      NULL );
+      NULL);
     x_off += xoff;
     y_off += yoff;
     parent = XtParent(parent);
-    if ( ! parent || XtIsShell(parent) )
+    if (! parent || XtIsShell(parent))
       break;
   }
 
   XButtonEvent pos;
   pos.x_root = x - x_off + 2;
   pos.y_root = y - y_off + 2;
-//  SoDebugError::postInfo( "SoXtPopupMenu::PopUp", "PopUp() at ( %3d, %3d ) - ( %3d, %3d )",
-//    x, y, x_off, y_off );
-  XmMenuPosition( this->popup, &pos );
-  XtManageChild( this->popup );
-//  SoDebugError::postInfo( "SoXtPopupMenu::PopUp", "menu popped up" );
+//  SoDebugError::postInfo("SoXtPopupMenu::PopUp", "PopUp() at (%3d, %3d) - (%3d, %3d)",
+//    x, y, x_off, y_off);
+  XmMenuPosition(this->popup, &pos);
+  XtManageChild(this->popup);
+//  SoDebugError::postInfo("SoXtPopupMenu::PopUp", "menu popped up");
 } // popUp()
 
 // *************************************************************************
@@ -644,11 +644,11 @@ Widget
 SoXtPopupMenu::traverseBuild(
   Widget parent,
   MenuRecord * menu,
-  int indent )
+  int indent)
 {
   char pre[24];
   int i, j;
-  for ( i = 0; i < indent; i++ ) pre[i] = ' ';
+  for (i = 0; i < indent; i++) pre[i] = ' ';
   pre[i] = '\0';
   j = 0;
   MenuRecord * sub;
@@ -657,64 +657,64 @@ SoXtPopupMenu::traverseBuild(
     sub = (MenuRecord *) NULL;
     item = (ItemRecord *) NULL;
     const int numMenus = this->menus->getLength();
-    for ( i = 0; i < numMenus; i++ ) {
+    for (i = 0; i < numMenus; i++) {
       sub = (MenuRecord *) (*this->menus)[i];
-      if ( sub->pos == j && sub->parent == menu ) {
-//        fprintf( stderr, "%s%s {\n", pre, sub->name );
+      if (sub->pos == j && sub->parent == menu) {
+//        fprintf(stderr, "%s%s {\n", pre, sub->name);
         Widget shell = parent;
-        while ( shell && ! XtIsShell(shell) )
+        while (shell && ! XtIsShell(shell))
           shell = XtParent(shell);
-        assert( shell != (Widget) NULL );
+        assert(shell != (Widget) NULL);
         Colormap colormap;
         Visual * visual;
         int depth;
-        XtVaGetValues( shell,
+        XtVaGetValues(shell,
           XmNvisual, &visual,
           XmNdepth, &depth,
           XmNcolormap, &colormap,
-          NULL );
+          NULL);
         Arg args[10];
         int argc = 0;
-        XtSetArg( args[argc], XmNvisual, visual ); argc++;
-        XtSetArg( args[argc], XmNdepth, depth ); argc++;
-        XtSetArg( args[argc], XmNcolormap, colormap ); argc++;
-        Widget submenu = XmCreatePulldownMenu( parent, sub->name, args, argc );
-        sub->menu = XtVaCreateManagedWidget( sub->name,
+        XtSetArg(args[argc], XmNvisual, visual); argc++;
+        XtSetArg(args[argc], XmNdepth, depth); argc++;
+        XtSetArg(args[argc], XmNcolormap, colormap); argc++;
+        Widget submenu = XmCreatePulldownMenu(parent, sub->name, args, argc);
+        sub->menu = XtVaCreateManagedWidget(sub->name,
           xmCascadeButtonGadgetClass, parent,
           XmNsubMenuId, submenu,
           XtVaTypedArg,
             XmNlabelString, XmRString,
             sub->title, strlen(sub->title)+1,
-          NULL );
-        this->traverseBuild( submenu, sub, indent + 2 );
-//        fprintf( stderr, "%s}\n", pre );
+          NULL);
+        this->traverseBuild(submenu, sub, indent + 2);
+//        fprintf(stderr, "%s}\n", pre);
         break;
       } else {
         sub = (MenuRecord *) NULL;
       }
     }
-    if ( sub == NULL ) {
+    if (sub == NULL) {
       const int numItems = this->items->getLength();
-      for ( i = 0; i < numItems; i++ ) {
+      for (i = 0; i < numItems; i++) {
         item = (ItemRecord *) (*this->items)[i];
-        if ( item->pos == j && item->parent == menu ) {
-//          fprintf( stderr, "%s%s\n", pre, item->name );
-          if ( item->flags & ITEM_SEPARATOR ) {
-            item->item = XtVaCreateManagedWidget( item->title,
-              xmSeparatorGadgetClass, parent, NULL );
+        if (item->pos == j && item->parent == menu) {
+//          fprintf(stderr, "%s%s\n", pre, item->name);
+          if (item->flags & ITEM_SEPARATOR) {
+            item->item = XtVaCreateManagedWidget(item->title,
+              xmSeparatorGadgetClass, parent, NULL);
           } else {
-            item->item = XtVaCreateManagedWidget( item->title,
+            item->item = XtVaCreateManagedWidget(item->title,
               xmToggleButtonGadgetClass, parent,
               XmNsensitive, (item->flags & ITEM_ENABLED) ? True : False,
               XtVaTypedArg,
                 XmNlabelString, XmRString,
                 item->title, strlen(item->title)+1,
-              NULL );
-            XtAddCallback( item->item, XmNvalueChangedCallback,
-                SoXtPopupMenu::itemSelectionCallback, this );
-            XmToggleButtonSetState( item->item,
+              NULL);
+            XtAddCallback(item->item, XmNvalueChangedCallback,
+                SoXtPopupMenu::itemSelectionCallback, this);
+            XmToggleButtonSetState(item->item,
               (item->flags & ITEM_MARKED) ? True : False,
-              False );
+              False);
           }
           break;
         } else {
@@ -723,7 +723,7 @@ SoXtPopupMenu::traverseBuild(
       }
     }
     j++;
-  } while ( sub != NULL || item != NULL );
+  } while (sub != NULL || item != NULL);
   return parent;
 } // traverseBuild()
 
@@ -732,36 +732,36 @@ SoXtPopupMenu::traverseBuild(
 
 Widget
 SoXtPopupMenu::build(
-  Widget parent )
+  Widget parent)
 {
-  MenuRecord * root = this->getMenuRecord( 0 );
-  assert( root != NULL );
+  MenuRecord * root = this->getMenuRecord(0);
+  assert(root != NULL);
 
   // FIXME: use SoXt::getPopupArgs() instead (when it's implemented).
   Widget shell = parent;
-  while ( shell && ! XtIsShell(shell) )
+  while (shell && ! XtIsShell(shell))
     shell = XtParent(shell);
-  assert( shell != (Widget) NULL );
+  assert(shell != (Widget) NULL);
 
   Colormap colormap;
   Visual * visual;
   int depth;
-  XtVaGetValues( shell,
+  XtVaGetValues(shell,
     XmNvisual, &visual,
     XmNdepth, &depth,
     XmNcolormap,  &colormap,
-    NULL );
+    NULL);
   Arg args[10];
   int argc = 0;
-  XtSetArg( args[argc], XmNvisual, visual ); argc++;
-  XtSetArg( args[argc], XmNdepth, depth ); argc++;
-  XtSetArg( args[argc], XmNcolormap, colormap ); argc++;
+  XtSetArg(args[argc], XmNvisual, visual); argc++;
+  XtSetArg(args[argc], XmNdepth, depth); argc++;
+  XtSetArg(args[argc], XmNcolormap, colormap); argc++;
 
-  Widget popup = XmCreatePopupMenu( parent, root->name, args, argc );
+  Widget popup = XmCreatePopupMenu(parent, root->name, args, argc);
 
-//  fprintf( stderr, "%s {\n", root->name );
-  (void) this->traverseBuild( popup, root, 2 );
-//  fprintf( stderr, "}\n" );
+//  fprintf(stderr, "%s {\n", root->name);
+  (void) this->traverseBuild(popup, root, 2);
+//  fprintf(stderr, "}\n");
   return popup;
 } // build()
 
@@ -772,12 +772,12 @@ SoXtPopupMenu::build(
 
 MenuRecord *
 SoXtPopupMenu::getMenuRecord(
-  int menuid )
+  int menuid)
 {
   const int numMenus = this->menus->getLength();
   int i;
-  for ( i = 0; i < numMenus; i++ )
-    if ( ((MenuRecord *) (*this->menus)[i])->menuid == menuid )
+  for (i = 0; i < numMenus; i++)
+    if (((MenuRecord *) (*this->menus)[i])->menuid == menuid)
       return (MenuRecord *) (*this->menus)[i];
   return (MenuRecord *) NULL;
 } // getMenuRecord()
@@ -787,12 +787,12 @@ SoXtPopupMenu::getMenuRecord(
 
 ItemRecord *
 SoXtPopupMenu::getItemRecord(
-  int itemid )
+  int itemid)
 {
   const int numItems = this->items->getLength();
   int i;
-  for ( i = 0; i < numItems; i++ )
-    if ( ((ItemRecord *) (*this->items)[i])->itemid == itemid )
+  for (i = 0; i < numItems; i++)
+    if (((ItemRecord *) (*this->items)[i])->itemid == itemid)
       return (ItemRecord *) (*this->items)[i];
   return (ItemRecord *) NULL;
 } // getItemRecord()
@@ -804,13 +804,13 @@ SoXtPopupMenu::getItemRecord(
 
 MenuRecord *
 SoXtPopupMenu::createMenuRecord(
-  const char * name )
+  const char * name)
 {
   MenuRecord * rec = new MenuRecord;
   rec->menuid = -1;
   rec->pos = -1;
-  rec->name = strcpy( new char [strlen(name)+1], name );
-  rec->title = strcpy( new char [strlen(name)+1], name );
+  rec->name = strcpy(new char [strlen(name)+1], name);
+  rec->title = strcpy(new char [strlen(name)+1], name);
   rec->menu = (Widget) NULL;
   rec->parent = NULL;
   return rec;
@@ -821,14 +821,14 @@ SoXtPopupMenu::createMenuRecord(
 
 ItemRecord *
 SoXtPopupMenu::createItemRecord(
-  const char * name )
+  const char * name)
 {
   ItemRecord * rec = new ItemRecord;
   rec->itemid = -1;
   rec->pos = -1;
   rec->flags = 0 | ITEM_ENABLED;
-  rec->name = strcpy( new char [strlen(name)+1], name );
-  rec->title = strcpy( new char [strlen(name)+1], name );
+  rec->name = strcpy(new char [strlen(name)+1], name);
+  rec->title = strcpy(new char [strlen(name)+1], name);
   rec->item = (Widget) NULL;
   rec->parent = NULL;
   return rec;
@@ -840,32 +840,32 @@ SoXtPopupMenu::createItemRecord(
 */
 
 void
-SoXtPopupMenu::itemSelection( // private
+SoXtPopupMenu::itemSelection(// private
   Widget w,
-  XtPointer call )
+  XtPointer call)
 {
-  if ( w == NULL )
+  if (w == NULL)
     return;
   XmToggleButtonCallbackStruct * data = (XmToggleButtonCallbackStruct *) call;
   const int numItems = this->items->getLength();
   int i;
-  for ( i = 0; i < numItems; i++ ) {
+  for (i = 0; i < numItems; i++) {
     ItemRecord * rec = (ItemRecord *) (*this->items)[i];
-    if ( rec->item == w ) {
-      int groupid = this->getRadioGroup( rec->itemid );
-      if ( data->set && groupid != -1 ) {
-        this->setMenuItemMarked( rec->itemid, TRUE );
-        this->invokeMenuSelection( rec->itemid );
+    if (rec->item == w) {
+      int groupid = this->getRadioGroup(rec->itemid);
+      if (data->set && groupid != -1) {
+        this->setMenuItemMarked(rec->itemid, TRUE);
+        this->invokeMenuSelection(rec->itemid);
       } else {
-        if ( groupid == -1 ) {
-          this->setMenuItemMarked( rec->itemid, FALSE );
-          this->invokeMenuSelection( rec->itemid );
-        } else if ( this->getRadioGroupSize( groupid ) > 1 ) {
-          this->setMenuItemMarked( rec->itemid, TRUE );
-          this->invokeMenuSelection( rec->itemid );
+        if (groupid == -1) {
+          this->setMenuItemMarked(rec->itemid, FALSE);
+          this->invokeMenuSelection(rec->itemid);
+        } else if (this->getRadioGroupSize(groupid) > 1) {
+          this->setMenuItemMarked(rec->itemid, TRUE);
+          this->invokeMenuSelection(rec->itemid);
         } else {
-          this->setMenuItemMarked( rec->itemid, FALSE );
-          this->invokeMenuSelection( rec->itemid );
+          this->setMenuItemMarked(rec->itemid, FALSE);
+          this->invokeMenuSelection(rec->itemid);
         }
       }
     }
@@ -876,14 +876,14 @@ SoXtPopupMenu::itemSelection( // private
 */
 
 void
-SoXtPopupMenu::itemSelectionCallback( // private, static
+SoXtPopupMenu::itemSelectionCallback(// private, static
   Widget w,
   XtPointer client_data,
-  XtPointer call_data )
+  XtPointer call_data)
 {
-  assert( client_data != NULL );
+  assert(client_data != NULL);
   SoXtPopupMenu * popup = (SoXtPopupMenu *) client_data;
-  popup->itemSelection( w, call_data );
+  popup->itemSelection(w, call_data);
 } // itemSelectionCallback()
 
 // *************************************************************************

@@ -78,15 +78,15 @@ static const char rcsid[] =
 // *************************************************************************
 // forward declarations:
 
-static void createColormap( SoXtGLAreaWidget, int, XrmValue * );
-static void Initialize( SoXtGLAreaWidget, SoXtGLAreaWidget,
-                        ArgList, Cardinal * );
-static void Realize( Widget, Mask *, XSetWindowAttributes * );
-static void Redraw( SoXtGLAreaWidget, XEvent *, Region );
-static void Resize( SoXtGLAreaWidget );
-static void Destroy( SoXtGLAreaWidget );
-static void glwInput( SoXtGLAreaWidget, XEvent *, String *, Cardinal * );
-static Boolean set_values( Widget, Widget, Widget, ArgList, Cardinal * );
+static void createColormap(SoXtGLAreaWidget, int, XrmValue *);
+static void Initialize(SoXtGLAreaWidget, SoXtGLAreaWidget,
+                        ArgList, Cardinal *);
+static void Realize(Widget, Mask *, XSetWindowAttributes *);
+static void Redraw(SoXtGLAreaWidget, XEvent *, Region);
+static void Resize(SoXtGLAreaWidget);
+static void Destroy(SoXtGLAreaWidget);
+static void glwInput(SoXtGLAreaWidget, XEvent *, String *, Cardinal *);
+static Boolean set_values(Widget, Widget, Widget, ArgList, Cardinal *);
 
 // *************************************************************************
 
@@ -116,9 +116,9 @@ static XtActionsRec actions[] = {
 // the initialize proc.  If requested, we also reallocate colors in
 // that colormap using the same method.
 
-#define coffset( field ) XtOffset( SoXtGLAreaWidget, core.field )
-#define poffset( field ) XtOffset( SoXtGLAreaWidget, primitive.field )
-#define offset( field )  XtOffset( SoXtGLAreaWidget, soxtGLArea.field )
+#define coffset(field) XtOffset(SoXtGLAreaWidget, core.field)
+#define poffset(field) XtOffset(SoXtGLAreaWidget, primitive.field)
+#define offset(field)  XtOffset(SoXtGLAreaWidget, soxtGLArea.field)
 
 static XtResource resources[] =
 {
@@ -364,21 +364,21 @@ WidgetClass soxtGLAreaWidgetClass = (WidgetClass) &soxtGLAreaClassRec;
 static void
 error(
   Widget w,
-  char * string )
+  char * string)
 {
   char buf[100];
-  sprintf( buf, "SoXtGLArea: %s\n", string );
-  XtAppError( XtWidgetToApplicationContext(w), buf );
+  sprintf(buf, "SoXtGLArea: %s\n", string);
+  XtAppError(XtWidgetToApplicationContext(w), buf);
 } // error()
 
 static void
 warning(
   Widget w,
-  char * string )
+  char * string)
 {
   char buf[100];
-  sprintf( buf, "SoXtGLArea: %s\n", string );
-  XtAppWarning( XtWidgetToApplicationContext(w), buf );
+  sprintf(buf, "SoXtGLArea: %s\n", string);
+  XtAppWarning(XtWidgetToApplicationContext(w), buf);
 } // warning()
 
 // *************************************************************************
@@ -387,21 +387,21 @@ warning(
 
 static void
 createAttribList(
-  SoXtGLAreaWidget widget )
+  SoXtGLAreaWidget widget)
 {
   int * ptr;
   widget->soxtGLArea.attribList =
-    (int *) XtMalloc( ATTRIBLIST_SIZE * sizeof(int) );
-  if ( ! widget->soxtGLArea.attribList )
-    error( (Widget) widget, "Unable to allocate attribute list" );
+    (int *) XtMalloc(ATTRIBLIST_SIZE * sizeof(int));
+  if (! widget->soxtGLArea.attribList)
+    error((Widget) widget, "Unable to allocate attribute list");
   ptr = widget->soxtGLArea.attribList;
   *ptr++ = GLX_BUFFER_SIZE;
   *ptr++ = widget->soxtGLArea.bufferSize;
   *ptr++ = GLX_LEVEL;
   *ptr++ = widget->soxtGLArea.level;
-  if ( widget->soxtGLArea.rgba ) *ptr++ = GLX_RGBA;
-  if ( widget->soxtGLArea.doublebuffer ) *ptr++ = GLX_DOUBLEBUFFER;
-  if ( widget->soxtGLArea.stereo ) *ptr++ = GLX_STEREO;
+  if (widget->soxtGLArea.rgba) *ptr++ = GLX_RGBA;
+  if (widget->soxtGLArea.doublebuffer) *ptr++ = GLX_DOUBLEBUFFER;
+  if (widget->soxtGLArea.stereo) *ptr++ = GLX_STEREO;
   *ptr++ = GLX_AUX_BUFFERS;
   *ptr++ = widget->soxtGLArea.auxBuffers;
   *ptr++ = GLX_RED_SIZE;
@@ -425,7 +425,7 @@ createAttribList(
   *ptr++ = GLX_ACCUM_ALPHA_SIZE;
   *ptr++ = widget->soxtGLArea.accumAlphaSize;
   *ptr++ = None;
-  assert( (ptr - widget->soxtGLArea.attribList) < ATTRIBLIST_SIZE );
+  assert((ptr - widget->soxtGLArea.attribList) < ATTRIBLIST_SIZE);
 } // createAttribList()
 
 // *************************************************************************
@@ -433,18 +433,18 @@ createAttribList(
 
 static void
 createVisualInfo(
-  SoXtGLAreaWidget widget )
+  SoXtGLAreaWidget widget)
 {
   static XVisualInfo * visualInfo;
-  assert( widget->soxtGLArea.attribList );
+  assert(widget->soxtGLArea.attribList);
 
-  if ( widget->soxtGLArea.visualInfo == NULL )
+  if (widget->soxtGLArea.visualInfo == NULL)
     widget->soxtGLArea.visualInfo = 
-      glXChooseVisual( XtDisplay(widget),
-                       XScreenNumberOfScreen( XtScreen(widget) ),
+      glXChooseVisual(XtDisplay(widget),
+                       XScreenNumberOfScreen(XtScreen(widget)),
                        widget->soxtGLArea.attribList);
-  if ( ! widget->soxtGLArea.visualInfo )
-    error( (Widget) widget, "requested visual not supported" );
+  if (! widget->soxtGLArea.visualInfo)
+    error((Widget) widget, "requested visual not supported");
 } // createVisualkInfo()
 
 // *************************************************************************
@@ -459,7 +459,7 @@ static void
 createColormap(
   SoXtGLAreaWidget widget,
   int offset,
-  XrmValue * value )
+  XrmValue * value)
 {
   static struct cmapCache {
     Visual * visual;
@@ -469,37 +469,37 @@ createColormap(
   static int cacheMalloced = 0;
   register int i;
     
-  assert( widget->soxtGLArea.visualInfo );
+  assert(widget->soxtGLArea.visualInfo);
 
   // see if we can find it in the cache
-  for ( i = 0; i < cacheEntries; i++ ) {
-    if ( cmapCache[i].visual == widget->soxtGLArea.visualInfo->visual ) {
+  for (i = 0; i < cacheEntries; i++) {
+    if (cmapCache[i].visual == widget->soxtGLArea.visualInfo->visual) {
       value->addr = (char *) &cmapCache[i].cmap;
       return;
     }
   }
 
   // not in the cache, create a new entry
-  if ( cacheEntries >= cacheMalloced ) {
+  if (cacheEntries >= cacheMalloced) {
     // need to malloc a new one.  Since we are likely to have only a
     // few colormaps, we allocate one the first time, and double
     // each subsequent time.
-    if ( cacheMalloced == 0 ) {
+    if (cacheMalloced == 0) {
       cacheMalloced = 1;
-      cmapCache = (struct cmapCache *) XtMalloc( sizeof(struct cmapCache) );
+      cmapCache = (struct cmapCache *) XtMalloc(sizeof(struct cmapCache));
     } else {
       cacheMalloced <<= 1;
-      cmapCache = (struct cmapCache *) XtRealloc( (char *) cmapCache,
-                     sizeof(struct cmapCache) * cacheMalloced );
+      cmapCache = (struct cmapCache *) XtRealloc((char *) cmapCache,
+                     sizeof(struct cmapCache) * cacheMalloced);
     }
   }
        
   cmapCache[cacheEntries].cmap =
-    XCreateColormap( XtDisplay(widget),
+    XCreateColormap(XtDisplay(widget),
                      RootWindow(XtDisplay(widget),
                                 widget->soxtGLArea.visualInfo->screen),
                      widget->soxtGLArea.visualInfo->visual,
-                     AllocNone );
+                     AllocNone);
   cmapCache[cacheEntries].visual = widget->soxtGLArea.visualInfo->visual;
   value->addr = (char *) &cmapCache[cacheEntries++].cmap;
 } // createColormap()
@@ -511,47 +511,47 @@ Initialize(
   SoXtGLAreaWidget req,
   SoXtGLAreaWidget neww,
   ArgList args,
-  Cardinal * num_args )
+  Cardinal * num_args)
 {
   // fix size
-  if ( req->core.width == 0 ) neww->core.width = 100;
-  if ( req->core.height == 0 ) neww->core.width = 100;
+  if (req->core.width == 0) neww->core.width = 100;
+  if (req->core.height == 0) neww->core.width = 100;
 
   // create the attribute list if needed
   neww->soxtGLArea.myList = FALSE;
-  if ( neww->soxtGLArea.attribList == NULL ) {
+  if (neww->soxtGLArea.attribList == NULL) {
     neww->soxtGLArea.myList = TRUE;
-    createAttribList( neww );
+    createAttribList(neww);
   }
 
   // Gotta have it
-  assert( neww->soxtGLArea.attribList );
+  assert(neww->soxtGLArea.attribList);
 
   // determine the visual info if needed
   neww->soxtGLArea.myVisual = FALSE;
-  if ( neww->soxtGLArea.visualInfo == NULL ) {
+  if (neww->soxtGLArea.visualInfo == NULL) {
     neww->soxtGLArea.myVisual = TRUE;
-    createVisualInfo( neww );
+    createVisualInfo(neww);
   }
 
   // Gotta have that too
-  assert( neww->soxtGLArea.visualInfo );
+  assert(neww->soxtGLArea.visualInfo);
 
   neww->core.depth = neww->soxtGLArea.visualInfo->depth;
 
   // Reobtain the colormap and colors in it using XtGetApplicationResources
-  XtGetApplicationResources( (Widget) neww, neww, initializeResources,
-    XtNumber(initializeResources), args, *num_args );
+  XtGetApplicationResources((Widget) neww, neww, initializeResources,
+    XtNumber(initializeResources), args, *num_args);
 
   // obtain the color resources if appropriate
-  if ( req->soxtGLArea.allocateBackground ) {
-    XtGetApplicationResources( (Widget) neww, neww, backgroundResources,
-      XtNumber(backgroundResources), args, *num_args );
+  if (req->soxtGLArea.allocateBackground) {
+    XtGetApplicationResources((Widget) neww, neww, backgroundResources,
+      XtNumber(backgroundResources), args, *num_args);
   }
 
-  if ( req->soxtGLArea.allocateOtherColors ) {
-    XtGetApplicationResources( (Widget) neww, neww, otherColorResources,
-      XtNumber(otherColorResources), args, *num_args );
+  if (req->soxtGLArea.allocateOtherColors) {
+    XtGetApplicationResources((Widget) neww, neww, otherColorResources,
+      XtNumber(otherColorResources), args, *num_args);
   }
 } // Initialize()
 
@@ -561,7 +561,7 @@ static void
 Realize(
   Widget widget,
   Mask * valueMask,
-  XSetWindowAttributes * attributes )
+  XSetWindowAttributes * attributes)
 {
   register SoXtGLAreaWidget glw = (SoXtGLAreaWidget) widget;
   SoXtGLAreaCallbackStruct cb;
@@ -573,47 +573,47 @@ Realize(
   // if we haven't requested that the background be both installed and
   // allocated, don't install it.
 
-  if ( ! (glw->soxtGLArea.installBackground &&
-          glw->soxtGLArea.allocateBackground) )
+  if (! (glw->soxtGLArea.installBackground &&
+          glw->soxtGLArea.allocateBackground))
     *valueMask &= ~CWBackPixel;
  
-  XtCreateWindow( widget, (unsigned int) InputOutput,
-    glw->soxtGLArea.visualInfo->visual, *valueMask, attributes );
+  XtCreateWindow(widget, (unsigned int) InputOutput,
+    glw->soxtGLArea.visualInfo->visual, *valueMask, attributes);
 
   // if appropriate, call XSetWMColormapWindows to install the colormap
-  if ( glw->soxtGLArea.installColormap ) {
+  if (glw->soxtGLArea.installColormap) {
 
     // get parent shell
-    for ( parentShell = XtParent(widget);
+    for (parentShell = XtParent(widget);
           parentShell && ! XtIsShell(parentShell);
-          parentShell = XtParent(parentShell) ) { }
+          parentShell = XtParent(parentShell)) { }
 
-    if ( parentShell && XtWindow(parentShell) ) {
+    if (parentShell && XtWindow(parentShell)) {
 
       // check to see if there is already a property
-      status = XGetWMColormapWindows( XtDisplay(parentShell),
+      status = XGetWMColormapWindows(XtDisplay(parentShell),
                                       XtWindow(parentShell),
-                                      &windowsReturn, &countReturn );
+                                      &windowsReturn, &countReturn);
             
       // if no property, just create one
-      if ( ! status ) {
+      if (! status) {
         windows[0] = XtWindow(widget);
         windows[1] = XtWindow(parentShell);
-        XSetWMColormapWindows( XtDisplay(parentShell), XtWindow(parentShell),
-                               windows, 2 );
+        XSetWMColormapWindows(XtDisplay(parentShell), XtWindow(parentShell),
+                               windows, 2);
       } else {
         // there was a property, add myself to the beginning
-        windowList = (Window *) XtMalloc( sizeof(Window) * (countReturn+1) );
+        windowList = (Window *) XtMalloc(sizeof(Window) * (countReturn+1));
         windowList[0] = XtWindow(widget);
-        for ( i = 0; i < countReturn; i++ )
+        for (i = 0; i < countReturn; i++)
           windowList[i+1] = windowsReturn[i];
-        XSetWMColormapWindows( XtDisplay(parentShell), XtWindow(parentShell),
-                               windowList, countReturn + 1 );
-        XtFree( (char *) windowList );
-        XtFree( (char *) windowsReturn );
+        XSetWMColormapWindows(XtDisplay(parentShell), XtWindow(parentShell),
+                               windowList, countReturn + 1);
+        XtFree((char *) windowList);
+        XtFree((char *) windowsReturn);
       }
     } else {
-      warning( widget, "Could not set colormap property on parent shell" );
+      warning(widget, "Could not set colormap property on parent shell");
     }
   }
   // Invoke init callbacks:
@@ -621,7 +621,7 @@ Realize(
   cb.event = NULL;
   cb.width = glw->core.width;
   cb.height = glw->core.height;
-  XtCallCallbackList( (Widget) glw, glw->soxtGLArea.ginitCallback, &cb );
+  XtCallCallbackList((Widget) glw, glw->soxtGLArea.ginitCallback, &cb);
 } // Realize()
 
 // *************************************************************************
@@ -630,40 +630,40 @@ static void
 Redraw(
   SoXtGLAreaWidget widget,
   XEvent * event,
-  Region region )
+  Region region)
 {
   SoXtGLAreaCallbackStruct cb;
   XtCallbackList cblist;
-  if ( ! XtIsRealized( (Widget) widget ) )
+  if (! XtIsRealized((Widget) widget))
     return;
   cb.reason = SoXtCR_EXPOSE;
   cb.event = event;
   cb.width = widget->core.width;
   cb.height = widget->core.height;
-  XtCallCallbackList( (Widget) widget, widget->soxtGLArea.exposeCallback, &cb );
+  XtCallCallbackList((Widget) widget, widget->soxtGLArea.exposeCallback, &cb);
 } // Redraw()
 
 // *************************************************************************
 
 static void
 Resize(
-  SoXtGLAreaWidget glw )
+  SoXtGLAreaWidget glw)
 {
   SoXtGLAreaCallbackStruct cb;
-  if ( ! XtIsRealized( (Widget) glw ) )
+  if (! XtIsRealized((Widget) glw))
     return;
   cb.reason = SoXtCR_RESIZE;
   cb.event = NULL;
   cb.width = glw->core.width;
   cb.height = glw->core.height;
-  XtCallCallbackList( (Widget) glw, glw->soxtGLArea.resizeCallback, &cb );
+  XtCallCallbackList((Widget) glw, glw->soxtGLArea.resizeCallback, &cb);
 } // Resize()
 
 // *************************************************************************
 
 static void
 Destroy(
-  SoXtGLAreaWidget glw )
+  SoXtGLAreaWidget glw)
 {
   Window * windowsReturn;
   Widget parentShell;
@@ -671,40 +671,40 @@ Destroy(
   int countReturn;
   register int i;
 
-  if ( glw->soxtGLArea.myList && glw->soxtGLArea.attribList )
-    XtFree( (char *) glw->soxtGLArea.attribList );
+  if (glw->soxtGLArea.myList && glw->soxtGLArea.attribList)
+    XtFree((char *) glw->soxtGLArea.attribList);
 
-  if ( glw->soxtGLArea.myVisual && glw->soxtGLArea.visualInfo )
-    XtFree( (char *) glw->soxtGLArea.visualInfo );
+  if (glw->soxtGLArea.myVisual && glw->soxtGLArea.visualInfo)
+    XtFree((char *) glw->soxtGLArea.visualInfo);
 
   // if my colormap was installed, remove it
-  if ( glw->soxtGLArea.installColormap ) {
+  if (glw->soxtGLArea.installColormap) {
     // Get parent shell
-    for ( parentShell = XtParent(glw);
+    for (parentShell = XtParent(glw);
           parentShell && ! XtIsShell(parentShell);
-          parentShell = XtParent(parentShell) ) { }
+          parentShell = XtParent(parentShell)) { }
 
-    if ( parentShell && XtWindow(parentShell) ) {
+    if (parentShell && XtWindow(parentShell)) {
       // make sure there is a property
-      status = XGetWMColormapWindows( XtDisplay(parentShell),
+      status = XGetWMColormapWindows(XtDisplay(parentShell),
                                       XtWindow(parentShell),
-                                      &windowsReturn, &countReturn );
+                                      &windowsReturn, &countReturn);
             
       // if no property, just return.  If there was a property, continue
-      if ( status ) {
+      if (status) {
         // search for a match
-        for ( i = 0; i < countReturn; i++ ) {
-          if ( windowsReturn[i] == XtWindow(glw) ) {
+        for (i = 0; i < countReturn; i++) {
+          if (windowsReturn[i] == XtWindow(glw)) {
             // we found a match, now copy the rest down
-            for ( i++; i < countReturn; i++ )
+            for (i++; i < countReturn; i++)
               windowsReturn[i-1] = windowsReturn[i];
 
-            XSetWMColormapWindows( XtDisplay(parentShell),
-              XtWindow(parentShell), windowsReturn, countReturn-1 );
+            XSetWMColormapWindows(XtDisplay(parentShell),
+              XtWindow(parentShell), windowsReturn, countReturn-1);
             break; 
           }
         }
-        XtFree( (char *) windowsReturn );
+        XtFree((char *) windowsReturn);
       }
     }
   }
@@ -719,14 +719,14 @@ glwInput(
   SoXtGLAreaWidget glw,
   XEvent * event,
   String * params,
-  Cardinal * numParams )
+  Cardinal * numParams)
 {
   SoXtGLAreaCallbackStruct cb;
   cb.reason = SoXtCR_INPUT;
   cb.event = event;
   cb.width = glw->core.width;
   cb.height = glw->core.height;
-  XtCallCallbackList( (Widget) glw, glw->soxtGLArea.inputCallback, &cb );
+  XtCallCallbackList((Widget) glw, glw->soxtGLArea.inputCallback, &cb);
 } // glwInput()
 
 // *************************************************************************
@@ -734,18 +734,18 @@ glwInput(
 void
 SoXtGLAreaMakeCurrent(
   Widget w,
-  GLXContext ctx )
+  GLXContext ctx)
 {
-  glXMakeCurrent( XtDisplay(w), XtWindow(w), ctx );
+  glXMakeCurrent(XtDisplay(w), XtWindow(w), ctx);
 } // SoXtGLAreaMakeCurrent()
 
 // *************************************************************************
 
 void
 SoXtGLAreaSwapBuffers(
-  Widget w )
+  Widget w)
 {
-  glXSwapBuffers( XtDisplay(w), XtWindow(w) );
+  glXSwapBuffers(XtDisplay(w), XtWindow(w));
 } // SoXtGLAreaSwapBuffers()
 
 // *************************************************************************
@@ -756,14 +756,14 @@ set_values(
   Widget request,
   Widget new_widget,
   ArgList args,
-  Cardinal * num_args )
+  Cardinal * num_args)
 {
   Boolean redisplay = False;
   SoXtGLAreaWidget curcw = (SoXtGLAreaWidget) current;
   SoXtGLAreaWidget reqcw = (SoXtGLAreaWidget) request;
   SoXtGLAreaWidget newcw = (SoXtGLAreaWidget) new_widget;
 
-  if ( newcw->soxtGLArea.refresh != curcw->soxtGLArea.refresh ) {
+  if (newcw->soxtGLArea.refresh != curcw->soxtGLArea.refresh) {
     newcw->soxtGLArea.refresh = False;
     redisplay = True;
   }

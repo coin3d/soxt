@@ -51,15 +51,15 @@ public:
   Widget getNormalWidget(void);
   Widget getGLWidget(void);
   Widget getOverlayWidget(void);
-  virtual void setNormalVisual( XVisualInfo * visual );
+  virtual void setNormalVisual(XVisualInfo * visual);
   XVisualInfo * getNormalVisual(void);
-  virtual void setOverlayVisual( XVisualInfo * visual );
+  virtual void setOverlayVisual(XVisualInfo * visual);
   XVisualInfo * getOverlayVisual(void);
-  virtual void setDoubleBuffer( SbBool enable );
+  virtual void setDoubleBuffer(SbBool enable);
   SbBool isDoubleBuffer(void);
-  void setBorder( SbBool enable );
+  void setBorder(SbBool enable);
   SbBool isBorder(void) const;
-  void setDrawToFrontBufferEnable( SbBool enable );
+  void setDrawToFrontBufferEnable(SbBool enable);
   SbBool isDrawToFrontBufferEnable(void) const;
   void setQuadBufferStereo(const SbBool enable);
   SbBool isQuadBufferStereo(void) const;
@@ -73,22 +73,22 @@ protected:
     const char * name = NULL,
     SbBool embed = TRUE,
     int glModes = SO_GLX_RGB,
-    SbBool build = TRUE );
+    SbBool build = TRUE);
   virtual ~SoXtGLWidget(void);
   virtual void redraw(void) = 0;
   virtual void redrawOverlay(void);
-  virtual void processEvent( XAnyEvent * event );
+  virtual void processEvent(XAnyEvent * event);
   virtual void initGraphic(void);
   virtual void initOverlayGraphic(void);
-  virtual void sizeChanged( const SbVec2s size );
-  virtual void widgetChanged( Widget widget );
+  virtual void sizeChanged(const SbVec2s size);
+  virtual void widgetChanged(Widget widget);
 
-  void setGLSize( const SbVec2s size );
+  void setGLSize(const SbVec2s size);
   const SbVec2s getGLSize(void) const;
   float getGLAspectRatio(void) const;
 
   // old aliases
-  void setGlxSize( const SbVec2s size ) { this->setGLSize( size ); }
+  void setGlxSize(const SbVec2s size) { this->setGLSize(size); }
   const SbVec2s getGlxSize(void) const { return this->getGLSize(); }
   float getGlxAspectRatio(void) const { return this->getGLAspectRatio(); }
   void setStereoBuffer(SbBool flag) {
@@ -99,7 +99,7 @@ protected:
   }
 
   SbBool isRGBMode(void);
-  int getDisplayListShareGroup( GLXContext context );
+  int getDisplayListShareGroup(GLXContext context);
 
   Colormap normalColorMap;
   Colormap overlayColorMap;
@@ -108,7 +108,7 @@ protected:
 
   SbBool waitForExpose;
   SbBool drawToFrontBuffer;
-  Widget buildWidget( Widget parent );
+  Widget buildWidget(Widget parent);
   Widget getGlxMgrWidget(void);
 
   unsigned long transparentPixel;
@@ -125,7 +125,7 @@ protected:
 
   SbBool doubleBuffer;
 
-  static void eventHandler( Widget, void *, XEvent *, Boolean * );
+  static void eventHandler(Widget, void *, XEvent *, Boolean *);
 
 protected:
 

@@ -76,7 +76,7 @@ SOXT_OBJECT_SOURCE(SoXtPlaneViewer);
 struct SoXtViewerButton {
   char * keyword;
   char * label;
-  void (*pressed)( Widget, XtPointer, XtPointer );
+  void (*pressed)(Widget, XtPointer, XtPointer);
   char ** xpm_data;
   Widget bwidget;
   Widget lwidget;
@@ -121,28 +121,28 @@ SoXtPlaneViewer::SoXtPlaneViewer(
   const char * const name,
   SbBool embed,
   SoXtFullViewer::BuildFlag flag,
-  SoXtViewer::Type type )
-: inherited( parent, name, embed, flag, type, FALSE )
-, common( new SoAnyPlaneViewer( this ) )
+  SoXtViewer::Type type)
+: inherited(parent, name, embed, flag, type, FALSE)
+, common(new SoAnyPlaneViewer(this))
 {
-  this->constructor( TRUE );
+  this->constructor(TRUE);
 } // SoXtPlaneViewer()
 
 /*!
   Protected constructor for deriving classes.
 */
 
-SoXtPlaneViewer::SoXtPlaneViewer( // protected
+SoXtPlaneViewer::SoXtPlaneViewer(// protected
   Widget parent,
   const char * const name,
   SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type,
-  SbBool build )
-: inherited( parent, name, embed, flag, type, FALSE )
-, common( new SoAnyPlaneViewer( this ) )
+  SbBool build)
+: inherited(parent, name, embed, flag, type, FALSE)
+, common(new SoAnyPlaneViewer(this))
 {
-  this->constructor( build );
+  this->constructor(build);
 } // SoXtPlaneViewer()
 
 /*!
@@ -151,28 +151,28 @@ SoXtPlaneViewer::SoXtPlaneViewer( // protected
 
 void
 SoXtPlaneViewer::constructor(
-  SbBool build )
+  SbBool build)
 {
   const int buttons = sizeof(SoXtPlaneViewerButtons) / sizeof(SoXtViewerButton);
   this->buttons = new SoXtViewerButton [ buttons ];
-  memcpy( this->buttons, SoXtPlaneViewerButtons, sizeof(SoXtPlaneViewerButtons) );
+  memcpy(this->buttons, SoXtPlaneViewerButtons, sizeof(SoXtPlaneViewerButtons));
 
   this->prefshell = this->prefsheet = (Widget) NULL;
   this->prefparts = NULL;
   this->numprefparts = 0;
 
-  this->setClassName( this->getDefaultWidgetName() );
+  this->setClassName(this->getDefaultWidgetName());
 
-  if ( build ) {
-    Widget viewer = this->buildWidget( this->getParentWidget() );
-    this->setBaseWidget( viewer );
-    this->fitSize( SbVec2s( 500, 300 ) );
+  if (build) {
+    Widget viewer = this->buildWidget(this->getParentWidget());
+    this->setBaseWidget(viewer);
+    this->fitSize(SbVec2s(500, 300));
 
-    SoXtResource rsc( this->getRightWheelLabelWidget() );
+    SoXtResource rsc(this->getRightWheelLabelWidget());
     char * dollyString = NULL;
-    rsc.getResource( "dollyString", XmRString, dollyString );
-    if ( dollyString != NULL )
-      this->setRightWheelString( dollyString );
+    rsc.getResource("dollyString", XmRString, dollyString);
+    if (dollyString != NULL)
+      this->setRightWheelString(dollyString);
   }
 } // constructor()
 
@@ -181,7 +181,7 @@ SoXtPlaneViewer::constructor(
 */
 
 SoXtPlaneViewer::~SoXtPlaneViewer(
-  void )
+  void)
 {
   delete [] this->buttons;
   delete this->common;
@@ -194,10 +194,10 @@ SoXtPlaneViewer::~SoXtPlaneViewer(
 */
 
 void
-SoXtPlaneViewer::setViewing( // virtual
-  SbBool enable )
+SoXtPlaneViewer::setViewing(// virtual
+  SbBool enable)
 {
-  inherited::setViewing( enable );
+  inherited::setViewing(enable);
 } // setViewing()
 
 /*!
@@ -205,53 +205,53 @@ SoXtPlaneViewer::setViewing( // virtual
 */
 
 void
-SoXtPlaneViewer::setCamera( // virtual
-  SoCamera * camera )
+SoXtPlaneViewer::setCamera(// virtual
+  SoCamera * camera)
 {
   Pixmap pixmap, pixmap_ins;
-  if ( camera == NULL ) {
+  if (camera == NULL) {
     // find better pixmaps for this...
     pixmap = this->pixmaps.ortho;
     pixmap_ins = this->pixmaps.ortho_ins;
-  } else if ( camera->isOfType( SoPerspectiveCamera::getClassTypeId() ) ) {
+  } else if (camera->isOfType(SoPerspectiveCamera::getClassTypeId())) {
     pixmap = this->pixmaps.perspective;
     pixmap_ins = this->pixmaps.perspective_ins;
-    SoXtResource rsc( this->getRightWheelLabelWidget() );
+    SoXtResource rsc(this->getRightWheelLabelWidget());
     char * dollyString = NULL;
-    rsc.getResource( "dollyString", XmRString, dollyString );
-    if ( dollyString != NULL )
-      this->setRightWheelString( dollyString );
-  } else if ( camera->isOfType( SoOrthographicCamera::getClassTypeId() ) ) {
+    rsc.getResource("dollyString", XmRString, dollyString);
+    if (dollyString != NULL)
+      this->setRightWheelString(dollyString);
+  } else if (camera->isOfType(SoOrthographicCamera::getClassTypeId())) {
     pixmap = this->pixmaps.ortho;
     pixmap_ins = this->pixmaps.ortho_ins;
-    SoXtResource rsc( this->getRightWheelLabelWidget() );
+    SoXtResource rsc(this->getRightWheelLabelWidget());
     char * zoomString = NULL;
-    rsc.getResource( "zoomString", XmRString, zoomString );
-    if ( zoomString != NULL )
-      this->setRightWheelString( zoomString );
+    rsc.getResource("zoomString", XmRString, zoomString);
+    if (zoomString != NULL)
+      this->setRightWheelString(zoomString);
   } else {
-    SoDebugError::postWarning( "SoXtExaminerViewer::setCamera",
-      "unknown camera type - got no pixmap" );
+    SoDebugError::postWarning("SoXtExaminerViewer::setCamera",
+      "unknown camera type - got no pixmap");
     // find better pixmaps for this...
     pixmap = this->pixmaps.ortho;
     pixmap_ins = this->pixmaps.ortho_ins;
   }
 
 #if HAVE_LIBXPM
-  XtUnmanageChild( this->buttons[3].bwidget );
-  XtVaSetValues( this->buttons[3].bwidget,
+  XtUnmanageChild(this->buttons[3].bwidget);
+  XtVaSetValues(this->buttons[3].bwidget,
     XmNlabelType, XmPIXMAP,
     XmNlabelPixmap, pixmap,
     XmNselectPixmap, pixmap,
     XmNlabelInsensitivePixmap, pixmap_ins,
     XmNselectInsensitivePixmap, pixmap_ins,
-    NULL );
-  XtVaSetValues( this->buttons[3].bwidget,
-    XmNwidth, 30, XmNheight, 30, NULL );
-  XtManageChild( this->buttons[3].bwidget );
+    NULL);
+  XtVaSetValues(this->buttons[3].bwidget,
+    XmNwidth, 30, XmNheight, 30, NULL);
+  XtManageChild(this->buttons[3].bwidget);
 #endif // HAVE_LIBXPM
 
-  inherited::setCamera( camera );
+  inherited::setCamera(camera);
 } // setCamera()
 
 /*!
@@ -259,10 +259,10 @@ SoXtPlaneViewer::setCamera( // virtual
 */
 
 void
-SoXtPlaneViewer::setCursorEnabled( // virtual
-  SbBool enable )
+SoXtPlaneViewer::setCursorEnabled(// virtual
+  SbBool enable)
 {
-  inherited::setCursorEnabled( enable );
+  inherited::setCursorEnabled(enable);
 } // setCursorEnabled()
 
 // *************************************************************************
@@ -273,16 +273,16 @@ SoXtPlaneViewer::setCursorEnabled( // virtual
 */
 
 void
-SoXtPlaneViewer::createViewerButtons( // virtual, protected
+SoXtPlaneViewer::createViewerButtons(// virtual, protected
   Widget parent,
-  SbPList * buttonlist )
+  SbPList * buttonlist)
 {
-  inherited::createViewerButtons( parent, buttonlist );
+  inherited::createViewerButtons(parent, buttonlist);
 
   const int buttons = sizeof(SoXtPlaneViewerButtons) / sizeof(SoXtViewerButton);
-  for ( int button = 0; button < buttons; button++ ) {
+  for (int button = 0; button < buttons; button++) {
     Widget widget = 
-      XtVaCreateManagedWidget( this->buttons[button].keyword,
+      XtVaCreateManagedWidget(this->buttons[button].keyword,
       xmPushButtonWidgetClass, parent,
       XmNshadowType, XmSHADOW_OUT,
       XmNhighlightThickness, 0,
@@ -293,33 +293,33 @@ SoXtPlaneViewer::createViewerButtons( // virtual, protected
       XtVaTypedArg,
         XmNlabelString, XmRString,
         this->buttons[button].label, strlen(this->buttons[button].label) + 1,
-      NULL );
+      NULL);
     this->buttons[button].bwidget = widget;
 
 #if HAVE_LIBXPM
-    Pixmap pixmap = createPixmapFromXpmData( widget, this->buttons[button].xpm_data );
-    if ( pixmap )
-      XtVaSetValues( widget,
+    Pixmap pixmap = createPixmapFromXpmData(widget, this->buttons[button].xpm_data);
+    if (pixmap)
+      XtVaSetValues(widget,
         XmNlabelType, XmPIXMAP,
         XmNlabelPixmap, pixmap,
-        NULL );
+        NULL);
 #endif
 
-    buttonlist->append( widget );
+    buttonlist->append(widget);
 
-    XtAddCallback( widget, XmNactivateCallback,
-      SoXtPlaneViewer::buttonCB, (XtPointer) this );
-  } // for ( button < buttons )
+    XtAddCallback(widget, XmNactivateCallback,
+      SoXtPlaneViewer::buttonCB, (XtPointer) this);
+  } // for (button < buttons)
 
 #if HAVE_LIBXPM
   this->pixmaps.ortho =
-    createPixmapFromXpmData( this->buttons[3].bwidget, ortho_xpm );
+    createPixmapFromXpmData(this->buttons[3].bwidget, ortho_xpm);
   this->pixmaps.ortho_ins =
-    createInsensitivePixmapFromXpmData( this->buttons[3].bwidget, ortho_xpm );
+    createInsensitivePixmapFromXpmData(this->buttons[3].bwidget, ortho_xpm);
   this->pixmaps.perspective =
-    createPixmapFromXpmData( this->buttons[3].bwidget, perspective_xpm );
+    createPixmapFromXpmData(this->buttons[3].bwidget, perspective_xpm);
   this->pixmaps.perspective_ins =
-    createInsensitivePixmapFromXpmData( this->buttons[3].bwidget, perspective_xpm );
+    createInsensitivePixmapFromXpmData(this->buttons[3].bwidget, perspective_xpm);
 #endif // HAVE_LIBXPM
 } // createViewerButtons()
 
@@ -331,7 +331,7 @@ SoXtPlaneViewer::createViewerButtons( // virtual, protected
 
 const char *
 SoXtPlaneViewer::getDefaultWidgetName(
-  void ) const
+  void) const
 {
   static const char defaultWidgetName[] = "SoXtPlaneViewer";
   return defaultWidgetName;
@@ -355,7 +355,7 @@ SoXtPlaneViewer::getDefaultTitle(
 
 const char *
 SoXtPlaneViewer::getDefaultIconTitle(
-  void ) const
+  void) const
 {
   static const char defaultIconTitle[] = "Plane Viewer";
   return defaultIconTitle;
@@ -368,12 +368,12 @@ SoXtPlaneViewer::getDefaultIconTitle(
 */
 
 SbBool
-SoXtPlaneViewer::processSoEvent( // virtual, protected
-  const SoEvent * const event )
+SoXtPlaneViewer::processSoEvent(// virtual, protected
+  const SoEvent * const event)
 {
-  if ( common->processSoEvent( event ) )
+  if (common->processSoEvent(event))
     return TRUE;
-  return inherited::processSoEvent( event );
+  return inherited::processSoEvent(event);
 } // processSoEvent()
 
 /*!
@@ -382,26 +382,26 @@ SoXtPlaneViewer::processSoEvent( // virtual, protected
 
 void
 SoXtPlaneViewer::processEvent(
-  XAnyEvent * event )
+  XAnyEvent * event)
 {
-  if ( SoXtViewer::processCommonEvents( event ) )
+  if (SoXtViewer::processCommonEvents(event))
     return;
 
-  if ( event->type == ButtonPress ) {
-    // SoDebugError::postInfo( "", "button %d", ((XButtonEvent *) event)->button );
-    if ( ((XButtonEvent *) event)->button == 3 ) {
-      if ( this->isPopupMenuEnabled() ) {
+  if (event->type == ButtonPress) {
+    // SoDebugError::postInfo("", "button %d", ((XButtonEvent *) event)->button);
+    if (((XButtonEvent *) event)->button == 3) {
+      if (this->isPopupMenuEnabled()) {
         int x = ((XButtonEvent *) event)->x_root;
         int y = ((XButtonEvent *) event)->y_root;
-        if ( ! this->prefmenu )
+        if (! this->prefmenu)
           this->buildPopupMenu();
-        this->prefmenu->popUp( this->getGLWidget(), x, y );
+        this->prefmenu->popUp(this->getGLWidget(), x, y);
         return;
       }
     }
   }
 
-  inherited::processEvent( event );
+  inherited::processEvent(event);
 } // processEvent()
 
 // *************************************************************************
@@ -412,10 +412,10 @@ SoXtPlaneViewer::processEvent(
 
 void
 SoXtPlaneViewer::setSeekMode(
-  SbBool enable )
+  SbBool enable)
 {
   SOXT_STUB_ONCE();
-  inherited::setSeekMode( enable );
+  inherited::setSeekMode(enable);
 } // setSeekMode()
 
 /*!
@@ -424,11 +424,11 @@ SoXtPlaneViewer::setSeekMode(
 
 void
 SoXtPlaneViewer::actualRedraw(
-  void )
+  void)
 {
   inherited::actualRedraw();
 #if 0
-  if ( this->mode == ROTZ_MODE )
+  if (this->mode == ROTZ_MODE)
     common->drawRotateGraphics();
 #endif
 } // actualRedraw()
@@ -438,10 +438,10 @@ SoXtPlaneViewer::actualRedraw(
 */
 
 void
-SoXtPlaneViewer::openViewerHelpCard( // virtual
-  void )
+SoXtPlaneViewer::openViewerHelpCard(// virtual
+  void)
 {
-  this->openHelpCard( "SoXtPlaneViewer.help" );
+  this->openHelpCard("SoXtPlaneViewer.help");
 } // openViewerHelpCard()
 
 // *************************************************************************
@@ -452,11 +452,11 @@ SoXtPlaneViewer::openViewerHelpCard( // virtual
 */
 
 void
-SoXtPlaneViewer::bottomWheelMotion( // virtual
-  float value )
+SoXtPlaneViewer::bottomWheelMotion(// virtual
+  float value)
 {
-  common->translateX( value - this->getBottomWheelValue() );
-  inherited::bottomWheelMotion( value );
+  common->translateX(value - this->getBottomWheelValue());
+  inherited::bottomWheelMotion(value);
 } // bottomWheelMotion()
 
 /*!
@@ -465,11 +465,11 @@ SoXtPlaneViewer::bottomWheelMotion( // virtual
 */
 
 void
-SoXtPlaneViewer::leftWheelMotion( // virtual
-  float value )
+SoXtPlaneViewer::leftWheelMotion(// virtual
+  float value)
 {
-  common->translateY( value - this->getLeftWheelValue() );
-  inherited::leftWheelMotion( value );
+  common->translateY(value - this->getLeftWheelValue());
+  inherited::leftWheelMotion(value);
 } // leftWheelMotion()
 
 /*!
@@ -478,11 +478,11 @@ SoXtPlaneViewer::leftWheelMotion( // virtual
 */
 
 void
-SoXtPlaneViewer::rightWheelMotion( // virtual
-  float value )
+SoXtPlaneViewer::rightWheelMotion(// virtual
+  float value)
 {
-  common->zoom( this->getRightWheelValue() - value );
-  inherited::rightWheelMotion( value );
+  common->zoom(this->getRightWheelValue() - value);
+  inherited::rightWheelMotion(value);
 } // rightWheelMotion()
 
 // *************************************************************************
@@ -494,17 +494,17 @@ SoXtPlaneViewer::rightWheelMotion( // virtual
 
 void
 SoXtPlaneViewer::createPrefSheet(
-  void )
+  void)
 {
-  if ( ! this->prefshell ) {
+  if (! this->prefshell) {
     this->prefparts = new Widget [ 16 ];
-    this->createPrefSheetShellAndForm( this->prefshell, this->prefsheet );
-    this->createDefaultPrefSheetParts( this->prefparts, this->numprefparts,
-      this->prefsheet );
+    this->createPrefSheetShellAndForm(this->prefshell, this->prefsheet);
+    this->createDefaultPrefSheetParts(this->prefparts, this->numprefparts,
+      this->prefsheet);
     // add parts specific for derived viewer
   }
-  this->layoutPartsAndMapPrefSheet( this->prefparts, this->numprefparts,
-    this->prefsheet, this->prefshell );
+  this->layoutPartsAndMapPrefSheet(this->prefparts, this->numprefparts,
+    this->prefsheet, this->prefshell);
 } // createPrefSheet()
 
 // *************************************************************************
@@ -514,12 +514,12 @@ SoXtPlaneViewer::createPrefSheet(
 */
 
 int
-SoXtPlaneViewer::findButton( // private
-  Widget widget ) const
+SoXtPlaneViewer::findButton(// private
+  Widget widget) const
 {
   const int buttons = sizeof(SoXtPlaneViewerButtons) / sizeof(SoXtViewerButton);
-  for ( int button = 0; button < buttons; button++ ) {
-    if ( this->buttons[button].bwidget == widget ) return button;
+  for (int button = 0; button < buttons; button++) {
+    if (this->buttons[button].bwidget == widget) return button;
   }
   return -1;
 } // findButton()
@@ -529,26 +529,26 @@ SoXtPlaneViewer::findButton( // private
 */
 
 void
-SoXtPlaneViewer::buttonCB( // static, private
+SoXtPlaneViewer::buttonCB(// static, private
   Widget widget,
   XtPointer closure,
-  XtPointer )
+  XtPointer)
 {
-  assert( closure != NULL );
+  assert(closure != NULL);
   SoXtPlaneViewer * viewer = (SoXtPlaneViewer *) closure;
-  const int idx = viewer->findButton( widget );
-  if ( idx == -1 ) {
-    SoDebugError::post( "SoXtPlaneViewer::buttonCB", "unknown button" );
-  } else if ( strcmp( viewer->buttons[idx].keyword, "x" ) == 0 ) {
+  const int idx = viewer->findButton(widget);
+  if (idx == -1) {
+    SoDebugError::post("SoXtPlaneViewer::buttonCB", "unknown button");
+  } else if (strcmp(viewer->buttons[idx].keyword, "x") == 0) {
     viewer->common->viewPlaneX();
-  } else if ( strcmp( viewer->buttons[idx].keyword, "y" ) == 0 ) {
+  } else if (strcmp(viewer->buttons[idx].keyword, "y") == 0) {
     viewer->common->viewPlaneY();
-  } else if ( strcmp( viewer->buttons[idx].keyword, "z" ) == 0 ) {
+  } else if (strcmp(viewer->buttons[idx].keyword, "z") == 0) {
     viewer->common->viewPlaneZ();
-  } else if ( strcmp( viewer->buttons[idx].keyword, "camera" ) == 0 ) {
+  } else if (strcmp(viewer->buttons[idx].keyword, "camera") == 0) {
     viewer->toggleCameraType();
   } else {
-    SoDebugError::post( "SoXtPlaneViewer::buttonCB", "unsupported button" );
+    SoDebugError::post("SoXtPlaneViewer::buttonCB", "unsupported button");
   }
 } /// camerabuttonCB()
 

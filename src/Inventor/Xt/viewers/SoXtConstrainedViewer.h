@@ -33,10 +33,10 @@ class SOXT_DLL_API SoXtConstrainedViewer : public SoXtFullViewer {
   friend class SoAnyConstrainedViewer;
 
 public:
-  void setUpDirection( const SbVec3f & vector );
+  void setUpDirection(const SbVec3f & vector);
   const SbVec3f & getUpDirection(void) const;
 
-  virtual void setCamera( SoCamera * camera );
+  virtual void setCamera(SoCamera * camera);
   virtual void saveHomePosition(void);
   virtual void resetToHomePosition(void);
   virtual void recomputeSceneSize(void);
@@ -48,18 +48,18 @@ protected:
     SbBool embed,
     SoXtFullViewer::BuildFlag flag,
     SoXtViewer::Type type,
-    SbBool build );
+    SbBool build);
   ~SoXtConstrainedViewer(void);
 
   SbVec3f upDirection;
   float sceneHeight;
 
-  virtual void tiltCamera( float delta );
-  virtual void bottomWheelMotion( float value );
-  virtual void leftWheelMotion( float value );
+  virtual void tiltCamera(float delta);
+  virtual void bottomWheelMotion(float value);
+  virtual void leftWheelMotion(float value);
 
-  virtual void changeCameraValues( SoCamera * camera );
-  void findUpDirection( SbVec2s mousepos );
+  virtual void changeCameraValues(SoCamera * camera);
+  void findUpDirection(SbVec2s mousepos);
   void checkForCameraUpConstrain(void);
   virtual void computeSeekFinalOrientation(void);
 

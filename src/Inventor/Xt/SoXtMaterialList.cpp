@@ -66,25 +66,25 @@ SoXtMaterialList::SoXtMaterialList(
   Widget parent,
   const char * const name,
   SbBool embed,
-  const char * const dir )
-: inherited( parent, name, embed )
+  const char * const dir)
+: inherited(parent, name, embed)
 {
-  this->constructor( dir, TRUE );
+  this->constructor(dir, TRUE);
 } // SoXtMaterialList()
 
 /*!
   Protected constructor.
 */
 
-SoXtMaterialList::SoXtMaterialList( // protected
+SoXtMaterialList::SoXtMaterialList(// protected
   Widget parent,
   const char * const name,
   SbBool embed,
   const char * const dir,
-  SbBool build )
-: inherited( parent, name, embed )
+  SbBool build)
+: inherited(parent, name, embed)
 {
-  this->constructor( dir, build );
+  this->constructor(dir, build);
 } // SoXtMaterialList()
 
 /*!
@@ -92,17 +92,17 @@ SoXtMaterialList::SoXtMaterialList( // protected
 */
 
 void
-SoXtMaterialList::constructor( // private
+SoXtMaterialList::constructor(// private
   const char * const dir,
-  const SbBool build )
+  const SbBool build)
 {
-  this->common = new SoAnyMaterialList( dir );
-  this->setSize( SbVec2s( 200, 300 ) );
+  this->common = new SoAnyMaterialList(dir);
+  this->setSize(SbVec2s(200, 300));
 
-  if ( build ) {
-    this->setClassName( "SoXtMaterialList" );
-    Widget materials = this->buildWidget( this->getParentWidget() );
-    this->setBaseWidget( materials );
+  if (build) {
+    this->setClassName("SoXtMaterialList");
+    Widget materials = this->buildWidget(this->getParentWidget());
+    this->setBaseWidget(materials);
   }
 } // constructor()
 
@@ -111,7 +111,7 @@ SoXtMaterialList::constructor( // private
 */
 
 SoXtMaterialList::~SoXtMaterialList(
-  void )
+  void)
 {
   delete this->common;
 } // ~SoXtMaterialList()
@@ -125,9 +125,9 @@ SoXtMaterialList::~SoXtMaterialList(
 void
 SoXtMaterialList::addCallback(
   SoXtMaterialListCB * const callback,
-  void * const closure )
+  void * const closure)
 {
-  common->addCallback( callback, closure );
+  common->addCallback(callback, closure);
 } // addCallback()
 
 /*!
@@ -137,9 +137,9 @@ SoXtMaterialList::addCallback(
 void
 SoXtMaterialList::removeCallback(
   SoXtMaterialListCB * const callback,
-  void * const closure )
+  void * const closure)
 {
-  common->removeCallback( callback, closure );
+  common->removeCallback(callback, closure);
 } // removeCallback()
 
 // *************************************************************************
@@ -149,8 +149,8 @@ SoXtMaterialList::removeCallback(
 */
 
 const char *
-SoXtMaterialList::getDefaultWidgetName( // virtual, protected
-  void ) const
+SoXtMaterialList::getDefaultWidgetName(// virtual, protected
+  void) const
 {
   static const char defaultWidgetName[] = "SoXtMaterialList";
   return defaultWidgetName;
@@ -161,8 +161,8 @@ SoXtMaterialList::getDefaultWidgetName( // virtual, protected
 */
 
 const char *
-SoXtMaterialList::getDefaultTitle( // virtual, protected
-  void ) const
+SoXtMaterialList::getDefaultTitle(// virtual, protected
+  void) const
 {
   static const char defaultTitle[] = "Material List";
   return defaultTitle;
@@ -173,8 +173,8 @@ SoXtMaterialList::getDefaultTitle( // virtual, protected
 */
 
 const char *
-SoXtMaterialList::getDefaultIconTitle( // virtual, protected
-  void ) const
+SoXtMaterialList::getDefaultIconTitle(// virtual, protected
+  void) const
 {
   static const char defaultIconTitle[] = "Material List";
   return defaultIconTitle;
@@ -187,35 +187,35 @@ SoXtMaterialList::getDefaultIconTitle( // virtual, protected
 */
 
 Widget
-SoXtMaterialList::buildWidget( // protected
-  Widget parent )
+SoXtMaterialList::buildWidget(// protected
+  Widget parent)
 {
   // we're building pulldown menu automatically...
-  Widget root = XtVaCreateManagedWidget( this->getClassName(),
+  Widget root = XtVaCreateManagedWidget(this->getClassName(),
     xmFormWidgetClass, parent,
-    NULL );
+    NULL);
 
-  Widget menubar = XtVaCreateManagedWidget( "menubar",
+  Widget menubar = XtVaCreateManagedWidget("menubar",
     xmRowColumnWidgetClass, root,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_FORM,
     XmNrowColumnType, XmMENU_BAR,
-    NULL );
+    NULL);
 
-  Widget palettemenu = this->buildPulldownMenu( menubar );
+  Widget palettemenu = this->buildPulldownMenu(menubar);
 
   SoXtMaterialDirectory * dir = common->getMaterialDirectory();
 
   int group, materials;
   XmStringTable list;
-  if ( dir->numGroups > 0 ) {
+  if (dir->numGroups > 0) {
     group = dir->current;
     materials = dir->groups[group]->numMaterials;
-    list = (XmStringTable) XtMalloc( sizeof(XmString) * materials );
-    for ( int i = 0; i < materials; i++ )
+    list = (XmStringTable) XtMalloc(sizeof(XmString) * materials);
+    for (int i = 0; i < materials; i++)
       list[i] =
-        SoXt::encodeString( dir->groups[group]->materials[i]->name );
+        SoXt::encodeString(dir->groups[group]->materials[i]->name);
   } else {
     materials = 0;
     list = NULL;
@@ -223,23 +223,23 @@ SoXtMaterialList::buildWidget( // protected
 
   Arg argv[10];
   int argc = 0;
-  XtSetArg( argv[argc], XmNleftAttachment, XmATTACH_FORM ); argc++;
-  XtSetArg( argv[argc], XmNtopAttachment, XmATTACH_WIDGET ); argc++;
-  XtSetArg( argv[argc], XmNtopWidget, menubar ); argc++;
-  XtSetArg( argv[argc], XmNrightAttachment, XmATTACH_FORM ); argc++;
-  XtSetArg( argv[argc], XmNbottomAttachment, XmATTACH_FORM ); argc++;
-  XtSetArg( argv[argc], XmNselectionPolicy, XmSINGLE_SELECT ); argc++;
-  XtSetArg( argv[argc], XmNscrollBarDisplayPolicy, XmSTATIC ); argc++;
-  XtSetArg( argv[argc], XmNitems, list ); argc++;
-  XtSetArg( argv[argc], XmNitemCount, materials ); argc++;
+  XtSetArg(argv[argc], XmNleftAttachment, XmATTACH_FORM); argc++;
+  XtSetArg(argv[argc], XmNtopAttachment, XmATTACH_WIDGET); argc++;
+  XtSetArg(argv[argc], XmNtopWidget, menubar); argc++;
+  XtSetArg(argv[argc], XmNrightAttachment, XmATTACH_FORM); argc++;
+  XtSetArg(argv[argc], XmNbottomAttachment, XmATTACH_FORM); argc++;
+  XtSetArg(argv[argc], XmNselectionPolicy, XmSINGLE_SELECT); argc++;
+  XtSetArg(argv[argc], XmNscrollBarDisplayPolicy, XmSTATIC); argc++;
+  XtSetArg(argv[argc], XmNitems, list); argc++;
+  XtSetArg(argv[argc], XmNitemCount, materials); argc++;
 
-  this->listwidget = XmCreateScrolledList( root, "materials", argv, argc );
-  XtManageChild( this->listwidget );
-  XtAddCallback( this->listwidget, XmNdefaultActionCallback,
-    SoXtMaterialList::selection_cb, (XtPointer) this );
-  for ( int i = 0; i < materials; i++ )
-    XmStringFree( list[i] );
-  XtFree( (char *) list );
+  this->listwidget = XmCreateScrolledList(root, "materials", argv, argc);
+  XtManageChild(this->listwidget);
+  XtAddCallback(this->listwidget, XmNdefaultActionCallback,
+    SoXtMaterialList::selection_cb, (XtPointer) this);
+  for (int i = 0; i < materials; i++)
+    XmStringFree(list[i]);
+  XtFree((char *) list);
   return root;
 } // buildWidget()
 
@@ -251,47 +251,47 @@ SoXtMaterialList::buildWidget( // protected
 */
 
 void
-SoXtMaterialList::selectionCallback( // private
-  int materialid )
+SoXtMaterialList::selectionCallback(// private
+  int materialid)
 {
   materialid--; // get index
   SoXtMaterialDirectory * data = common->getMaterialDirectory();
 
-  assert( materialid >= 0 &&
-          materialid < data->groups[data->current]->numMaterials );
+  assert(materialid >= 0 &&
+          materialid < data->groups[data->current]->numMaterials);
   const char * materialdata =
     data->groups[data->current]->materials[materialid]->data;
 
   SoInput reader;
-  if ( data->flags & SOXT_BUILTIN_MATERIALS ) {
-    reader.setBuffer( (void *) materialdata, strlen(materialdata) );
+  if (data->flags & SOXT_BUILTIN_MATERIALS) {
+    reader.setBuffer((void *) materialdata, strlen(materialdata));
   } else {
-    if ( ! reader.openFile( materialdata, FALSE ) ) {
-      SoDebugError::postWarning( "SoXtMaterialList::selectionCallback",
-        "could not open file: \"%s\"", materialdata );
+    if (! reader.openFile(materialdata, FALSE)) {
+      SoDebugError::postWarning("SoXtMaterialList::selectionCallback",
+        "could not open file: \"%s\"", materialdata);
       return;
     }
   }
 
   SoNode * material = NULL;
-  if ( ! SoDB::read( &reader, material ) ) {
-    SoDebugError::postWarning( "SoXtMaterialList::selectionCallback",
-      "failed to read material" );
+  if (! SoDB::read(&reader, material)) {
+    SoDebugError::postWarning("SoXtMaterialList::selectionCallback",
+      "failed to read material");
     return;
   }
-  if ( ! material ) {
-    SoDebugError::postWarning( "SoXtMaterialList::selectionCallback",
-      "read returned no data" );
+  if (! material) {
+    SoDebugError::postWarning("SoXtMaterialList::selectionCallback",
+      "read returned no data");
     return;
   }
   material->ref();
-  if ( ! material->isOfType( SoMaterial::getClassTypeId() ) ) {
-    SoDebugError::postWarning( "SoXtMaterialList::selectionCallback",
-      "not a material node!" );
+  if (! material->isOfType(SoMaterial::getClassTypeId())) {
+    SoDebugError::postWarning("SoXtMaterialList::selectionCallback",
+      "not a material node!");
     material->unref();
     return;
   }
-  common->invokeCallbacks( (SoMaterial *) material );
+  common->invokeCallbacks((SoMaterial *) material);
   material->unref();
 } // selectionCallback()
 
@@ -301,14 +301,14 @@ SoXtMaterialList::selectionCallback( // private
 */
 
 void
-SoXtMaterialList::selection_cb( // static, private
+SoXtMaterialList::selection_cb(// static, private
   Widget,
   XtPointer closure,
-  XtPointer call_data )
+  XtPointer call_data)
 {
   SoXtMaterialList * component = (SoXtMaterialList *) closure;
   XmListCallbackStruct * data = (XmListCallbackStruct *) call_data;
-  component->selectionCallback( data->item_position );
+  component->selectionCallback(data->item_position);
 } // selection_cb()
 
 // *************************************************************************
@@ -319,24 +319,24 @@ SoXtMaterialList::selection_cb( // static, private
 */
 
 void
-SoXtMaterialList::paletteMenuCallback( // private
-  Widget menuitem )
+SoXtMaterialList::paletteMenuCallback(// private
+  Widget menuitem)
 {
   SoXtMaterialDirectory * data = common->getMaterialDirectory();
   int i, j;
-  for ( i = 0; i < data->numGroups; i++ ) {
-    if ( data->groups[i]->menuitem == menuitem ) {
-      XmStringTable list = (XmStringTable) XtMalloc( sizeof(XmString) *
-        data->groups[i]->numMaterials );
-      for ( j = 0; j < data->groups[i]->numMaterials; j++ )
-        list[j] = SoXt::encodeString( data->groups[i]->materials[j]->name );
-      XtVaSetValues( this->listwidget,
+  for (i = 0; i < data->numGroups; i++) {
+    if (data->groups[i]->menuitem == menuitem) {
+      XmStringTable list = (XmStringTable) XtMalloc(sizeof(XmString) *
+        data->groups[i]->numMaterials);
+      for (j = 0; j < data->groups[i]->numMaterials; j++)
+        list[j] = SoXt::encodeString(data->groups[i]->materials[j]->name);
+      XtVaSetValues(this->listwidget,
         XmNitemCount, data->groups[i]->numMaterials,
         XmNitems, list,
-        NULL );
-      for ( j = 0; j < data->groups[i]->numMaterials; j++ )
-        XmStringFree( list[j] );
-      XtFree( (char *) list );
+        NULL);
+      for (j = 0; j < data->groups[i]->numMaterials; j++)
+        XmStringFree(list[j]);
+      XtFree((char *) list);
       data->current = i;
       return;
     }
@@ -349,14 +349,14 @@ SoXtMaterialList::paletteMenuCallback( // private
 */
 
 void
-SoXtMaterialList::palette_menu_cb( // static, private
+SoXtMaterialList::palette_menu_cb(// static, private
   Widget widget,
   XtPointer closure,
-  XtPointer )
+  XtPointer)
 {
-  assert( closure != NULL );
+  assert(closure != NULL);
   SoXtMaterialList * component = (SoXtMaterialList *) closure;
-  component->paletteMenuCallback( widget );
+  component->paletteMenuCallback(widget);
 } /* palette_menu_cb */
 
 // *************************************************************************
@@ -369,44 +369,44 @@ SoXtMaterialList::palette_menu_cb( // static, private
 */
 
 Widget
-SoXtMaterialList::buildPulldownMenu( // protected
-  Widget parent )
+SoXtMaterialList::buildPulldownMenu(// protected
+  Widget parent)
 {
-  Widget palettes = XtVaCreateManagedWidget( "palettes",
+  Widget palettes = XtVaCreateManagedWidget("palettes",
     xmCascadeButtonGadgetClass, parent,
     XtVaTypedArg,
       XmNlabelString, XmRString,
       "Palettes", sizeof("Palettes") + 1,
-    NULL );
+    NULL);
 
-  Widget shell = SoXt::getShellWidget( parent );
-  assert( shell != (Widget) NULL );
+  Widget shell = SoXt::getShellWidget(parent);
+  assert(shell != (Widget) NULL);
 
   Visual * visual;
   Colormap colormap;
   int depth;
 
-  XtVaGetValues( shell,
+  XtVaGetValues(shell,
     XmNvisual, &visual,
     XmNcolormap, &colormap,
     XmNdepth, &depth,
-    NULL );
+    NULL);
 
   Widget menu =
-    XmVaCreateSimplePulldownMenu( parent, "materialsmenu", 0, NULL, NULL );
+    XmVaCreateSimplePulldownMenu(parent, "materialsmenu", 0, NULL, NULL);
 
   SoXtMaterialDirectory * data = common->getMaterialDirectory();
-  for ( int i = 0; i < data->numGroups; i++ ) {
+  for (int i = 0; i < data->numGroups; i++) {
     Widget item;
-    item = XtVaCreateManagedWidget( data->groups[i]->name,
+    item = XtVaCreateManagedWidget(data->groups[i]->name,
              xmPushButtonGadgetClass, menu,
              XtVaTypedArg,
                XmNlabelString, XmRString,
-               data->groups[i]->name, strlen( data->groups[i]->name ) + 1,
-             NULL );
+               data->groups[i]->name, strlen(data->groups[i]->name) + 1,
+             NULL);
     data->groups[i]->menuitem = item;
-    XtAddCallback( item, XmNactivateCallback,
-      SoXtMaterialList::palette_menu_cb, (XtPointer) this );
+    XtAddCallback(item, XmNactivateCallback,
+      SoXtMaterialList::palette_menu_cb, (XtPointer) this);
   }
 
   return palettes;

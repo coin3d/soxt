@@ -114,28 +114,28 @@ SoXtExaminerViewer::SoXtExaminerViewer(
   const char * name,
   SbBool embed,
   SoXtFullViewer::BuildFlag flag,
-  SoXtViewer::Type type )
-: inherited( parent, name, embed, flag, type, FALSE )
-, common( new SoAnyExaminerViewer( this ) )
+  SoXtViewer::Type type)
+: inherited(parent, name, embed, flag, type, FALSE)
+, common(new SoAnyExaminerViewer(this))
 {
-  this->constructor( TRUE );
+  this->constructor(TRUE);
 } // SoXtExaminerViewer()
 
 /*!
   Protected constructor for derived viewers.
 */
 
-SoXtExaminerViewer::SoXtExaminerViewer( // protected
+SoXtExaminerViewer::SoXtExaminerViewer(// protected
   Widget parent,
   const char * name,
   SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type,
-  SbBool build )
-: inherited( parent, name, embed, flag, type, FALSE )
-, common( new SoAnyExaminerViewer( this ) )
+  SbBool build)
+: inherited(parent, name, embed, flag, type, FALSE)
+, common(new SoAnyExaminerViewer(this))
 {
-  this->constructor( build );
+  this->constructor(build);
 } // SoXtExaminerViewer()
 
 /*!
@@ -143,26 +143,26 @@ SoXtExaminerViewer::SoXtExaminerViewer( // protected
 */
 
 void
-SoXtExaminerViewer::constructor( // private
-  const SbBool build )
+SoXtExaminerViewer::constructor(// private
+  const SbBool build)
 {
 //  this->prefshell = this->prefsheet = (Widget) NULL;
   this->prefparts = NULL;
   this->numprefparts = 0;
 
-  this->setClassName( this->getWidgetName() );
+  this->setClassName(this->getWidgetName());
   this->camerabutton = (Widget) NULL;
 
-  if ( build ) {
-    Widget viewer = this->buildWidget( this->getParentWidget() );
-    this->setBaseWidget( viewer );
-    this->fitSize( SbVec2s( 500, 300 ) );
+  if (build) {
+    Widget viewer = this->buildWidget(this->getParentWidget());
+    this->setBaseWidget(viewer);
+    this->fitSize(SbVec2s(500, 300));
 
     char * dollyString = NULL;
-    SoXtResource rsc( this->getRightWheelLabelWidget() );
-    if ( rsc.getResource( "dollyString", XmRString, dollyString ) &&
-         dollyString != NULL )
-      this->setRightWheelString( dollyString );
+    SoXtResource rsc(this->getRightWheelLabelWidget());
+    if (rsc.getResource("dollyString", XmRString, dollyString) &&
+         dollyString != NULL)
+      this->setRightWheelString(dollyString);
   }
   this->mapped = FALSE; // ?
 } // constructor()
@@ -172,7 +172,7 @@ SoXtExaminerViewer::constructor( // private
 */
 
 SoXtExaminerViewer::~SoXtExaminerViewer(
-  void )
+  void)
 {
   delete this->common;
   delete [] this->prefparts;
@@ -188,11 +188,11 @@ SoXtExaminerViewer::~SoXtExaminerViewer(
 */
 
 SbBool
-SoXtExaminerViewer::processSoEvent( // virtual
-  const SoEvent * const event )
+SoXtExaminerViewer::processSoEvent(// virtual
+  const SoEvent * const event)
 {
-  if ( common->processSoEvent(event) ) return TRUE;
-  if ( inherited::processSoEvent(event) ) return TRUE;
+  if (common->processSoEvent(event)) return TRUE;
+  if (inherited::processSoEvent(event)) return TRUE;
   return FALSE;
 } // processSoEvent()
 
@@ -203,12 +203,12 @@ SoXtExaminerViewer::processSoEvent( // virtual
 
 void
 SoXtExaminerViewer::processEvent(
-  XAnyEvent * event )
+  XAnyEvent * event)
 {
-// if ( SoXtViewer::processCommonEvents( event ) )
+// if (SoXtViewer::processCommonEvents(event))
 //   return; // handled in SoXtViewer
 
-  inherited::processEvent( event );
+  inherited::processEvent(event);
   return;
 } // processEvent()
 
@@ -219,10 +219,10 @@ SoXtExaminerViewer::processEvent(
 */
 
 void
-SoXtExaminerViewer::leftWheelStart( // virtual, protected
-  void )
+SoXtExaminerViewer::leftWheelStart(// virtual, protected
+  void)
 {
-  if ( common->isAnimating() )
+  if (common->isAnimating())
     common->stopAnimating();
   inherited::leftWheelStart();
 } // leftWheelStart()
@@ -232,11 +232,11 @@ SoXtExaminerViewer::leftWheelStart( // virtual, protected
 */
 
 void
-SoXtExaminerViewer::leftWheelMotion( // virtual, protected
-  float value )
+SoXtExaminerViewer::leftWheelMotion(// virtual, protected
+  float value)
 {
   inherited::leftWheelMotion(
-    common->rotXWheelMotion( value, this->getLeftWheelValue() ) );
+    common->rotXWheelMotion(value, this->getLeftWheelValue()));
 } // leftWheelMotion()
 
 /*!
@@ -244,10 +244,10 @@ SoXtExaminerViewer::leftWheelMotion( // virtual, protected
 */
 
 void
-SoXtExaminerViewer::bottomWheelStart( // virtual, protected
-  void )
+SoXtExaminerViewer::bottomWheelStart(// virtual, protected
+  void)
 {
-  if ( common->isAnimating() )
+  if (common->isAnimating())
     common->stopAnimating();
   inherited::bottomWheelStart();
 } // bottomWheelStart()
@@ -257,11 +257,11 @@ SoXtExaminerViewer::bottomWheelStart( // virtual, protected
 */
 
 void
-SoXtExaminerViewer::bottomWheelMotion( // virtual, protected
-  float value )
+SoXtExaminerViewer::bottomWheelMotion(// virtual, protected
+  float value)
 {
   inherited::bottomWheelMotion(
-    common->rotYWheelMotion( value, this->getBottomWheelValue() ) );
+    common->rotYWheelMotion(value, this->getBottomWheelValue()));
 } // bottomWheelMotion()
 
 /*!
@@ -269,11 +269,11 @@ SoXtExaminerViewer::bottomWheelMotion( // virtual, protected
 */
 
 void
-SoXtExaminerViewer::rightWheelMotion( // virtual, protected
-  float value )
+SoXtExaminerViewer::rightWheelMotion(// virtual, protected
+  float value)
 {
-  common->zoom( this->getRightWheelValue() - value );
-  inherited::rightWheelMotion( value );
+  common->zoom(this->getRightWheelValue() - value);
+  inherited::rightWheelMotion(value);
 } // rightWheelMotion()
 
 // *************************************************************************
@@ -284,7 +284,7 @@ SoXtExaminerViewer::rightWheelMotion( // virtual, protected
 
 const char *
 SoXtExaminerViewer::getDefaultWidgetName(
-  void ) const
+  void) const
 {
   static const char defaultWidgetName[] = "SoXtExaminerViewer";
   return defaultWidgetName;
@@ -296,7 +296,7 @@ SoXtExaminerViewer::getDefaultWidgetName(
 
 const char *
 SoXtExaminerViewer::getDefaultTitle(
-  void ) const
+  void) const
 {
   static const char defaultTitle[] = "Examiner Viewer";
   return defaultTitle;
@@ -308,7 +308,7 @@ SoXtExaminerViewer::getDefaultTitle(
 
 const char *
 SoXtExaminerViewer::getDefaultIconTitle(
-  void ) const
+  void) const
 {
   static const char defaultIconTitle[] = "Examiner Viewer";
   return defaultIconTitle;
@@ -322,9 +322,9 @@ SoXtExaminerViewer::getDefaultIconTitle(
 
 void
 SoXtExaminerViewer::openViewerHelpCard(
-  void )
+  void)
 {
-  this->openHelpCard( "SoXtExaminerViewer.help" );
+  this->openHelpCard("SoXtExaminerViewer.help");
 } // openViewerHelpCard()
 
 // *************************************************************************
@@ -335,13 +335,13 @@ SoXtExaminerViewer::openViewerHelpCard(
 */
 
 void
-SoXtExaminerViewer::setViewing( // virtual
-  SbBool enable )
+SoXtExaminerViewer::setViewing(// virtual
+  SbBool enable)
 {
-  this->common->setMode( enable ?
+  this->common->setMode(enable ?
                          SoAnyExaminerViewer::EXAMINE :
-                         SoAnyExaminerViewer::INTERACT );
-  inherited::setViewing( enable );
+                         SoAnyExaminerViewer::INTERACT);
+  inherited::setViewing(enable);
 } // setViewing()
 
 // *************************************************************************
@@ -353,7 +353,7 @@ SoXtExaminerViewer::setViewing( // virtual
 */
 
 void
-SoXtExaminerViewer::setCursorRepresentation( int mode )
+SoXtExaminerViewer::setCursorRepresentation(int mode)
 {
   // FIXME: the cursor handling is just a hack at the moment, but the
   // design layout matches that of SoQtExaminerViewer and is looking
@@ -364,9 +364,9 @@ SoXtExaminerViewer::setCursorRepresentation( int mode )
 
 
   // Don't try to actually set cursor before window has been mapped.
-  if ( ! this->mapped ) return;
+  if (! this->mapped) return;
 
-  if ( ! this->isCursorEnabled() ) {
+  if (! this->isCursorEnabled()) {
     // FIXME: set blank bitmap for cursor (or disable it through X11
     // call?). 20000426 mortene.
     return;
@@ -374,11 +374,11 @@ SoXtExaminerViewer::setCursorRepresentation( int mode )
 
   Display * display = this->getDisplay();
 
-  switch ( mode ) {
+  switch (mode) {
   case SoAnyExaminerViewer::EXAMINE:
   case SoAnyExaminerViewer::DRAGGING:
-    this->cursor = XCreateFontCursor( display, XC_hand2 );
-    XDefineCursor( display, XtWindow( this->glxWidget ), this->cursor );
+    this->cursor = XCreateFontCursor(display, XC_hand2);
+    XDefineCursor(display, XtWindow(this->glxWidget), this->cursor);
     break;
 
   case SoAnyExaminerViewer::INTERACT:
@@ -386,18 +386,18 @@ SoXtExaminerViewer::setCursorRepresentation( int mode )
   case SoAnyExaminerViewer::WAITING_FOR_SEEK:
   case SoAnyExaminerViewer::WAITING_FOR_PAN:
   case SoAnyExaminerViewer::PANNING:
-    XUndefineCursor( display, XtWindow( this->glxWidget ) );
+    XUndefineCursor(display, XtWindow(this->glxWidget));
     break;
 
   default: SOXT_STUB(); break;
   }
 
 #if 0
-  Colormap cmap( DefaultColormap( display, DefaultScreen( display ) ) );
+  Colormap cmap(DefaultColormap(display, DefaultScreen(display)));
   XColor redcol, whitecol, unused;
-  XAllocNamedColor( display, cmap, "red", &redcol, &unused );
-  XAllocNamedColor( display, cmap, "white",  &whitecol, &unused );
-  XRecolorCursor( display, this->cursor, &redcol, &whitecol );
+  XAllocNamedColor(display, cmap, "red", &redcol, &unused);
+  XAllocNamedColor(display, cmap, "white",  &whitecol, &unused);
+  XRecolorCursor(display, this->cursor, &redcol, &whitecol);
 #endif
 } // setCursorRepresentation()
 
@@ -408,32 +408,32 @@ SoXtExaminerViewer::setCursorRepresentation( int mode )
 */
 
 void
-SoXtExaminerViewer::createViewerButtons( // virtual
+SoXtExaminerViewer::createViewerButtons(// virtual
   Widget parent,
-  SbPList * buttonlist )
+  SbPList * buttonlist)
 {
-  assert( this->camerabutton == (Widget) NULL );
+  assert(this->camerabutton == (Widget) NULL);
 
-  inherited::createViewerButtons( parent, buttonlist );
+  inherited::createViewerButtons(parent, buttonlist);
 
-  this->camerabutton = XtVaCreateManagedWidget( "C",
+  this->camerabutton = XtVaCreateManagedWidget("C",
     xmPushButtonWidgetClass, parent,
-    NULL );
+    NULL);
 
-  XtAddCallback( this->camerabutton,
-    XmNdisarmCallback, SoXtExaminerViewer::camerabuttonCB, this );
+  XtAddCallback(this->camerabutton,
+    XmNdisarmCallback, SoXtExaminerViewer::camerabuttonCB, this);
 
-  buttonlist->append( this->camerabutton );
+  buttonlist->append(this->camerabutton);
 
 #if HAVE_LIBXPM
   this->camerapixmaps.ortho =
-    createPixmapFromXpmData( this->camerabutton, ortho_xpm );
+    createPixmapFromXpmData(this->camerabutton, ortho_xpm);
   this->camerapixmaps.ortho_ins =
-    createInsensitivePixmapFromXpmData( this->camerabutton, ortho_xpm );
+    createInsensitivePixmapFromXpmData(this->camerabutton, ortho_xpm);
   this->camerapixmaps.perspective =
-    createPixmapFromXpmData( this->camerabutton, perspective_xpm );
+    createPixmapFromXpmData(this->camerabutton, perspective_xpm);
   this->camerapixmaps.perspective_ins =
-    createInsensitivePixmapFromXpmData( this->camerabutton, perspective_xpm );
+    createInsensitivePixmapFromXpmData(this->camerabutton, perspective_xpm);
 #endif // HAVE_LIBXPM
 
 } // createViewerButtons()
@@ -446,7 +446,7 @@ SoXtExaminerViewer::createViewerButtons( // virtual
 
 void
 SoXtExaminerViewer::camerabuttonClicked(
-  void )
+  void)
 {
   this->toggleCameraType();
 } // camerabuttonClicked()
@@ -458,10 +458,10 @@ SoXtExaminerViewer::camerabuttonClicked(
 */
 
 void
-SoXtExaminerViewer::camerabuttonCB( // static
+SoXtExaminerViewer::camerabuttonCB(// static
   Widget w,
   XtPointer client_data,
-  XtPointer call_data )
+  XtPointer call_data)
 {
   SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) client_data;
   viewer->camerabuttonClicked();
@@ -474,36 +474,36 @@ SoXtExaminerViewer::camerabuttonCB( // static
 */
 
 void
-SoXtExaminerViewer::setCamera( // virtual
-  SoCamera * camera )
+SoXtExaminerViewer::setCamera(// virtual
+  SoCamera * camera)
 {
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXtExaminerViewer::setCamera", "[enter]" );
+  SoDebugError::postInfo("SoXtExaminerViewer::setCamera", "[enter]");
 #endif // SOXT_DEBUG
   Pixmap pixmap, pixmap_ins;
-  if ( camera == NULL ) {
+  if (camera == NULL) {
     // find better pixmaps for this...
     pixmap = this->camerapixmaps.ortho;
     pixmap_ins = this->camerapixmaps.ortho_ins;
-  } else if ( camera->isOfType( SoPerspectiveCamera::getClassTypeId() ) ) {
+  } else if (camera->isOfType(SoPerspectiveCamera::getClassTypeId())) {
     pixmap = this->camerapixmaps.perspective;
     pixmap_ins = this->camerapixmaps.perspective_ins;
-    SoXtResource rsc( this->getRightWheelLabelWidget() );
+    SoXtResource rsc(this->getRightWheelLabelWidget());
     char * dollyString = NULL;
-    if ( rsc.getResource( "dollyString", XmRString, dollyString ) &&
-         dollyString != NULL )
-      this->setRightWheelString( dollyString );
-  } else if ( camera->isOfType( SoOrthographicCamera::getClassTypeId() ) ) {
+    if (rsc.getResource("dollyString", XmRString, dollyString) &&
+         dollyString != NULL)
+      this->setRightWheelString(dollyString);
+  } else if (camera->isOfType(SoOrthographicCamera::getClassTypeId())) {
     pixmap = this->camerapixmaps.ortho;
     pixmap_ins = this->camerapixmaps.ortho_ins;
-    SoXtResource rsc( this->getRightWheelLabelWidget() );
+    SoXtResource rsc(this->getRightWheelLabelWidget());
     char * zoomString = NULL;
-    if ( rsc.getResource( "zoomString", XmRString, zoomString ) &&
-         zoomString != NULL )
-      this->setRightWheelString( zoomString );
+    if (rsc.getResource("zoomString", XmRString, zoomString) &&
+         zoomString != NULL)
+      this->setRightWheelString(zoomString);
   } else {
-    SoDebugError::postWarning( "SoXtExaminerViewer::setCamera",
-      "unknown camera type - got no pixmap" );
+    SoDebugError::postWarning("SoXtExaminerViewer::setCamera",
+      "unknown camera type - got no pixmap");
     // find better pixmaps for this...
     pixmap = this->camerapixmaps.ortho;
     pixmap_ins = this->camerapixmaps.ortho_ins;
@@ -511,37 +511,37 @@ SoXtExaminerViewer::setCamera( // virtual
 
 #if HAVE_LIBXPM
   SbBool extra = FALSE;
-  if ( XtIsRealized( this->camerabutton ) ) {
+  if (XtIsRealized(this->camerabutton)) {
     extra = TRUE;
   }
   extra = FALSE;
 
-  if ( extra ) {
-    XtUnmapWidget( this->camerabutton );
-    XtUnrealizeWidget( this->camerabutton );
+  if (extra) {
+    XtUnmapWidget(this->camerabutton);
+    XtUnrealizeWidget(this->camerabutton);
   }
-  if ( pixmap ) {
-    XtVaSetValues( this->camerabutton,
+  if (pixmap) {
+    XtVaSetValues(this->camerabutton,
       XmNlabelType, XmPIXMAP,
       XmNlabelPixmap, pixmap,
       XmNselectPixmap, pixmap,
       XmNlabelInsensitivePixmap, pixmap_ins,
       XmNselectInsensitivePixmap, pixmap_ins,
-      NULL );
-    XtVaSetValues( this->camerabutton,
+      NULL);
+    XtVaSetValues(this->camerabutton,
       XmNwidth, 30,
       XmNheight, 30,
-      NULL );
+      NULL);
   }
-  if ( extra ) {
-    XtRealizeWidget( this->camerabutton );
-    XtMapWidget( this->camerabutton );
+  if (extra) {
+    XtRealizeWidget(this->camerabutton);
+    XtMapWidget(this->camerabutton);
   }
 #endif // HAVE_LIBXPM
 
-  inherited::setCamera( camera );
+  inherited::setCamera(camera);
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXtExaminerViewer::setCamera", "[exit]" );
+  SoDebugError::postInfo("SoXtExaminerViewer::setCamera", "[exit]");
 #endif // SOXT_DEBUG
 } // setCamera()
 
@@ -553,22 +553,22 @@ SoXtExaminerViewer::setCamera( // virtual
 
 void
 SoXtExaminerViewer::setSeekMode(
-  SbBool enable )
+  SbBool enable)
 {
 #if SOXT_DEBUG
-  if ( enable == this->isSeekMode() ) {
-    SoDebugError::postWarning( "SoXtExaminerViewer::setSeekMode",
-      "seek mode already %sset", enable ? "" : "un" );
+  if (enable == this->isSeekMode()) {
+    SoDebugError::postWarning("SoXtExaminerViewer::setSeekMode",
+      "seek mode already %sset", enable ? "" : "un");
     return;
   }
 #endif // SOXT_DEBUG
 
-  if ( common->isAnimating() )
+  if (common->isAnimating())
     common->stopAnimating();
-  inherited::setSeekMode( enable );
-  this->common->setMode( enable ?
+  inherited::setSeekMode(enable);
+  this->common->setMode(enable ?
                          SoAnyExaminerViewer::WAITING_FOR_SEEK :
-                         SoAnyExaminerViewer::EXAMINE );
+                         SoAnyExaminerViewer::EXAMINE);
 } // setSeekMode()
 
 // *************************************************************************
@@ -579,18 +579,18 @@ SoXtExaminerViewer::setSeekMode(
 */
 
 void
-SoXtExaminerViewer::actualRedraw( // virtual
-  void )
+SoXtExaminerViewer::actualRedraw(// virtual
+  void)
 {
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXtDebugError::actualRedraw()", "[invoked]" );
+  SoDebugError::postInfo("SoXtDebugError::actualRedraw()", "[invoked]");
 #endif // SOXT_DEBUG
 
   common->actualRedraw();               // spinanimation preparation
   inherited::actualRedraw();            // actual scene rendering
-  if ( common->isFeedbackVisible() )    // extra dingbats
+  if (common->isFeedbackVisible())    // extra dingbats
     common->drawAxisCross();
-  if ( common->isAnimating() )          // animation
+  if (common->isAnimating())          // animation
     this->scheduleRedraw();
 } // actualRedraw()
 
@@ -602,18 +602,18 @@ SoXtExaminerViewer::actualRedraw( // virtual
 
 void
 SoXtExaminerViewer::setAnimationEnabled(
-  const SbBool enable )
+  const SbBool enable)
 {
-  common->setAnimationEnabled( enable );
-  if ( this->spinanimtoggle ) {
+  common->setAnimationEnabled(enable);
+  if (this->spinanimtoggle) {
     Boolean enabled = False;
-    XtVaGetValues( this->spinanimtoggle,
+    XtVaGetValues(this->spinanimtoggle,
       XmNset, &enabled,
-      NULL );
-    if ( enable != enabled )
-      XtVaSetValues( this->spinanimtoggle,
+      NULL);
+    if (enable != enabled)
+      XtVaSetValues(this->spinanimtoggle,
         XmNset, enable ? True : False,
-        NULL );
+        NULL);
   }
 } // setAnimationEnabled()
 
@@ -623,7 +623,7 @@ SoXtExaminerViewer::setAnimationEnabled(
 
 SbBool
 SoXtExaminerViewer::isAnimationEnabled(
-  void ) const
+  void) const
 {
   return common->isAnimationEnabled();
 } // isAnimationEnabled()
@@ -634,7 +634,7 @@ SoXtExaminerViewer::isAnimationEnabled(
 
 void
 SoXtExaminerViewer::stopAnimating(
-  void )
+  void)
 {
   common->stopAnimating();
 } // stopAnimating()
@@ -645,7 +645,7 @@ SoXtExaminerViewer::stopAnimating(
 
 SbBool
 SoXtExaminerViewer::isAnimating(
-  void ) const
+  void) const
 {
   return common->isAnimating();
 } // isAnimating()
@@ -656,9 +656,9 @@ SoXtExaminerViewer::isAnimating(
 
 void
 SoXtExaminerViewer::setFeedbackVisibility(
-  const SbBool enable )
+  const SbBool enable)
 {
-  common->setFeedbackVisibility( enable );
+  common->setFeedbackVisibility(enable);
 } // setFeedbackVisibility()
 
 /*!
@@ -667,7 +667,7 @@ SoXtExaminerViewer::setFeedbackVisibility(
 
 SbBool
 SoXtExaminerViewer::isFeedbackVisible(
-  void ) const
+  void) const
 {
   return common->isFeedbackVisible();
 } // isFeedbackVisible()
@@ -678,15 +678,15 @@ SoXtExaminerViewer::isFeedbackVisible(
 
 void
 SoXtExaminerViewer::setFeedbackSize(
-  const int size )
+  const int size)
 {
-  if ( this->axessizefield ) {
+  if (this->axessizefield) {
     char buf[8];
-    sprintf( buf, "%d", size );
-    XmTextSetString( this->axessizefield, buf );
-    XmTextSetCursorPosition( this->axessizefield, (long) strlen(buf) );
+    sprintf(buf, "%d", size);
+    XmTextSetString(this->axessizefield, buf);
+    XmTextSetCursorPosition(this->axessizefield, (long) strlen(buf));
   }
-  common->setFeedbackSize( size );
+  common->setFeedbackSize(size);
 } // setFeedbackSize()
 
 /*!
@@ -695,7 +695,7 @@ SoXtExaminerViewer::setFeedbackSize(
 
 int
 SoXtExaminerViewer::getFeedbackSize(
-  void ) const
+  void) const
 {
   return common->getFeedbackSize();
 } // getFeedbackSize()
@@ -707,34 +707,34 @@ SoXtExaminerViewer::getFeedbackSize(
 */
 
 void
-SoXtExaminerViewer::createPrefSheet( // protected, virtual
-  void )
+SoXtExaminerViewer::createPrefSheet(// protected, virtual
+  void)
 {
-  if ( ! this->prefshell ) {
+  if (! this->prefshell) {
 #if SOXT_DEBUG && 0
-    SoDebugError::postInfo( "SoXtExaminerViewer::createPrefSheet",
-      "creating preferences window" );
+    SoDebugError::postInfo("SoXtExaminerViewer::createPrefSheet",
+      "creating preferences window");
 #endif // SOXT_DEBUG
     this->prefparts = new Widget [ 16 ];
-    this->createPrefSheetShellAndForm( this->prefshell, this->prefsheet );
-    this->createDefaultPrefSheetParts( this->prefparts, this->numprefparts,
-      this->prefsheet );
+    this->createPrefSheetShellAndForm(this->prefshell, this->prefsheet);
+    this->createDefaultPrefSheetParts(this->prefparts, this->numprefparts,
+      this->prefsheet);
 #if SOXT_DEBUG && 0
-    SoDebugError::postInfo( "SoXtExaminerViewer::createPrefSheet",
-      "numparts = %d", this->numprefparts );
+    SoDebugError::postInfo("SoXtExaminerViewer::createPrefSheet",
+      "numparts = %d", this->numprefparts);
 #endif // SOXT_DEBUG
 
     // add parts specific for derived viewer
     this->prefparts[this->numprefparts] =
-      this->createFramedSpinAnimPrefSheetGuts( this->prefsheet );
-    if ( this->prefparts[this->numprefparts] != NULL ) this->numprefparts++;
+      this->createFramedSpinAnimPrefSheetGuts(this->prefsheet);
+    if (this->prefparts[this->numprefparts] != NULL) this->numprefparts++;
 
     this->prefparts[this->numprefparts] =
-      this->createFramedRotAxisPrefSheetGuts( this->prefsheet );
-    if ( this->prefparts[this->numprefparts] != NULL ) this->numprefparts++;
+      this->createFramedRotAxisPrefSheetGuts(this->prefsheet);
+    if (this->prefparts[this->numprefparts] != NULL) this->numprefparts++;
   }
-  this->layoutPartsAndMapPrefSheet( this->prefparts, this->numprefparts,
-    this->prefsheet, this->prefshell );
+  this->layoutPartsAndMapPrefSheet(this->prefparts, this->numprefparts,
+    this->prefsheet, this->prefshell);
 } // createPrefSheet()
 
 // *************************************************************************
@@ -745,21 +745,21 @@ SoXtExaminerViewer::createPrefSheet( // protected, virtual
 
 Widget
 SoXtExaminerViewer::createFramedSpinAnimPrefSheetGuts(
-  Widget parent )
+  Widget parent)
 {
-  Widget frame = XtVaCreateManagedWidget( "spinanimframe",
-    xmFrameWidgetClass, parent, NULL );
+  Widget frame = XtVaCreateManagedWidget("spinanimframe",
+    xmFrameWidgetClass, parent, NULL);
 
-  Widget label = XtVaCreateManagedWidget( "spinanimlabel",
+  Widget label = XtVaCreateManagedWidget("spinanimlabel",
     xmLabelGadgetClass, frame,
     XmNchildType, XmFRAME_TITLE_CHILD,
     XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
     XtVaTypedArg,
       XmNlabelString, XmRString,
-      "Spin Animation Settings", strlen( "Spin Animation Settings" ) + 1,
-    NULL );
+      "Spin Animation Settings", strlen("Spin Animation Settings") + 1,
+    NULL);
 
-  this->createSpinAnimPrefSheetGuts( frame );
+  this->createSpinAnimPrefSheetGuts(frame);
 
   return frame;
 } // createFramedSpinAnimPrefSheetGuts()
@@ -770,25 +770,25 @@ SoXtExaminerViewer::createFramedSpinAnimPrefSheetGuts(
 
 Widget
 SoXtExaminerViewer::createSpinAnimPrefSheetGuts(
-  Widget parent )
+  Widget parent)
 {
   //  [] enable spin animation
-  Widget form = XtVaCreateManagedWidget( "spinanimguts",
-    xmFormWidgetClass, parent, NULL );
+  Widget form = XtVaCreateManagedWidget("spinanimguts",
+    xmFormWidgetClass, parent, NULL);
 
-  this->spinanimtoggle = XtVaCreateManagedWidget( "spinanimtoggle",
+  this->spinanimtoggle = XtVaCreateManagedWidget("spinanimtoggle",
     xmToggleButtonWidgetClass, form,
     XmNtopAttachment, XmATTACH_FORM,
     XmNleftAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
     XtVaTypedArg,
       XmNlabelString, XmRString,
-      "enable spin animation", strlen( "enable spin animation" ) + 1,
+      "enable spin animation", strlen("enable spin animation") + 1,
     XmNset, common->isAnimationEnabled(),
-    NULL );
+    NULL);
 
-  XtAddCallback( this->spinanimtoggle, XmNvalueChangedCallback,
-    SoXtExaminerViewer::spinanimtoggledCB, (XtPointer) this );
+  XtAddCallback(this->spinanimtoggle, XmNvalueChangedCallback,
+    SoXtExaminerViewer::spinanimtoggledCB, (XtPointer) this);
 
   return form;
 } // createSpinAnimPrefSheetGuts()
@@ -799,12 +799,12 @@ SoXtExaminerViewer::createSpinAnimPrefSheetGuts(
 
 void
 SoXtExaminerViewer::spinanimtoggled(
-  void )
+  void)
 {
   Boolean enable = False;
-  XtVaGetValues( this->spinanimtoggle, XmNset, &enable, NULL );
-  this->setAnimationEnabled( enable ? TRUE : FALSE );
-  if ( ! enable && this->isAnimating() )
+  XtVaGetValues(this->spinanimtoggle, XmNset, &enable, NULL);
+  this->setAnimationEnabled(enable ? TRUE : FALSE);
+  if (! enable && this->isAnimating())
     this->stopAnimating();
 } // spinanimtoggled()
 
@@ -813,10 +813,10 @@ SoXtExaminerViewer::spinanimtoggled(
 */
 
 void
-SoXtExaminerViewer::spinanimtoggledCB( // static
+SoXtExaminerViewer::spinanimtoggledCB(// static
   Widget,
   XtPointer closure,
-  XtPointer )
+  XtPointer)
 {
   SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
   viewer->spinanimtoggled();
@@ -831,21 +831,21 @@ SoXtExaminerViewer::spinanimtoggledCB( // static
 
 Widget
 SoXtExaminerViewer::createFramedRotAxisPrefSheetGuts(
-  Widget parent )
+  Widget parent)
 {
-  Widget frame = XtVaCreateManagedWidget( "rotaxisframe",
-    xmFrameWidgetClass, parent, NULL );
+  Widget frame = XtVaCreateManagedWidget("rotaxisframe",
+    xmFrameWidgetClass, parent, NULL);
 
-  Widget label = XtVaCreateManagedWidget( "rotaxislabel",
+  Widget label = XtVaCreateManagedWidget("rotaxislabel",
     xmLabelGadgetClass, frame,
     XmNchildType, XmFRAME_TITLE_CHILD,
     XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
     XtVaTypedArg,
       XmNlabelString, XmRString,
-      "Rotation Point Axes Settings", strlen( "Rotation Point Axes Settings" ) + 1,
-    NULL );
+      "Rotation Point Axes Settings", strlen("Rotation Point Axes Settings") + 1,
+    NULL);
 
-  this->createRotAxisPrefSheetGuts( frame );
+  this->createRotAxisPrefSheetGuts(frame);
 
   return frame;
 } // createFramedRotAxisPrefSheetGuts()
@@ -856,52 +856,52 @@ SoXtExaminerViewer::createFramedRotAxisPrefSheetGuts(
 
 Widget
 SoXtExaminerViewer::createRotAxisPrefSheetGuts(
-  Widget parent )
+  Widget parent)
 {
   //  [] display point of rotation
   //  axes size   |||||||||||||||||||||||||  |NN| pixels
 
-  Widget form = XtVaCreateManagedWidget( "rotaxisguts",
-    xmFormWidgetClass, parent, NULL );
+  Widget form = XtVaCreateManagedWidget("rotaxisguts",
+    xmFormWidgetClass, parent, NULL);
 
 #if 0
 
-  this->rotpointaxestoggle = XtVaCreateManagedWidget( "rotpointaxestoggle",
+  this->rotpointaxestoggle = XtVaCreateManagedWidget("rotpointaxestoggle",
     xmToggleButtonWidgetClass, form,
     XmNtopAttachment, XmATTACH_FORM,
     XmNleftAttachment, XmATTACH_FORM,
     XtVaTypedArg,
       XmNlabelString, XmRString,
-      "display rotation point", strlen( "display rotation point" ) + 1,
+      "display rotation point", strlen("display rotation point") + 1,
     XmNset, this->isFeedbackVisible(),
-    NULL );
+    NULL);
 
-  XtAddCallback( this->rotpointaxestoggle, XmNvalueChangedCallback,
-    SoXtExaminerViewer::rotpointtoggledCB, (XtPointer) this );
+  XtAddCallback(this->rotpointaxestoggle, XmNvalueChangedCallback,
+    SoXtExaminerViewer::rotpointtoggledCB, (XtPointer) this);
 
-  this->rotaxesoverlaytoggle = XtVaCreateManagedWidget( "rotaxesoverlaytoggle",
+  this->rotaxesoverlaytoggle = XtVaCreateManagedWidget("rotaxesoverlaytoggle",
     xmToggleButtonWidgetClass, form,
     XmNtopAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_FORM,
     XtVaTypedArg,
       XmNlabelString, XmRString,
-      "overlay graphics", strlen( "overlay graphics" ) + 1,
+      "overlay graphics", strlen("overlay graphics") + 1,
     XmNset, True,
-    NULL );
+    NULL);
 
-  XtAddCallback( this->rotaxesoverlaytoggle, XmNvalueChangedCallback,
-    SoXtExaminerViewer::rotaxesoverlaytoggledCB, (XtPointer) this );
+  XtAddCallback(this->rotaxesoverlaytoggle, XmNvalueChangedCallback,
+    SoXtExaminerViewer::rotaxesoverlaytoggledCB, (XtPointer) this);
 
-  Widget pixelslabel = XtVaCreateWidget( "pixelslabel",
+  Widget pixelslabel = XtVaCreateWidget("pixelslabel",
     xmLabelWidgetClass, form,
     XtVaTypedArg,
       XmNlabelString, XmRString,
-      "pixels", strlen( "pixels" ) + 1,
-    NULL );
+      "pixels", strlen("pixels") + 1,
+    NULL);
 
   Dimension width;
-  XtVaGetValues( pixelslabel, XmNwidth, &width, NULL );
-  this->axessizefield = XtVaCreateManagedWidget( "axessizefield",
+  XtVaGetValues(pixelslabel, XmNwidth, &width, NULL);
+  this->axessizefield = XtVaCreateManagedWidget("axessizefield",
     xmTextFieldWidgetClass, form,
     XmNtopAttachment, XmATTACH_WIDGET,
     XmNtopWidget, this->rotpointaxestoggle,
@@ -911,30 +911,30 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
     XmNsensitive, this->isFeedbackVisible() ? True : False,
     XmNeditable, this->isFeedbackVisible() ? True : False,
     XmNcursorPositionVisible, this->isFeedbackVisible() ? True : False,
-    NULL );
+    NULL);
 
-  XmTextSetMaxLength( this->axessizefield, 3 );
+  XmTextSetMaxLength(this->axessizefield, 3);
   char buffer[16];
-  sprintf( buffer, "%d", this->getFeedbackSize() );
-  XmTextSetString( this->axessizefield, buffer );
-  XmTextSetCursorPosition( this->axessizefield, (long) strlen(buffer) );
+  sprintf(buffer, "%d", this->getFeedbackSize());
+  XmTextSetString(this->axessizefield, buffer);
+  XmTextSetCursorPosition(this->axessizefield, (long) strlen(buffer));
 
-  XtAddCallback( this->axessizefield, XmNactivateCallback,
-    SoXtExaminerViewer::axesfieldchangedCB, (XtPointer) this );
-  XtAddCallback( this->axessizefield, XmNlosingFocusCallback,
-    SoXtExaminerViewer::axesfieldchangedCB, (XtPointer) this );
+  XtAddCallback(this->axessizefield, XmNactivateCallback,
+    SoXtExaminerViewer::axesfieldchangedCB, (XtPointer) this);
+  XtAddCallback(this->axessizefield, XmNlosingFocusCallback,
+    SoXtExaminerViewer::axesfieldchangedCB, (XtPointer) this);
 
-  XtVaSetValues( pixelslabel,
+  XtVaSetValues(pixelslabel,
     XmNrightAttachment, XmATTACH_FORM,
     XmNrightOffset, 2,
     XmNtopAttachment, XmATTACH_OPPOSITE_WIDGET,
     XmNtopWidget, this->axessizefield,
     XmNbottomAttachment, XmATTACH_OPPOSITE_WIDGET,
     XmNbottomWidget, this->axessizefield,
-    NULL );
-  XtManageChild( pixelslabel );
+    NULL);
+  XtManageChild(pixelslabel);
 
-  this->axessizewheel = XtVaCreateManagedWidget( "axeswheel",
+  this->axessizewheel = XtVaCreateManagedWidget("axeswheel",
     soxtThumbWheelWidgetClass, form,
     XmNtopAttachment, XmATTACH_OPPOSITE_WIDGET,
     XmNtopWidget, this->axessizefield,
@@ -946,11 +946,11 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
     XmNwidth, 90,
     XmNorientation, XmHORIZONTAL,
     XmNsensitive, this->isFeedbackVisible() ? True : False,
-    NULL );
-  XtAddCallback( this->axessizewheel, XmNvalueChangedCallback,
-    SoXtExaminerViewer::axeswheelmovedCB, (XtPointer) this );
+    NULL);
+  XtAddCallback(this->axessizewheel, XmNvalueChangedCallback,
+    SoXtExaminerViewer::axeswheelmovedCB, (XtPointer) this);
 
-  Widget label = XtVaCreateManagedWidget( "axeslabel",
+  Widget label = XtVaCreateManagedWidget("axeslabel",
     xmLabelWidgetClass, form,
     XmNtopAttachment, XmATTACH_OPPOSITE_WIDGET,
     XmNtopWidget, this->axessizewheel,
@@ -961,8 +961,8 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
     XmNbottomWidget, this->axessizewheel,
     XtVaTypedArg,
       XmNlabelString, XmRString,
-      "axes size", strlen( "axes size" ) + 1,
-    NULL );
+      "axes size", strlen("axes size") + 1,
+    NULL);
 
 #endif // 0
 
@@ -975,21 +975,21 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
 
 void
 SoXtExaminerViewer::rotpointtoggled(
-  void )
+  void)
 {
   Boolean enable = False;
-  XtVaGetValues( this->rotpointaxestoggle, XmNset, &enable, NULL );
+  XtVaGetValues(this->rotpointaxestoggle, XmNset, &enable, NULL);
 
-  XtVaSetValues( this->axessizewheel,
+  XtVaSetValues(this->axessizewheel,
     XmNsensitive, enable,
-    NULL );
-  XtVaSetValues( this->axessizefield,
+    NULL);
+  XtVaSetValues(this->axessizefield,
     XmNsensitive, enable,
     XmNeditable, enable,
     XmNcursorPositionVisible, enable,
-    NULL );
+    NULL);
 
-  this->setFeedbackVisibility( enable ? TRUE : FALSE );
+  this->setFeedbackVisibility(enable ? TRUE : FALSE);
 } // rotpointtoggled()
 
 /*!
@@ -1000,7 +1000,7 @@ void
 SoXtExaminerViewer::rotpointtoggledCB(
   Widget,
   XtPointer closure,
-  XtPointer )
+  XtPointer)
 {
   SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
   viewer->rotpointtoggled();
@@ -1012,14 +1012,14 @@ SoXtExaminerViewer::rotpointtoggledCB(
 
 void
 SoXtExaminerViewer::axeswheelmoved(
-  int ticks )
+  int ticks)
 {
   int size = this->getFeedbackSize() + ticks;
-  if ( size < 3 )
+  if (size < 3)
     size = 3;
-  else if ( size > 200 )
+  else if (size > 200)
     size = 200;
-  this->setFeedbackSize( size );
+  this->setFeedbackSize(size);
 } // axeswheelmoved()
 
 /*!
@@ -1030,11 +1030,11 @@ void
 SoXtExaminerViewer::axeswheelmovedCB(
   Widget,
   XtPointer closure,
-  XtPointer call_data )
+  XtPointer call_data)
 {
   SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
   SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
-  viewer->axeswheelmoved( data->ticks );
+  viewer->axeswheelmoved(data->ticks);
 } // axeswheelmovedCB()
 
 /*!
@@ -1043,14 +1043,14 @@ SoXtExaminerViewer::axeswheelmovedCB(
 
 void
 SoXtExaminerViewer::axesfieldchanged(
-  void )
+  void)
 {
-  int size = atoi( XmTextGetString( this->axessizefield ) );
-  if ( size < 3 )
+  int size = atoi(XmTextGetString(this->axessizefield));
+  if (size < 3)
     size = 3;
-  else if ( size > 200 )
+  else if (size > 200)
     size = 200;
-  this->setFeedbackSize( size );
+  this->setFeedbackSize(size);
 } // axesfieldchanged()
 
 /*!
@@ -1061,7 +1061,7 @@ void
 SoXtExaminerViewer::axesfieldchangedCB(
   Widget,
   XtPointer closure,
-  XtPointer )
+  XtPointer)
 {
   SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
   viewer->axesfieldchanged();
@@ -1074,12 +1074,12 @@ SoXtExaminerViewer::axesfieldchangedCB(
 
 void
 SoXtExaminerViewer::rotaxesoverlaytoggled(
-  void )
+  void)
 {
 #if SOXT_DEBUG
   SOXT_STUB_ONCE();
 #endif // SOXT_DEBUG
-  XtVaSetValues( this->rotaxesoverlaytoggle, XmNset, True, NULL );
+  XtVaSetValues(this->rotaxesoverlaytoggle, XmNset, True, NULL);
 } // rotpointoverlaytoggled()
 
 /*!
@@ -1087,10 +1087,10 @@ SoXtExaminerViewer::rotaxesoverlaytoggled(
 */
 
 void
-SoXtExaminerViewer::rotaxesoverlaytoggledCB( // static
+SoXtExaminerViewer::rotaxesoverlaytoggledCB(// static
   Widget,
   XtPointer closure,
-  XtPointer )
+  XtPointer)
 {
   SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
   viewer->rotaxesoverlaytoggled();
@@ -1101,18 +1101,18 @@ SoXtExaminerViewer::rotaxesoverlaytoggledCB( // static
 */
 
 void
-SoXtExaminerViewer::afterRealizeHook( // virtual, protected
-  void )
+SoXtExaminerViewer::afterRealizeHook(// virtual, protected
+  void)
 {
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXtExaminerViewer::afterRealizeHook",
-    "[invoked]" );
+  SoDebugError::postInfo("SoXtExaminerViewer::afterRealizeHook",
+    "[invoked]");
 #endif // SOXT_DEBUG
   inherited::afterRealizeHook();
   this->mapped = TRUE;
   // Note setCursorRepresentation() checks the value of this->mapped
   // before taking any action.
-  this->setCursorRepresentation( this->common->currentmode );
+  this->setCursorRepresentation(this->common->currentmode);
 } // afterRealizeHook()
 
 // *************************************************************************

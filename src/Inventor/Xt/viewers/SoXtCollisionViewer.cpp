@@ -54,10 +54,10 @@ static const char rcsid[] =
 */
 
 SoXtCollisionViewer::SoXtCollisionViewer(
-  SoXtViewer * const _viewer )
-: viewer( _viewer )
+  SoXtViewer * const _viewer)
+: viewer(_viewer)
 {
-  assert( viewer != NULL );
+  assert(viewer != NULL);
   this->numsteps = 3;
   this->distance = 1.0f;
   this->collisiondetection = TRUE;
@@ -69,7 +69,7 @@ SoXtCollisionViewer::SoXtCollisionViewer(
 */
 
 SoXtCollisionViewer::~SoXtCollisionViewer(
-  void )
+  void)
 {
 } // ~SoXtCollisionViewer()
 
@@ -81,7 +81,7 @@ SoXtCollisionViewer::~SoXtCollisionViewer(
 
 SoXtViewer *
 SoXtCollisionViewer::getViewer(
-  void ) const
+  void) const
 {
   return this->viewer;
 } // getViewer()
@@ -92,7 +92,7 @@ SoXtCollisionViewer::getViewer(
 
 void
 SoXtCollisionViewer::setDistance(
-  const float distance )
+  const float distance)
 {
   this->distance = distance;
 } // setDistance()
@@ -103,7 +103,7 @@ SoXtCollisionViewer::setDistance(
 
 float
 SoXtCollisionViewer::getDistance(
-  void ) const
+  void) const
 {
   return this->distance;
 } // getDistance()
@@ -114,7 +114,7 @@ SoXtCollisionViewer::getDistance(
 
 void
 SoXtCollisionViewer::setNumSteps(
-  const int steps )
+  const int steps)
 {
   this->numsteps = steps;
 } // setNumSteps()
@@ -125,7 +125,7 @@ SoXtCollisionViewer::setNumSteps(
 
 int
 SoXtCollisionViewer::getNumSteps(
-  void ) const
+  void) const
 {
   return this->numsteps;
 } // getNumSteps()
@@ -136,7 +136,7 @@ SoXtCollisionViewer::getNumSteps(
 
 void
 SoXtCollisionViewer::setCollisionDetection(
-  const SbBool enable )
+  const SbBool enable)
 {
   this->collisiondetection = enable;
 } // setCollisionDetection()
@@ -147,7 +147,7 @@ SoXtCollisionViewer::setCollisionDetection(
 
 SbBool
 SoXtCollisionViewer::getCollisionDetection(
-  void ) const
+  void) const
 {
   return this->collisiondetection;
 } // getCollisionDetection()
@@ -158,7 +158,7 @@ SoXtCollisionViewer::getCollisionDetection(
 
 void
 SoXtCollisionViewer::setZBufferOptimization(
-  const SbBool enable )
+  const SbBool enable)
 {
   this->zbufferoptimize = enable;
 } // setZBufferOptimization()
@@ -169,7 +169,7 @@ SoXtCollisionViewer::setZBufferOptimization(
 
 SbBool
 SoXtCollisionViewer::getZBufferOptimization(
-  void ) const
+  void) const
 {
   return this->zbufferoptimize;
 } // getZBufferOptimisation()
@@ -183,7 +183,7 @@ SoXtCollisionViewer::getZBufferOptimization(
 void
 SoXtCollisionViewer::addCallback(
   SoXtCollisionViewerCB * func,
-  void * user )
+  void * user)
 {
 } // addCallback()
 
@@ -194,7 +194,7 @@ SoXtCollisionViewer::addCallback(
 void
 SoXtCollisionViewer::removeCallback(
   SoXtCollisionViewerCB * func,
-  void * user )
+  void * user)
 {
 } // removeCallback()
 

@@ -29,8 +29,8 @@ class SoVRMLMaterial;
 
 // *************************************************************************
 
-typedef void SoXtMaterialEditorCB( void * userdata,
-  const SoMaterial * material );
+typedef void SoXtMaterialEditorCB(void * userdata,
+  const SoMaterial * material);
 
 class SOXT_DLL_API SoXtMaterialEditor : public SoXtComponent {
   SOXT_OBJECT_HEADER(SoXtMaterialEditor, SoXtComponent);
@@ -43,27 +43,27 @@ public:
   SoXtMaterialEditor(
     Widget parent = NULL,
     const char * name = NULL,
-    SbBool embed = TRUE );
+    SbBool embed = TRUE);
   ~SoXtMaterialEditor(void);
 
-  void attach( SoMaterial * material, int index = 0 );
-  void attach( SoVRMLMaterial * material );
+  void attach(SoMaterial * material, int index = 0);
+  void attach(SoVRMLMaterial * material);
   void detach(void);
   SbBool isAttached(void);
 
   void addMaterialChangedCallback(
-    SoXtMaterialEditorCB * callback, void * user = NULL );
+    SoXtMaterialEditorCB * callback, void * user = NULL);
   void removeMaterialChangedCallback(
-    SoXtMaterialEditorCB * callback, void * user = NULL );
+    SoXtMaterialEditorCB * callback, void * user = NULL);
 
-  void setUpdateFrequency( SoXtMaterialEditor::UpdateFrequency freq );
+  void setUpdateFrequency(SoXtMaterialEditor::UpdateFrequency freq);
   SoXtMaterialEditor::UpdateFrequency getUpdateFrequency(void) const;
 
   virtual void show(void);
   virtual void hide(void);
 
-  void setMaterial( const SoMaterial & mtl );
-  void setMaterial( const SoVRMLMaterial & mtl );
+  void setMaterial(const SoMaterial & mtl);
+  void setMaterial(const SoVRMLMaterial & mtl);
   const SoMaterial & getMaterial(void) const;
   SbBool isAttachedVRML(void);
 
@@ -72,16 +72,16 @@ protected:
     Widget parent,
     const char * const name,
     SbBool embed,
-    SbBool build );
+    SbBool build);
 
-  Widget buildWidget( Widget parent );
+  Widget buildWidget(Widget parent);
 
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
 
 private:
-  void constructor( SbBool build );
+  void constructor(SbBool build);
 
 }; // class SoXtMaterialEditor
 

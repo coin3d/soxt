@@ -54,25 +54,25 @@ SoXtTransformSliderSet::SoXtTransformSliderSet(
   Widget parent,
   const char * const name,
   const SbBool embed,
-  SoNode * const node )
-: inherited( parent, name, embed, node, FALSE )
+  SoNode * const node)
+: inherited(parent, name, embed, node, FALSE)
 {
-  this->constructor( TRUE );
+  this->constructor(TRUE);
 } // SoXtTransformSliderSet()
 
 /*!
   Constructor.
 */
 
-SoXtTransformSliderSet::SoXtTransformSliderSet( // protected
+SoXtTransformSliderSet::SoXtTransformSliderSet(// protected
   Widget parent,
   const char * const name,
   const SbBool embed,
   SoNode * const node,
-  const SbBool build )
-: inherited( parent, name, embed, node, FALSE )
+  const SbBool build)
+: inherited(parent, name, embed, node, FALSE)
 {
-  this->constructor( build );
+  this->constructor(build);
 } // SoXtTransformSliderSet()
 
 /*!
@@ -80,15 +80,15 @@ SoXtTransformSliderSet::SoXtTransformSliderSet( // protected
 */
 
 void
-SoXtTransformSliderSet::constructor( // private
-  SbBool build )
+SoXtTransformSliderSet::constructor(// private
+  SbBool build)
 {
-  if ( build ) {
-    SoDebugError::postInfo( "", "getWidgetName = %s", this->getWidgetName() );
-    this->setClassName( this->getWidgetName() );
-    Widget sliderset = this->buildWidget( this->getParentWidget() );
-    this->setBaseWidget( sliderset );
-    this->fitSize( SbVec2s( 300, 0 ) );
+  if (build) {
+    SoDebugError::postInfo("", "getWidgetName = %s", this->getWidgetName());
+    this->setClassName(this->getWidgetName());
+    Widget sliderset = this->buildWidget(this->getParentWidget());
+    this->setBaseWidget(sliderset);
+    this->fitSize(SbVec2s(300, 0));
   }
 } // constructor()
 
@@ -97,7 +97,7 @@ SoXtTransformSliderSet::constructor( // private
 */
 
 SoXtTransformSliderSet::~SoXtTransformSliderSet(
-  void )
+  void)
 {
 } // ~SoXtTransformSliderSet()
 
@@ -108,10 +108,10 @@ SoXtTransformSliderSet::~SoXtTransformSliderSet(
 */
 
 Widget
-SoXtTransformSliderSet::buildWidget( // protected
-  Widget parent )
+SoXtTransformSliderSet::buildWidget(// protected
+  Widget parent)
 {
-  return inherited::buildWidget( parent );
+  return inherited::buildWidget(parent);
 } // buildWidget()
 
 // *************************************************************************
@@ -121,8 +121,8 @@ SoXtTransformSliderSet::buildWidget( // protected
 */
 
 const char *
-SoXtTransformSliderSet::getDefaultWidgetName( // virtual, protected
-  void ) const
+SoXtTransformSliderSet::getDefaultWidgetName(// virtual, protected
+  void) const
 {
   static const char defaultWidgetName[] = "SoXtTransformSliderSet";
   return defaultWidgetName;
@@ -133,8 +133,8 @@ SoXtTransformSliderSet::getDefaultWidgetName( // virtual, protected
 */
 
 const char *
-SoXtTransformSliderSet::getDefaultTitle( // virtual, protected
-  void ) const
+SoXtTransformSliderSet::getDefaultTitle(// virtual, protected
+  void) const
 {
   static const char defaultTitle[] = "Transform Sliders";
   return defaultTitle;
@@ -145,8 +145,8 @@ SoXtTransformSliderSet::getDefaultTitle( // virtual, protected
 */
 
 const char *
-SoXtTransformSliderSet::getDefaultIconTitle( // virtual, protected
-  void ) const
+SoXtTransformSliderSet::getDefaultIconTitle(// virtual, protected
+  void) const
 {
   static const char defaultIconTitle[] = "Transform Sliders";
   return defaultIconTitle;

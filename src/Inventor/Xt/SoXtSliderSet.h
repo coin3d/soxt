@@ -37,10 +37,10 @@ public:
     const Widget parent,
     const char * const name,
     const SbBool embed,
-    SoNode * const node );
+    SoNode * const node);
 
-  virtual void setNode( SoNode * node );
-  void updateLayout( void );
+  virtual void setNode(SoNode * node);
+  void updateLayout(void);
 
 protected:
   SoXtSliderSet(
@@ -48,23 +48,23 @@ protected:
     const char * const name,
     const SbBool embed,
     SoNode * const node,
-    const SbBool build );
+    const SbBool build);
   ~SoXtSliderSet(void);
 
-  Widget buildWidget( Widget parent );
+  Widget buildWidget(Widget parent);
 
 private:
-  void constructor( const SbBool build );
+  void constructor(const SbBool build);
 
-  void buildSliderModule( const Widget rowcolumn );
-  void buildSliderSet( const Widget rowcolumn );
+  void buildSliderModule(const Widget rowcolumn);
+  void buildSliderSet(const Widget rowcolumn);
 
-  void folding( SoXtSliderSetClosure * closure, Widget button );
-  static void folding_cb( Widget, XtPointer, XtPointer );
-  void style( SoXtSliderSetClosure * closure );
-  static void style_cb( Widget, XtPointer, XtPointer );
-  void slider( SoXtSliderSetClosure * closure, char * title, float value );
-  static void slider_cb( void * closure, char * title, float value );
+  void folding(SoXtSliderSetClosure * closure, Widget button);
+  static void folding_cb(Widget, XtPointer, XtPointer);
+  void style(SoXtSliderSetClosure * closure);
+  static void style_cb(Widget, XtPointer, XtPointer);
+  void slider(SoXtSliderSetClosure * closure, char * title, float value);
+  static void slider_cb(void * closure, char * title, float value);
 
 private:
   int numSliders;

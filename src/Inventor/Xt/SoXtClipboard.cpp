@@ -88,7 +88,7 @@ static const char rcsid[] =
 
 SoXtClipboard::SoXtClipboard(
   Widget widget,
-  Atom selection )
+  Atom selection)
 {
 } // SoXtClipboard()
 
@@ -97,7 +97,7 @@ SoXtClipboard::SoXtClipboard(
 */
 
 SoXtClipboard::~SoXtClipboard(
-  void )
+  void)
 {
 } // ~SoXtClipboard()
 
@@ -110,7 +110,7 @@ SoXtClipboard::~SoXtClipboard(
 void
 SoXtClipboard::copy(
   SoNode * node,
-  Time when )
+  Time when)
 {
   SOXT_STUB();
 } // copy()
@@ -122,7 +122,7 @@ SoXtClipboard::copy(
 void
 SoXtClipboard::copy(
   SoPath * path,
-  Time when )
+  Time when)
 {
   SOXT_STUB();
 } // copy()
@@ -134,7 +134,7 @@ SoXtClipboard::copy(
 void
 SoXtClipboard::copy(
   SoPathList * paths,
-  Time when )
+  Time when)
 {
   SOXT_STUB();
 } // copy()
@@ -148,7 +148,7 @@ SoXtClipboard::copy(
   Atom type,
   void * data,
   uint32_t size,
-  Time when )
+  Time when)
 {
   SOXT_STUB();
 } // copy()
@@ -158,9 +158,9 @@ SoXtClipboard::copy(
 */
 
 void
-SoXtClipboard::copy( // protected
+SoXtClipboard::copy(// protected
   SoByteStream * byteStream,
-  Time when )
+  Time when)
 {
   SOXT_STUB();
 } // copy()
@@ -173,7 +173,7 @@ void
 SoXtClipboard::paste(
   Time when,
   SoXtClipboardPasteCB * pastedone,
-  void * userdata )
+  void * userdata)
 {
   SOXT_STUB();
 } // paste()
@@ -186,7 +186,7 @@ void
 SoXtClipboard::addPasteInterest(
   Atom datatype,
   SoXtClipboardImportCB * importfunc,
-  void * userdata )
+  void * userdata)
 {
   SOXT_STUB();
 } // addPasteInterest()
@@ -196,13 +196,13 @@ SoXtClipboard::addPasteInterest(
 */
 
 SbBool
-SoXtClipboard::convertData( // static
+SoXtClipboard::convertData(// static
   Widget widget,
   void * srcdata,
   uint32_t size,
   Atom desiredType,
   char ** retdata,
-  uint32_t * retsize )
+  uint32_t * retsize)
 {
   SOXT_STUB();
   return FALSE;
@@ -214,7 +214,7 @@ SoXtClipboard::convertData( // static
 
 void
 SoXtClipboard::setEmptyListOK(
-  SbBool enable )
+  SbBool enable)
 {
   SOXT_STUB();
 } // setEmptyListOK()
@@ -225,7 +225,7 @@ SoXtClipboard::setEmptyListOK(
 
 SbBool
 SoXtClipboard::isEmptyListOK(
-  void ) const
+  void) const
 {
   SOXT_STUB();
   return FALSE;
@@ -236,9 +236,9 @@ SoXtClipboard::isEmptyListOK(
 */
 
 void
-SoXtClipboard::getExportTargets( // protected
+SoXtClipboard::getExportTargets(// protected
   char ** value,
-  uint32_t * length )
+  uint32_t * length)
 {
   SOXT_STUB();
 } // getExportTargets()
@@ -248,9 +248,9 @@ SoXtClipboard::getExportTargets( // protected
 */
 
 Atom
-SoXtClipboard::chooseFromImportTargets( // protected
+SoXtClipboard::chooseFromImportTargets(// protected
   Atom * supportedTargets,
-  int length )
+  int length)
 {
   SOXT_STUB();
   return _XA_CLIPBOARD_;
@@ -261,10 +261,10 @@ SoXtClipboard::chooseFromImportTargets( // protected
 */
 
 SbBool
-SoXtClipboard::writeToFile( // static, protected
+SoXtClipboard::writeToFile(// static, protected
   SbString & tmpfile,
   void * srcdata,
-  uint32_t size )
+  uint32_t size)
 {
   SOXT_STUB();
   return FALSE;
@@ -275,9 +275,9 @@ SoXtClipboard::writeToFile( // static, protected
 */
 
 void
-SoXtClipboard::readFile( // static, protected
+SoXtClipboard::readFile(// static, protected
   SoPathList * & paths,
-  const char * filename )
+  const char * filename)
 {
   SOXT_STUB();
 } // readFile()
@@ -287,11 +287,11 @@ SoXtClipboard::readFile( // static, protected
 */
 
 SoPathList *
-SoXtClipboard::readData( // static, protected
+SoXtClipboard::readData(// static, protected
   Widget w,
   Atom target,
   void * data,
-  uint32_t size )
+  uint32_t size)
 {
   SOXT_STUB();
   return (SoPathList *) NULL;

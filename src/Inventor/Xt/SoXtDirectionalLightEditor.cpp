@@ -115,26 +115,26 @@ SOXT_OBJECT_SOURCE(SoXtDirectionalLightEditor);
 SoXtDirectionalLightEditor::SoXtDirectionalLightEditor(
   Widget parent,
   const char * const name,
-  SbBool embed )
-: inherited( parent, name, embed )
+  SbBool embed)
+: inherited(parent, name, embed)
 {
   SOXT_STUB();
-  this->constructor( TRUE );
+  this->constructor(TRUE);
 } // SoXtDirectionalLightEditor()
 
 /*!
   Constructor.
 */
 
-SoXtDirectionalLightEditor::SoXtDirectionalLightEditor( // protected
+SoXtDirectionalLightEditor::SoXtDirectionalLightEditor(// protected
   Widget parent,
   const char * const name,
   SbBool embed,
-  SbBool build )
-: inherited( parent, name, embed )
+  SbBool build)
+: inherited(parent, name, embed)
 {
   SOXT_STUB();
-  this->constructor( build );
+  this->constructor(build);
 } // SoXtDirectionalLightEditor()
 
 /*!
@@ -142,7 +142,7 @@ SoXtDirectionalLightEditor::SoXtDirectionalLightEditor( // protected
 */
 
 SoXtDirectionalLightEditor::~SoXtDirectionalLightEditor(
-  void )
+  void)
 {
   SOXT_STUB();
 } // ~SoXtDirectionalLightEditor()
@@ -155,7 +155,7 @@ SoXtDirectionalLightEditor::~SoXtDirectionalLightEditor(
 
 void
 SoXtDirectionalLightEditor::attach(
-  SoPath * pathToLight )
+  SoPath * pathToLight)
 {
   SOXT_STUB();
 } // attach()
@@ -166,7 +166,7 @@ SoXtDirectionalLightEditor::attach(
 
 void
 SoXtDirectionalLightEditor::detach(
-  void )
+  void)
 {
   SOXT_STUB();
 } // detach()
@@ -177,7 +177,7 @@ SoXtDirectionalLightEditor::detach(
 
 SbBool
 SoXtDirectionalLightEditor::isAttached(
-  void )
+  void)
 {
   SOXT_STUB();
   return FALSE;
@@ -189,7 +189,7 @@ SoXtDirectionalLightEditor::isAttached(
 
 void
 SoXtDirectionalLightEditor::setLight(
-  const SoDirectionalLight & light )
+  const SoDirectionalLight & light)
 {
   SOXT_STUB();
 } // setLight()
@@ -200,7 +200,7 @@ SoXtDirectionalLightEditor::setLight(
 
 const SoDirectionalLight &
 SoXtDirectionalLightEditor::getLight(
-  void ) const
+  void) const
 {
   SOXT_STUB();
   return *((SoDirectionalLight *) SoDirectionalLight::getClassTypeId().createInstance());
@@ -213,7 +213,7 @@ SoXtDirectionalLightEditor::getLight(
 void
 SoXtDirectionalLightEditor::addLightChangedCallback(
   SoXtDirectionalLightEditorCB * callback,
-  void * user )
+  void * user)
 {
   SOXT_STUB();
 } // addLightChangedCallback()
@@ -225,7 +225,7 @@ SoXtDirectionalLightEditor::addLightChangedCallback(
 void
 SoXtDirectionalLightEditor::removeLightChangedCallback(
   SoXtDirectionalLightEditorCB * callback,
-  void * user )
+  void * user)
 {
   SOXT_STUB();
 } // removeLightChangedCallback()
@@ -235,8 +235,8 @@ SoXtDirectionalLightEditor::removeLightChangedCallback(
 */
 
 void
-SoXtDirectionalLightEditor::show( // virtual
-  void )
+SoXtDirectionalLightEditor::show(// virtual
+  void)
 {
   SOXT_STUB();
 } // show()
@@ -246,8 +246,8 @@ SoXtDirectionalLightEditor::show( // virtual
 */
 
 void
-SoXtDirectionalLightEditor::hide( // virtual
-  void )
+SoXtDirectionalLightEditor::hide(// virtual
+  void)
 {
   SOXT_STUB();
 } // hide()
@@ -259,8 +259,8 @@ SoXtDirectionalLightEditor::hide( // virtual
 */
 
 const char *
-SoXtDirectionalLightEditor::getDefaultWidgetName( // virtual, protected
-  void ) const
+SoXtDirectionalLightEditor::getDefaultWidgetName(// virtual, protected
+  void) const
 {
   static const char defaultWidgetName[] = "SoXtDirectionalLightEditor";
   return defaultWidgetName;
@@ -271,8 +271,8 @@ SoXtDirectionalLightEditor::getDefaultWidgetName( // virtual, protected
 */
 
 const char *
-SoXtDirectionalLightEditor::getDefaultTitle( // virtual, protected
-  void ) const
+SoXtDirectionalLightEditor::getDefaultTitle(// virtual, protected
+  void) const
 {
   static const char defaultTitle[] = "Directional Light";
   return defaultTitle;
@@ -283,8 +283,8 @@ SoXtDirectionalLightEditor::getDefaultTitle( // virtual, protected
 */
 
 const char *
-SoXtDirectionalLightEditor::getDefaultIconTitle( // virtual, protected
-  void ) const
+SoXtDirectionalLightEditor::getDefaultIconTitle(// virtual, protected
+  void) const
 {
   static const char defaultIconTitle[] = "Directional Light";
   return defaultIconTitle;
@@ -295,9 +295,9 @@ SoXtDirectionalLightEditor::getDefaultIconTitle( // virtual, protected
 */
 
 void
-SoXtDirectionalLightEditor::copyLight( // protected
+SoXtDirectionalLightEditor::copyLight(// protected
   SoDirectionalLight * destination,
-  const SoDirectionalLight * source )
+  const SoDirectionalLight * source)
 {
   SOXT_STUB();
 } // copyLight()
@@ -307,8 +307,8 @@ SoXtDirectionalLightEditor::copyLight( // protected
 */
 
 void
-SoXtDirectionalLightEditor::updateLocalComponents( // protected
-  void )
+SoXtDirectionalLightEditor::updateLocalComponents(// protected
+  void)
 {
   SOXT_STUB();
 } // updateLocalComponents()
@@ -322,8 +322,8 @@ SoXtDirectionalLightEditor::updateLocalComponents( // protected
 // this method will be moved to protected - no point otherwise...
 
 Widget
-SoXtDirectionalLightEditor::buildWidget( // private
-  Widget parent )
+SoXtDirectionalLightEditor::buildWidget(// private
+  Widget parent)
 {
   SOXT_STUB();
   return (Widget) NULL;
@@ -334,8 +334,8 @@ SoXtDirectionalLightEditor::buildWidget( // private
 */
 
 void
-SoXtDirectionalLightEditor::constructor( // private
-  SbBool build )
+SoXtDirectionalLightEditor::constructor(// private
+  SbBool build)
 {
   SOXT_STUB();
 } // constructor()

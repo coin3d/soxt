@@ -32,7 +32,7 @@ class SOXT_DLL_API SoXtSliderSetBase : public SoXtComponent {
   SOXT_OBJECT_ABSTRACT_HEADER(SoXtSliderSetBase, SoXtComponent);
 
 public:
-  virtual void setNode( SoNode * node );
+  virtual void setNode(SoNode * node);
   SoNode * getNode(void) const;
 
   virtual void getLayoutSize(int & width, int & height);
@@ -43,7 +43,7 @@ protected:
     const Widget parent = NULL,
     const char * const name = NULL,
     const SbBool embed = TRUE,
-    SoNode * const node = NULL );
+    SoNode * const node = NULL);
   virtual ~SoXtSliderSetBase(void);
 
 private:

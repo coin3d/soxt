@@ -41,32 +41,32 @@ class SbPList;
 // *************************************************************************
 
 typedef void SoXtClipboardPasteCB(
-               void * userdata, SoPathList * pathlist );
+               void * userdata, SoPathList * pathlist);
 typedef void SoXtClipboardImportCB(
-               void * userdata, Atom type, void * data, uint32_t size );
+               void * userdata, Atom type, void * data, uint32_t size);
 
 #define _XA_CLIPBOARD_ ((Atom) 0)
 
 class SOXT_DLL_API SoXtClipboard {
 public:
-  SoXtClipboard( Widget widget, Atom selection = _XA_CLIPBOARD_ );
+  SoXtClipboard(Widget widget, Atom selection = _XA_CLIPBOARD_);
   ~SoXtClipboard(void);
 
-  void copy( SoNode * node, Time when );
-  void copy( SoPath * path, Time when );
-  void copy( SoPathList * paths, Time when );
-  void copy( Atom type, void * data, uint32_t size, Time when );
+  void copy(SoNode * node, Time when);
+  void copy(SoPath * path, Time when);
+  void copy(SoPathList * paths, Time when);
+  void copy(Atom type, void * data, uint32_t size, Time when);
 
-  void paste( Time when, SoXtClipboardPasteCB * pastedone,
-    void * userdata = NULL );
+  void paste(Time when, SoXtClipboardPasteCB * pastedone,
+    void * userdata = NULL);
 
-  void addPasteInterest( Atom datatype, SoXtClipboardImportCB * importfunc,
-    void * userdata = NULL );
+  void addPasteInterest(Atom datatype, SoXtClipboardImportCB * importfunc,
+    void * userdata = NULL);
 
-  static SbBool convertData( Widget widget, void * srcdata, uint32_t size,
-    Atom desiredType, char ** retdata, uint32_t * retsize );
+  static SbBool convertData(Widget widget, void * srcdata, uint32_t size,
+    Atom desiredType, char ** retdata, uint32_t * retsize);
 
-  void setEmptyListOK( SbBool enable );
+  void setEmptyListOK(SbBool enable);
   SbBool isEmptyListOK(void) const;
 
 protected:
@@ -79,17 +79,17 @@ protected:
 
   static SbDict * selOwnerList;
 
-  void copy( SoByteStream * byteStream, Time when );
+  void copy(SoByteStream * byteStream, Time when);
 
   SoXtImportInterestList * pasteInterest;
   SbPList * copyInterest;
 
-  void getExportTargets( char ** value, uint32_t * length );
-  Atom chooseFromImportTargets( Atom * supportedTargets, int length );
-  static SbBool writeToFile( SbString & tmpfile, void * srcdata, uint32_t size );
-  static void readFile( SoPathList * & paths, const char * filename );
+  void getExportTargets(char ** value, uint32_t * length);
+  Atom chooseFromImportTargets(Atom * supportedTargets, int length);
+  static SbBool writeToFile(SbString & tmpfile, void * srcdata, uint32_t size);
+  static void readFile(SoPathList * & paths, const char * filename);
 
-  static SoPathList * readData( Widget w, Atom target, void * data, uint32_t size );
+  static SoPathList * readData(Widget w, Atom target, void * data, uint32_t size);
 
 }; // class SoXtClipboard
 

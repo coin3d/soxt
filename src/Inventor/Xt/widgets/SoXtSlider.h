@@ -33,26 +33,26 @@ class SoXtSliderSetModule;
 
 // *************************************************************************
 
-typedef void SoXtSliderCB( void * closure, char * title, float value );
+typedef void SoXtSliderCB(void * closure, char * title, float value);
 
 class SoXtSlider {
 public:
-  SoXtSlider( const char * const title );
+  SoXtSlider(const char * const title);
   ~SoXtSlider(void);
 
-  void setValue( float val );
+  void setValue(float val);
   float getValue(void) const;
 
-  void setRange( float min, float max );
-  void getRange( float & min, float & max ) const;
+  void setRange(float min, float max);
+  void getRange(float & min, float & max) const;
 
-  void addCallback( SoXtSliderCB * callback, void * closure = NULL );
-  void removeCallback( SoXtSliderCB * callback, void * closure = NULL );
+  void addCallback(SoXtSliderCB * callback, void * closure = NULL);
+  void removeCallback(SoXtSliderCB * callback, void * closure = NULL);
 
-  Widget buildSimpleWidget( const Widget parent );
-  Widget buildRangedWidget( const Widget parent );
-  Widget buildFullWidget( const Widget parent );
-  Widget buildOrderlyWidget( const Widget parent );
+  Widget buildSimpleWidget(const Widget parent);
+  Widget buildRangedWidget(const Widget parent);
+  Widget buildFullWidget(const Widget parent);
+  Widget buildOrderlyWidget(const Widget parent);
 
 protected:
   void invokeCallbacks(void);
@@ -74,12 +74,12 @@ private:
   SbPList * callbacks;
 
 private:
-  static void slider_cb( Widget, XtPointer, XtPointer );
-  static void value_cb( Widget, XtPointer, XtPointer );
-  static void min_value_cb( Widget, XtPointer, XtPointer );
-  static void min_cb( Widget, XtPointer, XtPointer );
-  static void max_value_cb( Widget, XtPointer, XtPointer );
-  static void max_cb( Widget, XtPointer, XtPointer );
+  static void slider_cb(Widget, XtPointer, XtPointer);
+  static void value_cb(Widget, XtPointer, XtPointer);
+  static void min_value_cb(Widget, XtPointer, XtPointer);
+  static void min_cb(Widget, XtPointer, XtPointer);
+  static void max_value_cb(Widget, XtPointer, XtPointer);
+  static void max_cb(Widget, XtPointer, XtPointer);
 
 }; // class SoXtSlider
 

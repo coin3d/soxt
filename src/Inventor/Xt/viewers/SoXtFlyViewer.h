@@ -38,14 +38,14 @@ public:
     const char * const name = NULL,
     SbBool embed = TRUE,
     SoXtFullViewer::BuildFlag flags = BUILD_ALL,
-    SoXtViewer::Type type = BROWSER );
+    SoXtViewer::Type type = BROWSER);
   ~SoXtFlyViewer(void);
 
-  virtual void setViewing( SbBool enable );
+  virtual void setViewing(SbBool enable);
   virtual void resetToHomePosition(void);
-  virtual void setCamera( SoCamera * camera );
-  virtual void setCursorEnabled( SbBool enable );
-  virtual void setCameraType( SoType type );
+  virtual void setCamera(SoCamera * camera);
+  virtual void setCursorEnabled(SbBool enable);
+  virtual void setCameraType(SoType type);
 
 protected:
   SoXtFlyViewer(
@@ -54,21 +54,21 @@ protected:
     SbBool embed,
     SoXtFullViewer::BuildFlag flag,
     SoXtViewer::Type type,
-    SbBool build );
+    SbBool build);
 
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
 
-  virtual void processEvent( XAnyEvent * event );
-  virtual void setSeekMode( SbBool enable );
+  virtual void processEvent(XAnyEvent * event);
+  virtual void setSeekMode(SbBool enable);
   virtual void actualRedraw(void);
-  virtual void rightWheelMotion( float value );
+  virtual void rightWheelMotion(float value);
   virtual void createPrefSheet(void);
   virtual void openViewerHelpCard(void);
 
 private:
-  void constructor( SbBool build );
+  void constructor(SbBool build);
 
   SoAnyFlyViewer * const common;
 

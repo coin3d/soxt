@@ -62,7 +62,7 @@ SOXT_OBJECT_ABSTRACT_SOURCE(SoXtDevice);
 
 void
 SoXtDevice::initClasses(
-  void )
+  void)
 {
   SoXtDevice::initClass();
   SoXtInputFocus::initClass();
@@ -88,10 +88,10 @@ struct SoXtDeviceHandlerInfo {
   classes.
 */
 
-SoXtDevice::SoXtDevice( // protected
-  void )
-: size( 0, 0 )
-, handlers( NULL )
+SoXtDevice::SoXtDevice(// protected
+  void)
+: size(0, 0)
+, handlers(NULL)
 {
 } // SoXtDevice()
 
@@ -99,11 +99,11 @@ SoXtDevice::SoXtDevice( // protected
   Public virtual destructor.
 */
 
-SoXtDevice::~SoXtDevice( // virtual
-  void )
+SoXtDevice::~SoXtDevice(// virtual
+  void)
 {
-  if ( this->handlers ) {
-    for ( int i = 0; i < this->handlers->getLength(); i++ ) {
+  if (this->handlers) {
+    for (int i = 0; i < this->handlers->getLength(); i++) {
       SoXtDeviceHandlerInfo * info =
         (SoXtDeviceHandlerInfo *) (*this->handlers)[i];
       delete info;
@@ -115,7 +115,7 @@ SoXtDevice::~SoXtDevice( // virtual
 // *************************************************************************
 
 /*!
-  \fn void SoXtDevice::enable( Widget widget, XtEventHandler handler, XtPointer closure, Window window = (Window) NULL ) = 0
+  \fn void SoXtDevice::enable(Widget widget, XtEventHandler handler, XtPointer closure, Window window = (Window) NULL) = 0
 
   This method will enable the device for the widget.
 
@@ -125,13 +125,13 @@ SoXtDevice::~SoXtDevice( // virtual
 */
 
 /*!
-  \fn void SoXtDevice::disable( Widget widget, XtEventHandler handler, XtPointer closure ) = 0
+  \fn void SoXtDevice::disable(Widget widget, XtEventHandler handler, XtPointer closure) = 0
 
   This method will disable the handler for the device.
 */
 
 /*!
-  \fn SoEvent * SoXtDevice::translateEvent( XAnyEvent * event ) = 0
+  \fn SoEvent * SoXtDevice::translateEvent(XAnyEvent * event) = 0
 
   This method translates from X events to Open Inventor SoEvent events.
 */
@@ -145,7 +145,7 @@ SoXtDevice::~SoXtDevice( // virtual
 
 void
 SoXtDevice::setWindowSize(
-  const SbVec2s size )
+  const SbVec2s size)
 {
   this->size = size;
 } // setWindowSize()
@@ -156,7 +156,7 @@ SoXtDevice::setWindowSize(
 
 const SbVec2s
 SoXtDevice::getWindowSize(
-  void ) const
+  void) const
 {
   return this->size;
 } // getWindowSize()
@@ -172,14 +172,14 @@ void
 SoXtDevice::setEventPosition(
   SoEvent * event,
   int x,
-  int y ) const
+  int y) const
 {
-  assert( event != NULL );
-  SbVec2s position( x, this->size[1] - y - 1 );
-  event->setPosition( position );
+  assert(event != NULL);
+  SbVec2s position(x, this->size[1] - y - 1);
+  event->setPosition(position);
 #if 0 // SOXT_DEBUG
-  SoDebugError::postInfo( "SoXtDevice::setEventPosition",
-    "position = (%d, %d)", position[0], position[1] );
+  SoDebugError::postInfo("SoXtDevice::setEventPosition",
+    "position = (%d, %d)", position[0], position[1]);
 #endif // 0 was SOXT_DEBUG
 } // setEventPosition()
 
@@ -194,16 +194,16 @@ SoXtDevice::addEventHandler(
   Widget widget,
   XtEventHandler handler,
   XtPointer closure,
-  Window window )
+  Window window)
 {
-  if ( this->handlers == NULL )
+  if (this->handlers == NULL)
     this->handlers = new SbPList;
   SoXtDeviceHandlerInfo * info = new SoXtDeviceHandlerInfo;
   info->widget = widget;
   info->handler = handler;
   info->closure = closure;
   info->window = window;
-  this->handlers->append( info );
+  this->handlers->append(info);
 } // addEventHandler()
 
 /*!
@@ -214,14 +214,14 @@ void
 SoXtDevice::removeEventHandler(
   Widget widget,
   XtEventHandler handler,
-  XtPointer closure )
+  XtPointer closure)
 {
-  if ( this->handlers ) {
-    for ( int i = 0; i < this->handlers->getLength(); i++ ) {
+  if (this->handlers) {
+    for (int i = 0; i < this->handlers->getLength(); i++) {
       SoXtDeviceHandlerInfo * info =
         (SoXtDeviceHandlerInfo *) (*this->handlers)[i];
-      if ( (info->widget == widget) && (info->handler == handler) &&
-           (info->closure == closure) ) {
+      if ((info->widget == widget) && (info->handler == handler) &&
+           (info->closure == closure)) {
         delete info;
         this->handlers->remove(i);
         return;
@@ -229,8 +229,8 @@ SoXtDevice::removeEventHandler(
     }
   }
 #if SOXT_DEBUG
-  SoDebugError::post( "SoXtDevice::removeEventHandler",
-    "tried to remove nonexisting handler" );
+  SoDebugError::post("SoXtDevice::removeEventHandler",
+    "tried to remove nonexisting handler");
 #endif // SOXT_DEBUG
 } // removeEventHandler()
 
@@ -240,14 +240,14 @@ SoXtDevice::removeEventHandler(
 
 void
 SoXtDevice::invokeHandlers(
-  XEvent * const event )
+  XEvent * const event)
 {
-  if ( this->handlers ) {
+  if (this->handlers) {
     Boolean dispatch = False;
-    for ( int i = 0; i < this->handlers->getLength(); i++ ) {
+    for (int i = 0; i < this->handlers->getLength(); i++) {
       SoXtDeviceHandlerInfo * info =
         (SoXtDeviceHandlerInfo *) (*this->handlers)[i];
-      info->handler( info->widget, info->closure, event, &dispatch );
+      info->handler(info->widget, info->closure, event, &dispatch);
     }
   }
 } // invokeEventHandlers()

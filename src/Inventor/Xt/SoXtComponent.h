@@ -34,8 +34,8 @@ class SoXtComponent;
 
 // *************************************************************************
 
-typedef void SoXtComponentCB( void * closure, SoXtComponent * component );
-typedef void SoXtComponentVisibilityCB( void * closure, SbBool enable );
+typedef void SoXtComponentCB(void * closure, SoXtComponent * component);
+typedef void SoXtComponentVisibilityCB(void * closure, SbBool enable);
 
 class SOXT_DLL_API SoXtComponent : public SoXtObject {
   SOXT_OBJECT_ABSTRACT_HEADER(SoXtComponent, SoXtObject);
@@ -60,26 +60,26 @@ public:
 
   Display * getDisplay(void);
 
-  void setSize( const SbVec2s size );
+  void setSize(const SbVec2s size);
   SbVec2s getSize(void);
-  void fitSize( const SbVec2s size );
-  virtual void sizeChanged( const SbVec2s size );
+  void fitSize(const SbVec2s size);
+  virtual void sizeChanged(const SbVec2s size);
 
   const char * getWidgetName(void) const;
   const char * getClassName(void) const;
-  void setTitle( const char * const title );
+  void setTitle(const char * const title);
   const char * getTitle(void) const;
-  void setIconTitle( const char * const title );
+  void setIconTitle(const char * const title);
   const char * getIconTitle(void) const;
 
   void setWindowCloseCallback(
-    SoXtComponentCB * callback, void * closure = NULL );
+    SoXtComponentCB * callback, void * closure = NULL);
   void addWindowCloseCallback(
-    SoXtComponentCB * callback, void * closure = NULL );
+    SoXtComponentCB * callback, void * closure = NULL);
   void removeWindowCloseCallback(
-    SoXtComponentCB * callback, void * closure = NULL );
+    SoXtComponentCB * callback, void * closure = NULL);
 
-  static SoXtComponent * getComponent( Widget widget );
+  static SoXtComponent * getComponent(Widget widget);
 
   static void initClasses(void);
 
@@ -87,10 +87,10 @@ protected:
   SoXtComponent(
     const Widget parent = NULL,
     const char * const name = NULL,
-    const SbBool embed = TRUE );
+    const SbBool embed = TRUE);
 
-  void setBaseWidget( Widget widget );
-  void setClassName( const char * const name );
+  void setBaseWidget(Widget widget);
+  void setClassName(const char * const name);
 
   virtual void windowCloseAction(void);
   virtual void afterRealizeHook(void);
@@ -99,24 +99,24 @@ protected:
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
 
-  void registerWidget( Widget widget );
-  void unregisterWidget( Widget widget );
+  void registerWidget(Widget widget);
+  void unregisterWidget(Widget widget);
 
   void addVisibilityChangeCallback(
-    SoXtComponentVisibilityCB * callback, void * closure = NULL );
+    SoXtComponentVisibilityCB * callback, void * closure = NULL);
   void removeVisibilityChangeCallback(
-    SoXtComponentVisibilityCB * callback, void * closure = NULL );
+    SoXtComponentVisibilityCB * callback, void * closure = NULL);
 
-  void invokeVisibilityChangeCallbacks( const SbBool enable ) const;
+  void invokeVisibilityChangeCallbacks(const SbBool enable) const;
   void invokeWindowCloseCallbacks(void) const;
 
-  void openHelpCard( const char * name );
+  void openHelpCard(const char * name);
 
-  static char * getlabel( unsigned int what );
+  static char * getlabel(unsigned int what);
 
   SbBool firstRealize;
 
-  virtual Boolean eventHandler( Widget widget, XEvent * event );
+  virtual Boolean eventHandler(Widget widget, XEvent * event);
 
 private:
   Widget parent;
@@ -138,7 +138,7 @@ private:
   SbPList * visibility_callbacks;
   SbBool visibility_state, fullscreen;
 
-  static void event_handler( Widget, XtPointer, XEvent *, Boolean * );
+  static void event_handler(Widget, XtPointer, XEvent *, Boolean *);
 
 }; // class SoXtComponent
 

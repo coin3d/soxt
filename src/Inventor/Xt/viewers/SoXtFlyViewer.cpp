@@ -50,33 +50,33 @@ SOXT_OBJECT_SOURCE(SoXtFlyViewer);
   Public constructor.
 */
 
-SoXtFlyViewer::SoXtFlyViewer( // public
+SoXtFlyViewer::SoXtFlyViewer(// public
   Widget parent,
   const char * const name,
   SbBool embed,
   SoXtFullViewer::BuildFlag flags,
-  SoXtViewer::Type type )
-: inherited( parent, name, embed, flags, type, FALSE )
-, common( new SoAnyFlyViewer( this ) )
+  SoXtViewer::Type type)
+: inherited(parent, name, embed, flags, type, FALSE)
+, common(new SoAnyFlyViewer(this))
 {
-  this->constructor( TRUE );
+  this->constructor(TRUE);
 } // SoXtFlyViewer()
 
 /*!
   Protected constructor, used by SoXtFlyViewer-derived components.
 */
 
-SoXtFlyViewer::SoXtFlyViewer( // protected
+SoXtFlyViewer::SoXtFlyViewer(// protected
   Widget parent,
   const char * const name,
   SbBool embed,
   SoXtFullViewer::BuildFlag flags,
   SoXtViewer::Type type,
-  SbBool build )
-: inherited( parent, name, embed, flags, type, FALSE )
-, common( new SoAnyFlyViewer( this ) )
+  SbBool build)
+: inherited(parent, name, embed, flags, type, FALSE)
+, common(new SoAnyFlyViewer(this))
 {
-  this->constructor( build );
+  this->constructor(build);
 } // SoXtFlyViewer()
 
 /*!
@@ -84,20 +84,20 @@ SoXtFlyViewer::SoXtFlyViewer( // protected
 */
 
 void
-SoXtFlyViewer::constructor( // private
-  SbBool build )
+SoXtFlyViewer::constructor(// private
+  SbBool build)
 {
   this->prefshell = NULL;
   this->prefsheet = NULL;
   this->prefparts = NULL;
   this->numprefparts = 0;
 
-  this->setClassName( this->getDefaultWidgetName() );
+  this->setClassName(this->getDefaultWidgetName());
 
-  if ( build ) {
-    Widget viewer = inherited::buildWidget( this->getParentWidget() );
-    this->setBaseWidget( viewer );
-    this->fitSize( SbVec2s( 500, 300 ) );
+  if (build) {
+    Widget viewer = inherited::buildWidget(this->getParentWidget());
+    this->setBaseWidget(viewer);
+    this->fitSize(SbVec2s(500, 300));
   }
 } // constructor()
 
@@ -106,7 +106,7 @@ SoXtFlyViewer::constructor( // private
 */
 
 SoXtFlyViewer::~SoXtFlyViewer(
-  void )
+  void)
 {
   delete [] this->prefparts;
   delete this->common;
@@ -119,10 +119,10 @@ SoXtFlyViewer::~SoXtFlyViewer(
 */
 
 void
-SoXtFlyViewer::setViewing( // virtual
-  SbBool enable )
+SoXtFlyViewer::setViewing(// virtual
+  SbBool enable)
 {
-  inherited::setViewing( enable );
+  inherited::setViewing(enable);
 } // setViewing()
 
 /*!
@@ -130,8 +130,8 @@ SoXtFlyViewer::setViewing( // virtual
 */
 
 void
-SoXtFlyViewer::resetToHomePosition( // virtual
-  void )
+SoXtFlyViewer::resetToHomePosition(// virtual
+  void)
 {
   inherited::resetToHomePosition();
 } // resetToHomePosition()
@@ -141,10 +141,10 @@ SoXtFlyViewer::resetToHomePosition( // virtual
 */
 
 void
-SoXtFlyViewer::setCamera( // virtual
-  SoCamera * camera )
+SoXtFlyViewer::setCamera(// virtual
+  SoCamera * camera)
 {
-  inherited::setCamera( camera );
+  inherited::setCamera(camera);
 } // setCamera()
 
 /*!
@@ -152,10 +152,10 @@ SoXtFlyViewer::setCamera( // virtual
 */
 
 void
-SoXtFlyViewer::setCursorEnabled( // virtual
-  SbBool enable )
+SoXtFlyViewer::setCursorEnabled(// virtual
+  SbBool enable)
 {
-  inherited::setCursorEnabled( enable );
+  inherited::setCursorEnabled(enable);
 } // setCursorEnabled()
 
 /*!
@@ -163,10 +163,10 @@ SoXtFlyViewer::setCursorEnabled( // virtual
 */
 
 void
-SoXtFlyViewer::setCameraType( // virtual
-  SoType type )
+SoXtFlyViewer::setCameraType(// virtual
+  SoType type)
 {
-  inherited::setCameraType( type );
+  inherited::setCameraType(type);
   SOXT_STUB();
 } // setCameraType()
 
@@ -177,8 +177,8 @@ SoXtFlyViewer::setCameraType( // virtual
 */
 
 const char *
-SoXtFlyViewer::getDefaultWidgetName( // virtual, protected
-  void ) const
+SoXtFlyViewer::getDefaultWidgetName(// virtual, protected
+  void) const
 {
   static const char defaultWidgetName[] = "SoXtFlyViewer";
   return defaultWidgetName;
@@ -189,8 +189,8 @@ SoXtFlyViewer::getDefaultWidgetName( // virtual, protected
 */
 
 const char *
-SoXtFlyViewer::getDefaultTitle( // virtual, protected
-  void ) const
+SoXtFlyViewer::getDefaultTitle(// virtual, protected
+  void) const
 {
   static const char defaultTitle[] = "Fly Viewer";
   return defaultTitle;
@@ -201,8 +201,8 @@ SoXtFlyViewer::getDefaultTitle( // virtual, protected
 */
 
 const char *
-SoXtFlyViewer::getDefaultIconTitle( // virtual, protected
-  void ) const
+SoXtFlyViewer::getDefaultIconTitle(// virtual, protected
+  void) const
 {
   static const char defaultIconTitle[] = "Fly Viewer";
   return defaultIconTitle;
@@ -215,13 +215,13 @@ SoXtFlyViewer::getDefaultIconTitle( // virtual, protected
 */
 
 void
-SoXtFlyViewer::processEvent( // virtual, protected
-  XAnyEvent * event )
+SoXtFlyViewer::processEvent(// virtual, protected
+  XAnyEvent * event)
 {
-  if ( this->processCommonEvents( event ) )
+  if (this->processCommonEvents(event))
     return;
 
-  inherited::processEvent( event );
+  inherited::processEvent(event);
 } // processEvent()
 
 /*!
@@ -229,10 +229,10 @@ SoXtFlyViewer::processEvent( // virtual, protected
 */
 
 void
-SoXtFlyViewer::setSeekMode( // virtual, protected
-  SbBool enable )
+SoXtFlyViewer::setSeekMode(// virtual, protected
+  SbBool enable)
 {
-  inherited::setSeekMode( enable );
+  inherited::setSeekMode(enable);
 } // setSeekMode()
 
 /*!
@@ -240,8 +240,8 @@ SoXtFlyViewer::setSeekMode( // virtual, protected
 */
 
 void
-SoXtFlyViewer::actualRedraw( // virtual, protected
-  void )
+SoXtFlyViewer::actualRedraw(// virtual, protected
+  void)
 {
   inherited::actualRedraw();
   // add fly viewer graphics here
@@ -252,11 +252,11 @@ SoXtFlyViewer::actualRedraw( // virtual, protected
 */
 
 void
-SoXtFlyViewer::rightWheelMotion( // virtual, protected
-  float value )
+SoXtFlyViewer::rightWheelMotion(// virtual, protected
+  float value)
 {
-  common->dolly( value - this->getRightWheelValue() );
-  inherited::rightWheelMotion( value );
+  common->dolly(value - this->getRightWheelValue());
+  inherited::rightWheelMotion(value);
 } // rightWheelMotion()
 
 /*!
@@ -264,20 +264,20 @@ SoXtFlyViewer::rightWheelMotion( // virtual, protected
 */
 
 void
-SoXtFlyViewer::createPrefSheet( // virtual, protected
-  void )
+SoXtFlyViewer::createPrefSheet(// virtual, protected
+  void)
 {
-  if ( ! this->prefshell ) {
+  if (! this->prefshell) {
     this->prefparts = new Widget [ 16 ];
-    this->createPrefSheetShellAndForm( this->prefshell, this->prefsheet );
-    this->createDefaultPrefSheetParts( this->prefparts, this->numprefparts,
-      this->prefsheet );
+    this->createPrefSheetShellAndForm(this->prefshell, this->prefsheet);
+    this->createDefaultPrefSheetParts(this->prefparts, this->numprefparts,
+      this->prefsheet);
     this->prefparts[this->numprefparts] =
-      this->createFramedSpeedPrefSheetGuts( this->prefsheet );
-    if ( this->prefparts[this->numprefparts] != NULL ) this->numprefparts++;
+      this->createFramedSpeedPrefSheetGuts(this->prefsheet);
+    if (this->prefparts[this->numprefparts] != NULL) this->numprefparts++;
   }
-  this->layoutPartsAndMapPrefSheet( this->prefparts, this->numprefparts,
-    this->prefsheet, this->prefshell );
+  this->layoutPartsAndMapPrefSheet(this->prefparts, this->numprefparts,
+    this->prefsheet, this->prefshell);
 } // createPrefSheet()
 
 /*!
@@ -285,10 +285,10 @@ SoXtFlyViewer::createPrefSheet( // virtual, protected
 */
 
 void
-SoXtFlyViewer::openViewerHelpCard( // virtual, protected
-  void )
+SoXtFlyViewer::openViewerHelpCard(// virtual, protected
+  void)
 {
-  this->openHelpCard( "SoXtFlyViewer.help" );
+  this->openHelpCard("SoXtFlyViewer.help");
 } // openViewerHelpCard()
 
 // *************************************************************************

@@ -44,8 +44,8 @@ static const char rcsid[] =
 // *************************************************************************
 // RESOURCES
 
-#define offset( field ) \
-  XtOffsetOf( SoXtThumbWheelRec, thumbwheel.field )
+#define offset(field) \
+  XtOffsetOf(SoXtThumbWheelRec, thumbwheel.field)
 
 static float default_value = 0.0f;
 
@@ -91,11 +91,11 @@ resources[] = {
 // *************************************************************************
 // ACTION FUNCTION DECLARATIONS
 
-static void Arm( Widget, XEvent *, String *, Cardinal * );
-static void Disarm( Widget, XEvent *, String *, Cardinal * );
-static void Roll( Widget, XEvent *, String *, Cardinal * );
-static void WheelUp( Widget, XEvent *, String *, Cardinal * );
-static void WheelDown( Widget, XEvent *, String *, Cardinal * );
+static void Arm(Widget, XEvent *, String *, Cardinal *);
+static void Disarm(Widget, XEvent *, String *, Cardinal *);
+static void Roll(Widget, XEvent *, String *, Cardinal *);
+static void WheelUp(Widget, XEvent *, String *, Cardinal *);
+static void WheelDown(Widget, XEvent *, String *, Cardinal *);
 
 // *************************************************************************
 // ACTIONS TABLE
@@ -121,16 +121,16 @@ static char defaultTranslations[] = "\
 // *************************************************************************
 // METHOD FUNCTION DECLARATIONS
 
-static void initialize( Widget, Widget, ArgList, Cardinal * );
-static void destroy( Widget );
-static void resize( Widget );
-static void expose( Widget, XExposeEvent *, Region );
+static void initialize(Widget, Widget, ArgList, Cardinal *);
+static void destroy(Widget);
+static void resize(Widget);
+static void expose(Widget, XExposeEvent *, Region);
 /*
 static XtGeometryResult query_geometry(
-         Widget, XtWidgetGeometry *, XtWidgetGeometry * );
+         Widget, XtWidgetGeometry *, XtWidgetGeometry *);
 */
-static Boolean set_values( Widget, Widget, Widget, ArgList, Cardinal * );
-static void realize( Widget, XtValueMask *, XSetWindowAttributes * );
+static Boolean set_values(Widget, Widget, Widget, ArgList, Cardinal *);
+static void realize(Widget, XtValueMask *, XSetWindowAttributes *);
 
 // *************************************************************************
 // CLASS RECORD INITIALIZATION
@@ -196,7 +196,7 @@ initialize(
   Widget treq,
   Widget tnew,
   ArgList args,
-  Cardinal * num_args )
+  Cardinal * num_args)
 {
   SoXtThumbWheelWidget widget = (SoXtThumbWheelWidget) tnew;
 
@@ -216,7 +216,7 @@ initialize(
   gc.background = widget->core.background_pixel;
 
   int mask = GCLineWidth | GCLineStyle | GCForeground | GCBackground;
-  widget->thumbwheel.context = XtGetGC( tnew, mask, &gc );
+  widget->thumbwheel.context = XtGetGC(tnew, mask, &gc);
 } // initialize()
 
 static
@@ -224,7 +224,7 @@ void
 realize(
   Widget widget,
   XtValueMask * valueMask,
-  XSetWindowAttributes * attributes )
+  XSetWindowAttributes * attributes)
 {
   SOXT_STUB();
 } // realize()
@@ -236,33 +236,33 @@ static const int WHEEL_THICKNESS_PADDING = 4;
 static
 SoAnyThumbWheel *
 create_thumbwheel(
-  SoXtThumbWheelWidget widget )
+  SoXtThumbWheelWidget widget)
 {
-  assert( widget != NULL );
+  assert(widget != NULL);
 
   int diameter = widget->core.width
                - (2 * widget->primitive.shadow_thickness) - 2;
   int thickness = widget->core.height
                 - (2 * widget->primitive.shadow_thickness) - 2;
-  switch ( widget->thumbwheel.orientation ) {
+  switch (widget->thumbwheel.orientation) {
   case XmHORIZONTAL:
     // assumed in initialization
     break;
   case XmVERTICAL:
-    SoXtSwap( diameter, thickness );
+    SoXtSwap(diameter, thickness);
     break;
   default:
-    assert( 0 && "impossible orientation" );
+    assert(0 && "impossible orientation");
     break;
-  } // switch ( widget->thumbwheel.orientation )
+  } // switch (widget->thumbwheel.orientation)
   diameter -= 2 * WHEEL_DIAMETER_PADDING;
   thickness -= 2 * WHEEL_THICKNESS_PADDING;
 
   SoAnyThumbWheel * wheel = new SoAnyThumbWheel;
-  wheel->setSize( diameter, thickness );
-  wheel->setGraphicsByteOrder( SoAnyThumbWheel::ABGR );
-  wheel->setMovement( SoAnyThumbWheel::UNIFORM );
-  wheel->setBoundaryHandling( SoAnyThumbWheel::ACCUMULATE );
+  wheel->setSize(diameter, thickness);
+  wheel->setGraphicsByteOrder(SoAnyThumbWheel::ABGR);
+  wheel->setMovement(SoAnyThumbWheel::UNIFORM);
+  wheel->setBoundaryHandling(SoAnyThumbWheel::ACCUMULATE);
   return wheel;
 } // create_thumbwheel()
 
@@ -272,39 +272,39 @@ create_thumbwheel(
 static
 Boolean
 dirty_pixmaps(
-  SoXtThumbWheelWidget widget )
+  SoXtThumbWheelWidget widget)
 {
-  assert( widget != NULL );
-  assert( widget->thumbwheel.thumbwheel != NULL );
+  assert(widget != NULL);
+  assert(widget->thumbwheel.thumbwheel != NULL);
 
   int diameter = widget->core.width
                - (2 * widget->primitive.shadow_thickness) - 2;
   int thickness = widget->core.height
                 - (2 * widget->primitive.shadow_thickness) - 2;
 
-  switch ( widget->thumbwheel.orientation ) {
+  switch (widget->thumbwheel.orientation) {
   case XmHORIZONTAL:
     // assumed in initialization
     break;
   case XmVERTICAL:
-    SoXtSwap( diameter, thickness );
+    SoXtSwap(diameter, thickness);
     break;
   default:
-    assert( 0 && "impossible orientation" );
+    assert(0 && "impossible orientation");
     break;
-  } // switch ( widget->thumbwheel.orientation )
+  } // switch (widget->thumbwheel.orientation)
   diameter -= 2 * WHEEL_DIAMETER_PADDING;
   thickness -= 2 * WHEEL_THICKNESS_PADDING;
 
   int d = 0, t = 0;
-  ((SoAnyThumbWheel *) widget->thumbwheel.thumbwheel)->getSize( d, t );
+  ((SoAnyThumbWheel *) widget->thumbwheel.thumbwheel)->getSize(d, t);
 
-  if ( diameter != d || thickness != t ) {
+  if (diameter != d || thickness != t) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo( "SoXtThumbWheel:dirty_pixmaps", "dirty pixmaps" );
+    SoDebugError::postInfo("SoXtThumbWheel:dirty_pixmaps", "dirty pixmaps");
 #endif // SOXT_DEBUG
     ((SoAnyThumbWheel *) widget->thumbwheel.thumbwheel)->
-      setSize( diameter, thickness );
+      setSize(diameter, thickness);
     return True;
   }
 
@@ -320,14 +320,14 @@ static int r_shift, g_shift, b_shift;
 
 unsigned long
 twiddlebits(
-  unsigned long abgr )
+  unsigned long abgr)
 {
   unsigned long target = 0;
-  if ( r_shift >= 0 ) target |= ((abgr & 0x000000ff) << r_shift) & r_mask;
+  if (r_shift >= 0) target |= ((abgr & 0x000000ff) << r_shift) & r_mask;
   else                target |= ((abgr & 0x000000ff) >> (0-r_shift)) & r_mask;
-  if ( b_shift >= 0 ) target |= ((abgr & 0x0000ff00) << g_shift) & g_mask;
+  if (b_shift >= 0) target |= ((abgr & 0x0000ff00) << g_shift) & g_mask;
   else                target |= ((abgr & 0x0000ff00) >> (0-g_shift)) & g_mask;
-  if ( b_shift >= 0 ) target |= ((abgr & 0x00ff0000) << b_shift) & b_mask;
+  if (b_shift >= 0) target |= ((abgr & 0x00ff0000) << b_shift) & b_mask;
   else                target |= ((abgr & 0x00ff0000) >> (0-b_shift)) & b_mask;
   return target;
 } // fromABCtoCBA()
@@ -348,17 +348,17 @@ static Colormap rgb_colormap = 0;
 inline
 unsigned long
 abgr2pixel(
-  unsigned long abgr )
+  unsigned long abgr)
 {
-  switch ( rgb_target_mode ) {
-  case CUSTOM:   return twiddlebits( abgr );
+  switch (rgb_target_mode) {
+  case CUSTOM:   return twiddlebits(abgr);
   default:       break;
   }
  
   static unsigned long fallback = 0;
   static unsigned long prevabgr = 0xffffffff;
 
-  if ( abgr == prevabgr )
+  if (abgr == prevabgr)
     return fallback;
   prevabgr = abgr;
 
@@ -366,9 +366,9 @@ abgr2pixel(
   static int cached = 0;
   // try some caching and approximation stuff here...
   const unsigned long abgrreduced = abgr & 0x00fcfcfc;
-  for ( int i = cached - 1; i > 0; i-- ) {
-    if ( cache[i] == abgrreduced ) {
-//      SoDebugError::postInfo( "", "lifted from special-purpose cache" );
+  for (int i = cached - 1; i > 0; i--) {
+    if (cache[i] == abgrreduced) {
+//      SoDebugError::postInfo("", "lifted from special-purpose cache");
       return (fallback = cache[i+PIXEL_CACHE_SIZE]);
     }
   }
@@ -376,28 +376,28 @@ abgr2pixel(
   // lookup pixel
   static XColor cdata, ign;
   cdata.red   = (unsigned short) ((abgr << 8) & 0xff00);
-  cdata.green = (unsigned short) ((abgr     ) & 0xff00);
+  cdata.green = (unsigned short) ((abgr    ) & 0xff00);
   cdata.blue  = (unsigned short) ((abgr >> 8) & 0xff00);
-  if ( XAllocColor( rgb_dpy, rgb_colormap, &cdata ) ) {
+  if (XAllocColor(rgb_dpy, rgb_colormap, &cdata)) {
     fallback = cdata.pixel;
   } else {
     static char colorname[16];
-    sprintf( colorname, "rgb:%02x/%02x/%02x",
-                        cdata.red >> 8, cdata.green >> 8, cdata.blue >> 8 );
-    if ( XLookupColor( rgb_dpy, rgb_colormap, colorname, &cdata, &ign ) ) {
-      if ( XAllocColor( rgb_dpy, rgb_colormap, &cdata ) ) {
+    sprintf(colorname, "rgb:%02x/%02x/%02x",
+                        cdata.red >> 8, cdata.green >> 8, cdata.blue >> 8);
+    if (XLookupColor(rgb_dpy, rgb_colormap, colorname, &cdata, &ign)) {
+      if (XAllocColor(rgb_dpy, rgb_colormap, &cdata)) {
         fallback = cdata.pixel;
-      } else if ( XAllocColor( rgb_dpy, rgb_colormap, &ign ) ) {
+      } else if (XAllocColor(rgb_dpy, rgb_colormap, &ign)) {
         fallback = ign.pixel;
       } else {
         return (fallback = 0);
       }
     }
   }
-  if ( cached == PIXEL_CACHE_SIZE ) {
+  if (cached == PIXEL_CACHE_SIZE) {
     cached--;
-    memmove( &cache[1], &cache[0],
-             (sizeof(unsigned long) * PIXEL_CACHE_SIZE * 2) - 1 );
+    memmove(&cache[1], &cache[0],
+             (sizeof(unsigned long) * PIXEL_CACHE_SIZE * 2) - 1);
   }
   cache[cached + PIXEL_CACHE_SIZE] = fallback;
   cache[cached] = abgrreduced;
@@ -413,17 +413,17 @@ abgr2pixel(
 static
 void
 init_pixmaps(
-  SoXtThumbWheelWidget widget )
+  SoXtThumbWheelWidget widget)
 {
-  assert( widget != NULL );
-  if ( widget->thumbwheel.pixmaps != NULL ) {
+  assert(widget != NULL);
+  if (widget->thumbwheel.pixmaps != NULL) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo( "SoXtThumbWheel:init_pixmaps",
-      "pixmaps already initialized" );
+    SoDebugError::postInfo("SoXtThumbWheel:init_pixmaps",
+      "pixmaps already initialized");
 #endif // SOXT_DEBUG
     return;
   }
-  assert( widget->thumbwheel.thumbwheel != NULL );
+  assert(widget->thumbwheel.thumbwheel != NULL);
 
   SoAnyThumbWheel * const wheel =
     (SoAnyThumbWheel *) widget->thumbwheel.thumbwheel;
@@ -435,38 +435,38 @@ init_pixmaps(
   const int height = widget->core.height;
   const int pixels = width * height;
   int diameter = 0, thickness = 0;
-  wheel->getSize( diameter, thickness );
+  wheel->getSize(diameter, thickness);
 
   Widget shell = (Widget) widget;
-  while ( ! XtIsShell(shell) && shell != (Widget) NULL )
+  while (! XtIsShell(shell) && shell != (Widget) NULL)
     shell = XtParent(shell);
-  assert( shell != (Widget) NULL );
+  assert(shell != (Widget) NULL);
 
-  Display * dpy = XtDisplay( shell );
-  Screen * screen = XtScreen( shell );
+  Display * dpy = XtDisplay(shell);
+  Screen * screen = XtScreen(shell);
 
   Colormap colormap = 0;
   Visual * visual = (Visual *) NULL;
   int depth = 0;
 
-  XtVaGetValues( shell,
+  XtVaGetValues(shell,
     XmNvisual, &visual,
     XmNcolormap, &colormap,
     XmNdepth, &depth,
-    NULL );
-  assert( visual != (Visual *) NULL && colormap != 0 );
+    NULL);
+  assert(visual != (Visual *) NULL && colormap != 0);
 
   rgb_dpy = dpy;
   rgb_colormap = colormap;
 
-  if ( visual->red_mask   != 0x00000000 &&
+  if (visual->red_mask   != 0x00000000 &&
        visual->green_mask != 0x00000000 &&
-       visual->blue_mask  != 0x00000000 ) {
+       visual->blue_mask  != 0x00000000) {
     // analyze masks for custom rotate+mask converter
 
     // SGI fix - the 8th bit seems to have some special meaning
     rgb_target_mode = UNKNOWN;
-    unsigned long white_probe = abgr2pixel( 0x00ffffff );
+    unsigned long white_probe = abgr2pixel(0x00ffffff);
 
     r_mask = visual->red_mask   & white_probe;
     g_mask = visual->green_mask & white_probe;
@@ -475,38 +475,38 @@ init_pixmaps(
     g_shift = -16; // xxGGxx
     b_shift = -24; // BBxxxx
     unsigned long mask;
-    mask = r_mask; while ( mask ) { mask >>= 1; r_shift++; }
-    mask = g_mask; while ( mask ) { mask >>= 1; g_shift++; }
-    mask = b_mask; while ( mask ) { mask >>= 1; b_shift++; }
+    mask = r_mask; while (mask) { mask >>= 1; r_shift++; }
+    mask = g_mask; while (mask) { mask >>= 1; g_shift++; }
+    mask = b_mask; while (mask) { mask >>= 1; b_shift++; }
     rgb_target_mode = CUSTOM;
   }
 
   Pixel normal = widget->core.background_pixel;
   Pixel light = widget->primitive.top_shadow_color;
   Pixel shade = widget->primitive.bottom_shadow_color;
-  Pixel black = BlackPixelOfScreen( screen );
+  Pixel black = BlackPixelOfScreen(screen);
   const int t = widget->primitive.shadow_thickness;
 
-  Drawable drawable = XtWindow( widget );
-  if ( ! drawable )
-    drawable = DefaultRootWindow( dpy );
-  assert( drawable != 0 );
+  Drawable drawable = XtWindow(widget);
+  if (! drawable)
+    drawable = DefaultRootWindow(dpy);
+  assert(drawable != 0);
 
   unsigned long * const rgbdata = new unsigned long [ diameter * thickness ];
-  assert( rgbdata != NULL );
-  wheel->setGraphicsByteOrder( SoAnyThumbWheel::ABGR );
+  assert(rgbdata != NULL);
+  wheel->setGraphicsByteOrder(SoAnyThumbWheel::ABGR);
 
   int frame = 0;
-  for ( frame = widget->thumbwheel.numpixmaps - 1; frame > 0; frame-- ) {
+  for (frame = widget->thumbwheel.numpixmaps - 1; frame > 0; frame--) {
     widget->thumbwheel.pixmaps[frame] =
-      XCreatePixmap( dpy, drawable, width, height, depth );
-    assert( widget->thumbwheel.pixmaps[frame] );
+      XCreatePixmap(dpy, drawable, width, height, depth);
+    assert(widget->thumbwheel.pixmaps[frame]);
 
-    XImage * img = XGetImage( dpy, widget->thumbwheel.pixmaps[frame],
-      0, 0, width, height, 0xffffffff, ZPixmap );
+    XImage * img = XGetImage(dpy, widget->thumbwheel.pixmaps[frame],
+      0, 0, width, height, 0xffffffff, ZPixmap);
 
     int rect_top = 0, rect_left = 0, rect_bottom = 0, rect_right = 0;
-    switch ( widget->thumbwheel.orientation ) {
+    switch (widget->thumbwheel.orientation) {
     case XmHORIZONTAL:
       rect_top = widget->primitive.shadow_thickness + WHEEL_THICKNESS_PADDING;
       rect_left = widget->primitive.shadow_thickness + WHEEL_DIAMETER_PADDING;
@@ -526,89 +526,89 @@ init_pixmaps(
     default:
       // caught later
       break;
-    } // switch ( widget->thumbwheel.orientation )
+    } // switch (widget->thumbwheel.orientation)
       
     int x, y;
-    for ( x = 0; x < width; x++ )
-      for ( y = 0; y < height; y++ )
-        XPutPixel( img, x, y, normal );
+    for (x = 0; x < width; x++)
+      for (y = 0; y < height; y++)
+        XPutPixel(img, x, y, normal);
 
-    for ( y = 0; y < height; y++ ) {
-      for ( x = 0; x < width; x++ ) {
-        if ( x < t || y < t )                              // top/left light
-          XPutPixel( img, x, y, normal /* light */ );
-        if ( y > (height - t - 1) && (x >= (height - y)) ) // bottom shadow
-          XPutPixel( img, x, y, normal /* shade */ );
-        if ( y > (width - x - 1) && (x >= (width - t)) )   // right shadow
-          XPutPixel( img, x, y, normal /* shade */ );
+    for (y = 0; y < height; y++) {
+      for (x = 0; x < width; x++) {
+        if (x < t || y < t)                              // top/left light
+          XPutPixel(img, x, y, normal /* light */);
+        if (y > (height - t - 1) && (x >= (height - y))) // bottom shadow
+          XPutPixel(img, x, y, normal /* shade */);
+        if (y > (width - x - 1) && (x >= (width - t)))   // right shadow
+          XPutPixel(img, x, y, normal /* shade */);
   
-        if ( (y == rect_top || y == rect_bottom) &&        // black rectangle
-             (x >= rect_left && x <= rect_right) )
-          XPutPixel( img, x, y, black );
-        if ( (x == rect_left || x == rect_right) &&
-             (y >= rect_top && y <= rect_bottom) )
-          XPutPixel( img, x, y, black );
+        if ((y == rect_top || y == rect_bottom) &&        // black rectangle
+             (x >= rect_left && x <= rect_right))
+          XPutPixel(img, x, y, black);
+        if ((x == rect_left || x == rect_right) &&
+             (y >= rect_top && y <= rect_bottom))
+          XPutPixel(img, x, y, black);
       }
     }
   
-    switch ( widget->thumbwheel.orientation ) {
+    switch (widget->thumbwheel.orientation) {
     case XmHORIZONTAL:
-      wheel->drawBitmap( frame, (void *) rgbdata, SoAnyThumbWheel::HORIZONTAL );
+      wheel->drawBitmap(frame, (void *) rgbdata, SoAnyThumbWheel::HORIZONTAL);
       break;
     case XmVERTICAL:
-      wheel->drawBitmap( frame, (void *) rgbdata, SoAnyThumbWheel::VERTICAL );
+      wheel->drawBitmap(frame, (void *) rgbdata, SoAnyThumbWheel::VERTICAL);
       break;
     default:
-      assert( 0 && "invalid thumbwheel orientation" );
+      assert(0 && "invalid thumbwheel orientation");
       break;
-    } // switch ( widget->thumbweel.orientation )
+    } // switch (widget->thumbweel.orientation)
 
     int lpadding = widget->primitive.shadow_thickness + 1;
     int tpadding = widget->primitive.shadow_thickness + 1;
     int wheelwidth = 0;
     int wheelheight = 0;
-    switch ( widget->thumbwheel.orientation ) {
+    switch (widget->thumbwheel.orientation) {
     case XmHORIZONTAL:
       lpadding += WHEEL_DIAMETER_PADDING;
       tpadding += WHEEL_THICKNESS_PADDING;
-      wheel->getSize( wheelwidth, wheelheight );
+      wheel->getSize(wheelwidth, wheelheight);
       break;
     case XmVERTICAL:
       lpadding += WHEEL_THICKNESS_PADDING;
       tpadding += WHEEL_DIAMETER_PADDING;
-      wheel->getSize( wheelheight, wheelwidth );
+      wheel->getSize(wheelheight, wheelwidth);
       break;
     default:
-      assert( 0 && "impossible" );
+      assert(0 && "impossible");
       break;
-    } // switch ( widget->thumbweel.orientation )
+    } // switch (widget->thumbweel.orientation)
 
-    if ( widget->core.depth > 8 ) {
+    if (widget->core.depth > 8) {
       // lets do this the hard way and waste some resources :(
       XColor cdata, ign;
-      if ( widget->thumbwheel.orientation == XmHORIZONTAL ) {
-        for ( x = 0; x < wheelwidth; x++ ) {
-          for ( y = 0; y < wheelheight; y++ ) {
-            XPutPixel( img, x + lpadding, y + tpadding,
-                       abgr2pixel( rgbdata[(y * wheelwidth) + x] ) );
+      if (widget->thumbwheel.orientation == XmHORIZONTAL) {
+        for (x = 0; x < wheelwidth; x++) {
+          for (y = 0; y < wheelheight; y++) {
+            XPutPixel(img, x + lpadding, y + tpadding,
+                       abgr2pixel(rgbdata[(y * wheelwidth) + x]));
           }
         }
       } else {
-        for ( y = 0; y < wheelheight; y++ ) {
+        for (y = 0; y < wheelheight; y++) {
           const int offset = y * wheelwidth;
-          for ( x = 0; x < wheelwidth; x++ ) {
-            XPutPixel( img, x + lpadding, y + tpadding,
-                       abgr2pixel( rgbdata[offset + x] ) );
+          for (x = 0; x < wheelwidth; x++) {
+            XPutPixel(img, x + lpadding, y + tpadding,
+                       abgr2pixel(rgbdata[offset + x]));
           }
         }
       }
     }
 
-    GC temp = XCreateGC( dpy, drawable, 0, NULL );
-    XPutImage( dpy, widget->thumbwheel.pixmaps[frame], temp, img, 0, 0, 0, 0,
-      img->width, img->height );
-    XFreeGC( dpy, temp );
-    XDestroyImage( img );
+    GC temp = XCreateGC(dpy, drawable, 0, NULL);
+    XPutImage(dpy, widget->thumbwheel.pixmaps[frame], temp, img, 0, 0, 0, 0,
+      img->width, img->height);
+    XFreeGC(dpy, temp);
+    XDestroyImage(img);
   }
 
   delete [] rgbdata;
@@ -621,10 +621,10 @@ init_pixmaps(
 static
 void
 clean_pixmaps(
-  SoXtThumbWheelWidget widget )
+  SoXtThumbWheelWidget widget)
 {
-  assert( widget != NULL );
-  if ( widget->thumbwheel.pixmaps == NULL )
+  assert(widget != NULL);
+  if (widget->thumbwheel.pixmaps == NULL)
     return;
   int i;
 #if 0
@@ -632,8 +632,8 @@ clean_pixmaps(
   // SGI IRIX 6.5 (but not when an application is run "stand-alone",
   // strangely enough). So, we prefer a memory leak to a crash...
   // 20000707 mortene.
-  for ( i = 0; i < widget->thumbwheel.numpixmaps; i++ )
-    XFreePixmap( XtDisplay(widget), widget->thumbwheel.pixmaps[i] );
+  for (i = 0; i < widget->thumbwheel.numpixmaps; i++)
+    XFreePixmap(XtDisplay(widget), widget->thumbwheel.pixmaps[i]);
 #endif // FIXME
   delete [] widget->thumbwheel.pixmaps;
   widget->thumbwheel.pixmaps = NULL;
@@ -648,41 +648,41 @@ void
 expose(
   Widget w,
   XExposeEvent * event,
-  Region region )
+  Region region)
 {
   SoXtThumbWheelWidget widget = (SoXtThumbWheelWidget) w;
-  if ( ! XtIsRealized( w ) ) return;
+  if (! XtIsRealized(w)) return;
 
-  if ( ! widget->thumbwheel.thumbwheel ) {
-    widget->thumbwheel.thumbwheel = (void *) create_thumbwheel( widget );
-    init_pixmaps( widget );
+  if (! widget->thumbwheel.thumbwheel) {
+    widget->thumbwheel.thumbwheel = (void *) create_thumbwheel(widget);
+    init_pixmaps(widget);
   }
 
-  if ( dirty_pixmaps( widget ) ) {
-    clean_pixmaps( widget );
-    init_pixmaps( widget );
+  if (dirty_pixmaps(widget)) {
+    clean_pixmaps(widget);
+    init_pixmaps(widget);
   }
-  assert( ! dirty_pixmaps( widget ) );
+  assert(! dirty_pixmaps(widget));
 
-  if ( widget->thumbwheel.numpixmaps > 0 ) {
+  if (widget->thumbwheel.numpixmaps > 0) {
     int pixmap = 0;
-    if ( widget->core.sensitive ) {
+    if (widget->core.sensitive) {
       pixmap = ((SoAnyThumbWheel *) widget->thumbwheel.thumbwheel)->
-        getBitmapForValue( widget->thumbwheel.value, SoAnyThumbWheel::ENABLED );
+        getBitmapForValue(widget->thumbwheel.value, SoAnyThumbWheel::ENABLED);
     } else {
       pixmap =
         ((SoAnyThumbWheel *) widget->thumbwheel.thumbwheel)->
-          getBitmapForValue( widget->thumbwheel.value,
-                             SoAnyThumbWheel::DISABLED );
+          getBitmapForValue(widget->thumbwheel.value,
+                             SoAnyThumbWheel::DISABLED);
     }
-    XCopyArea( XtDisplay(widget), widget->thumbwheel.pixmaps[pixmap],
+    XCopyArea(XtDisplay(widget), widget->thumbwheel.pixmaps[pixmap],
       XtWindow(widget), widget->thumbwheel.context,
-      0, 0, widget->core.width, widget->core.height, 0, 0 );
+      0, 0, widget->core.width, widget->core.height, 0, 0);
     widget->thumbwheel.currentpixmap = pixmap;
   } else {
 #if SOXT_DEBUG
-    SoDebugError::postInfo( "SoXtThumbWheel::expose",
-      "expose, but no pixmaps" );
+    SoDebugError::postInfo("SoXtThumbWheel::expose",
+      "expose, but no pixmaps");
 #endif // SOXT_DEBUG
   }
 } // expose()
@@ -697,41 +697,41 @@ set_values(
   Widget request,
   Widget new_widget,
   ArgList args,
-  Cardinal * num_args )
+  Cardinal * num_args)
 {
   Boolean redisplay = False;
   SoXtThumbWheelWidget curcw = (SoXtThumbWheelWidget) current;
   SoXtThumbWheelWidget reqcw = (SoXtThumbWheelWidget) request;
   SoXtThumbWheelWidget newcw = (SoXtThumbWheelWidget) new_widget;
 
-  if ( newcw->core.width != curcw->core.width )
+  if (newcw->core.width != curcw->core.width)
     redisplay = True;
 
-  if ( newcw->core.height != curcw->core.height )
+  if (newcw->core.height != curcw->core.height)
     redisplay = True;
 
-  if ( newcw->thumbwheel.refresh != False ) {
+  if (newcw->thumbwheel.refresh != False) {
     newcw->thumbwheel.refresh = False;
     redisplay = True;
   }
 
-  if ( newcw->core.sensitive != curcw->core.sensitive )
-    expose( new_widget, NULL, NULL );
+  if (newcw->core.sensitive != curcw->core.sensitive)
+    expose(new_widget, NULL, NULL);
 
-  if ( newcw->thumbwheel.value != curcw->thumbwheel.value ) {
+  if (newcw->thumbwheel.value != curcw->thumbwheel.value) {
     int pixmap = 0;
     SoXtThumbWheelWidget wheel = (SoXtThumbWheelWidget) newcw;
-    if ( wheel->core.sensitive ) {
+    if (wheel->core.sensitive) {
       pixmap = ((SoAnyThumbWheel *) wheel->thumbwheel.thumbwheel)->
-        getBitmapForValue( wheel->thumbwheel.value, SoAnyThumbWheel::ENABLED );
+        getBitmapForValue(wheel->thumbwheel.value, SoAnyThumbWheel::ENABLED);
     } else {
       pixmap =
         ((SoAnyThumbWheel *) wheel->thumbwheel.thumbwheel)->
-          getBitmapForValue( wheel->thumbwheel.value,
-                             SoAnyThumbWheel::DISABLED );
+          getBitmapForValue(wheel->thumbwheel.value,
+                             SoAnyThumbWheel::DISABLED);
     }
-    if ( pixmap != wheel->thumbwheel.currentpixmap )
-      expose( new_widget, NULL, NULL );
+    if (pixmap != wheel->thumbwheel.currentpixmap)
+      expose(new_widget, NULL, NULL);
   }
 
   return redisplay;
@@ -743,10 +743,10 @@ set_values(
 static
 void
 resize(
-  Widget w )
+  Widget w)
 {
   SoXtThumbWheelWidget widget = (SoXtThumbWheelWidget) w;
-  if ( ! widget->thumbwheel.thumbwheel ) return;
+  if (! widget->thumbwheel.thumbwheel) return;
   // schedule edisplay
 } // resize()
 
@@ -759,7 +759,7 @@ XtGeometryResult
 query_geometry(
   Widget,
   XtWidgetGeometry *,
-  XtWidgetGeometry * )
+  XtWidgetGeometry *)
 {
   XtGeometryResult foo;
   SOXT_STUB();
@@ -773,11 +773,11 @@ query_geometry(
 static
 void
 destroy(
-  Widget w )
+  Widget w)
 {
-  assert( w != NULL );
+  assert(w != NULL);
   SoXtThumbWheelWidget widget = (SoXtThumbWheelWidget) w;
-  clean_pixmaps( widget );
+  clean_pixmaps(widget);
   SoAnyThumbWheel * wheel = (SoAnyThumbWheel *) widget->thumbwheel.thumbwheel;
   delete wheel;
 } // destroy()
@@ -793,38 +793,38 @@ Arm(
   Widget w,
   XEvent * e,
   String *,
-  Cardinal * )
+  Cardinal *)
 {
-  assert( e->type == ButtonPress );
+  assert(e->type == ButtonPress);
   XButtonPressedEvent * event = (XButtonPressedEvent *) e;
 
   SoXtThumbWheelWidget widget = (SoXtThumbWheelWidget) w;
-  if ( ! widget->core.sensitive ) return;
+  if (! widget->core.sensitive) return;
   SoAnyThumbWheel * wheel = (SoAnyThumbWheel *) widget->thumbwheel.thumbwheel;
 
   int width = 0, height = 0;
   int tpadding = 0, lpadding = 0;
 
-  switch ( widget->thumbwheel.orientation ) {
+  switch (widget->thumbwheel.orientation) {
   case XmHORIZONTAL:
-    wheel->getSize( width, height );
+    wheel->getSize(width, height);
     tpadding = widget->primitive.shadow_thickness + 1 + WHEEL_THICKNESS_PADDING;
     lpadding = widget->primitive.shadow_thickness + 1 + WHEEL_DIAMETER_PADDING;
     widget->thumbwheel.arm_position = event->x - lpadding;
     break;
   case XmVERTICAL:
-    wheel->getSize( height, width );
+    wheel->getSize(height, width);
     tpadding = widget->primitive.shadow_thickness + 1 + WHEEL_DIAMETER_PADDING;
     lpadding = widget->primitive.shadow_thickness + 1 + WHEEL_THICKNESS_PADDING;
     widget->thumbwheel.arm_position = event->y - tpadding;
     break;
   default:
-    assert( 0 && "not possible" );
+    assert(0 && "not possible");
     break;
-  } // switch ( widget->thumbwheel.orientation )
+  } // switch (widget->thumbwheel.orientation)
 
-  if ( event->x < lpadding || event->x >= (widget->core.width - lpadding) ||
-       event->y < tpadding || event->y >= (widget->core.height - tpadding) )
+  if (event->x < lpadding || event->x >= (widget->core.width - lpadding) ||
+       event->y < tpadding || event->y >= (widget->core.height - tpadding))
     return; // pointer missed wheel
 
   widget->thumbwheel.prev_position = widget->thumbwheel.arm_position;
@@ -840,7 +840,7 @@ Arm(
     0 // no movement on arm action
   };
 
-  XtCallCallbackList( w, widget->thumbwheel.arm_callback, (XtPointer) &data );
+  XtCallCallbackList(w, widget->thumbwheel.arm_callback, (XtPointer) &data);
 } // Arm()
 
 /*!
@@ -851,10 +851,10 @@ Disarm(
   Widget w,
   XEvent * e,
   String *,
-  Cardinal * )
+  Cardinal *)
 {
   SoXtThumbWheelWidget widget = (SoXtThumbWheelWidget) w;
-  if ( ! widget->thumbwheel.armed ) return;
+  if (! widget->thumbwheel.armed) return;
   widget->thumbwheel.armed = False;
 
   SoXtThumbWheelCallbackData data = {
@@ -865,8 +865,8 @@ Disarm(
     0 // no movement on disarm
   };
 
-  XtCallCallbackList( w, widget->thumbwheel.disarm_callback,
-    (XtPointer) &data );
+  XtCallCallbackList(w, widget->thumbwheel.disarm_callback,
+    (XtPointer) &data);
 } // Disarm()
 
 /*!
@@ -877,16 +877,16 @@ Roll(
   Widget w,
   XEvent * e,
   String *,
-  Cardinal * )
+  Cardinal *)
 {
-  assert( e->type == MotionNotify );
+  assert(e->type == MotionNotify);
   XMotionEvent * event = (XMotionEvent *) e;
   SoXtThumbWheelWidget widget = (SoXtThumbWheelWidget) w;
-  if ( ! widget->thumbwheel.armed )
+  if (! widget->thumbwheel.armed)
     return;
 
   int pos = 0;
-  switch ( widget->thumbwheel.orientation ) {
+  switch (widget->thumbwheel.orientation) {
   case XmHORIZONTAL:
     pos = event->x - widget->primitive.shadow_thickness - 1 -
           WHEEL_DIAMETER_PADDING;
@@ -896,29 +896,29 @@ Roll(
           WHEEL_DIAMETER_PADDING;
     break;
   default:
-    assert( 0 );
+    assert(0);
     break;
-  } // switch ( widget->thumbwheel.orientation )
+  } // switch (widget->thumbwheel.orientation)
 
-  if ( widget->thumbwheel.prev_position == pos )
+  if (widget->thumbwheel.prev_position == pos)
     return;
 
   widget->thumbwheel.prev_value = widget->thumbwheel.value;
   widget->thumbwheel.value =
     ((SoAnyThumbWheel *) widget->thumbwheel.thumbwheel)->
-      calculateValue( widget->thumbwheel.arm_value,
+      calculateValue(widget->thumbwheel.arm_value,
                       widget->thumbwheel.arm_position,
-                      (pos - widget->thumbwheel.arm_position) );
+                      (pos - widget->thumbwheel.arm_position));
 
   SoAnyThumbWheel * wheel = (SoAnyThumbWheel *) widget->thumbwheel.thumbwheel;
 
-  int pixmap = wheel->getBitmapForValue( widget->thumbwheel.value,
-    SoAnyThumbWheel::ENABLED );
+  int pixmap = wheel->getBitmapForValue(widget->thumbwheel.value,
+    SoAnyThumbWheel::ENABLED);
 
-  if ( pixmap != widget->thumbwheel.currentpixmap ) {
-    XCopyArea( XtDisplay(widget), widget->thumbwheel.pixmaps[pixmap],
+  if (pixmap != widget->thumbwheel.currentpixmap) {
+    XCopyArea(XtDisplay(widget), widget->thumbwheel.pixmaps[pixmap],
       XtWindow(widget), widget->thumbwheel.context,
-      0, 0, widget->core.width, widget->core.height, 0, 0 );
+      0, 0, widget->core.width, widget->core.height, 0, 0);
     widget->thumbwheel.currentpixmap = pixmap;
   }
 
@@ -930,7 +930,7 @@ Roll(
     pos - widget->thumbwheel.prev_position
   };
 
-  XtCallCallbackList( w, widget->thumbwheel.valuechanged_callback, &data );
+  XtCallCallbackList(w, widget->thumbwheel.valuechanged_callback, &data);
 
   widget->thumbwheel.prev_position = pos;
 } // Roll()
@@ -943,7 +943,7 @@ WheelUp(
   Widget,
   XEvent *,
   String *,
-  Cardinal * )
+  Cardinal *)
 {
 #if SOXT_DEBUG
   SOXT_STUB();
@@ -958,7 +958,7 @@ WheelDown(
   Widget,
   XEvent *,
   String *,
-  Cardinal * )
+  Cardinal *)
 {
 #if SOXT_DEBUG
   SOXT_STUB();
@@ -973,32 +973,32 @@ WheelDown(
 void
 SoXtThumbWheelSetValue(
   Widget w,
-  float value )
+  float value)
 {
-  if ( ! XtIsSoXtThumbWheel(w) ) {
-    SoDebugError::postWarning( "SoXtThumbWheelSetValue",
-      "not a thumbwheel widget" );
+  if (! XtIsSoXtThumbWheel(w)) {
+    SoDebugError::postWarning("SoXtThumbWheelSetValue",
+      "not a thumbwheel widget");
     return;
   }
   SoXtThumbWheelWidget wheel = (SoXtThumbWheelWidget) w;
   wheel->thumbwheel.value = value;
 
-  if ( ! wheel->thumbwheel.thumbwheel )
+  if (! wheel->thumbwheel.thumbwheel)
     return;
 
   int pixmap = 0;
-  if ( wheel->core.sensitive ) {
+  if (wheel->core.sensitive) {
     pixmap = ((SoAnyThumbWheel *) wheel->thumbwheel.thumbwheel)->
-      getBitmapForValue( wheel->thumbwheel.value, SoAnyThumbWheel::ENABLED );
+      getBitmapForValue(wheel->thumbwheel.value, SoAnyThumbWheel::ENABLED);
   } else {
     pixmap =
       ((SoAnyThumbWheel *) wheel->thumbwheel.thumbwheel)->
-        getBitmapForValue( wheel->thumbwheel.value,
-                           SoAnyThumbWheel::DISABLED );
+        getBitmapForValue(wheel->thumbwheel.value,
+                           SoAnyThumbWheel::DISABLED);
   }
 
-  if ( pixmap != wheel->thumbwheel.currentpixmap )
-    expose( w, NULL, NULL );
+  if (pixmap != wheel->thumbwheel.currentpixmap)
+    expose(w, NULL, NULL);
 } // SoXtThumbWheelSetValue()
 
 /*!
@@ -1006,11 +1006,11 @@ SoXtThumbWheelSetValue(
 
 float
 SoXtThumbWheelGetValue(
-  Widget w )
+  Widget w)
 {
-  if ( ! XtIsSoXtThumbWheel(w) ) {
-    SoDebugError::postWarning( "SoXtThumbWheelGetValue",
-      "not a thumbwheel widget" );
+  if (! XtIsSoXtThumbWheel(w)) {
+    SoDebugError::postWarning("SoXtThumbWheelGetValue",
+      "not a thumbwheel widget");
     return 0.0f;
   }
   SoXtThumbWheelWidget wheel = (SoXtThumbWheelWidget) w;

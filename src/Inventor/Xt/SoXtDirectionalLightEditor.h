@@ -41,7 +41,7 @@ class _SoXtColorSlider;
 // *************************************************************************
 
 typedef void SoXtDirectionalLightEditorCB(
-  void * user, const SoDirectionalLight * light );
+  void * user, const SoDirectionalLight * light);
 
 class SOXT_DLL_API SoXtDirectionalLightEditor : public SoXtComponent {
   SOXT_OBJECT_HEADER(SoXtDirectionalLightEditor, SoXtComponent);
@@ -50,20 +50,20 @@ public:
   SoXtDirectionalLightEditor(
     Widget parent = NULL,
     const char * const name = NULL,
-    SbBool embed = TRUE );
+    SbBool embed = TRUE);
   ~SoXtDirectionalLightEditor(void);
 
-  void attach( SoPath * pathToLight );
+  void attach(SoPath * pathToLight);
   void detach(void);
   SbBool isAttached(void);
 
-  void setLight( const SoDirectionalLight & light );
+  void setLight(const SoDirectionalLight & light);
   const SoDirectionalLight & getLight(void) const;
 
   void addLightChangedCallback(
     SoXtDirectionalLightEditorCB * callback, void * user = NULL);
   void removeLightChangedCallback(
-    SoXtDirectionalLightEditorCB * callback, void * user = NULL );
+    SoXtDirectionalLightEditorCB * callback, void * user = NULL);
 
   virtual void show(void);
   virtual void hide(void);
@@ -73,7 +73,7 @@ protected:
     Widget parent,
     const char * const name,
     SbBool embed,
-    SbBool build );
+    SbBool build);
 
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
@@ -98,12 +98,12 @@ protected:
 
   SoXtClipboard * clipboard;
 
-  void copyLight( SoDirectionalLight * dst, const SoDirectionalLight * src );
+  void copyLight(SoDirectionalLight * dst, const SoDirectionalLight * src);
   void updateLocalComponents(void);
 
 private:
-  Widget buildWidget( Widget parent );
-  void constructor( SbBool build );
+  Widget buildWidget(Widget parent);
+  void constructor(SbBool build);
 
 }; // class SoXtDirectionalLightEditor
 

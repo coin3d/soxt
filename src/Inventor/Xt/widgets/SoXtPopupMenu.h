@@ -41,40 +41,40 @@ public:
   SoXtPopupMenu(void);
   virtual ~SoXtPopupMenu(void);
 
-  virtual int newMenu( const char * name, int menuid = -1 );
-  virtual int getMenu( const char * name );
-  virtual void setMenuTitle( int id, const char * title );
-  virtual const char * getMenuTitle( int id );
+  virtual int newMenu(const char * name, int menuid = -1);
+  virtual int getMenu(const char * name);
+  virtual void setMenuTitle(int id, const char * title);
+  virtual const char * getMenuTitle(int id);
 
-  virtual int newMenuItem( const char * name, int itemid = -1 );
-  virtual int getMenuItem( const char * name );
-  virtual void setMenuItemTitle( int itemid, const char * title );
-  virtual const char * getMenuItemTitle( int itemid );
-  virtual void setMenuItemEnabled( int itemid, SbBool enabled );
-  virtual SbBool getMenuItemEnabled( int itemid );
-  virtual SbBool getMenuItemMarked( int itemid );
+  virtual int newMenuItem(const char * name, int itemid = -1);
+  virtual int getMenuItem(const char * name);
+  virtual void setMenuItemTitle(int itemid, const char * title);
+  virtual const char * getMenuItemTitle(int itemid);
+  virtual void setMenuItemEnabled(int itemid, SbBool enabled);
+  virtual SbBool getMenuItemEnabled(int itemid);
+  virtual SbBool getMenuItemMarked(int itemid);
 
-  virtual void addMenu( int menuid, int submenuid, int pos = -1 );
-  virtual void addMenuItem( int menuid, int itemid, int pos = -1 );
-  virtual void addSeparator( int menuid, int pos = -1 );
-  virtual void removeMenu( int menuid );
-  virtual void removeMenuItem( int itemid );
+  virtual void addMenu(int menuid, int submenuid, int pos = -1);
+  virtual void addMenuItem(int menuid, int itemid, int pos = -1);
+  virtual void addSeparator(int menuid, int pos = -1);
+  virtual void removeMenu(int menuid);
+  virtual void removeMenuItem(int itemid);
 
-  virtual void popUp( Widget inside, int x, int y );
+  virtual void popUp(Widget inside, int x, int y);
 
 protected:
-  virtual void _setMenuItemMarked( int itemid, SbBool marked );
+  virtual void _setMenuItemMarked(int itemid, SbBool marked);
 
-  MenuRecord * getMenuRecord( int menuid );
-  ItemRecord * getItemRecord( int itemid );
-  MenuRecord * createMenuRecord( const char * name );
-  ItemRecord * createItemRecord( const char * name );
+  MenuRecord * getMenuRecord(int menuid);
+  ItemRecord * getItemRecord(int itemid);
+  MenuRecord * createMenuRecord(const char * name);
+  ItemRecord * createItemRecord(const char * name);
 
-  Widget build( Widget parent );
-  Widget traverseBuild( Widget parent, MenuRecord *  menu, int indent );
+  Widget build(Widget parent);
+  Widget traverseBuild(Widget parent, MenuRecord *  menu, int indent);
 
-  void itemSelection( Widget w, XtPointer call );
-  static void itemSelectionCallback( Widget, XtPointer client, XtPointer call );
+  void itemSelection(Widget w, XtPointer call);
+  static void itemSelectionCallback(Widget, XtPointer client, XtPointer call);
 
 private:
   SbPList * menus;

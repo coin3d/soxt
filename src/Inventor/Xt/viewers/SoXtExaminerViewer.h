@@ -40,24 +40,24 @@ public:
     const char * name = NULL,
     SbBool embed = TRUE,
     SoXtFullViewer::BuildFlag flags = BUILD_ALL,
-    SoXtViewer::Type type = BROWSER );
+    SoXtViewer::Type type = BROWSER);
   ~SoXtExaminerViewer(void);
 
-  virtual void setViewing( SbBool enable );
+  virtual void setViewing(SbBool enable);
 
-  void setAnimationEnabled( const SbBool enable );
+  void setAnimationEnabled(const SbBool enable);
   SbBool isAnimationEnabled(void) const;
 
   void stopAnimating(void);
   SbBool isAnimating(void) const;
 
-  void setFeedbackVisibility( const SbBool enable );
+  void setFeedbackVisibility(const SbBool enable);
   SbBool isFeedbackVisible(void) const;
 
-  void setFeedbackSize( const int size );
+  void setFeedbackSize(const int size);
   int getFeedbackSize(void) const;
 
-  virtual void setCamera( SoCamera * camera );
+  virtual void setCamera(SoCamera * camera);
 
 protected:
   SoXtExaminerViewer(
@@ -66,23 +66,23 @@ protected:
     SbBool embed,
     SoXtFullViewer::BuildFlag flags,
     SoXtViewer::Type type,
-    SbBool build );
+    SbBool build);
 
-  virtual void actualRedraw( void );
+  virtual void actualRedraw(void);
 
-  virtual void setSeekMode( SbBool enable );
+  virtual void setSeekMode(SbBool enable);
 
-  virtual void processEvent( XAnyEvent * event );
+  virtual void processEvent(XAnyEvent * event);
 
   virtual void afterRealizeHook(void);
 
-  virtual SbBool processSoEvent( const SoEvent * const event );
+  virtual SbBool processSoEvent(const SoEvent * const event);
 
-  virtual void leftWheelStart( void );
-  virtual void leftWheelMotion( float value );
-  virtual void bottomWheelStart( void );
-  virtual void bottomWheelMotion( float value );
-  virtual void rightWheelMotion( float value );
+  virtual void leftWheelStart(void);
+  virtual void leftWheelMotion(float value);
+  virtual void bottomWheelStart(void);
+  virtual void bottomWheelMotion(float value);
+  virtual void rightWheelMotion(float value);
 
   void openViewerHelpCard(void);
 
@@ -90,34 +90,34 @@ protected:
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
 
-  virtual void createViewerButtons( Widget parent, SbPList * buttonlist );
+  virtual void createViewerButtons(Widget parent, SbPList * buttonlist);
   void camerabuttonClicked(void);
-  static void camerabuttonCB( Widget, XtPointer, XtPointer );
+  static void camerabuttonCB(Widget, XtPointer, XtPointer);
 
-  virtual void createPrefSheet( void );
+  virtual void createPrefSheet(void);
 
-  Widget createFramedSpinAnimPrefSheetGuts( Widget parent );
-  Widget createSpinAnimPrefSheetGuts( Widget parent );
+  Widget createFramedSpinAnimPrefSheetGuts(Widget parent);
+  Widget createSpinAnimPrefSheetGuts(Widget parent);
   Widget spinanimtoggle;
   void spinanimtoggled(void);
-  static void spinanimtoggledCB( Widget, XtPointer, XtPointer );
+  static void spinanimtoggledCB(Widget, XtPointer, XtPointer);
 
-  Widget createRotAxisPrefSheetGuts( Widget parent );
-  Widget createFramedRotAxisPrefSheetGuts( Widget parent );
+  Widget createRotAxisPrefSheetGuts(Widget parent);
+  Widget createFramedRotAxisPrefSheetGuts(Widget parent);
   Widget rotpointaxestoggle, rotaxesoverlaytoggle, axessizewheel, axessizefield;
   void rotpointtoggled(void);
-  static void rotpointtoggledCB( Widget, XtPointer, XtPointer );
+  static void rotpointtoggledCB(Widget, XtPointer, XtPointer);
   void rotaxesoverlaytoggled(void);
-  static void rotaxesoverlaytoggledCB( Widget, XtPointer, XtPointer );
-  void axeswheelmoved( int ticks );
-  static void axeswheelmovedCB( Widget, XtPointer, XtPointer );
+  static void rotaxesoverlaytoggledCB(Widget, XtPointer, XtPointer);
+  void axeswheelmoved(int ticks);
+  static void axeswheelmovedCB(Widget, XtPointer, XtPointer);
   void axesfieldchanged(void);
-  static void axesfieldchangedCB( Widget, XtPointer, XtPointer );
+  static void axesfieldchangedCB(Widget, XtPointer, XtPointer);
 
 private:
-  void constructor( const SbBool build );
+  void constructor(const SbBool build);
 
-  void setCursorRepresentation( int mode );
+  void setCursorRepresentation(int mode);
 
   Widget camerabutton;
   struct {

@@ -40,12 +40,12 @@ public:
     const char * const name = NULL,
     SbBool embed = TRUE,
     SoXtFullViewer::BuildFlag flag = BUILD_ALL,
-    SoXtViewer::Type type = BROWSER );
-  ~SoXtPlaneViewer( void );
+    SoXtViewer::Type type = BROWSER);
+  ~SoXtPlaneViewer(void);
 
-  virtual void setViewing( SbBool enable );
-  virtual void setCamera( SoCamera * camera );
-  virtual void setCursorEnabled( SbBool enable );
+  virtual void setViewing(SbBool enable);
+  virtual void setCamera(SoCamera * camera);
+  virtual void setCursorEnabled(SbBool enable);
 
 protected:
   SoXtPlaneViewer(
@@ -54,33 +54,33 @@ protected:
     SbBool embed,
     SoXtFullViewer::BuildFlag flag,
     SoXtViewer::Type type,
-    SbBool buildNow );
+    SbBool buildNow);
 
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
 
-  virtual SbBool processSoEvent( const SoEvent * const event );
-  virtual void processEvent( XAnyEvent * event );
-  virtual void setSeekMode( SbBool enable );
+  virtual SbBool processSoEvent(const SoEvent * const event);
+  virtual void processEvent(XAnyEvent * event);
+  virtual void setSeekMode(SbBool enable);
   virtual void actualRedraw(void);
 
-  virtual void bottomWheelMotion( float value );
-  virtual void leftWheelMotion( float value );
-  virtual void rightWheelMotion( float value );
+  virtual void bottomWheelMotion(float value);
+  virtual void leftWheelMotion(float value);
+  virtual void rightWheelMotion(float value);
 
   virtual void createPrefSheet(void);
-  virtual void createViewerButtons( Widget parent, SbPList * buttonlist );
+  virtual void createViewerButtons(Widget parent, SbPList * buttonlist);
   virtual void openViewerHelpCard(void);
 
 private:
-  void constructor( SbBool build );
+  void constructor(SbBool build);
 
   static SoXtViewerButton SoXtPlaneViewerButtons[];
   SoXtViewerButton * buttons;
-  int findButton( Widget button ) const;
+  int findButton(Widget button) const;
   
-  static void buttonCB( Widget, XtPointer, XtPointer );
+  static void buttonCB(Widget, XtPointer, XtPointer);
 
   Widget prefshell, prefsheet, * prefparts;
   int numprefparts;

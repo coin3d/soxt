@@ -71,7 +71,7 @@ SOXT_OBJECT_SOURCE(SoXtKeyboard);
 */
 
 SoXtKeyboard::SoXtKeyboard(
-  int events )
+  int events)
 {
   this->events = events;
   this->keyboardEvent = NULL;
@@ -81,8 +81,8 @@ SoXtKeyboard::SoXtKeyboard(
   Destructor.
 */
 
-SoXtKeyboard::~SoXtKeyboard( // virtual
-  void )
+SoXtKeyboard::~SoXtKeyboard(// virtual
+  void)
 {
   delete this->keyboardEvent;
 } // ~SoXtKeyboard()
@@ -94,11 +94,11 @@ SoXtKeyboard::~SoXtKeyboard( // virtual
 */
 
 void
-SoXtKeyboard::enable( // virtual
+SoXtKeyboard::enable(// virtual
   Widget, // widget,
   XtEventHandler, // func,
   XtPointer, // data,
-  Window ) // window )
+  Window) // window)
 {
   SOXT_STUB();
 } // enable()
@@ -108,10 +108,10 @@ SoXtKeyboard::enable( // virtual
 */
 
 void
-SoXtKeyboard::disable( // virtual
+SoXtKeyboard::disable(// virtual
   Widget, // widget,
   XtEventHandler, // func,
-  XtPointer ) // data )
+  XtPointer) // data)
 {
   SOXT_STUB();
 } // disable()
@@ -126,19 +126,19 @@ SoXtKeyboard::disable( // virtual
 */
 
 const SoEvent *
-SoXtKeyboard::translateEvent( // virtual
-  XAnyEvent * event )
+SoXtKeyboard::translateEvent(// virtual
+  XAnyEvent * event)
 {
-  switch ( event->type ) {
+  switch (event->type) {
   case KeyPress:
-    return this->makeKeyboardEvent( (XKeyEvent *) event, SoButtonEvent::DOWN );
+    return this->makeKeyboardEvent((XKeyEvent *) event, SoButtonEvent::DOWN);
     break;
   case KeyRelease:
-    return this->makeKeyboardEvent( (XKeyEvent *) event, SoButtonEvent::UP );
+    return this->makeKeyboardEvent((XKeyEvent *) event, SoButtonEvent::UP);
     break;
   default:
     break;
-  } // switch ( event->type )
+  } // switch (event->type)
   return (SoEvent *) NULL;
 } // translateEvent()
 
@@ -149,21 +149,21 @@ SoXtKeyboard::translateEvent( // virtual
 */
 
 SoKeyboardEvent *
-SoXtKeyboard::makeKeyboardEvent( // private
+SoXtKeyboard::makeKeyboardEvent(// private
   XKeyEvent * event,
-  SoButtonEvent::State state )
+  SoButtonEvent::State state)
 {
   delete this->keyboardEvent;
   this->keyboardEvent = new SoKeyboardEvent;
-  this->setEventPosition( this->keyboardEvent, event->x, event->y );
-  this->keyboardEvent->setState( state );
+  this->setEventPosition(this->keyboardEvent, event->x, event->y);
+  this->keyboardEvent->setState(state);
 
   char keybuf[8];
   KeySym keysym;
 
   SoKeyboardEvent::Key key = SoKeyboardEvent::ANY;
 
-  int keybufusage = XLookupString( event, keybuf, 8, &keysym, NULL );
+  int keybufusage = XLookupString(event, keybuf, 8, &keysym, NULL);
   
   // check these first or they will be set to incorrect values
   switch (keysym) {
@@ -181,8 +181,8 @@ SoXtKeyboard::makeKeyboardEvent( // private
     key = SoKeyboardEvent::ANY;
   }
   
-  if ( key == SoKeyboardEvent::ANY && keybufusage == 1 ) {
-    switch ( keybuf[0] ) {
+  if (key == SoKeyboardEvent::ANY && keybufusage == 1) {
+    switch (keybuf[0]) {
     case 'a': case 'A':   key = SoKeyboardEvent::A;              break;
     case 'b': case 'B':   key = SoKeyboardEvent::B;              break;
     case 'c': case 'C':   key = SoKeyboardEvent::C;              break;
@@ -227,8 +227,8 @@ SoXtKeyboard::makeKeyboardEvent( // private
     }
   } 
 
-  if ( key == SoKeyboardEvent::ANY ) {
-    switch ( keysym ) {
+  if (key == SoKeyboardEvent::ANY) {
+    switch (keysym) {
     case XK_Shift_L:      key = SoKeyboardEvent::LEFT_SHIFT;     break;
     case XK_Shift_R:      key = SoKeyboardEvent::RIGHT_SHIFT;    break;
     case XK_Control_L:    key = SoKeyboardEvent::LEFT_CONTROL;   break;
@@ -305,22 +305,22 @@ SoXtKeyboard::makeKeyboardEvent( // private
 
     default:
 #if SOXT_DEBUG && 0
-      SoDebugError::postWarning( "SoXtKeyboard::makeKeyboardEvent",
-        "keysym 0x%04x isn't handled", keysym );
+      SoDebugError::postWarning("SoXtKeyboard::makeKeyboardEvent",
+        "keysym 0x%04x isn't handled", keysym);
 #endif // SOXT_DEBUG
       break;
     }
   }
 
-  this->keyboardEvent->setKey( key );
+  this->keyboardEvent->setKey(key);
 
   // modifiers:
   this->keyboardEvent->setShiftDown(
-    (event->state & ShiftMask) ? TRUE : FALSE );
+    (event->state & ShiftMask) ? TRUE : FALSE);
   this->keyboardEvent->setCtrlDown(
-    (event->state & ControlMask) ? TRUE : FALSE );
+    (event->state & ControlMask) ? TRUE : FALSE);
   this->keyboardEvent->setAltDown(
-    (event->state & Mod1Mask) ? TRUE : FALSE );
+    (event->state & Mod1Mask) ? TRUE : FALSE);
 
   return this->keyboardEvent;
 } // makeKeyboardEvent()

@@ -55,7 +55,7 @@ static const char rcsid[] =
 */
 
 SoXtSlider::SoXtSlider(
-  const char * const title )
+  const char * const title)
 {
   this->s_form = NULL;
   this->s_value = NULL;
@@ -81,8 +81,8 @@ SoXtSlider::SoXtSlider(
   this->o_slider = NULL;
   this->o_label = NULL;
 
-  if ( title )
-    this->title = strcpy( new char [strlen(title)+1], title );
+  if (title)
+    this->title = strcpy(new char [strlen(title)+1], title);
   else
     this->title = NULL;
   this->callbacks = NULL;
@@ -96,7 +96,7 @@ SoXtSlider::SoXtSlider(
 */
 
 SoXtSlider::~SoXtSlider(
-  void )
+  void)
 {
   delete [] this->title;
 } // ~SoXtSlider()
@@ -108,7 +108,7 @@ SoXtSlider::~SoXtSlider(
 
 void
 SoXtSlider::setValue(
-  float value )
+  float value)
 {
   this->current = value;
   // FIXME: update widgets
@@ -119,7 +119,7 @@ SoXtSlider::setValue(
 
 float
 SoXtSlider::getValue(
-  void ) const
+  void) const
 {
   return this->current;
 } // getValue()
@@ -132,7 +132,7 @@ SoXtSlider::getValue(
 void
 SoXtSlider::setRange(
   float min,
-  float max )
+  float max)
 {
   this->minimum = min;
   this->maximum = max;
@@ -144,7 +144,7 @@ SoXtSlider::setRange(
 void
 SoXtSlider::getRange(
   float & min,
-  float & max ) const
+  float & max) const
 {
   min = this->minimum;
   max = this->maximum;
@@ -163,14 +163,14 @@ struct SoXtSliderCallbackInfo {
 void
 SoXtSlider::addCallback(
   SoXtSliderCB * callback,
-  void * closure )
+  void * closure)
 {
-  if ( this->callbacks == NULL )
+  if (this->callbacks == NULL)
     this->callbacks = new SbPList;
   SoXtSliderCallbackInfo * info = new SoXtSliderCallbackInfo;
   info->callback = callback;
   info->closure = closure;
-  this->callbacks->append( info );
+  this->callbacks->append(info);
 } // addCallback()
 
 /*!
@@ -179,27 +179,27 @@ SoXtSlider::addCallback(
 void
 SoXtSlider::removeCallback(
   SoXtSliderCB * callback,
-  void * closure )
+  void * closure)
 {
-  if ( this->callbacks == NULL ) {
+  if (this->callbacks == NULL) {
 #if SOXT_DEBUG
-    SoDebugError::postInfo( "SoXtSlider::removeCallback",
-      "no callbacks" );
+    SoDebugError::postInfo("SoXtSlider::removeCallback",
+      "no callbacks");
 #endif // SOXT_DEBUG
     return;
   }
   const int num = this->callbacks->getLength();
-  for ( int i = 0; i < num; i++ ) {
+  for (int i = 0; i < num; i++) {
     SoXtSliderCallbackInfo * info =
       (SoXtSliderCallbackInfo *) (*this->callbacks)[i];
-    if ( info->callback == callback && info->closure == closure ) {
-      this->callbacks->remove( i );
+    if (info->callback == callback && info->closure == closure) {
+      this->callbacks->remove(i);
       return;
     }
   }
 #if SOXT_DEBUG
-  SoDebugError::postInfo( "SoXtSlider::removeCallback",
-    "no such callback" );
+  SoDebugError::postInfo("SoXtSlider::removeCallback",
+    "no such callback");
 #endif // SOXT_DEBUG
 } // removeCallback()
 
@@ -208,14 +208,14 @@ SoXtSlider::removeCallback(
 
 void
 SoXtSlider::invokeCallbacks(
-  void )
+  void)
 {
-  if ( this->callbacks != NULL ) {
+  if (this->callbacks != NULL) {
     const int num = this->callbacks->getLength();
-    for ( int i = 0; i < num; i++ ) {
+    for (int i = 0; i < num; i++) {
       SoXtSliderCallbackInfo * info =
         (SoXtSliderCallbackInfo *) (*this->callbacks)[i];
-      info->callback( info->closure, this->title, this->current );
+      info->callback(info->closure, this->title, this->current);
     }
   }
 } // invokeCallbacks()
@@ -226,15 +226,15 @@ SoXtSlider::invokeCallbacks(
 */
 
 Widget
-SoXtSlider::buildSimpleWidget( // protected
-  const Widget parent )
+SoXtSlider::buildSimpleWidget(// protected
+  const Widget parent)
 {
-  if ( this->s_form == (Widget) NULL ) {
-    this->s_form = XtVaCreateManagedWidget( "simple",
+  if (this->s_form == (Widget) NULL) {
+    this->s_form = XtVaCreateManagedWidget("simple",
       xmFormWidgetClass, parent,
-      NULL );
+      NULL);
 
-    this->s_value = XtVaCreateManagedWidget( "value",
+    this->s_value = XtVaCreateManagedWidget("value",
       xmTextWidgetClass, this->s_form,
       XmNleftAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_FORM,
@@ -242,19 +242,19 @@ SoXtSlider::buildSimpleWidget( // protected
       XmNbottomAttachment, XmATTACH_NONE,
       XmNwidth, 60,
       XmNhighlightThickness, 0,
-      NULL );
+      NULL);
 
     char text[16];
-    sprintf( text, "%g", this->current );
-    XmTextSetString( this->s_value, text );
-    XmTextSetCursorPosition( this->s_value, strlen(text) );
+    sprintf(text, "%g", this->current);
+    XmTextSetString(this->s_value, text);
+    XmTextSetCursorPosition(this->s_value, strlen(text));
 
-    XtAddCallback( this->s_value, XmNactivateCallback,
-      SoXtSlider::value_cb, (XtPointer) this );
-    XtAddCallback( this->s_value, XmNlosingFocusCallback,
-      SoXtSlider::value_cb, (XtPointer) this );
+    XtAddCallback(this->s_value, XmNactivateCallback,
+      SoXtSlider::value_cb, (XtPointer) this);
+    XtAddCallback(this->s_value, XmNlosingFocusCallback,
+      SoXtSlider::value_cb, (XtPointer) this);
 
-    this->s_slider = XtVaCreateManagedWidget( "slider",
+    this->s_slider = XtVaCreateManagedWidget("slider",
       xmScaleWidgetClass, this->s_form,
       XmNleftAttachment, XmATTACH_WIDGET,
       XmNleftWidget, this->s_value,
@@ -275,12 +275,12 @@ SoXtSlider::buildSimpleWidget( // protected
       XtVaTypedArg,
         XmNtitleString, XmRString,
         "", 0,
-      NULL );
+      NULL);
 
-    XtAddCallback( this->s_slider, XmNdragCallback,
-      SoXtSlider::slider_cb, (XtPointer) this );
-    XtAddCallback( this->s_slider, XmNvalueChangedCallback,
-      SoXtSlider::slider_cb, (XtPointer) this );
+    XtAddCallback(this->s_slider, XmNdragCallback,
+      SoXtSlider::slider_cb, (XtPointer) this);
+    XtAddCallback(this->s_slider, XmNvalueChangedCallback,
+      SoXtSlider::slider_cb, (XtPointer) this);
   }
   return this->s_form;
 } // buildSimpleWidget()
@@ -290,14 +290,14 @@ SoXtSlider::buildSimpleWidget( // protected
 
 Widget
 SoXtSlider::buildRangedWidget(
-  const Widget parent )
+  const Widget parent)
 {
-  if ( this->r_form == (Widget) NULL ) {
-    this->r_form = XtVaCreateManagedWidget( "ranged",
+  if (this->r_form == (Widget) NULL) {
+    this->r_form = XtVaCreateManagedWidget("ranged",
       xmFormWidgetClass, parent,
-      NULL );
+      NULL);
 
-    this->r_slider = XtVaCreateManagedWidget( "slider",
+    this->r_slider = XtVaCreateManagedWidget("slider",
       xmScaleWidgetClass, this->r_form,
       XmNorientation, XmHORIZONTAL,
       XmNtraversalOn, False,
@@ -308,82 +308,82 @@ SoXtSlider::buildRangedWidget(
       XmNhighlightThickness, 0,
       XtVaTypedArg,
         XmNtitleString, XmRString, "", 0,
-      NULL );
+      NULL);
 
-    XtAddCallback( this->r_slider, XmNdragCallback,
-      SoXtSlider::slider_cb, (XtPointer) this );
-    XtAddCallback( this->r_slider, XmNvalueChangedCallback,
-      SoXtSlider::slider_cb, (XtPointer) this );
+    XtAddCallback(this->r_slider, XmNdragCallback,
+      SoXtSlider::slider_cb, (XtPointer) this);
+    XtAddCallback(this->r_slider, XmNvalueChangedCallback,
+      SoXtSlider::slider_cb, (XtPointer) this);
 
-    this->r_value = XtVaCreateManagedWidget( "value",
+    this->r_value = XtVaCreateManagedWidget("value",
       xmTextWidgetClass, this->r_form,
       XmNhighlightThickness, 0,
-      NULL );
+      NULL);
 
     char text[16];
-    sprintf( text, "%g", this->current );
-    XmTextSetString( this->r_value, text );
-    XmTextSetCursorPosition( this->r_value, strlen(text) );
+    sprintf(text, "%g", this->current);
+    XmTextSetString(this->r_value, text);
+    XmTextSetCursorPosition(this->r_value, strlen(text));
 
-    XtAddCallback( this->r_value, XmNactivateCallback,
-      SoXtSlider::value_cb, (XtPointer) this );
-    XtAddCallback( this->r_value, XmNlosingFocusCallback,
-      SoXtSlider::value_cb, (XtPointer) this );
+    XtAddCallback(this->r_value, XmNactivateCallback,
+      SoXtSlider::value_cb, (XtPointer) this);
+    XtAddCallback(this->r_value, XmNlosingFocusCallback,
+      SoXtSlider::value_cb, (XtPointer) this);
 
-    this->r_minValue = XtVaCreateManagedWidget( "minValue",
+    this->r_minValue = XtVaCreateManagedWidget("minValue",
       xmTextWidgetClass, this->r_form,
       XmNhighlightThickness, 0,
-      NULL );
+      NULL);
 
-    sprintf( text, "%g", this->minimum );
-    XmTextSetString( this->r_minValue, text );
-    XmTextSetCursorPosition( this->r_minValue, strlen(text) );
+    sprintf(text, "%g", this->minimum);
+    XmTextSetString(this->r_minValue, text);
+    XmTextSetCursorPosition(this->r_minValue, strlen(text));
 
-    XtAddCallback( this->r_minValue, XmNactivateCallback,
-      SoXtSlider::min_value_cb, (XtPointer) this );
-    XtAddCallback( this->r_minValue, XmNlosingFocusCallback,
-      SoXtSlider::min_value_cb, (XtPointer) this );
+    XtAddCallback(this->r_minValue, XmNactivateCallback,
+      SoXtSlider::min_value_cb, (XtPointer) this);
+    XtAddCallback(this->r_minValue, XmNlosingFocusCallback,
+      SoXtSlider::min_value_cb, (XtPointer) this);
 
-    this->r_maxValue = XtVaCreateManagedWidget( "maxValue",
+    this->r_maxValue = XtVaCreateManagedWidget("maxValue",
       xmTextWidgetClass, this->r_form,
       XmNhighlightThickness, 0,
-      NULL );
+      NULL);
 
-    sprintf( text, "%g", this->maximum );
-    XmTextSetString( this->r_maxValue, text );
-    XmTextSetCursorPosition( this->r_maxValue, strlen(text) );
+    sprintf(text, "%g", this->maximum);
+    XmTextSetString(this->r_maxValue, text);
+    XmTextSetCursorPosition(this->r_maxValue, strlen(text));
 
-    XtAddCallback( this->r_maxValue, XmNactivateCallback,
-      SoXtSlider::max_value_cb, (XtPointer) this );
-    XtAddCallback( this->r_maxValue, XmNlosingFocusCallback,
-      SoXtSlider::max_value_cb, (XtPointer) this );
+    XtAddCallback(this->r_maxValue, XmNactivateCallback,
+      SoXtSlider::max_value_cb, (XtPointer) this);
+    XtAddCallback(this->r_maxValue, XmNlosingFocusCallback,
+      SoXtSlider::max_value_cb, (XtPointer) this);
 
-  XtVaSetValues( this->r_value,
+  XtVaSetValues(this->r_value,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_NONE,
     XmNbottomAttachment, XmATTACH_NONE,
     XmNwidth, 60,
-    NULL );
+    NULL);
 
-  XtVaSetValues( this->r_minValue,
+  XtVaSetValues(this->r_minValue,
     XmNleftAttachment, XmATTACH_WIDGET,
     XmNleftWidget, this->r_value,
     XmNtopAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_NONE,
     XmNbottomAttachment, XmATTACH_NONE,
     XmNwidth, 50,
-    NULL );
+    NULL);
 
-  XtVaSetValues( this->r_maxValue,
+  XtVaSetValues(this->r_maxValue,
     XmNleftAttachment, XmATTACH_NONE,
     XmNtopAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_NONE,
     XmNwidth, 50,
-    NULL );
+    NULL);
 
-  XtVaSetValues( this->r_slider,
+  XtVaSetValues(this->r_slider,
     XmNleftAttachment, XmATTACH_WIDGET,
     XmNleftWidget, this->r_minValue,
     XmNleftOffset, 2,
@@ -398,7 +398,7 @@ SoXtSlider::buildRangedWidget(
     XtVaTypedArg,
       XmNtitleString, XmRString,
       "", 0,
-    NULL );
+    NULL);
   }
   return this->r_form;
 } // buildRangedWidget()
@@ -408,16 +408,16 @@ SoXtSlider::buildRangedWidget(
 
 Widget
 SoXtSlider::buildFullWidget(
-  const Widget parent )
+  const Widget parent)
 {
-  if ( this->f_form == (Widget) NULL ) {
+  if (this->f_form == (Widget) NULL) {
     char text[16];
 
-    this->f_form = XtVaCreateManagedWidget( "slider",
+    this->f_form = XtVaCreateManagedWidget("slider",
       xmFormWidgetClass, parent,
-      NULL );
+      NULL);
 
-    this->f_minValue = XtVaCreateManagedWidget( "minValue",
+    this->f_minValue = XtVaCreateManagedWidget("minValue",
       xmTextWidgetClass, this->f_form,
       XmNleftAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_FORM,
@@ -425,18 +425,18 @@ SoXtSlider::buildFullWidget(
       XmNbottomAttachment, XmATTACH_NONE,
       XmNwidth, 50,
       XmNhighlightThickness, 0,
-      NULL );
+      NULL);
 
-    sprintf( text, "%g", this->minimum );
-    XmTextSetString( this->f_minValue, text );
-    XmTextSetCursorPosition( this->f_minValue, strlen(text) );
+    sprintf(text, "%g", this->minimum);
+    XmTextSetString(this->f_minValue, text);
+    XmTextSetCursorPosition(this->f_minValue, strlen(text));
 
-    XtAddCallback( this->f_minValue, XmNactivateCallback,
-      SoXtSlider::min_value_cb, (XtPointer) this );
-    XtAddCallback( this->f_minValue, XmNlosingFocusCallback,
-      SoXtSlider::min_value_cb, (XtPointer) this );
+    XtAddCallback(this->f_minValue, XmNactivateCallback,
+      SoXtSlider::min_value_cb, (XtPointer) this);
+    XtAddCallback(this->f_minValue, XmNlosingFocusCallback,
+      SoXtSlider::min_value_cb, (XtPointer) this);
 
-    this->f_maxValue = XtVaCreateManagedWidget( "maxValue",
+    this->f_maxValue = XtVaCreateManagedWidget("maxValue",
       xmTextWidgetClass, this->f_form,
       XmNleftAttachment, XmATTACH_NONE,
       XmNtopAttachment, XmATTACH_FORM,
@@ -444,18 +444,18 @@ SoXtSlider::buildFullWidget(
       XmNbottomAttachment, XmATTACH_NONE,
       XmNwidth, 50,
       XmNhighlightThickness, 0,
-      NULL );
+      NULL);
 
-    sprintf( text, "%g", this->maximum );
-    XmTextSetString( this->f_maxValue, text );
-    XmTextSetCursorPosition( this->f_maxValue, strlen(text) );
+    sprintf(text, "%g", this->maximum);
+    XmTextSetString(this->f_maxValue, text);
+    XmTextSetCursorPosition(this->f_maxValue, strlen(text));
 
-    XtAddCallback( this->f_maxValue, XmNactivateCallback,
-      SoXtSlider::max_value_cb, (XtPointer) this );
-    XtAddCallback( this->f_maxValue, XmNlosingFocusCallback, 
-      SoXtSlider::max_value_cb, (XtPointer) this );
+    XtAddCallback(this->f_maxValue, XmNactivateCallback,
+      SoXtSlider::max_value_cb, (XtPointer) this);
+    XtAddCallback(this->f_maxValue, XmNlosingFocusCallback, 
+      SoXtSlider::max_value_cb, (XtPointer) this);
 
-    this->f_value = XtVaCreateManagedWidget( "value",
+    this->f_value = XtVaCreateManagedWidget("value",
       xmTextWidgetClass, this->f_form,
       XmNleftAttachment, XmATTACH_WIDGET,
       XmNleftWidget, this->f_minValue,
@@ -465,18 +465,18 @@ SoXtSlider::buildFullWidget(
       XmNrightWidget, this->f_maxValue,
       XmNrightOffset, 2,
       XmNhighlightThickness, 0,
-      NULL );
+      NULL);
 
-    sprintf( text, "%g", this->current );
-    XmTextSetString( this->f_value, text );
-    XmTextSetCursorPosition( this->f_value, strlen(text) );
+    sprintf(text, "%g", this->current);
+    XmTextSetString(this->f_value, text);
+    XmTextSetCursorPosition(this->f_value, strlen(text));
 
-    XtAddCallback( this->f_value, XmNactivateCallback,
-      SoXtSlider::value_cb, (XtPointer) this );
-    XtAddCallback( this->f_value, XmNlosingFocusCallback,
-      SoXtSlider::value_cb, (XtPointer) this );
+    XtAddCallback(this->f_value, XmNactivateCallback,
+      SoXtSlider::value_cb, (XtPointer) this);
+    XtAddCallback(this->f_value, XmNlosingFocusCallback,
+      SoXtSlider::value_cb, (XtPointer) this);
 
-    this->f_min = XtVaCreateManagedWidget( "min",
+    this->f_min = XtVaCreateManagedWidget("min",
       xmPushButtonWidgetClass, this->f_form,
       XmNleftAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_WIDGET,
@@ -485,12 +485,12 @@ SoXtSlider::buildFullWidget(
       XmNbottomOffset, 2,
       XmNwidth, 50,
       XmNtraversalOn, False,
-      NULL );
+      NULL);
 
-    XtAddCallback( this->f_min, XmNactivateCallback,
-      SoXtSlider::min_cb, (XtPointer) this );
+    XtAddCallback(this->f_min, XmNactivateCallback,
+      SoXtSlider::min_cb, (XtPointer) this);
 
-    this->f_max = XtVaCreateManagedWidget( "max",
+    this->f_max = XtVaCreateManagedWidget("max",
       xmPushButtonWidgetClass, this->f_form,
       XmNtopAttachment, XmATTACH_WIDGET,
       XmNtopWidget, this->f_maxValue,
@@ -499,12 +499,12 @@ SoXtSlider::buildFullWidget(
       XmNbottomOffset, 2,
       XmNwidth, 50,
       XmNtraversalOn, False,
-      NULL );
+      NULL);
 
-    XtAddCallback( this->f_max, XmNactivateCallback,
-      SoXtSlider::max_cb, (XtPointer) this );
+    XtAddCallback(this->f_max, XmNactivateCallback,
+      SoXtSlider::max_cb, (XtPointer) this);
 
-    this->f_slider = XtVaCreateManagedWidget( "slider",
+    this->f_slider = XtVaCreateManagedWidget("slider",
       xmScaleWidgetClass, this->f_form,
       XmNleftAttachment, XmATTACH_WIDGET,
       XmNleftWidget, this->f_minValue,
@@ -525,14 +525,14 @@ SoXtSlider::buildFullWidget(
       XmNmaximum, 999,
       XmNshowValue, False,
       XmNhighlightThickness, 0,
-      NULL );
+      NULL);
 
-    XtAddCallback( this->f_slider, XmNdragCallback,
-      SoXtSlider::slider_cb, (XtPointer) this );
-    XtAddCallback( this->f_slider, XmNvalueChangedCallback,
-      SoXtSlider::slider_cb, (XtPointer) this );
+    XtAddCallback(this->f_slider, XmNdragCallback,
+      SoXtSlider::slider_cb, (XtPointer) this);
+    XtAddCallback(this->f_slider, XmNvalueChangedCallback,
+      SoXtSlider::slider_cb, (XtPointer) this);
 
-    this->f_label = XtVaCreateManagedWidget( "label",
+    this->f_label = XtVaCreateManagedWidget("label",
       xmLabelWidgetClass, this->f_form,
       XmNleftAttachment, XmATTACH_WIDGET,
       XmNleftWidget, this->f_min,
@@ -544,7 +544,7 @@ SoXtSlider::buildFullWidget(
       XtVaTypedArg,
         XmNlabelString, XmRString,
         this->title, strlen(this->title)+1,
-      NULL );
+      NULL);
 
   }
   return this->f_form;
@@ -555,32 +555,32 @@ SoXtSlider::buildFullWidget(
 
 Widget
 SoXtSlider::buildOrderlyWidget(
-  const Widget parent )
+  const Widget parent)
 {
-  if ( this->o_form == (Widget) NULL ) {
-    this->o_form = XtVaCreateManagedWidget( "orderly",
+  if (this->o_form == (Widget) NULL) {
+    this->o_form = XtVaCreateManagedWidget("orderly",
       xmFormWidgetClass, parent,
-      NULL );
+      NULL);
 
-    this->o_value = XtVaCreateManagedWidget( "value",
+    this->o_value = XtVaCreateManagedWidget("value",
       xmTextWidgetClass, this->o_form,
       XmNleftAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_FORM,
       XmNrightAttachment, XmATTACH_FORM,
       XmNhighlightThickness, 0,
-      NULL );
+      NULL);
 
     char text[16];
-    sprintf( text, "%g", this->current );
-    XmTextSetString( this->o_value, text );
-    XmTextSetCursorPosition( this->o_value, strlen(text) );
+    sprintf(text, "%g", this->current);
+    XmTextSetString(this->o_value, text);
+    XmTextSetCursorPosition(this->o_value, strlen(text));
 
-    XtAddCallback( this->o_value, XmNactivateCallback,
-      SoXtSlider::value_cb, (XtPointer) this );
-    XtAddCallback( this->o_value, XmNlosingFocusCallback,
-      SoXtSlider::value_cb, (XtPointer) this );
+    XtAddCallback(this->o_value, XmNactivateCallback,
+      SoXtSlider::value_cb, (XtPointer) this);
+    XtAddCallback(this->o_value, XmNlosingFocusCallback,
+      SoXtSlider::value_cb, (XtPointer) this);
 
-    this->o_slider = XtVaCreateManagedWidget( "slider",
+    this->o_slider = XtVaCreateManagedWidget("slider",
       xmScaleWidgetClass, this->o_form,
       XmNleftAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_WIDGET,
@@ -594,14 +594,14 @@ SoXtSlider::buildOrderlyWidget(
       XmNmaximum, 999,
       XmNshowValue, False,
       XmNhighlightThickness, 0,
-      NULL );
+      NULL);
 
-    XtAddCallback( this->o_slider, XmNdragCallback,
-      SoXtSlider::slider_cb, (XtPointer) this );
-    XtAddCallback( this->o_slider, XmNvalueChangedCallback,
-      SoXtSlider::slider_cb, (XtPointer) this );
+    XtAddCallback(this->o_slider, XmNdragCallback,
+      SoXtSlider::slider_cb, (XtPointer) this);
+    XtAddCallback(this->o_slider, XmNvalueChangedCallback,
+      SoXtSlider::slider_cb, (XtPointer) this);
 
-    this->o_label = XtVaCreateManagedWidget( "label",
+    this->o_label = XtVaCreateManagedWidget("label",
       xmLabelWidgetClass, this->o_form,
       XmNleftAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_WIDGET,
@@ -612,7 +612,7 @@ SoXtSlider::buildOrderlyWidget(
         XmNlabelString, XmRString,
         this->title, strlen(this->title)+1,
       XmNalignment, XmALIGNMENT_BEGINNING,
-      NULL );
+      NULL);
   }
   return this->o_form;
 } // buildOrderlyWidget()
@@ -626,34 +626,34 @@ void
 SoXtSlider::slider_cb(
   Widget widget,
   XtPointer closure,
-  XtPointer call_data )
+  XtPointer call_data)
 {
-  assert( closure != NULL );
+  assert(closure != NULL);
   SoXtSlider * slider = (SoXtSlider *) closure;
   XmScaleCallbackStruct * data = (XmScaleCallbackStruct *) call_data;
   float previous = slider->current;
   slider->current = slider->minimum +
     (slider->maximum - slider->minimum) / 999 * (float) data->value;
-  slider->current = SoXtMax( slider->current, slider->minimum );
-  slider->current = SoXtMin( slider->current, slider->maximum );
+  slider->current = SoXtMax(slider->current, slider->minimum);
+  slider->current = SoXtMin(slider->current, slider->maximum);
   char text[16];
   
-  sprintf( text, "%.2g", slider->current );
+  sprintf(text, "%.2g", slider->current);
   const int pos = strlen(text);
-  XmTextSetString( slider->s_value, text );
-  XmTextSetString( slider->r_value, text );
-  XmTextSetString( slider->f_value, text );
-  XmTextSetString( slider->o_value, text );
-  XmTextSetCursorPosition( slider->s_value, pos );
-  XmTextSetCursorPosition( slider->r_value, pos );
-  XmTextSetCursorPosition( slider->f_value, pos );
-  XmTextSetCursorPosition( slider->o_value, pos );
-  XmScaleSetValue( slider->s_slider, data->value );
-  XmScaleSetValue( slider->r_slider, data->value );
-  XmScaleSetValue( slider->f_slider, data->value );
-  XmScaleSetValue( slider->o_slider, data->value );
+  XmTextSetString(slider->s_value, text);
+  XmTextSetString(slider->r_value, text);
+  XmTextSetString(slider->f_value, text);
+  XmTextSetString(slider->o_value, text);
+  XmTextSetCursorPosition(slider->s_value, pos);
+  XmTextSetCursorPosition(slider->r_value, pos);
+  XmTextSetCursorPosition(slider->f_value, pos);
+  XmTextSetCursorPosition(slider->o_value, pos);
+  XmScaleSetValue(slider->s_slider, data->value);
+  XmScaleSetValue(slider->r_slider, data->value);
+  XmScaleSetValue(slider->f_slider, data->value);
+  XmScaleSetValue(slider->o_slider, data->value);
 
-  if ( previous != slider->current )
+  if (previous != slider->current)
     slider->invokeCallbacks();
 } // slider_cb()
 
@@ -664,36 +664,36 @@ void
 SoXtSlider::value_cb(
   Widget widget,
   XtPointer closure,
-  XtPointer call_data )
+  XtPointer call_data)
 {
-  assert( closure != NULL );
+  assert(closure != NULL);
   SoXtSlider * slider = (SoXtSlider *) closure;
 
   float previous = slider->current;
-  slider->current = atof( XmTextGetString( widget ) );
-  slider->current = SoXtMax( slider->current, slider->minimum );
-  slider->current = SoXtMin( slider->current, slider->maximum );
+  slider->current = atof(XmTextGetString(widget));
+  slider->current = SoXtMax(slider->current, slider->minimum);
+  slider->current = SoXtMin(slider->current, slider->maximum);
   
   char text[16];
-  sprintf( text, "%.2g", slider->current );
+  sprintf(text, "%.2g", slider->current);
   const int cpos = strlen(text);
   const int pos = (int) ((slider->current - slider->minimum) /
     (slider->maximum - slider->minimum) * 999.0f);
 
-  XmTextSetString( slider->s_value, text );
-  XmTextSetString( slider->r_value, text );
-  XmTextSetString( slider->f_value, text );
-  XmTextSetString( slider->o_value, text );
-  XmTextSetCursorPosition( slider->s_value, cpos );
-  XmTextSetCursorPosition( slider->r_value, cpos );
-  XmTextSetCursorPosition( slider->f_value, cpos );
-  XmTextSetCursorPosition( slider->o_value, cpos );
-  XmScaleSetValue( slider->s_slider, pos );
-  XmScaleSetValue( slider->r_slider, pos );
-  XmScaleSetValue( slider->f_slider, pos );
-  XmScaleSetValue( slider->o_slider, pos );
+  XmTextSetString(slider->s_value, text);
+  XmTextSetString(slider->r_value, text);
+  XmTextSetString(slider->f_value, text);
+  XmTextSetString(slider->o_value, text);
+  XmTextSetCursorPosition(slider->s_value, cpos);
+  XmTextSetCursorPosition(slider->r_value, cpos);
+  XmTextSetCursorPosition(slider->f_value, cpos);
+  XmTextSetCursorPosition(slider->o_value, cpos);
+  XmScaleSetValue(slider->s_slider, pos);
+  XmScaleSetValue(slider->r_slider, pos);
+  XmScaleSetValue(slider->f_slider, pos);
+  XmScaleSetValue(slider->o_slider, pos);
 
-  if ( previous != slider->current )
+  if (previous != slider->current)
     slider->invokeCallbacks();
 } // value_cb()
 
@@ -704,21 +704,21 @@ void
 SoXtSlider::min_cb(
   Widget widget,
   XtPointer closure,
-  XtPointer call_data )
+  XtPointer call_data)
 {
-  assert( closure != NULL );
+  assert(closure != NULL);
   SoXtSlider * slider = (SoXtSlider *) closure;
   slider->minimum = slider->current;
   char text[16];
-  sprintf( text, "%.2g", slider->minimum );
+  sprintf(text, "%.2g", slider->minimum);
   const int cpos = strlen(text);
 
-  XmTextSetString( slider->r_minValue, text );
-  XmTextSetString( slider->f_minValue, text );
-  XmTextSetCursorPosition( slider->r_minValue, cpos );
-  XmTextSetCursorPosition( slider->f_minValue, cpos );
-  XmScaleSetValue( slider->r_slider, 0 );
-  XmScaleSetValue( slider->f_slider, 0 );
+  XmTextSetString(slider->r_minValue, text);
+  XmTextSetString(slider->f_minValue, text);
+  XmTextSetCursorPosition(slider->r_minValue, cpos);
+  XmTextSetCursorPosition(slider->f_minValue, cpos);
+  XmScaleSetValue(slider->r_slider, 0);
+  XmScaleSetValue(slider->f_slider, 0);
 } // min_cb()
 
 /*!
@@ -728,60 +728,60 @@ void
 SoXtSlider::min_value_cb(
   Widget widget,
   XtPointer closure,
-  XtPointer call_data )
+  XtPointer call_data)
 {
-  assert( closure != NULL );
+  assert(closure != NULL);
   SoXtSlider * slider = (SoXtSlider *) closure;
   float previous = slider->current;
   float prevmax = slider->maximum;
-  slider->minimum = atof( XmTextGetString(widget) );
-  slider->maximum = SoXtMax( slider->maximum, slider->minimum );
-  slider->current = SoXtMax( slider->current, slider->minimum );
+  slider->minimum = atof(XmTextGetString(widget));
+  slider->maximum = SoXtMax(slider->maximum, slider->minimum);
+  slider->current = SoXtMax(slider->current, slider->minimum);
 
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXtSlider::min_value_cb", "[invoked]" );
+  SoDebugError::postInfo("SoXtSlider::min_value_cb", "[invoked]");
 #endif // SOXT_DEBUG
 
   char text[16];
-  sprintf( text, "%.2g", slider->minimum );
-  int cpos = strlen( text );
+  sprintf(text, "%.2g", slider->minimum);
+  int cpos = strlen(text);
   int pos = 0;
-  if ( slider->minimum != slider->maximum )
+  if (slider->minimum != slider->maximum)
     pos = (int) ((slider->current - slider->minimum) /
       (slider->maximum - slider->minimum) * 999.0f);
 
-  XmTextSetString( slider->r_minValue, text );
-  XmTextSetString( slider->f_minValue, text );
-  XmTextSetCursorPosition( slider->r_minValue, cpos );
-  XmTextSetCursorPosition( slider->f_minValue, cpos );
+  XmTextSetString(slider->r_minValue, text);
+  XmTextSetString(slider->f_minValue, text);
+  XmTextSetCursorPosition(slider->r_minValue, cpos);
+  XmTextSetCursorPosition(slider->f_minValue, cpos);
 
-  if ( prevmax != slider->maximum ) {
-    sprintf( text, "%.2g", slider->maximum );
-    cpos = strlen( text );
-    XmTextSetString( slider->r_maxValue, text );
-    XmTextSetString( slider->f_maxValue, text );
-    XmTextSetCursorPosition( slider->r_maxValue, cpos );
-    XmTextSetCursorPosition( slider->f_maxValue, cpos );
+  if (prevmax != slider->maximum) {
+    sprintf(text, "%.2g", slider->maximum);
+    cpos = strlen(text);
+    XmTextSetString(slider->r_maxValue, text);
+    XmTextSetString(slider->f_maxValue, text);
+    XmTextSetCursorPosition(slider->r_maxValue, cpos);
+    XmTextSetCursorPosition(slider->f_maxValue, cpos);
   }
 
-  XmScaleSetValue( slider->s_slider, pos );
-  XmScaleSetValue( slider->r_slider, pos );
-  XmScaleSetValue( slider->f_slider, pos );
-  XmScaleSetValue( slider->o_slider, pos );
+  XmScaleSetValue(slider->s_slider, pos);
+  XmScaleSetValue(slider->r_slider, pos);
+  XmScaleSetValue(slider->f_slider, pos);
+  XmScaleSetValue(slider->o_slider, pos);
 
-  if ( previous != slider->current ) {
-    sprintf( text, "%.2g", slider->current );
-    cpos = strlen( text );
-    XmTextSetString( slider->s_value, text );
-    XmTextSetString( slider->r_value, text );
-    XmTextSetString( slider->f_value, text );
-    XmTextSetString( slider->o_value, text );
-    XmTextSetCursorPosition( slider->s_value, cpos );
-    XmTextSetCursorPosition( slider->r_value, cpos );
-    XmTextSetCursorPosition( slider->f_value, cpos );
-    XmTextSetCursorPosition( slider->o_value, cpos );
+  if (previous != slider->current) {
+    sprintf(text, "%.2g", slider->current);
+    cpos = strlen(text);
+    XmTextSetString(slider->s_value, text);
+    XmTextSetString(slider->r_value, text);
+    XmTextSetString(slider->f_value, text);
+    XmTextSetString(slider->o_value, text);
+    XmTextSetCursorPosition(slider->s_value, cpos);
+    XmTextSetCursorPosition(slider->r_value, cpos);
+    XmTextSetCursorPosition(slider->f_value, cpos);
+    XmTextSetCursorPosition(slider->o_value, cpos);
   }
-  if ( previous != slider->current )
+  if (previous != slider->current)
     slider->invokeCallbacks();
 } // min_value_cb()
 
@@ -792,24 +792,24 @@ void
 SoXtSlider::max_cb(
   Widget widget,
   XtPointer closure,
-  XtPointer call_data )
+  XtPointer call_data)
 {
-  assert( closure != NULL );
+  assert(closure != NULL);
   SoXtSlider * slider = (SoXtSlider *) closure;
   slider->maximum = slider->current;
   char text[16];
-  sprintf( text, "%.2g", slider->maximum );
+  sprintf(text, "%.2g", slider->maximum);
   const int cpos = strlen(text);
   int pos = 999;
-  if ( slider->minimum == slider->maximum )
+  if (slider->minimum == slider->maximum)
     pos = 0;
 
-  XmTextSetString( slider->r_maxValue, text );
-  XmTextSetString( slider->f_maxValue, text );
-  XmTextSetCursorPosition( slider->r_maxValue, cpos );
-  XmTextSetCursorPosition( slider->f_maxValue, cpos );
-  XmScaleSetValue( slider->r_slider, pos );
-  XmScaleSetValue( slider->f_slider, pos );
+  XmTextSetString(slider->r_maxValue, text);
+  XmTextSetString(slider->f_maxValue, text);
+  XmTextSetCursorPosition(slider->r_maxValue, cpos);
+  XmTextSetCursorPosition(slider->f_maxValue, cpos);
+  XmScaleSetValue(slider->r_slider, pos);
+  XmScaleSetValue(slider->f_slider, pos);
 } // max_cb()
 
 /*!
@@ -819,60 +819,60 @@ void
 SoXtSlider::max_value_cb(
   Widget widget,
   XtPointer closure,
-  XtPointer call_data )
+  XtPointer call_data)
 {
-  assert( closure != NULL );
+  assert(closure != NULL);
   SoXtSlider * slider = (SoXtSlider *) closure;
   float previous = slider->current;
   float prevmin = slider->minimum;
-  slider->maximum = atof( XmTextGetString(widget) );
-  slider->minimum = SoXtMin( slider->minimum, slider->maximum );
-  slider->current = SoXtMin( slider->current, slider->maximum );
+  slider->maximum = atof(XmTextGetString(widget));
+  slider->minimum = SoXtMin(slider->minimum, slider->maximum);
+  slider->current = SoXtMin(slider->current, slider->maximum);
 
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXtSlider::max_value_cb", "[invoked]" );
+  SoDebugError::postInfo("SoXtSlider::max_value_cb", "[invoked]");
 #endif // SOXT_DEBUG
 
   char text[16];
-  sprintf( text, "%.2g", slider->maximum );
-  int cpos = strlen( text );
+  sprintf(text, "%.2g", slider->maximum);
+  int cpos = strlen(text);
   int pos = 0;
-  if ( slider->minimum != slider->maximum )
+  if (slider->minimum != slider->maximum)
     pos = (int) ((slider->current - slider->minimum) /
       (slider->maximum - slider->minimum) * 999.0f);
 
-  XmTextSetString( slider->r_maxValue, text );
-  XmTextSetString( slider->f_maxValue, text );
-  XmTextSetCursorPosition( slider->r_maxValue, cpos );
-  XmTextSetCursorPosition( slider->f_maxValue, cpos );
+  XmTextSetString(slider->r_maxValue, text);
+  XmTextSetString(slider->f_maxValue, text);
+  XmTextSetCursorPosition(slider->r_maxValue, cpos);
+  XmTextSetCursorPosition(slider->f_maxValue, cpos);
 
-  if ( prevmin != slider->minimum ) {
-    sprintf( text, "%.2g", slider->minimum );
-    cpos = strlen( text );
-    XmTextSetString( slider->r_minValue, text );
-    XmTextSetString( slider->f_minValue, text );
-    XmTextSetCursorPosition( slider->r_minValue, cpos );
-    XmTextSetCursorPosition( slider->f_minValue, cpos );
+  if (prevmin != slider->minimum) {
+    sprintf(text, "%.2g", slider->minimum);
+    cpos = strlen(text);
+    XmTextSetString(slider->r_minValue, text);
+    XmTextSetString(slider->f_minValue, text);
+    XmTextSetCursorPosition(slider->r_minValue, cpos);
+    XmTextSetCursorPosition(slider->f_minValue, cpos);
   }
 
-  XmScaleSetValue( slider->s_slider, pos );
-  XmScaleSetValue( slider->r_slider, pos );
-  XmScaleSetValue( slider->f_slider, pos );
-  XmScaleSetValue( slider->o_slider, pos );
+  XmScaleSetValue(slider->s_slider, pos);
+  XmScaleSetValue(slider->r_slider, pos);
+  XmScaleSetValue(slider->f_slider, pos);
+  XmScaleSetValue(slider->o_slider, pos);
 
-  if ( previous != slider->current ) {
-    sprintf( text, "%.2g", slider->current );
-    cpos = strlen( text );
-    XmTextSetString( slider->s_value, text );
-    XmTextSetString( slider->r_value, text );
-    XmTextSetString( slider->f_value, text );
-    XmTextSetString( slider->o_value, text );
-    XmTextSetCursorPosition( slider->s_value, cpos );
-    XmTextSetCursorPosition( slider->r_value, cpos );
-    XmTextSetCursorPosition( slider->f_value, cpos );
-    XmTextSetCursorPosition( slider->o_value, cpos );
+  if (previous != slider->current) {
+    sprintf(text, "%.2g", slider->current);
+    cpos = strlen(text);
+    XmTextSetString(slider->s_value, text);
+    XmTextSetString(slider->r_value, text);
+    XmTextSetString(slider->f_value, text);
+    XmTextSetString(slider->o_value, text);
+    XmTextSetCursorPosition(slider->s_value, cpos);
+    XmTextSetCursorPosition(slider->r_value, cpos);
+    XmTextSetCursorPosition(slider->f_value, cpos);
+    XmTextSetCursorPosition(slider->o_value, cpos);
   }
-  if ( previous != slider->current )
+  if (previous != slider->current)
     slider->invokeCallbacks();
 } // max_value_cb()
 

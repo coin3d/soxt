@@ -36,7 +36,7 @@ public:
     Widget parent = NULL,
     const char * const name = NULL,
     const SbBool embed = TRUE,
-    SoNode * const node = NULL );
+    SoNode * const node = NULL);
   ~SoXtTransformSliderSet(void);
 
 protected:
@@ -45,16 +45,16 @@ protected:
     const char * const name,
     const SbBool embed,
     SoNode * const node,
-    const SbBool build );
+    const SbBool build);
 
-  Widget buildWidget( Widget parent );
+  Widget buildWidget(Widget parent);
 
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
 
 private:
-  void constructor( SbBool build );
+  void constructor(SbBool build);
 
 }; // class SoXtTransformSliderSet
 

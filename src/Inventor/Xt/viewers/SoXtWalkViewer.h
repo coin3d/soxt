@@ -38,13 +38,13 @@ public:
     const char * const name = NULL,
     SbBool embed = TRUE,
     SoXtFullViewer::BuildFlag flag = BUILD_ALL,
-    SoXtViewer::Type type = BROWSER );
+    SoXtViewer::Type type = BROWSER);
   ~SoXtWalkViewer(void);
 
-  virtual void setViewing( SbBool enable );
-  virtual void setCamera( SoCamera * camera );
-  virtual void setCursorEnabled( SbBool enable );
-  virtual void setCameraType( SoType type );
+  virtual void setViewing(SbBool enable);
+  virtual void setCamera(SoCamera * camera);
+  virtual void setCursorEnabled(SbBool enable);
+  virtual void setCameraType(SoType type);
 
 protected:
   SoXtWalkViewer(
@@ -53,29 +53,29 @@ protected:
     SbBool embed,
     SoXtFullViewer::BuildFlag flag,
     SoXtViewer::Type type,
-    SbBool buildNow );
+    SbBool buildNow);
 
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
 
-  virtual void processEvent( XAnyEvent * event );
-  virtual void setSeekMode( SbBool enable );
+  virtual void processEvent(XAnyEvent * event);
+  virtual void setSeekMode(SbBool enable);
   virtual void actualRedraw(void);
-  virtual void rightWheelMotion( float value );
+  virtual void rightWheelMotion(float value);
 
   virtual void leftWheel2Start(void);
-  virtual void leftWheel2Motion( float value );
+  virtual void leftWheel2Motion(float value);
   virtual void leftWheel2Finish(void);
   float getLeftWheel2Value(void) const;
-  void setLeftWheel2String( char * string );
+  void setLeftWheel2String(char * string);
 
-  virtual Widget buildLeftTrim( Widget parent );
+  virtual Widget buildLeftTrim(Widget parent);
   virtual void createPrefSheet(void);
   virtual void openViewerHelpCard(void);
 
 private:
-  void constructor( SbBool build );
+  void constructor(SbBool build);
 
   SoAnyWalkViewer * const common;
   Widget * prefparts;
@@ -85,11 +85,11 @@ private:
   float heightvalue;
 
   void wheelarmed(void);
-  static void wheelarmedCB( Widget, XtPointer, XtPointer );
-  void wheelchanged( float value );
-  static void wheelchangedCB( Widget, XtPointer, XtPointer );
+  static void wheelarmedCB(Widget, XtPointer, XtPointer);
+  void wheelchanged(float value);
+  static void wheelchangedCB(Widget, XtPointer, XtPointer);
   void wheeldisarmed(void);
-  static void wheeldisarmedCB( Widget, XtPointer, XtPointer );
+  static void wheeldisarmedCB(Widget, XtPointer, XtPointer);
 
 }; // class SoXtWalkViewer
 

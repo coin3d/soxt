@@ -59,25 +59,25 @@ SoXtLightSliderSet::SoXtLightSliderSet(
   const Widget parent,
   const char * const name,
   const SbBool embed,
-  SoNode * const node )
-: inherited( parent, name, embed, node, FALSE )
+  SoNode * const node)
+: inherited(parent, name, embed, node, FALSE)
 {
-  this->constructor( TRUE );
+  this->constructor(TRUE);
 } // SoXtLightSliderSet()
 
 /*!
   Constructor.
 */
 
-SoXtLightSliderSet::SoXtLightSliderSet( // protected
+SoXtLightSliderSet::SoXtLightSliderSet(// protected
   const Widget parent,
   const char * const name,
   const SbBool embed,
   SoNode * const node,
-  const SbBool build )
-: inherited( parent, name, embed, node, FALSE )
+  const SbBool build)
+: inherited(parent, name, embed, node, FALSE)
 {
-  this->constructor( build );
+  this->constructor(build);
 } // SoXtLightSliderSet()
 
 /*!
@@ -85,14 +85,14 @@ SoXtLightSliderSet::SoXtLightSliderSet( // protected
 */
 
 void
-SoXtLightSliderSet::constructor( // private
-  const SbBool build )
+SoXtLightSliderSet::constructor(// private
+  const SbBool build)
 {
-  if ( build ) {
-    this->setClassName( "SoXtLightSliderSet" );
-    Widget sliderset = this->buildWidget( this->getParentWidget() );
-    this->setBaseWidget( sliderset );
-    this->fitSize( SbVec2s( 300, 0 ) );
+  if (build) {
+    this->setClassName("SoXtLightSliderSet");
+    Widget sliderset = this->buildWidget(this->getParentWidget());
+    this->setBaseWidget(sliderset);
+    this->fitSize(SbVec2s(300, 0));
   }
 } // constructor()
 
@@ -101,7 +101,7 @@ SoXtLightSliderSet::constructor( // private
 */
 
 SoXtLightSliderSet::~SoXtLightSliderSet(
-  void )
+  void)
 {
 } // ~SoXtLightSliderSet()
 
@@ -112,10 +112,10 @@ SoXtLightSliderSet::~SoXtLightSliderSet(
 */
 
 Widget
-SoXtLightSliderSet::buildWidget( // protected
-  Widget parent )
+SoXtLightSliderSet::buildWidget(// protected
+  Widget parent)
 {
-  return inherited::buildWidget( parent );
+  return inherited::buildWidget(parent);
 } // buildWidget()
 
 // *************************************************************************
@@ -125,8 +125,8 @@ SoXtLightSliderSet::buildWidget( // protected
 */
 
 const char *
-SoXtLightSliderSet::getDefaultWidgetName( // virtual, protected
-  void ) const
+SoXtLightSliderSet::getDefaultWidgetName(// virtual, protected
+  void) const
 {
   static const char defaultWidgetName[] = "SoXtLightSliderSet";
   return defaultWidgetName;
@@ -137,8 +137,8 @@ SoXtLightSliderSet::getDefaultWidgetName( // virtual, protected
 */
 
 const char *
-SoXtLightSliderSet::getDefaultTitle( // virtual, protected
-  void ) const
+SoXtLightSliderSet::getDefaultTitle(// virtual, protected
+  void) const
 {
   static const char defaultTitle[] = "Light Editor";
   return defaultTitle;
@@ -149,8 +149,8 @@ SoXtLightSliderSet::getDefaultTitle( // virtual, protected
 */
 
 const char *
-SoXtLightSliderSet::getDefaultIconTitle( // virtual, protected
-  void ) const
+SoXtLightSliderSet::getDefaultIconTitle(// virtual, protected
+  void) const
 {
   static const char defaultIconTitle[] = "Light Editor";
   return defaultIconTitle;

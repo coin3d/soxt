@@ -43,15 +43,15 @@ public:
     ALL_EVENTS = BUTTON_PRESS | BUTTON_RELEASE | POINTER_MOTION | BUTTON_MOTION
   };
 
-  SoXtMouse( int events = SoXtMouse::ALL_EVENTS );
+  SoXtMouse(int events = SoXtMouse::ALL_EVENTS);
   virtual ~SoXtMouse(void);
 
-  virtual void enable( Widget widget, XtEventHandler handler,
-      XtPointer closure, Window window = (Window) NULL );
-  virtual void disable( Widget widget, XtEventHandler handler,
-      XtPointer closure );
+  virtual void enable(Widget widget, XtEventHandler handler,
+      XtPointer closure, Window window = (Window) NULL);
+  virtual void disable(Widget widget, XtEventHandler handler,
+      XtPointer closure);
 
-  virtual const SoEvent * translateEvent( XAnyEvent * xevent );
+  virtual const SoEvent * translateEvent(XAnyEvent * xevent);
 
 private:
   int events;
@@ -59,9 +59,9 @@ private:
   SoLocation2Event * locationEvent;
   SoMouseButtonEvent * buttonEvent;
 
-  SoLocation2Event * makeLocationEvent( XMotionEvent * event );
-  SoMouseButtonEvent * makeButtonEvent( XButtonEvent * event,
-      SoButtonEvent::State state );
+  SoLocation2Event * makeLocationEvent(XMotionEvent * event);
+  SoMouseButtonEvent * makeButtonEvent(XButtonEvent * event,
+      SoButtonEvent::State state);
 
 }; // class SoXtMouse
 

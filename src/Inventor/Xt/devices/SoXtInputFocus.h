@@ -36,15 +36,15 @@ public:
     ALL_EVENTS = ENTER_WINDOW | LEAVE_WINDOW
   };
 
-  SoXtInputFocus( int events = SoXtInputFocus::ALL_EVENTS );
+  SoXtInputFocus(int events = SoXtInputFocus::ALL_EVENTS);
   virtual ~SoXtInputFocus(void);
 
-  virtual void enable( Widget widget, XtEventHandler handler,
-      XtPointer closure, Window window = (Window) NULL );
-  virtual void disable( Widget widget, XtEventHandler handler,
-      XtPointer closure );
+  virtual void enable(Widget widget, XtEventHandler handler,
+      XtPointer closure, Window window = (Window) NULL);
+  virtual void disable(Widget widget, XtEventHandler handler,
+      XtPointer closure);
 
-  virtual const SoEvent * translateEvent( XAnyEvent * xevent );
+  virtual const SoEvent * translateEvent(XAnyEvent * xevent);
 
 private:
   int events;

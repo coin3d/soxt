@@ -34,21 +34,21 @@
 
 class SOXT_DLL_API SoXtResource {
 public:
-  SoXtResource( const Widget widget );
+  SoXtResource(const Widget widget);
   ~SoXtResource(void);
 
-  SbBool getResource( const char * const rname, const char * const rclass,
-    SbColor & retval ) const;
-  SbBool getResource( const char * const rname, const char * const rclass,
-    short & retval ) const;
-  SbBool getResource( const char * const rname, const char * const rclass,
-    unsigned short & retval ) const;
-  SbBool getResource( const char * const rname, const char * const rclass,
-    char * & retval ) const;
-  SbBool getResource( const char * const rname, const char * const rclass,
-    SbBool & retval ) const;
-  SbBool getResource( const char * const rname, const char * const rclass,
-    float & retval ) const;
+  SbBool getResource(const char * const rname, const char * const rclass,
+    SbColor & retval) const;
+  SbBool getResource(const char * const rname, const char * const rclass,
+    short & retval) const;
+  SbBool getResource(const char * const rname, const char * const rclass,
+    unsigned short & retval) const;
+  SbBool getResource(const char * const rname, const char * const rclass,
+    char * & retval) const;
+  SbBool getResource(const char * const rname, const char * const rclass,
+    SbBool & retval) const;
+  SbBool getResource(const char * const rname, const char * const rclass,
+    float & retval) const;
 
   void DumpInternals(void) const;
 

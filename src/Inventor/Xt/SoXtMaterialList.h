@@ -27,7 +27,7 @@
 class SoMaterial;
 class SoAnyMaterialList;
 
-typedef void SoXtMaterialListCB( void * closure, const SoMaterial * material );
+typedef void SoXtMaterialListCB(void * closure, const SoMaterial * material);
 
 // *************************************************************************
 
@@ -39,15 +39,15 @@ public:
     Widget parent = NULL,
     const char * const name = NULL,
     SbBool embed = TRUE,
-    const char * const dir = NULL );
+    const char * const dir = NULL);
   ~SoXtMaterialList(void);
 
   void addCallback(
     SoXtMaterialListCB * const callback,
-    void * const closure = NULL );
+    void * const closure = NULL);
   void removeCallback(
     SoXtMaterialListCB * const callback,
-    void * const closure = NULL );
+    void * const closure = NULL);
 
 protected:
   SoXtMaterialList(
@@ -55,23 +55,23 @@ protected:
     const char * const name,
     SbBool embed,
     const char * const dir,
-    SbBool build );
+    SbBool build);
 
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
 
-  Widget buildWidget( Widget parent );
-  Widget buildPulldownMenu( Widget parent );
+  Widget buildWidget(Widget parent);
+  Widget buildPulldownMenu(Widget parent);
 
 private:
-  void constructor( const char * const dir, const SbBool build );
+  void constructor(const char * const dir, const SbBool build);
 
-  void selectionCallback( int i );
-  static void selection_cb( Widget, XtPointer, XtPointer );
+  void selectionCallback(int i);
+  static void selection_cb(Widget, XtPointer, XtPointer);
 
-  void paletteMenuCallback( Widget );
-  static void palette_menu_cb( Widget, XtPointer, XtPointer );
+  void paletteMenuCallback(Widget);
+  static void palette_menu_cb(Widget, XtPointer, XtPointer);
 
   Widget listwidget;
 

@@ -42,37 +42,37 @@ public:
     ALL_EVENTS = 0
   };
 
-  SoXtLinuxJoystick( int events = SoXtLinuxJoystick::ALL_EVENTS );
+  SoXtLinuxJoystick(int events = SoXtLinuxJoystick::ALL_EVENTS);
   virtual ~SoXtLinuxJoystick(void);
 
-  virtual void enable( Widget widget, XtEventHandler handler,
-      XtPointer closure, Window window = (Window) NULL );
-  virtual void disable( Widget widget, XtEventHandler handler,
-      XtPointer closure );
+  virtual void enable(Widget widget, XtEventHandler handler,
+      XtPointer closure, Window window = (Window) NULL);
+  virtual void disable(Widget widget, XtEventHandler handler,
+      XtPointer closure);
 
-  virtual const SoEvent * translateEvent( XAnyEvent * xevent );
+  virtual const SoEvent * translateEvent(XAnyEvent * xevent);
 
-  void setRotationScaleFactor( const float factor );
+  void setRotationScaleFactor(const float factor);
   float getRotationScaleFactor(void) const;
-  void setTranslationScaleFactor( const float factor );
+  void setTranslationScaleFactor(const float factor);
   float getTranslationScaleFactor(void) const;
 
   static SbBool exists(void);
 
-  void setFocusToWindow( SbBool enable );
+  void setFocusToWindow(SbBool enable);
   SbBool isFocusToWindow(void) const;
 
   int getNumButtons(void) const;
-  SbBool getButtonValue( const int button ) const;
+  SbBool getButtonValue(const int button) const;
 
   int getNumAxes(void) const;
-  float getAxisValue( const int axis ) const;
+  float getAxisValue(const int axis) const;
 
 private:
   static const char * getDevicePathName(void);
 
-  void input( int * source, XtInputId * id );
-  static void input_cb( XtPointer closure, int * source, XtInputId * id );
+  void input(int * source, XtInputId * id);
+  static void input_cb(XtPointer closure, int * source, XtInputId * id);
 
 private:
   int events;
@@ -91,9 +91,9 @@ private:
   SoMotion3Event * motion3Event;
   SoSpaceballButtonEvent * buttonEvent;
 
-  SoMotion3Event * makeMotion3Event( SoXt6dofDevicePressureEvent * event );
-  SoSpaceballButtonEvent * makeButtonEvent( SoXt6dofDeviceButtonEvent * event,
-      SoButtonEvent::State state );
+  SoMotion3Event * makeMotion3Event(SoXt6dofDevicePressureEvent * event);
+  SoSpaceballButtonEvent * makeButtonEvent(SoXt6dofDeviceButtonEvent * event,
+      SoButtonEvent::State state);
 
   static SbBool enabled;
 }; // class SoXtLinuxJoystick

@@ -75,7 +75,7 @@ SOXT_OBJECT_SOURCE(SoXtSpaceball);
 */
 
 SoXtSpaceball::SoXtSpaceball(
-  int events )
+  int events)
 {
   this->events = events;
   this->rotationFactor = 1.0f;
@@ -89,7 +89,7 @@ SoXtSpaceball::SoXtSpaceball(
 
 SoXtSpaceball::SoXtSpaceball(
   Display *, // display,
-  int events )
+  int events)
 {
   this->events = events;
 } // SoXtSpaceball()
@@ -98,8 +98,8 @@ SoXtSpaceball::SoXtSpaceball(
   Destructor.
 */
 
-SoXtSpaceball::~SoXtSpaceball( // virtual
-  void )
+SoXtSpaceball::~SoXtSpaceball(// virtual
+  void)
 {
 } // ~SoXtSpaceball()
 
@@ -110,11 +110,11 @@ SoXtSpaceball::~SoXtSpaceball( // virtual
 */
 
 void
-SoXtSpaceball::enable( // virtual
+SoXtSpaceball::enable(// virtual
   Widget, // widget,
   XtEventHandler, // func,
   XtPointer, // data,
-  Window ) // window )
+  Window) // window)
 {
   SOXT_STUB();
 } // enable()
@@ -124,10 +124,10 @@ SoXtSpaceball::enable( // virtual
 */
 
 void
-SoXtSpaceball::disable( // virtual
+SoXtSpaceball::disable(// virtual
   Widget, // widget,
   XtEventHandler, // func,
-  XtPointer ) // data )
+  XtPointer) // data)
 {
   SOXT_STUB();
 } // disable()
@@ -139,8 +139,8 @@ SoXtSpaceball::disable( // virtual
 */
 
 const SoEvent *
-SoXtSpaceball::translateEvent( // virtual
- XAnyEvent * event )
+SoXtSpaceball::translateEvent(// virtual
+ XAnyEvent * event)
 {
   SOXT_STUB_ONCE();
   return (SoEvent *) NULL;
@@ -154,7 +154,7 @@ SoXtSpaceball::translateEvent( // virtual
 
 void
 SoXtSpaceball::setRotationScaleFactor(
-  float factor )
+  float factor)
 {
   this->rotationFactor = factor;
 } // setRotationScaleFactor()
@@ -165,7 +165,7 @@ SoXtSpaceball::setRotationScaleFactor(
 
 float
 SoXtSpaceball::getRotationScaleFactor(
-  void ) const
+  void) const
 {
   return this->rotationFactor;
 } // getRotationScaleFactor()
@@ -176,7 +176,7 @@ SoXtSpaceball::getRotationScaleFactor(
 
 void
 SoXtSpaceball::setTranslationScaleFactor(
-  float factor )
+  float factor)
 {
   this->translationFactor = factor;
 } // setTranslationScaleFactor()
@@ -187,7 +187,7 @@ SoXtSpaceball::setTranslationScaleFactor(
 
 float
 SoXtSpaceball::getTranslationScaleFactor(
-  void ) const
+  void) const
 {
   return this->translationFactor;
 } // getTranslationScaleFactor()
@@ -199,24 +199,24 @@ SoXtSpaceball::getTranslationScaleFactor(
 */
 
 SbBool
-SoXtSpaceball::exists( // static
-  Display * display )
+SoXtSpaceball::exists(// static
+  Display * display)
 {
-  if ( display == NULL )
+  if (display == NULL)
     display = SoXt::getDisplay();
-  assert( display != NULL );
-  Atom SpaceballAtom = XInternAtom( display, XI_SPACEBALL, True );
-  if ( SpaceballAtom == None )
+  assert(display != NULL);
+  Atom SpaceballAtom = XInternAtom(display, XI_SPACEBALL, True);
+  if (SpaceballAtom == None)
     return FALSE;
   int numDevices = 0;
-  XDeviceInfo * devices = XListInputDevices( display, &numDevices );
-  for ( int i = 0; i < numDevices; i++ ) {
-    if ( devices[i].type == SpaceballAtom ) {
-      XFreeDeviceList( devices );
+  XDeviceInfo * devices = XListInputDevices(display, &numDevices);
+  for (int i = 0; i < numDevices; i++) {
+    if (devices[i].type == SpaceballAtom) {
+      XFreeDeviceList(devices);
       return TRUE;
     }
   }
-  XFreeDeviceList( devices );
+  XFreeDeviceList(devices);
   return FALSE;
 } // exists()
 
@@ -228,7 +228,7 @@ SoXtSpaceball::exists( // static
 
 void
 SoXtSpaceball::setFocusToWindow(
-  SbBool ) // enable )
+  SbBool) // enable)
 {
   SOXT_STUB();
 } // setFocusToWindow()
@@ -239,7 +239,7 @@ SoXtSpaceball::setFocusToWindow(
 
 SbBool
 SoXtSpaceball::isFocusToWindow(
-  void ) const
+  void) const
 {
   SOXT_STUB();
   return FALSE;

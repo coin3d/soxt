@@ -171,8 +171,8 @@ typedef struct {
   Dimension height;
 } SoXtGLAreaCallbackStruct;
 
-void SoXtGLAreaMakeCurrent( Widget w, GLXContext ctx );
-void SoXtGLAreaSwapBuffers( Widget w );
+void SoXtGLAreaMakeCurrent(Widget w, GLXContext ctx);
+void SoXtGLAreaSwapBuffers(Widget w);
 
 #ifndef XtIsSoXtGLArea
 #define XtIsSoXtGLArea(w) XtIsSubclass(w, soxtGLAreaWidgetClass)

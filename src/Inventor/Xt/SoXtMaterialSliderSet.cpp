@@ -50,25 +50,25 @@ SoXtMaterialSliderSet::SoXtMaterialSliderSet(
   Widget parent,
   const char * const name,
   SbBool embed,
-  SoNode * const node )
-: inherited( parent, name, embed, node, FALSE )
+  SoNode * const node)
+: inherited(parent, name, embed, node, FALSE)
 {
-  this->constructor( TRUE );
+  this->constructor(TRUE);
 } // SoXtMaterialSliderSet()
 
 /*!
   Constructor.
 */
 
-SoXtMaterialSliderSet::SoXtMaterialSliderSet( // protected
+SoXtMaterialSliderSet::SoXtMaterialSliderSet(// protected
   Widget parent,
   const char * const name,
   SbBool embed,
   SoNode * const node,
-  SbBool build )
-: inherited( parent, name, embed, node, FALSE )
+  SbBool build)
+: inherited(parent, name, embed, node, FALSE)
 {
-  this->constructor( build );
+  this->constructor(build);
 } // SoXtMaterialSliderSet()
 
 /*!
@@ -76,14 +76,14 @@ SoXtMaterialSliderSet::SoXtMaterialSliderSet( // protected
 */
 
 void
-SoXtMaterialSliderSet::constructor( // private
-  SbBool build )
+SoXtMaterialSliderSet::constructor(// private
+  SbBool build)
 {
-  if ( build ) {
-    this->setClassName( "SoXtMaterialSliderSet" );
-    Widget sliderset = this->buildWidget( this->getParentWidget() );
-    this->setBaseWidget( sliderset );
-    this->fitSize( SbVec2s( 300, 0 ) );
+  if (build) {
+    this->setClassName("SoXtMaterialSliderSet");
+    Widget sliderset = this->buildWidget(this->getParentWidget());
+    this->setBaseWidget(sliderset);
+    this->fitSize(SbVec2s(300, 0));
   }
 } // constructor()
 
@@ -92,7 +92,7 @@ SoXtMaterialSliderSet::constructor( // private
 */
 
 SoXtMaterialSliderSet::~SoXtMaterialSliderSet(
-  void )
+  void)
 {
 } // ~SoXtMaterialSliderSet()
 
@@ -104,9 +104,9 @@ SoXtMaterialSliderSet::~SoXtMaterialSliderSet(
 
 Widget
 SoXtMaterialSliderSet::buildWidget(
-  Widget parent )
+  Widget parent)
 {
-  return inherited::buildWidget( parent );
+  return inherited::buildWidget(parent);
 } // buildWidget()
 
 // *************************************************************************
@@ -116,8 +116,8 @@ SoXtMaterialSliderSet::buildWidget(
 */
 
 const char *
-SoXtMaterialSliderSet::getDefaultWidgetName( // virtual, protected
-  void ) const
+SoXtMaterialSliderSet::getDefaultWidgetName(// virtual, protected
+  void) const
 {
   static const char defaultWidgetName[] = "SoXtMaterialSliderSet";
   return defaultWidgetName;
@@ -128,8 +128,8 @@ SoXtMaterialSliderSet::getDefaultWidgetName( // virtual, protected
 */
 
 const char *
-SoXtMaterialSliderSet::getDefaultTitle( // virtual, protected
-  void ) const
+SoXtMaterialSliderSet::getDefaultTitle(// virtual, protected
+  void) const
 {
   static const char defaultTitle[] = "Material Sliders";
   return defaultTitle;
@@ -140,8 +140,8 @@ SoXtMaterialSliderSet::getDefaultTitle( // virtual, protected
 */
 
 const char *
-SoXtMaterialSliderSet::getDefaultIconTitle( // virtual, protected
-  void ) const
+SoXtMaterialSliderSet::getDefaultIconTitle(// virtual, protected
+  void) const
 {
   static const char defaultIconTitle[] = "Material Sliders";
   return defaultIconTitle;

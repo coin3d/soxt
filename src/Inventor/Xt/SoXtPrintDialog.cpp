@@ -238,10 +238,10 @@ SOXT_OBJECT_SOURCE(SoXtPrintDialog);
 SoXtPrintDialog::SoXtPrintDialog(
   Widget parent,
   const char * const name,
-  SbBool embed )
-: inherited( parent, name, embed)
+  SbBool embed)
+: inherited(parent, name, embed)
 {
-  this->constructor( TRUE );
+  this->constructor(TRUE);
 } // SoXtPrintDialog()
 
 /*!
@@ -252,24 +252,24 @@ SoXtPrintDialog::SoXtPrintDialog(
   SoGLRenderAction * const action,
   Widget parent,
   const char * const name,
-  SbBool embed )
-: inherited( parent, name, embed)
+  SbBool embed)
+: inherited(parent, name, embed)
 {
-  this->constructor( TRUE );
+  this->constructor(TRUE);
 } // SoXtPrintDialog()
 
 /*!
   Constructor.
 */
 
-SoXtPrintDialog::SoXtPrintDialog( // protected
+SoXtPrintDialog::SoXtPrintDialog(// protected
   Widget parent,
   const char * const name,
   SbBool embed,
-  SbBool build )
-: inherited( parent, name, embed)
+  SbBool build)
+: inherited(parent, name, embed)
 {
-  this->constructor( build );
+  this->constructor(build);
 } // SoXtPrintDialog()
 
 /*!
@@ -277,8 +277,8 @@ SoXtPrintDialog::SoXtPrintDialog( // protected
 */
 
 void
-SoXtPrintDialog::constructor( // private
-  SbBool build )
+SoXtPrintDialog::constructor(// private
+  SbBool build)
 {
   SOXT_STUB();
 } // constructor()
@@ -288,7 +288,7 @@ SoXtPrintDialog::constructor( // private
 */
 
 SoXtPrintDialog::~SoXtPrintDialog(
-  void )
+  void)
 {
 } // ~SoXtPrintDialog()
 
@@ -300,7 +300,7 @@ SoXtPrintDialog::~SoXtPrintDialog(
 
 void
 SoXtPrintDialog::setSceneGraph(
-  SoPath * path )
+  SoPath * path)
 {
 } // setSceneGraph()
 
@@ -310,7 +310,7 @@ SoXtPrintDialog::setSceneGraph(
 
 void
 SoXtPrintDialog::setSceneGraph(
-  SoNode * root )
+  SoNode * root)
 {
 } // setSceneGraph()
 
@@ -320,7 +320,7 @@ SoXtPrintDialog::setSceneGraph(
 
 SoNode *
 SoXtPrintDialog::getSceneGraph(
-  void )
+  void)
 {
   return (SoNode *) NULL;
 } // getSceneGraph()
@@ -331,7 +331,7 @@ SoXtPrintDialog::getSceneGraph(
 
 SoPath *
 SoXtPrintDialog::getSceneGraphPath(
-  void )
+  void)
 {
   return (SoPath *) NULL;
 } // getSceneGraphPath()
@@ -342,7 +342,7 @@ SoXtPrintDialog::getSceneGraphPath(
 
 void
 SoXtPrintDialog::setGLRenderAction(
-  const SoGLRenderAction * const action )
+  const SoGLRenderAction * const action)
 {
 } // setGLRenderAction()
 
@@ -352,7 +352,7 @@ SoXtPrintDialog::setGLRenderAction(
 
 SoGLRenderAction *
 SoXtPrintDialog::getGLRenderAction(
-  void )
+  void)
 {
   return (SoGLRenderAction *) NULL;
 } // getGLRenderAction()
@@ -363,7 +363,7 @@ SoXtPrintDialog::getGLRenderAction(
 
 void
 SoXtPrintDialog::setPrintSize(
-  const SbVec2f & size )
+  const SbVec2f & size)
 {
 } // setPrintSize()
 
@@ -373,7 +373,7 @@ SoXtPrintDialog::setPrintSize(
 
 void
 SoXtPrintDialog::setPrintSize(
-  const SbVec2s size )
+  const SbVec2s size)
 {
 } // setPrintSize()
 
@@ -384,7 +384,7 @@ SoXtPrintDialog::setPrintSize(
 void
 SoXtPrintDialog::setBeforePrintCallback(
   SoXtPrintDialogCB * callback,
-  void * user )
+  void * user)
 {
 } // setBeforePrintCallback()
 
@@ -395,7 +395,7 @@ SoXtPrintDialog::setBeforePrintCallback(
 void
 SoXtPrintDialog::setAfterPrintCallback(
   SoXtPrintDialogCB * callback,
-  void * user )
+  void * user)
 {
 } // setAfterPrintCallback()
 
@@ -406,8 +406,8 @@ SoXtPrintDialog::setAfterPrintCallback(
 */
 
 const char *
-SoXtPrintDialog::getDefaultWidgetName( // virtual, protected
-  void ) const
+SoXtPrintDialog::getDefaultWidgetName(// virtual, protected
+  void) const
 {
   static const char defaultWidgetName[] = "SoXtPrintDialog";
   return defaultWidgetName;
@@ -418,8 +418,8 @@ SoXtPrintDialog::getDefaultWidgetName( // virtual, protected
 */
 
 const char *
-SoXtPrintDialog::getDefaultTitle( // virtual, protected
-  void ) const
+SoXtPrintDialog::getDefaultTitle(// virtual, protected
+  void) const
 {
   static const char defaultTitle[] = "Print";
   return defaultTitle;
@@ -430,8 +430,8 @@ SoXtPrintDialog::getDefaultTitle( // virtual, protected
 */
 
 const char *
-SoXtPrintDialog::getDefaultIconTitle( // virtual, protected
-  void ) const
+SoXtPrintDialog::getDefaultIconTitle(// virtual, protected
+  void) const
 {
   static const char defaultIconTitle[] = "Print";
   return defaultIconTitle;
@@ -444,8 +444,8 @@ SoXtPrintDialog::getDefaultIconTitle( // virtual, protected
 */
 
 void
-SoXtPrintDialog::print( // protected
-  void )
+SoXtPrintDialog::print(// protected
+  void)
 {
 } // print()
 
@@ -454,8 +454,8 @@ SoXtPrintDialog::print( // protected
 */
 
 void
-SoXtPrintDialog::getPrinterList( // protected
-  void )
+SoXtPrintDialog::getPrinterList(// protected
+  void)
 {
 } // getPrinterList()
 
@@ -464,11 +464,11 @@ SoXtPrintDialog::getPrinterList( // protected
 */
 
 void
-SoXtPrintDialog::printToPostScript( // protected
+SoXtPrintDialog::printToPostScript(// protected
   SoNode * node,
   char *,
   int,
-  int )
+  int)
 {
 } // printToPostScript()
 
@@ -479,8 +479,8 @@ SoXtPrintDialog::printToPostScript( // protected
 */
 
 void
-SoXtPrintDialog::buildToPrinterWidget( // protected
-  Widget parent )
+SoXtPrintDialog::buildToPrinterWidget(// protected
+  Widget parent)
 {
 } // buildToPrinterWidget()
 
@@ -489,8 +489,8 @@ SoXtPrintDialog::buildToPrinterWidget( // protected
 */
 
 void
-SoXtPrintDialog::buildToPostScriptFileWidget( // protected
-  Widget parent )
+SoXtPrintDialog::buildToPostScriptFileWidget(// protected
+  Widget parent)
 {
 } // buildToPostScriptFileWidget()
 
@@ -499,8 +499,8 @@ SoXtPrintDialog::buildToPostScriptFileWidget( // protected
 */
 
 void
-SoXtPrintDialog::buildToRGBFileWidget( // protected
-  Widget parent )
+SoXtPrintDialog::buildToRGBFileWidget(// protected
+  Widget parent)
 {
 } // buildToRGBFileWidget()
 
@@ -509,8 +509,8 @@ SoXtPrintDialog::buildToRGBFileWidget( // protected
 */
 
 void
-SoXtPrintDialog::placeBottomOfDialog( // protected
-  SoXtPrintDialog * )
+SoXtPrintDialog::placeBottomOfDialog(// protected
+  SoXtPrintDialog *)
 {
 } // placeBottomOfdialog()
 
@@ -519,14 +519,14 @@ SoXtPrintDialog::placeBottomOfDialog( // protected
 */
 
 void
-SoXtPrintDialog::buildRadioButton( // protected
+SoXtPrintDialog::buildRadioButton(// protected
   char *,
   char *,
   char *,
   int,
   int,
   Widget,
-  XtCallbackProc )
+  XtCallbackProc)
 {
 } // buildRadioButton()
 
@@ -535,14 +535,14 @@ SoXtPrintDialog::buildRadioButton( // protected
 */
 
 void
-SoXtPrintDialog::buildSizeFields( // protected
+SoXtPrintDialog::buildSizeFields(// protected
   char *,
   int,
   Widget,
   Widget &,
   Widget &,
   XtCallbackProc,
-  XtCallbackProc )
+  XtCallbackProc)
 {
 } // buildSizeFields()
 
@@ -551,11 +551,11 @@ SoXtPrintDialog::buildSizeFields( // protected
 */
 
 void
-SoXtPrintDialog::buildDPIField( // protected
+SoXtPrintDialog::buildDPIField(// protected
   int,
   Widget,
   Widget &,
-  XtCallbackProc )
+  XtCallbackProc)
 {
 } // buildDPIField()
 
@@ -564,8 +564,8 @@ SoXtPrintDialog::buildDPIField( // protected
 */
 
 void
-SoXtPrintDialog::updateTextports( // protected
-  void )
+SoXtPrintDialog::updateTextports(// protected
+  void)
 {
 } // updateTextports()
 
@@ -579,7 +579,7 @@ void
 SoXtPrintDialog::qualityCB(
   Widget,
   SoXtPrintDialog *,
-  XmAnyCallbackStruct * )
+  XmAnyCallbackStruct *)
 {
   SOXT_STUB();
 } // qualityCB()
@@ -592,7 +592,7 @@ void
 SoXtPrintDialog::pageFormatCB(
   Widget,
   SoXtPrintDialog *,
-  XmAnyCallbackStruct * )
+  XmAnyCallbackStruct *)
 {
   SOXT_STUB();
 } // pageFormatCB()
@@ -605,7 +605,7 @@ void
 SoXtPrintDialog::fileFormatCB(
   Widget,
   SoXtPrintDialog *,
-  XmAnyCallbackStruct * )
+  XmAnyCallbackStruct *)
 {
   SOXT_STUB();
 } // fileFormatCB()
@@ -618,7 +618,7 @@ void
 SoXtPrintDialog::printerHorizSizeCB(
   Widget,
   SoXtPrintDialog *,
-  XmAnyCallbackStruct * )
+  XmAnyCallbackStruct *)
 {
   SOXT_STUB();
 } // printerHorizCB()
@@ -631,7 +631,7 @@ void
 SoXtPrintDialog::printerVertSizeCB(
   Widget,
   SoXtPrintDialog *,
-  XmAnyCallbackStruct * )
+  XmAnyCallbackStruct *)
 {
   SOXT_STUB();
 } // printerVertSizeCB()
@@ -644,7 +644,7 @@ void
 SoXtPrintDialog::postScriptHorizSizeCB(
   Widget,
   SoXtPrintDialog *,
-  XmAnyCallbackStruct * )
+  XmAnyCallbackStruct *)
 {
   SOXT_STUB();
 } // postScriptHorizSizeCB()
@@ -657,7 +657,7 @@ void
 SoXtPrintDialog::postScriptVertSizeCB(
   Widget,
   SoXtPrintDialog *,
-  XmAnyCallbackStruct * )
+  XmAnyCallbackStruct *)
 {
   SOXT_STUB();
 } // postScriptVertSizeCB()
@@ -670,7 +670,7 @@ void
 SoXtPrintDialog::rgbHorizSizeCB(
   Widget,
   SoXtPrintDialog *,
-  XmAnyCallbackStruct * )
+  XmAnyCallbackStruct *)
 {
   SOXT_STUB();
 } // rgbHorizSizeCB()
@@ -683,7 +683,7 @@ void
 SoXtPrintDialog::rgbVertSizeCB(
   Widget,
   SoXtPrintDialog *,
-  XmAnyCallbackStruct * )
+  XmAnyCallbackStruct *)
 {
   SOXT_STUB();
 } // rgbVertSizeCB()
@@ -696,7 +696,7 @@ void
 SoXtPrintDialog::printerDPICB(
   Widget,
   SoXtPrintDialog *,
-  XmAnyCallbackStruct * )
+  XmAnyCallbackStruct *)
 {
   SOXT_STUB();
 } // printerDPICB()
@@ -709,7 +709,7 @@ void
 SoXtPrintDialog::postScriptDPICB(
   Widget,
   SoXtPrintDialog *,
-  XmAnyCallbackStruct * )
+  XmAnyCallbackStruct *)
 {
   SOXT_STUB();
 } // postScriptDPICB()
@@ -722,7 +722,7 @@ void
 SoXtPrintDialog::outputCB(
   Widget,
   SoXtPrintDialog *,
-  XmAnyCallbackStruct * )
+  XmAnyCallbackStruct *)
 {
   SOXT_STUB();
 } // outputCB()
@@ -735,7 +735,7 @@ void
 SoXtPrintDialog::printCB(
   Widget,
   SoXtPrintDialog *,
-  XmAnyCallbackStruct * )
+  XmAnyCallbackStruct *)
 {
   SOXT_STUB();
 } // printCB()
@@ -748,7 +748,7 @@ void
 SoXtPrintDialog::quitCB(
   Widget,
   SoXtPrintDialog *,
-  XmAnyCallbackStruct * )
+  XmAnyCallbackStruct *)
 {
   SOXT_STUB();
 } // quitCB()
@@ -761,7 +761,7 @@ void
 SoXtPrintDialog::listPick(
   Widget,
   SoXtPrintDialog *,
-  XmAnyCallbackStruct * )
+  XmAnyCallbackStruct *)
 {
   SOXT_STUB();
 } // listPick()
@@ -774,8 +774,8 @@ SoXtPrintDialog::listPick(
 
 // why private?
 Widget
-SoXtPrintDialog::buildWidget( // private
-  Widget parent )
+SoXtPrintDialog::buildWidget(// private
+  Widget parent)
 {
   SOXT_STUB();
   return (Widget) NULL;

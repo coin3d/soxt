@@ -51,7 +51,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-int icstrcmp( char * str1, char * str2 );
+int icstrcmp(char * str1, char * str2);
 
 /*!
   Constructor.   sets up the SoXtResource object to fetch resources for
@@ -59,61 +59,61 @@ int icstrcmp( char * str1, char * str2 );
 */
 
 SoXtResource::SoXtResource(
-  const Widget widget )
+  const Widget widget)
 {
   static SbBool initialized = FALSE;
-  if ( ! initialized ) {
+  if (! initialized) {
     XrmInitialize();
     initialized = TRUE;
   }
 
   this->hierarchy_depth = 0;
 
-  if ( ! widget ) {
+  if (! widget) {
     this->name_hierarchy = NULL;
     this->class_hierarchy = NULL;
     this->display = SoXt::getDisplay();
     return;
   }
 
-  this->display = XtDisplay( widget );
+  this->display = XtDisplay(widget);
 
   SbIntList quarks;
   Widget stop = NULL;
 
-  SoXtComponent * component = SoXtComponent::getComponent( widget );
-  if ( component != NULL ) {
+  SoXtComponent * component = SoXtComponent::getComponent(widget);
+  if (component != NULL) {
     Widget cwidget = component->getBaseWidget();
-    if ( cwidget != NULL )
-      stop = XtParent( cwidget );
+    if (cwidget != NULL)
+      stop = XtParent(cwidget);
   }
 
   Widget w = widget;
-  while ( w && w != stop ) {
-    quarks.append( ((CorePart *) w)->xrm_name );
-    quarks.append( ((CoreClassPart *) XtClass(w))->xrm_class );
+  while (w && w != stop) {
+    quarks.append(((CorePart *) w)->xrm_name);
+    quarks.append(((CoreClassPart *) XtClass(w))->xrm_class);
     this->hierarchy_depth++;
-    if ( XtIsShell( w ) )
+    if (XtIsShell(w))
       break;
-    if ( (component == NULL) &&
-         ((component = SoXtComponent::getComponent( w )) != NULL) ) {
+    if ((component == NULL) &&
+         ((component = SoXtComponent::getComponent(w)) != NULL)) {
       Widget cwidget = component->getWidget();
-      if ( cwidget != NULL )
-        stop = XtParent( cwidget );
+      if (cwidget != NULL)
+        stop = XtParent(cwidget);
     }
-    w = XtParent( w );
+    w = XtParent(w);
   }
 
 #if SOXT_DEBUG
-  if ( component == NULL )
-    SoDebugError::postInfo( "SoXtResource",
-      "using SoXtResource for non-component widget (which is OK)" );
+  if (component == NULL)
+    SoDebugError::postInfo("SoXtResource",
+      "using SoXtResource for non-component widget (which is OK)");
 #endif // SOXT_DEBUG
 
   this->name_hierarchy = new XrmQuark [ this->hierarchy_depth + 2];
   this->class_hierarchy = new XrmQuark [ this->hierarchy_depth + 2];
   int i;
-  for ( i = 0; i < this->hierarchy_depth; i++ ) {
+  for (i = 0; i < this->hierarchy_depth; i++) {
     this->name_hierarchy[this->hierarchy_depth - i - 1] = quarks[i*2];
     this->class_hierarchy[this->hierarchy_depth - i - 1] = quarks[i*2+1];
   }
@@ -132,7 +132,7 @@ SoXtResource::SoXtResource(
 */
 
 SoXtResource::~SoXtResource(
-  void )
+  void)
 {
   delete [] this->name_hierarchy;
   delete [] this->class_hierarchy;
@@ -147,25 +147,25 @@ SoXtResource::~SoXtResource(
 
 void
 SoXtResource::DumpInternals(
-  void ) const
+  void) const
 {
-  SoDebugError::postInfo( "SoXtResource::DumpInternals", "dumping" );
-  fprintf( stdout, "Classes: " );
+  SoDebugError::postInfo("SoXtResource::DumpInternals", "dumping");
+  fprintf(stdout, "Classes: ");
   int i;
-  for ( i = 0; i < this->hierarchy_depth; i++ ) {
-    fprintf( stdout, "%s", XrmQuarkToString( this->class_hierarchy[i] ) );
-    if ( i < (this->hierarchy_depth - 1) )
-      fprintf( stdout, "." );
+  for (i = 0; i < this->hierarchy_depth; i++) {
+    fprintf(stdout, "%s", XrmQuarkToString(this->class_hierarchy[i]));
+    if (i < (this->hierarchy_depth - 1))
+      fprintf(stdout, ".");
   }
-  fprintf( stdout, "\n" );
+  fprintf(stdout, "\n");
 
-  fprintf( stdout, "Names:  " );
-  for ( i = 0; i < this->hierarchy_depth; i++ ) {
-    fprintf( stdout, "%s", XrmQuarkToString( this->name_hierarchy[i] ) );
-    if ( i < (this->hierarchy_depth - 1) )
-      fprintf( stdout, "." );
+  fprintf(stdout, "Names:  ");
+  for (i = 0; i < this->hierarchy_depth; i++) {
+    fprintf(stdout, "%s", XrmQuarkToString(this->name_hierarchy[i]));
+    if (i < (this->hierarchy_depth - 1))
+      fprintf(stdout, ".");
   }
-  fprintf( stdout, "\n" );
+  fprintf(stdout, "\n");
 } // DumpInternals()
 
 // *************************************************************************
@@ -176,22 +176,22 @@ SoXtResource::DumpInternals(
   char * formatstr = NULL;                                                     \
   do {                                                                         \
     SbBool found = FALSE;                                                      \
-    XrmDatabase database = XrmGetDatabase( this->display );                    \
-    if ( this->name_hierarchy != NULL ) {                                      \
-      this->name_hierarchy[this->hierarchy_depth] = XrmStringToQuark( rname ); \
+    XrmDatabase database = XrmGetDatabase(this->display);                    \
+    if (this->name_hierarchy != NULL) {                                      \
+      this->name_hierarchy[this->hierarchy_depth] = XrmStringToQuark(rname); \
       this->class_hierarchy[this->hierarchy_depth] =                           \
-        XrmStringToQuark( rclass );                                            \
-      found = XrmQGetResource( database, this->name_hierarchy,                 \
-                this->class_hierarchy, &format, &value ) ? TRUE : FALSE;       \
+        XrmStringToQuark(rclass);                                            \
+      found = XrmQGetResource(database, this->name_hierarchy,                 \
+                this->class_hierarchy, &format, &value) ? TRUE : FALSE;       \
       this->name_hierarchy[this->hierarchy_depth] = 0;                         \
       this->class_hierarchy[this->hierarchy_depth] = 0;                        \
     }                                                                          \
-    if ( ! found )                                                             \
-      found = XrmGetResource( database, rname,                                 \
-                rclass, &formatstr, &value ) ? TRUE : FALSE;                   \
-    if ( ! found )                                                             \
+    if (! found)                                                             \
+      found = XrmGetResource(database, rname,                                 \
+                rclass, &formatstr, &value) ? TRUE : FALSE;                   \
+    if (! found)                                                             \
       return FALSE;                                                            \
-  } while ( FALSE )
+  } while (FALSE)
 
 // *************************************************************************
 
@@ -206,31 +206,31 @@ SbBool
 SoXtResource::getResource(
   const char * const rname,
   const char * const rclass,
-  SbColor & retval ) const
+  SbColor & retval) const
 {
   GET_RESOURCE();
   SOXT_STUB_ONCE();
 
-  XrmQuark stringq = XrmStringToQuark( XmRString );
+  XrmQuark stringq = XrmStringToQuark(XmRString);
 
-  if ( formatstr != NULL )
-    format = XrmStringToQuark( formatstr );
+  if (formatstr != NULL)
+    format = XrmStringToQuark(formatstr);
 
-  if ( format == stringq ) {
+  if (format == stringq) {
     XColor exact, screen;
     Display * dpy = SoXt::getDisplay();
     Colormap cmap = 0; // = SoXt::getColormap();
-    if ( XLookupColor( dpy, cmap, (char *) value.addr, &exact, &screen ) ) {
-      retval = SbColor( float(exact.red) / 65535.0f,
-        float(exact.green) / 65535.0f, float(exact.blue) / 65535.0f );
+    if (XLookupColor(dpy, cmap, (char *) value.addr, &exact, &screen)) {
+      retval = SbColor(float(exact.red) / 65535.0f,
+        float(exact.green) / 65535.0f, float(exact.blue) / 65535.0f);
       return TRUE;
     }
     return FALSE;
   }
 
 #if SOXT_DEBUG
-  SoDebugError::postInfo( "getResource",
-    "resource format \"%s\" not supported\n", XrmQuarkToString( format ) );
+  SoDebugError::postInfo("getResource",
+    "resource format \"%s\" not supported\n", XrmQuarkToString(format));
 #endif // SOXT_DEBUG
   return FALSE;
 } // getResource()
@@ -248,28 +248,28 @@ SbBool
 SoXtResource::getResource(
   const char * const rname,
   const char * const rclass,
-  short & retval ) const
+  short & retval) const
 {
   GET_RESOURCE();
 
-  XrmQuark shortq = XrmStringToQuark( XmRShort );
-  XrmQuark stringq = XrmStringToQuark( XmRString );
+  XrmQuark shortq = XrmStringToQuark(XmRShort);
+  XrmQuark stringq = XrmStringToQuark(XmRString);
 
-  if ( formatstr != NULL )
-    format = XrmStringToQuark( formatstr );
+  if (formatstr != NULL)
+    format = XrmStringToQuark(formatstr);
 
-  if ( format == shortq ) {
+  if (format == shortq) {
     retval = *((short *) value.addr);
     return TRUE;
   }
-  if ( format == stringq ) {
-    retval = atoi( (char *) value.addr );
+  if (format == stringq) {
+    retval = atoi((char *) value.addr);
     return TRUE;
   }
 
 #if SOXT_DEBUG
-  SoDebugError::postInfo( "getResource",
-    "resource format \"%s\" not supported\n", XrmQuarkToString( format ) );
+  SoDebugError::postInfo("getResource",
+    "resource format \"%s\" not supported\n", XrmQuarkToString(format));
 #endif // SOXT_DEBUG
   return FALSE;
 } // getResource()
@@ -287,29 +287,29 @@ SbBool
 SoXtResource::getResource(
   const char * const rname,
   const char * const rclass,
-  unsigned short & retval ) const
+  unsigned short & retval) const
 {
   GET_RESOURCE();
 
-  XrmQuark stringq = XrmStringToQuark( XmRString );
-  XrmQuark shortq = XrmStringToQuark( XmRShort );
+  XrmQuark stringq = XrmStringToQuark(XmRString);
+  XrmQuark shortq = XrmStringToQuark(XmRShort);
 
-  if ( formatstr != NULL )
-    format = XrmStringToQuark( formatstr );
+  if (formatstr != NULL)
+    format = XrmStringToQuark(formatstr);
 
-  if ( format == shortq ) {
+  if (format == shortq) {
     retval = *((unsigned short *) value.addr);
     return TRUE;
   }
 
-  if ( format == stringq ) {
-    retval = atoi( (char *) value.addr );
+  if (format == stringq) {
+    retval = atoi((char *) value.addr);
     return TRUE;
   }
   
 #if SOXT_DEBUG
-  SoDebugError::postInfo( "getResource",
-    "resource format \"%s\" not supported\n", XrmQuarkToString( format ) );
+  SoDebugError::postInfo("getResource",
+    "resource format \"%s\" not supported\n", XrmQuarkToString(format));
 #endif // SOXT_DEBUG
   return FALSE;
 } // getResource()
@@ -327,23 +327,23 @@ SbBool
 SoXtResource::getResource(
   const char * const rname,
   const char * const rclass,
-  char * & retval ) const
+  char * & retval) const
 {
   GET_RESOURCE();
 
-  XrmQuark stringq = XrmStringToQuark( XmRString );
+  XrmQuark stringq = XrmStringToQuark(XmRString);
 
-  if ( formatstr != NULL )
-    format = XrmStringToQuark( formatstr );
+  if (formatstr != NULL)
+    format = XrmStringToQuark(formatstr);
 
-  if ( format == stringq ) {
+  if (format == stringq) {
     retval = (char *) value.addr;
     return TRUE;
   }
 
 #if SOXT_DEBUG
-  SoDebugError::postInfo( "getResource",
-    "resource format \"%s\" not supported\n", XrmQuarkToString( format ) );
+  SoDebugError::postInfo("getResource",
+    "resource format \"%s\" not supported\n", XrmQuarkToString(format));
 #endif // SOXT_DEBUG
   return FALSE;
 } // getResource()
@@ -361,50 +361,50 @@ SbBool
 SoXtResource::getResource(
   const char * const rname,
   const char * const rclass,
-  SbBool & retval ) const
+  SbBool & retval) const
 {
   GET_RESOURCE();
 
-  XrmQuark stringq = XrmStringToQuark( XmRString );
-  XrmQuark booleanq = XrmStringToQuark( XmRBoolean );
+  XrmQuark stringq = XrmStringToQuark(XmRString);
+  XrmQuark booleanq = XrmStringToQuark(XmRBoolean);
 
-  if ( formatstr != NULL )
-    format = XrmStringToQuark( formatstr );
+  if (formatstr != NULL)
+    format = XrmStringToQuark(formatstr);
 
-  if ( format == booleanq ) {
+  if (format == booleanq) {
     retval = *((Boolean *) value.addr) ? TRUE : FALSE;
     return TRUE;
   }
 
-  if ( format == stringq ) {
-    if ( icstrcmp( (char *) value.addr, "true" ) == 0 ||
-         icstrcmp( (char *) value.addr, "on" ) == 0 ||
-         icstrcmp( (char *) value.addr, "yes" ) == 0 ||
-         icstrcmp( (char *) value.addr, "enable" ) == 0 ||
-         icstrcmp( (char *) value.addr, "enabled" ) == 0 ||
-         icstrcmp( (char *) value.addr, "set" ) == 0 ||
-         icstrcmp( (char *) value.addr, "1" ) == 0 ) {
+  if (format == stringq) {
+    if (icstrcmp((char *) value.addr, "true") == 0 ||
+         icstrcmp((char *) value.addr, "on") == 0 ||
+         icstrcmp((char *) value.addr, "yes") == 0 ||
+         icstrcmp((char *) value.addr, "enable") == 0 ||
+         icstrcmp((char *) value.addr, "enabled") == 0 ||
+         icstrcmp((char *) value.addr, "set") == 0 ||
+         icstrcmp((char *) value.addr, "1") == 0) {
       retval = TRUE;
       return TRUE;
-    } else if ( icstrcmp( (char *) value.addr, "false" ) == 0 ||
-                icstrcmp( (char *) value.addr, "off" ) == 0 ||
-                icstrcmp( (char *) value.addr, "no" ) == 0 ||
-                icstrcmp( (char *) value.addr, "disable" ) == 0 ||
-                icstrcmp( (char *) value.addr, "disabled" ) == 0 ||
-                icstrcmp( (char *) value.addr, "unset" ) == 0 ||
-                icstrcmp( (char *) value.addr, "0" ) == 0 ) {
+    } else if (icstrcmp((char *) value.addr, "false") == 0 ||
+                icstrcmp((char *) value.addr, "off") == 0 ||
+                icstrcmp((char *) value.addr, "no") == 0 ||
+                icstrcmp((char *) value.addr, "disable") == 0 ||
+                icstrcmp((char *) value.addr, "disabled") == 0 ||
+                icstrcmp((char *) value.addr, "unset") == 0 ||
+                icstrcmp((char *) value.addr, "0") == 0) {
       retval = FALSE;
       return TRUE;
     } else {
-      SoDebugError::postWarning( "getResource",
-        "string \"%s\" not understood", (char *) value.addr );
+      SoDebugError::postWarning("getResource",
+        "string \"%s\" not understood", (char *) value.addr);
       return FALSE;
     }
   }
 
 #if SOXT_DEBUG
-  SoDebugError::postInfo( "getResource",
-    "resource format \"%s\" not supported\n", XrmQuarkToString( format ) );
+  SoDebugError::postInfo("getResource",
+    "resource format \"%s\" not supported\n", XrmQuarkToString(format));
 #endif // SOXT_DEBUG
   return FALSE;
 } // getResource()
@@ -422,37 +422,37 @@ SbBool
 SoXtResource::getResource(
   const char * const rname,
   const char * const rclass,
-  float & retval ) const
+  float & retval) const
 {
   GET_RESOURCE();
 
-  XrmQuark stringq = XrmStringToQuark( XmRString );
-  XrmQuark floatq = XrmStringToQuark( XmRFloat );
+  XrmQuark stringq = XrmStringToQuark(XmRString);
+  XrmQuark floatq = XrmStringToQuark(XmRFloat);
 
-  if ( formatstr != NULL )
-    format = XrmStringToQuark( formatstr );
+  if (formatstr != NULL)
+    format = XrmStringToQuark(formatstr);
 
-  if ( format == floatq ) {
+  if (format == floatq) {
     retval = *((float *) value.addr);
     return TRUE;
   }
 
-  if ( format == stringq ) {
-    retval = atof( (char *) value.addr );
+  if (format == stringq) {
+    retval = atof((char *) value.addr);
     return TRUE;
   }
 
 #if SOXT_DEBUG
-  SoDebugError::postInfo( "getResource",
-    "resource format \"%s\" not supported\n", XrmQuarkToString( format ) );
+  SoDebugError::postInfo("getResource",
+    "resource format \"%s\" not supported\n", XrmQuarkToString(format));
 #endif // SOXT_DEBUG
   return FALSE;
 } // getResource()
 
 // *************************************************************************
 
-inline char upcase( char letter ) {
-  if ( letter >= 'a' && letter <= 'z' )
+inline char upcase(char letter) {
+  if (letter >= 'a' && letter <= 'z')
     return letter - 'a' + 'A';
   return letter;
 }
@@ -460,10 +460,10 @@ inline char upcase( char letter ) {
 int
 icstrcmp(
   char * str1,
-  char * str2 )
+  char * str2)
 {
   int i = 0;
-  while ( str1[i] && (upcase(str1[i]) == upcase(str2[i])) ) i++;
+  while (str1[i] && (upcase(str1[i]) == upcase(str2[i]))) i++;
   return str2[i] - str1[i];
 } // icstrcmp()
 

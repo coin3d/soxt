@@ -48,8 +48,8 @@ typedef struct _SoXtThumbWheelCallbackData {
 #define SoXtCR_DISARM   0x02
 #define SoXtCR_MOVE     0x03
 
-void SoXtThumbWheelSetValue( Widget w, float value );
-float SoXtThumbWheelGetValue( Widget w );
+void SoXtThumbWheelSetValue(Widget w, float value);
+float SoXtThumbWheelGetValue(Widget w);
 
 #ifndef XtIsSoXtThumbWheel
 #define XtIsSoXtThumbWheel(w) XtIsSubclass(w, soxtThumbWheelWidgetClass)

@@ -64,7 +64,7 @@ SOXT_OBJECT_SOURCE(SoXtInputFocus);
 */
 
 SoXtInputFocus::SoXtInputFocus(
-  int events )
+  int events)
 {
   this->events = events;
 } // SoXtInputfocus()
@@ -73,8 +73,8 @@ SoXtInputFocus::SoXtInputFocus(
   Destructor.
 */
 
-SoXtInputFocus::~SoXtInputFocus( // virtual
-  void )
+SoXtInputFocus::~SoXtInputFocus(// virtual
+  void)
 {
 } // ~SoXtInputfocus()
 
@@ -85,11 +85,11 @@ SoXtInputFocus::~SoXtInputFocus( // virtual
 */
 
 void
-SoXtInputFocus::enable( // virtual
+SoXtInputFocus::enable(// virtual
   Widget, // widget,
   XtEventHandler, // func,
   XtPointer, // data,
-  Window ) // window )
+  Window) // window)
 {
   SOXT_STUB();
 } // enable()
@@ -99,10 +99,10 @@ SoXtInputFocus::enable( // virtual
 */
 
 void
-SoXtInputFocus::disable( // virtual
+SoXtInputFocus::disable(// virtual
   Widget, // widget,
   XtEventHandler, // func,
-  XtPointer ) // data )
+  XtPointer) // data)
 {
   SOXT_STUB();
 } // disable()
@@ -115,24 +115,24 @@ SoXtInputFocus::disable( // virtual
 */
 
 const SoEvent *
-SoXtInputFocus::translateEvent( // virtual
-  XAnyEvent * event )
+SoXtInputFocus::translateEvent(// virtual
+  XAnyEvent * event)
 {
-  switch ( event->type ) {
+  switch (event->type) {
 
   // events we should handle:
   case FocusIn:
   case FocusOut:
     do {
       SOXT_STUB();
-    } while ( FALSE );
+    } while (FALSE);
     // return SoEvent here
     break;
 
   // events we should ignore:
   default:
     break;
-  } // switch ( event->type )
+  } // switch (event->type)
 
   return (SoEvent *) NULL;
 } // translateEvent()

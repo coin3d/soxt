@@ -47,25 +47,25 @@ public:
     MAGELLAN_SPACE_MOUSE   = 0x02
   };
 
-  SoXtSpaceball( int events = SoXtSpaceball::ALL_EVENTS );
-  SoXtSpaceball( Display * display, int events = SoXtSpaceball::ALL_EVENTS );
+  SoXtSpaceball(int events = SoXtSpaceball::ALL_EVENTS);
+  SoXtSpaceball(Display * display, int events = SoXtSpaceball::ALL_EVENTS);
   virtual ~SoXtSpaceball(void);
 
-  virtual void enable( Widget widget, XtEventHandler handler,
-      XtPointer closure, Window window = (Window) NULL );
-  virtual void disable( Widget widget, XtEventHandler handler,
-      XtPointer closure );
+  virtual void enable(Widget widget, XtEventHandler handler,
+      XtPointer closure, Window window = (Window) NULL);
+  virtual void disable(Widget widget, XtEventHandler handler,
+      XtPointer closure);
 
-  virtual const SoEvent * translateEvent( XAnyEvent * xevent );
+  virtual const SoEvent * translateEvent(XAnyEvent * xevent);
 
-  void setRotationScaleFactor( float factor );
+  void setRotationScaleFactor(float factor);
   float getRotationScaleFactor(void) const;
-  void setTranslationScaleFactor( float factor );
+  void setTranslationScaleFactor(float factor);
   float getTranslationScaleFactor(void) const;
 
-  static SbBool exists( Display * display = NULL );
+  static SbBool exists(Display * display = NULL);
 
-  void setFocusToWindow( SbBool enable );
+  void setFocusToWindow(SbBool enable);
   SbBool isFocusToWindow(void) const;
 
 private:

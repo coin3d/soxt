@@ -41,23 +41,23 @@ public:
     BUILD_ALL        = 0xff
   };
 
-  void setDecoration( const SbBool enable );
+  void setDecoration(const SbBool enable);
   SbBool isDecoration(void) const;
 
-  void setPopupMenuEnabled( const SbBool enable );
+  void setPopupMenuEnabled(const SbBool enable);
   SbBool isPopupMenuEnabled(void) const;
 
   Widget getAppPushButtonParent(void) const;
-  void addAppPushButton( Widget button );
-  void insertAppPushButton( Widget button, int idx );
-  void removeAppPushButton( Widget button );
-  int findAppPushButton( Widget button ) const;
+  void addAppPushButton(Widget button);
+  void insertAppPushButton(Widget button, int idx);
+  void removeAppPushButton(Widget button);
+  int findAppPushButton(Widget button) const;
   int lengthAppPushButton(void) const;
 
   Widget getRenderAreaWidget(void) const;
 
-  virtual void setViewing( SbBool enable );
-  virtual void setCamera( SoCamera * camera );
+  virtual void setViewing(SbBool enable);
+  virtual void setCamera(SoCamera * camera);
   virtual void hide(void);
 
 protected:
@@ -67,105 +67,105 @@ protected:
     SbBool embed,
     BuildFlag flag,
     Type type,
-    SbBool build );
+    SbBool build);
   ~SoXtFullViewer(void);
 
-  Widget buildWidget( Widget parent );
+  Widget buildWidget(Widget parent);
 
-  virtual void buildDecoration( Widget parent );
-  virtual Widget buildLeftTrim( Widget parent );
-  virtual Widget buildBottomTrim( Widget parent );
-  virtual Widget buildRightTrim( Widget parent );
-  Widget buildAppButtonsForm( Widget parent );
-  Widget buildViewerButtons( Widget parent );
-  virtual void createViewerButtons( Widget parent, SbPList * buttonlist = 0);
+  virtual void buildDecoration(Widget parent);
+  virtual Widget buildLeftTrim(Widget parent);
+  virtual Widget buildBottomTrim(Widget parent);
+  virtual Widget buildRightTrim(Widget parent);
+  Widget buildAppButtonsForm(Widget parent);
+  Widget buildViewerButtons(Widget parent);
+  virtual void createViewerButtons(Widget parent, SbPList * buttonlist = 0);
 
   virtual void buildPopupMenu(void);
-  void setPopupMenuString( const char * const title );
-  Widget buildFunctionsSubmenu( Widget popup );
-  Widget buildDrawStyleSubmenu( Widget popup );
-  void openPopupMenu( const SbVec2s position );
+  void setPopupMenuString(const char * const title);
+  Widget buildFunctionsSubmenu(Widget popup);
+  Widget buildDrawStyleSubmenu(Widget popup);
+  void openPopupMenu(const SbVec2s position);
 
   virtual void leftWheelStart(void);
-  static void leftWheelStartCB( Widget, XtPointer, XtPointer );
-  virtual void leftWheelMotion( float value );
-  static void leftWheelMotionCB( Widget, XtPointer, XtPointer );
+  static void leftWheelStartCB(Widget, XtPointer, XtPointer);
+  virtual void leftWheelMotion(float value);
+  static void leftWheelMotionCB(Widget, XtPointer, XtPointer);
   virtual void leftWheelFinish(void);
-  static void leftWheelFinishCB( Widget, XtPointer, XtPointer );
+  static void leftWheelFinishCB(Widget, XtPointer, XtPointer);
   float getLeftWheelValue(void) const;
-  void setLeftWheelValue( const float value );
+  void setLeftWheelValue(const float value);
 
   virtual void bottomWheelStart(void);
-  static void bottomWheelStartCB( Widget, XtPointer, XtPointer );
-  virtual void bottomWheelMotion( float value );
-  static void bottomWheelMotionCB( Widget, XtPointer, XtPointer );
+  static void bottomWheelStartCB(Widget, XtPointer, XtPointer);
+  virtual void bottomWheelMotion(float value);
+  static void bottomWheelMotionCB(Widget, XtPointer, XtPointer);
   virtual void bottomWheelFinish(void);
-  static void bottomWheelFinishCB( Widget, XtPointer, XtPointer );
+  static void bottomWheelFinishCB(Widget, XtPointer, XtPointer);
   float getBottomWheelValue(void) const;
-  void setBottomWheelValue( const float value );
+  void setBottomWheelValue(const float value);
 
   virtual void rightWheelStart(void);
-  static void rightWheelStartCB( Widget, XtPointer, XtPointer );
-  virtual void rightWheelMotion( float value );
-  static void rightWheelMotionCB( Widget, XtPointer, XtPointer );
+  static void rightWheelStartCB(Widget, XtPointer, XtPointer);
+  virtual void rightWheelMotion(float value);
+  static void rightWheelMotionCB(Widget, XtPointer, XtPointer);
   virtual void rightWheelFinish(void);
-  static void rightWheelFinishCB( Widget, XtPointer, XtPointer );
+  static void rightWheelFinishCB(Widget, XtPointer, XtPointer);
   float getRightWheelValue(void) const;
-  void setRightWheelValue( const float value );
+  void setRightWheelValue(const float value);
 
-  void setLeftWheelString( const char * const name );
+  void setLeftWheelString(const char * const name);
   Widget getLeftWheelLabelWidget(void) const;
-  void setBottomWheelString( const char * const name );
+  void setBottomWheelString(const char * const name);
   Widget getBottomWheelLabelWidget(void) const;
-  void setRightWheelString( const char * const name );
+  void setRightWheelString(const char * const name);
   Widget getRightWheelLabelWidget(void) const;
 
-  virtual void sizeChanged( const SbVec2s size );
+  virtual void sizeChanged(const SbVec2s size);
 
   virtual void openViewerHelpCard(void);
 
-  Pixmap createPixmapFromXpmData( Widget button, char ** xpm );
-  Pixmap createInsensitivePixmapFromXpmData( Widget button, char ** xpm );
+  Pixmap createPixmapFromXpmData(Widget button, char ** xpm);
+  Pixmap createInsensitivePixmapFromXpmData(Widget button, char ** xpm);
 
   char * popupTitle;
   SbBool popupEnabled;
 
   SoAnyPopupMenu * prefmenu;
 
-  virtual SbBool processSoEvent( const SoEvent * const event );
+  virtual SbBool processSoEvent(const SoEvent * const event);
 
 protected: // preference sheet routines
-  void setPrefSheetString( const char * name );
+  void setPrefSheetString(const char * name);
   virtual void createPrefSheet(void);
   void createPrefSheetShellAndForm(
-    Widget & shell, Widget & form );
+    Widget & shell, Widget & form);
   void createDefaultPrefSheetParts(
-    Widget * widgets, int & num, Widget form );
+    Widget * widgets, int & num, Widget form);
   void layoutPartsAndMapPrefSheet(
-    Widget * widgets, int num, Widget form, Widget shell );
+    Widget * widgets, int num, Widget form, Widget shell);
 
-  Widget createSeekPrefSheetGuts( Widget parent );
-  Widget createSeekDistPrefSheetGuts( Widget parent );
-  Widget createZoomPrefSheetGuts( Widget parent );
-  Widget createClippingPrefSheetGuts( Widget parent );
-  Widget createStereoPrefSheetGuts( Widget parent );
-  Widget createSpeedPrefSheetGuts( Widget parent );
+  Widget createSeekPrefSheetGuts(Widget parent);
+  Widget createSeekDistPrefSheetGuts(Widget parent);
+  Widget createZoomPrefSheetGuts(Widget parent);
+  Widget createClippingPrefSheetGuts(Widget parent);
+  Widget createStereoPrefSheetGuts(Widget parent);
+  Widget createSpeedPrefSheetGuts(Widget parent);
 
-  Widget createFramedSeekPrefSheetGuts( Widget parent );
-  Widget createFramedSeekDistPrefSheetGuts( Widget parent );
-  Widget createFramedZoomPrefSheetGuts( Widget parent );
-  Widget createFramedClippingPrefSheetGuts( Widget parent );
-  Widget createFramedStereoPrefSheetGuts( Widget parent );
-  Widget createFramedSpeedPrefSheetGuts( Widget parent );
+  Widget createFramedSeekPrefSheetGuts(Widget parent);
+  Widget createFramedSeekDistPrefSheetGuts(Widget parent);
+  Widget createFramedZoomPrefSheetGuts(Widget parent);
+  Widget createFramedClippingPrefSheetGuts(Widget parent);
+  Widget createFramedStereoPrefSheetGuts(Widget parent);
+  Widget createFramedSpeedPrefSheetGuts(Widget parent);
 
   void prefSheetDestroy(void);
-  static void prefSheetDestroyCB( Widget, XtPointer, XtPointer );
+  static void prefSheetDestroyCB(Widget, XtPointer, XtPointer);
   void seekPrefSheetField(void);
-  static void seekPrefSheetFieldCB( Widget, XtPointer, XtPointer );
+  static void seekPrefSheetFieldCB(Widget, XtPointer, XtPointer);
   void seekPrefSheetToggle1(void);
-  static void seekPrefSheetToggle1CB( Widget, XtPointer, XtPointer );
+  static void seekPrefSheetToggle1CB(Widget, XtPointer, XtPointer);
   void seekPrefSheetToggle2(void);
-  static void seekPrefSheetToggle2CB( Widget, XtPointer, XtPointer );
+  static void seekPrefSheetToggle2CB(Widget, XtPointer, XtPointer);
 
 protected:
   char * prefstring;
@@ -199,11 +199,11 @@ private:
   Widget bottomDecoration;
 
   Widget mainlayout;
-  void showDecorationWidgets( SbBool enable );
+  void showDecorationWidgets(SbBool enable);
 
   Widget appButtonsForm;
   SbPList * appButtonsList;
-  void layoutAppPushButtons( Widget parent );
+  void layoutAppPushButtons(Widget parent);
 
   Widget viewerButtonsForm;
 
@@ -234,83 +234,83 @@ private:
   void selectedDecoration(void);
   void selectedHeadlight(void);
   void selectedPrefs(void);
-  void interactbuttonClicked( Boolean set );
-  static void interactbuttonCB( Widget, XtPointer, XtPointer );
-  void examinebuttonClicked( Boolean set );
-  static void examinebuttonCB( Widget, XtPointer, XtPointer );
+  void interactbuttonClicked(Boolean set);
+  static void interactbuttonCB(Widget, XtPointer, XtPointer);
+  void examinebuttonClicked(Boolean set);
+  static void examinebuttonCB(Widget, XtPointer, XtPointer);
   void helpbuttonClicked(void);
-  static void helpbuttonCB( Widget, XtPointer, XtPointer );
+  static void helpbuttonCB(Widget, XtPointer, XtPointer);
   void homebuttonClicked(void);
-  static void homebuttonCB( Widget, XtPointer, XtPointer );
+  static void homebuttonCB(Widget, XtPointer, XtPointer);
   void sethomebuttonClicked(void);
-  static void sethomebuttonCB( Widget, XtPointer, XtPointer );
+  static void sethomebuttonCB(Widget, XtPointer, XtPointer);
   void viewallbuttonClicked(void);
-  static void viewallbuttonCB( Widget, XtPointer, XtPointer );
+  static void viewallbuttonCB(Widget, XtPointer, XtPointer);
   void seekbuttonClicked(void);
-  static void seekbuttonCB( Widget, XtPointer, XtPointer );
+  static void seekbuttonCB(Widget, XtPointer, XtPointer);
   void copyviewSelected(void);
   void pasteviewSelected(void);
-  void drawstyleActivated( int );
+  void drawstyleActivated(int);
 
   Widget seektimefield;
   Widget pointtoggle, objecttoggle;
   void seektimechanged(void);
-  static void seektimechangedCB( Widget, XtPointer, XtPointer );
+  static void seektimechangedCB(Widget, XtPointer, XtPointer);
   void pointtoggled(void);
-  static void pointtoggledCB( Widget, XtPointer, XtPointer );
+  static void pointtoggledCB(Widget, XtPointer, XtPointer);
   void objecttoggled(void);
-  static void objecttoggledCB( Widget, XtPointer, XtPointer );
+  static void objecttoggledCB(Widget, XtPointer, XtPointer);
   Widget seekdistancefield;
   Widget percenttoggle, absolutetoggle;
   void seekdistancechanged(void);
-  static void seekdistancechangedCB( Widget, XtPointer, XtPointer );
+  static void seekdistancechangedCB(Widget, XtPointer, XtPointer);
   void percenttoggled(void);
-  static void percenttoggledCB( Widget, XtPointer, XtPointer );
+  static void percenttoggledCB(Widget, XtPointer, XtPointer);
   void absolutetoggled(void);
-  static void absolutetoggledCB( Widget, XtPointer, XtPointer );
+  static void absolutetoggledCB(Widget, XtPointer, XtPointer);
 
   SbVec2f zoomrange;
   Widget zoomfrom, zoomslider, zoomto, zoomvalue;
   void zoomfromchanged(void);
-  static void zoomfromchangedCB( Widget, XtPointer, XtPointer );
+  static void zoomfromchangedCB(Widget, XtPointer, XtPointer);
   void zoomtochanged(void);
-  static void zoomtochangedCB( Widget, XtPointer, XtPointer );
+  static void zoomtochangedCB(Widget, XtPointer, XtPointer);
   void zoomsliderchanged(void);
-  static void zoomsliderchangedCB( Widget, XtPointer, XtPointer );
+  static void zoomsliderchangedCB(Widget, XtPointer, XtPointer);
   void zoomvaluechanged(void);
-  static void zoomvaluechangedCB( Widget, XtPointer, XtPointer );
+  static void zoomvaluechangedCB(Widget, XtPointer, XtPointer);
 
-  void setCameraZoom( float zoom );
+  void setCameraZoom(float zoom);
   float getCameraZoom(void);
 
   // clipping preferences widgets
   Widget autocliptoggle, nearwheel, farwheel, nearvalue, farvalue;
 
   void autocliptoggled(void);
-  static void autocliptoggledCB( Widget, XtPointer, XtPointer );
+  static void autocliptoggledCB(Widget, XtPointer, XtPointer);
   void nearwheelvaluechanged(void);
-  static void nearwheelvaluechangedCB( Widget, XtPointer, XtPointer );
+  static void nearwheelvaluechangedCB(Widget, XtPointer, XtPointer);
   void farwheelvaluechanged(void);
-  static void farwheelvaluechangedCB( Widget, XtPointer, XtPointer );
+  static void farwheelvaluechangedCB(Widget, XtPointer, XtPointer);
   void nearvaluechanged(void);
-  static void nearvaluechangedCB( Widget, XtPointer, XtPointer );
+  static void nearvaluechangedCB(Widget, XtPointer, XtPointer);
   void farvaluechanged(void);
-  static void farvaluechangedCB( Widget, XtPointer, XtPointer );
+  static void farvaluechangedCB(Widget, XtPointer, XtPointer);
 
   Widget stereotoggle;
   void stereotoggled(void);
-  static void stereotoggledCB( Widget, XtPointer, XtPointer );
+  static void stereotoggledCB(Widget, XtPointer, XtPointer);
 
   void increaseInteractiveCount(void);
-  static void increaseInteractiveCountCB( Widget, XtPointer, XtPointer );
+  static void increaseInteractiveCountCB(Widget, XtPointer, XtPointer);
   void decreaseInteractiveCount(void);
-  static void decreaseInteractiveCountCB( Widget, XtPointer, XtPointer );
+  static void decreaseInteractiveCountCB(Widget, XtPointer, XtPointer);
 
   Widget incspeedbutton, decspeedbutton;
   void speedInc(void);
-  static void speedIncCB( Widget, XtPointer, XtPointer );
+  static void speedIncCB(Widget, XtPointer, XtPointer);
   void speedDec(void);
-  static void speedDecCB( Widget, XtPointer, XtPointer );
+  static void speedDecCB(Widget, XtPointer, XtPointer);
 
 private:
   SoAnyFullViewer * const common;

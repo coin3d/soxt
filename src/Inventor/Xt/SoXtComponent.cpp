@@ -84,7 +84,7 @@ SOXT_OBJECT_ABSTRACT_SOURCE(SoXtComponent);
 
 void
 SoXtComponent::initClasses(
-  void )
+  void)
 {
   SoXtComponent::initClass();
   SoXtGLWidget::initClass();
@@ -156,10 +156,10 @@ struct SoXtComponentVisibilityCallbackInfo {
   words.
 */
 
-SoXtComponent::SoXtComponent( // protected
+SoXtComponent::SoXtComponent(// protected
   const Widget parent,
   const char * const name,
-  const SbBool embed )
+  const SbBool embed)
 {
   this->constructorParent = parent;
 
@@ -175,12 +175,12 @@ SoXtComponent::SoXtComponent( // protected
   this->close_callbacks = NULL;
   this->visibility_callbacks = NULL;
 
-  this->size = SbVec2s( -1, -1 );
+  this->size = SbVec2s(-1, -1);
 
-  if ( name && strlen(name) > 0 )
-    this->widgetName = strcpy( new char [ strlen( name ) + 1 ], name );
+  if (name && strlen(name) > 0)
+    this->widgetName = strcpy(new char [ strlen(name) + 1 ], name);
 
-  if ( (parent == (Widget) NULL) || ! embed ) {
+  if ((parent == (Widget) NULL) || ! embed) {
     // create own shell
 
     Visual * visual = NULL; 
@@ -188,21 +188,21 @@ SoXtComponent::SoXtComponent( // protected
     int depth = 0;
     Display * dpy = SoXt::getDisplay();
 
-    if ( parent ) {
+    if (parent) {
       Widget shell = parent;
-      while ( ! XtIsShell( shell ) && shell != (Widget) NULL )
-        shell = XtParent( shell );
-      assert( shell != (Widget) NULL );
+      while (! XtIsShell(shell) && shell != (Widget) NULL)
+        shell = XtParent(shell);
+      assert(shell != (Widget) NULL);
       dpy = XtDisplay(shell);
-      XtVaGetValues( shell, 
+      XtVaGetValues(shell, 
         XmNvisual, &visual,
         XmNcolormap, &colormap,
         XmNdepth, &depth,
-        NULL );
+        NULL);
     } else {
-      SoXt::selectBestVisual( dpy, visual, colormap, depth );
+      SoXt::selectBestVisual(dpy, visual, colormap, depth);
     }
-    assert( dpy != NULL );
+    assert(dpy != NULL);
 
     this->parent = XtVaAppCreateShell(
       SoXt::getAppName(), // didn't work
@@ -212,11 +212,11 @@ SoXtComponent::SoXtComponent( // protected
       XmNvisual, visual,
       XmNcolormap, colormap,
       XmNdepth, depth,
-      NULL );
+      NULL);
 
 #if SOXT_DEBUG
     XtEventHandler editres_hook = (XtEventHandler) _XEditResCheckMessages;
-    XtAddEventHandler( this->parent, (EventMask) 0, True, editres_hook, NULL );
+    XtAddEventHandler(this->parent, (EventMask) 0, True, editres_hook, NULL);
 #endif // SOXT_DEBUG
 
     this->embedded = FALSE;
@@ -224,37 +224,37 @@ SoXtComponent::SoXtComponent( // protected
     this->parent = parent;
     this->embedded = TRUE;
   }
-  if ( parent && XtIsShell( parent ) )
+  if (parent && XtIsShell(parent))
     this->embedded = FALSE;
 
-  if ( XtIsShell( this->parent ) )
-    XtInsertEventHandler( this->parent, (EventMask) StructureNotifyMask, False,
-      SoXtComponent::event_handler, (XtPointer) this, XtListTail );
+  if (XtIsShell(this->parent))
+    XtInsertEventHandler(this->parent, (EventMask) StructureNotifyMask, False,
+      SoXtComponent::event_handler, (XtPointer) this, XtListTail);
 } // SoXtComponent()
 
 /*!
   The destructor.
 */
 
-SoXtComponent::~SoXtComponent( // virtual
-  void )
+SoXtComponent::~SoXtComponent(// virtual
+  void)
 {
   delete [] this->widgetName;
   delete [] this->widgetClass;
   delete [] this->title;
   delete [] this->iconTitle;
-  if ( this->close_callbacks != NULL ) {
+  if (this->close_callbacks != NULL) {
     const int num = this->close_callbacks->getLength();
-    for ( int i = 0; i < num; i++ ) {
+    for (int i = 0; i < num; i++) {
       SoXtWindowCloseCallbackInfo * info =
         (SoXtWindowCloseCallbackInfo *) (*this->close_callbacks)[i];
       delete info;
     }
     delete this->close_callbacks;
   }
-  if ( this->visibility_callbacks != NULL ) {
+  if (this->visibility_callbacks != NULL) {
     const int num = this->visibility_callbacks->getLength();
-    for ( int i = 0; i < num; i++ ) {
+    for (int i = 0; i < num; i++) {
       SoXtComponentVisibilityCallbackInfo * info =
         (SoXtComponentVisibilityCallbackInfo *)
           (*this->visibility_callbacks)[i];
@@ -274,25 +274,25 @@ SoXtComponent::~SoXtComponent( // virtual
 */
 
 void
-SoXtComponent::show( // virtual
-  void )
+SoXtComponent::show(// virtual
+  void)
 {
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXtComponent::show", "[enter]" );
+  SoDebugError::postInfo("SoXtComponent::show", "[enter]");
 #endif // SOXT_DEBUG
-  if ( this->isTopLevelShell() ) {
+  if (this->isTopLevelShell()) {
     Widget shell = this->getShellWidget();
-    XtRealizeWidget( shell );
-    if ( this->firstRealize == TRUE ) {
+    XtRealizeWidget(shell);
+    if (this->firstRealize == TRUE) {
       this->afterRealizeHook();
       this->firstRealize = FALSE;
     }
-    XtMapWidget( shell );
+    XtMapWidget(shell);
   } else {
-    XtManageChild( this->getBaseWidget() );
+    XtManageChild(this->getBaseWidget());
   }
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXtComponent::show", "[exit]" );
+  SoDebugError::postInfo("SoXtComponent::show", "[exit]");
 #endif // SOXT_DEBUG
 } // show()
 
@@ -304,21 +304,21 @@ SoXtComponent::show( // virtual
 */
 
 void
-SoXtComponent::hide( // virtual
-  void )
+SoXtComponent::hide(// virtual
+  void)
 {
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXtComponent::hide", "[enter]" );
+  SoDebugError::postInfo("SoXtComponent::hide", "[enter]");
 #endif // SOXT_DEBUG
-  if ( this->isTopLevelShell() ) {
+  if (this->isTopLevelShell()) {
     Widget shell = this->getShellWidget();
-    XtUnmapWidget( shell );
-    XtUnrealizeWidget( shell );
+    XtUnmapWidget(shell);
+    XtUnrealizeWidget(shell);
   } else {
-    XtUnmanageChild( this->getBaseWidget() );
+    XtUnmanageChild(this->getBaseWidget());
   }
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXtComponent::hide", "[exit]" );
+  SoDebugError::postInfo("SoXtComponent::hide", "[exit]");
 #endif // SOXT_DEBUG
 } // hide()
 
@@ -330,7 +330,7 @@ SoXtComponent::hide( // virtual
 
 SbBool
 SoXtComponent::isVisible(
-  void )
+  void)
 {
   return this->visibility_state;
 } // isVisible()
@@ -345,7 +345,7 @@ SoXtComponent::isVisible(
 
 Widget
 SoXtComponent::getWidget(
-  void ) const
+  void) const
 {
   return this->getBaseWidget();
 } // getWidget()
@@ -358,7 +358,7 @@ SoXtComponent::getWidget(
 
 Widget
 SoXtComponent::baseWidget(
-  void ) const
+  void) const
 {
   return this->getBaseWidget();
 } // baseWidget()
@@ -371,7 +371,7 @@ SoXtComponent::baseWidget(
 
 Widget
 SoXtComponent::getBaseWidget(
-  void ) const
+  void) const
 {
   return this->widget;
 } // getBaseWidget()
@@ -383,7 +383,7 @@ SoXtComponent::getBaseWidget(
 
 SbBool
 SoXtComponent::isTopLevelShell(
-  void ) const
+  void) const
 {
   return this->embedded ? FALSE : TRUE;
 } // isTopLevelShell()
@@ -396,7 +396,7 @@ SoXtComponent::isTopLevelShell(
 
 Widget
 SoXtComponent::getShellWidget(
-  void ) const
+  void) const
 {
   return this->isTopLevelShell() ? this->parent : (Widget) NULL;
 } // getShellWidget()
@@ -410,7 +410,7 @@ SoXtComponent::getShellWidget(
 
 Widget      
 SoXtComponent::getParentWidget(
-  void ) const
+  void) const
 {
   return this->parent;
 } // getParentWidget()
@@ -425,29 +425,29 @@ SoXtComponent::getParentWidget(
 
 void    
 SoXtComponent::setSize(
-  const SbVec2s size )
+  const SbVec2s size)
 {
   this->size = size;
   Widget widget;
-  if ( this->isTopLevelShell() )
+  if (this->isTopLevelShell())
     widget = this->getShellWidget();
   else
     widget = this->getBaseWidget();
-  if ( ! widget )
+  if (! widget)
     return;
 
   int argc = 0;
   Arg args[2];
-  if ( size[0] != -1 ) {
-    XtSetArg( args[argc], XmNwidth, size[0] );
+  if (size[0] != -1) {
+    XtSetArg(args[argc], XmNwidth, size[0]);
     argc++;
   }
-  if ( size[1] != -1 ) {
-    XtSetArg( args[argc], XmNheight, size[1] );
+  if (size[1] != -1) {
+    XtSetArg(args[argc], XmNheight, size[1]);
     argc++;
   }
-  XtSetValues( widget, args, argc );
-  this->sizeChanged( size );
+  XtSetValues(widget, args, argc);
+  this->sizeChanged(size);
 } // setSize()
 
 /*!
@@ -459,7 +459,7 @@ SoXtComponent::setSize(
 
 SbVec2s   
 SoXtComponent::getSize(
-  void )
+  void)
 {
   return this->size;
 } // getSize()
@@ -473,17 +473,17 @@ SoXtComponent::getSize(
 
 void
 SoXtComponent::fitSize(
-  const SbVec2s size )
+  const SbVec2s size)
 {
-  if ( this->isTopLevelShell() || (this->parent && XtIsShell(this->parent)) ) {
+  if (this->isTopLevelShell() || (this->parent && XtIsShell(this->parent))) {
     XtWidgetGeometry geometry;
-    XtQueryGeometry( this->getBaseWidget(), NULL, &geometry );
-    this->size[0] = SoXtMax( (short) geometry.width, size[0] );
-    this->size[1] = SoXtMax( (short) geometry.height, size[1] );
-    XtVaSetValues( this->getShellWidget(),
+    XtQueryGeometry(this->getBaseWidget(), NULL, &geometry);
+    this->size[0] = SoXtMax((short) geometry.width, size[0]);
+    this->size[1] = SoXtMax((short) geometry.height, size[1]);
+    XtVaSetValues(this->getShellWidget(),
       XmNwidth, this->size[0],
       XmNheight, this->size[1],
-      NULL );
+      NULL);
   }
 } // fitSize()
 
@@ -496,8 +496,8 @@ SoXtComponent::fitSize(
 */
 
 void
-SoXtComponent::sizeChanged( // virtual
-  const SbVec2s )
+SoXtComponent::sizeChanged(// virtual
+  const SbVec2s)
 {
   // empty
 } // sizeChanged()
@@ -510,15 +510,15 @@ SoXtComponent::sizeChanged( // virtual
 
 Display *
 SoXtComponent::getDisplay(
-  void )
+  void)
 {
 #if SOXT_DEBUG
-  if ( ! this->getBaseWidget() )
-    SoDebugError::postInfo( "SoXtComponent::getDisplay",
-      "component has no base widget" );
+  if (! this->getBaseWidget())
+    SoDebugError::postInfo("SoXtComponent::getDisplay",
+      "component has no base widget");
 #endif // SOXT_DEBUG
   return this->getBaseWidget() ?
-    XtDisplay( this->getBaseWidget() ) : (Display *) NULL;
+    XtDisplay(this->getBaseWidget()) : (Display *) NULL;
 } // getDisplay()
 
 // *************************************************************************
@@ -532,22 +532,22 @@ SoXtComponent::getDisplay(
 
 void      
 SoXtComponent::setTitle(
-  const char * const title )
+  const char * const title)
 {
-  if ( this->title && strlen(this->title) >= strlen(title) ) {
-    strcpy( this->title, (char *) title );
+  if (this->title && strlen(this->title) >= strlen(title)) {
+    strcpy(this->title, (char *) title);
   } else {
     delete [] this->title;
-    this->title = strcpy( new char [strlen(title)+1], title );
+    this->title = strcpy(new char [strlen(title)+1], title);
   }
 
   Widget shell = this->isTopLevelShell() ?
     this->getShellWidget() : (Widget) NULL;
-  if ( ! shell )
+  if (! shell)
     return;
-  XtVaSetValues( shell,
+  XtVaSetValues(shell,
     XmNtitle, this->title,
-    NULL );
+    NULL);
 } // setTitle()
 
 /*!
@@ -559,7 +559,7 @@ SoXtComponent::setTitle(
 
 const char *
 SoXtComponent::getTitle(
-  void ) const
+  void) const
 {
   // FIXME: use SoXtResource to see if title is set?
   return this->title ? this->title : this->getDefaultTitle();
@@ -574,21 +574,21 @@ SoXtComponent::getTitle(
 
 void      
 SoXtComponent::setIconTitle(
-  const char * const title )
+  const char * const title)
 {
-  if ( this->iconTitle && strlen(this->iconTitle) >= strlen(title) ) {
-    strcpy( this->iconTitle, (char *) title );
+  if (this->iconTitle && strlen(this->iconTitle) >= strlen(title)) {
+    strcpy(this->iconTitle, (char *) title);
   } else {
     delete [] this->iconTitle;
-    this->iconTitle = strcpy( new char [strlen(title)+1], title );
+    this->iconTitle = strcpy(new char [strlen(title)+1], title);
   }
   Widget shell = this->isTopLevelShell() ?
     this->getShellWidget() : (Widget) NULL;
-  if ( ! shell )
+  if (! shell)
     return;
-  XtVaSetValues( shell,
+  XtVaSetValues(shell,
     XtNiconName, this->iconTitle,
-    NULL );
+    NULL);
 }
 
 /*!
@@ -600,7 +600,7 @@ SoXtComponent::setIconTitle(
 
 const char * 
 SoXtComponent::getIconTitle(
-  void ) const
+  void) const
 {
   // FIXME: use SoXtResource to see if iconName is set?
   return this->iconTitle ? this->iconTitle : this->getDefaultIconTitle();
@@ -621,9 +621,9 @@ SoXtComponent::getIconTitle(
 void
 SoXtComponent::setWindowCloseCallback(
   SoXtComponentCB * callback,
-  void * closure )
+  void * closure)
 {
-  this->addWindowCloseCallback( callback, closure );
+  this->addWindowCloseCallback(callback, closure);
 } // setWindowCloseAction()
 
 /*!
@@ -639,14 +639,14 @@ SoXtComponent::setWindowCloseCallback(
 void
 SoXtComponent::addWindowCloseCallback(
   SoXtComponentCB * callback,
-  void * closure )
+  void * closure)
 {
-  if ( this->close_callbacks == NULL )
+  if (this->close_callbacks == NULL)
     this->close_callbacks = new SbPList;
   SoXtWindowCloseCallbackInfo * info = new SoXtWindowCloseCallbackInfo;
   info->callback = callback;
   info->closure = closure;
-  this->close_callbacks->append( info );
+  this->close_callbacks->append(info);
 } // addWindowCloseCallback()
 
 /*!
@@ -662,23 +662,23 @@ SoXtComponent::addWindowCloseCallback(
 void
 SoXtComponent::removeWindowCloseCallback(
   SoXtComponentCB * callback,
-  void * closure )
+  void * closure)
 {
-  if ( this->close_callbacks != NULL ) {
+  if (this->close_callbacks != NULL) {
     const int num = this->close_callbacks->getLength();
-    for ( int i = 0; i < num; i++ ) {
+    for (int i = 0; i < num; i++) {
       SoXtWindowCloseCallbackInfo * info =
         (SoXtWindowCloseCallbackInfo *) (*this->close_callbacks)[i];
-      if ( info->callback == callback && info->closure == closure ) {
-        this->close_callbacks->remove( i );
+      if (info->callback == callback && info->closure == closure) {
+        this->close_callbacks->remove(i);
         delete info;
         return;
       }
     }
   }
 #if SOXT_DEBUG
-  SoDebugError::post( "SoXtComponent::removeWindowCloseCallback",
-    "trying to remove nonexisting callback" );
+  SoDebugError::post("SoXtComponent::removeWindowCloseCallback",
+    "trying to remove nonexisting callback");
 #endif // SOXT_DEBUG
 } // removeWindowCloseCallback()
 
@@ -693,17 +693,17 @@ SoXtComponent::removeWindowCloseCallback(
 */
 
 void
-SoXtComponent::invokeWindowCloseCallbacks( // protected
-  void ) const
+SoXtComponent::invokeWindowCloseCallbacks(// protected
+  void) const
 {
-  if ( this->close_callbacks == NULL )
+  if (this->close_callbacks == NULL)
     return;
   const int num = this->close_callbacks->getLength();
-  for ( int i = 0; i < num; i++ ) {
+  for (int i = 0; i < num; i++) {
     SoXtWindowCloseCallbackInfo * info =
       (SoXtWindowCloseCallbackInfo *) (*this->close_callbacks)[i];
     // Cast required for AIX
-    info->callback( info->closure, (SoXtComponent *) this );
+    info->callback(info->closure, (SoXtComponent *) this);
   }
 } // invokeWindowCloseCallbacks()
 
@@ -715,12 +715,12 @@ SoXtComponent::invokeWindowCloseCallbacks( // protected
 */
 
 SoXtComponent *
-SoXtComponent::getComponent( // static
-  Widget widget )
+SoXtComponent::getComponent(// static
+  Widget widget)
 {
-  assert( SoXtComponent::widgets != NULL );
-  int pos = SoXtComponent::widgets->find( (void *) widget );
-  if ( pos == -1 )
+  assert(SoXtComponent::widgets != NULL);
+  int pos = SoXtComponent::widgets->find((void *) widget);
+  if (pos == -1)
     return NULL;
   return (SoXtComponent *) (*SoXtComponent::components)[pos];
 } // getComponent()
@@ -731,7 +731,7 @@ SoXtComponent::getComponent( // static
 
 const char *
 SoXtComponent::getWidgetName(
-  void ) const
+  void) const
 {
   return this->widgetName ? this->widgetName : this->getDefaultWidgetName();
 } // getWidgetName()
@@ -742,7 +742,7 @@ SoXtComponent::getWidgetName(
 
 const char *
 SoXtComponent::getClassName(
-  void ) const
+  void) const
 {
   return this->widgetClass;
 } // getClassName()
@@ -752,8 +752,8 @@ SoXtComponent::getClassName(
 */
 
 void
-SoXtComponent::setBaseWidget( // protected
-  Widget widget )
+SoXtComponent::setBaseWidget(// protected
+  Widget widget)
 {
   const EventMask events = StructureNotifyMask | VisibilityChangeMask;
 
@@ -761,21 +761,21 @@ SoXtComponent::setBaseWidget( // protected
 //    FocusChangeMask;
 //    EnterWindowMask | LeaveWindowMask |
 
-  if ( this->widget ) {
+  if (this->widget) {
     // remove event handler
   }
 
   this->widget = widget;
 
   // really resize widget?  after all, size has been touched...
-  if ( this->size[0] != -1 )
-    XtVaSetValues( this->widget, XtNwidth, this->size[0], NULL );
-  if ( this->size[1] != -1 )
-    XtVaSetValues( this->widget, XtNheight, this->size[1], NULL );
+  if (this->size[0] != -1)
+    XtVaSetValues(this->widget, XtNwidth, this->size[0], NULL);
+  if (this->size[1] != -1)
+    XtVaSetValues(this->widget, XtNheight, this->size[1], NULL);
   // register widget?
 
-  XtInsertEventHandler( this->widget, events, False,
-    SoXtComponent::event_handler, (XtPointer) this, XtListTail );
+  XtInsertEventHandler(this->widget, events, False,
+    SoXtComponent::event_handler, (XtPointer) this, XtListTail);
 } // setBaseWidget()
 
 /*!
@@ -783,14 +783,14 @@ SoXtComponent::setBaseWidget( // protected
 */
 
 void
-SoXtComponent::setClassName( // protected
-  const char * const name )
+SoXtComponent::setClassName(// protected
+  const char * const name)
 {
-  if ( this->widgetClass && strlen(this->widgetClass) >= strlen(name) ) {
-    strcpy( this->widgetClass, (char *) name );
+  if (this->widgetClass && strlen(this->widgetClass) >= strlen(name)) {
+    strcpy(this->widgetClass, (char *) name);
   } else {
     delete [] this->widgetClass;
-    this->widgetClass = strcpy( new char [strlen(name)+1], name );
+    this->widgetClass = strcpy(new char [strlen(name)+1], name);
   }
 } // setClassName()
 
@@ -801,11 +801,11 @@ SoXtComponent::setClassName( // protected
 */
 
 void
-SoXtComponent::windowCloseAction( // virtual, protected
-  void )
+SoXtComponent::windowCloseAction(// virtual, protected
+  void)
 {
-  if ( this->getShellWidget() == SoXt::getTopLevelWidget() ) {
-    XtAppSetExitFlag( SoXt::getAppContext() );
+  if (this->getShellWidget() == SoXt::getTopLevelWidget()) {
+    XtAppSetExitFlag(SoXt::getAppContext());
   } else {
     this->hide();
   }
@@ -818,24 +818,24 @@ SoXtComponent::windowCloseAction( // virtual, protected
 */
 
 void
-SoXtComponent::afterRealizeHook( // virtual, protected
-  void )
+SoXtComponent::afterRealizeHook(// virtual, protected
+  void)
 {
 #if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "SoXtComponent::afterRealizeHook", "invoked" );
+  SoDebugError::postInfo("SoXtComponent::afterRealizeHook", "invoked");
 #endif // SOXT_DEBUG
-  if ( this->isTopLevelShell() ) {
+  if (this->isTopLevelShell()) {
 
-    XtVaSetValues( this->getShellWidget(),
+    XtVaSetValues(this->getShellWidget(),
       XmNtitle, this->getTitle(),
       XmNiconName, this->getIconTitle(),
-      NULL );
+      NULL);
 
-    if ( this->size[0] > 0 ) {
-      XtVaSetValues( this->getShellWidget(),
+    if (this->size[0] > 0) {
+      XtVaSetValues(this->getShellWidget(),
         XmNwidth, this->size[0],
         XmNheight, this->size[1],
-        NULL );
+        NULL);
     }
   }
 } // afterRealizeHook()
@@ -850,8 +850,8 @@ SoXtComponent::afterRealizeHook( // virtual, protected
 */
 
 const char *
-SoXtComponent::getDefaultWidgetName( // virtual, protected
-  void ) const
+SoXtComponent::getDefaultWidgetName(// virtual, protected
+  void) const
 {
   static const char defaultWidgetName[] = "SoXtComponent";
   return defaultWidgetName;
@@ -865,8 +865,8 @@ SoXtComponent::getDefaultWidgetName( // virtual, protected
 */
 
 const char *
-SoXtComponent::getDefaultTitle( // virtual, protected
-  void ) const
+SoXtComponent::getDefaultTitle(// virtual, protected
+  void) const
 {
   static const char defaultTitle[] = "Xt Component";
   return defaultTitle;
@@ -880,8 +880,8 @@ SoXtComponent::getDefaultTitle( // virtual, protected
 */
 
 const char *
-SoXtComponent::getDefaultIconTitle( // virtual, protected
-  void ) const
+SoXtComponent::getDefaultIconTitle(// virtual, protected
+  void) const
 {
   static const char defaultIconTitle[] = "Xt Component";
   return defaultIconTitle;
@@ -901,15 +901,15 @@ SoXtComponent::getDefaultIconTitle( // virtual, protected
 // FIXME: Should base widgets get registered when setBaseWidget is called?
 
 void
-SoXtComponent::registerWidget( // protected
-  Widget widget )
+SoXtComponent::registerWidget(// protected
+  Widget widget)
 {
-  if ( SoXtComponent::widgets == NULL ) {
+  if (SoXtComponent::widgets == NULL) {
     SoXtComponent::widgets = new SbPList;
     SoXtComponent::components = new SbPList;
   }
-  SoXtComponent::widgets->append( (void *) widget );
-  SoXtComponent::components->append( (void *) this );
+  SoXtComponent::widgets->append((void *) widget);
+  SoXtComponent::components->append((void *) this);
 } // registerWidget()
 
 /*!
@@ -919,19 +919,19 @@ SoXtComponent::registerWidget( // protected
 */
 
 void
-SoXtComponent::unregisterWidget( // protected
-  Widget widget )
+SoXtComponent::unregisterWidget(// protected
+  Widget widget)
 {
-  assert( SoXtComponent::widgets != NULL );
-  assert( widget != NULL );
-  int pos = SoXtComponent::widgets->find( (void *) widget );
-  if ( pos == -1 ) {
-    SoDebugError::post( "SoXtComponent::unregisterWidget",
-      "widget (%s) not registered", XtName( widget ) );
+  assert(SoXtComponent::widgets != NULL);
+  assert(widget != NULL);
+  int pos = SoXtComponent::widgets->find((void *) widget);
+  if (pos == -1) {
+    SoDebugError::post("SoXtComponent::unregisterWidget",
+      "widget (%s) not registered", XtName(widget));
   }
-  assert( SoXtComponent::components != NULL );
-  SoXtComponent::widgets->remove( pos );
-  SoXtComponent::components->remove( pos );
+  assert(SoXtComponent::components != NULL);
+  SoXtComponent::widgets->remove(pos);
+  SoXtComponent::components->remove(pos);
 } // unregisterWidget()
 
 // *************************************************************************
@@ -946,15 +946,15 @@ SoXtComponent::unregisterWidget( // protected
 */
 
 void
-SoXtComponent::addVisibilityChangeCallback( // protected
+SoXtComponent::addVisibilityChangeCallback(// protected
   SoXtComponentVisibilityCB * callback,
-  void * closure )
+  void * closure)
 {
-  if ( this->visibility_callbacks == NULL )
+  if (this->visibility_callbacks == NULL)
     this->visibility_callbacks = new SbPList;
   SoXtComponentVisibilityCallbackInfo * info =
     new SoXtComponentVisibilityCallbackInfo;
-  this->visibility_callbacks->append( info );
+  this->visibility_callbacks->append(info);
 } // addVisibilityChangeCallback()
 
 /*!
@@ -965,26 +965,26 @@ SoXtComponent::addVisibilityChangeCallback( // protected
 */
 
 void
-SoXtComponent::removeVisibilityChangeCallback( // protected
+SoXtComponent::removeVisibilityChangeCallback(// protected
   SoXtComponentVisibilityCB * callback,
-  void * closure )
+  void * closure)
 {
-  if ( this->visibility_callbacks != NULL ) {
+  if (this->visibility_callbacks != NULL) {
     const int num = this->visibility_callbacks->getLength();
-    for ( int i = 0; i < num; i++ ) {
+    for (int i = 0; i < num; i++) {
       SoXtComponentVisibilityCallbackInfo * info =
         (SoXtComponentVisibilityCallbackInfo *)
           (*this->visibility_callbacks)[i];
-      if ( info->callback == callback && info->closure == closure ) {
-        this->visibility_callbacks->remove( i );
+      if (info->callback == callback && info->closure == closure) {
+        this->visibility_callbacks->remove(i);
         delete info;
         return;
       }
     }
   }
 #if SOXT_DEBUG
-  SoDebugError::post( "SoXtComponent::removeVisibilityChangeCallback",
-    "Tried to remove nonexistent callback." );
+  SoDebugError::post("SoXtComponent::removeVisibilityChangeCallback",
+    "Tried to remove nonexistent callback.");
 #endif // SOXT_DEBUG
 } // removeVisibilityChangeCallback()
 
@@ -998,17 +998,17 @@ SoXtComponent::removeVisibilityChangeCallback( // protected
 */
 
 void
-SoXtComponent::invokeVisibilityChangeCallbacks( // protected
-  const SbBool enable ) const
+SoXtComponent::invokeVisibilityChangeCallbacks(// protected
+  const SbBool enable) const
 {
-  if ( this->visibility_callbacks == NULL )
+  if (this->visibility_callbacks == NULL)
     return;
   const int num = this->visibility_callbacks->getLength();
-  for ( int i = 0; i < num; i++ ) {
+  for (int i = 0; i < num; i++) {
     SoXtComponentVisibilityCallbackInfo * info =
       (SoXtComponentVisibilityCallbackInfo *)
         (*this->visibility_callbacks)[i];
-    info->callback( info->closure, enable );
+    info->callback(info->closure, enable);
   }
 } // invokeVisibilityChangeCallbacks()
 
@@ -1028,12 +1028,12 @@ SoXtComponent::invokeVisibilityChangeCallbacks( // protected
 */
 
 void
-SoXtComponent::openHelpCard( // protected
-  const char * name )
+SoXtComponent::openHelpCard(// protected
+  const char * name)
 {
-  SoXt::createSimpleErrorDialog( this->getWidget(),
+  SoXt::createSimpleErrorDialog(this->getWidget(),
     "Not Implemented",
-    "Help Card functionality is not implemented yet." );
+    "Help Card functionality is not implemented yet.");
 } // openHelpCard()
 
 // *************************************************************************
@@ -1043,8 +1043,8 @@ SoXtComponent::openHelpCard( // protected
 */
 
 char *
-SoXtComponent::getlabel( // static, protected
-  unsigned int what )
+SoXtComponent::getlabel(// static, protected
+  unsigned int what)
 {
   SOXT_STUB();
   return "(null)";
@@ -1057,61 +1057,61 @@ SoXtComponent::getlabel( // static, protected
 */
 
 Boolean
-SoXtComponent::eventHandler( // protected, virtual
+SoXtComponent::eventHandler(// protected, virtual
   Widget widget,
-  XEvent * event )
+  XEvent * event)
 {
-  if ( widget == this->widget ) { // base widget
+  if (widget == this->widget) { // base widget
 #if SOXT_DEBUG && 0
-    SoDebugError::postInfo( "SoXtComponent::eventHandler",
-      "base widget event (%d)", event->type );
+    SoDebugError::postInfo("SoXtComponent::eventHandler",
+      "base widget event (%d)", event->type);
 #endif // SOXT_DEBUG
-    if ( event->type == ConfigureNotify ) {
+    if (event->type == ConfigureNotify) {
       XConfigureEvent * conf = (XConfigureEvent *) event;
-      if ( this->size != SbVec2s( conf->width, conf->height ) ) {
-        this->size = SbVec2s( conf->width, conf->height );
-        this->sizeChanged( this->size );
+      if (this->size != SbVec2s(conf->width, conf->height)) {
+        this->size = SbVec2s(conf->width, conf->height);
+        this->sizeChanged(this->size);
       }
-    } else if ( event->type == MapNotify ) {
+    } else if (event->type == MapNotify) {
       Dimension width = 0, height = 0;
-      XtVaGetValues( this->getBaseWidget(),
+      XtVaGetValues(this->getBaseWidget(),
         XmNwidth, &width,
         XmNheight, &height,
-        NULL );
-      this->size = SbVec2s( width, height );
-      this->sizeChanged( this->size );
-    } else if ( event->type == VisibilityNotify ) {
-//    SoDebugError::postInfo( "SoXtComponent::eventHandler", "Visibility" );
+        NULL);
+      this->size = SbVec2s(width, height);
+      this->sizeChanged(this->size);
+    } else if (event->type == VisibilityNotify) {
+//    SoDebugError::postInfo("SoXtComponent::eventHandler", "Visibility");
       XVisibilityEvent * visibility = (XVisibilityEvent *) event;
       SbBool newvisibility = TRUE;
-      if ( visibility->state == VisibilityFullyObscured )
+      if (visibility->state == VisibilityFullyObscured)
         newvisibility = FALSE;
-      if ( this->visibility_state != newvisibility ) {
+      if (this->visibility_state != newvisibility) {
         this->visibility_state = newvisibility;
-        this->invokeVisibilityChangeCallbacks( this->visibility_state );
+        this->invokeVisibilityChangeCallbacks(this->visibility_state);
       }
     }
-  } else if ( this->isTopLevelShell() && widget == this->getShellWidget() ) {
+  } else if (this->isTopLevelShell() && widget == this->getShellWidget()) {
 #if SOXT_DEBUG && 0
-    SoDebugError::postInfo( "SoXtComponent::eventHandler",
-      "shell widget event (%d)", event->type );
+    SoDebugError::postInfo("SoXtComponent::eventHandler",
+      "shell widget event (%d)", event->type);
 #endif // SOXT_DEBUG
 
-    if ( event->type == ConfigureNotify ) {
+    if (event->type == ConfigureNotify) {
       XConfigureEvent * conf = (XConfigureEvent *) event;
-      if ( this->size != SbVec2s( conf->width, conf->height ) ) {
-        this->size = SbVec2s( conf->width, conf->height );
-        XtVaSetValues( this->getBaseWidget(),
+      if (this->size != SbVec2s(conf->width, conf->height)) {
+        this->size = SbVec2s(conf->width, conf->height);
+        XtVaSetValues(this->getBaseWidget(),
           XmNwidth, this->size[0],
           XmNheight, this->size[1],
-          NULL );
-        this->sizeChanged( this->size );
+          NULL);
+        this->sizeChanged(this->size);
       }
     }
   } else {
 #if SOXT_DEBUG && 0
-    SoDebugError::postInfo( "SoXtComponent::eventHandler",
-      "[removing] event handler for unknown widget" );
+    SoDebugError::postInfo("SoXtComponent::eventHandler",
+      "[removing] event handler for unknown widget");
 #endif // SOXT_DEBUG
   }
   return True;
@@ -1128,11 +1128,11 @@ SoXtComponent::event_handler(
   Widget widget,
   XtPointer closure,
   XEvent * event,
-  Boolean * dispatch )
+  Boolean * dispatch)
 {
-  assert( closure != NULL );
+  assert(closure != NULL);
   SoXtComponent * component = (SoXtComponent *) closure;
-  *dispatch = component->eventHandler( widget, event );
+  *dispatch = component->eventHandler(widget, event);
 } // event_handler()
 
 /*!

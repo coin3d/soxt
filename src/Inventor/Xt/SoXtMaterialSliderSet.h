@@ -34,7 +34,7 @@ public:
     Widget parent = NULL,
     const char * const name = NULL,
     SbBool embed = TRUE,
-    SoNode * const node = NULL );
+    SoNode * const node = NULL);
   ~SoXtMaterialSliderSet(void);
 
 protected:
@@ -45,14 +45,14 @@ protected:
     SoNode * const node,
     SbBool build);
 
-  Widget buildWidget( Widget parent );
+  Widget buildWidget(Widget parent);
 
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
   virtual const char * getDefaultIconTitle(void) const;
 
 private:
-  void constructor( SbBool build );
+  void constructor(SbBool build);
 
 }; // class SoXtMaterialSliderSet
 
