@@ -6064,44 +6064,17 @@ CXXFLAGS="$CXXFLAGS -DSOXT_INTERNAL=1"
 
 # **************************************************************************
 
-# --with-test-code is a silent option
-
-if test "${with_test_code+set}" = set; then
-  BUILD_TESTS_TRUE=
-  BUILD_TESTS_FALSE='#'
-else
-  BUILD_TESTS_TRUE='#'
-  BUILD_TESTS_FALSE=
-fi
-
-# --with-ivexamples is a silent option
-sim_ac_want_ivexamples=false
-if test x"${with_ivexamples+set}" = x"set"; then
-  echo "$as_me:6080: checking for ivexamples directory" >&5
-echo $ECHO_N "checking for ivexamples directory... $ECHO_C" >&6
-  if test -f ${srcdir}/ivexamples/configure.in; then
-    echo "$as_me:6083: result: found" >&5
-echo "${ECHO_T}found" >&6
-    sim_ac_want_ivexamples=true
-  else
-    echo "$as_me:6087: result: not found" >&5
-echo "${ECHO_T}not found" >&6
-    {  echo "$as_me: error: can't use '--with-ivexamples' when ivexamples/ doesn't exist" >&2
-  { false; exit; }; }
-  fi
-fi
-
 # --with-devcode is a silent option
 sim_ac_want_devcode=false
 if test x"${with_devcode+set}" = x"set"; then
-  echo "$as_me:6097: checking for devcode directory" >&5
+  echo "$as_me:6070: checking for devcode directory" >&5
 echo $ECHO_N "checking for devcode directory... $ECHO_C" >&6
   if test -f ${srcdir}/devcode/configure.in; then
-    echo "$as_me:6100: result: found" >&5
+    echo "$as_me:6073: result: found" >&5
 echo "${ECHO_T}found" >&6
     sim_ac_want_devcode=true
   else
-    echo "$as_me:6104: result: not found" >&5
+    echo "$as_me:6077: result: not found" >&5
 echo "${ECHO_T}not found" >&6
     {  echo "$as_me: error: can't use '--with-devcode' when devcode/ doesn't exist" >&2
   { false; exit; }; }
@@ -6135,22 +6108,6 @@ else
   BUILD_DEVCODE_FALSE=
 fi
 
-if $sim_ac_want_examples; then
-  BUILD_EXAMPLES_TRUE=
-  BUILD_EXAMPLES_FALSE='#'
-else
-  BUILD_EXAMPLES_TRUE='#'
-  BUILD_EXAMPLES_FALSE=
-fi
-
-if $sim_ac_want_ivexamples; then
-  BUILD_IV_EXAMPLES_TRUE=
-  BUILD_IV_EXAMPLES_FALSE='#'
-else
-  BUILD_IV_EXAMPLES_TRUE='#'
-  BUILD_IV_EXAMPLES_FALSE=
-fi
-
 # **************************************************************************
 # Variable substitutions for using libSoXt in the generic code.
 
@@ -6161,6 +6118,24 @@ gui=xt
 WIDGET="Widget"
 EVENT="XAnyEvent *"
 COMPONENTHEADER=""
+
+test x"$prefix" = x"NONE" && prefix="$ac_default_prefix"
+test x"$exec_prefix" = x"NONE" && exec_prefix="${prefix}"
+
+# This is the list of all install-path variables found in configure
+# scripts. FIXME: use another "eval-nesting" to move assignments into
+# a for-loop. 20000704 mortene.
+bindir="`eval echo $bindir`"
+sbindir="`eval echo $sbindir`"
+libexecdir="`eval echo $libexecdir`"
+datadir="`eval echo $datadir`"
+sysconfdir="`eval echo $sysconfdir`"
+sharedstatedir="`eval echo $sharedstatedir`"
+localstatedir="`eval echo $localstatedir`"
+libdir="`eval echo $libdir`"
+includedir="`eval echo $includedir`"
+infodir="`eval echo $infodir`"
+mandir="`eval echo $mandir`"
 
 # **************************************************************************
 # Section for Doxygen
@@ -6195,11 +6170,7 @@ SOXT_DOC_HTML=`echo $want_html | tr a-z A-Z`
 SOXT_DOC_MAN=`echo $want_man | tr a-z A-Z`
 
 soxt_build_dir=`pwd`
-cd $srcdir
-soxt_src_dir=`pwd`
-cd $soxt_build_dir
-soxt_data_dir=/usr/local/share/Coin
-test x"$exec_prefix" != xNONE && soxt_data_dir=$exec_prefix/share/Coin
+soxt_src_dir=`cd $srcdir; pwd`
 
 if test x"$want_html" != xno -o x"$want_man" != xno; then
 
@@ -6221,7 +6192,7 @@ if test x"$with_doxygen" != xno; then
 
   # Extract the first word of "doxygen", so it can be a program name with args.
 set dummy doxygen; ac_word=$2
-echo "$as_me:6224: checking for $ac_word" >&5
+echo "$as_me:6195: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_path_sim_ac_doxygen_exe+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -6249,10 +6220,10 @@ fi
 sim_ac_doxygen_exe=$ac_cv_path_sim_ac_doxygen_exe
 
 if test -n "$sim_ac_doxygen_exe"; then
-  echo "$as_me:6252: result: $sim_ac_doxygen_exe" >&5
+  echo "$as_me:6223: result: $sim_ac_doxygen_exe" >&5
 echo "${ECHO_T}$sim_ac_doxygen_exe" >&6
 else
-  echo "$as_me:6255: result: no" >&5
+  echo "$as_me:6226: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
 
@@ -6267,13 +6238,13 @@ fi
 
   sim_ac_doxygen_our_version=1.1.5
   if test x"$sim_ac_doxygen_avail" != x"$sim_ac_doxygen_our_version"; then
-    { echo "$as_me:6270: WARNING: You are not using Doxygen version $sim_ac_doxygen_our_version" >&5
+    { echo "$as_me:6241: WARNING: You are not using Doxygen version $sim_ac_doxygen_our_version" >&5
 echo "$as_me: warning: You are not using Doxygen version $sim_ac_doxygen_our_version" >&2; }
   fi
 
   # Extract the first word of "perl", so it can be a program name with args.
 set dummy perl; ac_word=$2
-echo "$as_me:6276: checking for $ac_word" >&5
+echo "$as_me:6247: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_path_sim_ac_perl_exe+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -6301,15 +6272,15 @@ fi
 sim_ac_perl_exe=$ac_cv_path_sim_ac_perl_exe
 
 if test -n "$sim_ac_perl_exe"; then
-  echo "$as_me:6304: result: $sim_ac_perl_exe" >&5
+  echo "$as_me:6275: result: $sim_ac_perl_exe" >&5
 echo "${ECHO_T}$sim_ac_perl_exe" >&6
 else
-  echo "$as_me:6307: result: no" >&5
+  echo "$as_me:6278: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
 
   if test x"$sim_ac_perl_exe" = xfalse; then
-    { echo "$as_me:6312: WARNING: Could not find the Perl executable" >&5
+    { echo "$as_me:6283: WARNING: Could not find the Perl executable" >&5
 echo "$as_me: warning: Could not find the Perl executable" >&2; }
   fi
 
@@ -6320,28 +6291,10 @@ fi
 
   eval "soxt_configure_date=\"`date +%Y%m%d`\""
 
-# **************************************************************************
-# Configure the submodule with the examples.
-
 # soxt-config
 
-test x"$prefix" = x"NONE" && prefix="$ac_default_prefix"
-test x"$exec_prefix" = x"NONE" && exec_prefix="${prefix}"
-
-# This is the list of all install-path variables found in configure
-# scripts. FIXME: use another "eval-nesting" to move assignments into
-# a for-loop. 20000704 mortene.
-bindir="`eval echo $bindir`"
-sbindir="`eval echo $sbindir`"
-libexecdir="`eval echo $libexecdir`"
-datadir="`eval echo $datadir`"
-sysconfdir="`eval echo $sysconfdir`"
-sharedstatedir="`eval echo $sharedstatedir`"
-localstatedir="`eval echo $localstatedir`"
-libdir="`eval echo $libdir`"
-includedir="`eval echo $includedir`"
-infodir="`eval echo $infodir`"
-mandir="`eval echo $mandir`"
+# **************************************************************************
+# Configure the submodule with the data.
 
 subdirs="$subdirs data"
 
@@ -6461,9 +6414,6 @@ ac_config_files="$ac_config_files
 	src/Inventor/Xt/devices/Makefile
 	src/Inventor/Xt/widgets/Makefile
 	src/Inventor/Xt/viewers/Makefile
-	test-code/Makefile
-	test-code/bugs/Makefile
-	test-code/components/Makefile
 	build/soxt.spec
 	build/soxt.doxygen
 "
@@ -6561,7 +6511,7 @@ sed '/^$/d;s/^/| /' confdefs.h >&5
 : ${CONFIG_STATUS=./config.status}
 ac_clean_files_save=$ac_clean_files
 ac_clean_files="$ac_clean_files $CONFIG_STATUS"
-{ echo "$as_me:6564: creating $CONFIG_STATUS" >&5
+{ echo "$as_me:6514: creating $CONFIG_STATUS" >&5
 echo "creating $CONFIG_STATUS" >&6;}
 cat >$CONFIG_STATUS <<\_ACEOF
 #! /bin/sh
@@ -6747,9 +6697,6 @@ Try \`$0 --help' for more information." >&2
   'src/Inventor/Xt/devices/Makefile' ) CONFIG_FILES="$CONFIG_FILES src/Inventor/Xt/devices/Makefile" ;;
   'src/Inventor/Xt/widgets/Makefile' ) CONFIG_FILES="$CONFIG_FILES src/Inventor/Xt/widgets/Makefile" ;;
   'src/Inventor/Xt/viewers/Makefile' ) CONFIG_FILES="$CONFIG_FILES src/Inventor/Xt/viewers/Makefile" ;;
-  'test-code/Makefile' ) CONFIG_FILES="$CONFIG_FILES test-code/Makefile" ;;
-  'test-code/bugs/Makefile' ) CONFIG_FILES="$CONFIG_FILES test-code/bugs/Makefile" ;;
-  'test-code/components/Makefile' ) CONFIG_FILES="$CONFIG_FILES test-code/components/Makefile" ;;
   'build/soxt.spec' ) CONFIG_FILES="$CONFIG_FILES build/soxt.spec" ;;
   'build/soxt.doxygen' ) CONFIG_FILES="$CONFIG_FILES build/soxt.doxygen" ;;
   'default-1' ) CONFIG_COMMANDS="$CONFIG_COMMANDS default-1" ;;
@@ -6922,14 +6869,8 @@ s,@X_EXTRA_LIBS@,$X_EXTRA_LIBS,;t t
 s,@sim_ac_coin_configcmd@,$sim_ac_coin_configcmd,;t t
 s,@HAVE_JOYSTICK_LINUX_TRUE@,$HAVE_JOYSTICK_LINUX_TRUE,;t t
 s,@HAVE_JOYSTICK_LINUX_FALSE@,$HAVE_JOYSTICK_LINUX_FALSE,;t t
-s,@BUILD_TESTS_TRUE@,$BUILD_TESTS_TRUE,;t t
-s,@BUILD_TESTS_FALSE@,$BUILD_TESTS_FALSE,;t t
 s,@BUILD_DEVCODE_TRUE@,$BUILD_DEVCODE_TRUE,;t t
 s,@BUILD_DEVCODE_FALSE@,$BUILD_DEVCODE_FALSE,;t t
-s,@BUILD_EXAMPLES_TRUE@,$BUILD_EXAMPLES_TRUE,;t t
-s,@BUILD_EXAMPLES_FALSE@,$BUILD_EXAMPLES_FALSE,;t t
-s,@BUILD_IV_EXAMPLES_TRUE@,$BUILD_IV_EXAMPLES_TRUE,;t t
-s,@BUILD_IV_EXAMPLES_FALSE@,$BUILD_IV_EXAMPLES_FALSE,;t t
 s,@GUI@,$GUI,;t t
 s,@Gui@,$Gui,;t t
 s,@gui@,$gui,;t t
@@ -6940,7 +6881,6 @@ s,@SOXT_DOC_HTML@,$SOXT_DOC_HTML,;t t
 s,@SOXT_DOC_MAN@,$SOXT_DOC_MAN,;t t
 s,@soxt_src_dir@,$soxt_src_dir,;t t
 s,@soxt_build_dir@,$soxt_build_dir,;t t
-s,@soxt_data_dir@,$soxt_data_dir,;t t
 s,@sim_ac_doxygen_exe@,$sim_ac_doxygen_exe,;t t
 s,@sim_ac_perl_exe@,$sim_ac_perl_exe,;t t
 s,@soxt_configure_date@,$soxt_configure_date,;t t
@@ -7053,7 +6993,7 @@ done; }
   esac
 
   if test x"$ac_file" != x-; then
-    { echo "$as_me:7056: creating $ac_file" >&5
+    { echo "$as_me:6996: creating $ac_file" >&5
 echo "creating $ac_file" >&6;}
     rm -f "$ac_file"
   fi
@@ -7146,7 +7086,7 @@ for ac_file in : $CONFIG_HEADERS; do test "x$ac_file" = x: && continue
   * )   ac_file_in=$ac_file.in ;;
   esac
 
-  test x"$ac_file" != x- && { echo "$as_me:7149: creating $ac_file" >&5
+  test x"$ac_file" != x- && { echo "$as_me:7089: creating $ac_file" >&5
 echo "creating $ac_file" >&6;}
 
   # First look for the input files in the build tree, otherwise in the
@@ -7286,7 +7226,7 @@ cat >>$CONFIG_STATUS <<\EOF
   rm -f $tmp/in
   if test x"$ac_file" != x-; then
     if cmp -s $ac_file $tmp/config.h 2>/dev/null; then
-      { echo "$as_me:7289: $ac_file is unchanged" >&5
+      { echo "$as_me:7229: $ac_file is unchanged" >&5
 echo "$ac_file is unchanged" >&6;}
     else
       ac_dir=`expr X"$ac_file" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
@@ -7426,7 +7366,7 @@ if test "$no_recursion" != yes; then
     # parts of a large source tree are present.
     test -d $srcdir/$ac_subdir || continue
 
-    { echo "$as_me:7429: configuring in $ac_subdir" >&5
+    { echo "$as_me:7369: configuring in $ac_subdir" >&5
 echo "configuring in $ac_subdir" >&6;}
     case $srcdir in
     .) ;;
@@ -7472,7 +7412,7 @@ done; }
     elif test -f $ac_sub_srcdir/configure.in; then
       ac_sub_configure=$ac_configure
     else
-      { echo "$as_me:7475: WARNING: no configuration information is in $ac_subdir" >&5
+      { echo "$as_me:7415: WARNING: no configuration information is in $ac_subdir" >&5
 echo "$as_me: warning: no configuration information is in $ac_subdir" >&2; }
       ac_sub_configure=
     fi
@@ -7490,7 +7430,7 @@ echo "$as_me: warning: no configuration information is in $ac_subdir" >&2; }
         *) INSTALL=$ac_dots$ac_given_INSTALL ;;
       esac
 
-      { echo "$as_me:7493: running $ac_sub_configure $ac_sub_configure_args --cache-file=$ac_sub_cache_file --srcdir=$ac_sub_srcdir" >&5
+      { echo "$as_me:7433: running $ac_sub_configure $ac_sub_configure_args --cache-file=$ac_sub_cache_file --srcdir=$ac_sub_srcdir" >&5
 echo "running $ac_sub_configure $ac_sub_configure_args --cache-file=$ac_sub_cache_file --srcdir=$ac_sub_srcdir" >&6;}
       # The eval makes quoting arguments work.
       if eval $ac_sub_configure $ac_sub_configure_args --cache-file=$ac_sub_cache_file --srcdir=$ac_sub_srcdir

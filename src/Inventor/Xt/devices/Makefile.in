@@ -109,7 +109,6 @@ sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 soxt_build_dir = @soxt_build_dir@
 soxt_configure_date = @soxt_configure_date@
-soxt_data_dir = @soxt_data_dir@
 soxt_src_dir = @soxt_src_dir@
 
 ############################################################################
