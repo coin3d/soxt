@@ -68,6 +68,8 @@
 #include <assert.h>
 #include <string.h>
 
+#define SOXT_VISIBILITY_DEBUG 0
+
 // *************************************************************************
 
 // The private data and code for the SoXtComponent.
@@ -849,11 +851,41 @@ SoXtComponentP::checkVisibilityChange(void)
 {
   SbBool prev = this->visibilitystate;
   this->visibilitystate = TRUE;
-  if ( !this->widget ) this->visibilitystate = FALSE;
-  else if ( !this->widgetmappedstatus ) this->visibilitystate = FALSE;
-  else if ( !this->shellmappedstatus ) this->visibilitystate = FALSE;
-  else if ( !XtWindow(this->widget) ) this->visibilitystate = FALSE;
+  if ( !this->widget ) {
+#if SOXT_VISIBILITY_DEBUG
+    SoDebugError::postInfo("SoXtComponentP::checkVisibilityChange",
+                           "no widget - not visible");
+#endif // SOXT_VISIBILITY_DEBUG
+    this->visibilitystate = FALSE;
+  }
+  else if ( !this->widgetmappedstatus ) {
+#if SOXT_VISIBILITY_DEBUG
+    SoDebugError::postInfo("SoXtComponentP::checkVisibilityChange",
+                           "widget not mapped - not visible");
+#endif // SOXT_VISIBILITY_DEBUG
+    this->visibilitystate = FALSE;
+  }
+  else if ( !this->shellmappedstatus ) {
+#if SOXT_VISIBILITY_DEBUG
+    SoDebugError::postInfo("SoXtComponentP::checkVisibilityChange",
+                           "shell not mapped - not visible");
+#endif // SOXT_VISIBILITY_DEBUG
+    this->visibilitystate = FALSE;
+  }
+  else if ( !XtWindow(this->widget) ) {
+#if SOXT_VISIBILITY_DEBUG
+    SoDebugError::postInfo("SoXtComponentP::checkVisibilityChange",
+                           "base widget has no window - not visible");
+#endif // SOXT_VISIBILITY_DEBUG
+    this->visibilitystate = FALSE;
+  }
   if ( prev != this->visibilitystate ) {
+#if SOXT_VISIBILITY_DEBUG
+    SoDebugError::postInfo("SoXtComponentP::checkVisibilityChange",
+                           "visibility just changed from %s to %s",
+                           prev ? "on" : "off",
+                           this->visibilitystate ? "on" : "off");
+#endif // SOXT_VISIBILITY_DEBUG
     PUBLIC(this)->invokeVisibilityChangeCallbacks(this->visibilitystate);
   }
 }
