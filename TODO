@@ -1,6 +1,11 @@
 TODO
 ====
 
+* [larsa:20000324] Find out how to get the --with-inventor option to work.
+  Some potential problems:
+    - header file include paths (Inventor/Xt times two)
+    - having based SoXt on Coin-specific features
+
 * [larsa:20000206] Improve autoconf-tests for Lesstif/Motif, Xm, Xmu, ...
 
 * [larsa:20000206] Write alternative buildWidget()-code for systems without

@@ -100,7 +100,6 @@ dnl *******************************************************************
 dnl * Search for and set up stuff we depend on.
 dnl *******************************************************************
 
-
 SIM_CHECK_DL([
   SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_dl_cppflags"
   SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_dl_ldflags"
@@ -114,10 +113,18 @@ SIM_CHECK_X11([
 ])
 
 if test x"$sim_ac_x11_avail" = xyes; then
-  SIM_CHECK_X11SHMEM(SOXT_EXTRA_LIBS="$sim_ac_x11shmem_libs $SOXT_EXTRA_LIBS")
-  SIM_CHECK_X11MU(SOXT_EXTRA_LIBS="$sim_ac_x11mu_libs $SOXT_EXTRA_LIBS")
-  SIM_CHECK_X11XID(SOXT_EXTRA_LIBS="$sim_ac_x11mu_libs $SOXT_EXTRA_LIBS")
-  SIM_CHECK_X_INTRINSIC(SOXT_EXTRA_LIBS="$sim_ac_xt_libs $SOXT_EXTRA_LIBS")
+  SIM_CHECK_X11SHMEM([
+    SOXT_EXTRA_LIBS="$sim_ac_x11shmem_libs $SOXT_EXTRA_LIBS"
+  ])
+  SIM_CHECK_X11MU([
+    SOXT_EXTRA_LIBS="$sim_ac_x11mu_libs $SOXT_EXTRA_LIBS"
+  ])
+  SIM_CHECK_X11XID([
+    SOXT_EXTRA_LIBS="$sim_ac_x11mu_libs $SOXT_EXTRA_LIBS"
+  ])
+  SIM_CHECK_X_INTRINSIC([
+    SOXT_EXTRA_LIBS="$sim_ac_xt_libs $SOXT_EXTRA_LIBS"
+  ])
 fi
 
 SIM_CHECK_OPENGL([
@@ -126,30 +133,40 @@ SIM_CHECK_OPENGL([
   SOXT_EXTRA_LIBS="$sim_ac_gl_libs $SOXT_EXTRA_LIBS"
 ], AC_MSG_ERROR(needs an OpenGL-compatible development system installation))
 
-SIM_CHECK_COIN([
-  SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_coin_cppflags"
-  SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_coin_ldflags"
-  SOXT_EXTRA_LIBS="$sim_ac_coin_libs $SOXT_EXTRA_LIBS"
-],[
-  AC_MSG_ERROR(couldn't compile and link against Coin)
-],[
-  default searchprefix
-])
 
+if test x"${with_inventor+set}" = x"set"; then
+  # check for SGI or TGS Open Inventor
+  SIM_CHECK_INVENTOR([
+    SOXT_EXTRA_CPPFLAGS="$sim_ac_oiv_cppflags $SOXT_EXTRA_CPPFLAGS"
+    SOXT_EXTRA_LDFLAGS="$sim_ac_oiv_ldflags $SOXT_EXTRA_LDFLAGS"
+    SOXT_EXTRA_LIBS="$sim_ac_oiv_wlibs $SOXT_EXTRA_LIBS"
+  ], AC_MSG_ERROR([couldn't compile and link against Open Inventor]))
+else
+  # check for Coin library and its dependencies
+  SIM_CHECK_COIN([
+    SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_coin_cppflags"
+    SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_coin_ldflags"
+    SOXT_EXTRA_LIBS="$sim_ac_coin_libs $SOXT_EXTRA_LIBS"
+  ],[
+    AC_MSG_ERROR(couldn't compile and link against Coin)
+  ],[
+    default searchprefix
+  ])
+fi
 
 dnl Check for the availability of this node (it is used in the hidden
 dnl line rendering), which is not part of older Inventor implementations.
 SIM_HAVE_SOPOLYGONOFFSET
 
-
 SIM_CHECK_MOTIF([
   SOXT_EXTRA_CPPFLAGS="$SOXT_EXTRA_CPPFLAGS $sim_ac_motif_cppflags"
   SOXT_EXTRA_LDFLAGS="$SOXT_EXTRA_LDFLAGS $sim_ac_motif_ldflags"
   SOXT_EXTRA_LIBS="$sim_ac_motif_libs $SOXT_EXTRA_LIBS"
-], AC_MSG_ERROR(couldn't compile and link with Motif))
+], AC_MSG_ERROR([couldn't compile and link with Motif]))
 
-SIM_CHECK_MOTIF_GLWIDGET(SOXT_EXTRA_LIBS="-l$sim_ac_motif_glwidget_library $SOXT_EXTRA_LIBS",
-                         AC_MSG_ERROR(couldn't find Xt/Motif support for GL))
+SIM_CHECK_MOTIF_GLWIDGET([
+  SOXT_EXTRA_LIBS="-l$sim_ac_motif_glwidget_library $SOXT_EXTRA_LIBS"
+], AC_MSG_ERROR([couldn't find Xt/Motif support for GL]))
 
 CXXFLAGS="$CXXFLAGS -DSOXT_DEBUG=1"
 

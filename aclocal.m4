@@ -1285,6 +1285,146 @@ Choke me.
 fi
 ])
 
+dnl Usage:
+dnl  SIM_CHECK_INVENTOR([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl
+dnl  Try to find the Open Inventor development system. If it is found, these
+dnl  shell variables are set:
+dnl
+dnl    $sim_ac_oiv_cppflags (extra flags the compiler needs for Inventor)
+dnl    $sim_ac_oiv_ldflags  (extra flags the linker needs for Inventor)
+dnl    $sim_ac_oiv_libs     (link libraries the linker needs for Inventor)
+dnl
+dnl  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+dnl  In addition, the variable $sim_ac_oiv_avail is set to "yes" if
+dnl  the Open Inventor development system is found.
+dnl
+dnl
+dnl Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+
+AC_DEFUN(SIM_CHECK_INVENTOR,[
+AC_ARG_WITH(inventor, AC_HELP_STRING([--with-inventor=DIR], [use the Open Inventor library [default=no]]), , [with_inventor=yes])
+
+sim_ac_oiv_avail=no
+
+if test x"$with_inventor" != xno; then
+  if test x"$with_inventor" != xyes; then
+    sim_ac_oiv_cppflags="-I${with_inventor}/include"
+    sim_ac_oiv_ldflags="-L${with_inventor}/lib"
+  else
+    AC_MSG_CHECKING(value of the OIVHOME environment variable)
+    if test x"$OIVHOME" = x; then
+      AC_MSG_RESULT(empty)
+      AC_MSG_WARN(OIVHOME environment variable not set -- this might be an indication of a problem)
+    else
+      AC_MSG_RESULT($OIVHOME)
+      sim_ac_oiv_cppflags="-I$OIVHOME/include"
+      sim_ac_oiv_ldflags="-L$OIVHOME/lib"
+    fi
+  fi
+
+  sim_ac_oiv_libs="-lInventor -limage"
+
+  sim_ac_save_cppflags=$CPPFLAGS
+  sim_ac_save_ldflags=$LDFLAGS
+  sim_ac_save_libs=$LIBS
+
+  CPPFLAGS="$sim_ac_oiv_cppflags $CPPFLAGS"
+  LDFLAGS="$sim_ac_oiv_ldflags $LDFLAGS"
+  LIBS="$sim_ac_oiv_libs $LIBS"
+
+  AC_CACHE_CHECK([for Open Inventor developer kit],
+    sim_cv_lib_oiv_avail,
+    [AC_TRY_LINK([#include <Inventor/SoDB.h>],
+                 [SoDB::init();],
+                 sim_cv_lib_oiv_avail=yes,
+                 sim_cv_lib_oiv_avail=no)])
+
+  if test x"$sim_cv_lib_oiv_avail" = xyes; then
+    sim_ac_oiv_avail=yes
+    ifelse($1, , :, $1)
+  else
+    CPPFLAGS=$sim_ac_save_cppflags
+    LDFLAGS=$sim_ac_save_ldflags
+    LIBS=$sim_ac_save_libs
+    ifelse($2, , :, $2)
+  fi
+fi
+])
+
+
+
+dnl ************************************************************************
+
+dnl Usage:
+dnl  SIM_CHECK_OIV_XT([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl
+dnl  Try to compile and link against the Xt GUI glue library for
+dnl  the Open Inventor development system. Sets this shell
+dnl  variable:
+dnl
+dnl    $sim_ac_oivxt_libs     (link libraries the linker needs for InventorXt)
+dnl
+dnl  The LIBS variable will also be modified accordingly. In addition,
+dnl  the variable $sim_ac_oivxt_avail is set to "yes" if the Xt glue
+dnl  library for the Open Inventor development system is found.
+dnl
+dnl
+dnl Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+
+AC_DEFUN(SIM_CHECK_OIV_XT,[
+sim_ac_oivxt_avail=no
+
+sim_ac_oivxt_libs="-lInventorXt"
+sim_ac_save_libs=$LIBS
+LIBS="$sim_ac_oivxt_libs $LIBS"
+
+AC_CACHE_CHECK([for Xt glue library in the Open Inventor developer kit],
+  sim_cv_lib_oivxt_avail,
+  [AC_TRY_LINK([#include <Inventor/Xt/SoXt.h>],
+               [(void)SoXt::init(0L, 0L);],
+               sim_cv_lib_oivxt_avail=yes,
+               sim_cv_lib_oivxt_avail=no)])
+
+if test x"$sim_cv_lib_oivxt_avail" = xyes; then
+  sim_ac_oivxt_avail=yes
+  ifelse($1, , :, $1)
+else
+  LIBS=$sim_ac_save_libs
+  ifelse($2, , :, $2)
+fi
+])
+
+
+dnl ************************************************************************
+
+dnl Usage:
+dnl  SIM_HAVE_SOPOLYGONOFFSET([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl
+dnl  Check whether or not the SoPolygonOffset node is part of the
+dnl  Open Inventor development system. If it is found, the
+dnl  HAVE_SOPOLYGONOFFSET define is set.
+dnl
+dnl Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN(SIM_HAVE_SOPOLYGONOFFSET,[
+AC_CACHE_CHECK([for the SoPolygonOffset node],
+  sim_cv_sopolygonoffset,
+  [AC_TRY_LINK([#include <Inventor/nodes/SoPolygonOffset.h>],
+               [SoPolygonOffset * p = new SoPolygonOffset;],
+               sim_cv_sopolygonoffset=yes,
+               sim_cv_sopolygonoffset=no)])
+
+if test x"$sim_cv_sopolygonoffset" = xyes; then
+  AC_DEFINE(HAVE_SOPOLYGONOFFSET)
+  $1
+else
+  ifelse([$2], , :, [$2])
+fi
+])
+
 dnl ************************************************************************
 dnl Usage:
 dnl   SIM_CHECK_COIN( ACTION-IF-FOUND, ACTION-IF-NOT-FOUND, ATTRIBUTE-LIST )
@@ -1530,146 +1670,6 @@ AC_DEFUN([SIM_PARSE_MODIFIER_LIST],
         [$4],
         [$5])])
 
-
-dnl Usage:
-dnl  SIM_CHECK_INVENTOR([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-dnl
-dnl  Try to find the Open Inventor development system. If it is found, these
-dnl  shell variables are set:
-dnl
-dnl    $sim_ac_oiv_cppflags (extra flags the compiler needs for Inventor)
-dnl    $sim_ac_oiv_ldflags  (extra flags the linker needs for Inventor)
-dnl    $sim_ac_oiv_libs     (link libraries the linker needs for Inventor)
-dnl
-dnl  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
-dnl  In addition, the variable $sim_ac_oiv_avail is set to "yes" if
-dnl  the Open Inventor development system is found.
-dnl
-dnl
-dnl Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-
-AC_DEFUN(SIM_CHECK_INVENTOR,[
-AC_ARG_WITH(inventor, AC_HELP_STRING([--with-inventor=DIR], [use the Open Inventor library [default=no]]), , [with_inventor=yes])
-
-sim_ac_oiv_avail=no
-
-if test x"$with_inventor" != xno; then
-  if test x"$with_inventor" != xyes; then
-    sim_ac_oiv_cppflags="-I${with_inventor}/include"
-    sim_ac_oiv_ldflags="-L${with_inventor}/lib"
-  else
-    AC_MSG_CHECKING(value of the OIVHOME environment variable)
-    if test x"$OIVHOME" = x; then
-      AC_MSG_RESULT(empty)
-      AC_MSG_WARN(OIVHOME environment variable not set -- this might be an indication of a problem)
-    else
-      AC_MSG_RESULT($OIVHOME)
-      sim_ac_oiv_cppflags="-I$OIVHOME/include"
-      sim_ac_oiv_ldflags="-L$OIVHOME/lib"
-    fi
-  fi
-
-  sim_ac_oiv_libs="-lInventor -limage"
-
-  sim_ac_save_cppflags=$CPPFLAGS
-  sim_ac_save_ldflags=$LDFLAGS
-  sim_ac_save_libs=$LIBS
-
-  CPPFLAGS="$sim_ac_oiv_cppflags $CPPFLAGS"
-  LDFLAGS="$sim_ac_oiv_ldflags $LDFLAGS"
-  LIBS="$sim_ac_oiv_libs $LIBS"
-
-  AC_CACHE_CHECK([for Open Inventor developer kit],
-    sim_cv_lib_oiv_avail,
-    [AC_TRY_LINK([#include <Inventor/SoDB.h>],
-                 [SoDB::init();],
-                 sim_cv_lib_oiv_avail=yes,
-                 sim_cv_lib_oiv_avail=no)])
-
-  if test x"$sim_cv_lib_oiv_avail" = xyes; then
-    sim_ac_oiv_avail=yes
-    ifelse($1, , :, $1)
-  else
-    CPPFLAGS=$sim_ac_save_cppflags
-    LDFLAGS=$sim_ac_save_ldflags
-    LIBS=$sim_ac_save_libs
-    ifelse($2, , :, $2)
-  fi
-fi
-])
-
-
-
-dnl ************************************************************************
-
-dnl Usage:
-dnl  SIM_CHECK_OIV_XT([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-dnl
-dnl  Try to compile and link against the Xt GUI glue library for
-dnl  the Open Inventor development system. Sets this shell
-dnl  variable:
-dnl
-dnl    $sim_ac_oivxt_libs     (link libraries the linker needs for InventorXt)
-dnl
-dnl  The LIBS variable will also be modified accordingly. In addition,
-dnl  the variable $sim_ac_oivxt_avail is set to "yes" if the Xt glue
-dnl  library for the Open Inventor development system is found.
-dnl
-dnl
-dnl Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-
-AC_DEFUN(SIM_CHECK_OIV_XT,[
-sim_ac_oivxt_avail=no
-
-sim_ac_oivxt_libs="-lInventorXt"
-sim_ac_save_libs=$LIBS
-LIBS="$sim_ac_oivxt_libs $LIBS"
-
-AC_CACHE_CHECK([for Xt glue library in the Open Inventor developer kit],
-  sim_cv_lib_oivxt_avail,
-  [AC_TRY_LINK([#include <Inventor/Xt/SoXt.h>],
-               [(void)SoXt::init(0L, 0L);],
-               sim_cv_lib_oivxt_avail=yes,
-               sim_cv_lib_oivxt_avail=no)])
-
-if test x"$sim_cv_lib_oivxt_avail" = xyes; then
-  sim_ac_oivxt_avail=yes
-  ifelse($1, , :, $1)
-else
-  LIBS=$sim_ac_save_libs
-  ifelse($2, , :, $2)
-fi
-])
-
-
-dnl ************************************************************************
-
-dnl Usage:
-dnl  SIM_HAVE_SOPOLYGONOFFSET([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-dnl
-dnl  Check whether or not the SoPolygonOffset node is part of the
-dnl  Open Inventor development system. If it is found, the
-dnl  HAVE_SOPOLYGONOFFSET define is set.
-dnl
-dnl Author: Morten Eriksen, <mortene@sim.no>.
-
-AC_DEFUN(SIM_HAVE_SOPOLYGONOFFSET,[
-AC_CACHE_CHECK([for the SoPolygonOffset node],
-  sim_cv_sopolygonoffset,
-  [AC_TRY_LINK([#include <Inventor/nodes/SoPolygonOffset.h>],
-               [SoPolygonOffset * p = new SoPolygonOffset;],
-               sim_cv_sopolygonoffset=yes,
-               sim_cv_sopolygonoffset=no)])
-
-if test x"$sim_cv_sopolygonoffset" = xyes; then
-  AC_DEFINE(HAVE_SOPOLYGONOFFSET)
-  $1
-else
-  ifelse([$2], , :, [$2])
-fi
-])
 
 dnl ************************************************************************
 dnl Usage:
