@@ -245,14 +245,15 @@ SoXtWalkViewer::buildLeftTrim( // virtual, protected
 
   this->tiltwheel = this->getThumbWheel( LEFTDECORATION );
 
-  XmString labelstring = SoXt::encodeString( "H" );
   Widget label = XtVaCreateManagedWidget( "label",
     xmLabelWidgetClass, form,
-    XmNlabelString, labelstring,
     XmNleftAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_WIDGET,
     XmNbottomWidget, tiltwheel,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "H", 2,
     NULL );
 
   this->heightwheel = XtVaCreateManagedWidget( "heightwheel",

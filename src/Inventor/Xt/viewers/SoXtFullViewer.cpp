@@ -1582,15 +1582,14 @@ SoXtFullViewer::createFramedSeekPrefSheetGuts( // protected
     xmFrameWidgetClass, parent,
     NULL );
 
-  XmString labelstring;
-  labelstring = SoXt::encodeString( "Seek Settings" );
   XtVaCreateManagedWidget( "title",
     xmLabelGadgetClass, frame,
     XmNchildType, XmFRAME_TITLE_CHILD,
     XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "Seek Settings", strlen( "Seek Settings" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   Widget form = XtVaCreateManagedWidget( "form",
     xmFormWidgetClass, frame,
@@ -1613,15 +1612,14 @@ SoXtFullViewer::createFramedSeekDistPrefSheetGuts( // protected
   Widget frame = XtVaCreateManagedWidget( "seekdistframe",
     xmFrameWidgetClass, parent,
     NULL );
-  XmString labelstring;
-  labelstring = SoXt::encodeString( "Seek Distance Settings" );
   XtVaCreateManagedWidget( "seekdisttitle",
     xmLabelGadgetClass, frame,
     XmNchildType, XmFRAME_TITLE_CHILD,
     XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "Seek Distance Settings", strlen( "Seek Distance Settings" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   Widget form = XtVaCreateManagedWidget( "form",
     xmFormWidgetClass, frame,
@@ -1643,14 +1641,14 @@ SoXtFullViewer::createFramedZoomPrefSheetGuts( // protected
     xmFrameWidgetClass, parent,
     NULL );
 
-  XmString labelstring = SoXt::encodeString( "Zoom Settings" );
   XtVaCreateManagedWidget( "title",
     xmLabelGadgetClass, frame,
     XmNchildType, XmFRAME_TITLE_CHILD,
     XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "Zoom Settings", strlen( "Zoom Settings" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   this->createZoomPrefSheetGuts( frame );
 
@@ -1668,14 +1666,14 @@ SoXtFullViewer::createFramedClippingPrefSheetGuts(
     xmFrameWidgetClass, parent,
     NULL );
 
-  XmString labelstring = SoXt::encodeString( "Clipping Plane Settings" );
   XtVaCreateManagedWidget( "title",
     xmLabelGadgetClass, frame,
     XmNchildType, XmFRAME_TITLE_CHILD,
     XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "Clipping Plane Settings", strlen( "Clipping Plane Settings" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   this->createClippingPrefSheetGuts( frame );
   return frame;
@@ -1693,12 +1691,13 @@ SoXtFullViewer::createFramedStereoPrefSheetGuts(
   Widget frame = XtVaCreateManagedWidget( "stereoframe",
     xmFrameWidgetClass, parent, NULL );
 
-  XmString labelstring = SoXt::encodeString( "Stereo Viewing Settings" );
   Widget label = XtVaCreateManagedWidget( "stereoframelabel",
     xmLabelGadgetClass, frame,
     XmNchildType, XmFRAME_TITLE_CHILD,
     XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "Stereo Viewing Settings", strlen( "Stereo Viewing Settings" ) + 1,
     NULL );
 
   this->createStereoPrefSheetGuts( frame );
@@ -1716,12 +1715,13 @@ SoXtFullViewer::createFramedSpeedPrefSheetGuts(
   Widget frame = XtVaCreateManagedWidget( "speedframe",
     xmFrameWidgetClass, parent, NULL );
 
-  XmString labelstring = SoXt::encodeString( "Speed Settings" );
   Widget label = XtVaCreateManagedWidget( "speedframelabel",
     xmLabelGadgetClass, frame,
     XmNchildType, XmFRAME_TITLE_CHILD,
     XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "Speed Settings", strlen( "Speed Settings" ) + 1,
     NULL );
 
   this->createSpeedPrefSheetGuts( frame );
@@ -1751,16 +1751,15 @@ SoXtFullViewer::createSeekPrefSheetGuts( // protected
     XmNrightAttachment, XmATTACH_FORM,
     NULL );
 
-  XmString labelstring;
-  labelstring = SoXt::encodeString( "Seek animation time: " );
   Widget label = XtVaCreateManagedWidget( "seektime",
     xmLabelWidgetClass, line1,
-    XmNlabelString, labelstring,
     XmNtopAttachment, XmATTACH_FORM,
     XmNleftAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "Seek animation time: ", strlen( "Seek animation time: " ) + 1, 
     NULL );
-  XtFree( (char *) labelstring );
 
   this->seektimefield = XtVaCreateManagedWidget( "seektimeinput",
     xmTextFieldWidgetClass, line1,
@@ -1770,6 +1769,7 @@ SoXtFullViewer::createSeekPrefSheetGuts( // protected
     XmNbottomAttachment, XmATTACH_FORM,
     XmNwidth, 60,
     NULL );
+
   XtAddCallback( this->seektimefield, XmNactivateCallback,
     SoXtFullViewer::seektimechangedCB, (XtPointer) this );
   XtAddCallback( this->seektimefield, XmNlosingFocusCallback,
@@ -1797,15 +1797,15 @@ SoXtFullViewer::createSeekPrefSheetGuts( // protected
     XmNbottomAttachment, XmATTACH_FORM,
     NULL );
 
-  labelstring = SoXt::encodeString( "Seek to: " );
   Widget tolabel = XtVaCreateManagedWidget( "tolabel",
     xmLabelWidgetClass, line2,
-    XmNlabelString, labelstring,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "Seek to: ", strlen( "Seek to: " ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   this->pointtoggle = XtVaCreateManagedWidget( "point",
     xmToggleButtonWidgetClass, line2,
@@ -1816,6 +1816,7 @@ SoXtFullViewer::createSeekPrefSheetGuts( // protected
     XmNbottomAttachment, XmATTACH_FORM,
     XmNset, this->isDetailSeek() ? True : False,
     NULL );
+
   XtAddCallback( this->pointtoggle, XmNvalueChangedCallback,
     SoXtFullViewer::pointtoggledCB, (XtPointer) this );
 
@@ -1828,6 +1829,7 @@ SoXtFullViewer::createSeekPrefSheetGuts( // protected
     XmNbottomAttachment, XmATTACH_FORM,
     XmNset, this->isDetailSeek() ? False : True,
     NULL );
+
   XtAddCallback( this->objecttoggle, XmNvalueChangedCallback,
     SoXtFullViewer::objecttoggledCB, (XtPointer) this );
 
@@ -1856,16 +1858,15 @@ SoXtFullViewer::createSeekDistPrefSheetGuts( // protected
     XmNtopAttachment, XmATTACH_FORM,
     NULL );
 
-  XmString labelstring;
-  labelstring = SoXt::encodeString( "Seek distance: " );
   Widget label = XtVaCreateManagedWidget( "seekdistlabel",
     xmLabelWidgetClass, line1,
     XmNtopAttachment, XmATTACH_FORM,
     XmNleftAttachment, XmATTACH_FORM,
-    XmNlabelString, labelstring,
     XmNbottomAttachment, XmATTACH_FORM,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "Seek distance: ", strlen( "Seek distance: " ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   Widget wheel = XtVaCreateManagedWidget( "distance",
     soxtThumbWheelWidgetClass, line1,
@@ -1906,21 +1907,21 @@ SoXtFullViewer::createSeekDistPrefSheetGuts( // protected
     XmNrightAttachment, XmATTACH_FORM,
     NULL );
 
-  labelstring = SoXt::encodeString( "percentage" );
   this->percenttoggle = XtVaCreateManagedWidget( "percentagetoggle",
     xmToggleButtonWidgetClass, line2,
     XmNtopAttachment, XmATTACH_FORM,
     XmNleftAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "percentage", strlen( "percentage" ) + 1,
     XmNindicatorType, XmONE_OF_MANY,
     XmNset, this->seekdistaspercentage ? True : False,
     NULL );
-  XtFree( (char *) labelstring );
+
   XtAddCallback( this->percenttoggle, XmNvalueChangedCallback,
     SoXtFullViewer::percenttoggledCB, (XtPointer) this );
 
-  labelstring = SoXt::encodeString( "absolute" );
   this->absolutetoggle = XtVaCreateManagedWidget( "absolutetoggle",
     xmToggleButtonWidgetClass, line2,
     XmNtopAttachment, XmATTACH_FORM,
@@ -1928,10 +1929,12 @@ SoXtFullViewer::createSeekDistPrefSheetGuts( // protected
     XmNleftWidget, this->percenttoggle,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNindicatorType, XmONE_OF_MANY,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "absolute", strlen( "absolute" ) + 1,
     XmNset, this->seekdistaspercentage ? False : True,
     NULL );
-  XtFree( (char *) labelstring );
+
   XtAddCallback( this->absolutetoggle, XmNvalueChangedCallback,
     SoXtFullViewer::absolutetoggledCB, (XtPointer) this );
 
@@ -2009,16 +2012,16 @@ SoXtFullViewer::createZoomPrefSheetGuts( // protected
   XtAddCallback( this->zoomvalue, XmNlosingFocusCallback,
     SoXtFullViewer::zoomvaluechangedCB, (XtPointer) this );
 
-  XmString labelstring = SoXt::encodeString( " Value: " );
   Widget valuelabel = XtVaCreateManagedWidget( "valuelabel",
     xmLabelWidgetClass, form,
     XmNtopAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_WIDGET,
     XmNrightWidget, zoomvalue,
     XmNbottomAttachment, XmATTACH_FORM,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      " Value: ", strlen( " Value: " ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   this->zoomto = XtVaCreateManagedWidget( "to",
     xmTextFieldWidgetClass, form,
@@ -2093,20 +2096,18 @@ Widget
 SoXtFullViewer::createClippingPrefSheetGuts( // protected
   Widget parent )
 {
-  XmString labelstring;
-
   Widget form = XtVaCreateManagedWidget( "clippingprefs",
     xmFormWidgetClass, parent, NULL );
 
-  labelstring = SoXt::encodeString( "auto" );
   this->autocliptoggle = XtVaCreateManagedWidget( "autocliptoggle",
     xmToggleButtonWidgetClass, form,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
     XmNset, this->isAutoClipping() ? True : False,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "auto", strlen( "auto" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   XtAddCallback( this->autocliptoggle, XmNvalueChangedCallback,
     SoXtFullViewer::autocliptoggledCB, (XtPointer) this );
@@ -2164,7 +2165,6 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
 
   SoXtThumbWheelSetValue( this->farwheel, fardistance );
 
-  labelstring = SoXt::encodeString( "Far plane:" );
   Widget farlabel = XtVaCreateManagedWidget( "farlabel",
     xmLabelWidgetClass, form,
     XmNleftAttachment, XmATTACH_OPPOSITE_WIDGET,
@@ -2174,9 +2174,10 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
     XmNbottomAttachment, XmATTACH_WIDGET,
     XmNbottomWidget, this->farwheel,
     XmNbottomOffset, 2,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "Far plane:", strlen( "Far plane:" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   float neardistance = 0.001f;
   if ( camera != NULL )
@@ -2228,7 +2229,6 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
   XtAddCallback( this->nearwheel, XmNdisarmCallback,
     SoXtFullViewer::decreaseInteractiveCountCB, (XtPointer) this );
 
-  labelstring = SoXt::encodeString( "Near plane:" );
   Widget nearlabel = XtVaCreateManagedWidget( "nearlabel",
     xmLabelWidgetClass, form,
     XmNleftAttachment, XmATTACH_OPPOSITE_WIDGET,
@@ -2237,9 +2237,10 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
     XmNrightWidget, this->nearvalue,
     XmNbottomAttachment, XmATTACH_OPPOSITE_WIDGET,
     XmNbottomWidget, farlabel,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "Near plane:", strlen( "Near plane:" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   return form;
 } // createClippingPrefSheetGuts()
@@ -2256,15 +2257,15 @@ SoXtFullViewer::createStereoPrefSheetGuts( // protected
   Widget form = XtVaCreateManagedWidget( "stereoguts",
     xmFormWidgetClass, parent, NULL );
 
-  XmString labelstring = SoXt::encodeString( "stereo viewing" );
   this->stereotoggle = XtVaCreateManagedWidget( "stereotoggle",
     xmToggleButtonWidgetClass, form,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
     XmNset, False,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "stereo viewing", strlen( "stereo viewing" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   XtAddCallback( this->stereotoggle, XmNvalueChangedCallback,
     SoXtFullViewer::stereotoggledCB, (XtPointer) this );
@@ -2284,38 +2285,38 @@ SoXtFullViewer::createSpeedPrefSheetGuts( // protected
   Widget form = XtVaCreateManagedWidget( "speedform",
     xmFormWidgetClass, parent, NULL );
 
-  XmString labelstring = SoXt::encodeString( "Viewer speed: " );
   Widget label = XtVaCreateManagedWidget( "speedlabel",
     xmLabelWidgetClass, form,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "Viewer speed: ", strlen( "Viewer speed: " ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
-  labelstring = SoXt::encodeString( "increase" );
   this->incspeedbutton = XtVaCreateManagedWidget( "incbutton",
     xmPushButtonWidgetClass, form,
     XmNleftAttachment, XmATTACH_WIDGET,
     XmNleftWidget, label,
     XmNtopAttachment, XmATTACH_FORM,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "increase", strlen( "increase" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   XtAddCallback( this->incspeedbutton, XmNactivateCallback,
     SoXtFullViewer::speedIncCB, (XtPointer) this );
 
-  labelstring = SoXt::encodeString( "decrease" );
   this->decspeedbutton = XtVaCreateManagedWidget( "decbutton",
     xmPushButtonWidgetClass, form,
     XmNleftAttachment, XmATTACH_WIDGET,
     XmNleftWidget, this->incspeedbutton,
     XmNtopAttachment, XmATTACH_FORM,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "decrease", strlen( "decrease" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   XtAddCallback( this->decspeedbutton, XmNactivateCallback,
     SoXtFullViewer::speedDecCB, (XtPointer) this );

@@ -22,6 +22,8 @@ static const char rcsid[] =
 
 #include <assert.h>
 
+#include <X11/keysym.h>
+
 #include <Xm/PushB.h>
 
 #include <Inventor/errors/SoDebugError.h>
@@ -188,48 +190,55 @@ SoXtPlaneViewer::createViewerButtons( // virtual, protected
 {
   inherited::createViewerButtons( parent, buttonlist );
 
-  XmString labelstring;
-
-  labelstring = SoXt::encodeString( "X" );
   this->buttons.x = XtVaCreateManagedWidget( "xbutton",
     xmPushButtonWidgetClass, parent,
-    XmNlabelString, labelstring,
+    XmNshadowType, XmSHADOW_OUT,
     XmNhighlightThickness, 0,
     XmNshadowThickness, 2,
+    XmNtraversalOn, False,
     XmNwidth, 30,
     XmNheight, 30,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "X", strlen( "X" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
+
   buttonlist->append( this->buttons.x );
 
   XtAddCallback( this->buttons.x, XmNactivateCallback,
     SoXtPlaneViewer::xbuttonCB, (XtPointer) this );
 
-  labelstring = SoXt::encodeString( "Y" );
   this->buttons.y = XtVaCreateManagedWidget( "ybutton",
     xmPushButtonWidgetClass, parent,
-    XmNlabelString, labelstring,
+    XmNshadowType, XmSHADOW_OUT,
     XmNhighlightThickness, 0,
     XmNshadowThickness, 2,
+    XmNtraversalOn, False,
     XmNwidth, 30,
     XmNheight, 30,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "Y", strlen( "Y" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
+
   buttonlist->append( this->buttons.y );
 
   XtAddCallback( this->buttons.y, XmNactivateCallback,
     SoXtPlaneViewer::ybuttonCB, (XtPointer) this );
 
-  labelstring = SoXt::encodeString( "Z" );
   this->buttons.z = XtVaCreateManagedWidget( "zbutton",
     xmPushButtonWidgetClass, parent,
-    XmNlabelString, labelstring,
+    XmNshadowType, XmSHADOW_OUT,
     XmNhighlightThickness, 0,
     XmNshadowThickness, 2,
+    XmNtraversalOn, False,
     XmNwidth, 30,
     XmNheight, 30,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "Z", strlen( "Z" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
+
   buttonlist->append( this->buttons.z );
 
   XtAddCallback( this->buttons.z, XmNactivateCallback,
@@ -243,6 +252,9 @@ SoXtPlaneViewer::createViewerButtons( // virtual, protected
     XmNtraversalOn, False,
     XmNwidth, 30,
     XmNheight, 30,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "C", strlen( "C" ) + 1,
     NULL );
 
   XtAddCallback( this->buttons.camera, XmNactivateCallback,
@@ -338,6 +350,9 @@ SoXtPlaneViewer::processEvent(
 
   switch ( event->type ) {
   case ButtonPress:
+    common->setPointerLocation( mousepos );
+    common->setPointerLocation( mousepos );
+    this->prevMousePosition = mousepos_normalized;
     switch ( ((XButtonEvent *) event)->button ) {
     case 1:
       if ( this->mode == IDLE_MODE ) {
@@ -424,7 +439,11 @@ SoXtPlaneViewer::processEvent(
       break;
 
     case ROTZ_MODE:
+    {
+      common->setPointerLocation( mousepos );
+      common->rotateZ( common->getPointerOrigoMotionAngle() );
       break;
+    }
 
     default:
       break;
@@ -432,10 +451,34 @@ SoXtPlaneViewer::processEvent(
     break;
 
   case KeyPress:
-    break;
-
   case KeyRelease:
+  {
+    char keybuf[8];
+    int keybuflen;
+    KeySym keysym = 0;
+
+    keybuflen = XLookupString( (XKeyEvent *) event, keybuf, 8, &keysym, NULL );
+
+    switch ( keysym ) {
+    case XK_Control_L:
+    case XK_Control_R:
+      if ( event->type == KeyPress ) {
+        this->mode = ROTZ_MODE;
+        common->setCanvasSize( canvassize );
+        common->setPointerLocation( mousepos );
+        common->setPointerLocation( mousepos );
+	this->scheduleRedraw();
+      } else {
+        this->mode = IDLE_MODE;
+	this->scheduleRedraw();
+      }
+      break;
+    default:
+      break;
+    }
+
     break;
+  }
 
   default:
     break;
@@ -446,6 +489,8 @@ SoXtPlaneViewer::processEvent(
 
   inherited::processEvent( event );
 } // processEvent()
+
+// *************************************************************************
 
 /*!
 */
@@ -466,7 +511,8 @@ SoXtPlaneViewer::actualRedraw(
   void )
 {
   inherited::actualRedraw();
-  // draw the roll graphics from here
+  if ( this->mode == ROTZ_MODE )
+    common->drawRotateGraphics();
 } // actualRedraw()
 
 /*!

@@ -871,14 +871,14 @@ SoXtExaminerViewer::createFramedSpinAnimPrefSheetGuts(
   Widget frame = XtVaCreateManagedWidget( "spinanimframe",
     xmFrameWidgetClass, parent, NULL );
 
-  XmString labelstring = SoXt::encodeString( "Spin Animation Settings" );
   Widget label = XtVaCreateManagedWidget( "spinanimlabel",
     xmLabelGadgetClass, frame,
     XmNchildType, XmFRAME_TITLE_CHILD,
     XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "Spin Animation Settings", strlen( "Spin Animation Settings" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   this->createSpinAnimPrefSheetGuts( frame );
 
@@ -896,16 +896,16 @@ SoXtExaminerViewer::createSpinAnimPrefSheetGuts(
   Widget form = XtVaCreateManagedWidget( "spinanimguts",
     xmFormWidgetClass, parent, NULL );
 
-  XmString labelstring = SoXt::encodeString( "enable spin animation" );
   this->spinanimtoggle = XtVaCreateManagedWidget( "spinanimtoggle",
     xmToggleButtonWidgetClass, form,
     XmNtopAttachment, XmATTACH_FORM,
     XmNleftAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "enable spin animation", strlen( "enable spin animation" ) + 1,
     XmNset, common->isAnimationEnabled(),
     NULL );
-  XtFree( (char *) labelstring );
 
   XtAddCallback( this->spinanimtoggle, XmNvalueChangedCallback,
     SoXtExaminerViewer::spinanimtoggledCB, (XtPointer) this );
@@ -941,14 +941,13 @@ SoXtExaminerViewer::createFramedRotAxisPrefSheetGuts(
   Widget frame = XtVaCreateManagedWidget( "rotaxisframe",
     xmFrameWidgetClass, parent, NULL );
 
-  XmString labelstring = SoXt::encodeString( "Rotation Point Axes Settings" );
   Widget label = XtVaCreateManagedWidget( "rotaxislabel",
     xmLabelGadgetClass, frame,
     XmNchildType, XmFRAME_TITLE_CHILD,
     XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
-    XmNlabelString, labelstring,
+      XmNlabelString, XmRString,
+      "Rotation Point Axes Settings", strlen( "Rotation Point Axes Settings" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   this->createRotAxisPrefSheetGuts( frame );
 
@@ -968,36 +967,38 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
   Widget form = XtVaCreateManagedWidget( "rotaxisguts",
     xmFormWidgetClass, parent, NULL );
 
-  XmString labelstring = SoXt::encodeString( "display rotation point" );
   this->rotpointaxestoggle = XtVaCreateManagedWidget( "rotpointaxestoggle",
     xmToggleButtonWidgetClass, form,
     XmNtopAttachment, XmATTACH_FORM,
     XmNleftAttachment, XmATTACH_FORM,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "display rotation point", strlen( "display rotation point" ) + 1,
     XmNset, this->isFeedbackVisible(),
     NULL );
-  XtFree( (char *) labelstring );
+
   XtAddCallback( this->rotpointaxestoggle, XmNvalueChangedCallback,
     SoXtExaminerViewer::rotpointtoggledCB, (XtPointer) this );
 
-  labelstring = SoXt::encodeString( "overlay graphics" );
   this->rotaxesoverlaytoggle = XtVaCreateManagedWidget( "rotaxesoverlaytoggle",
     xmToggleButtonWidgetClass, form,
     XmNtopAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_FORM,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "overlay graphics", strlen( "overlay graphics" ) + 1,
     XmNset, True,
     NULL );
-  XtFree( (char *) labelstring );
+
   XtAddCallback( this->rotaxesoverlaytoggle, XmNvalueChangedCallback,
     SoXtExaminerViewer::rotaxesoverlaytoggledCB, (XtPointer) this );
 
-  labelstring = SoXt::encodeString( "pixels" );
   Widget pixelslabel = XtVaCreateWidget( "pixelslabel",
     xmLabelWidgetClass, form,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "pixels", strlen( "pixels" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   Dimension width;
   XtVaGetValues( pixelslabel, XmNwidth, &width, NULL );
@@ -1012,6 +1013,7 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
     XmNeditable, this->isFeedbackVisible() ? True : False,
     XmNcursorPositionVisible, this->isFeedbackVisible() ? True : False,
     NULL );
+
   XmTextSetMaxLength( this->axessizefield, 3 );
   char buffer[16];
   sprintf( buffer, "%d", this->getFeedbackSize() );
@@ -1049,7 +1051,6 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
   XtAddCallback( this->axessizewheel, XmNvalueChangedCallback,
     SoXtExaminerViewer::axeswheelmovedCB, (XtPointer) this );
 
-  labelstring = SoXt::encodeString( "axes size" );
   Widget label = XtVaCreateManagedWidget( "axeslabel",
     xmLabelWidgetClass, form,
     XmNtopAttachment, XmATTACH_OPPOSITE_WIDGET,
@@ -1059,9 +1060,10 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
     XmNrightOffset, 2,
     XmNbottomAttachment, XmATTACH_OPPOSITE_WIDGET,
     XmNbottomWidget, this->axessizewheel,
-    XmNlabelString, labelstring,
+    XtVaTypedArg,
+      XmNlabelString, XmRString,
+      "axes size", strlen( "axes size" ) + 1,
     NULL );
-  XtFree( (char *) labelstring );
 
   return form;
 } // createRotAxisPrefSheetGuts()
