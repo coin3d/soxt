@@ -526,11 +526,13 @@ SoXtLinuxJoystick::makeMotion3Event( // private
     this->motion3Event = new SoMotion3Event;
 
   this->motion3Event->setTranslation(
-    SbVec3f( event->trans_x, event->trans_y, event->trans_z ) );
+    SbVec3f( event->trans_x,
+             event->trans_y,
+             0 - event->trans_z ) );
 
   SbRotation xrot( SbVec3f( 1, 0, 0 ), event->rot_x );
   SbRotation yrot( SbVec3f( 0, 1, 0 ), event->rot_y );
-  SbRotation zrot( SbVec3f( 0, 0, 1 ), event->rot_z );
+  SbRotation zrot( SbVec3f( 0, 0, 1 ), 0 - event->rot_z );
 
   this->motion3Event->setRotation( xrot * yrot * zrot );
 
