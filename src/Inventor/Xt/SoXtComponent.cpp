@@ -36,6 +36,7 @@
 #include <Inventor/Xt/SoXt.h>
 
 #include <Inventor/Xt/SoXtComponent.h>
+#include <Inventor/Xt/SoXtComponentP.h>
 #include <Inventor/Xt/SoXtGLWidget.h>
 #include <Inventor/Xt/SoXtRenderArea.h>
 #include <Inventor/Xt/viewers/SoXtViewer.h>
@@ -64,52 +65,30 @@
 
 // *************************************************************************
 
-// The private data for the SoXtComponent.
+// The private data and code for the SoXtComponent.
 
-class SoXtComponentP {
-public:
-  // Constructor.
-  SoXtComponentP(const SoXtComponent * o)
-    : widget(NULL), widgetname(NULL), widgetclass(NULL), title(NULL),
-      icontitle(NULL), size(SbVec2s(-1, -1)),
-      closecbs(NULL), visibilitycbs(NULL),
-      visibilitystate(FALSE), fullscreen(FALSE)
-  {
-    this->owner = o;
-  }
+SoXtComponentP::SoXtComponentP(SoXtComponent * o)
+  : SoGuiComponentP(o)
+{
+  this->widget= NULL;
+  this->widgetname = NULL;
+  this->widgetclass = NULL;
+  this->title = NULL;
+  this->icontitle = NULL;
+  this->size = SbVec2s(-1, -1);
+  this->closecbs = NULL;
+  this->visibilitycbs = NULL;
+  this->visibilitystate = FALSE;
+  this->fullscreen = FALSE;
+}
 
-
-  static Cursor getNativeCursor(Display * d,
-                                const SoXtCursor::CustomCursor * cc);
-
-  Widget parent;
-  Widget widget;
-  char * widgetname;
-  char * widgetclass;
-  char * title;
-  char * icontitle;
-
-  SbBool embedded;
-
-  SbVec2s size;
-
-  static SbPList * widgets;
-  static SbPList * components;
-
-  SbPList * closecbs;
-  SbPList * visibilitycbs;
-  SbBool visibilitystate, fullscreen;
-
-private:
-  const SoXtComponent * owner;
-  static SbDict * cursordict;
-};
+SoXtComponentP::~SoXtComponentP()
+{
+}
 
 SbPList * SoXtComponentP::widgets = NULL;
 SbPList * SoXtComponentP::components = NULL;
 SbDict * SoXtComponentP::cursordict = NULL;
-
-#define PRIVATE(o) (o->pimpl)
 
 // *************************************************************************
 

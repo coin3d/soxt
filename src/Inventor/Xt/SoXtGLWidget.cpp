@@ -41,6 +41,7 @@
 #include <Inventor/Xt/widgets/SoXtGLArea.h>
 
 #include <Inventor/Xt/SoXtGLWidget.h>
+#include <Inventor/Xt/SoXtGLWidgetP.h>
 #include <Inventor/Xt/SoAny.h>
 
 #include <Xm/Xm.h>
@@ -58,47 +59,29 @@
 
 // *************************************************************************
 
-// The private data for the SoQtGLWidget.
+// The private data and code for the SoXtGLWidget.
 
-class SoXtGLWidgetP {
-public:
-  SoXtGLWidgetP(const SoXtGLWidget * w) :
-    glsize(SbVec2s(-1, -1)), normalcolormapsize(0), overlaycolormapsize(0),
-    transparentpixel(0), border(FALSE), borderwidth(2),
-    glxwidget(NULL), glxmanager(NULL),
-    normalcontext(NULL), normalvisual(NULL),
-    overlaycontext(NULL), overlayvisual(NULL),
-    doublebuffer(TRUE)
-  {
-    this->owner = w;
-  }
+SoXtGLWidgetP::SoXtGLWidgetP(SoXtGLWidget * w)
+  : SoGuiGLWidgetP(w)
+{
+  this->glsize = SbVec2s(-1, -1);
+  this->normalcolormapsize = 0;
+  this->overlaycolormapsize = 0;
+  this->transparentpixel = 0;
+  this->border = FALSE;
+  this->borderwidth = 2;
+  this->glxwidget = NULL;
+  this->glxmanager = NULL;
+  this->normalcontext = NULL;
+  this->normalvisual = NULL;
+  this->overlaycontext = NULL;
+  this->overlayvisual = NULL;
+  this->doublebuffer = TRUE;
+}
 
-  void initNormalContext(void);
-
-  SbVec2s glsize; // cached GL widget size
-
-  // FIXME: none of these are really supported, and the initialization
-  // values are probably wrong. 20011012 mortene.
-  int normalcolormapsize;
-  int overlaycolormapsize;
-  unsigned long transparentpixel;
-
-  SbBool border;
-  int borderwidth;
-
-  Widget glxwidget;
-  Widget glxmanager;
-  GLXContext normalcontext;
-  XVisualInfo * normalvisual;
-  GLXContext overlaycontext;
-  XVisualInfo * overlayvisual;
-  SbBool doublebuffer;
-
-private:
-  const SoXtGLWidget * owner;
-};
-
-#define PRIVATE(o) (o->pimpl)
+SoXtGLWidgetP::~SoXtGLWidgetP()
+{
+}
 
 // *************************************************************************
 
@@ -577,7 +560,7 @@ SoXtGLWidgetP::initNormalContext(void)
     XtAppError(SoXt::getAppContext(), "no context");
   }
   else {
-    SoAny::si()->registerGLContext((void *)this->owner, (void *)display, (void *)screen);
+    SoAny::si()->registerGLContext((void *)PUBLIC(this), (void *)display, (void *)screen);
   }
 }
 

@@ -26,7 +26,9 @@ libSoXt_la_SOURCES = \
 	SoXtInternal.cpp SoXtInternal.h \
 	SoXt.cpp \
 	SoXtComponent.cpp \
+	SoXtComponentP.h \
 	SoXtGLWidget.cpp \
+	SoXtGLWidgetP.h \
 	SoXtResource.cpp SoXtResource.h
 
 nodist_libSoXt_la_SOURCES = \
