@@ -842,7 +842,7 @@ SoXtExaminerViewer::createPrefSheet( // protected, virtual
   void )
 {
   if ( ! this->prefshell ) {
-#if SOXT_DEBUG
+#if SOXT_DEBUG && 0
     SoDebugError::postInfo( "SoXtExaminerViewer::createPrefSheet",
       "creating preferences window" );
 #endif // SOXT_DEBUG
