@@ -24,14 +24,6 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-/*!
-  \class SoXtComponent Inventor/Xt/SoXtComponent.h
-  \brief The SoXtComponent class is the base class for all SoXt components.
-  \ingroup components
-*/
-
-// *************************************************************************
-
 #include <assert.h>
 #include <string.h>
 
@@ -52,6 +44,31 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXt.h>
 
 #include <Inventor/Xt/SoXtComponent.h>
+#include <Inventor/Xt/SoXtGLWidget.h>
+#include <Inventor/Xt/SoXtRenderArea.h>
+#include <Inventor/Xt/viewers/SoXtViewer.h>
+
+// *************************************************************************
+
+/*!
+  \class SoXtComponent Inventor/Xt/SoXtComponent.h
+  \brief The SoXtComponent class is the base class for all SoXt components.
+  \ingroup components
+*/
+
+// *************************************************************************
+
+SOXT_TYPED_ABSTRACT_OBJECT_SOURCE(SoXtComponent, SoXtTypedObject);
+
+void
+SoXtComponent::initClasses(
+  void )
+{
+  SoXtComponent::initClass();
+  SoXtGLWidget::initClass();
+  SoXtRenderArea::initClass();
+  SoXtViewer::initClass();
+} // initClasses()
 
 // *************************************************************************
 

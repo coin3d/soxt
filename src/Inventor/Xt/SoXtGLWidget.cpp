@@ -24,14 +24,6 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-/*!
-  \class SoXtGLWidget Inventor/Xt/SoXtGLWidget.h
-  \brief The SoXtGLWidget class manages GL contexts.
-  \ingroup components
-*/
-
-// *************************************************************************
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -56,6 +48,16 @@ static const char rcsid[] =
 #include <Inventor/Xt/widgets/SoXtGLArea.h>
 
 #include <Inventor/Xt/SoXtGLWidget.h>
+
+// *************************************************************************
+
+/*!
+  \class SoXtGLWidget Inventor/Xt/SoXtGLWidget.h
+  \brief The SoXtGLWidget class manages GL contexts.
+  \ingroup components
+*/
+
+SOXT_TYPED_ABSTRACT_OBJECT_SOURCE(SoXtGLWidget, SoXtComponent);
 
 // *************************************************************************
 

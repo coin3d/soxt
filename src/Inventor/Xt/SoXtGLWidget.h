@@ -37,6 +37,7 @@ enum GLModes {           // should we keep these?
 };
 
 class SOXT_DLL_EXPORT SoXtGLWidget : public SoXtComponent {
+  SOXT_TYPED_ABSTRACT_OBJECT_HEADER(SoXtGLWidget);
   typedef SoXtComponent inherited;
 
 public:

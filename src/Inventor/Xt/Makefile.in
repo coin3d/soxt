@@ -139,6 +139,8 @@ libSoXt_la_SOURCES = \
 	So@Gui@.cpp \
 	So@Gui@Clipboard.h \
 	So@Gui@Clipboard.cpp \
+	So@Gui@TypedObject.h \
+	So@Gui@TypedObject.cpp \
 	So@Gui@Component.h \
 	So@Gui@Component.cpp \
 	So@Gui@Cursors.h \
@@ -187,6 +189,7 @@ libSoXtincdir = $(includedir)/Inventor/@Gui@
 libSoXtinc_HEADERS = \
 	So@Gui@.h \
 	So@Gui@Clipboard.h \
+	So@Gui@TypedObject.h \
 	So@Gui@Component.h \
 	So@Gui@Cursors.h \
 	So@Gui@DirectionalLightEditor.h \
@@ -223,12 +226,12 @@ libSoXt_la_DEPENDENCIES =  devices/libSoXtDevices.la \
 widgets/libSoXtWidgets.la viewers/libSoXtViewers.la
 am_libSoXt_la_OBJECTS =  So@Gui@RenderArea.lo SoAnyMaterialList.lo \
 SoAnyMaterialListBuiltins.lo So@Gui@.lo So@Gui@Clipboard.lo \
-So@Gui@Component.lo So@Gui@Cursors.lo So@Gui@DirectionalLightEditor.lo \
-So@Gui@GLWidget.lo So@Gui@Icons.lo So@Gui@LightSliderSet.lo \
-So@Gui@MaterialEditor.lo So@Gui@MaterialList.lo \
-So@Gui@MaterialSliderSet.lo So@Gui@PrintDialog.lo So@Gui@Resource.lo \
-So@Gui@SliderSet.lo So@Gui@SliderSetBase.lo \
-So@Gui@TransformSliderSet.lo
+So@Gui@TypedObject.lo So@Gui@Component.lo So@Gui@Cursors.lo \
+So@Gui@DirectionalLightEditor.lo So@Gui@GLWidget.lo So@Gui@Icons.lo \
+So@Gui@LightSliderSet.lo So@Gui@MaterialEditor.lo \
+So@Gui@MaterialList.lo So@Gui@MaterialSliderSet.lo \
+So@Gui@PrintDialog.lo So@Gui@Resource.lo So@Gui@SliderSet.lo \
+So@Gui@SliderSetBase.lo So@Gui@TransformSliderSet.lo
 libSoXt_la_OBJECTS =  $(am_libSoXt_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -256,7 +259,8 @@ $(DEPDIR)/So@Gui@MaterialList.Plo \
 $(DEPDIR)/So@Gui@MaterialSliderSet.Plo $(DEPDIR)/So@Gui@PrintDialog.Plo \
 $(DEPDIR)/So@Gui@RenderArea.Plo $(DEPDIR)/So@Gui@Resource.Plo \
 $(DEPDIR)/So@Gui@SliderSet.Plo $(DEPDIR)/So@Gui@SliderSetBase.Plo \
-$(DEPDIR)/So@Gui@TransformSliderSet.Plo $(DEPDIR)/SoAnyMaterialList.Plo \
+$(DEPDIR)/So@Gui@TransformSliderSet.Plo \
+$(DEPDIR)/So@Gui@TypedObject.Plo $(DEPDIR)/SoAnyMaterialList.Plo \
 $(DEPDIR)/SoAnyMaterialListBuiltins.Plo
 DIST_COMMON =  $(libSoXtinc_HEADERS) Makefile.am Makefile.in
 
@@ -454,6 +458,7 @@ maintainer-clean-tags:
 @AMDEP@include $(DEPDIR)/So@Gui@SliderSet.Plo
 @AMDEP@include $(DEPDIR)/So@Gui@SliderSetBase.Plo
 @AMDEP@include $(DEPDIR)/So@Gui@TransformSliderSet.Plo
+@AMDEP@include $(DEPDIR)/So@Gui@TypedObject.Plo
 @AMDEP@include $(DEPDIR)/SoAnyMaterialList.Plo
 @AMDEP@include $(DEPDIR)/SoAnyMaterialListBuiltins.Plo
 

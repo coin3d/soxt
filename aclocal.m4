@@ -1927,6 +1927,34 @@ fi
 ])
 
 
+# **************************************************************************
+# SIM_AC_GLU_READY_IFELSE( [ACTION-IF-TRUE], [ACTION-IF-FALSE] )
+
+AC_DEFUN([SIM_AC_GLU_READY_IFELSE],
+[AC_CACHE_CHECK(
+  [if GLU is available as part of GL library],
+  [sim_cv_glu_ready],
+  [AC_TRY_LINK(
+    [
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif /* HAVE_WINDOWS_H */
+#include <GL/gl.h>
+#include <GL/glu.h>
+],
+    [
+gluSphere(0L, 1.0, 1, 1);
+],
+    [sim_cv_glu_ready=true],
+    [sim_cv_glu_ready=false])])
+if ${sim_cv_glu_ready}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_GLU_READY_IFELSE()
+
+
 # Usage:
 #  SIM_AC_GLU_NURBSOBJECT([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
@@ -2049,6 +2077,58 @@ fi
 # Author: Morten Eriksen, <mortene@sim.no>.
 #
 
+AC_DEFUN([SIM_AC_HAVE_INVENTOR_IMAGE_IFELSE], [
+
+sim_ac_oiv_image_avail=false
+
+if test x"$with_inventor" != xno; then
+  if test x"$with_inventor" != xyes; then
+    sim_ac_oiv_image_cppflags="-I${with_inventor}/include"
+    sim_ac_oiv_image_ldflags="-L${with_inventor}/lib"
+  else
+    AC_MSG_CHECKING(value of the OIVHOME environment variable)
+    if test x"$OIVHOME" = x; then
+      AC_MSG_RESULT([empty])
+      AC_MSG_WARN([OIVHOME environment variable not set -- this might be an indication of a problem])
+    else
+      AC_MSG_RESULT([$OIVHOME])
+      sim_ac_oiv_image_cppflags="-I$OIVHOME/include"
+      sim_ac_oiv_image_ldflags="-L$OIVHOME/lib"
+    fi
+  fi
+  sim_ac_oiv_image_libs="-limage"
+
+  AC_LANG_PUSH(C)
+  sim_ac_save_cppflags=$CPPFLAGS
+  sim_ac_save_ldflags=$LDFLAGS
+  sim_ac_save_libs=$LIBS
+  CPPFLAGS="$sim_ac_oiv_image_cppflags $CPPFLAGS"
+  LDFLAGS="$sim_ac_oiv_image_ldflags $LDFLAGS"
+  LIBS="$sim_ac_oiv_image_libs $LIBS"
+  AC_MSG_CHECKING([for the Open Inventor image library])
+  AC_TRY_LINK(,
+    [img_read();],
+    [sim_ac_oiv_image_avail=true],
+    [sim_ac_oiv_image_avail=false])
+  if $sim_ac_oiv_image_avail; then
+    AC_MSG_RESULT([found])
+  else
+    AC_MSG_RESULT([not found])
+  fi
+  CPPFLAGS=$sim_ac_save_cppflags
+  LDFLAGS=$sim_ac_save_ldflags
+  LIBS=$sim_ac_save_libs
+  AC_LANG_POP
+fi
+
+if $sim_ac_oiv_image_avail; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+
+])
+
 AC_DEFUN([SIM_CHECK_INVENTOR], [
 AC_ARG_WITH(
   [inventor],
@@ -2090,7 +2170,7 @@ EOF
     sim_ac_oiv_enter="#include <SoWinEnterScope.h>"
     sim_ac_oiv_leave="#include <SoWinLeaveScope.h>"
   else
-    sim_ac_oiv_libs="-lInventor -limage"
+    sim_ac_oiv_libs="-lInventor"
   fi
 
   sim_ac_save_cppflags=$CPPFLAGS
@@ -2169,6 +2249,11 @@ fi
 #
 # Author: Morten Eriksen, <mortene@sim.no>.
 #
+# TODO:
+#
+#     [20001002:mortene]   make a macro SIM_AC_HAVE_INVENTOR_NODE to replace
+#                          this macro and the SIM_AC_HAVE_SOEXTSELECTION
+#                          macro.
 
 AC_DEFUN([SIM_AC_HAVE_SOPOLYGONOFFSET],
 [AC_CACHE_CHECK([for the SoPolygonOffset node],
@@ -2186,6 +2271,38 @@ else
   ifelse([$2], , :, [$2])
 fi
 ]) # SIM_AC_HAVE_SOPOLYGONOFFSET
+
+# **************************************************************************
+# SIM_AC_HAVE_SOEXTSELECTION( [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]] )
+#
+# Check whether or not the SoExtSelection node is part of the
+# Open Inventor development system. If it is found, the
+# HAVE_SOEXTSELECTION define is set.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#
+#     [20001002:mortene]   make a macro SIM_AC_HAVE_INVENTOR_NODE to replace
+#                          this macro and the SIM_AC_HAVE_SOPOLYGONOFFSET
+#                          macro.
+
+AC_DEFUN([SIM_AC_HAVE_SOEXTSELECTION],
+[AC_CACHE_CHECK([for the SoExtSelection node],
+  sim_cv_soextselection,
+  [AC_TRY_LINK([#include <Inventor/nodes/SoExtSelection.h>],
+               [SoExtSelection * p = new SoExtSelection;],
+               [sim_cv_soextselection=yes],
+               [sim_cv_soextselection=no])])
+
+if test x"$sim_cv_soextselection" = xyes; then
+  AC_DEFINE(HAVE_SOEXTSELECTION, 1,
+    [Define to enable use of the SoExtSelection node])
+  $1
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_SOEXTSELECTION
 
 # **************************************************************************
 # SIM_AC_HAVE_SOMOUSEBUTTONEVENT_BUTTONS

@@ -49,6 +49,8 @@ public:
   void setWindowSize( const SbVec2s size );
   const SbVec2s getWindowSize(void) const;
 
+  static void initClasses(void);
+
 protected:
   SoXtDevice(void);
 

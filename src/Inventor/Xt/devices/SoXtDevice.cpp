@@ -24,17 +24,6 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-/*!
-  \class SoXtDevice Inventor/Xt/SoXtDevice.h
-  \brief The SoXtDevice class is the base class for the SoXt device classes.
-  \ingroup devices
-
-  The SoXt device classes provide glue functionality for translating GUI
-  Xt/Motif events to Inventor Scene Graph SoEvent events.
-*/
-
-// *************************************************************************
-
 #include <assert.h>
 
 #if SOXT_DEBUG
@@ -48,6 +37,25 @@ static const char rcsid[] =
 #include <soxtdefs.h>
 
 #include <Inventor/Xt/devices/SoXtDevice.h>
+
+// *************************************************************************
+
+/*!
+  \class SoXtDevice Inventor/Xt/SoXtDevice.h
+  \brief The SoXtDevice class is the base class for the SoXt device classes.
+  \ingroup devices
+
+  The SoXt device classes provide glue functionality for translating GUI
+  Xt/Motif events to Inventor Scene Graph SoEvent events.
+*/
+
+// *************************************************************************
+
+void
+SoXtDevice::initClasses(
+  void )
+{
+} // initClasses()
 
 // *************************************************************************
 
