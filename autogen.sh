@@ -80,5 +80,15 @@ automake
 echo "Running autoconf (generating ./configure and the Makefile files)..."
 autoconf
 
+AMBUGFIXES=`find . -name Makefile.in.diff`
+fixmsg=0
+for bugfix in $AMBUGFIXES; do
+  if test $fixmsg -eq 0; then
+    echo "[correcting automake bugs]"
+    fixmsg=1
+  fi
+  patch --no-backup-if-mismatch -p0 < $bugfix
+done
+
 echo "Done: Now run './configure' and 'make install' to build $PROJECT."
 
