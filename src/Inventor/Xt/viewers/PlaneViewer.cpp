@@ -219,9 +219,7 @@ SoXtPlaneViewer::~SoXtPlaneViewer()
 
 // ************************************************************************
 
-/*!
-  FIXME: write doc
-*/
+// Documented in superclass.
 Widget
 SoXtPlaneViewer::buildWidget(Widget parent)
 {
@@ -232,9 +230,7 @@ SoXtPlaneViewer::buildWidget(Widget parent)
 
 // *************************************************************************
 
-/*!
-  FIXME: write doc
-*/
+// Documented in superclass.
 void
 SoXtPlaneViewer::setCamera(SoCamera * camera)
 {

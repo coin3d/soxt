@@ -315,9 +315,10 @@ static const int SOXT_VIEWER_MIN_WIDTH = 300;
 */
 
 void
-SoXtFullViewer::setDecoration(
-  const SbBool enable)
+SoXtFullViewer::setDecoration(const SbBool enable)
 {
+  if (!!this->decorations && !!enable) { return; }
+
   if ((this->decorations != enable) && (this->viewerbase != (Widget) NULL))
     this->showDecorationWidgets(enable);
   this->decorations = enable;
@@ -326,26 +327,27 @@ SoXtFullViewer::setDecoration(
     Widget shell = this->getShellWidget();
     Dimension minwidth = SOXT_VIEWER_MIN_WIDTH;
     Dimension minheight = SOXT_VIEWER_MIN_HEIGHT_BASE +
-       30 * this->viewerButtonWidgets->getLength();
+      30 * this->viewerButtonWidgets->getLength();
     if (enable) {
       Dimension width, height;
       XtVaGetValues(shell, 
-        XmNwidth, &width,
-        XmNheight, &height,
-        NULL);
+                    XmNwidth, &width,
+                    XmNheight, &height,
+                    NULL);
       width = SoXtMax(width, minwidth);
       height = SoXtMax(height, minheight);
       XtVaSetValues(shell,
-        XmNminWidth, minwidth,
-        XmNminHeight, minheight,
-        XmNwidth, width,
-        XmNheight, height,
-        NULL);
-    } else {
+                    XmNminWidth, minwidth,
+                    XmNminHeight, minheight,
+                    XmNwidth, width,
+                    XmNheight, height,
+                    NULL);
+    }
+    else {
       XtVaSetValues(shell,
-        XmNminWidth, 0,
-        XmNminHeight, 0,
-        NULL);
+                    XmNminWidth, 0,
+                    XmNminHeight, 0,
+                    NULL);
     }
   }
 } // setDecoration()
@@ -496,13 +498,9 @@ SoXtFullViewer::getRenderAreaWidget(void) const
 
 // *************************************************************************
 
-/*!
-  FIXME: write doc
-*/
-
+// Documented in superclass.
 Widget
-SoXtFullViewer::buildWidget(// protected
-  Widget parent)
+SoXtFullViewer::buildWidget(Widget parent)
 {
   int depth = 0;
   XtVaGetValues(parent, XmNdepth, &depth, NULL);
