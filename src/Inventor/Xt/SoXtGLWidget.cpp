@@ -20,7 +20,7 @@
 //  $Id$
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include <config.h>
 #endif // HAVE_CONFIG_H
 
 #include <assert.h>
@@ -75,7 +75,7 @@ SoXtGLWidget::SoXtGLWidget( // protected
   SbBool inParent,
   int glModes,
   SbBool buildNow )
-: inherited( parent, name, inParent )
+: inherited( parent, name, inParent ), waitForExpose( TRUE )
 {
   this->glLockLevel = 0;
   this->borderwidth = 0; // SOXT_BORDER_WIDTH;
@@ -264,6 +264,7 @@ SoXtGLWidget::processEvent( // virtual, protected
 
   case Expose:
     this->glRender();
+    this->waitForExpose = FALSE; // Gets flipped from TRUE on first expose.
     break;
 
   case ConfigureNotify:
