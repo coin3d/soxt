@@ -254,7 +254,7 @@ SoXt::init(int & argc, char ** argv,
   SoXt::selectBestVisual(display, visual, colormap, depth);
 
   Widget toplevel = (Widget) NULL;
-  if (visual) {
+  if ( visual ) {
     toplevel = XtVaOpenApplication(&tempcontext, SoXtP::appclass, NULL, 0,
                                    &argc, argv,
                                    SoXtP::fallbackresources, topLevelShellWidgetClass,
@@ -264,7 +264,7 @@ SoXt::init(int & argc, char ** argv,
                                    NULL);
   }
   else {
-    SoDebugError::postInfo("SoXt::init", "default toplevel! (error)");
+    SoDebugError::postInfo("SoXt::init", "could not find an appropriate visual - trying with the default");
     // FIXME: if we get here, a segfault comes up later for me on
     // embla.trh.sim.no, at least. 20020117 mortene.
     toplevel = XtVaOpenApplication(&tempcontext, SoXtP::appclass, NULL, 0,
@@ -272,7 +272,9 @@ SoXt::init(int & argc, char ** argv,
                                    SoXtP::fallbackresources, topLevelShellWidgetClass,
                                    NULL);
   }
-  if (appname) { XtVaSetValues(toplevel, XmNtitle, SoXtP::appname, NULL); }
+  if ( appname ) {
+    XtVaSetValues(toplevel, XmNtitle, SoXtP::appname, NULL);
+  }
   SoXt::init(toplevel);
   return toplevel;
 }
@@ -1045,6 +1047,19 @@ debug_dumpvisualinfo(Display * d, Visual * v)
   debug_dumpvisualinfo(xvi);
 }
 
+static void
+debug_dumpallvisualinfo(Display * d)
+{
+  int i, num;
+  XVisualInfo templ;
+  XVisualInfo * all = XGetVisualInfo(d, VisualNoMask, &templ, &num);
+  SoDebugError::postInfo("debug_dumpallvisualinfo",
+                         "%d available visual%s, dumping:",
+                         num, num == 1 ? "" : "s");
+  for ( i = 0; i < num; i++ ) { debug_dumpvisualinfo(&all[i]); }
+  XFree((char *) all);
+}
+
 /*!
   This function tries to find the best visual type, depth, and
   colormap combination for the display.  The display argument may be
@@ -1062,31 +1077,84 @@ debug_dumpvisualinfo(Display * d, Visual * v)
 
   This function is not part of the original SGI InventorXt API.
 */
+
+
+#if 0
 void
 SoXt::selectBestVisual(Display * dpy, Visual * & visual,
                        Colormap & colormap, int & depth)
 {
   assert(dpy != NULL);
 
+  unsigned int wantedid = 0;
+  const char * env = getenv("SOXT_SELECT_VISUAL");
+  if ( env ) {
+    wantedid = atoi(env);
 #if SOXT_SELECTBESTVISUAL_DEBUG // debug
+    SoDebugError::postInfo("SoXt::selectBestVisual", "will try to get visual with id %d", wantedid);
+#endif
+  }
+
   { // Dump all visuals available on the X server.
+#if SOXT_SELECTBESTVISUAL_DEBUG // debug
     static SbBool first = TRUE;
-    if (first) {
+    if ( first ) {
       first = FALSE;
+      debug_dumpallvisualsinfo(dpy);
+    }
+#endif
+    if ( wantedid != 0 ) { // no speciufic requests
       int num;
       XVisualInfo templ;
+      templ.c_class = TrueColor;
       XVisualInfo * all = XGetVisualInfo(dpy, VisualNoMask, &templ, &num);
-      SoDebugError::postInfo("SoXt::selectBestVisual",
-                             "%d available visual%s, dumping:",
-                             num, num == 1 ? "" : "s");
-      for (int i=0; i < num; i++) { debug_dumpvisualinfo(&all[i]); }
+      for (int i=0; i < num; i++) {
+        if ( all[i].visualid == wantedid ) {
+          visual = all[i].visual;
+          depth = all[i].depth;
+          int numcmaps;
+          XStandardColormap * stdcolormaps = NULL;
+
+          if (XmuLookupStandardColormap(dpy, all[i].screen, all[i].visualid,
+                                        all[i].depth, XA_RGB_DEFAULT_MAP,
+                                        False, True)
+              && XGetRGBColormaps(dpy, RootWindow(dpy, all[i].screen),
+                                  &stdcolormaps, &numcmaps, XA_RGB_DEFAULT_MAP)) {
+            SbBool found = FALSE;
+            for (int j = 0; j < numcmaps && ! found; j++) {
+              if (stdcolormaps[j].visualid == all[i].visualid) {
+#if SOXT_SELECTBESTVISUAL_DEBUG // debug
+                SoDebugError::postInfo("SoXt::selectBestVisual[1]", "found standard colormap");
+#endif
+                colormap = stdcolormaps[j].colormap;
+                found = TRUE;
+              }
+            }
+            if (! found) {
+              colormap = XCreateColormap(dpy, RootWindow(dpy, all[i].screen), all[i].visual, AllocNone);
+#if SOXT_SELECTBESTVISUAL_DEBUG // debug
+              SoDebugError::postInfo("SoXt::selectBestVisual[1]",
+                                     "standard RGB colormaps did not work with visual - created own colormap %d", colormap);
+#endif
+              
+            }
+          }
+          else {
+            colormap = XCreateColormap(dpy, RootWindow(dpy, all[i].screen), all[i].visual, AllocNone);
+#if SOXT_SELECTBESTVISUAL_DEBUG // debug
+            SoDebugError::postInfo("SoXt::selectBestVisual[1]", "no standard RGB colormaps - created own colormap %d", colormap);
+#endif
+          }
+          XtFree((char *) stdcolormaps);
+          return;
+        }
+      }
+      SoDebugError::postInfo("SoXt::selectBestVisual", "could not find requested visual with id %d", wantedid);
     }
   }
-#endif // debug
 
   int snum = XDefaultScreen(dpy);
-
-  if (XDefaultDepth(dpy, snum) >= 16) { // me like...
+  if ( XDefaultDepth(dpy, snum) >= 16 ) { // me like...
     visual = XDefaultVisual(dpy, snum);
 #if SOXT_SELECTBESTVISUAL_DEBUG // debug
     SoDebugError::postInfo("SoXt::selectBestVisual", "using default visual:");
@@ -1101,14 +1169,17 @@ SoXt::selectBestVisual(Display * dpy, Visual * & visual,
     int depth;
     int vclass;
   } pri[] = { // how things are prioritized
-    { 24, DirectColor },
     { 24, TrueColor },
+    { 24, DirectColor },
     { 24, PseudoColor },
-    { 16, DirectColor },
     { 16, TrueColor },
+    { 16, DirectColor },
     { 16, PseudoColor },
-    { 12, DirectColor },
+    { 15, TrueColor },
+    { 15, DirectColor },
+    { 15, PseudoColor },
     { 12, TrueColor },
+    { 12, DirectColor },
     { 12, PseudoColor },
     { 8, PseudoColor },
     { 0, 0 }
@@ -1164,7 +1235,110 @@ SoXt::selectBestVisual(Display * dpy, Visual * & visual,
       return;
     }
   }
+  // FIXME: didn't find visual - what should we do?
+  SoDebugError::postInfo("SoXt::selectBestVisual", "no visual found");
+  exit(1);
 }
+#else
+/*
+  The DirectColor class of X Visuals are not handled correctly yet.
+  TrueColor does not seem to be a problem.  The default Visual may
+  be of class DirectColor, so we don't default to using the default
+  any more, but try to obtain a TrueColor visual first.
+*/
+void
+SoXt::selectBestVisual(Display * dpy, Visual * & visual, Colormap & colormap, int & depth)
+{
+  assert(dpy != NULL);
+  unsigned int wanted = 0;
+  const char * env = getenv("SOXT_SELECT_VISUAL");
+  // run "glxinfo -t" to get a list of visuals and their ids...
+  if ( env ) {
+    wanted = atoi(env);
+#if SOXT_SELECTBESTVISUAL_DEBUG // debug
+    SoDebugError::postInfo("SoXt::selectBestVisual", "will try to get visual with id %d", wanted);
+#endif
+  }
+
+  int i, numvisuals, idx;
+  depth = 0;
+  idx = -1;
+  XVisualInfo templ;
+  XVisualInfo * visuals = XGetVisualInfo(dpy, VisualNoMask, &templ, &numvisuals);
+  for ( i = 0; i < numvisuals; i++ ) {
+    if ( visuals[i].visualid == wanted ) {
+      idx = i;
+      goto selected;
+    }
+    if ( visuals[i].c_class != TrueColor ) continue;
+    if ( visuals[i].depth <= depth ) continue;
+    idx = i;
+    depth = visuals[i].depth;
+  }
+  if ( depth < 24 ) {
+    for ( i = 0; i < numvisuals; i++ ) {
+      if ( visuals[i].c_class != DirectColor ) continue;
+      if ( visuals[i].depth <= depth ) continue;
+      idx = i;
+      depth = visuals[i].depth;
+    }
+    for ( i = 0; i < numvisuals; i++ ) {
+      if ( visuals[i].c_class != PseudoColor ) continue;
+      if ( visuals[i].depth <= depth ) continue;
+      idx = i;
+      depth = visuals[i].depth;
+    }
+  }
+
+selected:
+  if ( idx == -1 ) {
+    SoDebugError::postInfo("SoXt::selectBestVisual", "did not find a satisfactory Visual");
+    exit(1);
+  }
+
+  visual = visuals[idx].visual;
+  depth = visuals[idx].depth;
+  int numcmaps;
+  XStandardColormap * stdcolormaps = NULL;
+#if SOXT_SELECTBESTVISUAL_DEBUG // debug
+      SoDebugError::postInfo("SoXt::selectBestVisual", "found visual to use:");
+      debug_dumpvisualinfo(&visuals[idx]);
+#endif // debug
+
+#ifdef HAVE_LIBXMU
+  if ( XmuLookupStandardColormap(dpy, visuals[idx].screen, visuals[idx].visualid, visuals[idx].depth,
+                                 XA_RGB_DEFAULT_MAP, False, True) &&
+       XGetRGBColormaps(dpy, RootWindow(dpy, visuals[idx].screen),
+                        &stdcolormaps, &numcmaps, XA_RGB_DEFAULT_MAP) ) {
+    for (i = 0; i < numcmaps; i++) {
+      if (stdcolormaps[i].visualid == visuals[idx].visualid) {
+        colormap = stdcolormaps[i].colormap;
+        goto cleanup;
+      }
+    }
+    colormap = XCreateColormap(dpy, RootWindow(dpy, visuals[idx].screen), visuals[idx].visual, AllocNone);
+#if SOXT_SELECTBESTVISUAL_DEBUG // debug
+    SoDebugError::postInfo("SoXt::selectBestVisual", "standard RGB colormaps did not work with visual - created own (%d)", colormap);
+#endif // debug
+  } else {
+    colormap = XCreateColormap(dpy, RootWindow(dpy, visuals[idx].screen), visuals[idx].visual, AllocNone);
+#if SOXT_SELECTBESTVISUAL_DEBUG // debug
+    SoDebugError::postInfo("SoXt::selectBestVisual", "no standard RGB colormaps - created own (%d)", colormap);
+#endif // debug
+  }
+#else
+  SoDebugError::postInfo("SoXt::selectBestVisual",
+                         "SoXt does not support detecting best visual/colormap without the Xmu library (yet)");
+  // FIXME: couldn't we do better than this? Exiting here doesn't
+  // seem particularly robust.. 20020117 mortene.
+  exit(1);
+#endif /* ! HAVE_LIBXMU */
+
+cleanup:
+  XFree((char *) visuals);
+  if ( stdcolormaps ) XtFree((char *) stdcolormaps);
+}
+#endif
 
 // *************************************************************************
 
