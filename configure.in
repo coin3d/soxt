@@ -135,6 +135,11 @@ if test x"$sim_ac_x11_avail" = xyes; then
   SIM_CHECK_X11XID([
     SOXT_EXTRA_LIBS="$sim_ac_x11mu_libs $SOXT_EXTRA_LIBS"
   ])
+  # Open Group Motif depends on the Xp printing library (at least
+  # on some platforms).
+  SIM_AC_CHECK_X11_XP([
+    SOXT_EXTRA_LIBS="$sim_ac_xp_libs $SOXT_EXTRA_LIBS"
+  ])
   SIM_CHECK_X_INTRINSIC([
     SOXT_EXTRA_LIBS="$sim_ac_xt_libs $SOXT_EXTRA_LIBS"
   ])

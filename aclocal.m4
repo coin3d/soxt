@@ -1269,6 +1269,43 @@ fi
 
 
 # Usage:
+#  SIM_AC_CHECK_X11_XP([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the Xp library for printing functionality. Sets this
+#  shell variable:
+#
+#    $sim_ac_xp_libs   (link library the linker needs for the Xp library)
+#
+#  The LIBS flag will also be modified accordingly. In addition, the
+#  variable $sim_ac_xp_avail is set to "yes" if the Xp library is found.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+
+AC_DEFUN([SIM_AC_CHECK_X11_XP], [
+sim_ac_xp_avail=no
+sim_ac_xp_libs="-lXp"
+sim_ac_save_libs=$LIBS
+LIBS="$sim_ac_xp_libs $LIBS"
+
+AC_CACHE_CHECK(
+  [whether the X11 printing library is available],
+  sim_cv_lib_xp_avail,
+  [AC_TRY_LINK([#include <X11/extensions/Print.h>],
+               [XpEndJob(0L);],
+               [sim_cv_lib_xp_avail=yes],
+               [sim_cv_lib_xp_avail=no])])
+
+if test x"$sim_cv_lib_xp_avail" = xyes; then
+  sim_ac_xp_avail=yes
+  $1
+else
+  LIBS=$sim_ac_save_libs
+  $2
+fi
+])
+
+# Usage:
 #  SIM_AC_CHECK_OPENGL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 #  Try to find an OpenGL development system, either a native
