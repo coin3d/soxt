@@ -24,8 +24,6 @@ static const char rcsid[] =
 
 #include <assert.h>
 
-#include <Xm/XmP.h>
-
 #include <Inventor/errors/SoDebugError.h>
 
 #include <soxtdefs.h>
@@ -450,18 +448,18 @@ init_pixmaps(
   int depth = 0;
 
   XtVaGetValues(shell,
-    XmNvisual, &visual,
-    XmNcolormap, &colormap,
-    XmNdepth, &depth,
-    NULL);
+                XmNvisual, &visual,
+                XmNcolormap, &colormap,
+                XmNdepth, &depth,
+                NULL);
   assert(visual != (Visual *) NULL && colormap != 0);
 
   rgb_dpy = dpy;
   rgb_colormap = colormap;
 
   if (visual->red_mask   != 0x00000000 &&
-       visual->green_mask != 0x00000000 &&
-       visual->blue_mask  != 0x00000000) {
+      visual->green_mask != 0x00000000 &&
+      visual->blue_mask  != 0x00000000) {
     // analyze masks for custom rotate+mask converter
 
     // SGI fix - the 8th bit seems to have some special meaning
