@@ -13,6 +13,10 @@ $(KEYHTMLPAGE): $(SoGuiBuiltFiles)
 	@sim_ac_doxygen_exe@ $(top_builddir)/sogui.doxygen
 
 filelist.txt: $(KEYHTMLPAGE)
+	@if cmp -s $(top_srcdir)/src/Inventor/Xt/common/docs/doxygen/Coin_logo.png Coin_logo.png; then :; else \
+	  echo  " cp $(top_srcdir)/src/Inventor/Xt/common/docs/doxygen/Coin_logo.png ."; \
+	  cp $(top_srcdir)/src/Inventor/Xt/common/docs/doxygen/Coin_logo.png .; \
+	fi
 	@ls -1 | egrep '(\.html|\.png|\.gif|\.css)$$' >filelist.txt
 
 all-local: filelist.txt
