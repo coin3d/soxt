@@ -95,7 +95,7 @@ SoXtFullViewer::SoXtFullViewer( // protected
   this->setSize( SbVec2s( 500, 390 ) );
   this->setClassName( "SoXtFullViewer" );
 
-  this->prefmenu = setupStandardPopupMenu();
+  this->prefmenu = NULL;
 
   if ( build != FALSE )
     this->buildWidget( parent );
@@ -121,10 +121,14 @@ void
 SoXtFullViewer::setDecoration(
   const SbBool enable )
 {
-
   if ( (this->decorations != enable) && (this->viewerbase != (Widget) NULL) )
     this->showDecorationWidgets( enable );
   this->decorations = enable;
+  if ( this->prefmenu ) {
+    SoDebugError::postInfo( "SoXtFullViewer::setDecoration",
+       "setting to %s", enable ? "true" : "false" );
+    this->prefmenu->SetMenuItemMarked( DECORATION_ITEM, enable );
+  }
 } // setDecoration()
 
 /*!
@@ -450,8 +454,12 @@ SoXtFullViewer::setViewing( // virtual
 #endif // SOXT_DEBUG
 
   inherited::setViewing( enable );
-//  if ( this->prefmenu )
-//    this->prefmenu ...
+  if ( this->prefmenu )
+    this->prefmenu->SetMenuItemMarked( EXAMINING_ITEM, enable );
+
+//  VIEWERBUTTON(EXAMINE_BUTTON)->setOn( enable );
+//  VIEWERBUTTON(INTERACT_BUTTON)->setOn( enable ? FALSE : TRUE);
+//  VIEWERBUTTON(SEEK_BUTTON)->setEnabled( enable );
 } // setViewing()
 
 /*!
@@ -462,8 +470,8 @@ SoXtFullViewer::setHeadlight( // virtual
   SbBool enable )
 {
   inherited::setHeadlight( enable );
-//  if ( this->prefmenu )
-//    this->prefmenu->setItemChecked( HEADLIGHT_ITEM, enable );
+  if ( this->prefmenu )
+    this->prefmenu->SetMenuItemMarked( HEADLIGHT_ITEM, enable );
 } // setHeadlight()
 
 /*!
@@ -475,8 +483,8 @@ SoXtFullViewer::setDrawStyle( // virtual
   SoXtViewer::DrawStyle style )
 {
   inherited::setDrawStyle( type, style );
-//  if ( this->prefmenu )
-//    this->setDrawStyleMenuActivation( type, style );
+  if ( this->prefmenu )
+    this->setDrawStyleMenuActivation( type, style );
 } // setDrawStyle()
 
 /*!
@@ -488,8 +496,22 @@ SoXtFullViewer::setBufferingType( // virtual
 {
   inherited::setBufferingType( type );
 
-//  if ( this->prefmenu ) {
-//
+  if ( this->prefmenu ) {
+    switch ( type ) {
+    case SoXtViewer::BUFFER_SINGLE:
+      this->prefmenu->SetMenuItemMarked( SINGLE_BUFFER_ITEM, TRUE );
+      break;
+    case SoXtViewer::BUFFER_DOUBLE:
+      this->prefmenu->SetMenuItemMarked( DOUBLE_BUFFER_ITEM, TRUE );
+      break;
+    case SoXtViewer::BUFFER_INTERACTIVE:
+      this->prefmenu->SetMenuItemMarked( INTERACTIVE_BUFFER_ITEM, TRUE );
+      break;
+    default:
+      assert( 0 && "unsupported buffer type" );
+      break;
+    } // switch ( type )
+  }
 } // setBufferingType()
 
 /*!
@@ -647,10 +669,19 @@ void
 SoXtFullViewer::buildPopupMenu(
   void )
 {
-  if ( this->prefmenu == NULL ) {
+  if ( this->prefmenu == NULL )
     this->prefmenu = setupStandardPopupMenu();
-  }
-  SOXT_STUB();
+
+  this->setDrawStyle(
+    SoXtViewer::STILL, this->getDrawStyle( SoXtViewer::STILL ) );
+  this->setDrawStyle(
+    SoXtViewer::INTERACTIVE, this->getDrawStyle( SoXtViewer::INTERACTIVE ) );
+  this->setBufferingType( this->getBufferingType() );
+
+  this->prefmenu->SetMenuItemMarked( EXAMINING_ITEM, this->isViewing() );
+  SoDebugError::postInfo( "SoXtFullViewer::buildPopupMenu", "decorations = %s", this->decorations ? "true" : "false" );
+  this->prefmenu->SetMenuItemMarked( DECORATION_ITEM, this->decorations );
+  this->prefmenu->SetMenuItemMarked( HEADLIGHT_ITEM, this->isHeadlight() );
 } // buildPopupMenu()
 
 /*!
@@ -829,16 +860,13 @@ SoXtFullViewer::showDecorationWidgets(
   assert( this->decorform[1] != (Widget) NULL );
   assert( this->decorform[2] != (Widget) NULL );
 
-  if ( ! enable ) {
+  if ( enable ) {
     XtRealizeWidget( this->decorform[0] );
     XtManageChild( this->decorform[0] );
-
     XtRealizeWidget( this->decorform[1] );
     XtManageChild( this->decorform[1] );
-
     XtRealizeWidget( this->decorform[2] );
     XtManageChild( this->decorform[2] );
-
     XtVaSetValues( this->canvas,
       XmNleftOffset, 30, XmNrightOffset, 30, XmNbottomOffset, 30, NULL );
   } else {
@@ -858,10 +886,11 @@ SoXtFullViewer::processEvent(
 {
   switch ( event->type ) {
   case ButtonPress:
-    if ( ((XButtonEvent *) event)->button == 3 ) {
-//      SoDebugError::postInfo( "SoXtFullViewer::processEvent", "yo!" );
+    if ( ((XButtonEvent *) event)->button == 3 && this->menuenabled ) {
       int x = ((XButtonEvent *) event)->x_root;
       int y = ((XButtonEvent *) event)->y_root;
+      if ( ! this->prefmenu )
+        this->buildPopupMenu();
       this->prefmenu->PopUp( this->getGLWidget(), x, y );
       return;
     } else {
