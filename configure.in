@@ -84,6 +84,16 @@ AM_MAINTAINER_MODE
 
 AC_PROG_LIBTOOL
 
+# These are used for constructing the soqt-config file.
+SOGUI_EXTRA_CPPFLAGS=$CPPFLAGS
+SOGUI_EXTRA_CXXFLAGS=$CXXFLAGS
+SOGUI_EXTRA_LDFLAGS=$LDFLAGS
+SOGUI_EXTRA_LIBS=$LIBS
+AC_SUBST(SOGUI_EXTRA_CPPFLAGS)
+AC_SUBST(SOGUI_EXTRA_CXXFLAGS)
+AC_SUBST(SOGUI_EXTRA_LDFLAGS)
+AC_SUBST(SOGUI_EXTRA_LIBS)
+
 # **************************************************************************
 # If you just want to generate docs, ignore all the build-related tests
 
@@ -403,11 +413,6 @@ fi
 
 SIM_AC_ISO8601_DATE(soxt_configure_date)
 AC_SUBST(soxt_configure_date)
-
-# soxt-config
-AC_SUBST(SOGUI_EXTRA_CPPFLAGS)
-AC_SUBST(SOGUI_EXTRA_LDFLAGS)
-AC_SUBST(SOGUI_EXTRA_LIBS)
 
 # **************************************************************************
 # Remove redundant options from certain option lists.
