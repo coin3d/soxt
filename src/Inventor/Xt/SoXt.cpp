@@ -173,6 +173,13 @@ SoXt::init( // static
   const char * const appName,
   const char * const appClass )
 {
+  // FIXME: as far as I can see, no SoXt::init() method in InventorXt
+  // matches the signature of this constructor. So we should probably
+  // mark this as SoXt/Coin-only (but look over InventorXt again).
+  //
+  // Also investigate our other So*-libraries to see if they contain
+  // this Coin-specific init() method. 20010919 mortene.
+
   if ( appName )
     SoXt::appName = strcpy( new char [strlen(appName) + 1], appName );
   if ( appClass )
