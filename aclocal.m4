@@ -2506,35 +2506,6 @@ m4_do([popdef([cache_variable])],
 ]) # SIM_AC_HAVE_INVENTOR_NODE
 
 # **************************************************************************
-# SIM_AC_HAVE_SOMOUSEBUTTONEVENT_BUTTONS
-#
-# Authors:
-#   Lars J. Aas <larsa@sim.no>
-#
-# TODO:
-#   Check for enums generically instead.
-#
-
-AC_DEFUN([SIM_AC_HAVE_SOMOUSEBUTTONEVENT_BUTTONS],
-[AC_CACHE_CHECK(
-  [for SoMouseButtonEvent::BUTTON5 availability],
-  sim_cv_somousebuttonevent_buttons,
-  [AC_TRY_COMPILE(
-    [#include <Inventor/events/SoMouseButtonEvent.h>],
-    [int button = SoMouseButtonEvent::BUTTON5],
-    [sim_cv_somousebuttonevent_buttons=true],
-    [sim_cv_somousebuttonevent_buttons=false])])
-
-if $sim_cv_somousebuttonevent_buttons; then
-  AC_DEFINE(HAVE_SOMOUSEBUTTONEVENT_BUTTONS, 1,
-    [Define to enable use of SoMouseButtonEvent::BUTTON5])
-  $1
-else
-  ifelse([$2], , :, [$2])
-fi
-]) # SIM_AC_HAVE_SOMOUSEBUTTONEVENT_BUTTONS()
-
-# **************************************************************************
 # SIM_AC_HAVE_INVENTOR_FEATURE(MESSAGE, HEADERS, BODY, DEFINE
 #                              [, ACTION-IF-FOUND[, ACTION-IF-NOT-FOUND]])
 #
@@ -2562,6 +2533,7 @@ fi
 m4_do([popdef([cache_variable])],
       [popdef([DEFINE_VARIABLE])])
 ]) # SIM_AC_HAVE_INVENTOR_FEATURE
+
 
 # Convenience macros SIM_AC_DEBACKSLASH and SIM_AC_DOBACKSLASH for
 # converting to and from MSWin/MS-DOS style paths.
@@ -2691,6 +2663,49 @@ else
   ifelse([$2], , :, [$2])
 fi
 ]) # SIM_AC_HAVE_COIN_IFELSE()
+
+
+# **************************************************************************
+# CHECK_LINUX.M4
+# ==============
+# This file contains macros for detecting miscellaneous APIs originating
+# from Linux.
+
+# **************************************************************************
+# SIM_AC_CHECK_JOYSTICK_LINUX( SUCCESS-ACTION, FAILURE-ACTION )
+#
+# This macro checks wether the system has the Linux Joystick driver or not.
+#
+# Authors:
+#   Lars J. Aas <larsa@sim.no>
+
+AC_DEFUN([SIM_AC_CHECK_JOYSTICK_LINUX], [
+
+AC_CACHE_CHECK(
+  [Linux Joystick device driver],
+  [sim_cv_joystick_linux],
+  [AC_TRY_CPP(
+    [#include <linux/joystick.h>],
+    [sim_cv_joystick_linux=true],
+    [sim_cv_joystick_linux=false])])
+
+sim_ac_joystick_linux_avail=$sim_cv_joystick_linux
+if $sim_cv_joystick_linux; then
+  AC_ARG_WITH(
+    [linux-joystick-device],
+    AC_HELP_STRING([--with-linux-joystick-device=DEV],
+                   [default joystick device to something other than /dev/js0]),
+    [sim_cv_joystick_linux_device=$with_linux_joystick_device],
+    [: ${sim_cv_joystick_linux_device=/dev/js0}])
+  AC_CACHE_CHECK(
+    [Linux Joystick device handle],
+    [sim_cv_joystick_linux_device])
+  sim_ac_joystick_linux_device=$sim_cv_joystick_linux_device
+  $1
+else
+  ifelse([$2], [], :, [$2])
+fi
+])
 
 
 # Usage:
@@ -2903,49 +2918,6 @@ else
 
     $1
   fi
-fi
-])
-
-
-# **************************************************************************
-# CHECK_LINUX.M4
-# ==============
-# This file contains macros for detecting miscellaneous APIs originating
-# from Linux.
-
-# **************************************************************************
-# SIM_AC_CHECK_JOYSTICK_LINUX( SUCCESS-ACTION, FAILURE-ACTION )
-#
-# This macro checks wether the system has the Linux Joystick driver or not.
-#
-# Authors:
-#   Lars J. Aas <larsa@sim.no>
-
-AC_DEFUN([SIM_AC_CHECK_JOYSTICK_LINUX], [
-
-AC_CACHE_CHECK(
-  [Linux Joystick device driver],
-  [sim_cv_joystick_linux],
-  [AC_TRY_CPP(
-    [#include <linux/joystick.h>],
-    [sim_cv_joystick_linux=true],
-    [sim_cv_joystick_linux=false])])
-
-sim_ac_joystick_linux_avail=$sim_cv_joystick_linux
-if $sim_cv_joystick_linux; then
-  AC_ARG_WITH(
-    [linux-joystick-device],
-    AC_HELP_STRING([--with-linux-joystick-device=DEV],
-                   [default joystick device to something other than /dev/js0]),
-    [sim_cv_joystick_linux_device=$with_linux_joystick_device],
-    [: ${sim_cv_joystick_linux_device=/dev/js0}])
-  AC_CACHE_CHECK(
-    [Linux Joystick device handle],
-    [sim_cv_joystick_linux_device])
-  sim_ac_joystick_linux_device=$sim_cv_joystick_linux_device
-  $1
-else
-  ifelse([$2], [], :, [$2])
 fi
 ])
 
