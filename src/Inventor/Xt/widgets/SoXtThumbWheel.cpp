@@ -343,7 +343,8 @@ init_pixmaps(
   }
   assert( widget->thumbwheel.thumbwheel != NULL );
 
-  SoAnyThumbWheel * wheel = (SoAnyThumbWheel *) widget->thumbwheel.thumbwheel;
+  SoAnyThumbWheel * const wheel =
+    (SoAnyThumbWheel *) widget->thumbwheel.thumbwheel;
 
   widget->thumbwheel.numpixmaps = wheel->BitmapsRequired();
   widget->thumbwheel.pixmaps = new Pixmap [ widget->thumbwheel.numpixmaps ];
@@ -354,80 +355,107 @@ init_pixmaps(
   int diameter = 0, thickness = 0;
   wheel->GetWheelSize( diameter, thickness );
 
-  Pixel *image = new Pixel[ pixels ];
+  Widget shell = (Widget) widget;
+  while ( ! XtIsShell(shell) && shell != (Widget) NULL )
+    shell = XtParent(shell);
+  assert( shell != (Widget) NULL );
+
+  Display * dpy = XtDisplay( shell );
+  Screen * screen = XtScreen( shell );
+
+  Colormap colormap = NULL;
+  Visual * visual = NULL;
+  int depth = 0;
+
+  XtVaGetValues( shell,
+    XmNvisual, &visual,
+    XmNcolormap, &colormap,
+    XmNdepth, &depth,
+    NULL );
+  assert( visual != NULL && colormap != NULL );
 
   Pixel normal = widget->core.background_pixel;
   Pixel light = widget->primitive.top_shadow_color;
   Pixel shade = widget->primitive.bottom_shadow_color;
+  Pixel black = BlackPixelOfScreen( screen );
   const int t = widget->primitive.shadow_thickness;
-  int x, y;
-  for ( x = 0; x < pixels; x++ )
-    image[x] = normal;
 
-  int rect_top = 0, rect_left = 0, rect_bottom = 0, rect_right = 0;
-  switch ( widget->thumbwheel.orientation ) {
-  case XmHORIZONTAL:
-    rect_top = widget->primitive.shadow_thickness + WHEEL_THICKNESS_PADDING;
-    rect_left = widget->primitive.shadow_thickness + WHEEL_DIAMETER_PADDING;
-    rect_bottom = height -
-      widget->primitive.shadow_thickness - WHEEL_THICKNESS_PADDING - 1;
-    rect_right = width -
-      widget->primitive.shadow_thickness - WHEEL_DIAMETER_PADDING - 1;
-    break;
-  case XmVERTICAL:
-    rect_top = widget->primitive.shadow_thickness + WHEEL_DIAMETER_PADDING;
-    rect_left = widget->primitive.shadow_thickness + WHEEL_THICKNESS_PADDING;
-    rect_bottom = height -
-      widget->primitive.shadow_thickness - WHEEL_DIAMETER_PADDING - 1;
-    rect_right = widget->core.width -
-      widget->primitive.shadow_thickness - WHEEL_THICKNESS_PADDING - 1;
-    break;
-  default:
-    // caught later
-    break;
-  } // switch ( widget->thumbwheel.orientation )
-
-  for ( y = 0; y < height; y++ ) {
-    for ( x = 0; x < width; x++ ) {
-      // top/left light
-      if ( x < t || y < t )
-        image[(y * width) + x] = light;
-      // bottom shadow
-      if ( y > (height - t - 1) && (x >= (height - y)) )
-        image[(y * width) + x] = shade;
-      // right shadow
-      if ( y > (width - x - 1) && (x >= (width - t)) )
-        image[(y * width) + x] = shade;
-
-      // rectangle
-      if ( (y == rect_top || y == rect_bottom) &&
-           (x >= rect_left && x <= rect_right) )
-        image[(y * width) + x] = 0x00000000;
-      if ( (x == rect_left || x == rect_right) &&
-           (y >= rect_top && y <= rect_bottom) )
-        image[(y * width) + x] = 0x00000000;
-    }
+  Drawable drawable = XtWindow( widget );
+  if ( ! drawable ) {
+    drawable = DefaultRootWindow( dpy );
   }
+  assert( drawable );
 
-  int j;
-  unsigned long *bitmap = new unsigned long[ diameter * thickness ];
-  for ( j = 0; j < widget->thumbwheel.numpixmaps; j++ ) {
+  unsigned long * const rgbdata = new unsigned long [ diameter * thickness ];
+  assert( rgbdata != NULL );
+  wheel->SetGraphicsByteOrder( SoAnyThumbWheel::RGBA );
+
+  int frame = 0;
+  for ( frame = 0; frame < widget->thumbwheel.numpixmaps; frame++ ) {
+    widget->thumbwheel.pixmaps[frame] =
+      XCreatePixmap( dpy, drawable, width, height, depth );
+    assert( widget->thumbwheel.pixmaps[frame] );
+
+    XImage * img = XGetImage( dpy, widget->thumbwheel.pixmaps[frame],
+      0, 0, width, height, 0xffffffff, ZPixmap );
+
+    int rect_top = 0, rect_left = 0, rect_bottom = 0, rect_right = 0;
     switch ( widget->thumbwheel.orientation ) {
     case XmHORIZONTAL:
-      wheel->DrawBitmap( j, (void *) bitmap, SoAnyThumbWheel::HORIZONTAL );
+      rect_top = widget->primitive.shadow_thickness + WHEEL_THICKNESS_PADDING;
+      rect_left = widget->primitive.shadow_thickness + WHEEL_DIAMETER_PADDING;
+      rect_bottom = height -
+        widget->primitive.shadow_thickness - WHEEL_THICKNESS_PADDING - 1;
+      rect_right = width -
+        widget->primitive.shadow_thickness - WHEEL_DIAMETER_PADDING - 1;
       break;
     case XmVERTICAL:
-      wheel->DrawBitmap( j, (void *) bitmap, SoAnyThumbWheel::VERTICAL );
+      rect_top = widget->primitive.shadow_thickness + WHEEL_DIAMETER_PADDING;
+      rect_left = widget->primitive.shadow_thickness + WHEEL_THICKNESS_PADDING;
+      rect_bottom = height -
+        widget->primitive.shadow_thickness - WHEEL_DIAMETER_PADDING - 1;
+      rect_right = widget->core.width -
+        widget->primitive.shadow_thickness - WHEEL_THICKNESS_PADDING - 1;
       break;
     default:
-      assert( 0 && "no orientation" );
+      // caught later
+      break;
+    } // switch ( widget->thumbwheel.orientation )
+      
+    int x, y;
+    for ( x = 0; x < width; x++ )
+      for ( y = 0; y < height; y++ )
+        XPutPixel( img, x, y, normal );
+
+    for ( y = 0; y < height; y++ ) {
+      for ( x = 0; x < width; x++ ) {
+        if ( x < t || y < t )                              // top/left light
+          XPutPixel( img, x, y, light );
+        if ( y > (height - t - 1) && (x >= (height - y)) ) // bottom shadow
+          XPutPixel( img, x, y, shade );
+        if ( y > (width - x - 1) && (x >= (width - t)) )   // right shadow
+          XPutPixel( img, x, y, shade );
+  
+        if ( (y == rect_top || y == rect_bottom) &&        // black rectangle
+             (x >= rect_left && x <= rect_right) )
+          XPutPixel( img, x, y, black );
+        if ( (x == rect_left || x == rect_right) &&
+             (y >= rect_top && y <= rect_bottom) )
+          XPutPixel( img, x, y, black );
+      }
+    }
+  
+    switch ( widget->thumbwheel.orientation ) {
+    case XmHORIZONTAL:
+      wheel->DrawBitmap( frame, (void *) rgbdata, SoAnyThumbWheel::HORIZONTAL );
+      break;
+    case XmVERTICAL:
+      wheel->DrawBitmap( frame, (void *) rgbdata, SoAnyThumbWheel::VERTICAL );
+      break;
+    default:
+      assert( 0 && "invalid thumbwheel orientation" );
       break;
     } // switch ( widget->thumbweel.orientation )
-
-    Display * dpy = XtDisplay(widget);
-    Screen * screen = XtScreen(widget);
-    Visual * visual = DefaultVisual(dpy,DefaultScreen(dpy));
-    int depth = DefaultDepthOfScreen(screen);
 
     int lpadding = widget->primitive.shadow_thickness + 1;
     int tpadding = widget->primitive.shadow_thickness + 1;
@@ -449,57 +477,57 @@ init_pixmaps(
       break;
     } // switch ( widget->thumbweel.orientation )
 
-    for ( y = 0; y < wheelheight; y++ ) {
+    // lets do this the hard way and waste some resources :(
+    XColor cdata, ign;
+    char colorname[16];
+    unsigned long prevrgb = 0;
+    unsigned long prev = black;
+    if ( widget->thumbwheel.orientation == XmHORIZONTAL ) {
       for ( x = 0; x < wheelwidth; x++ ) {
-        switch ( depth ) {
-        case 16:
-          image[((y+tpadding)*width)+lpadding+x] =
-            from32to16bit( bitmap[(y*wheelwidth)+x] );
-          break;
-        case 24:
-        case 32:
-          image[((y+tpadding)*width)+lpadding+x] =
-            bitmap[(y*wheelwidth)+x];
-          break;
-        default:
-#if SOXT_DEBUG
-          static int first = 1;
-          if ( first )
-            SoDebugError::postWarning( "SoXtThumbWheel:init_pixmaps",
-              "unsupported pixmap depth (%d)\n%s", depth,
-              "thumbwheel pixmaps won't be shown" );
-          first = 0;
-#endif // SOXT_DEBUG
-          break;
+        for ( y = 0; y < wheelheight; y++ ) {
+          if ( rgbdata[(y*wheelwidth)+x] != prevrgb ) {
+            cdata.red   = (rgbdata[(y*wheelwidth)+x] >>  8) & 0xff;
+            cdata.green = (rgbdata[(y*wheelwidth)+x] >> 16) & 0xff;
+            cdata.blue  = (rgbdata[(y*wheelwidth)+x] >> 24) & 0xff;
+            sprintf( colorname, "rgb:%02x/%02x/%02x",
+              cdata.red, cdata.green, cdata.blue );
+            if ( XLookupColor( dpy, colormap, colorname, &cdata, &ign ) &&
+                 XAllocColor( dpy, colormap, &cdata ) ) {
+              prevrgb = rgbdata[(y*wheelwidth)+x];
+              prev = cdata.pixel;
+            }
+          }
+          XPutPixel( img, x + lpadding, y + tpadding, prev );
+        }
+      }
+    } else {
+      for ( y = 0; y < wheelheight; y++ ) {
+        for ( x = 0; x < wheelwidth; x++ ) {
+          if ( rgbdata[(y*wheelwidth)+x] != prevrgb ) {
+            cdata.red   = (rgbdata[(y*wheelwidth)+x] >>  8) & 0xff;
+            cdata.green = (rgbdata[(y*wheelwidth)+x] >> 16) & 0xff;
+            cdata.blue  = (rgbdata[(y*wheelwidth)+x] >> 24) & 0xff;
+            sprintf( colorname, "rgb:%02x/%02x/%02x",
+              cdata.red, cdata.green, cdata.blue );
+            if ( XLookupColor( dpy, colormap, colorname, &cdata, &ign ) &&
+                 XAllocColor( dpy, colormap, &cdata ) ) {
+              prevrgb = rgbdata[(y*wheelwidth)+x];
+              prev = cdata.pixel;
+            }
+          }
+          XPutPixel( img, x + lpadding, y + tpadding, prev );
         }
       }
     }
 
-    char * data = new char [width * height * (depth / 8) * 2];
-
-    XImage * img = XCreateImage( dpy, visual, depth, ZPixmap, 0,
-      data, width, height, 8, 0 );
-    assert( img != NULL );
-
-    // put pixels
-    for ( y = 0; y < height; y++ ) {
-      for ( x = 0; x < width; x++ ) {
-        unsigned long pixel = image[(y*width)+x];
-        XPutPixel( img, x, y, pixel );
-      }
-    }
-    widget->thumbwheel.pixmaps[j] =
-      XCreatePixmap( XtDisplay(widget), XtWindow(widget),
-        width, height, img->depth );
-    XPutImage( XtDisplay(widget), widget->thumbwheel.pixmaps[j],
-      widget->thumbwheel.context, img, 0, 0, 0, 0, width, height );
-    delete [] data;
-    img->data = NULL;
+    GC temp = XCreateGC( dpy, drawable, 0, NULL );
+    XPutImage( dpy, widget->thumbwheel.pixmaps[frame], temp, img, 0, 0, 0, 0,
+      img->width, img->height );
+    XFreeGC( dpy, temp );
     XDestroyImage( img );
   }
 
-  delete [] image;
-  delete [] bitmap;
+  delete [] rgbdata;
 } // init_pixmaps()
 
 /*!
@@ -642,8 +670,8 @@ query_geometry(
   XtWidgetGeometry *,
   XtWidgetGeometry * )
 {
-  SOXT_STUB();
   XtGeometryResult foo;
+  SOXT_STUB();
   return foo;
 } // query_geometry()
 
