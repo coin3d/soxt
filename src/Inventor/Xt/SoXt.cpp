@@ -322,10 +322,10 @@ SoXt::timerSensorCB( // static, private
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo( "SoXt::timerSensorCB", "called" );
 #endif // SOXT_DEBUG
-  SoDB::getSensorManager()->processTimerQueue();
-  SoXt::sensorQueueChanged( NULL );
   SoXt::timerSensorId = 0;
   SoXt::timerSensorActive = FALSE;
+  SoDB::getSensorManager()->processTimerQueue();
+  SoXt::sensorQueueChanged( NULL );
 } // timerSensorCB()
 
 /*!
@@ -381,18 +381,27 @@ SoXt::sensorQueueChanged( // static, private
   SbTime timevalue;
   if ( sensormanager->isTimerSensorPending( timevalue ) ) {
     SbTime interval = timevalue - SbTime::getTimeOfDay();
-    if ( ! SoXt::timerSensorActive ) {
-      SoXt::timerSensorId = XtAppAddTimeOut( SoXt::getAppContext(),
-                              interval.getMsecValue(),
-                              SoXt::timerSensorCB, NULL );
-      SoXt::timerSensorActive = TRUE;
-    } else {
-      XtRemoveTimeOut( SoXt::timerSensorId );
-      SoXt::timerSensorId = XtAppAddTimeOut( SoXt::getAppContext(),
-                              interval.getMsecValue(),
-                              SoXt::timerSensorCB, NULL );
-      SoXt::timerSensorActive = TRUE;
-    }
+
+#if SOXT_DEBUG && 0 // debug
+    SoDebugError::postInfo("SoXt::sensorQueueChanged",
+                           "interval: %f (msec: %d)",
+                           interval.getValue(),
+                           interval.getMsecValue());
+#endif // debug
+
+    // On a system with some load, the interval value can easily get
+    // negative. For Xt, this means it will never trigger -- which
+    // causes all kinds of problems. Setting it to 0 will make it
+    // trigger more-or-less immediately.
+    if (interval.getValue() < 0.0) interval.setValue(0.0);
+
+    if ( SoXt::timerSensorActive ) XtRemoveTimeOut( SoXt::timerSensorId );
+
+    SoXt::timerSensorId = XtAppAddTimeOut( SoXt::getAppContext(),
+                            interval.getMsecValue(),
+                            SoXt::timerSensorCB, NULL );
+    SoXt::timerSensorActive = TRUE;
+
   } else if ( SoXt::timerSensorActive ) {
     XtRemoveTimeOut( SoXt::timerSensorId );
     SoXt::timerSensorId = 0;
