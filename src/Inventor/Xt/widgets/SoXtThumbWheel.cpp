@@ -196,6 +196,8 @@ initialize(
 {
   SoXtThumbWheelWidget widget = (SoXtThumbWheelWidget) tnew;
 
+  widget->thumbwheel.refresh = False;
+  widget->thumbwheel.value = 0.0;
   widget->thumbwheel.pixmaps = NULL;
   widget->thumbwheel.numpixmaps = 0;
   widget->thumbwheel.armed = False;
