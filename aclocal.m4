@@ -1305,6 +1305,25 @@ else
 fi
 ])
 
+# SIM_AC_X11_READY( [ACTION-IF-TRUE], [ACTION-IF-FALSE] )
+
+AC_DEFUN([SIM_AC_CHECK_X11_READY],
+[AC_CACHE_CHECK(
+  [if X11 linkage is ready],
+  [sim_cv_x11_ready],
+  [AC_TRY_LINK(
+    [#include <X11/Xlib.h>],
+    [(void)XOpenDisplay(0L);],
+    [sim_cv_x11_ready=true],
+    [sim_cv_x11_ready=false])])
+if ${sim_cv_x11_ready}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_X11_READY()
+
+
 # Usage:
 #  SIM_AC_CHECK_OPENGL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #

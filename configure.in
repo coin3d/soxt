@@ -182,11 +182,6 @@ SIM_CHECK_MOTIF([
   SOXT_EXTRA_LIBS="$sim_ac_motif_libs $SOXT_EXTRA_LIBS"
 ], AC_MSG_ERROR([couldn't compile and link with Motif]))
 
-SIM_CHECK_MOTIF_GLWIDGET([
-  SOXT_EXTRA_LIBS="-l$sim_ac_motif_glwidget_library $SOXT_EXTRA_LIBS"
-], AC_MSG_ERROR([couldn't find Xt/Motif support for GL.
-    A GL widget for Motif/LessTif can be found in the Mesa sources in the
-    mesa-widget/ directory.  This widget does not depend on using Mesa.]))
 
 CXXFLAGS="$CXXFLAGS -DSOXT_DEBUG=1"
 
