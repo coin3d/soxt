@@ -35,53 +35,48 @@
  *
  * OpenGL(TM) is a trademark of Silicon Graphics, Inc.
  */
-#ifndef _GLwDrawAP_h
-#define _GLwDrawAP_h
 
+/*
+ * This file has been heavily modified from the original.  It has been
+ * stripped down and moved into the SoXt namespace to avoid potential
+ * name-collisions with externally installed GL widgets, and all pure
+ * Xt vs. Xt/Motif ifdef wrappers have been removed (only the Motif
+ * parts remain).  You are encouraged to rather go back to the source,
+ * which you will find with Mesa, than to base your GL widget derivation
+ * on this code.
+ *
+ *     Lars J. Aas <larsa@sim.no>,
+ *     19th may 2000
+ */
 
-/* MOTIF */
-#ifdef __GLX_MOTIF
-#include "GLwMDrawA.h"
-#else
-#include "GLwDrawA.h"
-#endif
+#ifndef SOXT_GLAREA_PRIVATE_H
+#define SOXT_GLAREA_PRIVATE_H
 
-typedef struct _GLwDrawingAreaClassPart {
+#include <Inventor/Xt/widgets/SoXtGLArea.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* _cplusplus */
+
+/* ********************************************************************** */
+
+typedef struct _SoXtGLAreaClassPart {
   caddr_t extension;
-  } GLwDrawingAreaClassPart;
+} SoXtGLAreaClassPart;
 
-
-#ifdef __GLX_MOTIF
-typedef struct _GLwMDrawingAreaClassRec {
+typedef struct _SoXtGLAreaClassRec {
   CoreClassPart               core_class;
   XmPrimitiveClassPart        primitive_class;
-  GLwDrawingAreaClassPart     glwDrawingArea_class;
-  } GLwMDrawingAreaClassRec;
+  SoXtGLAreaClassPart         soxtGLArea_class;
+} SoXtGLAreaClassRec;
 
+extern SoXtGLAreaClassRec soxtGLAreaClassRec;
 
-extern GLwMDrawingAreaClassRec glwMDrawingAreaClassRec;
-
-
-/* XT */
-#else 
-
-typedef struct _GLwDrawingAreaClassRec {
-  CoreClassPart               core_class;
-  GLwDrawingAreaClassPart     glwDrawingArea_class;
-  } GLwDrawingAreaClassRec;
-
-extern GLwDrawingAreaClassRec glwDrawingAreaClassRec;
-
-
-#endif 
-
-
-
-typedef struct {
+typedef struct _SoXtGLAreaPart {
   /* resources */
   int *                attribList;
   XVisualInfo *        visualInfo;
-  Boolean              myList;                /* TRUE if we malloced the attribList*/
+  Boolean              myList;          /* TRUE if we malloced the attribList*/
   Boolean              myVisual;        /* TRUE if we created the visualInfo*/
   Boolean              installColormap;
   Boolean              allocateBackground;
@@ -91,6 +86,7 @@ typedef struct {
   XtCallbackList       resizeCallback;
   XtCallbackList       exposeCallback;
   XtCallbackList       inputCallback;
+
   /* specific attributes; add as we get new attributes */
   int                  bufferSize;
   int                  level;
@@ -108,23 +104,18 @@ typedef struct {
   int                  accumGreenSize;
   int                  accumBlueSize;
   int                  accumAlphaSize;
-  } GLwDrawingAreaPart;
+} SoXtGLAreaPart;
 
-#ifdef __GLX_MOTIF
-
-typedef struct _GLwMDrawingAreaRec {
+typedef struct _SoXtGLAreaRec {
   CorePart             core;
   XmPrimitivePart      primitive;
-  GLwDrawingAreaPart   glwDrawingArea;
-  } GLwMDrawingAreaRec;
+  SoXtGLAreaPart       soxtGLArea;
+} SoXtGLAreaRec;
 
-#else 
+/* ********************************************************************** */
 
-typedef struct _GLwDrawingAreaRec {
-  CorePart             core;
-  GLwDrawingAreaPart   glwDrawingArea;
-  } GLwDrawingAreaRec;
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* _cplusplus */
 
-#endif 
-
-#endif
+#endif /* ! SOXT_GLAREA_PRIVATE_H */

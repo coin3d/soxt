@@ -35,17 +35,31 @@
  *
  * OpenGL(TM) is a trademark of Silicon Graphics, Inc.
  */
-#ifndef _GLwDrawA_h
-#define _GLwDrawA_h
+
+/*
+ * This file has been heavily modified from the original.  It has been
+ * stripped down and moved into the SoXt namespace to avoid potential
+ * name-collisions with externally installed GL widgets, and all pure
+ * Xt vs. Xt/Motif ifdef wrappers have been removed (only the Motif
+ * parts remain).  You are encouraged to rather go back to the source,
+ * which you will find with Mesa, than to base your GL widget derivation
+ * on this code.
+ *
+ *     Lars J. Aas <larsa@sim.no>,
+ *     19th may 2000
+ */
+
+#ifndef SOXT_GLAREA_H
+#define SOXT_GLAREA_H
 
 #include <GL/glx.h>
 #include <GL/gl.h>
 
-/****************************************************************
- *
- * GLwDrawingArea widgets
- *
- ****************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+/* ********************************************************************** */
 
 /* Resources:
 
@@ -82,114 +96,87 @@
  accumAlphaSize	     AccumAlphaSize	int		0
 */
 
-#define GLwNattribList		"attribList"
-#define GLwCAttribList		"AttribList"
-#define GLwNvisualInfo		"visualInfo"
-#define GLwCVisualInfo		"VisualInfo"
-#define GLwRVisualInfo		"VisualInfo"
+/* ********************************************************************** */
 
-#define GLwNinstallColormap	"installColormap"
-#define GLwCInstallColormap	"InstallColormap"
-#define GLwNallocateBackground	"allocateBackground"
-#define GLwNallocateOtherColors	"allocateOtherColors"
-#define GLwCAllocateColors	"AllocateColors"
-#define GLwNinstallBackground	"installBackground"
-#define GLwCInstallBackground	"InstallBackground"
+#define SoXtNattribList           "attribList"
+#define SoXtCAttribList           "AttribList"
+#define SoXtNvisualInfo           "visualInfo"
+#define SoXtCVisualInfo           "VisualInfo"
+#define SoXtRVisualInfo           "VisualInfo"
 
-#define GLwCCallback		"Callback"
-#define GLwNexposeCallback	"exposeCallback"
-#define GLwNginitCallback	"ginitCallback"
-#define GLwNresizeCallback	"resizeCallback"
-#define GLwNinputCallback	"inputCallback"
+#define SoXtNinstallColormap      "installColormap"
+#define SoXtCInstallColormap      "InstallColormap"
+#define SoXtNallocateBackground   "allocateBackground"
+#define SoXtNallocateOtherColors  "allocateOtherColors"
+#define SoXtCAllocateColors       "AllocateColors"
+#define SoXtNinstallBackground    "installBackground"
+#define SoXtCInstallBackground    "InstallBackground"
 
-#define GLwNbufferSize		"bufferSize"
-#define GLwCBufferSize		"BufferSize"
-#define GLwNlevel		"level"
-#define GLwCLevel		"Level"
-#define GLwNrgba		"rgba"
-#define GLwCRgba		"Rgba"
-#define GLwNdoublebuffer	"doublebuffer"
-#define GLwCDoublebuffer	"Doublebuffer"
-#define GLwNstereo		"stereo"
-#define GLwCStereo		"Stereo"
-#define GLwNauxBuffers		"auxBuffers"
-#define GLwCAuxBuffers		"AuxBuffers"
-#define GLwNredSize		"redSize"
-#define GLwNgreenSize		"greenSize"
-#define GLwNblueSize		"blueSize"
-#define GLwCColorSize		"ColorSize"
-#define GLwNalphaSize		"alphaSize"
-#define GLwCAlphaSize		"AlphaSize"
-#define GLwNdepthSize		"depthSize"
-#define GLwCDepthSize		"DepthSize"
-#define GLwNstencilSize		"stencilSize"
-#define GLwCStencilSize		"StencilSize"
-#define GLwNaccumRedSize	"accumRedSize"
-#define GLwNaccumGreenSize	"accumGreenSize"
-#define GLwNaccumBlueSize	"accumBlueSize"
-#define GLwCAccumColorSize	"AccumColorSize"
-#define GLwNaccumAlphaSize	"accumAlphaSize"
-#define GLwCAccumAlphaSize	"AccumAlphaSize"
+#define SoXtCCallback             "Callback"
+#define SoXtNexposeCallback       "exposeCallback"
+#define SoXtNginitCallback        "ginitCallback"
+#define SoXtNresizeCallback       "resizeCallback"
+#define SoXtNinputCallback        "inputCallback"
 
-#ifdef __GLX_MOTIF
+#define SoXtNbufferSize           "bufferSize"
+#define SoXtCBufferSize           "BufferSize"
+#define SoXtNlevel                "level"
+#define SoXtCLevel                "Level"
+#define SoXtNrgba                 "rgba"
+#define SoXtCRgba                 "Rgba"
+#define SoXtNdoublebuffer         "doublebuffer"
+#define SoXtCDoublebuffer         "Doublebuffer"
+#define SoXtNstereo               "stereo"
+#define SoXtCStereo               "Stereo"
+#define SoXtNauxBuffers           "auxBuffers"
+#define SoXtCAuxBuffers           "AuxBuffers"
+#define SoXtNredSize              "redSize"
+#define SoXtNgreenSize            "greenSize"
+#define SoXtNblueSize             "blueSize"
+#define SoXtCColorSize            "ColorSize"
+#define SoXtNalphaSize            "alphaSize"
+#define SoXtCAlphaSize            "AlphaSize"
+#define SoXtNdepthSize            "depthSize"
+#define SoXtCDepthSize            "DepthSize"
+#define SoXtNstencilSize          "stencilSize"
+#define SoXtCStencilSize          "StencilSize"
+#define SoXtNaccumRedSize         "accumRedSize"
+#define SoXtNaccumGreenSize       "accumGreenSize"
+#define SoXtNaccumBlueSize        "accumBlueSize"
+#define SoXtCAccumColorSize       "AccumColorSize"
+#define SoXtNaccumAlphaSize       "accumAlphaSize"
+#define SoXtCAccumAlphaSize       "AccumAlphaSize"
 
-typedef struct _GLwMDrawingAreaClassRec	*GLwMDrawingAreaWidgetClass;
-typedef struct _GLwMDrawingAreaRec	*GLwMDrawingAreaWidget;
+typedef  struct _SoXtGLAreaClassRec *  SoXtGLAreaWidgetClass;
+typedef  struct _SoXtGLAreaRec *       SoXtGLAreaWidget;
 
-extern WidgetClass glwMDrawingAreaWidgetClass;
-
-
-#else 
-
-typedef struct _GLwDrawingAreaClassRec	*GLwDrawingAreaWidgetClass;
-typedef struct _GLwDrawingAreaRec	*GLwDrawingAreaWidget;
-
-extern WidgetClass glwDrawingAreaWidgetClass;
-
-
-#endif
-
+extern WidgetClass soxtGLAreaWidgetClass;
 
 /* Callback reasons */
-#ifdef __GLX_MOTIF
-#define GLwCR_EXPOSE	XmCR_EXPOSE
-#define GLwCR_RESIZE	XmCR_RESIZE
-#define GLwCR_INPUT	XmCR_INPUT
-#else 
-/* The same values as Motif, but don't use Motif constants */
-#define GLwCR_EXPOSE	38
-#define GLwCR_RESIZE	39
-#define GLwCR_INPUT	40
-#endif
+#define SoXtCR_EXPOSE    XmCR_EXPOSE
+#define SoXtCR_RESIZE    XmCR_RESIZE
+#define SoXtCR_INPUT     XmCR_INPUT
 
-#define GLwCR_GINIT	32135	/* Arbitrary number that should neverr clash */
+#define SoXtCR_GINIT     31975	/* Arbitrary number that should never clash */
 
-typedef struct 
-  {
+typedef struct {
   int       reason;
-  XEvent   *event;
-  Dimension width,height;
-  } 
-  GLwDrawingAreaCallbackStruct;
+  XEvent  * event;
+  Dimension width;
+  Dimension height;
+} SoXtGLAreaCallbackStruct;
 
-#if defined(__cplusplus) || defined(c_plusplus)
-extern "C" {
-#endif
+void SoXtGLAreaMakeCurrent( Widget w, GLXContext ctx );
+void SoXtGLAreaSwapBuffers( Widget w );
 
-/* front ends to glXMakeCurrent and glXSwapBuffers */
-extern void GLwDrawingAreaMakeCurrent(Widget w,GLXContext ctx);
-extern void GLwDrawingAreaSwapBuffers(Widget w);
+#ifndef XtIsSoXtGLArea
+#define XtIsSoXtGLArea(w) XtIsSubclass(w, soxtGLAreaWidgetClass)
+#endif /* ! SoXtIsGLArea */
 
-#ifdef __GLX_MOTIF
-#ifdef _NO_PROTO
-extern Widget GLwCreateMDrawingArea();
-#else
-extern Widget GLwCreateMDrawingArea(Widget parent,char *name,ArgList arglist,Cardinal argcount);
-#endif
-#endif 
+/* ********************************************************************** */
 
-#if defined(__cplusplus) || defined(c_plusplus)
-}
-#endif
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
 
-#endif
+#endif /* ! SOXT_GLAREA_H */
