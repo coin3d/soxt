@@ -22,12 +22,21 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-#include <X11/X.h>
+#include <assert.h>
+
+#include <X11/extensions/XInput.h>
 
 #include <Inventor/misc/SoBasic.h>
 
+// FIXME: really ugly, but necessary to avoid XInput.h/Print.h conflict
+#define _XpPrint_H_
+#define _XP_PRINT_SERVER_
+typedef void * XPContext;
+
 #include <soxtdefs.h>
 #include <Inventor/Xt/SoXtBasic.h>
+#include <Inventor/Xt/SoXt.h>
+
 #include <Inventor/Xt/devices/SoXtSpaceball.h>
 
 // *************************************************************************
@@ -59,6 +68,8 @@ SoXtSpaceball::~SoXtSpaceball( // virtual
 {
 } // ~SoXtSpaceball()
 
+// *************************************************************************
+
 /*!
 */
 
@@ -84,6 +95,8 @@ SoXtSpaceball::disable( // virtual
   SOXT_STUB();
 } // disable()
 
+// *************************************************************************
+
 /*!
 */
 
@@ -91,24 +104,11 @@ const SoEvent *
 SoXtSpaceball::translateEvent( // virtual
  XAnyEvent * event )
 {
-  switch ( event->type ) {
-
-  // events we should handle:
-  case ClientMessage: // ???
-    do {
-      SOXT_STUB();
-    } while ( FALSE );
-    // return SoEvent * here
-    break;
-
-  // events we should ignore:
-  default:
-    break;
-
-  } // switch ( event->type )
-
+  SOXT_STUB_ONCE();
   return (SoEvent *) NULL;
 } // translateEvent()
+
+// *************************************************************************
 
 /*!
 */
@@ -150,23 +150,41 @@ SoXtSpaceball::getTranslationScaleFactor(
   return this->translationFactor;
 } // getTranslationScaleFactor()
 
+// *************************************************************************
+
 /*!
 */
 
 SbBool
 SoXtSpaceball::exists( // static
-  Display * ) // display )
+  Display * display )
 {
-  SOXT_STUB();
+  if ( display == NULL )
+    display = SoXt::getDisplay();
+  assert( display != NULL );
+  Atom SpaceballAtom = XInternAtom( display, XI_SPACEBALL, True );
+  if ( SpaceballAtom == None )
+    return FALSE;
+  int numDevices = 0;
+  XDeviceInfo * devices = XListInputDevices( display, &numDevices );
+  for ( int i = 0; i < numDevices; i++ ) {
+    if ( devices[i].type == SpaceballAtom ) {
+      XFreeDeviceList( devices );
+      return TRUE;
+    }
+  }
+  XFreeDeviceList( devices );
   return FALSE;
 } // exists()
+
+// *************************************************************************
 
 /*!
 */
 
 void
 SoXtSpaceball::setFocusToWindow(
-  SbBool ) // flag )
+  SbBool ) // enable )
 {
   SOXT_STUB();
 } // setFocusToWindow()
