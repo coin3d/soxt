@@ -35,6 +35,10 @@ void
 SoXtRenderArea::processEvent( // virtual, protected
   XAnyEvent * event )
 {
+  // Call the event callback, if it returns true, then the event has been
+  // handled and we can stop
+  if (invokeAppCB(event)) return;
+
   const SoEvent * sceneEvent = NULL;
 
   if ( this->devices.extra )
