@@ -1213,9 +1213,9 @@ AC_CACHE_CHECK([whether libXpm is available],
 
 if test x"$sim_cv_lib_xpm_avail" = xyes; then
   sim_ac_xpm_avail=yes
+  LIBS="$sim_ac_xpm_libs $LIBS"
   ifelse([$1], , :, [$1])
 else
-  LIBS=$sim_ac_save_libs
   ifelse([$2], , :, [$2])
 fi
 ])

@@ -3232,6 +3232,7 @@ echo "$ac_t""$sim_cv_lib_xpm_avail" 1>&6
 
 if test x"$sim_cv_lib_xpm_avail" = xyes; then
   sim_ac_xpm_avail=yes
+  LIBS="$sim_ac_xpm_libs $LIBS"
   
     SOXT_EXTRA_LIBS="$sim_ac_xpm_libs $SOXT_EXTRA_LIBS"
     cat >>confdefs.h <<\EOF
@@ -3240,7 +3241,6 @@ EOF
 
   
 else
-  LIBS=$sim_ac_save_libs
   :
 fi
 
