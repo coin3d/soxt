@@ -719,13 +719,13 @@ SoXtGLWidget::getDisplayListShareGroup(GLXContext context)
 */
 
 void
-SoXtGLWidgetP::eventHandler(Widget widget,
-                            void * closure,
-                            XEvent * event,
-                            Boolean * dispatch)
+SoXtGLWidget::eventHandler(Widget widget,
+                           SoXtGLWidget * closure,
+                           XAnyEvent * event,
+                           Boolean * dispatch)
 {
   assert(closure != NULL);
-  SoXtGLWidget * component = (SoXtGLWidget *) closure;
+  SoXtGLWidget * component = closure;
   component->processEvent((XAnyEvent *) event);
   *dispatch = False;
 }
@@ -884,7 +884,7 @@ SoXtGLWidget::buildWidget(Widget parent)
                     ButtonReleaseMask | PointerMotionMask | KeyPressMask | KeyReleaseMask,
                     False,
                     (void (*)(_WidgetRec *, void *, _XEvent *, char *))
-                    SoXtGLWidgetP::eventHandler, this);
+                    SoXtGLWidget::eventHandler, this);
 
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtGLWidget::buildWidget", "[exit]");
