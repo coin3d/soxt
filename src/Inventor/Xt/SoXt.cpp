@@ -59,7 +59,7 @@ static const char rcsid[] =
 #include <X11/Xmu/Editres.h>
 #include <X11/Xmu/StdCmap.h>
 #include <X11/Xmu/Atoms.h>
-#endif HAVE_LIBXMU
+#endif // HAVE_LIBXMU
 #include <Xm/Xm.h>
 #include <Xm/Protocols.h>
 #include <Xm/MessageB.h>
