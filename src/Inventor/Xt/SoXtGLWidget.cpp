@@ -1005,7 +1005,6 @@ SoXtGLWidgetP::exposeCB(Widget widget, XtPointer closure, XtPointer call_data)
   thisp->glsize = SbVec2s(width, height);
   if ( thisp->firstexpose ) {
     PUBLIC(thisp)->sizeChanged(SbVec2s(width, height));
-    PUBLIC(thisp)->waitForExpose = FALSE;
     thisp->firstexpose = FALSE;
   }
 }
