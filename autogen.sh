@@ -87,7 +87,7 @@ echo "Running automake (generating the Makefile.in files)..."
 echo "[ignore any \"directory should not contain '/'\" warning]"
 automake
 
-AMBUGFIXES=`find . -name Makefile.in.diff | grep -v examples`
+AMBUGFIXES=`find . \( -name Makefile.in.diff -a -not -path "./examples/*" -a -not -path "./ivexamples/*" \)`
 fixmsg=0
 for bugfix in $AMBUGFIXES; do
   if test $fixmsg -eq 0; then
