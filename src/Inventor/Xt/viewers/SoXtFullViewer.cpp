@@ -166,7 +166,7 @@ SoXtFullViewer::SoXtFullViewer( // protected
     this->setClassName( "SoXtFullViewer" );
     Widget viewer = this->buildWidget( this->getParentWidget() );
     this->setBaseWidget( viewer );
-    this->setSize( SbVec2s( 500, 390 ) );
+    this->fitSize( SbVec2s( 500, 300 ) );
   }
 } // SoXtFullViewer()
 

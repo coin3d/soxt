@@ -121,12 +121,7 @@ SoXtExaminerViewer::constructor( // private
   if ( build ) {
     Widget viewer = this->buildWidget( this->getParentWidget() );
     this->setBaseWidget( viewer );
-    XtVaSetValues( viewer,
-      XmNleftAttachment, XmATTACH_FORM,
-      XmNtopAttachment, XmATTACH_FORM,
-      XmNrightAttachment, XmATTACH_FORM,
-      XmNbottomAttachment, XmATTACH_FORM,
-      NULL );
+    this->fitSize( SbVec2s( 500, 300 ) );
 
     char * dollyString = NULL;
     SoXtResource rsc( this->getRightWheelLabelWidget() );

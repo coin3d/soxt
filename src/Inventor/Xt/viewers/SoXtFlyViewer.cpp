@@ -85,13 +85,7 @@ SoXtFlyViewer::constructor( // private
   if ( build ) {
     Widget viewer = inherited::buildWidget( this->getParentWidget() );
     this->setBaseWidget( viewer );
-    XtVaSetValues( viewer,
-      XmNleftAttachment, XmATTACH_FORM,
-      XmNtopAttachment, XmATTACH_FORM,
-      XmNrightAttachment, XmATTACH_FORM,
-      XmNbottomAttachment, XmATTACH_FORM,
-      NULL );
-    // extra resources
+    this->fitSize( SbVec2s( 500, 300 ) );
   }
 } // constructor()
 
