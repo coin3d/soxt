@@ -28,11 +28,28 @@ static const char rcsid[] =
 #include <Inventor/errors/SoDebugError.h>
 #endif // SOXT_DEBUG
 
+#include <Inventor/SbPList.h>
 #include <Inventor/misc/SoBasic.h>
 #include <Inventor/events/SoEvent.h>
 
 #include <soxtdefs.h>
+
 #include <Inventor/Xt/devices/SoXtDevice.h>
+
+/*!
+  \class SoXtDevice Inventor/Xt/SoXtDevice.h
+  \brief The SoXtDevice class system is for gluing GUI events to Inventor
+  Scene Graph events.
+*/
+
+// *************************************************************************
+
+struct SoXtDeviceHandlerInfo {
+  Widget widget;
+  XtEventHandler handler;
+  XtPointer closure;
+  Window window;
+};
 
 // *************************************************************************
 
@@ -42,6 +59,7 @@ static const char rcsid[] =
 SoXtDevice::SoXtDevice(
   void )
 : size( 0, 0 )
+, handlers( NULL )
 {
 } // SoXtDevice()
 
@@ -51,7 +69,33 @@ SoXtDevice::SoXtDevice(
 SoXtDevice::~SoXtDevice( // virtual
   void )
 {
+  if ( this->handlers ) {
+    for ( int i = 0; i < this->handlers->getLength(); i++ ) {
+      SoXtDeviceHandlerInfo * info =
+        (SoXtDeviceHandlerInfo *) (*this->handlers)[i];
+      delete info;
+    }
+    delete this->handlers;
+  }
 } // ~SoXtDevice()
+
+// *************************************************************************
+
+/*!
+  \fn void SoXtDevice::enable( Widget widget, XtEventHandler handler, XtPointer closure, Window window = (Window) NULL ) = 0
+
+  This method will enable the device for the widget.
+
+  \a handler is invoked with the \a closure argument when an event occur
+  in \a widget.  The \a window argument is needed because GLX widgets can
+  have more than one window (normal, overlay).
+*/
+
+/*!
+  \fn void SoXtDevice::disable( Widget widget, XtEventHandler handler, XtPointer closure ) = 0
+
+  This method will disable the handler for the device.
+*/
 
 // *************************************************************************
 
@@ -94,6 +138,72 @@ SoXtDevice::setEventPosition(
     "position = (%d, %d)", position[0], position[1] );
 #endif // 0 was SOXT_DEBUG
 } // setEventPosition()
+
+// *************************************************************************
+
+/*!
+*/
+
+void
+SoXtDevice::addEventHandler(
+  Widget widget,
+  XtEventHandler handler,
+  XtPointer closure,
+  Window window )
+{
+  if ( this->handlers == NULL )
+    this->handlers = new SbPList;
+  SoXtDeviceHandlerInfo * info = new SoXtDeviceHandlerInfo;
+  info->widget = widget;
+  info->handler = handler;
+  info->closure = closure;
+  info->window = window;
+  this->handlers->append( info );
+} // addEventHandler()
+
+/*!
+*/
+
+void
+SoXtDevice::removeEventHandler(
+  Widget widget,
+  XtEventHandler handler,
+  XtPointer closure )
+{
+  if ( this->handlers ) {
+    for ( int i = 0; i < this->handlers->getLength(); i++ ) {
+      SoXtDeviceHandlerInfo * info =
+        (SoXtDeviceHandlerInfo *) (*this->handlers)[i];
+      if ( (info->widget == widget) && (info->handler == handler) &&
+           (info->closure == closure) ) {
+        delete info;
+        this->handlers->remove(i);
+        return;
+      }
+    }
+  }
+#if SOXT_DEBUG
+  SoDebugError::post( "SoXtDevice::removeEventHandler",
+    "tried to remove nonexisting handler" );
+#endif // SOXT_DEBUG
+} // removeEventHandler()
+
+/*!
+*/
+
+void
+SoXtDevice::invokeHandlers(
+  XEvent * const event )
+{
+  if ( this->handlers ) {
+    Boolean dispatch = False;
+    for ( int i = 0; i < this->handlers->getLength(); i++ ) {
+      SoXtDeviceHandlerInfo * info =
+        (SoXtDeviceHandlerInfo *) (*this->handlers)[i];
+      info->handler( info->widget, info->closure, event, &dispatch );
+    }
+  }
+} // invokeEventHandlers()
 
 // *************************************************************************
 
