@@ -60,7 +60,6 @@ protected:
       SbBool inParent, SoXtFullViewer::BuildFlag flags,
       SoXtViewer::Type type, SbBool build );
 
-
   virtual void setCamera( SoCamera * camera );
   virtual void setSeekMode( SbBool enable );
 
@@ -85,6 +84,8 @@ protected:
   virtual void createViewerButtons( Widget parent, SbPList * buttonlist );
   void camerabuttonClicked(void);
   static void camerabuttonCB( Widget, XtPointer, XtPointer );
+
+  virtual void createPrefSheet( void );
 
 private:
   void constructor( SbBool build );
@@ -114,6 +115,10 @@ private:
   SoAnyExaminerViewer * const common;
   Cursor cursor;
   SbBool mapped;
+
+//  Widget prefshell, prefsheet;
+  Widget * prefparts;
+  int numprefparts;
 
 }; // class SoXtExaminerViewer
 

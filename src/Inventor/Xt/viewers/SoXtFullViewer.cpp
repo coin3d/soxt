@@ -45,6 +45,8 @@ static const char rcsid[] =
 #include <Xm/DialogS.h>
 #include <Xm/RowColumn.h>
 #include <Xm/Text.h>
+#include <Xm/Scale.h>
+#include <Xm/PanedW.h>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoBasic.h>
@@ -629,7 +631,6 @@ SoXtFullViewer::buildViewerButtons(
     XmNx, 0, XmNy, 0,
     XmNleftAttachment, XmATTACH_POSITION,
     XmNtopAttachment, XmATTACH_POSITION,
-//    XmNbackground, 0x00a00000,
     XmNwidth, 30,
     XmNheight, buttons * 30,
     XmNfractionBase, buttons,
@@ -1212,41 +1213,13 @@ SoXtFullViewer::showDecorationWidgets(
 
 // *************************************************************************
 
-/*
-Widget
-SoXtFullViewer::makePreferencesWindow(
-  Widget parent )
-{
-  Widget pane = XtCreateWidget( "pane",
-    xmPanedWindowWidgetClass, prefs,
-    XmNsashWidth, 1,
-    XmNsashHeight, 1,
-    NULL );
-
-  Widget form = XtVaCreateWidget( "form",
-    xmFormWidgetClass, pane,
-    NULL );
-
-  Widget seek_preferences =
-    this->makeSeekPreferences( form );
-//  Widget seek_distance_preferences =
-//    this->makeSeekDistancePreferences( form );
-//  Widget zoom_preferences =
-//    this->makeZoomPreferences( form );
-//  Widget autoclip_preferences =
-//    this->makeAutoclipPreferences( form );
-
-//  this->makeSubPreferences( form );
-
-  return prefs;
-} // makePreferencesWindow()
+/*!
+  This method sets the title text for the viewer preferences window.
 */
-
-// *************************************************************************
 
 void
 SoXtFullViewer::setPrefSheetString( // protected
-  const char * const name )
+  const char * name )
 {
   if ( this->prefstring )
     delete [] this->prefstring;
@@ -1254,30 +1227,78 @@ SoXtFullViewer::setPrefSheetString( // protected
   if ( name )
     this->prefstring = strcpy( new char [strlen(name) + 1], name );
 
-  if ( this->prefshell ) {
-    // FIXME: set shell title
-  }
+  if ( this->prefshell )
+    XtVaSetValues( this->prefshell, XtNtitle, this->prefstring, NULL );
 } // setPrefSheetString()
+
+/*!
+  This is a hook for constructing the preferences window in the derived
+  viewer classes.
+
+  Basically, derived classes will do the following in this method:
+
+  \code
+    if ( ! this->prefshell ) {
+      createPrefSheetShellAndForm( this->prefshell, this->prefsheet );
+      createDefaultPrefSheetParts( this->prefparts, this->numprefparts,
+        this->prefsheet );
+      // add parts specific for derived viewer
+    }
+    layoutPartsAndMapPrefSheet( this->prefparts, this->numprefparts,
+      this->prefsheet, this->prefshell );
+*/
 
 void
 SoXtFullViewer::createPrefSheet( // protected, virtual
   void )
 {
-  
-  SOXT_STUB();
+/*¡
+  Method could be made abstract.
+*/
 } // createPrefSheet()
+
+/*!
+*/
+
+void
+SoXtFullViewer::prefSheetDestroyCB( // protected, static
+  Widget w,
+  XtPointer client_data,
+  XtPointer ) // call_data )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) client_data;
+  XtUnrealizeWidget( viewer->prefshell );
+  viewer->prefshell = NULL;
+  viewer->prefsheet = NULL;
+} // prefSheetDestroyCB()
+
+/*!
+*/
 
 void
 SoXtFullViewer::createPrefSheetShellAndForm(  // protected
   Widget & shell,
   Widget & form )
 {
-  shell = XtVaCreatePopupShell( "Preferences",
-    xmDialogShellWidgetClass, SoXt::getShellWidget( SoXt::getTopLevelWidget() ),
-    XmNdeleteResponse, XmDESTROY,
+  assert( this->prefshell == NULL );
+
+  if ( ! this->prefstring )
+    this->setPrefSheetString( "Xt Viewer Preferences" );
+
+  shell = XtVaAppCreateShell( NULL, "SoXt",
+    topLevelShellWidgetClass, SoXt::getDisplay(),
+    XtNtitle, this->prefstring,
     NULL );
+  XtAddCallback( shell, XmNdestroyCallback,
+    prefSheetDestroyCB, (XtPointer) this );
+  this->prefshell = shell;
+
   form = XtVaCreateWidget( "form", xmFormWidgetClass, shell, NULL );
+  this->prefsheet = form;
 } // createPrefSheetShellAndForm()
+
+/*!
+*/
 
 void
 SoXtFullViewer::createDefaultPrefSheetParts( // protected
@@ -1285,8 +1306,18 @@ SoXtFullViewer::createDefaultPrefSheetParts( // protected
   int & num,
   Widget form )
 {
-  SOXT_STUB();
+  assert( widgets != NULL );
+  num = 0;
+  widgets[num++] = this->createSeekPrefSheetGuts( form );
+  if ( ! (widgets[num++] = this->createSeekDistPrefSheetGuts( form )) ) num--;
+  if ( ! (widgets[num++] = this->createZoomPrefSheetGuts( form ) )) num--;
+  if ( ! (widgets[num++] = this->createClippingPrefSheetGuts( form )) ) num--;
+  if ( ! (widgets[num++] = this->createStereoPrefSheetGuts( form )) ) num--;
+  if ( ! (widgets[num++] = this->createSpeedPrefSheetGuts( form )) ) num--;
 } // createDefaultPrefSheetParts()
+
+/*!
+*/
 
 void
 SoXtFullViewer::layoutPartsAndMapPrefSheet( // protected
@@ -1295,74 +1326,431 @@ SoXtFullViewer::layoutPartsAndMapPrefSheet( // protected
   Widget form,
   Widget shell )
 {
-  SOXT_STUB();
+  assert( widgets != NULL );
+  for ( int i = 0; i < num; i++ ) {
+    int attachment_top, attachment_bottom;
+    if ( i == 0 ) {
+      attachment_top = XmATTACH_FORM;
+      attachment_bottom = XmATTACH_NONE;
+    } else if ( i == (num - 1) ) {
+      attachment_top = XmATTACH_WIDGET;
+      attachment_bottom = XmATTACH_FORM;
+    } else {
+      attachment_top = XmATTACH_WIDGET;
+      attachment_bottom = XmATTACH_NONE;
+    }
+    XtVaSetValues( widgets[i],
+      XmNtopAttachment, attachment_top,
+      XmNleftAttachment, XmATTACH_FORM,
+      XmNrightAttachment, XmATTACH_FORM,
+      XmNbottomAttachment, attachment_bottom,
+      NULL );
+    if ( attachment_top == XmATTACH_WIDGET )
+      XtVaSetValues( widgets[i], XmNtopWidget, widgets[i-1], NULL );
+  }
+  XtManageChild( form );
+  XtPopup( shell, XtGrabNone );
 } // layoutPartsAndMapPrefSheet()
  
 // *************************************************************************
+
+/*!
+*/
 
 Widget
 SoXtFullViewer::createSeekPrefSheetGuts( // protected
   Widget parent )
 {
-  Widget grid = XtVaCreateManagedWidget( "rowcolumn",
-    xmRowColumnWidgetClass, parent,
-    XmNnumColumns, 3,
-    XmNorientation, XmHORIZONTAL,
-    NULL );
+  //  Seek animation time  |NNN|  seconds
+  //  Seek to:   <> point   <> object
+
+  Widget form = XtVaCreateManagedWidget( "seekprefs",
+    xmFormWidgetClass, parent, NULL );
 
   XmString labelstring;
 
-  labelstring = SoXt::encodeString( "Seek animation time" );
+  Widget line1 = XtVaCreateManagedWidget( "line 1",
+    xmFormWidgetClass, form,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    NULL );
+
+  labelstring = SoXt::encodeString( "Seek animation time: " );
   Widget label = XtVaCreateManagedWidget( "seektime",
-    xmLabelWidgetClass, grid,
+    xmLabelWidgetClass, line1,
     XmNlabelString, labelstring,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
     NULL );
   XtFree( (char *) labelstring );
 
   Widget input = XtVaCreateManagedWidget( "seektimeinput",
-    xmTextWidgetClass, grid, NULL );
+    xmTextWidgetClass, line1,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, label,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNwidth, 60,
+    NULL );
 
   Widget denotion = XtVaCreateManagedWidget( "seconds",
-    xmLabelWidgetClass, grid, NULL );
+    xmLabelWidgetClass, line1,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, input,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNbottomWidget, input,
+    NULL );
 
-  labelstring = SoXt::encodeString( "Seek to:" );
+  Widget line2 = XtVaCreateManagedWidget( "line 2",
+    xmFormWidgetClass, form,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNtopAttachment, XmATTACH_WIDGET,
+    XmNtopWidget, line1,
+    XmNbottomAttachment, XmATTACH_FORM,
+    NULL );
+
+  labelstring = SoXt::encodeString( "Seek to: " );
   Widget tolabel = XtVaCreateManagedWidget( "tolabel",
-    xmLabelWidgetClass, grid,
+    xmLabelWidgetClass, line2,
     XmNlabelString, labelstring,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
     NULL );
   XtFree( (char *) labelstring );
 
   Widget pointb = XtVaCreateManagedWidget( "point",
-    xmToggleButtonWidgetClass, grid, NULL );
-  Widget objectb = XtVaCreateManagedWidget( "object",
-    xmToggleButtonWidgetClass, grid, NULL );
+    xmToggleButtonWidgetClass, line2,
+    XmNindicatorType, XmONE_OF_MANY,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, tolabel,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    NULL );
 
-  return grid;
+  Widget objectb = XtVaCreateManagedWidget( "object",
+    xmToggleButtonWidgetClass, line2,
+    XmNindicatorType, XmONE_OF_MANY,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, pointb,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    NULL );
+
+  return form;
 } // createSeekPrefSheetGuts()
+
+/*!
+*/
 
 Widget
 SoXtFullViewer::createSeekDistPrefSheetGuts( // protected
   Widget parent )
 {
-  SOXT_STUB();
-  return (Widget) NULL;
+  //   Seek distance:   |||||||||||||   |NN.NNN|
+  //      <> percentage   <> absolute
+
+  Widget form = XtVaCreateManagedWidget( "seekdistprefs",
+    xmFormWidgetClass, parent, NULL );
+
+  Widget line1 = XtVaCreateManagedWidget( "seekdistprefs",
+    xmFormWidgetClass, form,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNtopAttachment, XmATTACH_FORM,
+    NULL );
+
+  XmString labelstring;
+  labelstring = SoXt::encodeString( "Seek distance: " );
+  Widget label = XtVaCreateManagedWidget( "seekdistlabel",
+    xmLabelWidgetClass, line1,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNlabelString, labelstring,
+    XmNbottomAttachment, XmATTACH_FORM,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  Widget wheel = XtVaCreateManagedWidget( "distance",
+    soxtThumbWheelWidgetClass, line1,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNtopOffset, 2,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, label,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNbottomOffset, 2,
+    XmNorientation, XmHORIZONTAL,
+    XmNshadowType, XmSHADOW_OUT,
+    XmNshadowThickness, 2,
+    XmNtraversalOn, False,
+    XmNwidth, 90,
+    NULL );
+
+  Widget input = XtVaCreateManagedWidget( "input",
+    xmTextWidgetClass, line1,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, wheel,
+    XmNwidth, 80,
+    NULL );
+
+
+  Widget line2 = XtVaCreateManagedWidget( "line 2",
+    xmFormWidgetClass, form,
+    XmNtopAttachment, XmATTACH_WIDGET,
+    XmNtopWidget, line1,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    NULL );
+
+  labelstring = SoXt::encodeString( "percentage" );
+  Widget percentb = XtVaCreateManagedWidget( "percentage",
+    xmToggleButtonWidgetClass, line2,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNlabelString, labelstring,
+    XmNindicatorType, XmONE_OF_MANY,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  labelstring = SoXt::encodeString( "absolute" );
+  Widget absb = XtVaCreateManagedWidget( "absolute",
+    xmToggleButtonWidgetClass, line2,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, percentb,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNindicatorType, XmONE_OF_MANY,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  return form;
 } // createSeekDistPrefSheetGuts()
+
+/*!
+*/
 
 Widget
 SoXtFullViewer::createZoomPrefSheetGuts( // protected
   Widget parent )
 {
-  SOXT_STUB();
-  return (Widget) NULL;
+  //  Camera zoom  |          ||||        |     |NN.NN|
+  //  Zoom slider ranges from:  |N.N|  to |N.N|
+
+  Widget form = XtVaCreateManagedWidget( "zoomprefs",
+    xmFormWidgetClass, parent,
+    NULL );
+
+  Widget line1 = XtVaCreateManagedWidget( "line 1",
+    xmFormWidgetClass, form,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    NULL );
+
+  XmString labelstring;
+  labelstring = SoXt::encodeString( "Camera zoom: " );
+  Widget label1 = XtVaCreateManagedWidget( "label1",
+    xmLabelWidgetClass, line1,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  Widget zoomscale = XtVaCreateManagedWidget( "scale",
+    xmScaleWidgetClass, line1,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNtopOffset, 6,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, label1,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNbottomOffset, 6,
+    XmNorientation, XmHORIZONTAL,
+    XmNwidth, 120,
+    NULL );
+
+  Widget zoominput = XtVaCreateManagedWidget( "zoominput",
+    xmTextWidgetClass, line1,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, zoomscale,
+    XmNleftOffset, 2,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNwidth, 80,
+    NULL );
+
+  Widget line2 = XtVaCreateManagedWidget( "line 2",
+    xmFormWidgetClass, form,
+    XmNtopAttachment, XmATTACH_WIDGET,
+    XmNtopWidget, line1,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    NULL );
+
+  labelstring = SoXt::encodeString( "Zoom slider ranges from " );
+  Widget rangelabel = XtVaCreateManagedWidget( "rangelabel",
+    xmLabelWidgetClass, line2,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  Widget from = XtVaCreateManagedWidget( "from",
+    xmTextWidgetClass, line2,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, rangelabel,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNwidth, 80,
+    NULL );
+
+  labelstring = SoXt::encodeString( " to " );
+  Widget tolabel = XtVaCreateManagedWidget( "rangelabel",
+    xmLabelWidgetClass, line2,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, from,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  Widget to = XtVaCreateManagedWidget( "to",
+    xmTextWidgetClass, line2,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, tolabel,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNwidth, 80,
+    NULL );
+
+  return form;
 } // createZoomPrefSheetGuts()
+
+/*!
+*/
 
 Widget
 SoXtFullViewer::createClippingPrefSheetGuts( // protected
   Widget parent )
 {
-  SOXT_STUB();
-  return (Widget) NULL;
+  //     []  Auto clipping planes
+  //      near plane    ||||||||||||||   |N.NNNNNN|
+  //       far plane    ||||||||||||||   |N.NNNNNN|
+  Widget form = XtVaCreateManagedWidget( "clippingprefs",
+    xmFormWidgetClass, parent,
+    NULL );
+
+  Widget line1 = XtVaCreateManagedWidget( "line 1",
+    xmFormWidgetClass, form,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    NULL );
+
+  XmString labelstring;
+  labelstring = SoXt::encodeString( "Auto clipping planes" );
+  Widget enable = XtVaCreateManagedWidget( "enable",
+    xmToggleButtonWidgetClass, line1,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  Widget line2 = XtVaCreateManagedWidget( "line 2",
+    xmFormWidgetClass, form,
+    XmNtopAttachment, XmATTACH_WIDGET,
+    XmNtopWidget, line1,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    NULL );
+
+  labelstring = SoXt::encodeString( "near plane" );
+  Widget label2 = XtVaCreateManagedWidget( "label2",
+    xmLabelWidgetClass, line2,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  Widget wheel2 = XtVaCreateManagedWidget( "wheel2",
+    soxtThumbWheelWidgetClass, line2,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNtopOffset, 2,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNbottomOffset, 2,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, label2,
+    XmNwidth, 90,
+    XmNorientation, XmHORIZONTAL,
+    NULL );
+
+  Widget input2 = XtVaCreateManagedWidget( "input 2",
+    xmTextWidgetClass, line2,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, wheel2,
+    XmNwidth, 80,
+    NULL );
+
+  Widget line3 = XtVaCreateManagedWidget( "line 3",
+    xmFormWidgetClass, form,
+    XmNtopAttachment, XmATTACH_WIDGET,
+    XmNtopWidget, line2,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    NULL );
+
+  labelstring = SoXt::encodeString( "far plane" );
+  Widget label3 = XtVaCreateManagedWidget( "label3",
+    xmLabelWidgetClass, line3,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  Widget wheel3 = XtVaCreateManagedWidget( "wheel3",
+    soxtThumbWheelWidgetClass, line3,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNtopOffset, 2,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNbottomOffset, 2,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, label3,
+    XmNorientation, XmHORIZONTAL,
+    XmNwidth, 90,
+    NULL );
+
+  Widget input3 = XtVaCreateManagedWidget( "input 3",
+    xmTextWidgetClass, line3,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_WIDGET,
+    XmNleftWidget, wheel3,
+    XmNwidth, 80,
+    NULL );
+
+  return form;
 } // createClippingPrefSheetGuts()
+
+/*!
+*/
 
 Widget
 SoXtFullViewer::createStereoPrefSheetGuts( // protected
@@ -1371,6 +1759,9 @@ SoXtFullViewer::createStereoPrefSheetGuts( // protected
   SOXT_STUB();
   return (Widget) NULL;
 } // createStereoPrefSheetGuts()
+
+/*!
+*/
 
 Widget
 SoXtFullViewer::createSpeedPrefSheetGuts( // protected
@@ -1382,12 +1773,18 @@ SoXtFullViewer::createSpeedPrefSheetGuts( // protected
 
 // *************************************************************************
 
+/*!
+*/
+
 void
 SoXtFullViewer::selectedViewing(
   void )
 {
   this->setViewing( this->isViewing() ? FALSE : TRUE );
 } // selectedViewing()
+
+/*!
+*/
 
 void
 SoXtFullViewer::selectedDecoration(
@@ -1396,6 +1793,9 @@ SoXtFullViewer::selectedDecoration(
   SOXT_STUB();
 } // selectedDecoration();
 
+/*!
+*/
+
 void
 SoXtFullViewer::selectedHeadlight(
   void )
@@ -1403,12 +1803,19 @@ SoXtFullViewer::selectedHeadlight(
   SOXT_STUB();
 } // selectedHeadlight();
 
+/*!
+*/
+
 void
 SoXtFullViewer::selectedPrefs(
   void )
 {
-  SOXT_STUB();
+  if ( ! this->prefshell )
+    this->createPrefSheet();
 } // selectedPrefs()
+
+/*!
+*/
 
 void
 SoXtFullViewer::interactbuttonClicked(
@@ -1424,6 +1831,9 @@ SoXtFullViewer::interactbuttonClicked(
     this->setViewing( TRUE );
 } // interactbuttonClicked()
 
+/*!
+*/
+
 void
 SoXtFullViewer::interactbuttonCB(
   Widget,
@@ -1434,6 +1844,9 @@ SoXtFullViewer::interactbuttonCB(
     (XmToggleButtonCallbackStruct *) call_data;
   ((SoXtFullViewer *) client_data)->interactbuttonClicked( data->set );
 } // interactbuttonCB()
+
+/*!
+*/
 
 void
 SoXtFullViewer::examinebuttonClicked(
@@ -1449,6 +1862,9 @@ SoXtFullViewer::examinebuttonClicked(
     this->setViewing( TRUE );
 } // examinebuttonClicked();
 
+/*!
+*/
+
 void
 SoXtFullViewer::examinebuttonCB(
   Widget,
@@ -1460,12 +1876,18 @@ SoXtFullViewer::examinebuttonCB(
   ((SoXtFullViewer *) client_data)->examinebuttonClicked( data->set );
 } // examinebuttonCB()
 
+/*!
+*/
+
 void
 SoXtFullViewer::helpbuttonClicked(
   void )
 {
   this->openViewerHelpCard();
 } // helpbuttonClicked()
+
+/*!
+*/
 
 void
 SoXtFullViewer::helpbuttonCB(
@@ -1476,12 +1898,18 @@ SoXtFullViewer::helpbuttonCB(
   ((SoXtFullViewer *) client_data)->helpbuttonClicked();
 } // helpbuttonCB()
 
+/*!
+*/
+
 void
 SoXtFullViewer::homebuttonClicked(
   void )
 {
   this->resetToHomePosition();
 } // homebuttonClicked()
+
+/*!
+*/
 
 void
 SoXtFullViewer::homebuttonCB(
@@ -1492,12 +1920,18 @@ SoXtFullViewer::homebuttonCB(
   ((SoXtFullViewer *) client_data)->homebuttonClicked();
 } // homebuttonCB()
 
+/*!
+*/
+
 void
 SoXtFullViewer::sethomebuttonClicked(
   void )
 {
   this->saveHomePosition();
 } // sethomebuttonClicked()
+
+/*!
+*/
 
 void
 SoXtFullViewer::sethomebuttonCB(
@@ -1508,12 +1942,18 @@ SoXtFullViewer::sethomebuttonCB(
   ((SoXtFullViewer *) client_data)->sethomebuttonClicked();
 } // sethomebuttonCB()
 
+/*!
+*/
+
 void
 SoXtFullViewer::viewallbuttonClicked(
   void )
 {
   this->viewAll();
 } // viewallbuttonClicked()
+
+/*!
+*/
 
 void
 SoXtFullViewer::viewallbuttonCB(
@@ -1541,6 +1981,9 @@ SoXtFullViewer::seekbuttonClicked(
   this->setSeekMode(this->isSeekMode() ? FALSE : TRUE);
 } // seekbuttonClicked()
 
+/*!
+*/
+
 void
 SoXtFullViewer::seekbuttonCB(
   Widget,
@@ -1550,12 +1993,18 @@ SoXtFullViewer::seekbuttonCB(
   ((SoXtFullViewer *) client_data)->seekbuttonClicked();
 } // seekbuttonCB()
 
+/*!
+*/
+
 void
 SoXtFullViewer::copyviewSelected(
   void )
 {
   this->copyView( SbTime::getTimeOfDay() );
 } // copyviewSelected()
+
+/*!
+*/
 
 void
 SoXtFullViewer::pasteviewSelected(
@@ -1564,11 +2013,17 @@ SoXtFullViewer::pasteviewSelected(
   this->pasteView( SbTime::getTimeOfDay() );
 } // pasteviewSelected()
 
+/*!
+*/
+
 void
 SoXtFullViewer::drawstyleActivated(
   int item )
 {
   SOXT_STUB();
 } // drawstyleActivated()
+
+// *************************************************************************
+// preferences sheet hooks:
 
 // *************************************************************************

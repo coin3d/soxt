@@ -81,6 +81,10 @@ void
 SoXtExaminerViewer::constructor( // private
   SbBool build )
 {
+  this->prefshell = this->prefsheet = (Widget) NULL;
+  this->prefparts = NULL;
+  this->numprefparts = 0;
+
 // don't uncomment this until constructor sends FALSE to FullViewer class
   this->mode = EXAMINE;
 
@@ -107,6 +111,7 @@ SoXtExaminerViewer::~SoXtExaminerViewer(
   void )
 {
   delete this->common;
+  delete [] this->prefparts;
 } // ~SoXtExaminerViewer()
 
 // *************************************************************************
@@ -118,7 +123,7 @@ SoXtExaminerViewer::processEvent(
   if ( SoXtViewer::processCommonEvents( event ) )
     return; // handled in SoXtViewer
 
-  if (!this->mapped) {
+  if ( ! this->mapped ) {
     this->mapped = TRUE; // Must be set before setCursorRepresentation() call.
     this->setCursorRepresentation( this->mode );
   }
@@ -782,5 +787,33 @@ void SoXtExaminerViewer::setFeedbackSize( const int size ) {
 int SoXtExaminerViewer::getFeedbackSize(void) const {
   return common->getFeedbackSize();
 } // getFeedbackSize()
+
+// *************************************************************************
+
+/*!
+*/
+
+void
+SoXtExaminerViewer::createPrefSheet( // protected, virtual
+  void )
+{
+  if ( ! this->prefshell ) {
+#if SOXT_DEBUG
+    SoDebugError::postInfo( "SoXtExaminerViewer::createPrefSheet",
+      "creating preferences window" );
+#endif // SOXT_DEBUG
+    this->prefparts = new Widget [ 10 ];
+    this->createPrefSheetShellAndForm( this->prefshell, this->prefsheet );
+    this->createDefaultPrefSheetParts( this->prefparts, this->numprefparts,
+      this->prefsheet );
+#if SOXT_DEBUG && 0
+    SoDebugError::postInfo( "SoXtExaminerViewer::createPrefSheet",
+      "numparts = %d", this->numprefparts );
+#endif // SOXT_DEBUG
+    // add parts specific for derived viewer
+  }
+  this->layoutPartsAndMapPrefSheet( this->prefparts, this->numprefparts,
+    this->prefsheet, this->prefshell );
+} // createPrefSheet()
 
 // *************************************************************************

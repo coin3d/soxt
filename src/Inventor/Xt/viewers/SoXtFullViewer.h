@@ -161,13 +161,13 @@ protected: // preference sheet routines
   Widget createStereoPrefSheetGuts( Widget parent );
   Widget createSpeedPrefSheetGuts( Widget parent );
 
-private: // preference sheet data
+  static void prefSheetDestroyCB( Widget, XtPointer, XtPointer );
+
   char * prefstring;
   Widget prefshell;
   Widget prefsheet;
 
 /*
-  static void prefSheetDestroyCB( Widget, SoXtFullViewer *, void * );
   static void seekPrefSheetFieldCB( Widget, SoXtFullViewer *, void * );
   static void seekPrefSheetToggle1CB( Widget, Widget, void * );
   static void seekPrefSheetToggle2CB( Widget, Widget, void * );
