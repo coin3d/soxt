@@ -32,24 +32,29 @@
 
 class SoXtResource {
 public:
-  SoXtResource( Widget widget );
+  SoXtResource( const Widget widget );
   ~SoXtResource(void);
 
   SbBool getResource( const char * const rname, const char * const rclass,
-    SbColor & retval );
+    SbColor & retval ) const;
   SbBool getResource( const char * const rname, const char * const rclass,
-    short & retval );
+    short & retval ) const;
   SbBool getResource( const char * const rname, const char * const rclass,
-    unsigned short & retval );
+    unsigned short & retval ) const;
   SbBool getResource( const char * const rname, const char * const rclass,
-    char * & retval );
+    char * & retval ) const;
   SbBool getResource( const char * const rname, const char * const rclass,
-    SbBool & retval );
+    SbBool & retval ) const;
   SbBool getResource( const char * const rname, const char * const rclass,
-    float & retval );
+    float & retval ) const;
+
+  void DumpInternals(void) const;
 
 private:
-  Display * display;
+  Display * const display;
+  XrmQuark * name_hierarchy;
+  XrmQuark * class_hierarchy;
+  int hierarchy_depth;
 
 }; // class SoXtResource
 
