@@ -37,6 +37,7 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXt.h>
 
 #include <Inventor/Xt/devices/SoXtLinuxJoystick.h>
+#include <Inventor/Xt/SoAny.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -324,7 +325,7 @@ const char *
 SoXtLinuxJoystick::getDevicePathName(// static, private
   void)
 {
-  const char * devicepath = getenv("SOXT_JOYSTICK_DEVICE");
+  const char * devicepath = SoAny::si()->getenv("SOXT_JOYSTICK_DEVICE");
 #ifdef SOXT_JOYSTICK_LINUX_DEVICE
   static const char configured[] = SOXT_JOYSTICK_LINUX_DEVICE;
   if (devicepath == NULL)
