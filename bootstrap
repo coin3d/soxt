@@ -9,10 +9,12 @@
 #   Lars J. Aas <larsa@sim.no>
 #   Ralph Levien (original autogen.sh picked up from Gnome source archive).
 
-wd=`echo $0 | sed 's,[^\\/]*$,,g'`;
+wd=`echo $0 | sed 's,[^\\/]*$,,g'`
+me=`echo $0 | sed 's,.*/,,g'`
+
 cd $wd
-if test ! -f autogen.sh; then
-  echo "unexpected problem with your shell - bailing out"
+if test ! -f ./$me; then
+  echo >&2 "$me: error: unexpected problem with your shell - bailing out"
   exit 1
 fi
 
@@ -45,10 +47,6 @@ if test -z "`autoconf --version | grep \" $AUTOCONF_VER\" 2> /dev/null`"; then
   ---------------------------
   You must use the CVS development version of autoconf ($AUTOCONF_VER)
   to generate configure information and Makefiles for $PROJECT.
-  You can find the pre-release snapshot at:
-
-  ftp://alpha.gnu.org/gnu/autoconf/autoconf-2.49a.tar.gz
-
 EOF
   DIE=true
 fi
@@ -66,7 +64,6 @@ if test -z "`automake --version | grep \" $AUTOMAKE_VER\" 2> /dev/null`"; then
 
   $ cvs -d :pserver:anoncvs@anoncvs.cygnus.com:/cvs/automake login
   $ cvs -d :pserver:anoncvs@anoncvs.cygnus.com:/cvs/automake co automake
-
 EOF
   DIE=true
 fi
@@ -80,7 +77,6 @@ if test -z "`libtool --version | grep \" $LIBTOOL_VER \" 2> /dev/null`"; then
   configure information and Makefiles for $PROJECT.
 
   Get ftp://ftp.gnu.org/pub/gnu/libtool/libtool-1.3.5.tar.gz
-
 EOF
   DIE=true
 fi
@@ -89,6 +85,7 @@ set $SUBPROJECTNAMES
 num=1
 for project in $SUBPROJECTS; do
   test -d $project || {
+    echo ""
     echo "Could not find subdirectory '$project'."
     echo "It was probably added after you initially fetched $PROJECT."
     echo "To add the missing module, run 'cvs co $1' from the $PROJECT"
@@ -98,7 +95,6 @@ for project in $SUBPROJECTS; do
     echo "(if all else fails), remove $PROJECT and run:"
     echo ""
     echo "  cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot co -P $PROJECT"
-    echo ""
     DIE=true
   }
   num=`expr $num + 1`
@@ -106,7 +102,10 @@ for project in $SUBPROJECTS; do
 done
 
 # abnormal exit?
-${DIE=false} && echo "" && exit 1
+${DIE=false} && echo "" && echo >&2 "$me: error: aborting because of errors..." && exit 1
+
+# **************************************************************************
+# grepping stderr makes the commands weird
 
 # generate aux/aclocal.m4
 echo "Running aclocal..."
@@ -114,22 +113,12 @@ aclocal -I $MACRODIR
 
 # generate config.h.in
 echo "Running autoheader..."
-autoheader
+( autoheader 3>&1 1>&2 2>&3 | grep -v 'is unchanged$' ) 3>&1 1>&2 2>&3
 
 # generate Makefile.in templates
 echo "Running automake..."
-echo "[ignore any \"directory should not contain '/'\" warning]"
-automake $AUTOMAKE_ADD
-
-AMBUGFIXES=`find . \( -name Makefile.in.diff \) | egrep -v '^\./data'`
-for bugfix in $AMBUGFIXES; do
-  : ${fixmsg=true}
-  $fixmsg && {
-    echo "[correcting automake bugs]"
-    fixmsg=false
-  }
-  patch -p0 < $bugfix
-done
+( automake $AUTOMAKE_ADD 3>&1 1>&2 2>&3 | \
+  grep -v 'directory should not' ) 3>&1 1>&2 2>&3
 
 # generate configure
 echo "Running autoconf..."
