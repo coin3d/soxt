@@ -74,7 +74,8 @@ SoXtExaminerViewer::constructor( // private
   this->spindetecttimerActive = FALSE;
   this->spinsamplecounter = 0;
   this->spinincrement = SbRotation::identity();
-  this->timertrigger = new SoTimerSensor( SoXtExaminerViewer::timertriggerCB, this );
+  this->timertrigger =
+    new SoTimerSensor( SoXtExaminerViewer::timertriggerCB, this );
   this->timertrigger->setInterval( 1.0f/30.0f );
 
   this->setClassName( "SoXtExaminerViewer" );

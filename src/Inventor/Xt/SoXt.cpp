@@ -383,7 +383,7 @@ SoXt::sensorQueueChanged( // static, private
 
   if ( sensormanager->isDelaySensorPending() ) {
     if ( ! SoXt::idleSensorActive ) {
-      SoXt::idleSensorId = XtAppAddTimeOut( SoXt::getAppContext(), 0,
+      SoXt::idleSensorId = XtAppAddTimeOut( SoXt::getAppContext(), 1,
                                SoXt::idleSensorCB, NULL );
       SoXt::idleSensorActive = TRUE;
     }
