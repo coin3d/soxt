@@ -76,6 +76,7 @@
 #include <Inventor/Xt/SoXtComponent.h>
 #include <Inventor/Xt/SoAny.h>
 #include <Inventor/Xt/nodes/SoGuiNodes.h>
+#include <Inventor/Xt/engines/SoGuiEngines.h>
 
 #include <X11/Intrinsic.h>
 #include <X11/StringDefs.h>
@@ -325,6 +326,7 @@ SoXt::init(Widget toplevel)
 
   SoXtObject::init();
   SoGuiNodes::initClasses();
+  SoGuiEngines::initClasses();
 
   SoDB::getSensorManager()->setChangedCallback(SoGuiP::sensorQueueChanged, NULL);
 
