@@ -158,12 +158,11 @@ SoXt::hide( // static
 
 // *************************************************************************
 
-/*
 XmString
 SoXt::encodeString( // static
   char * string )
 {
-  SOGUI_STUB();
+  return XmStringCreateLocalized(string);
 } // encodeString()
 
 char *
@@ -171,8 +170,8 @@ SoXt::decodeString( // static
   XmString xstring )
 {
   SOGUI_STUB();
+  return 0;
 } // decodeString()
-*/
 
 // *************************************************************************
 

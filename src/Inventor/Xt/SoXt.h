@@ -23,7 +23,7 @@
 #define SOXT_H
 
 #include <X11/Intrinsic.h>
-
+#include <Xm/Xm.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2s.h>
 
@@ -48,8 +48,8 @@ public:
   static void show( Widget widget );
   static void hide( Widget widget );
 
-//  static XmString encodeString( char * string );
-//  static char * decodeString( XmString xstring );
+  static XmString encodeString( char * string );
+  static char * decodeString( XmString xstring );
 
   static void setWidgetSize( Widget widget, const SbVec2s size );
   static SbVec2s getWidgetSize( Widget widget );
