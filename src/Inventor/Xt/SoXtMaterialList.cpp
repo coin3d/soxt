@@ -236,7 +236,7 @@ SoXtMaterialList::buildWidget(// protected
   this->listwidget = XmCreateScrolledList(root, "materials", argv, argc);
   XtManageChild(this->listwidget);
   XtAddCallback(this->listwidget, XmNdefaultActionCallback,
-    SoXtMaterialList::selection_cb, (XtPointer) this);
+    SoXtMaterialList::selection_cb, (void *) this);
   for (int i = 0; i < materials; i++)
     XmStringFree(list[i]);
   XtFree((char *) list);
@@ -303,8 +303,8 @@ SoXtMaterialList::selectionCallback(// private
 void
 SoXtMaterialList::selection_cb(// static, private
   Widget,
-  XtPointer closure,
-  XtPointer call_data)
+  void * closure,
+  void * call_data)
 {
   SoXtMaterialList * component = (SoXtMaterialList *) closure;
   XmListCallbackStruct * data = (XmListCallbackStruct *) call_data;
@@ -351,8 +351,8 @@ SoXtMaterialList::paletteMenuCallback(// private
 void
 SoXtMaterialList::palette_menu_cb(// static, private
   Widget widget,
-  XtPointer closure,
-  XtPointer)
+  void * closure,
+  void *)
 {
   assert(closure != NULL);
   SoXtMaterialList * component = (SoXtMaterialList *) closure;
@@ -406,7 +406,7 @@ SoXtMaterialList::buildPulldownMenu(// protected
              NULL);
     data->groups[i]->menuitem = item;
     XtAddCallback(item, XmNactivateCallback,
-      SoXtMaterialList::palette_menu_cb, (XtPointer) this);
+      SoXtMaterialList::palette_menu_cb, (void *) this);
   }
 
   return palettes;

@@ -5,8 +5,6 @@ include src/Inventor/Xt/common/Makefile.common
 
 ACLOCAL_AMFLAGS = -I cfg/m4
 
-SUFFIXES = .h .cpp .in .lo .o
-
 ############################################################################
 
 if BUILD_LIBRARY
