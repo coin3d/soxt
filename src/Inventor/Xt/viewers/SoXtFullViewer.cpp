@@ -147,6 +147,9 @@ SoXtFullViewer::~SoXtFullViewer( // protected
 
 // *************************************************************************
 
+static const int SOXT_VIEWER_MIN_HEIGHT_BASE = 30 + 90 + 8;
+static const int SOXT_VIEWER_MIN_WIDTH = 300;
+
 /*!
 */
 
@@ -159,6 +162,40 @@ SoXtFullViewer::setDecoration(
   this->decorations = enable;
   if ( this->prefmenu )
     this->prefmenu->SetMenuItemMarked( DECORATION_ITEM, enable );
+  Widget shell = this->baseWidget();
+  while ( shell != NULL && ! XtIsWMShell( shell ) )
+    shell = XtParent( shell );
+
+  if ( shell ) {
+    Dimension curminwidth, curwidth, curminheight, curheight;
+    Dimension minwidth = SOXT_VIEWER_MIN_WIDTH;
+    Dimension minheight = SOXT_VIEWER_MIN_HEIGHT_BASE +
+       30 * this->viewerButtonsList->getLength();
+    XtVaGetValues( shell,
+      XmNminHeight, &curminheight,
+      XmNheight, &curheight,
+      XmNminWidth, &curminwidth,
+      XmNwidth, &curwidth,
+      NULL );
+
+    if ( enable ) {
+      if ( curminwidth == 0 ) {
+        XtVaSetValues( shell, XmNminWidth, minwidth, NULL );
+        if ( curwidth < minwidth )
+          XtVaSetValues( shell, XmNwidth, minwidth, NULL );
+      }
+      if ( curminheight == 0 ) {
+        XtVaSetValues( shell, XmNminHeight, minheight, NULL );
+        if ( curheight < minheight )
+          XtVaSetValues( shell, XmNheight, minheight, NULL );
+      }
+    } else {
+      if ( curminwidth == minwidth )
+        XtVaSetValues( shell, XmNminWidth, 0, NULL );
+      if ( curminheight == minheight )
+        XtVaSetValues( shell, XmNminHeight, 0, NULL );
+    }
+  }
 } // setDecoration()
 
 /*!
@@ -323,9 +360,12 @@ SoXtFullViewer::buildWidget( // protected
   Widget shell = this->viewerbase;
   while ( shell && ! XtIsWMShell( shell ) )
     shell = XtParent( shell );
-  if ( shell ) {
+  if ( shell && this->decorations != FALSE ) {
     int existing = 0, current = 0;
-    XtVaGetValues( shell, XmNminHeight, &existing, XmNheight, &current, NULL );
+    XtVaGetValues( shell,
+      XmNminHeight, &existing,
+      XmNheight, &current,
+      NULL );
     Dimension minheight =
       30 + 90 + 30 * this->viewerButtonsList->getLength() + 8;
     if ( existing > minheight ) minheight = existing;
