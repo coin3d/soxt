@@ -634,8 +634,8 @@ SoXtSlider::slider_cb(
   float previous = slider->current;
   slider->current = slider->minimum +
     (slider->maximum - slider->minimum) / 999 * (float) data->value;
-  slider->current = SbMax( slider->current, slider->minimum );
-  slider->current = SbMin( slider->current, slider->maximum );
+  slider->current = SoXtMax( slider->current, slider->minimum );
+  slider->current = SoXtMin( slider->current, slider->maximum );
   char text[16];
   
   sprintf( text, "%.2g", slider->current );
@@ -671,8 +671,8 @@ SoXtSlider::value_cb(
 
   float previous = slider->current;
   slider->current = atof( XmTextGetString( widget ) );
-  slider->current = SbMax( slider->current, slider->minimum );
-  slider->current = SbMin( slider->current, slider->maximum );
+  slider->current = SoXtMax( slider->current, slider->minimum );
+  slider->current = SoXtMin( slider->current, slider->maximum );
   
   char text[16];
   sprintf( text, "%.2g", slider->current );
@@ -735,8 +735,8 @@ SoXtSlider::min_value_cb(
   float previous = slider->current;
   float prevmax = slider->maximum;
   slider->minimum = atof( XmTextGetString(widget) );
-  slider->maximum = SbMax( slider->maximum, slider->minimum );
-  slider->current = SbMax( slider->current, slider->minimum );
+  slider->maximum = SoXtMax( slider->maximum, slider->minimum );
+  slider->current = SoXtMax( slider->current, slider->minimum );
 
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo( "SoXtSlider::min_value_cb", "[invoked]" );
@@ -826,8 +826,8 @@ SoXtSlider::max_value_cb(
   float previous = slider->current;
   float prevmin = slider->minimum;
   slider->maximum = atof( XmTextGetString(widget) );
-  slider->minimum = SbMin( slider->minimum, slider->maximum );
-  slider->current = SbMin( slider->current, slider->maximum );
+  slider->minimum = SoXtMin( slider->minimum, slider->maximum );
+  slider->current = SoXtMin( slider->current, slider->maximum );
 
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo( "SoXtSlider::max_value_cb", "[invoked]" );
