@@ -28,7 +28,7 @@ static const char rcsid[] =
   \class SoXtFlyViewer Inventor/Xt/viewers/SoXtFlyViewer.h
   \brief The SoXtFlyViewer class is for making the browsing experience more
   like in a flight simulator.
-  \ingroup viewers
+  \ingroup components viewers
 */
 
 // *************************************************************************

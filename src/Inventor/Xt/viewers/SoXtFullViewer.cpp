@@ -27,7 +27,7 @@ static const char rcsid[] =
 /*!
   \class SoXtFullViewer Inventor/Xt/SoXtFullViewer.h
   \brief The SoXtFullViewer class adds GUI decorations to the viewer component.
-  \ingroup viewers components
+  \ingroup components viewers
 */
 
 // *************************************************************************

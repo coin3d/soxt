@@ -28,7 +28,7 @@ static const char rcsid[] =
   \class SoXtWalkViewer Inventor/Xt/viewers/SoXtWalkViewer.h
   \brief The SoXtWalkViewer class is a viewer for giving a "walk"-like
   experience in the scene.
-  \ingroup viewers
+  \ingroup components viewers
 */
 
 // *************************************************************************

@@ -27,6 +27,7 @@ static const char rcsid[] =
 /*!
   \class SoXtConstrainedViewer Inventor/Xt/viewers/SoXtConstrainedViewer.h
   \brief The SoXtConstrainedViewer is yet to be documented.
+  \ingroup components viewers
 */
 
 // *************************************************************************

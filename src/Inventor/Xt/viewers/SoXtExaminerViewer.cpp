@@ -27,7 +27,7 @@ static const char rcsid[] =
 /*!
   \class SoXtExaminerViewer Inventor/Xt/viewers/SoXtExaminerViewer.h
   \brief The SoXtExaminerViewer class is the most used viewer component.
-  \ingroup viewers components
+  \ingroup components viewers
 */
 
 // *************************************************************************

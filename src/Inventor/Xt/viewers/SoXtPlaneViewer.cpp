@@ -27,7 +27,7 @@ static const char rcsid[] =
 /*!
   \class SoXtPlaneViewer Inventor/Xt/viewers/SoXtPlaneViewer.h
   \brief The SoXtPlaneViewer class is an alternative to the examiner viewer.
-  \ingroup viewers
+  \ingroup components viewers
 */
 
 // *************************************************************************
