@@ -163,14 +163,16 @@ SoXtFullViewer::setDecoration(
   this->decorations = enable;
   if ( this->prefmenu )
     this->prefmenu->SetMenuItemMarked( DECORATION_ITEM, enable );
+
+/*
   Widget shell = this->baseWidget();
   while ( shell != NULL && ! XtIsWMShell( shell ) )
     shell = XtParent( shell );
 
   if ( shell ) {
     Dimension curminwidth, curwidth, curminheight, curheight;
-    Dimension minwidth = SOXT_VIEWER_MIN_WIDTH;
-    Dimension minheight = SOXT_VIEWER_MIN_HEIGHT_BASE +
+    int minwidth = SOXT_VIEWER_MIN_WIDTH;
+    int minheight = SOXT_VIEWER_MIN_HEIGHT_BASE +
        30 * this->viewerButtonsList->getLength();
     XtVaGetValues( shell,
       XmNminHeight, &curminheight,
@@ -182,13 +184,13 @@ SoXtFullViewer::setDecoration(
     if ( enable ) {
       if ( curminwidth == 0 ) {
         XtVaSetValues( shell, XmNminWidth, minwidth, NULL );
-        if ( curwidth < minwidth )
-          XtVaSetValues( shell, XmNwidth, minwidth, NULL );
+//        if ( curwidth < minwidth )
+//          XtVaSetValues( shell, XmNwidth, minwidth, NULL );
       }
       if ( curminheight == 0 ) {
         XtVaSetValues( shell, XmNminHeight, minheight, NULL );
-        if ( curheight < minheight )
-          XtVaSetValues( shell, XmNheight, minheight, NULL );
+//        if ( curheight < minheight )
+//          XtVaSetValues( shell, XmNheight, minheight, NULL );
       }
     } else {
       if ( curminwidth == minwidth )
@@ -197,6 +199,7 @@ SoXtFullViewer::setDecoration(
         XtVaSetValues( shell, XmNminHeight, 0, NULL );
     }
   }
+*/
 } // setDecoration()
 
 /*!
@@ -339,11 +342,15 @@ SoXtFullViewer::buildWidget( // protected
 {
   this->viewerbase = XtVaCreateManagedWidget( this->getClassName(),
     xmFormWidgetClass, parent,
+/*
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
+*/
     NULL );
+
+  this->setBaseWidget( this->viewerbase );
   this->registerWidget( this->viewerbase );
 
   char * titleString = NULL;
@@ -352,23 +359,19 @@ SoXtFullViewer::buildWidget( // protected
   if ( titleString != NULL )
     this->setTitle( titleString );
 
-  this->buildDecoration( this->viewerbase );
-  
   this->canvas = inherited::buildWidget( this->viewerbase );
-
   XtVaSetValues( this->canvas,
       XmNleftAttachment, XmATTACH_FORM,
       XmNleftOffset, 30,
       XmNtopAttachment, XmATTACH_FORM,
-      XmNbottomAttachment, XmATTACH_FORM,
-      XmNbottomOffset, 30,
       XmNrightAttachment, XmATTACH_FORM,
       XmNrightOffset, 30,
+      XmNbottomAttachment, XmATTACH_FORM,
+      XmNbottomOffset, 30,
       NULL );
 
-  XtManageChild( this->canvas );
-  this->setBaseWidget( this->viewerbase );
-
+  this->buildDecoration( this->viewerbase );
+  
   Widget shell = this->viewerbase;
   while ( shell && ! XtIsWMShell( shell ) )
     shell = XtParent( shell );
@@ -403,12 +406,142 @@ SoXtFullViewer::buildDecoration( // virtual
   Widget parent )
 {
   this->decorform[LEFTDECORATION]   = this->buildLeftTrim( parent );
+  XtVaSetValues( this->decorform[LEFTDECORATION],
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_OPPOSITE_FORM,
+    XmNrightOffset, -30,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNbottomOffset, 30,
+    NULL );
+
   this->decorform[RIGHTDECORATION]  = this->buildRightTrim( parent );
+  XtVaSetValues( this->decorform[RIGHTDECORATION],
+    XmNleftAttachment, XmATTACH_OPPOSITE_FORM,
+    XmNleftOffset, -30,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNbottomOffset, 30,
+    NULL );
+
   this->decorform[BOTTOMDECORATION] = this->buildBottomTrim( parent );
-//  XtManageChild( this->decorform[LEFTDECORATION] );
-//  XtManageChild( this->decorform[RIGHTDECORATION] );
-//  XtManageChild( this->decorform[BOTTOMDECORATION] );
+  XtVaSetValues( this->decorform[BOTTOMDECORATION],
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNtopAttachment, XmATTACH_OPPOSITE_FORM,
+    XmNtopOffset, -30,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    NULL );
 } // buildDecorations()
+
+// *************************************************************************
+
+/*!
+  This method creates the left decoration form.
+*/
+
+Widget
+SoXtFullViewer::buildLeftTrim( // virtual
+  Widget parent )
+{
+  Widget trim = XtVaCreateManagedWidget( "LeftTrim",
+      xmFormWidgetClass, parent,
+/*
+      XmNleftAttachment, XmATTACH_FORM,
+      XmNtopAttachment, XmATTACH_FORM,
+      XmNbottomAttachment, XmATTACH_FORM,
+      XmNbottomOffset, 30,
+      XmNrightAttachment, XmATTACH_OPPOSITE_FORM,
+      XmNrightOffset, -30,
+*/
+      NULL );
+
+  // build application buttons
+  this->appButtonsForm = this->buildAppButtonsForm( trim );
+
+  XtVaSetValues( this->appButtonsForm,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    NULL );
+  XtManageChild( this->appButtonsForm );
+
+  // add right thumb wheel
+  this->wheels[LEFTDECORATION] = XtVaCreateManagedWidget( "LeftWheel",
+    soxtThumbWheelWidgetClass, trim,
+    XmNorientation, XmVERTICAL,
+    XmNshadowType, XmSHADOW_OUT,
+    XmNhighlightThickness, 0,
+    XmNshadowThickness, 2,
+    XmNtraversalOn, False,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNleftOffset, 2,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNrightOffset, 2,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNbottomOffset, 2,
+    XmNheight, 90,
+    NULL );
+
+  XtAddCallback( this->wheels[LEFTDECORATION],
+    XmNarmCallback, SoXtFullViewer::leftWheelStartCB, this );
+  XtAddCallback( this->wheels[LEFTDECORATION],
+    XmNdisarmCallback, SoXtFullViewer::leftWheelFinishCB, this );
+  XtAddCallback( this->wheels[LEFTDECORATION],
+    XmNvalueChangedCallback, SoXtFullViewer::leftWheelMotionCB, this );
+
+  return trim;
+} // buildLeftTrim()
+
+/*!
+  This method creates the right decoration form.
+*/
+
+Widget
+SoXtFullViewer::buildRightTrim( // virtual
+  Widget parent )
+{
+  Widget trim = XtVaCreateManagedWidget( "RightTrim",
+      xmFormWidgetClass, parent,
+/*
+      XmNtopAttachment, XmATTACH_FORM,
+      XmNrightAttachment, XmATTACH_FORM,
+      XmNbottomAttachment, XmATTACH_FORM,
+      XmNbottomOffset, 30,
+      XmNleftAttachment, XmATTACH_OPPOSITE_FORM,
+      XmNleftOffset, -30,
+*/
+      NULL );
+
+  this->buildViewerButtons( trim );
+
+  // add right thumb wheel
+  this->wheels[RIGHTDECORATION] = XtVaCreateManagedWidget( "RightWheel",
+    soxtThumbWheelWidgetClass, trim,
+    XmNorientation, XmVERTICAL,
+    XmNshadowType, XmSHADOW_OUT,
+    XmNhighlightThickness, 0,
+    XmNshadowThickness, 2,
+    XmNtraversalOn, False,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNleftOffset, 2,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNrightOffset, 2,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNbottomOffset, 2,
+    XmNheight, 90,
+    NULL );
+
+  XtAddCallback( this->wheels[RIGHTDECORATION],
+    XmNarmCallback, SoXtFullViewer::rightWheelStartCB, this );
+  XtAddCallback( this->wheels[RIGHTDECORATION],
+    XmNdisarmCallback, SoXtFullViewer::rightWheelFinishCB, this );
+  XtAddCallback( this->wheels[RIGHTDECORATION],
+    XmNvalueChangedCallback, SoXtFullViewer::rightWheelMotionCB, this );
+
+  return trim;
+} // buildRightTrim()
 
 /*!
   This method created the bottom decoration form.
@@ -420,11 +553,13 @@ SoXtFullViewer::buildBottomTrim( // virtual
 {
   Widget trim = XtVaCreateManagedWidget( "BottomTrim",
       xmFormWidgetClass, parent,
+/*
       XmNleftAttachment, XmATTACH_FORM,
       XmNrightAttachment, XmATTACH_FORM,
       XmNbottomAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_OPPOSITE_FORM,
       XmNtopOffset, -30,
+*/
       NULL );
 
   const char * string;
@@ -483,108 +618,6 @@ SoXtFullViewer::buildBottomTrim( // virtual
 
   return trim;
 } // buildBottomTrim()
-
-/*!
-  This method creates the left decoration form.
-*/
-
-Widget
-SoXtFullViewer::buildLeftTrim( // virtual
-  Widget parent )
-{
-  Widget trim = XtVaCreateManagedWidget( "LeftTrim",
-      xmFormWidgetClass, parent,
-      XmNleftAttachment, XmATTACH_FORM,
-      XmNtopAttachment, XmATTACH_FORM,
-      XmNbottomAttachment, XmATTACH_FORM,
-      XmNbottomOffset, 30,
-      XmNrightAttachment, XmATTACH_OPPOSITE_FORM,
-      XmNrightOffset, -30,
-      NULL );
-
-  // build application buttons
-  this->appButtonsForm = this->buildAppButtonsForm( trim );
-
-  XtVaSetValues( this->appButtonsForm,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNrightAttachment, XmATTACH_FORM,
-    NULL );
-  XtManageChild( this->appButtonsForm );
-
-  // add right thumb wheel
-  this->wheels[LEFTDECORATION] = XtVaCreateManagedWidget( "LeftWheel",
-    soxtThumbWheelWidgetClass, trim,
-    XmNorientation, XmVERTICAL,
-    XmNshadowType, XmSHADOW_OUT,
-    XmNhighlightThickness, 0,
-    XmNshadowThickness, 2,
-    XmNtraversalOn, False,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNleftOffset, 2,
-    XmNrightAttachment, XmATTACH_FORM,
-    XmNrightOffset, 2,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNbottomOffset, 2,
-    XmNheight, 90,
-    NULL );
-
-  XtAddCallback( this->wheels[LEFTDECORATION],
-    XmNarmCallback, SoXtFullViewer::leftWheelStartCB, this );
-  XtAddCallback( this->wheels[LEFTDECORATION],
-    XmNdisarmCallback, SoXtFullViewer::leftWheelFinishCB, this );
-  XtAddCallback( this->wheels[LEFTDECORATION],
-    XmNvalueChangedCallback, SoXtFullViewer::leftWheelMotionCB, this );
-
-  return trim;
-} // buildLeftTrim()
-
-/*!
-  This method creates the right decoration form.
-*/
-
-Widget
-SoXtFullViewer::buildRightTrim( // virtual
-  Widget parent )
-{
-  Widget trim = XtVaCreateManagedWidget( "RightTrim",
-      xmFormWidgetClass, parent,
-      XmNtopAttachment, XmATTACH_FORM,
-      XmNrightAttachment, XmATTACH_FORM,
-      XmNbottomAttachment, XmATTACH_FORM,
-      XmNbottomOffset, 30,
-      XmNleftAttachment, XmATTACH_OPPOSITE_FORM,
-      XmNleftOffset, -30,
-      NULL );
-
-  this->buildViewerButtons( trim );
-
-  // add right thumb wheel
-  this->wheels[RIGHTDECORATION] = XtVaCreateManagedWidget( "RightWheel",
-    soxtThumbWheelWidgetClass, trim,
-    XmNorientation, XmVERTICAL,
-    XmNshadowType, XmSHADOW_OUT,
-    XmNhighlightThickness, 0,
-    XmNshadowThickness, 2,
-    XmNtraversalOn, False,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNleftOffset, 2,
-    XmNrightAttachment, XmATTACH_FORM,
-    XmNrightOffset, 2,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNbottomOffset, 2,
-    XmNheight, 90,
-    NULL );
-
-  XtAddCallback( this->wheels[RIGHTDECORATION],
-    XmNarmCallback, SoXtFullViewer::rightWheelStartCB, this );
-  XtAddCallback( this->wheels[RIGHTDECORATION],
-    XmNdisarmCallback, SoXtFullViewer::rightWheelFinishCB, this );
-  XtAddCallback( this->wheels[RIGHTDECORATION],
-    XmNvalueChangedCallback, SoXtFullViewer::rightWheelMotionCB, this );
-
-  return trim;
-} // buildRightTrim()
 
 // *************************************************************************
 
