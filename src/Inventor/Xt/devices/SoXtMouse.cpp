@@ -30,7 +30,7 @@ static const char rcsid[] =
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 
-#include <common/soguidefs.h> // SOGUI_STUB()
+#include <Inventor/Xt/common/soguidefs.h> // SOGUI_STUB()
 #include <Inventor/Xt/devices/SoXtMouse.h>
 
 /*

@@ -24,7 +24,8 @@ static const char rcsid[] =
 
 #include <Inventor/misc/SoBasic.h>
 
-#include <common/soguidefs.h> // SOGUI_STUB()
+#include <Inventor/Xt/common/soguidefs.h> // SOGUI_STUB()
+
 #include <Inventor/Xt/devices/SoXtInputFocus.h>
 
 // *************************************************************************

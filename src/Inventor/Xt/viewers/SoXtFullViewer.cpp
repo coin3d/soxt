@@ -40,7 +40,7 @@ static const char rcsid[] =
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
 #endif // SOXT_THUMBWHEELTEST
 
-#include <common/soguidefs.h> // SOGUI_STUB()
+#include <Inventor/Xt/common/soguidefs.h> // SOGUI_STUB()
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
 
 enum DefaultViewerButtons {
