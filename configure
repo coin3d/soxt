@@ -462,7 +462,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS SOXT_MAJOR_VERSION SOXT_MINOR_VERSION SOXT_MICRO_VERSION SOXT_VERSION SOXT_INTERFACE_AGE SOXT_BINARY_AGE LT_RELEASE LT_CURRENT LT_REVISION LT_AGE build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB F77 FFLAGS ac_ct_F77 LIBTOOL SOGUI_EXTRA_CPPFLAGS SOGUI_EXTRA_CFLAGS SOGUI_EXTRA_CXXFLAGS SOGUI_EXTRA_LDFLAGS SOGUI_EXTRA_LIBS BUILD_LIBRARY_TRUE BUILD_LIBRARY_FALSE CONFIG SUFFIX htmldir SOGUI_DOC_HTML SOGUI_DOC_MAN sogui_build_dir sogui_src_dir sogui_html_dir sogui_man_dir BUILD_MANPAGES_TRUE BUILD_MANPAGES_FALSE BUILD_HTMLPAGES_TRUE BUILD_HTMLPAGES_FALSE sim_ac_doxygen_exe sim_ac_perl_exe path_tag BUILD_METAFILES_TRUE BUILD_METAFILES_FALSE meta_prefix DSUFFIX X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS sim_ac_coin_configcmd HAVE_JOYSTICK_LINUX_TRUE HAVE_JOYSTICK_LINUX_FALSE BUILD_DEVCODE_TRUE BUILD_DEVCODE_FALSE COIN_COMPILER GUI Gui gui WIDGET EVENT COMPONENTHEADER soxt_configure_date LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS SOXT_MAJOR_VERSION SOXT_MINOR_VERSION SOXT_MICRO_VERSION SOXT_VERSION SOXT_INTERFACE_AGE SOXT_BINARY_AGE LT_RELEASE LT_CURRENT LT_REVISION LT_AGE build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB F77 FFLAGS ac_ct_F77 LIBTOOL SOGUI_EXTRA_CPPFLAGS SOGUI_EXTRA_CFLAGS SOGUI_EXTRA_CXXFLAGS SOGUI_EXTRA_LDFLAGS SOGUI_EXTRA_LIBS BUILD_LIBRARY_TRUE BUILD_LIBRARY_FALSE CONFIG SUFFIX htmldir SOGUI_DOC_HTML SOGUI_DOC_MAN sogui_build_dir sogui_src_dir sogui_html_dir sogui_man_dir BUILD_MANPAGES_TRUE BUILD_MANPAGES_FALSE BUILD_HTMLPAGES_TRUE BUILD_HTMLPAGES_FALSE sim_ac_doxygen_exe sim_ac_perl_exe path_tag BUILD_METAFILES_TRUE BUILD_METAFILES_FALSE meta_prefix DSUFFIX X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS USE_LIBXPM_TRUE USE_LIBXPM_FALSE sim_ac_coin_configcmd HAVE_JOYSTICK_LINUX_TRUE HAVE_JOYSTICK_LINUX_FALSE BUILD_DEVCODE_TRUE BUILD_DEVCODE_FALSE COIN_COMPILER GUI Gui gui WIDGET EVENT COMPONENTHEADER soxt_configure_date LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -21816,6 +21816,17 @@ echo "$as_me: error: need to able to compile and link against X11 libraries" >&2
    { (exit 1); exit 1; }; }
 fi
 
+
+
+if test x"$sim_ac_xpm_status" = x"Yes"; then
+  USE_LIBXPM_TRUE=
+  USE_LIBXPM_FALSE='#'
+else
+  USE_LIBXPM_TRUE='#'
+  USE_LIBXPM_FALSE=
+fi
+
+
 if test "${with_inventor+set}" = set; then
 
 
@@ -24384,6 +24395,13 @@ echo "$as_me: error: conditional \"BUILD_METAFILES\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
+if test -z "${USE_LIBXPM_TRUE}" && test -z "${USE_LIBXPM_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"USE_LIBXPM\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"USE_LIBXPM\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
 if test -z "${HAVE_JOYSTICK_LINUX_TRUE}" && test -z "${HAVE_JOYSTICK_LINUX_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"HAVE_JOYSTICK_LINUX\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
@@ -25055,6 +25073,8 @@ s,@X_CFLAGS@,$X_CFLAGS,;t t
 s,@X_PRE_LIBS@,$X_PRE_LIBS,;t t
 s,@X_LIBS@,$X_LIBS,;t t
 s,@X_EXTRA_LIBS@,$X_EXTRA_LIBS,;t t
+s,@USE_LIBXPM_TRUE@,$USE_LIBXPM_TRUE,;t t
+s,@USE_LIBXPM_FALSE@,$USE_LIBXPM_FALSE,;t t
 s,@sim_ac_coin_configcmd@,$sim_ac_coin_configcmd,;t t
 s,@HAVE_JOYSTICK_LINUX_TRUE@,$HAVE_JOYSTICK_LINUX_TRUE,;t t
 s,@HAVE_JOYSTICK_LINUX_FALSE@,$HAVE_JOYSTICK_LINUX_FALSE,;t t

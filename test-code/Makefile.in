@@ -130,6 +130,8 @@ SOXT_MINOR_VERSION = @SOXT_MINOR_VERSION@
 SOXT_VERSION = @SOXT_VERSION@
 STRIP = @STRIP@
 SUFFIX = @SUFFIX@
+USE_LIBXPM_FALSE = @USE_LIBXPM_FALSE@
+USE_LIBXPM_TRUE = @USE_LIBXPM_TRUE@
 VERSION = @VERSION@
 WIDGET = @WIDGET@
 X_CFLAGS = @X_CFLAGS@
@@ -195,7 +197,10 @@ target_vendor = @target_vendor@
 
 DEFAULT_INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 
-noinst_PROGRAMS = button materialeditor coloreditor examinerviewer
+@USE_LIBXPM_TRUE@XpmApps = button
+@USE_LIBXPM_FALSE@XpmApps = 
+
+noinst_PROGRAMS = materialeditor coloreditor examinerviewer $(XpmApps)
 
 materialeditor_SOURCES = materialeditor.cpp
 materialeditor_LDADD = ../src/Inventor/Xt/libSoXt.la
@@ -213,8 +218,11 @@ ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/src/config.h
 CONFIG_CLEAN_FILES =
-noinst_PROGRAMS = button$(EXEEXT) materialeditor$(EXEEXT) \
-	coloreditor$(EXEEXT) examinerviewer$(EXEEXT)
+@USE_LIBXPM_TRUE@noinst_PROGRAMS = materialeditor$(EXEEXT) \
+@USE_LIBXPM_TRUE@	coloreditor$(EXEEXT) examinerviewer$(EXEEXT) \
+@USE_LIBXPM_TRUE@	button$(EXEEXT)
+@USE_LIBXPM_FALSE@noinst_PROGRAMS = materialeditor$(EXEEXT) \
+@USE_LIBXPM_FALSE@	coloreditor$(EXEEXT) examinerviewer$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
 
 am_button_OBJECTS = button.$(OBJEXT)

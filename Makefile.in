@@ -139,6 +139,8 @@ SOXT_MINOR_VERSION = @SOXT_MINOR_VERSION@
 SOXT_VERSION = @SOXT_VERSION@
 STRIP = @STRIP@
 SUFFIX = @SUFFIX@
+USE_LIBXPM_FALSE = @USE_LIBXPM_FALSE@
+USE_LIBXPM_TRUE = @USE_LIBXPM_TRUE@
 VERSION = @VERSION@
 WIDGET = @WIDGET@
 X_CFLAGS = @X_CFLAGS@
@@ -563,7 +565,7 @@ SoQt_ExtraBuiltMetaFiles = \
 
 @BUILD_HTMLPAGES_TRUE@HTMLDIR = html
 
-SUBDIRS = . $(LIBDIRS) man $(HTMLDIR)
+SUBDIRS = . $(LIBDIRS) man $(HTMLDIR) test-code
 
 
 ############################################################################
@@ -619,7 +621,7 @@ DIST_COMMON = README $(dist_acdata_DATA) \
 	aclocal.m4 cfg/config.guess cfg/config.sub cfg/depcomp \
 	cfg/install-sh cfg/ltmain.sh cfg/missing cfg/mkinstalldirs \
 	configure configure.ac
-DIST_SUBDIRS = . src man html
+DIST_SUBDIRS = . src man html test-code
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
