@@ -5368,7 +5368,7 @@ if test x"$sim_cv_lib_x11mu_avail" = xyes; then
   sim_ac_x11mu_avail=yes
 else
   # On HP-UX, Xmu might be located under /usr/contrib/X11R6/
-  if test -d /usr/controb/X11R6; then
+  if test -d /usr/contrib/X11R6; then
     CPPFLAGS="-I/usr/contrib/X11R6/include $CPPFLAGS"
     LDFLAGS="-L/usr/contrib/X11R6/lib $LDFLAGS"
     AC_CACHE_CHECK(
