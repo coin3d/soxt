@@ -19,6 +19,8 @@ BUILT_SOURCES = \
 	src/Inventor/@Gui@/So@Gui@Basic.h \
 	src/Inventor/@Gui@/So@Gui@Cursors.h \
 	src/Inventor/@Gui@/So@Gui@Cursors.cpp \
+	src/Inventor/@Gui@/So@Gui@Object.h \
+	src/Inventor/@Gui@/So@Gui@Object.cpp \
 	src/Inventor/@Gui@/So@Gui@RenderArea.h \
 	src/Inventor/@Gui@/So@Gui@RenderArea.cpp \
 	src/Inventor/@Gui@/SoAnyMaterialList.h \
@@ -75,6 +77,16 @@ src/Inventor/@Gui@/So@Gui@Cursors.cpp: \
   $(srcdir)/src/Inventor/@Gui@/common/SoGuiCursors.cpp.in
 	@./config.status \
 	  --file=$@:src/Inventor/@Gui@/common/SoGuiCursors.cpp.in
+
+src/Inventor/@Gui@/So@Gui@Object.h: \
+  $(srcdir)/src/Inventor/@Gui@/common/SoGuiObject.h.in
+	@./config.status \
+	  --file=$@:src/Inventor/@Gui@/common/SoGuiObject.h.in
+
+src/Inventor/@Gui@/So@Gui@Object.cpp: \
+  $(srcdir)/src/Inventor/@Gui@/common/SoGuiObject.cpp.in
+	@./config.status \
+	  --file=$@:src/Inventor/@Gui@/common/SoGuiObject.cpp.in
 
 src/Inventor/@Gui@/So@Gui@RenderArea.h: \
   $(srcdir)/src/Inventor/@Gui@/common/SoGuiRenderArea.h.in
