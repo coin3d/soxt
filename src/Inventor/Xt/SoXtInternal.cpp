@@ -27,6 +27,7 @@
 
 #include <assert.h>
 
+#include <X11/Xlib.h>
 #include <X11/Intrinsic.h>
 
 #ifdef HAVE_LIBXPM
