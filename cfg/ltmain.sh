@@ -96,6 +96,9 @@ fi
 # Make sure IFS has a sensible default
 : ${IFS=" 	"}
 
+# Make sure MKS sh doesn't run case/esac switches in case-insensitive mode
+DUALCASE=1
+
 if test "$build_libtool_libs" != yes && test "$build_old_libs" != yes; then
   $echo "$modename: not configured to build any kind of library" 1>&2
   $echo "Fatal configuration error.  See the $PACKAGE docs for more information." 1>&2
