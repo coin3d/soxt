@@ -111,7 +111,7 @@ protected:
 
   SbBool doubleBuffer;
 
-  static void eventHandler( Widget, SoXtGLWidget *, XEvent *, Boolean * );
+  static void eventHandler( Widget, void *, XEvent *, Boolean * );
 
 protected:
   int glLockLevel;

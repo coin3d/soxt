@@ -22,6 +22,16 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtGLWidget Inventor/Xt/SoXtGLWidget.h
+  \brief The SoXtGLWidget class manages GL contexts.
+  \ingroup components
+*/
+
+// *************************************************************************
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -49,6 +59,118 @@ static const char rcsid[] =
 // *************************************************************************
 
 /*!
+  \fn void SoXtGLWidget::redraw(void) = 0
+
+  This method is invokedwhen the GL buffer needs to be redrawn.
+*/
+
+/*!
+  \var Widget SoXtGLWidget::glxManager
+
+  The widget managing the GL widget, providing it with a border.
+*/
+
+/*!
+  \var Widget SoXtGLWidget::glxWidget
+
+  The GL area widget.
+*/
+
+/*!
+  \var Visual * SoXtGLWidget::normalVisual
+
+  Visual for normal graphics.
+*/
+
+/*!
+  \var GLXcontext SoXtGLWidget::normalContext
+
+  GL context for normal graphics.
+*/
+
+/*!
+  \var GLXcontext SoXtGLWidget::normalColorMapSize
+
+  Size of colormap for normal graphics.
+*/
+
+/*!
+  \var SbColor * SoXtGLWidget::normalColorMap
+
+  Colormap for normal graphics.
+*/
+
+/*!
+  \var Visual * SoXtGLWidget::overlayVisual
+
+  Visual for overlay graphics.
+*/
+
+/*!
+  \var GLXcontext SoXtGLWidget::overlayContext
+
+  GL context for overlay graphics.
+*/
+
+/*!
+  \var GLXcontext SoXtGLWidget::overlayColorMapSize
+
+  Size of colormap for overlay graphics.
+*/
+
+/*!
+  \var SbColor * SoXtGLWidget::overlayColorMap
+
+  Colormap for overlay graphics.
+*/
+
+/*!
+  \var SbBool SoXtGLWidget::waitForExpose
+
+  Flag telling whether to wait for expose or not..
+*/
+
+/*!
+  \var SbBool SoXtGLWidget::border
+
+  Whether there should be a border around the GL area or not.
+*/
+
+/*!
+  \var int SoXtGLWidget::borderwidth
+
+  Width of the border around the GL area.
+*/
+
+/*!
+  \var unsigned long SoXtGLWidget::transparentPixel
+
+  Which pixel value for transparent pixels in the overlay planes.
+*/
+
+/*!
+  \var SbBool SoXtGLWidget::drawToFrontBuffer
+
+  Whether drawing should happen to the front buffer or not.
+*/
+
+/*!
+  \var SbBool SoXtGLWidget::doubleBuffer
+
+  Whether double buffering is used or not.
+*/
+
+/*!
+  \var int SoXtGLWidget::glLockLevel
+
+  Integer that tracks the lock/unlock calls.
+*/
+
+
+// *************************************************************************
+
+/*!
+  The constructor.
 */
 
 SoXtGLWidget::SoXtGLWidget( // protected
@@ -86,6 +208,7 @@ SoXtGLWidget::SoXtGLWidget( // protected
 } // SoXtGLWidget()
 
 /*!
+  The destructor.
 */
 
 SoXtGLWidget::~SoXtGLWidget( // virtual, protected
@@ -96,6 +219,7 @@ SoXtGLWidget::~SoXtGLWidget( // virtual, protected
 // *************************************************************************
 
 /*!
+  This method returns the transparent pixel for the overlay planes.
 */
 
 unsigned long
@@ -106,6 +230,7 @@ SoXtGLWidget::getOverlayTransparentPixel(
 } // getOverlayTransparentPixel()
 
 /*!
+  This method returns the size of the colormap for the overlay planes.
 */
 
 int
@@ -116,6 +241,7 @@ SoXtGLWidget::getOverlayColorMapSize(
 } // getOverlayColorMapSize()
 
 /*!
+  This methos returns the size of the colormap for the normal planes.
 */
 
 int
@@ -126,6 +252,7 @@ SoXtGLWidget::getColorMapSize(
 } // getColorMapSize()
 
 /*!
+  This method returns the Window associated with the normal GL context.
 */
 
 Window
@@ -137,6 +264,7 @@ SoXtGLWidget::getNormalWindow(
 } // getNormalWindow()
 
 /*!
+  This method returns the Window associated with the overlay GL context.
 */
 
 Window
@@ -148,6 +276,7 @@ SoXtGLWidget::getOverlayWindow(
 } // getOverlayWindow()
 
 /*!
+  This method returns the normal GL context.
 */
 
 GLXContext
@@ -158,6 +287,7 @@ SoXtGLWidget::getNormalContext(
 } // getNormalContext()
 
 /*!
+  This method returns the GL context for the overlay planes.
 */
 
 GLXContext
@@ -168,6 +298,7 @@ SoXtGLWidget::getOverlayContext(
 } // getOverlayContext()
 
 /*!
+  This method returns the Widget associated with the normal GL context.
 */
 
 Widget
@@ -178,6 +309,7 @@ SoXtGLWidget::getNormalWidget(
 } // getNormalWidget()
 
 /*!
+  This method returns the Widget associated with the overlay GL context.
 */
 
 Widget
@@ -189,6 +321,7 @@ SoXtGLWidget::getOverlayWidget(
 } // getOverlayWidget()
 
 /*!
+  This method sets the visual for the normal GL context.
 */
 
 void
@@ -199,6 +332,7 @@ SoXtGLWidget::setNormalVisual( // virtual
 } // setNormalVisual()
 
 /*!
+  This method returns the visual for the normal GL context.
 */
 
 XVisualInfo *
@@ -209,6 +343,7 @@ SoXtGLWidget::getNormalVisual(
 } // setNormalVisual()
 
 /*!
+  This method sets the visual for the overlay GL context.
 */
 
 void
@@ -219,6 +354,7 @@ SoXtGLWidget::setOverlayVisual( // virtual
 } // setOverlayVisual()
 
 /*!
+  This method returns the visual for the overlay GL context.
 */
 
 XVisualInfo *
@@ -229,6 +365,7 @@ SoXtGLWidget::getOverlayVisual(
 } // getOverlayVisual()
 
 /*!
+  This method sets whether double buffering is to be used or not.
 */
 
 void
@@ -239,6 +376,7 @@ SoXtGLWidget::setDoubleBuffer( // virtual
 } // setDoubleBuffer()
 
 /*!
+  This method returns whether double buffering is used or not.
 */
 
 SbBool
@@ -249,6 +387,7 @@ SoXtGLWidget::isDoubleBuffer(
 } // isDoubleBuffer()
 
 /*!
+  This method sets whether the GL area should be framed by a border or not.
 */
 
 void
@@ -275,6 +414,7 @@ SoXtGLWidget::setBorder(
 } // setBorder()
 
 /*!
+  This method returns whether the GL area is framed by a border or not.
 */
 
 SbBool
@@ -285,6 +425,8 @@ SoXtGLWidget::isBorder(
 } // isBorder()
 
 /*!
+  This method sets whether rendering will be done to the front buffer
+  or not.
 */
 
 void
@@ -295,6 +437,8 @@ SoXtGLWidget::setDrawToFrontBufferEnable(
 } // setDrawToFrontBufferEnable()
 
 /*!
+  This method returns whether rendering will be done to the front buffer
+  or not.
 */
 
 SbBool
@@ -305,6 +449,7 @@ SoXtGLWidget::isDrawToFrontBufferEnable(
 } // isDrawToFrontBufferEnable()
 
 /*!
+  This method is invoked when the overlay graphics should be redrawn.
 */
 
 void
@@ -315,6 +460,7 @@ SoXtGLWidget::redrawOverlay( // virtual, protected
 } // redrawOverlay()
 
 /*!
+  This method handles X events.
 */
 
 void
@@ -345,6 +491,7 @@ SoXtGLWidget::processEvent( // virtual, protected
 } // processEvent()
 
 /*!
+  This method initializes the graphics.
 */
 
 void
@@ -355,6 +502,7 @@ SoXtGLWidget::initGraphic( // virtual, protected
 } // initGraphic()
 
 /*!
+  This method initializes the overlay graphics.
 */
 
 void
@@ -365,16 +513,19 @@ SoXtGLWidget::initOverlayGraphic( // virtual, protected
 } // initOverlayGraphic()
 
 /*!
+  This method is invoked when the GL widget component changes size.
 */
 
 void
 SoXtGLWidget::sizeChanged( // virtual, protected
   const SbVec2s size )
 {
+//  SoDebugError::postInfo( "SoXtGLWidget::sizeChanged", "[invoked]" );
   // nothing to do
 } // sizeChanged()
 
 /*!
+  This method is invoked when a widget Cin the component is changed.
 */
 
 void
@@ -387,6 +538,9 @@ SoXtGLWidget::widgetChanged( // virtual, protected
 // *************************************************************************
 
 /*!
+  This method sets the Glx size.
+
+  \sa setGLSize
 */
 
 void
@@ -397,6 +551,7 @@ SoXtGLWidget::setGlxSize( // protected
 } // setGlxSize()
 
 /*!
+  This methid sets the size of the GL widget.
 */
 
 void
@@ -415,6 +570,9 @@ SoXtGLWidget::setGLSize( // protected
 } // setGLSize()
 
 /*!
+  This method returns the size of the Glx area.
+
+  \sa getGLSize
 */
 
 const SbVec2s
@@ -425,6 +583,7 @@ SoXtGLWidget::getGlxSize( // protected
 } // getGlxSize()
 
 /*!
+  This method returns the size of the GL area.
 */
 
 const SbVec2s
@@ -435,6 +594,7 @@ SoXtGLWidget::getGLSize( // protected
 } // getGLSize()
 
 /*!
+  This method returns the aspect ratio of the GL area.
 */
 
 float
@@ -450,6 +610,7 @@ SoXtGLWidget::getGLAspectRatio(
 // *************************************************************************
 
 /*!
+  This method sets whether stereo should be used or not.
 */
 
 void
@@ -460,6 +621,7 @@ SoXtGLWidget::setStereoBuffer( // protected
 } // setStereoBuffer()
 
 /*!
+  This method returns whether stereo viewing is enabled or not.
 */
 
 SbBool
@@ -471,6 +633,7 @@ SoXtGLWidget::isStereoBuffer( // protected
 } // isStereoBuffer()
 
 /*!
+  This method returns whether the GL context is in RGB mode or not.
 */
 
 SbBool
@@ -482,6 +645,8 @@ SoXtGLWidget::isRGBMode( // protected
 } // isRGBMode()
 
 /*!
+  This method returns the share group for the display lists for the
+  GL context.
 */
 
 int
@@ -495,20 +660,28 @@ SoXtGLWidget::getDisplayListShareGroup( // protected
 // *************************************************************************
 
 /*!
+  This method is a callback that dispatches events to processEvent().
+
+  \sa processEvent
 */
 
 void
 SoXtGLWidget::eventHandler( // static, protected
   Widget widget,
-  SoXtGLWidget * user,
+  void * closure,
   XEvent * event,
   Boolean * dispatch )
 {
-  user->processEvent( (XAnyEvent *) event );
+  assert( closure != NULL );
+  SoXtGLWidget * component = (SoXtGLWidget *) closure;
+  component->processEvent( (XAnyEvent *) event );
   *dispatch = False;
 } // eventHandler()
 
 /*!
+  This method builds the GL widget inside \a parent.
+  The returned widget is the widget managing the GL widget and providing it
+  with a border.
 */
 
 Widget
@@ -672,6 +845,7 @@ SoXtGLWidget::buildWidget( // protected
 } // buildWidget()
 
 /*!
+  This method returns the widget that is managing the GL widget.
 */
 
 Widget
@@ -682,6 +856,7 @@ SoXtGLWidget::getGlxMgrWidget( // protected
 } // getGlxMgrWidget()
 
 /*!
+  This method returns the actual GL widget.
 */
 
 Widget
@@ -694,6 +869,12 @@ SoXtGLWidget::getGLWidget( // protected
 // *************************************************************************
 
 /*!
+  This method locks the GL context.
+
+  On systems that use GL context locking and unlocking, this method will
+  lock the GL context.  On other systems, only makeCurrent will be run.
+
+  This method is an SoXt extension.
 */
 
 void
@@ -708,6 +889,7 @@ SoXtGLWidget::glLock(
 } // glLock()
 
 /*!
+  This method unlocks the GL context.
 */
 
 void
@@ -720,6 +902,7 @@ SoXtGLWidget::glUnlock(
 } // glUnlock()
 
 /*!
+  This method swaps the GL buffers.
 */
 
 void
@@ -735,6 +918,7 @@ SoXtGLWidget::glSwapBuffers(
 } // glSwapBuffers()
 
 /*!
+  This methid flushes the GL context.
 */
 
 void
@@ -750,6 +934,7 @@ SoXtGLWidget::glFlushBuffer(
 // *************************************************************************
 
 /*!
+  This method is invoked on initialization of the GL context.
 */
 
 void
@@ -779,6 +964,7 @@ SoXtGLWidget::glInit( // virtual
 } // glInit()
 
 /*!
+  This method is invoked when the GL context is reshaped.
 */
 
 void
@@ -786,11 +972,13 @@ SoXtGLWidget::glReshape( // virtual
   int width,
   int height )
 {
+//  SoDebugError::postInfo( "SoXtGLWidget::glReshape", "[invoked]" );
   this->glSize = SbVec2s( width, height );
-  this->sizeChanged( this->glSize );
 } // glReshape()
 
 /*!
+  This method is invoked on expose events, when the GL area needs to be
+  redrawn.
 */
 
 void
