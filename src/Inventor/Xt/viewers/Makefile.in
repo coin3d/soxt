@@ -326,16 +326,16 @@ SoGuiCommonDistFiles = \
   src/Inventor/@Gui@/common/SoAny.cpp.in \
   src/Inventor/@Gui@/common/widgets/SoGuiPopupMenu.h.in \
   src/Inventor/@Gui@/common/widgets/SoGuiPopupMenu.cpp.in \
-  src/Inventor/@Gui@/common/SoAnyThumbWheel.h.in \
-  src/Inventor/@Gui@/common/SoAnyThumbWheel.cpp.in \
-  src/Inventor/@Gui@/common/SoAnyFullViewer.h.in \
-  src/Inventor/@Gui@/common/SoAnyFullViewer.cpp.in \
-  src/Inventor/@Gui@/common/SoAnyExaminerViewer.h.in \
-  src/Inventor/@Gui@/common/SoAnyExaminerViewer.cpp.in \
-  src/Inventor/@Gui@/common/SoAnyPlaneViewer.h.in \
-  src/Inventor/@Gui@/common/SoAnyPlaneViewer.cpp.in \
-  src/Inventor/@Gui@/common/SoAnyWalkViewer.h.in \
-  src/Inventor/@Gui@/common/SoAnyWalkViewer.cpp.in \
+  src/Inventor/@Gui@/common/widgets/SoAnyThumbWheel.h.in \
+  src/Inventor/@Gui@/common/widgets/SoAnyThumbWheel.cpp.in \
+  src/Inventor/@Gui@/common/viewers/SoAnyFullViewer.h.in \
+  src/Inventor/@Gui@/common/viewers/SoAnyFullViewer.cpp.in \
+  src/Inventor/@Gui@/common/viewers/SoAnyExaminerViewer.h.in \
+  src/Inventor/@Gui@/common/viewers/SoAnyExaminerViewer.cpp.in \
+  src/Inventor/@Gui@/common/viewers/SoAnyPlaneViewer.h.in \
+  src/Inventor/@Gui@/common/viewers/SoAnyPlaneViewer.cpp.in \
+  src/Inventor/@Gui@/common/viewers/SoAnyWalkViewer.h.in \
+  src/Inventor/@Gui@/common/viewers/SoAnyWalkViewer.cpp.in \
   src/Inventor/@Gui@/common/SoAnyMaterialList.h.in \
   src/Inventor/@Gui@/common/SoAnyMaterialList.cpp.in \
   src/Inventor/@Gui@/common/SoAnyMaterialListBuiltins.cpp.in \
@@ -401,9 +401,7 @@ libSoXtViewers_la_SOURCES = \
 	So@Gui@PlaneViewer.cpp \
 	So@Gui@PlaneViewer.h \
 	So@Gui@WalkViewer.cpp \
-	So@Gui@WalkViewer.h \
-	So@Gui@CollisionViewer.cpp \
-	So@Gui@CollisionViewer.h
+	So@Gui@WalkViewer.h
 
 
 nodist_libSoXtViewers_la_SOURCES = \
@@ -423,8 +421,7 @@ SoXtViewersinc_HEADERS = \
 	So@Gui@FullViewer.h \
 	So@Gui@ExaminerViewer.h \
 	So@Gui@PlaneViewer.h \
-	So@Gui@WalkViewer.h \
-	So@Gui@CollisionViewer.h
+	So@Gui@WalkViewer.h
 
 
 nodist_SoXtViewersinc_HEADERS = \
@@ -442,7 +439,7 @@ libSoXtViewers_la_LDFLAGS =
 libSoXtViewers_la_LIBADD =
 am_libSoXtViewers_la_OBJECTS = So@Gui@FullViewer.lo \
 	So@Gui@ExaminerViewer.lo So@Gui@PlaneViewer.lo \
-	So@Gui@WalkViewer.lo So@Gui@CollisionViewer.lo
+	So@Gui@WalkViewer.lo
 @BUILD_METAFILES_TRUE@nodist_libSoXtViewers_la_OBJECTS = \
 @BUILD_METAFILES_TRUE@	So@Gui@Viewer.lo \
 @BUILD_METAFILES_TRUE@	So@Gui@ConstrainedViewer.lo \
@@ -478,7 +475,6 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/@meta_prefix@So@Gui@PlaneViewer.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/@meta_prefix@So@Gui@Viewer.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/@meta_prefix@So@Gui@WalkViewer.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@CollisionViewer.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/So@Gui@ConstrainedViewer.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/So@Gui@ExaminerViewer.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/So@Gui@FlyViewer.Plo \
@@ -583,7 +579,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/@meta_prefix@So@Gui@PlaneViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/@meta_prefix@So@Gui@Viewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/@meta_prefix@So@Gui@WalkViewer.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@CollisionViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@ConstrainedViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@ExaminerViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@FlyViewer.Plo@am__quote@
@@ -1162,35 +1157,35 @@ $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.h: $(top_srcdir)/src
 $(top_builddir)/src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/viewers/SoGuiFlyViewer.cpp.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.cpp:src/Inventor/@Gui@/common/viewers/SoGuiFlyViewer.cpp.in )
 
-$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyFullViewer.h: $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyFullViewer.h.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyFullViewer.h:src/Inventor/@Gui@/common/SoAnyFullViewer.h.in )
+$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyFullViewer.h: $(top_srcdir)/src/Inventor/@Gui@/common/viewers/SoAnyFullViewer.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyFullViewer.h:src/Inventor/@Gui@/common/viewers/SoAnyFullViewer.h.in )
 
-$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyFullViewer.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyFullViewer.cpp.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyFullViewer.cpp:src/Inventor/@Gui@/common/SoAnyFullViewer.cpp.in )
+$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyFullViewer.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/viewers/SoAnyFullViewer.cpp.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyFullViewer.cpp:src/Inventor/@Gui@/common/viewers/SoAnyFullViewer.cpp.in )
 
-$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyExaminerViewer.h: $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyExaminerViewer.h.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyExaminerViewer.h:src/Inventor/@Gui@/common/SoAnyExaminerViewer.h.in )
+$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyExaminerViewer.h: $(top_srcdir)/src/Inventor/@Gui@/common/viewers/SoAnyExaminerViewer.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyExaminerViewer.h:src/Inventor/@Gui@/common/viewers/SoAnyExaminerViewer.h.in )
 
-$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyExaminerViewer.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyExaminerViewer.cpp.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyExaminerViewer.cpp:src/Inventor/@Gui@/common/SoAnyExaminerViewer.cpp.in )
+$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyExaminerViewer.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/viewers/SoAnyExaminerViewer.cpp.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyExaminerViewer.cpp:src/Inventor/@Gui@/common/viewers/SoAnyExaminerViewer.cpp.in )
 
-$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyPlaneViewer.h: $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyPlaneViewer.h.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyPlaneViewer.h:src/Inventor/@Gui@/common/SoAnyPlaneViewer.h.in )
+$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyPlaneViewer.h: $(top_srcdir)/src/Inventor/@Gui@/common/viewers/SoAnyPlaneViewer.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyPlaneViewer.h:src/Inventor/@Gui@/common/viewers/SoAnyPlaneViewer.h.in )
 
-$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyPlaneViewer.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyPlaneViewer.cpp.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyPlaneViewer.cpp:src/Inventor/@Gui@/common/SoAnyPlaneViewer.cpp.in )
+$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyPlaneViewer.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/viewers/SoAnyPlaneViewer.cpp.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyPlaneViewer.cpp:src/Inventor/@Gui@/common/viewers/SoAnyPlaneViewer.cpp.in )
 
-$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyWalkViewer.h: $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyWalkViewer.h.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyWalkViewer.h:src/Inventor/@Gui@/common/SoAnyWalkViewer.h.in )
+$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyWalkViewer.h: $(top_srcdir)/src/Inventor/@Gui@/common/viewers/SoAnyWalkViewer.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyWalkViewer.h:src/Inventor/@Gui@/common/viewers/SoAnyWalkViewer.h.in )
 
-$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyWalkViewer.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyWalkViewer.cpp.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyWalkViewer.cpp:src/Inventor/@Gui@/common/SoAnyWalkViewer.cpp.in )
+$(top_builddir)/src/Inventor/@Gui@/viewers/SoAnyWalkViewer.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/viewers/SoAnyWalkViewer.cpp.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/viewers/SoAnyWalkViewer.cpp:src/Inventor/@Gui@/common/viewers/SoAnyWalkViewer.cpp.in )
 
-$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.h: $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyThumbWheel.h.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/widgets/SoAnyThumbWheel.h:src/Inventor/@Gui@/common/SoAnyThumbWheel.h.in )
+$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.h: $(top_srcdir)/src/Inventor/@Gui@/common/widgets/SoAnyThumbWheel.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/widgets/SoAnyThumbWheel.h:src/Inventor/@Gui@/common/widgets/SoAnyThumbWheel.h.in )
 
-$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/SoAnyThumbWheel.cpp.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp:src/Inventor/@Gui@/common/SoAnyThumbWheel.cpp.in )
+$(top_builddir)/src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp: $(top_srcdir)/src/Inventor/@Gui@/common/widgets/SoAnyThumbWheel.cpp.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/widgets/SoAnyThumbWheel.cpp:src/Inventor/@Gui@/common/widgets/SoAnyThumbWheel.cpp.in )
 
 $(top_builddir)/src/Inventor/@Gui@/widgets/So@Gui@PopupMenu.h: $(top_srcdir)/src/Inventor/@Gui@/common/widgets/SoGuiPopupMenu.h.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/widgets/So@Gui@PopupMenu.h:src/Inventor/@Gui@/common/widgets/SoGuiPopupMenu.h.in )
