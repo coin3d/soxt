@@ -371,21 +371,6 @@ SoXtPlaneViewer::processEvent(XAnyEvent * event)
   inherited::processEvent(event);
 }
 
-// *************************************************************************
-
-/*!
-  FIXME: write doc
-*/
-void
-SoXtPlaneViewer::actualRedraw(void)
-{
-  inherited::actualRedraw();
-#if 0
-  if (this->mode == ROTZ_MODE)
-    this->drawRotateGraphics();
-#endif
-}
-
 /*!
   FIXME: write doc
 */
