@@ -53,6 +53,44 @@ enum DefaultViewerButtons {
   SEEK_BUTTON
 };
 
+enum MenuIdValues {
+  MENUTITLE_ITEM,
+
+  FUNCTIONS_ITEM,
+  HELP_ITEM,
+  HOME_ITEM,
+  SET_HOME_ITEM,
+  VIEW_ALL_ITEM,
+  SEEK_ITEM,
+  COPY_VIEW_ITEM,
+  PASTE_VIEW_ITEM,
+
+  DRAWSTYLES_ITEM,
+  AS_IS_ITEM,
+  HIDDEN_LINE_ITEM,
+  NO_TEXTURE_ITEM,
+  LOW_RESOLUTION_ITEM,
+  WIREFRAME_ITEM,
+  POINTS_ITEM,
+  BOUNDING_BOX_ITEM,
+  MOVE_SAME_AS_STILL_ITEM,
+  MOVE_NO_TEXTURE_ITEM,
+  MOVE_LOW_RES_ITEM,
+  MOVE_WIREFRAME_ITEM,
+  MOVE_LOW_RES_WIREFRAME_ITEM,
+  MOVE_POINTS_ITEM,
+  MOVE_LOW_RES_POINTS_ITEM,
+  MOVE_BOUNDING_BOX_ITEM,
+  SINGLE_BUFFER_ITEM,
+  DOUBLE_BUFFER_ITEM,
+  INTERACTIVE_BUFFER_ITEM,
+
+  EXAMINING_ITEM,
+  DECORATION_ITEM,
+  HEADLIGHT_ITEM,
+  PREFERENCES_ITEM
+};
+
 // *************************************************************************
 
 /*!
@@ -63,15 +101,33 @@ SoXtFullViewer::SoXtFullViewer( // protected
   Widget parent,
   const char * name,
   SbBool inParent,
-  BuildFlag flag,
+  BuildFlag flags,
   Type type,
   SbBool build )
 : inherited( parent, name, inParent, type, FALSE )
 {
-  this->setClassName( "SoXtFullViewer" );
+  this->viewerbase = NULL;
+  this->canvas = NULL;
+
+  char axisindicator[] = { 'Y', 'X', 'Z' };
+  for ( int i = FIRSTDECORATION; i <= LASTDECORATION; i++) {
+    this->wheelstrings[i] = "Motion ";
+    this->wheelstrings[i] += axisindicator[i - FIRSTDECORATION];
+    this->decorform[i] = NULL;
+    this->wheellabels[i] = NULL;
+  }
+
+  this->zoomrange = SbVec2f( 1.0f, 140.0f );
+
+  this->menuenabled = (flags & SoXtFullViewer::BUILD_POPUP) ? TRUE : FALSE;
+  this->decorations = (flags & SoXtFullViewer::BUILD_DECORATION) ? TRUE : FALSE;
+
+  this->appButtonsList = new SbPList;
+  this->viewerButtonsList = new SbPList;
+
   this->setSize( SbVec2s( 500, 390 ) );
-  this->viewerButtons = new SbPList;
-  this->appButtons = new SbPList;
+  this->setClassName( "SoXtFullViewer" );
+
   if ( build != FALSE )
     this->buildWidget( parent );
 } // SoXtFullViewer()
@@ -83,11 +139,159 @@ SoXtFullViewer::SoXtFullViewer( // protected
 SoXtFullViewer::~SoXtFullViewer( // protected
   void )
 {
-  delete this->viewerButtons;
-  delete this->appButtons;
+  delete this->appButtonsList;
+  delete this->viewerButtonsList;
 } // ~SoXtFullViewer()
 
 // *************************************************************************
+
+/*!
+*/
+
+void
+SoXtFullViewer::setDecoration(
+  const SbBool enable )
+{
+
+  if ( (this->decorations != enable) && (this->viewerbase != (Widget) NULL) )
+    this->showDecorationWidgets( enable );
+  this->decorations = enable;
+} // setDecoration()
+
+/*!
+*/
+
+SbBool
+SoXtFullViewer::isDecoration(
+  void ) const
+{
+  return this->decorations;
+} // isDecoration()
+
+// *************************************************************************
+
+/*!
+*/
+
+void
+SoXtFullViewer::setPopupMenuEnabled(
+  const SbBool enable )
+{
+  this->menuenabled = enable;
+  // FIXME: lazily create menu here? - or better; on first popup?
+} // setPopupMenuEnabled()
+
+/*!
+*/
+
+SbBool
+SoXtFullViewer::isPopupMenuEnabled(
+  void ) const
+{
+  return this->menuenabled;
+} // isPopupMenuEnabled()
+
+// *************************************************************************
+
+/*!
+  Return value is either NULL or a widget of type xmFormWidgetClass (Xm/Form.h)
+*/
+
+Widget
+SoXtFullViewer::getAppPushButtonParent(
+  void ) const
+{
+  return this->appButtonsForm;
+} // getAppPushButtonParent()
+
+/*!
+*/
+
+void
+SoXtFullViewer::addAppPushButton(
+  Widget button )
+{
+  this->appButtonsList->append( button );
+  this->layoutAppPushButtons( this->getAppPushButtonParent() );
+} // addAppPushButton()
+
+/*!
+*/
+
+void
+SoXtFullViewer::insertAppPushButton(
+  Widget button,
+  int idx )
+{
+  this->appButtonsList->insert( button, idx );
+  this->layoutAppPushButtons( this->getAppPushButtonParent() );
+} // insertAppPushButton()
+
+/*!
+*/
+
+void
+SoXtFullViewer::removeAppPushButton(
+  Widget button )
+{
+  int idx = this->appButtonsList->find( button );
+  if ( idx == -1 ) {
+#if SOXT_DEBUG
+    SoDebugError::postWarning( "SoXtFullViewer::removeAppPushButton",
+                               "tried to remove non-existant button" );
+#endif // SOXT_DEBUG
+    return;
+  }
+  this->appButtonsList->remove( idx );
+  this->layoutAppPushButtons( this->getAppPushButtonParent() );
+} // removeAppPushButton()
+
+/*!
+*/
+
+int
+SoXtFullViewer::findAppPushButton(
+  Widget button ) const
+{
+  return this->appButtonsList->find( button );
+} // findAppPushButton()
+
+/*!
+*/
+
+int
+SoXtFullViewer::lengthAppPushButton(
+  void ) const
+{
+  return this->appButtonsList->getLength();
+} // lengthAppPushButton()
+
+/*!
+*/
+
+void
+SoXtFullViewer::layoutAppPushButtons(
+  Widget parent )
+{
+  SOGUI_STUB();
+} // layoutAppPushButtons()
+
+// *************************************************************************
+
+/*!
+*/
+
+Widget
+SoXtFullViewer::getRenderAreaWidget(
+  void ) const
+{
+  return this->canvas;
+} // getRenderAreaWidget()
+
+// *************************************************************************
+
+/*!
+*/
 
 Widget
 SoXtFullViewer::buildWidget( // protected
@@ -102,12 +306,12 @@ SoXtFullViewer::buildWidget( // protected
 
   XtVaSetValues( this->canvas,
       XmNtopAttachment, XmATTACH_FORM,
-      XmNleftAttachment, XmATTACH_WIDGET,
-      XmNleftWidget, this->decorform[LEFTDECORATION],
-      XmNbottomAttachment, XmATTACH_WIDGET,
-      XmNbottomWidget, this->decorform[BOTTOMDECORATION],
-      XmNrightAttachment, XmATTACH_WIDGET,
-      XmNrightWidget, this->decorform[RIGHTDECORATION],
+      XmNleftAttachment, XmATTACH_FORM,
+      XmNleftOffset, 30,
+      XmNbottomAttachment, XmATTACH_FORM,
+      XmNbottomOffset, 30,
+      XmNrightAttachment, XmATTACH_FORM,
+      XmNrightOffset, 30,
       NULL );
   this->setBorder( FALSE );
 
@@ -197,6 +401,14 @@ SoXtFullViewer::buildLeftTrim( // virtual
       NULL );
 
   // build application buttons
+  this->appButtonsForm = this->buildAppButtonsForm( trim );
+
+  XtVaSetValues( this->appButtonsForm,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    NULL );
+  XtManageChild( this->appButtonsForm );
 
 #ifdef SOXT_THUMBWHEELTEST
   // add right thumb wheel
@@ -255,39 +467,64 @@ SoXtFullViewer::buildRightTrim( // virtual
 
 // *************************************************************************
 
+/*!
+*/
+
 void
 SoXtFullViewer::setViewing( // virtual
   SbBool enable )
 {
+#if SOXT_DEBUG
+  if ( this->isViewing() == enable )
+    SoDebugError::postWarning( "SoXtFullViewer::setViewing",
+      "current state already that of argument" );
+#endif // SOXT_DEBUG
+
   inherited::setViewing( enable );
-  SOGUI_STUB();
-}
+//  if ( this->prefmenu )
+//    this->prefmenu ...
+} // setViewing()
+
+/*!
+*/
 
 void
 SoXtFullViewer::setHeadlight( // virtual
   SbBool enable )
 {
   inherited::setHeadlight( enable );
-#if 0
-  if ( this->prefmenu )
-    this->prefmenu->setItemChecked( HEADLIGHT_ITEM, enable );
-#endif // 0
+//  if ( this->prefmenu )
+//    this->prefmenu->setItemChecked( HEADLIGHT_ITEM, enable );
 } // setHeadlight()
+
+/*!
+*/
 
 void
 SoXtFullViewer::setDrawStyle( // virtual
   SoXtViewer::DrawType type,
   SoXtViewer::DrawStyle style )
 {
-  SOGUI_STUB();
+  inherited::setDrawStyle( type, style );
+//  if ( this->prefmenu )
+//    this->setDrawStyleMenuActivation( type, style );
 } // setDrawStyle()
+
+/*!
+*/
 
 void
 SoXtFullViewer::setBufferingType( // virtual
   SoXtViewer::BufferType type )
 {
-  SOGUI_STUB();
+  inherited::setBufferingType( type );
+
+//  if ( this->prefmenu ) {
+//
 } // setBufferingType()
+
+/*!
+*/
 
 void
 SoXtFullViewer::setCamera( // virtual
@@ -309,23 +546,41 @@ SoXtFullViewer::setCamera( // virtual
 #endif // 0
 } // setCamera()
 
+/*!
+*/
+
 void
 SoXtFullViewer::hide( // virtual
   void )
 {
-  SOGUI_STUB();
+  inherited::hide();
+//  if ( this->prefwindow )
+//    SoXt::hide( this->prefwindow );
 } // hide()
 
 // *************************************************************************
 
+/*!
+*/
+
 SbBool
 SoXtFullViewer::eventFilter( // virtual
-  Widget obj,
+  Widget widget,
   XAnyEvent * event )
 {
+  SoDebugError::postInfo( "SoXtFullViewer::eventFilter",
+    "widget = 0x%08x, event->type = %d", widget, event->type );
+//  inherited::eventFilter( widget, event );
   SOGUI_STUB();
+  // catch close events
+  // activate popupmenu
   return FALSE;
 } // eventFilter()
+
+// *************************************************************************
+
+/*!
+*/
 
 Widget
 SoXtFullViewer::buildViewerButtons(
@@ -338,10 +593,10 @@ SoXtFullViewer::buildViewerButtons(
       XmNrightAttachment, XmATTACH_FORM,
       NULL );
 
-  this->createViewerButtons( form, this->viewerButtons );
+  this->createViewerButtons( form, this->viewerButtonsList );
 
-  for ( int i = 0; i < this->viewerButtons->getLength(); i++ ) {
-    Widget button = (Widget) (*this->viewerButtons)[i];
+  for ( int i = 0; i < this->viewerButtonsList->getLength(); i++ ) {
+    Widget button = (Widget) (*this->viewerButtonsList)[i];
     if ( i == 0 )
       XtVaSetValues( button,
          XmNleftOffset, 0,
@@ -361,7 +616,7 @@ SoXtFullViewer::buildViewerButtons(
          XmNbottomOffset, 0,
          XmNleftAttachment, XmATTACH_FORM,
          XmNtopAttachment, XmATTACH_WIDGET,
-         XmNtopWidget, (Widget) (*this->viewerButtons)[i-1],
+         XmNtopWidget, (Widget) (*this->viewerButtonsList)[i-1],
          XmNrightAttachment, XmATTACH_FORM,
          XmNwidth, 30, XmNheight, 30,
          NULL );
@@ -369,6 +624,9 @@ SoXtFullViewer::buildViewerButtons(
 
   return form;
 } // buildViewerButtons()
+
+/*!
+*/
 
 void
 SoXtFullViewer::createViewerButtons(
@@ -383,12 +641,18 @@ SoXtFullViewer::createViewerButtons(
   }
 } // createViewerButtons()
 
+/*!
+*/
+
 void
 SoXtFullViewer::buildPopupMenu(
   void )
 {
   SOGUI_STUB();
 } // buildPopupMenu()
+
+/*!
+*/
 
 Widget
 SoXtFullViewer::makeSubPreferences(
@@ -398,66 +662,188 @@ SoXtFullViewer::makeSubPreferences(
   return (Widget) NULL;
 } // makeSubPreferences()
 
-void
-SoXtFullViewer::leftWheelStart(
-  void )
-{
-  SOGUI_STUB();
-} // leftWheelStart()
+// *************************************************************************
+
+/*!
+*/
 
 void
-SoXtFullViewer::leftWheelMotion(
-  float )
+SoXtFullViewer::leftWheelStart( // virtual
+  void )
+{
+  this->interactiveCountInc();
+} // leftWheelStart()
+
+/*!
+*/
+
+void
+SoXtFullViewer::leftWheelMotion( // virtual
+  float value )
 {
   SOGUI_STUB();
 } // leftWheelMotion()
 
+/*!
+*/
+
 void
-SoXtFullViewer::leftWheelFinish(void)
+SoXtFullViewer::leftWheelFinish( // virtual
+  void )
 {
-  SOGUI_STUB();
+  this->interactiveCountDec();
 } // leftWheelFinished()
 
-void
-SoXtFullViewer::bottomWheelStart(void)
+/*!
+*/
+
+float
+SoXtFullViewer::getLeftWheelValue(
+  void ) const
 {
-  SOGUI_STUB();
-} // bottomWheelStart()
+  return this->wheelvalues[LEFTDECORATION];
+} // getLeftWheelValue()
+
+// *************************************************************************
+
+/*!
+*/
 
 void
-SoXtFullViewer::bottomWheelMotion(float)
+SoXtFullViewer::bottomWheelStart( // virtual
+  void )
+{
+  this->interactiveCountInc();
+} // bottomWheelStart()
+
+/*!
+*/
+
+void
+SoXtFullViewer::bottomWheelMotion( // virtual
+  float value )
 {
   SOGUI_STUB();
 } // bottomWheelMode()
 
+/*!
+*/
+
 void
-SoXtFullViewer::bottomWheelFinish(void)
+SoXtFullViewer::bottomWheelFinish( // virtual
+  void )
 {
-  SOGUI_STUB();
+  this->interactiveCountDec();
 } // bottomWheelFinish()
 
-void
-SoXtFullViewer::rightWheelStart(void)
+/*!
+*/
+
+float
+SoXtFullViewer::getBottomWheelValue(
+  void ) const
 {
-  SOGUI_STUB();
-} // rightWheelStart()
+  return this->wheelvalues[BOTTOMDECORATION];
+} // getBottomWheelValue()
+
+// *************************************************************************
+
+/*!
+*/
 
 void
-SoXtFullViewer::rightWheelMotion(float)
+SoXtFullViewer::rightWheelStart( // virtual
+  void )
+{
+  this->interactiveCountInc();
+} // rightWheelStart()
+
+/*!
+*/
+
+void
+SoXtFullViewer::rightWheelMotion( // virtual
+  float value )
 {
   SOGUI_STUB();
 } // rightWheelMotion()
 
-void
-SoXtFullViewer::rightWheelFinish(void)
-{
-  SOGUI_STUB();
-} // rightWheelFinish()
+/*!
+*/
 
 void
-SoXtFullViewer::openViewerHelpCard(void)
+SoXtFullViewer::rightWheelFinish( // virtual
+  void )
 {
-  SOGUI_STUB();
+  this->interactiveCountDec();
+} // rightWheelFinish()
+
+/*!
+*/
+
+float
+SoXtFullViewer::getRightWheelValue(
+  void ) const
+{
+} // getRightWheelValue()
+
+// *************************************************************************
+
+/*!
+  Default implementation does nothing.
+*/
+
+void
+SoXtFullViewer::openViewerHelpCard( // virtual
+  void )
+{
 } // openViewerHelpCard()
+
+// *************************************************************************
+
+/*!
+*/
+
+Widget
+SoXtFullViewer::buildAppButtonsForm(
+  Widget parent )
+{
+  Widget form = XtVaCreateManagedWidget( "appbuttons", xmFormWidgetClass,
+    parent, NULL );
+
+  return form;
+} // buildAppButtonsForm()
+
+// *************************************************************************
+
+void
+SoXtFullViewer::showDecorationWidgets(
+  SbBool enable )
+{
+  assert( this->canvas != (Widget) NULL );
+  assert( this->decorform[0] != (Widget) NULL );
+  assert( this->decorform[1] != (Widget) NULL );
+  assert( this->decorform[2] != (Widget) NULL );
+
+  if ( ! enable ) {
+    XtRealizeWidget( this->decorform[0] );
+    XtManageChild( this->decorform[0] );
+
+    XtRealizeWidget( this->decorform[1] );
+    XtManageChild( this->decorform[1] );
+
+    XtRealizeWidget( this->decorform[2] );
+    XtManageChild( this->decorform[2] );
+
+    XtVaSetValues( this->canvas,
+      XmNleftOffset, 30, XmNrightOffset, 30, XmNbottomOffset, 30, NULL );
+  } else {
+    XtUnrealizeWidget( this->decorform[0] );
+    XtUnrealizeWidget( this->decorform[1] );
+    XtUnrealizeWidget( this->decorform[2] );
+    XtVaSetValues( this->canvas,
+      XmNleftOffset, 0, XmNrightOffset, 0, XmNbottomOffset, 0, NULL );
+  }
+} // showDecorationWidgets()
 
 // *************************************************************************

@@ -35,7 +35,7 @@ extern "C" {
 /* ********************************************************************** */
 
 typedef struct {
-  XmNorientation orientation;
+  int orientation;
   Boolean enabled;
   
 } SoXtThumbWheelClassPart;

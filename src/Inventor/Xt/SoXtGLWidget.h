@@ -79,7 +79,6 @@ protected:
   const SbVec2s getGlxSize(void) const;
   const SbVec2s getGLSize(void) const;
   float getGLAspectRatio(void) const;
-  static void eventHandler( Widget, SoXtGLWidget *, XAnyEvent *, Boolean *);
   void setStereoBuffer( SbBool enable );
   SbBool isStereoBuffer(void);
   SbBool isRGBMode(void);
@@ -102,21 +101,23 @@ protected:
   Widget glxManager;
   GLXContext normalContext;
   GLXContext overlayContext;
+  XVisualInfo * normalVisual;
+  XVisualInfo * overlayVisual;
 
   SbBool doubleBuffer;
 
+  static void eventHandler( Widget, XtPointer, XEvent *, Boolean * );
+
 protected:
   int glLockLevel;
-  void glInit(void);
   void glLock(void);
   void glUnlock(void);
   void glSwapBuffers(void);
   void glFlushBuffer(void);
+
+  virtual void glInit(void);
   virtual void glReshape( int width, int height );
   virtual void glRender(void);
-
-  static void glWidgetEventHandler( Widget widget, XtPointer data,
-      XEvent * event, Boolean * dispatch );
 
 }; // class SoXtGLWidget
 

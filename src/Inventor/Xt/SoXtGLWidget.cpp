@@ -58,13 +58,16 @@
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtGLWidget.h>
 
-#ifndef GLW_WIDGETCLASS
+#ifndef XT_GLWIDGET
 #error No define for which GL widget class to use
 #endif
 
 static const int SOXT_BORDER_WIDTH = 2;
 
 // *************************************************************************
+
+/*!
+*/
 
 SoXtGLWidget::SoXtGLWidget( // protected
   Widget parent,
@@ -77,11 +80,19 @@ SoXtGLWidget::SoXtGLWidget( // protected
   this->glLockLevel = 0;
   this->borderwidth = 0; // SOXT_BORDER_WIDTH;
   this->doubleBuffer = TRUE;
+  this->normalContext = NULL;
+  this->overlayContext = NULL;
+  this->normalVisual = NULL;
+  this->overlayVisual = NULL;
+
   if ( buildNow ) {
     Widget widget = this->buildWidget( parent );
     this->setBaseWidget( widget );
   }
 } // SoXtGLWidget()
+
+/*!
+*/
 
 SoXtGLWidget::~SoXtGLWidget( // virtual, protected
   void )
@@ -160,30 +171,28 @@ void
 SoXtGLWidget::setNormalVisual( // virtual
   XVisualInfo * visual )
 {
-  SOGUI_STUB();
+  this->normalVisual = visual;
 } // setNormalVisual()
 
 XVisualInfo *
 SoXtGLWidget::getNormalVisual(
   void )
 {
-  SOGUI_STUB();
-  return (XVisualInfo *) NULL;
+  return this->normalVisual;
 } // setNormalVisual()
 
 void
 SoXtGLWidget::setOverlayVisual( // virtual
   XVisualInfo * visual )
 {
-  SOGUI_STUB();
+  this->overlayVisual = visual;
 } // setOverlayVisual()
 
 XVisualInfo *
 SoXtGLWidget::getOverlayVisual(
   void )
 {
-  SOGUI_STUB();
-  return (XVisualInfo *) NULL;
+  return this->overlayVisual;
 } // getOverlayVisual()
 
 void
@@ -207,9 +216,9 @@ SoXtGLWidget::setBorder(
   this->borderwidth = enable ? SOXT_BORDER_WIDTH : 0;
   if ( this->glxWidget != (Widget) NULL ) {
     XtVaSetValues( this->glxWidget,
-        XmNleftOffset, this->borderwidth,
-        XmNtopOffset, this->borderwidth,
-        XmNrightOffset, this->borderwidth,
+        XmNleftOffset,   this->borderwidth,
+        XmNtopOffset,    this->borderwidth,
+        XmNrightOffset,  this->borderwidth,
         XmNbottomOffset, this->borderwidth,
         NULL );
   }
@@ -360,7 +369,8 @@ const SbVec2s
 SoXtGLWidget::getGLSize( // protected
   void ) const
 {
-  assert( this->glxWidget != (Widget) NULL );
+  if ( this->glxWidget == (Widget) NULL )
+    return SbVec2s( 0, 0 );
   Dimension width, height;
   XtVaGetValues( this->glxWidget, XmNwidth, &width, XmNheight, &height, NULL );
   return SbVec2s( width, height );
@@ -377,16 +387,6 @@ SoXtGLWidget::getGLAspectRatio(
 } // getGLAspectRatio()
 
 // *************************************************************************
-
-void
-SoXtGLWidget::eventHandler( // static, protected
-  Widget widget,
-  SoXtGLWidget * component,
-  XAnyEvent * event,
-  Boolean * flag )
-{
-  SOGUI_STUB();
-} // eventHandler()
 
 void
 SoXtGLWidget::setStereoBuffer( // protected
@@ -419,6 +419,19 @@ SoXtGLWidget::getDisplayListShareGroup( // protected
   return 0;
 } // getDisplayListShareGroup()
 
+// *************************************************************************
+
+void
+SoXtGLWidget::eventHandler( // static, protected
+  Widget widget,
+  XtPointer user,
+  XEvent * event,
+  Boolean * dispatch )
+{
+  ((SoXtGLWidget *) user)->processEvent( (XAnyEvent *) event );
+  *dispatch = False;
+} // glWidgetEventHandler()
+
 Widget
 SoXtGLWidget::buildWidget( // protected
   Widget parent )
@@ -429,17 +442,20 @@ SoXtGLWidget::buildWidget( // protected
     GLX_RGBA, GLX_DEPTH_SIZE, 16, GLX_DOUBLEBUFFER, None };
 
   Display * display = SoXt::getDisplay();
-  XVisualInfo * visual =
-    glXChooseVisual( display, DefaultScreen(display), double_attrs );
 
-  if ( visual == NULL ) {
+  if ( this->normalVisual == NULL )
+    this->normalVisual =
+      glXChooseVisual( display, DefaultScreen(display), double_attrs );
+
+  if ( this->normalVisual == NULL ) {
 #if SOXT_DEBUG
     SoDebugError::postInfo( "SoXtGLWidget::buildWidget",
       "could not double-buffer - trying single-buffering" );
 #endif // SOXT_DEBUG
     this->doubleBuffer = FALSE;
-    visual = glXChooseVisual( display, DefaultScreen( display ), single_attrs );
-    if ( visual == NULL ) {
+    this->normalVisual =
+      glXChooseVisual( display, DefaultScreen( display ), single_attrs );
+    if ( this->normalVisual == NULL ) {
       SoDebugError::post( "SoXtGLWidget::buildWidget",
         "could not get visual with RGB and ZBUFFER capabilities" );
       XtAppError( SoXt::getAppContext(), "SoXtGLWidget::buildWidget()" );
@@ -449,7 +465,7 @@ SoXtGLWidget::buildWidget( // protected
   this->glxManager = XtVaCreateManagedWidget(
     "GLBorderWidget", xmFormWidgetClass, parent, NULL );
 
-  if ( ! (visual->c_class & (TrueColor | PseudoColor)) ) {
+  if ( ! (this->normalVisual->c_class & (TrueColor | PseudoColor)) ) {
     SoDebugError::post( "SoXtGLWidget::buildWidget",
         "Visual hasn't the necessary color capabilities" );
     XtAppError( SoXt::getAppContext(), "SoXtGLWidget::buildWidget()" );
@@ -460,30 +476,36 @@ SoXtGLWidget::buildWidget( // protected
   int nmaps;
 
   if ( XmuLookupStandardColormap(
-           display, visual->screen, visual->visualid,
-           visual->depth, XA_RGB_DEFAULT_MAP, False, True ) &&
-       XGetRGBColormaps( display, RootWindow( display, visual->screen ),
-           &cmaps, &nmaps, XA_RGB_DEFAULT_MAP ) )
+           display, this->normalVisual->screen, this->normalVisual->visualid,
+           this->normalVisual->depth, XA_RGB_DEFAULT_MAP, False, True ) &&
+       XGetRGBColormaps( display,
+           RootWindow( display, this->normalVisual->screen ), &cmaps, &nmaps,
+           XA_RGB_DEFAULT_MAP ) )
   {
     SbBool found = FALSE;
     for ( int i = 0; i < nmaps && ! found; i++ ) {
-      if ( cmaps[i].visualid == visual->visualid ) {
+      if ( cmaps[i].visualid == this->normalVisual->visualid ) {
         colors = cmaps[i].colormap;
         XFree( cmaps );
         found = TRUE;
       }
     }
     if ( ! found )
-      colors = XCreateColormap( display, RootWindow( display, visual->screen ),
-                                visual->visual, AllocNone );
+      colors = XCreateColormap( display,
+                   RootWindow( display, this->normalVisual->screen ),
+                   this->normalVisual->visual, AllocNone );
   } else {
-    colors = XCreateColormap( display, RootWindow( display, visual->screen ),
-                              visual->visual, AllocNone );
+    colors = XCreateColormap( display,
+                 RootWindow( display, this->normalVisual->screen ),
+                 this->normalVisual->visual, AllocNone );
   }
 
   this->glxWidget = XtVaCreateManagedWidget(
-    "GLWidget", GLW_WIDGETCLASS, this->glxManager,
-    GLwNvisualInfo, visual,
+    "GLWidget", XT_GLWIDGET, this->glxManager,
+#ifdef GLwNvisualInfo
+    GLwNvisualInfo, this->normalVisual,
+// any alternatives?
+#endif
     XtNcolormap, colors,
     XmNleftAttachment,   XmATTACH_FORM,
     XmNtopAttachment,    XmATTACH_FORM,
@@ -496,7 +518,7 @@ SoXtGLWidget::buildWidget( // protected
   XtAddEventHandler( this->glxWidget,
       ExposureMask | StructureNotifyMask | ButtonPressMask | ButtonReleaseMask
       | PointerMotionMask | KeyPressMask | KeyReleaseMask,
-      False, SoXtGLWidget::glWidgetEventHandler, this );
+      False, SoXtGLWidget::eventHandler, this );
 
   this->setBaseWidget( this->glxManager );
   return this->glxManager;
@@ -515,19 +537,6 @@ SoXtGLWidget::getGLWidget( // protected
 {
   return this->glxWidget;
 } // getGLWidget()
-
-// *************************************************************************
-
-void
-SoXtGLWidget::glWidgetEventHandler( // static, protected
-  Widget widget,
-  XtPointer user,
-  XEvent * event,
-  Boolean * dispatch )
-{
-  ((SoXtGLWidget *) user)->processEvent( (XAnyEvent *) event );
-  *dispatch = True;
-} // glWidgetEventHandler()
 
 // *************************************************************************
 
@@ -581,7 +590,7 @@ SoXtGLWidget::glFlushBuffer(
 {
   assert( this->glxWidget != (Widget) NULL );
   assert( this->glLockLevel > 0 );
-  SOGUI_STUB();
+  // nothing to do...
 } // glFlushBuffer()
 
 // *************************************************************************

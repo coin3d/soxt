@@ -169,19 +169,19 @@ SoXtMouse::makeButtonEvent( // private
   this->buttonEvent = new SoMouseButtonEvent;
   this->buttonEvent->setState( state );
   switch ( event->button ) {
-  case 1:
+  case 1: // left button
     this->buttonEvent->setButton( SoMouseButtonEvent::BUTTON1 );
     break;
-  case 2:
+  case 2: // midbutton
     this->buttonEvent->setButton( SoMouseButtonEvent::BUTTON2 );
     break;
-  case 3:
+  case 3: // right button
     this->buttonEvent->setButton( SoMouseButtonEvent::BUTTON3 );
     break;
-  case 4:
+  case 4: // wheel up
     this->buttonEvent->setButton( SoMouseButtonEvent::BUTTON4 );
     break;
-  case 5:
+  case 5: // wheel down
     this->buttonEvent->setButton( SoMouseButtonEvent::BUTTON5 );
     break;
   default:
