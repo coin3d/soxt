@@ -22,12 +22,29 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-/*!
-  \class SoXt Inventor/Xt/SoXt.h
-  \brief The SoXt class provides initialization and run-time management
-  functions for the SoXt library.
+// *************************************************************************
 
-  All methods in SoXt are static methods.
+
+// Class documentation in common/SoGuiCommon.cpp.in.
+
+/*!
+  \mainpage
+
+  %SoXt is an Xt/Motif glue library for Coin.  It can also be used on
+  top of the SGI or TGS implementation of Open Inventor, and is
+  designed to be source code compatible with SGI's InventorXt library.
+
+  You will need either Motif (<a
+  href="http://www.opengroup.org/openmotif/">Open Motif</a>) or <a
+  href="http://www.lesstif.org/">Lesstif</a> installed on your system
+  to use %SoXt.
+
+  SoXt is still in alpha mode, meaning that it is buggy and lacks
+  functionality.  In other words, hope for the best but expect the
+  worst.
+
+  The corresponding documentation for Coin is located at
+  <URL:http://doc.coin3d.org/Coin/>.
 */
 
 // *************************************************************************
@@ -69,26 +86,6 @@ static const char rcsid[] =
 
 #include <assert.h>
 #include <stdlib.h>
-
-// *************************************************************************
-
-/*!
-  \mainpage
-
-  SoXt is an Xt/Motif glue library for Coin.  It can also be used
-  on top of Open Inventor, and is designed to be source code
-  compatible with SGI's InventorXt library (which is a goal that
-  is still way off).  You will need either Motif
-  (<a href="http://www.opengroup.org/openmotif/">Open Motif</a>)
-  or <a href="http://www.lesstif.org/">Lesstif</a> to use SoXt.
-
-  SoXt is in alpha release, meaning that it is buggy and lacks
-  functionality.  In other words, hope for the best but expect the
-  worst.
-
-  The corresponding documentation for Coin is located at
-  http://doc.coin3d.org/Coin/
-*/
 
 // *************************************************************************
 
