@@ -1135,16 +1135,6 @@ SoXtFullViewer::openPopupMenu(const SbVec2s position)
 // *************************************************************************
 
 /*!
-  This method is invoked when the left thumb wheel is pressed.
-*/
-
-void
-SoXtFullViewer::leftWheelStart(void)
-{
-  this->interactiveCountInc();
-}
-
-/*!
   static callback
 */
 
@@ -1155,16 +1145,6 @@ SoXtFullViewer::leftWheelStartCB(Widget,
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->leftWheelStart();
-}
-
-/*!
-  This method is invoked when the left thumb wheel is moved.
-*/
-
-void
-SoXtFullViewer::leftWheelMotion(float value)
-{
-  this->leftWheelVal = value;
 }
 
 /*!
@@ -1182,16 +1162,6 @@ SoXtFullViewer::leftWheelMotionCB(Widget,
 }
 
 /*!
-  This method is invoked when the left thumb wheel is released.
-*/
-
-void
-SoXtFullViewer::leftWheelFinish(void)
-{
-  this->interactiveCountDec();
-}
-
-/*!
   static callback
 */
 
@@ -1204,38 +1174,7 @@ SoXtFullViewer::leftWheelFinishCB(Widget,
   viewer->leftWheelFinish();
 }
 
-/*!
-  This method returns the value for the left thumb wheel.
-*/
-
-float
-SoXtFullViewer::getLeftWheelValue(void) const
-{
-  return this->leftWheelVal;
-}
-
-/*!
-  This method sets the value for the left thumb wheel.
-*/
-
-void
-SoXtFullViewer::setLeftWheelValue(const float value)
-{
-  this->leftWheelVal = value;
-  SoXtThumbWheelSetValue(this->leftWheel, value);
-}
-
 // *************************************************************************
-
-/*!
-  This method is invoked when the bottom thumb wheel is pressed.
-*/
-
-void
-SoXtFullViewer::bottomWheelStart(void)
-{
-  this->interactiveCountInc();
-}
 
 /*!
   static callback
@@ -1248,16 +1187,6 @@ SoXtFullViewer::bottomWheelStartCB(Widget,
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->bottomWheelStart();
-}
-
-/*!
-  This method is invoked when the bottom thumb wheel is moved.
-*/
-
-void
-SoXtFullViewer::bottomWheelMotion(float value)
-{
-  this->bottomWheelVal = value;
 }
 
 /*!
@@ -1275,16 +1204,6 @@ SoXtFullViewer::bottomWheelMotionCB(Widget,
 }
 
 /*!
-  This method is invoked when the bottom thumb wheel is released
-*/
-
-void
-SoXtFullViewer::bottomWheelFinish(void)
-{
-  this->interactiveCountDec();
-}
-
-/*!
   static callback
 */
 
@@ -1297,38 +1216,7 @@ SoXtFullViewer::bottomWheelFinishCB(Widget,
   viewer->bottomWheelFinish();
 }
 
-/*!
-  This method returns the value for the bottom thumb wheel.
-*/
-
-float
-SoXtFullViewer::getBottomWheelValue(void) const
-{
-  return this->bottomWheelVal;
-}
-
-/*!
-  This method sets the value of the bottom thumb wheel.
-*/
-
-void
-SoXtFullViewer::setBottomWheelValue(const float value)
-{
-  this->bottomWheelVal = value;
-  SoXtThumbWheelSetValue(this->bottomWheel, value);
-}
-
 // *************************************************************************
-
-/*!
-  This method is invoked when the right thumb wheel is pressed.
-*/
-
-void
-SoXtFullViewer::rightWheelStart(void)
-{
-  this->interactiveCountInc();
-}
 
 /*!
   FIXME: write doc
@@ -1341,16 +1229,6 @@ SoXtFullViewer::rightWheelStartCB(Widget,
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->rightWheelStart();
-}
-
-/*!
-  This method is invoked when the right thumb wheel is moved.
-*/
-
-void
-SoXtFullViewer::rightWheelMotion(float value)
-{
-  this->rightWheelVal = value;
 }
 
 /*!
@@ -1368,16 +1246,6 @@ SoXtFullViewer::rightWheelMotionCB(Widget,
 }
 
 /*!
-  This method is invoked when the right thumb wheel is released.
-*/
-
-void
-SoXtFullViewer::rightWheelFinish(void)
-{
-  this->interactiveCountDec();
-}
-
-/*!
   static callback
 */
 
@@ -1388,27 +1256,6 @@ SoXtFullViewer::rightWheelFinishCB(Widget,
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->rightWheelFinish();
-}
-
-/*!
-  This method returns the value of the right thumb wheel.
-*/
-
-float
-SoXtFullViewer::getRightWheelValue(void) const
-{
-  return this->rightWheelVal;
-}
-
-/*!
-  This method sets the value of the right thumb wheel.
-*/
-
-void
-SoXtFullViewer::setRightWheelValue(const float value)
-{
-  this->rightWheelVal = value;
-  SoXtThumbWheelSetValue(this->rightWheel, value);
 }
 
 // *************************************************************************
