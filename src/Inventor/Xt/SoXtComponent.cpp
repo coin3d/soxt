@@ -1136,13 +1136,18 @@ SoXtComponent::event_handler(
 } // event_handler()
 
 /*!
-  Toggle full screen mode for this component.
+  Toggle full screen mode for this component, if possible.
+
+  Returns \c FALSE if operation failed.  This might happen if the
+  toolkit doesn't support attempts at making the component cover the
+  complete screen or if the component is not a toplevel window.
 */
-void 
-SoXtComponent::goFullScreen(const SbBool onoff)
+SbBool 
+SoXtComponent::setFullScreen(const SbBool onoff)
 {
-  if (onoff == this->fullscreen) return;
+  if (onoff == this->fullscreen) { return TRUE; }
   SOXT_STUB();
+  return FALSE;
 }
 
 /*!
