@@ -5,17 +5,6 @@ AC_INIT(src/Inventor/Xt/SoXt.h)
 AC_CONFIG_AUX_DIR(cfg)
 
 # **************************************************************************
-# create "reconfigure" script for invoking configure again with the exact
-# same command line options as last time.
-
-cat >reconfigure <<END_OF_SCRIPT
-#! /bin/sh
-echo $0 $@
-$0 $@
-END_OF_SCRIPT
-chmod 755 reconfigure
-
-# **************************************************************************
 # Make sure the given source repository is in sync with the master source
 # repository.
 
@@ -351,6 +340,8 @@ if test x"$want_html" != xno -o x"$want_man" != xno; then
     AC_MSG_WARN(Could not find the Perl executable)
   fi
   AC_SUBST(sim_ac_perl_exe)
+  HTML_DOC_DIR=`eval echo "$datadir/SoXt/html"`
+  AC_SUBST(HTML_DOC_DIR)
 fi
 
 # **************************************************************************

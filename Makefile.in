@@ -78,6 +78,7 @@ DSUFFIX = @DSUFFIX@
 EVENT = @EVENT@
 GUI = @GUI@
 Gui = @Gui@
+HTML_DOC_DIR = @HTML_DOC_DIR@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBTOOL = @LIBTOOL@
@@ -720,6 +721,9 @@ src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp: \
 ############################################################################
 
 doxygen-docs:
+	@( cd build; @sim_ac_doxygen_exe@ so@gui@.doxygen )
+
+doxygen-doc:
 	@( cd build; @sim_ac_doxygen_exe@ so@gui@.doxygen )
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -214,3 +214,6 @@ src/Inventor/@Gui@/widgets/SoAnyPopupMenu.cpp: \
 doxygen-docs:
 	@( cd build; @sim_ac_doxygen_exe@ so@gui@.doxygen )
 
+doxygen-doc:
+	@( cd build; @sim_ac_doxygen_exe@ so@gui@.doxygen )
+

@@ -329,6 +329,30 @@ AC_DEFUN([AM_AUX_DIR_EXPAND], [
 am_aux_dir=`CDPATH=:; cd $ac_aux_dir && pwd`
 ])
 
+# AM_AUX_DIR_EXPAND
+
+# For projects using AC_CONFIG_AUX_DIR([foo]), Autoconf sets
+# $ac_aux_dir to ${srcdir}/foo.  In other projects, it is set to `.'.
+# Of course, Automake must honor this variable whenever it calls a tool
+# from the auxiliary directory.  The problem is that $srcdir (and therefore
+# $ac_aux_dir as well) can be either an absolute path or a path relative to
+# $top_srcdir, depending on how configure is run.  This is pretty annoying,
+# since it makes $ac_aux_dir quite unusable in subdirectories: in the top
+# source directory, any form will work fine, but in subdirectories a relative
+# path needs to be adjusted first.
+# - calling $top_srcdir/$ac_aux_dir/missing would succeed if $ac_aux_dir was
+#   relative, but fail if it was absolute.
+# - conversly, calling $ac_aux_dir/missing would fail if $ac_aux_dir was
+#   relative, and succeed on absolute paths.
+#
+# Consequently, we define and use $am_aux_dir, the "always absolute"
+# version of $ac_aux_dir.
+
+AC_DEFUN([AM_AUX_DIR_EXPAND], [
+# expand $ac_aux_dir to an absolute path
+am_aux_dir=`CDPATH=:; cd $ac_aux_dir && pwd`
+])
+
 # One issue with vendor `install' (even GNU) is that you can't
 # specify the program used to strip binaries.  This is especially
 # annoying in cross=compiling environments, where the build's strip
@@ -1617,7 +1641,7 @@ if test x"$with_dl" != xno; then
 #include <dlfcn.h>
 #endif /* HAVE_DLFCN_H */
 ],
-                 [(void)dlopen(0L, 0);],
+                 [(void)dlopen(0L, 0); (void)dlsym(0L, "Gunners!"); (void)dlclose(0L);],
                  [sim_cv_lib_dl_avail=yes],
                  [sim_cv_lib_dl_avail=no])])
 
@@ -2388,6 +2412,9 @@ if test x"$with_glu" != xno; then
 ],
                     [
 gluSphere(0L, 1.0, 1, 1);
+/* Defect JAGad01283 of HP's aCC compiler causes a link failure unless
+   there is at least one "pure" OpenGL call along with GLU calls. */
+glEnd();
 ],
                     [sim_cv_lib_glu="$sim_ac_glu_libcheck"])
       fi
@@ -2428,6 +2455,9 @@ AC_DEFUN([SIM_AC_GLU_READY_IFELSE],
 ],
     [
 gluSphere(0L, 1.0, 1, 1);
+/* Defect JAGad01283 of HP's aCC compiler causes a link failure unless
+   there is at least one "pure" OpenGL call along with GLU calls. */
+glEnd();
 ],
     [sim_cv_glu_ready=true],
     [sim_cv_glu_ready=false])])
@@ -2465,8 +2495,13 @@ AC_CACHE_CHECK(
 #endif /* HAVE_WINDOWS_H */
 #include <GL/gl.h>
 #include <GL/glu.h>],
-                  [$sim_ac_glu_structname * hepp = gluNewNurbsRenderer();
-                   gluDeleteNurbsRenderer(hepp)],
+                  [
+$sim_ac_glu_structname * hepp = gluNewNurbsRenderer();
+gluDeleteNurbsRenderer(hepp);
+/* Defect JAGad01283 of HP's aCC compiler causes a link failure unless
+   there is at least one "pure" OpenGL call along with GLU calls. */
+glEnd();
+],
                   [sim_cv_func_glu_nurbsobject=$sim_ac_glu_structname])
     fi
   done
@@ -2491,8 +2526,16 @@ AC_CACHE_CHECK(
   [whether GLX is on the system],
   sim_cv_have_glx,
   AC_TRY_LINK(
-    [#include <GL/glx.h>],
-    [(void)glXChooseVisual(0L, 0, 0L);],
+    [
+#include <GL/glx.h>
+#include <GL/gl.h>
+],
+    [
+(void)glXChooseVisual(0L, 0, 0L);
+/* Defect JAGad01283 of HP's aCC compiler causes a link failure unless
+   there is at least one "pure" OpenGL call along with GLU calls. */
+glEnd();
+],
     [sim_cv_have_glx=true],
     [sim_cv_have_glx=false]))
 
@@ -2503,6 +2546,40 @@ else
 fi
 ]) # SIM_AC_HAVE_GLX_IFELSE()
 
+
+# **************************************************************************
+# SIM_AC_HAVE_WGL_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Check whether WGL is on the system.
+#
+# This macro has one important side-effect: the variable
+# sim_ac_wgl_libs will be set to the list of libraries
+# needed to link with wgl*() functions.
+
+AC_DEFUN([SIM_AC_HAVE_WGL_IFELSE], [
+sim_ac_save_libs=$LIBS
+sim_ac_wgl_libs="-lgdi32"
+LIBS="$LIBS $sim_ac_wgl_libs"
+
+AC_CACHE_CHECK(
+  [whether WGL is on the system],
+  sim_cv_have_wgl,
+  AC_TRY_LINK(
+    [
+#include <windows.h>
+#include <GL/gl.h>
+],
+    [(void)wglCreateContext(0L);],
+    [sim_cv_have_wgl=true],
+    [sim_cv_have_wgl=false]))
+
+LIBS=$sim_ac_save_libs
+if ${sim_cv_have_wgl=false}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_WGL_IFELSE()
 
 # Usage:
 #  SIM_AC_CHECK_PTHREAD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
@@ -2697,17 +2774,36 @@ if $sim_ac_want_inventor; then
   # Let's at least test for "libInventor".
   sim_ac_inventor_chk_libs="-lInventor"
 
+  AC_MSG_CHECKING([the Open Inventor version])
   # See if we can get the TGS_VERSION number for including a
   # check for inv{ver}.lib.
+  # TGS did not include TGS_VERSION before 2.6, so this may have to be
+  # back-ported to SO_VERSION+SO_REVISION usage.  larsa 2001-07-25
     cat <<EOF > conftest.c
 #include <Inventor/SbBasic.h>
+#ifdef __COIN__
+#error Testing for original Open Inventor, but found Coin...
+#endif
 PeekInventorVersion: TGS_VERSION
 EOF
-  tgs_version=`$CPP $sim_ac_inventor_cppflags $CPPFLAGS conftest.c 2>/dev/null | grep "^PeekInventorVersion" | sed 's/.* //g'`
+  if test x"$CPP" = x; then
+    AC_MSG_ERROR([cpp not detected - aborting.  notify maintainer at coin-support@coin3d.org.])
+  fi
+  echo "$CPP $sim_ac_inventor_cppflags $CPPFLAGS conftest.c" >&AS_MESSAGE_LOG_FD
+  tgs_version_line=`$CPP $sim_ac_inventor_cppflags $CPPFLAGS conftest.c 2>&AS_MESSAGE_LOG_FD | grep "^PeekInventorVersion"`
+  if test x"$tgs_version_line" = x; then
+    echo "second try..." >&AS_MESSAGE_LOG_FD
+    echo "$CPP -DWIN32 $sim_ac_inventor_cppflags $CPPFLAGS conftest.c" >&AS_MESSAGE_LOG_FD
+    tgs_version_line=`$CPP -DWIN32 $sim_ac_inventor_cppflags $CPPFLAGS conftest.c 2>&AS_MESSAGE_LOG_FD | grep "^PeekInventorVersion"`
+  fi
   rm -f conftest.c
-  if test x"$tgs_version" != xTGS_VERSION; then
-    tgs_version=`echo $tgs_version | cut -c-3`
-    sim_ac_inventor_chk_libs="$sim_ac_inventor_chk_libs -linv${tgs_version}"
+  tgs_version=`echo $tgs_version_line | cut -c22-24`
+  if test x"$tgs_version" != xTGS; then
+    sim_ac_inventor_chk_libs="$sim_ac_inventor_chk_libs -linv$tgs_version"
+    tgs_version_string=`echo $tgs_version | sed 's/\(.\)\(.\)\(.\)/\1.\2.\3/g'`
+    AC_MSG_RESULT([TGS Open Inventor v$tgs_version_string])
+  else
+    AC_MSG_RESULT([probably SGI or older TGS Open Inventor])
   fi
 
   AC_MSG_CHECKING([for Open Inventor library])
@@ -3299,6 +3395,7 @@ if test x"$with_doxygen" != xno; then
   fi
 fi
 ])
+
 
 # Usage:
 #  SIM_AC_ISO8601_DATE(variable)
