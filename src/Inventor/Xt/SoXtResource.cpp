@@ -87,7 +87,8 @@ SoXtResource::SoXtResource(
 
   this->name_hierarchy = new XrmQuark [ this->hierarchy_depth + 2];
   this->class_hierarchy = new XrmQuark [ this->hierarchy_depth + 2];
-  for ( int i = 0; i < this->hierarchy_depth; i++ ) {
+  int i;
+  for ( i = 0; i < this->hierarchy_depth; i++ ) {
     this->name_hierarchy[this->hierarchy_depth - i - 1] = quarks[i*2];
     this->class_hierarchy[this->hierarchy_depth - i - 1] = quarks[i*2+1];
   }
@@ -121,13 +122,14 @@ SoXtResource::DumpInternals(
 {
   SoDebugError::postInfo( "SoXtResource::DumpInternals", "dumping" );
   fprintf( stdout, "Class hierarchy:\n  " );
-  for ( int i = 0; i < this->hierarchy_depth; i++ ) {
+  int i;
+  for ( i = 0; i < this->hierarchy_depth; i++ ) {
     fprintf( stdout, "%s", XrmQuarkToString( this->class_hierarchy[i] ) );
     if ( i < (this->hierarchy_depth - 1) )
       fprintf( stdout, "." );
   }
   fprintf( stdout, "\nName hierarchy:\n  " );
-  for ( int i = 0; i < this->hierarchy_depth; i++ ) {
+  for ( i = 0; i < this->hierarchy_depth; i++ ) {
     fprintf( stdout, "%s", XrmQuarkToString( this->name_hierarchy[i] ) );
     if ( i < (this->hierarchy_depth - 1) )
       fprintf( stdout, "." );
