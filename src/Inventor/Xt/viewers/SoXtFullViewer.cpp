@@ -785,6 +785,8 @@ float
 SoXtFullViewer::getRightWheelValue(
   void ) const
 {
+  SOGUI_STUB();
+  return 0.0f;
 } // getRightWheelValue()
 
 // *************************************************************************
