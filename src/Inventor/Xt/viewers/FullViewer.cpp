@@ -59,7 +59,6 @@
 #include <X11/xpm.h>
 #include <Inventor/Xt/common/pixmaps/pick.xpm>
 #include <Inventor/Xt/common/pixmaps/view.xpm>
-#include <Inventor/Xt/common/pixmaps/help.xpm>
 #include <Inventor/Xt/common/pixmaps/home.xpm>
 #include <Inventor/Xt/common/pixmaps/set_home.xpm>
 #include <Inventor/Xt/common/pixmaps/view_all.xpm>
@@ -88,7 +87,6 @@ SOXT_OBJECT_ABSTRACT_SOURCE(SoXtFullViewer);
 enum DefaultViewerButtons {
   INTERACT_BUTTON = 0,
   EXAMINE_BUTTON,
-  HELP_BUTTON,
   HOME_BUTTON,
   SET_HOME_BUTTON,
   VIEW_ALL_BUTTON,
@@ -258,8 +256,6 @@ SoXtFullViewer::SoXtFullViewer(Widget parent,
   PRIVATE(this)->pixmaps.pick_ins = 0;
   PRIVATE(this)->pixmaps.view = 0;
   PRIVATE(this)->pixmaps.view_ins = 0;
-  PRIVATE(this)->pixmaps.help = 0;
-  PRIVATE(this)->pixmaps.help_ins = 0;
   PRIVATE(this)->pixmaps.home = 0;
   PRIVATE(this)->pixmaps.home_ins = 0;
   PRIVATE(this)->pixmaps.set_home = 0;
@@ -878,10 +874,6 @@ SoXtFullViewer::createViewerButtons(Widget parent,
       proc = SoXtFullViewerP::examinebuttonCB;
       label[0] = 'E';
       break;
-    case HELP_BUTTON:
-      proc = SoXtFullViewerP::helpbuttonCB;
-      label[0] = '?';
-      break;
     case HOME_BUTTON:
       proc = SoXtFullViewerP::homebuttonCB;
       label[0] = 'H';
@@ -927,9 +919,6 @@ SoXtFullViewer::createViewerButtons(Widget parent,
     case EXAMINE_BUTTON:
       PRIVATE(this)->viewerbuttons.view = button;
       break;
-    case HELP_BUTTON:
-      PRIVATE(this)->viewerbuttons.help = button;
-      break;
     case HOME_BUTTON:
       PRIVATE(this)->viewerbuttons.home = button;
       break;
@@ -960,10 +949,6 @@ SoXtFullViewer::createViewerButtons(Widget parent,
         SoXtInternal::createPixmapFromXpm(button, view_xpm);
       pixmap_ins = PRIVATE(this)->pixmaps.view_ins =
         SoXtInternal::createPixmapFromXpm(button, view_xpm, TRUE);
-      break;
-    case HELP_BUTTON:
-      pixmap = pixmap_ins = PRIVATE(this)->pixmaps.help =
-        SoXtInternal::createPixmapFromXpm(button, help_xpm);
       break;
     case HOME_BUTTON:
       pixmap = pixmap_ins = PRIVATE(this)->pixmaps.home =
@@ -1298,12 +1283,6 @@ SoXtFullViewerP::examinebuttonCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *)closure;
   if (!viewer->isViewing()) viewer->setViewing(TRUE);
-}
-
-void
-SoXtFullViewerP::helpbuttonCB(Widget, XtPointer client_data, XtPointer)
-{
-  ((SoXtFullViewer *)client_data)->openViewerHelpCard();
 }
 
 void

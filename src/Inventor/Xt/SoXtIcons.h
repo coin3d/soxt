@@ -29,7 +29,6 @@
 
 extern char so_xt_pick_bits[];
 extern char so_xt_view_bits[];
-extern char so_xt_help_bits[];
 extern char so_xt_home_bits[];
 extern char so_xt_set_home_bits[];
 extern char so_xt_set_all_bits[];

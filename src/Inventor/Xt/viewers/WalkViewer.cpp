@@ -255,13 +255,6 @@ SoXtWalkViewer::buildLeftTrim(Widget parent)
   return form;
 }
 
-// Documented in superclass.
-void
-SoXtWalkViewer::openViewerHelpCard(void)
-{
-  this->openHelpCard("SoXtWalkViewer.help");
-}
-
 // *************************************************************************
 
 /*!

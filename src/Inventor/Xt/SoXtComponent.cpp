@@ -814,29 +814,6 @@ SoXtComponent::invokeVisibilityChangeCallbacks(// protected
 // *************************************************************************
 
 /*!
-  This method is used to open component help cards.  \a name is the name of
-  a file that will be searched for in the following path:
-
-  .:$SO_HELP_DIR:/{prefix}/share/Coin/help
-
-  If no card is found, an error dialog will appear.
-
-  This method is not implemented yet.
-
-  \sa SoXtViewer::openViewerHelpCard()
-*/
-
-void         // protected
-SoXtComponent::openHelpCard(const char * const name)
-{
-  SoXt::createSimpleErrorDialog(this->getWidget(),
-                                "Not Implemented",
-                                "Help Card functionality is not implemented yet.");
-}
-
-// *************************************************************************
-
-/*!
   This function is not implemented yet.
 */
 

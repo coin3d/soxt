@@ -60,7 +60,6 @@ public:
 
   static void interactbuttonCB(Widget, XtPointer, XtPointer);
   static void examinebuttonCB(Widget, XtPointer, XtPointer);
-  static void helpbuttonCB(Widget, XtPointer, XtPointer);
   static void homebuttonCB(Widget, XtPointer, XtPointer);
   static void sethomebuttonCB(Widget, XtPointer, XtPointer);
   static void viewallbuttonCB(Widget, XtPointer, XtPointer);
@@ -92,13 +91,12 @@ public:
   Widget viewerButtonsForm;
 
   struct {
-    Widget pick, view, help, home, set_home, view_all, seek;
+    Widget pick, view, home, set_home, view_all, seek;
   } viewerbuttons;
 
   struct {
     Pixmap pick, pick_ins;
     Pixmap view, view_ins;
-    Pixmap help, help_ins;
     Pixmap home, home_ins;
     Pixmap set_home, set_home_ins;
     Pixmap view_all, view_all_ins;
