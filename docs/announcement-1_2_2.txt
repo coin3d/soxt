@@ -1,0 +1,27 @@
+SoXt 1.2.2 Released
+===================
+
+SoXt 1.2.2 is a micro release.  It was released to fix a build problem
+on the Mac OS X platform.
+
+
+NEWS File Excerpt:
+------------------
+
+SoXt 1.2.2 (2004-11-16):
+* Mac OS X build fixes
+
+
+Download Information:
+---------------------
+
+Source Code by FTP:
+  ftp://ftp.coin3d.org/pub/coin/src/SoXt-1.2.2.tar.gz
+
+We do not provide pre-compiled binary packages of the SoXt library
+for any platform.
+
+Regards,
+
+  Lars J. Aas
+  Systems in Motion
