@@ -106,6 +106,8 @@ AH_TOP([
 #endif /* !SOXT_INTERNAL */
 ])
 
+AC_CHECK_HEADERS([windows.h])
+
 # **************************************************************************
 # If you just want to generate docs, ignore all the build-related tests
 

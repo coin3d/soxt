@@ -90,6 +90,9 @@
    name */
 #undef HAVE_VAR___func__
 
+/* Define to 1 if you have the <windows.h> header file. */
+#undef HAVE_WINDOWS_H
+
 /* Name of package */
 #undef PACKAGE
 
