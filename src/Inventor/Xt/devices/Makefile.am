@@ -21,7 +21,7 @@ libSoXtDevicesVPATH = . $(srcdir)
 	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
 	done; \
 	eval "$(CXXDEPMODE)"; \
-	: ${depmod=none}; \
+	: ${depmode=none}; \
 	source="$$source" \
 	object='$@' libtool=no \
 	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
