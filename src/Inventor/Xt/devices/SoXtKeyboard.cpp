@@ -36,6 +36,9 @@
 #include <Inventor/Xt/devices/SoXtKeyboard.h>
 #include <Inventor/Xt/devices/SoGuiKeyboardP.h>
 
+#define PRIVATE(p) (p->pimpl)
+#define PUBLIC(p) (p->pub)
+
 // *************************************************************************
 
 class SoXtKeyboardP : public SoGuiKeyboardP {
@@ -273,3 +276,7 @@ SoXtKeyboard::translateEvent(XAnyEvent * event)
 }
 
 // *************************************************************************
+
+#undef PRIVATE
+#undef PUBLIC
+

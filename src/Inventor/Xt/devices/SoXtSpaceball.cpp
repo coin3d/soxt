@@ -37,6 +37,9 @@ typedef void * XPContext;
 #include <Inventor/Xt/devices/SoXtSpaceball.h>
 #include <Inventor/Xt/devices/SoXtSpaceballP.h>
 
+#define PRIVATE(p) (p->pimpl)
+#define PUBLIC(p) (p->pub)
+
 // *************************************************************************
 
 SoXtSpaceball::SoXtSpaceball(int events)
@@ -117,3 +120,7 @@ SoXtSpaceball::isFocusToWindow(void) const
 }
 
 // *************************************************************************
+
+#undef PRIVATE
+#undef PUBLIC
+

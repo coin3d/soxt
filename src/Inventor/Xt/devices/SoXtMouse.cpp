@@ -39,6 +39,9 @@
 #include <Inventor/Xt/devices/SoGuiMouseP.h>
 #include <soxtdefs.h>
 
+#define PRIVATE(p) (p->pimpl)
+#define PUBLIC(p) (p->pub)
+
 // *************************************************************************
 
 class SoXtMouseP : public SoGuiMouseP {
@@ -200,3 +203,7 @@ SoXtMouseP::makeButtonEvent(XButtonEvent * event, SoButtonEvent::State state)
 }
 
 // *************************************************************************
+
+#undef PRIVATE
+#undef PUBLIC
+

@@ -27,6 +27,9 @@
 #include <Inventor/Xt/devices/SoXtInputFocus.h>
 #include <Inventor/Xt/devices/SoGuiInputFocusP.h>
 
+#define PRIVATE(p) (p->pimpl)
+#define PUBLIC(p) (p->pub)
+
 // *************************************************************************
 
 class SoXtInputFocusP : public SoGuiInputFocusP {
@@ -92,3 +95,7 @@ SoXtInputFocus::translateEvent(XAnyEvent * event)
 }
 
 // *************************************************************************
+
+#undef PRIVATE
+#undef PUBLIC
+

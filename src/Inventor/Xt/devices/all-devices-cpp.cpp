@@ -22,8 +22,15 @@
 \**************************************************************************/
 
 #include "SoXtDevice.cpp"
+#include "SoXtDeviceCommon.cpp"
 #include "SoXtInputFocus.cpp"
+#include "SoXtInputFocusCommon.cpp"
 #include "SoXtKeyboard.cpp"
+#include "SoXtKeyboardCommon.cpp"
 #include "SoXtMouse.cpp"
+#include "SoXtMouseCommon.cpp"
 #include "SoXtSpaceball.cpp"
+#include "SoXtSpaceballCommon.cpp"
 #include "SoXtLinuxJoystick.cpp"
+#include "spwinput_win32.c"
+#include "spwinput_x11.cpp"

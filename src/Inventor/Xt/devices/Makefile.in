@@ -573,7 +573,7 @@ SoQt_ExtraBuiltMetaFiles = \
 
 noinst_LTLIBRARIES = libSoXtDevices.la
 
-DEFAULT_INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
+DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)/src -I$(top_srcdir)/src
 
 BUILT_SOURCES = \
 	$(SoGuiAllBuiltFiles)
@@ -602,12 +602,19 @@ RegularSources = \
 	So@Gui@LinuxJoystick.cpp \
 	6DOFEvents.h
 
+
+BuiltSources = \
+	$(SoGui_src_Inventor_Gui_devices_BuiltFiles)
+
+
 LinkHackSources = \
 	all-devices-cpp.cpp
 
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_FALSE@NoDistSources = $(BuiltSources)
+@HACKING_COMPACT_BUILD_TRUE@NoDistSources = 
 @HACKING_COMPACT_BUILD_FALSE@ExtraSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_TRUE@ExtraSources = $(RegularSources)
 
@@ -616,7 +623,7 @@ libSoXtDevices_la_SOURCES = \
 
 
 nodist_libSoXtDevices_la_SOURCES = \
-	$(SoGui_src_Inventor_Gui_devices_BuiltFiles)
+	$(NoDistSources)
 
 
 
@@ -679,7 +686,10 @@ am_libSoXtDevices_la_OBJECTS = $(am__objects_3)
 am__objects_4 = spwinput_x11.lo spwinput_win32.lo So@Gui@DeviceCommon.lo \
 	So@Gui@InputFocusCommon.lo So@Gui@KeyboardCommon.lo \
 	So@Gui@MouseCommon.lo So@Gui@SpaceballCommon.lo
-nodist_libSoXtDevices_la_OBJECTS = $(am__objects_4)
+am__objects_5 = $(am__objects_4)
+@HACKING_COMPACT_BUILD_TRUE@am__objects_6 =
+@HACKING_COMPACT_BUILD_FALSE@am__objects_6 = $(am__objects_5)
+nodist_libSoXtDevices_la_OBJECTS = $(am__objects_6)
 libSoXtDevices_la_OBJECTS = $(am_libSoXtDevices_la_OBJECTS) \
 	$(nodist_libSoXtDevices_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp

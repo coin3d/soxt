@@ -34,6 +34,9 @@
 #include <Inventor/Xt/devices/SoXtDevice.h>
 #include <Inventor/Xt/devices/SoXtDeviceP.h>
 
+#define PRIVATE(p) (p->pimpl)
+#define PUBLIC(p) (p->pub)
+
 // *************************************************************************
 
 SoXtDevice::SoXtDevice(void)
@@ -75,3 +78,7 @@ SoXtDeviceP::invokeHandlerCB(SoXtEventHandler * handler,
 #endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
+
+#undef PRIVATE
+#undef PUBLIC
+

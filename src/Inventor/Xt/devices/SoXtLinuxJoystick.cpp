@@ -667,3 +667,7 @@ SoXtLinuxJoystickP::makeButtonEvent(SoXt6dofDeviceButtonEvent * event,
 }
 
 // *************************************************************************
+
+#undef PRIVATE
+#undef PUBLIC
+
