@@ -17,7 +17,8 @@ SIM_AC_CVS_CHANGES([
 ])
 
 # **************************************************************************
-# library versioning
+# Library versioning. For information about our versioning strategy, see the
+# document ``HACKING'' in the Coin CVS module.
 
 SOXT_MAJOR_VERSION=0
 SOXT_MINOR_VERSION=5
@@ -132,7 +133,7 @@ AC_SUBST(SUFFIX)
 # **************************************************************************
 
 SIM_AC_MATHLIB_READY_IFELSE(,[
-  SIM_AC_CHECK_MATHLIB(COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_libm",
+  SIM_AC_CHECK_MATHLIB(SOXT_EXTRA_LIBS="SOXT_EXTRA_LIBS $sim_ac_libm",
                        AC_MSG_ERROR(could not find a way to use math library))
 ])
 
@@ -315,7 +316,16 @@ AM_CONDITIONAL(BUILD_DEVCODE, $sim_ac_want_devcode)
 
 # **************************************************************************
 
+COIN_COMPILER="$CXX"
+if $BUILD_WITH_MSVC; then
+  # don't use wrapmsvc from source hierarchy when later using soqt-config.
+  COIN_COMPILER="wrapmsvc"
 fi
+AC_SUBST(COIN_COMPILER)
+
+# **************************************************************************
+
+fi  # $sim_ac_build_library == true
 
 # **************************************************************************
 # Variable substitutions for using libSoXt in the generic code.
