@@ -381,22 +381,22 @@ SoXtResource::getResource(
   }
 
   if (format == stringq) {
-    if (icstrcmp((char *) value.addr, "true") == 0 ||
-         icstrcmp((char *) value.addr, "on") == 0 ||
-         icstrcmp((char *) value.addr, "yes") == 0 ||
-         icstrcmp((char *) value.addr, "enable") == 0 ||
-         icstrcmp((char *) value.addr, "enabled") == 0 ||
-         icstrcmp((char *) value.addr, "set") == 0 ||
-         icstrcmp((char *) value.addr, "1") == 0) {
+    if (icstrcmp((const char *) value.addr, "true") == 0 ||
+         icstrcmp((const char *) value.addr, "on") == 0 ||
+         icstrcmp((const char *) value.addr, "yes") == 0 ||
+         icstrcmp((const char *) value.addr, "enable") == 0 ||
+         icstrcmp((const char *) value.addr, "enabled") == 0 ||
+         icstrcmp((const char *) value.addr, "set") == 0 ||
+         icstrcmp((const char *) value.addr, "1") == 0) {
       retval = TRUE;
       return TRUE;
-    } else if (icstrcmp((char *) value.addr, "false") == 0 ||
-                icstrcmp((char *) value.addr, "off") == 0 ||
-                icstrcmp((char *) value.addr, "no") == 0 ||
-                icstrcmp((char *) value.addr, "disable") == 0 ||
-                icstrcmp((char *) value.addr, "disabled") == 0 ||
-                icstrcmp((char *) value.addr, "unset") == 0 ||
-                icstrcmp((char *) value.addr, "0") == 0) {
+    } else if (icstrcmp((const char *) value.addr, "false") == 0 ||
+                icstrcmp((const char *) value.addr, "off") == 0 ||
+                icstrcmp((const char *) value.addr, "no") == 0 ||
+                icstrcmp((const char *) value.addr, "disable") == 0 ||
+                icstrcmp((const char *) value.addr, "disabled") == 0 ||
+                icstrcmp((const char *) value.addr, "unset") == 0 ||
+                icstrcmp((const char *) value.addr, "0") == 0) {
       retval = FALSE;
       return TRUE;
     } else {

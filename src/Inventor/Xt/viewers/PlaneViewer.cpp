@@ -68,8 +68,8 @@ static const char ** z_xpm = NULL;
 // ************************************************************************
 
 struct SoXtViewerButton {
-  char * keyword;
-  char * label;
+  const char * keyword;
+  const char * label;
   void (*pressed)(Widget, XtPointer, XtPointer);
   const char ** xpm_data;
   Widget bwidget;
@@ -126,8 +126,8 @@ SoXtPlaneViewerP::constructor(SbBool build)
 {
   this->commonConstructor(); // generic code
 
-  const int buttons = sizeof(SoXtPlaneViewerButtons) / sizeof(SoXtViewerButton);
-  this->buttons = new SoXtViewerButton[buttons];
+  const int numbuttons = sizeof(SoXtPlaneViewerButtons) / sizeof(SoXtViewerButton);
+  this->buttons = new SoXtViewerButton[numbuttons];
   memcpy(this->buttons, SoXtPlaneViewerButtons, sizeof(SoXtPlaneViewerButtons));
 
   PUBLIC(this)->setClassName(PUBLIC(this)->getDefaultWidgetName());
@@ -175,8 +175,8 @@ SoXtPlaneViewerP::buttonCB(Widget widget, XtPointer closure, XtPointer)
 int
 SoXtPlaneViewerP::findButton(Widget widget) const
 {
-  const int buttons = sizeof(SoXtPlaneViewerButtons) / sizeof(SoXtViewerButton);
-  for (int button = 0; button < buttons; button++) {
+  const int numbuttons = sizeof(SoXtPlaneViewerButtons) / sizeof(SoXtViewerButton);
+  for (int button = 0; button < numbuttons; button++) {
     if (this->buttons[button].bwidget == widget) return button;
   }
   return -1;

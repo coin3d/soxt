@@ -54,7 +54,7 @@
 */
 
 SoXtSlider::SoXtSlider(
-  const char * const title)
+  const char * const thetitle)
 {
   this->s_form = NULL;
   this->s_value = NULL;
@@ -80,10 +80,13 @@ SoXtSlider::SoXtSlider(
   this->o_slider = NULL;
   this->o_label = NULL;
 
-  if (title)
-    this->title = strcpy(new char [strlen(title)+1], title);
-  else
+  if ( thetitle ) {
+    this->title = new char [strlen(thetitle)+1];
+    assert(this->title);
+    strcpy(this->title, thetitle);
+  } else {
     this->title = NULL;
+  }
   this->callbacks = NULL;
 
   this->current = 0.0f;
