@@ -574,10 +574,17 @@ set_values(
   ArgList args,
   Cardinal * num_args )
 {
-  Boolean redisplay = True;
-#if SOXT_DEBUG
-  SOXT_STUB();
-#endif // SOXT_DEBUG
+  Boolean redisplay = False;
+  SoXtThumbWheelWidget curcw = (SoXtThumbWheelWidget) current;
+  SoXtThumbWheelWidget reqcw = (SoXtThumbWheelWidget) request;
+  SoXtThumbWheelWidget newcw = (SoXtThumbWheelWidget) new_widget;
+
+  if ( newcw->core.sensitive != curcw->core.sensitive )
+    redisplay = True;
+
+  if ( newcw->thumbwheel.value != curcw->thumbwheel.value )
+    redisplay = True;
+
   return redisplay;
 } // set_values()
 
