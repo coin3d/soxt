@@ -1,17 +1,11 @@
 TODO
 ====
 
-* [larsa:20000206] Write an autoconf-test for GL/GLwDrawA.h, libMesaGLwM,
-  and glwMDrawingAreaWidgetClass typedef.
-
 * [larsa:20000206] Write autoconf-tests for Lesstif/Motif, Xm, Xmu, ...
 
-* [larsa:20000206] Create soxt-config.
+* [larsa:20000206] Create soxt-config script.
 
-* [larsa:20000206] Write alternative buildWidgeti()-code for systems without
+* [larsa:20000206] Write alternative buildWidget()-code for systems without
   the Xt/Motif (lesstif) glwMDrawingArea widget.
 
-* [larsa:20000206] It looks like So*RenderArea can be merged for all GUI
-  component libraries just like So*Viewer was merged into common/SoAnyViewer
-  - investigate...
 
