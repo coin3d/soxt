@@ -173,8 +173,7 @@ SoXtLinuxJoystick::~SoXtLinuxJoystick()
 void
 SoXtLinuxJoystick::enable(Widget widget,
                           SoXtEventHandler * handler,
-                          XtPointer closure,
-                          Window window)
+                          XtPointer closure)
 {
 #ifdef HAVE_JOYSTICK_LINUX
   if (! SoXtLinuxJoystickP::enabled) {
@@ -232,7 +231,7 @@ SoXtLinuxJoystick::enable(Widget widget,
                   SoXtLinuxJoystickP::input_cb, (XtPointer) this);
   }
 
-  this->addEventHandler(widget, handler, closure, window);
+  this->addEventHandler(widget, handler, closure);
 #endif // HAVE_JOYSTICK_LINUX
 }
 

@@ -75,8 +75,7 @@ SoXtInputFocus::~SoXtInputFocus()
 void
 SoXtInputFocus::enable(Widget, // widget,
                        SoXtEventHandler *, // func,
-                       XtPointer, // data,
-                       Window) // window)
+                       XtPointer)
 {
   SOXT_STUB();
 }

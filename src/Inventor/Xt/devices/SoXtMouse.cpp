@@ -90,7 +90,7 @@ SoXtMouse::~SoXtMouse()
 // Doc in superclass.
 void
 SoXtMouse::enable(Widget widget, SoXtEventHandler * handler,
-                  XtPointer closure, Window window)
+                  XtPointer closure)
 {
   XtAddEventHandler(widget, this->eventmask, FALSE, handler, closure);
 }
@@ -171,18 +171,15 @@ SoXtMouse::makeLocationEvent(XMotionEvent * event)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtMouse::makeLocationEvent",
-    "pointer at (%d, %d)", event->x, this->getWindowSize()[1] - event->y);
+                         "pointer at (%d, %d)", event->x, this->getWindowSize()[1] - event->y);
 #endif // 0 was SOXT_DEBUG
   delete this->locationevent;
   this->locationevent = new SoLocation2Event;
   this->setEventPosition(this->locationevent, event->x, event->y);
 
-  this->locationevent->setShiftDown(
-    (event->state & ShiftMask) ? TRUE : FALSE);
-  this->locationevent->setCtrlDown(
-    (event->state & ControlMask) ? TRUE : FALSE);
-  this->locationevent->setAltDown(
-    (event->state & Mod1Mask) ? TRUE : FALSE);
+  this->locationevent->setShiftDown((event->state & ShiftMask) ? TRUE : FALSE);
+  this->locationevent->setCtrlDown((event->state & ControlMask) ? TRUE : FALSE);
+  this->locationevent->setAltDown((event->state & Mod1Mask) ? TRUE : FALSE);
 
   SbTime stamp;
   stamp.setMsecValue(event->time);
@@ -202,7 +199,7 @@ SoXtMouse::makeButtonEvent(XButtonEvent * event,
 {
 #if 0 // SOXT_DEBUG
   SoDebugError::postInfo("SoXtMouse::makeButtonEvent",
-    "button %d, state %d", event->button, (int) state);
+                         "button %d, state %d", event->button, (int) state);
 #endif // 0 was SOXT_DEBUG
   delete this->buttonevent;
   this->buttonevent = new SoMouseButtonEvent;
@@ -226,12 +223,9 @@ SoXtMouse::makeButtonEvent(XButtonEvent * event,
 
   this->setEventPosition(this->buttonevent, event->x, event->y);
 
-  this->buttonevent->setShiftDown(
-    (event->state & ShiftMask) ? TRUE : FALSE);
-  this->buttonevent->setCtrlDown(
-    (event->state & ControlMask) ? TRUE : FALSE);
-  this->buttonevent->setAltDown(
-    (event->state & Mod1Mask) ? TRUE : FALSE);
+  this->buttonevent->setShiftDown((event->state & ShiftMask) ? TRUE : FALSE);
+  this->buttonevent->setCtrlDown((event->state & ControlMask) ? TRUE : FALSE);
+  this->buttonevent->setAltDown((event->state & Mod1Mask) ? TRUE : FALSE);
 
   SbTime stamp;
   stamp.setMsecValue(event->time);

@@ -101,8 +101,7 @@ SoXtSpaceball::~SoXtSpaceball()
 void
 SoXtSpaceball::enable(Widget, // widget,
                       SoXtEventHandler *, // func,
-                      XtPointer, // data,
-                      Window) // window)
+                      XtPointer)
 {
   SOXT_STUB();
 }

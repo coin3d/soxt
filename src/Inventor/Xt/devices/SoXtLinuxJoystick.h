@@ -46,7 +46,7 @@ public:
   virtual ~SoXtLinuxJoystick(void);
 
   virtual void enable(Widget widget, SoXtEventHandler * handler,
-                      XtPointer closure, Window window = (Window) NULL);
+                      XtPointer closure);
   virtual void disable(Widget widget, SoXtEventHandler * handler,
                        XtPointer closure);
 

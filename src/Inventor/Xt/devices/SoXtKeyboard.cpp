@@ -83,7 +83,7 @@ SoXtKeyboard::~SoXtKeyboard()
 // Doc in superclass.
 void
 SoXtKeyboard::enable(Widget widget, SoXtEventHandler * handler,
-                     XtPointer closure, Window window)
+                     XtPointer closure)
 {
   XtAddEventHandler(widget, this->eventmask, FALSE, handler, closure);
 }

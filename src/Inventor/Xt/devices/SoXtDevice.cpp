@@ -51,7 +51,6 @@ struct SoXtDeviceHandlerInfo {
   Widget widget;
   SoXtEventHandler * handler;
   XtPointer closure;
-  Window window;
 };
 
 // *************************************************************************
@@ -130,13 +129,12 @@ SoXtDevice::~SoXtDevice()
 // *************************************************************************
 
 /*!
-  \fn void SoXtDevice::enable(Widget widget, SoXtEventHandler * handler, XtPointer closure, Window window = (Window) NULL) = 0
+  \fn void SoXtDevice::enable(Widget widget, SoXtEventHandler * handler, XtPointer closure) = 0
 
   This method will enable the device for the widget.
 
   \a handler is invoked with the \a closure argument when an event occur
-  in \a widget.  The \a window argument is needed because GLX widgets can
-  have more than one window (normal, overlay).
+  in \a widget.
 */
 
 /*!
@@ -204,8 +202,7 @@ SoXtDevice::setEventPosition(SoEvent * event,
 void
 SoXtDevice::addEventHandler(Widget widget,
                             SoXtEventHandler * handler,
-                            XtPointer closure,
-                            Window window)
+                            XtPointer closure)
 {
   if (PRIVATE(this)->handlers == NULL)
     PRIVATE(this)->handlers = new SbPList;
@@ -213,7 +210,6 @@ SoXtDevice::addEventHandler(Widget widget,
   info->widget = widget;
   info->handler = handler;
   info->closure = closure;
-  info->window = window;
   PRIVATE(this)->handlers->append(info);
 }
 

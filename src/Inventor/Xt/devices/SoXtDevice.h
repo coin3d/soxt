@@ -37,10 +37,10 @@ class SOXT_DLL_API SoXtDevice : public SoXtObject {
   SOXT_OBJECT_ABSTRACT_HEADER(SoXtDevice, SoXtObject);
 
 public:
-  virtual ~SoXtDevice(void);
+  virtual ~SoXtDevice();
 
   virtual void enable(Widget widget, SoXtEventHandler * handler,
-                      XtPointer closure, Window window = (Window) NULL) = 0;
+                      XtPointer closure) = 0;
   virtual void disable(Widget widget, SoXtEventHandler * handler,
                        XtPointer closure) = 0;
 
@@ -56,9 +56,8 @@ protected:
 
   void setEventPosition(SoEvent * event, int x, int y) const;
 
-  void addEventHandler(Widget, SoXtEventHandler *, XtPointer, Window);
+  void addEventHandler(Widget, SoXtEventHandler *, XtPointer);
   void removeEventHandler(Widget, SoXtEventHandler *, XtPointer);
-
   void invokeHandlers(XEvent * const event);
 
 private:
