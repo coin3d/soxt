@@ -132,3 +132,6 @@ SoXtViewer::processCommonEvents(
 } // processCommonEvents()
 
 // *************************************************************************
+
+static const char * getSoXtViewerExtraRCSId(void) { return rcsid; }
+

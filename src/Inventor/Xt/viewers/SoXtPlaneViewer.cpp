@@ -473,10 +473,10 @@ SoXtPlaneViewer::processEvent(
   case KeyRelease:
   {
     char keybuf[8];
-    int keybuflen;
     KeySym keysym = 0;
 
-    keybuflen = XLookupString( (XKeyEvent *) event, keybuf, 8, &keysym, NULL );
+//    int keybuflen =
+      XLookupString( (XKeyEvent *) event, keybuf, 8, &keysym, NULL );
 
     switch ( keysym ) {
     case XK_Control_L:
@@ -679,3 +679,6 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // camerabutton()
 
 // *************************************************************************
+
+static const char * getSoXtPlaneViewerRCSId(void) { return rcsid; }
+

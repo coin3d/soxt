@@ -207,3 +207,6 @@ SoXtConstrainedViewer::computeSeekFinalOrientation( // virtual, protected
 } // computeSeekFinalOrientation()
 
 // *************************************************************************
+
+static const char * getSoXtConstrainedViewerRCSId(void) { return rcsid; }
+

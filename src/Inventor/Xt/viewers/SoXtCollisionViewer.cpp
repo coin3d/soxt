@@ -164,3 +164,6 @@ SoXtCollisionViewer::removeCallback(
 } // removeCallback()
 
 // *************************************************************************
+
+static const char * getSoXtCollisionViewerRCSId(void) { return rcsid; }
+

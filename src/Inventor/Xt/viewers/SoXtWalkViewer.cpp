@@ -391,3 +391,6 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // wheeldisarmed()
 
 // *************************************************************************
+
+static const char * getSoXtWalkViewerRCSId(void) { return rcsid; }
+

@@ -17,6 +17,9 @@
  *
  **************************************************************************/
 
+static const char rcsid[] =
+  "$Id$";
+
 #include <assert.h>
 
 #include <Xm/Xm.h>
@@ -266,3 +269,6 @@ SoXtFlyViewer::openViewerHelpCard( // virtual, protected
 } // openViewerHelpCard()
 
 // *************************************************************************
+
+static const char * getSoXtFlyViewerRCSId(void) { return rcsid; }
+
