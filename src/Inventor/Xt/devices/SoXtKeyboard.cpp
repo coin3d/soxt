@@ -124,18 +124,14 @@ SoXtKeyboard::translateEvent( // virtual
   XAnyEvent * event )
 {
   switch ( event->type ) {
-  // events we should catch:
   case KeyPress:
-    return this->makeKeyboardEvent( (XKeyEvent *) event, SoButtonEvent::DOWN);
+    return this->makeKeyboardEvent( (XKeyEvent *) event, SoButtonEvent::DOWN );
     break;
   case KeyRelease:
     return this->makeKeyboardEvent( (XKeyEvent *) event, SoButtonEvent::UP );
     break;
-
-  // events we should ignore:
   default:
     break;
-
   } // switch ( event->type )
   return (SoEvent *) NULL;
 } // translateEvent()
@@ -164,117 +160,132 @@ SoXtKeyboard::makeKeyboardEvent( // private
   int keybufusage = XLookupString( event, keybuf, 8, &keysym, NULL );
 
   if ( keybufusage == 1 ) {
-    char cap = keybuf[0];
-    if ( cap >= 'A' && cap <= 'Z' ) {
-      key = (SoKeyboardEvent::Key)
-        ((int) SoKeyboardEvent::A + (cap - 'A'));
-    } else if ( cap >= 'a' && cap <= 'z' ) {
-      key = (SoKeyboardEvent::Key)
-        ((int) SoKeyboardEvent::A + (cap - 'a'));
-    } else if ( cap >= '0' && cap <= '9' ) {
-      key = (SoKeyboardEvent::Key)
-        ((int) SoKeyboardEvent::NUMBER_0 + (cap - '0'));
+    switch ( keybuf[0] ) {
+    case 'a': case 'A':   key = SoKeyboardEvent::A;              break;
+    case 'b': case 'B':   key = SoKeyboardEvent::B;              break;
+    case 'c': case 'C':   key = SoKeyboardEvent::C;              break;
+    case 'd': case 'D':   key = SoKeyboardEvent::D;              break;
+    case 'e': case 'E':   key = SoKeyboardEvent::E;              break;
+    case 'f': case 'F':   key = SoKeyboardEvent::F;              break;
+    case 'g': case 'G':   key = SoKeyboardEvent::G;              break;
+    case 'h': case 'H':   key = SoKeyboardEvent::H;              break;
+    case 'i': case 'I':   key = SoKeyboardEvent::I;              break;
+    case 'j': case 'J':   key = SoKeyboardEvent::J;              break;
+    case 'k': case 'K':   key = SoKeyboardEvent::K;              break;
+    case 'l': case 'L':   key = SoKeyboardEvent::L;              break;
+    case 'm': case 'M':   key = SoKeyboardEvent::M;              break;
+    case 'n': case 'N':   key = SoKeyboardEvent::N;              break;
+    case 'o': case 'O':   key = SoKeyboardEvent::O;              break;
+    case 'p': case 'P':   key = SoKeyboardEvent::P;              break;
+    case 'q': case 'Q':   key = SoKeyboardEvent::Q;              break;
+    case 'r': case 'R':   key = SoKeyboardEvent::R;              break;
+    case 's': case 'S':   key = SoKeyboardEvent::S;              break;
+    case 't': case 'T':   key = SoKeyboardEvent::T;              break;
+    case 'u': case 'U':   key = SoKeyboardEvent::U;              break;
+    case 'v': case 'V':   key = SoKeyboardEvent::V;              break;
+    case 'w': case 'W':   key = SoKeyboardEvent::W;              break;
+    case 'x': case 'X':   key = SoKeyboardEvent::X;              break;
+    case 'y': case 'Y':   key = SoKeyboardEvent::Y;              break;
+    case 'z': case 'Z':   key = SoKeyboardEvent::Z;              break;
+    case '\\':            key = SoKeyboardEvent::BACKSLASH;      break;
+    case '[':             key = SoKeyboardEvent::BRACKETLEFT;    break;
+    case ']':             key = SoKeyboardEvent::BRACKETRIGHT;   break;
+    case '0':             key = SoKeyboardEvent::NUMBER_0;       break;
+    case '1':             key = SoKeyboardEvent::NUMBER_1;       break;
+    case '2':             key = SoKeyboardEvent::NUMBER_2;       break;
+    case '3':             key = SoKeyboardEvent::NUMBER_3;       break;
+    case '4':             key = SoKeyboardEvent::NUMBER_4;       break;
+    case '5':             key = SoKeyboardEvent::NUMBER_5;       break;
+    case '6':             key = SoKeyboardEvent::NUMBER_6;       break;
+    case '7':             key = SoKeyboardEvent::NUMBER_7;       break;
+    case '8':             key = SoKeyboardEvent::NUMBER_8;       break;
+    case '9':             key = SoKeyboardEvent::NUMBER_9;       break;
+    default:
+      break;
     }
   } 
 
   if ( key == SoKeyboardEvent::ANY ) {
-    int offset = 0;
     switch ( keysym ) {
-    case XK_Shift_L:    offset++;
-    case XK_Shift_R:    offset++;
-    case XK_Control_R:  offset++;
-    case XK_Control_L:  offset++;
-    case XK_Alt_L:      offset++;
-    case XK_Alt_R:
-      key = (SoKeyboardEvent::Key) ((int) SoKeyboardEvent::RIGHT_ALT - offset);
-      break;
-
-    case XK_Home:      offset++;
-    case XK_Left:      offset++;
-    case XK_Up:        offset++;
-    case XK_Right:     offset++;
-    case XK_Down:      offset++;
-    case XK_Page_Up:   offset++;
-    case XK_Page_Down:
-      key = (SoKeyboardEvent::Key) ((int) SoKeyboardEvent::PAGE_DOWN - offset);
-      break;
+    case XK_Shift_L:      key = SoKeyboardEvent::LEFT_SHIFT;     break;
+    case XK_Shift_R:      key = SoKeyboardEvent::RIGHT_SHIFT;    break;
+    case XK_Control_L:    key = SoKeyboardEvent::LEFT_CONTROL;   break;
+    case XK_Control_R:    key = SoKeyboardEvent::RIGHT_CONTROL;  break;
+    case XK_Alt_L:        key = SoKeyboardEvent::LEFT_ALT;       break;
+    case XK_Alt_R:        key = SoKeyboardEvent::RIGHT_ALT;      break;
+    case XK_Home:         key = SoKeyboardEvent::HOME;           break;
+    case XK_Left:         key = SoKeyboardEvent::LEFT_ARROW;     break;
+    case XK_Up:           key = SoKeyboardEvent::UP_ARROW;       break;
+    case XK_Right:        key = SoKeyboardEvent::RIGHT_ARROW;    break;
+    case XK_Down:         key = SoKeyboardEvent::DOWN_ARROW;     break;
+    case XK_Page_Up:      key = SoKeyboardEvent::PAGE_UP;        break;
+    case XK_Page_Down:    key = SoKeyboardEvent::PAGE_DOWN;      break;
 
 // X11 defines XK_Prior and XK_Next to the same as XK_Page_Up and XK_Page_Down
-//  case XK_Prior:     offset++;
-//  case XK_Next:      offset++;
+//  case XK_Prior:
+//  case XK_Next:
 
-    case XK_End:
-      key = (SoKeyboardEvent::Key) ((int) SoKeyboardEvent::END - offset);
-      break;
-
-    case XK_KP_Enter:    offset++;
-    case XK_KP_F1:       offset++;
-    case XK_KP_F2:       offset++;
-    case XK_KP_F3:       offset++;
-    case XK_KP_F4:       offset++;
-    case XK_KP_0:        offset++;
-    case XK_KP_1:        offset++;
-    case XK_KP_2:        offset++;
-    case XK_KP_3:        offset++;
-    case XK_KP_4:        offset++;
-    case XK_KP_5:        offset++;
-    case XK_KP_6:        offset++;
-    case XK_KP_7:        offset++;
-    case XK_KP_8:        offset++;
-    case XK_KP_9:        offset++;
-    case XK_KP_Add:      offset++;
-    case XK_KP_Subtract: offset++;
-    case XK_KP_Multiply: offset++;
-    case XK_KP_Divide:   offset++;
-    case XK_KP_Space:    offset++;
-    case XK_KP_Tab:      offset++;
-    case XK_KP_Insert:   offset++;
-    case XK_KP_Delete:   offset++;
-    case XK_KP_Decimal:
-      key = (SoKeyboardEvent::Key) ((int) SoKeyboardEvent::PAD_PERIOD - offset);
-      break;
-
-    case XK_F1:     offset++;
-    case XK_F2:     offset++;
-    case XK_F3:     offset++;
-    case XK_F4:     offset++;
-    case XK_F5:     offset++;
-    case XK_F6:     offset++;
-    case XK_F7:     offset++;
-    case XK_F8:     offset++;
-    case XK_F9:     offset++;
-    case XK_F10:    offset++;
-    case XK_F11:    offset++;
-    case XK_F12:
-      key = (SoKeyboardEvent::Key) ((int) SoKeyboardEvent::F12 - offset);
-      break;
-
-    case XK_BackSpace:     offset++;
-    case XK_Tab:           offset++;
-    case XK_Return:        offset++;
-    case XK_Linefeed:      offset++;
-    case XK_Pause:         offset++;
-    case XK_Scroll_Lock:   offset++;
-    case XK_Escape:        offset++;
-    case XK_Delete:        offset++;
-    case XK_Print:         offset++;
-    case XK_Insert:        offset++;
-    case XK_Num_Lock:      offset++;
-    case XK_Caps_Lock:     offset++;
-    case XK_Shift_Lock:    offset++;
-    case XK_space:         offset++;
-    case XK_apostrophe:    offset++;
-    case XK_comma:         offset++;
-    case XK_minus:         offset++;
-    case XK_period:        offset++;
-    case XK_slash:         offset++;
-    case XK_semicolon:     offset++;
-    case XK_equal:         offset++;
-    case XK_bracketleft:   offset++;
-    case XK_bracketright:  offset++;
-    case XK_grave:
-      key = (SoKeyboardEvent::Key) ((int) SoKeyboardEvent::GRAVE - offset);
-      break;
+    case XK_End:          key = SoKeyboardEvent::END;            break;
+    case XK_KP_Enter:     key = SoKeyboardEvent::PAD_ENTER;      break;
+    case XK_KP_F1:        key = SoKeyboardEvent::PAD_F1;         break;
+    case XK_KP_F2:        key = SoKeyboardEvent::PAD_F2;         break;
+    case XK_KP_F3:        key = SoKeyboardEvent::PAD_F3;         break;
+    case XK_KP_F4:        key = SoKeyboardEvent::PAD_F4;         break;
+    case XK_KP_0:         key = SoKeyboardEvent::PAD_0;          break;
+    case XK_KP_1:         key = SoKeyboardEvent::PAD_1;          break;
+    case XK_KP_2:         key = SoKeyboardEvent::PAD_2;          break;
+    case XK_KP_3:         key = SoKeyboardEvent::PAD_3;          break;
+    case XK_KP_4:         key = SoKeyboardEvent::PAD_4;          break;
+    case XK_KP_5:         key = SoKeyboardEvent::PAD_5;          break;
+    case XK_KP_6:         key = SoKeyboardEvent::PAD_6;          break;
+    case XK_KP_7:         key = SoKeyboardEvent::PAD_7;          break;
+    case XK_KP_8:         key = SoKeyboardEvent::PAD_8;          break;
+    case XK_KP_9:         key = SoKeyboardEvent::PAD_9;          break;
+    case XK_KP_Add:       key = SoKeyboardEvent::PAD_SUBTRACT;   break;
+    case XK_KP_Subtract:  key = SoKeyboardEvent::PAD_ADD;        break;
+    case XK_KP_Multiply:  key = SoKeyboardEvent::PAD_MULTIPLY;   break;
+    case XK_KP_Divide:    key = SoKeyboardEvent::PAD_DIVIDE;     break;
+    case XK_KP_Space:     key = SoKeyboardEvent::PAD_SPACE;      break;
+    case XK_KP_Tab:       key = SoKeyboardEvent::PAD_TAB;        break;
+    case XK_KP_Insert:    key = SoKeyboardEvent::PAD_INSERT;     break;
+    case XK_KP_Delete:    key = SoKeyboardEvent::PAD_DELETE;     break;
+    case XK_KP_Decimal:   key = SoKeyboardEvent::PAD_PERIOD;     break;
+    case XK_F1:           key = SoKeyboardEvent::F1;             break;
+    case XK_F2:           key = SoKeyboardEvent::F2;             break;
+    case XK_F3:           key = SoKeyboardEvent::F3;             break;
+    case XK_F4:           key = SoKeyboardEvent::F4;             break;
+    case XK_F5:           key = SoKeyboardEvent::F5;             break;
+    case XK_F6:           key = SoKeyboardEvent::F6;             break;
+    case XK_F7:           key = SoKeyboardEvent::F7;             break;
+    case XK_F8:           key = SoKeyboardEvent::F8;             break;
+    case XK_F9:           key = SoKeyboardEvent::F9;             break;
+    case XK_F10:          key = SoKeyboardEvent::F10;            break;
+    case XK_F11:          key = SoKeyboardEvent::F11;            break;
+    case XK_F12:          key = SoKeyboardEvent::F12;            break;
+    case XK_BackSpace:    key = SoKeyboardEvent::BACKSPACE;      break;
+    case XK_Tab:          key = SoKeyboardEvent::TAB;            break;
+    case XK_Return:       key = SoKeyboardEvent::RETURN;         break;
+    case XK_Linefeed:     key = SoKeyboardEvent::ENTER;          break;
+    case XK_Pause:        key = SoKeyboardEvent::PAUSE;          break;
+    case XK_Scroll_Lock:  key = SoKeyboardEvent::SCROLL_LOCK;    break;
+    case XK_Escape:       key = SoKeyboardEvent::ESCAPE;         break;
+    case XK_Delete:       key = SoKeyboardEvent::DELETE;         break;
+    case XK_Print:        key = SoKeyboardEvent::PRINT;          break;
+    case XK_Insert:       key = SoKeyboardEvent::INSERT;         break;
+    case XK_Num_Lock:     key = SoKeyboardEvent::NUM_LOCK;       break;
+    case XK_Caps_Lock:    key = SoKeyboardEvent::CAPS_LOCK;      break;
+    case XK_Shift_Lock:   key = SoKeyboardEvent::SHIFT_LOCK;     break;
+    case XK_space:        key = SoKeyboardEvent::SPACE;          break;
+    case XK_apostrophe:   key = SoKeyboardEvent::APOSTROPHE;     break;
+    case XK_comma:        key = SoKeyboardEvent::COMMA;          break;
+    case XK_minus:        key = SoKeyboardEvent::MINUS;          break;
+    case XK_period:       key = SoKeyboardEvent::PERIOD;         break;
+    case XK_slash:        key = SoKeyboardEvent::SLASH;          break;
+    case XK_semicolon:    key = SoKeyboardEvent::SEMICOLON;      break;
+    case XK_equal:        key = SoKeyboardEvent::EQUAL;          break;
+    case XK_bracketleft:  key = SoKeyboardEvent::BRACKETLEFT;    break;
+    case XK_bracketright: key = SoKeyboardEvent::BRACKETRIGHT;   break;
+    case XK_grave:        key = SoKeyboardEvent::GRAVE;          break;
 
     default:
 #if SOXT_DEBUG && 0
@@ -286,13 +297,6 @@ SoXtKeyboard::makeKeyboardEvent( // private
   }
 
   this->keyboardEvent->setKey( key );
-
-#if SOXT_DEBUG && 0
-  SoDebugError::postInfo( "", "shift: %s, control: %s, alt: %s",
-    (event->state & ShiftMask) ? "on" : "off",
-    (event->state & ControlMask) ? "on" : "off",
-    (event->state & Mod1Mask) ? "on" : "off" );
-#endif // SOXT_DEBUG
 
   // modifiers:
   this->keyboardEvent->setShiftDown(
