@@ -387,33 +387,22 @@ DISTCLEANFILES = \
 lib_LTLIBRARIES = libSoXt.la
 
 libSoXt_la_SOURCES = \
-	So@Gui@.cpp \
-	So@Gui@Clipboard.h \
-	So@Gui@Clipboard.cpp \
-	So@Gui@Component.cpp \
-	So@Gui@DirectionalLightEditor.h \
-	So@Gui@DirectionalLightEditor.cpp \
-	So@Gui@GLWidget.cpp \
-	So@Gui@Icons.h \
-	So@Gui@Icons.cpp \
-	So@Gui@LightSliderSet.h \
-	So@Gui@LightSliderSet.cpp \
-	So@Gui@MaterialEditor.h \
-	So@Gui@MaterialEditor.cpp \
-	So@Gui@MaterialList.h \
-	So@Gui@MaterialList.cpp \
-	So@Gui@MaterialSliderSet.h \
-	So@Gui@MaterialSliderSet.cpp \
-	So@Gui@PrintDialog.h \
-	So@Gui@PrintDialog.cpp \
-	So@Gui@Resource.h \
-	So@Gui@Resource.cpp \
-	So@Gui@SliderSet.h \
-	So@Gui@SliderSet.cpp \
-	So@Gui@SliderSetBase.h \
-	So@Gui@SliderSetBase.cpp \
-	So@Gui@TransformSliderSet.h \
-	So@Gui@TransformSliderSet.cpp
+	SoXt.cpp \
+	SoXtComponent.cpp \
+	SoXtGLWidget.cpp \
+	SoXtLightSliderSet.h \
+	SoXtLightSliderSet.cpp \
+	SoXtMaterialSliderSet.h \
+	SoXtMaterialSliderSet.cpp \
+	SoXtSliderSet.h \
+	SoXtSliderSet.cpp \
+	SoXtSliderSetBase.h \
+	SoXtSliderSetBase.cpp \
+	SoXtTransformSliderSet.h \
+	SoXtTransformSliderSet.cpp \
+	SoXtResource.h \
+	SoXtResource.cpp \
+	SoXtMaterialList.cpp
 
 
 nodist_libSoXt_la_SOURCES = \
@@ -434,31 +423,26 @@ libSoXt_la_LDFLAGS = \
 
 
 ############################################################################
-SoXtincdir = $(includedir)/Inventor/@Gui@
+SoXtincdir = $(includedir)/Inventor/Xt
 
 SoXtinc_HEADERS = \
-	So@Gui@Clipboard.h \
-	So@Gui@DirectionalLightEditor.h \
-	So@Gui@Icons.h \
-	So@Gui@LightSliderSet.h \
-	So@Gui@MaterialEditor.h \
-	So@Gui@MaterialList.h \
-	So@Gui@MaterialSliderSet.h \
-	So@Gui@PrintDialog.h \
-	So@Gui@Resource.h \
-	So@Gui@SliderSet.h \
-	So@Gui@SliderSetBase.h \
-	So@Gui@TransformSliderSet.h
+	SoXtLightSliderSet.h \
+	SoXtMaterialSliderSet.h \
+	SoXtResource.h \
+	SoXtSliderSet.h \
+	SoXtSliderSetBase.h \
+	SoXtTransformSliderSet.h
 
 
 nodist_SoXtinc_HEADERS = \
-	So@Gui@.h \
-	So@Gui@Basic.h \
-	So@Gui@Cursor.h \
-	So@Gui@Component.h \
-	So@Gui@Object.h \
-	So@Gui@GLWidget.h \
-	So@Gui@RenderArea.h
+	SoXt.h \
+	SoXtBasic.h \
+	SoXtObject.h \
+	SoXtCursor.h \
+	SoXtComponent.h \
+	SoXtGLWidget.h \
+	SoXtRenderArea.h \
+	SoXtMaterialList.h
 
 subdir = src/Inventor/Xt
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -468,13 +452,10 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 
 libSoXt_la_DEPENDENCIES = devices/libSoXtDevices.la \
 	widgets/libSoXtWidgets.la viewers/libSoXtViewers.la
-am_libSoXt_la_OBJECTS = So@Gui@.lo So@Gui@Clipboard.lo \
-	So@Gui@Component.lo So@Gui@DirectionalLightEditor.lo \
-	So@Gui@GLWidget.lo So@Gui@Icons.lo So@Gui@LightSliderSet.lo \
-	So@Gui@MaterialEditor.lo So@Gui@MaterialList.lo \
-	So@Gui@MaterialSliderSet.lo So@Gui@PrintDialog.lo \
-	So@Gui@Resource.lo So@Gui@SliderSet.lo So@Gui@SliderSetBase.lo \
-	So@Gui@TransformSliderSet.lo
+am_libSoXt_la_OBJECTS = SoXt.lo SoXtComponent.lo SoXtGLWidget.lo \
+	SoXtLightSliderSet.lo SoXtMaterialSliderSet.lo SoXtSliderSet.lo \
+	SoXtSliderSetBase.lo SoXtTransformSliderSet.lo SoXtResource.lo \
+	SoXtMaterialList.lo
 @BUILD_METAFILES_TRUE@nodist_libSoXt_la_OBJECTS = SoAny.lo \
 @BUILD_METAFILES_TRUE@	So@Gui@Cursor.lo So@Gui@Object.lo \
 @BUILD_METAFILES_TRUE@	So@Gui@Common.lo So@Gui@GLWidgetCommon.lo \
@@ -518,28 +499,22 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/@meta_prefix@So@Gui@SliderSet.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/@meta_prefix@So@Gui@SliderSetBase.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/@meta_prefix@So@Gui@TransformSliderSet.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@Clipboard.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/So@Gui@Common.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@Component.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/So@Gui@Cursor.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@DirectionalLightEditor.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@GLWidget.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/So@Gui@GLWidgetCommon.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@Icons.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@LightSliderSet.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@MaterialEditor.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@MaterialList.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@MaterialSliderSet.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/So@Gui@Object.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@PrintDialog.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@RenderArea.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@Resource.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@SliderSet.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@SliderSetBase.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@TransformSliderSet.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoAny.Plo $(DEPDIR)/SoAnyMaterialList.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoAnyMaterialListBuiltins.Plo
+@AMDEP_TRUE@	$(DEPDIR)/So@Gui@RenderArea.Plo $(DEPDIR)/SoAny.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoAnyMaterialList.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoAnyMaterialListBuiltins.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoXt.Plo $(DEPDIR)/SoXtComponent.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoXtGLWidget.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoXtLightSliderSet.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoXtMaterialList.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoXtMaterialSliderSet.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoXtResource.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoXtSliderSet.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoXtSliderSetBase.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoXtTransformSliderSet.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -663,29 +638,24 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/@meta_prefix@So@Gui@SliderSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/@meta_prefix@So@Gui@SliderSetBase.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/@meta_prefix@So@Gui@TransformSliderSet.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@Clipboard.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@Common.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@Component.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@Cursor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@DirectionalLightEditor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@GLWidget.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@GLWidgetCommon.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@Icons.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@LightSliderSet.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@MaterialEditor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@MaterialList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@MaterialSliderSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@Object.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@PrintDialog.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@RenderArea.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@Resource.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@SliderSet.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@SliderSetBase.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@TransformSliderSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAny.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAnyMaterialList.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAnyMaterialListBuiltins.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtComponent.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtGLWidget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtLightSliderSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtMaterialList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtMaterialSliderSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtResource.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtSliderSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtSliderSetBase.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtTransformSliderSet.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -1442,7 +1412,10 @@ $(top_builddir)/src/Inventor/@Gui@/widgets/So@Gui@PopupMenu.cpp: $(top_srcdir)/s
 	@( cd $(top_builddir); $(SHELL) config.status --file=src/Inventor/@Gui@/widgets/So@Gui@PopupMenu.cpp:src/Inventor/@Gui@/common/widgets/SoGuiPopupMenu.cpp.in )
 
 $(top_builddir)/build/so@gui@.doxygen: $(top_srcdir)/build/so@gui@.doxygen.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(SHELL) config.status --file=build/so@gui@.doxygen )
+	@( cd $(top_builddir); \
+	   if test -d build; then :; else mkdir build; fi; \
+	   ./config.status --file=build/so@gui@.doxygen:build/so@gui@.doxygen.in; \
+	   $(srcdir)/cfg/m4/doxy4win.pl build/so@gui@.doxygen )
 
 $(top_builddir)/man/man1/so@gui@-config.1: $(top_srcdir)/src/Inventor/@Gui@/common/sogui-config.1.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(SHELL) config.status --file=man/man1/so@gui@-config.1:src/Inventor/@Gui@/common/sogui-config.1.in )
