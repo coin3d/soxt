@@ -262,17 +262,6 @@ SoXtPlaneViewer::setCamera(// virtual
   inherited::setCamera(camera);
 } // setCamera()
 
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtPlaneViewer::setCursorEnabled(// virtual
-  SbBool enable)
-{
-  inherited::setCursorEnabled(enable);
-} // setCursorEnabled()
-
 // *************************************************************************
 
 /*!
