@@ -1424,3 +1424,7 @@ SoXtFullViewerP::setThumbWheelValue(void * wheel, float val)
 }
 
 // *************************************************************************
+
+#undef PRIVATE
+#undef PUBLIC
+

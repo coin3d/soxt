@@ -21,7 +21,7 @@ DISTCLEANFILES = \
 
 ############################################################################
 
-libSoXtWidgets_la_SOURCES = \
+RegularSources = \
 	SoXtGLArea.h \
 	SoXtGLAreaP.h \
 	SoXtGLArea.cpp \
@@ -32,6 +32,20 @@ libSoXtWidgets_la_SOURCES = \
 	SoXtThumbWheel.cpp \
 	SoXtSlider.h \
 	SoXtSlider.cpp
+
+LinkHackSources = \
+	all-widgets-cpp.cpp
+
+if HACKING_COMPACT_BUILD
+BuildSources = $(LinkHackSources)
+ExtraSources = $(RegularSources)
+else
+BuildSources = $(RegularSources)
+ExtraSources = $(LinkHackSources)
+endif
+
+libSoXtWidgets_la_SOURCES = \
+	$(BuildSources)
 
 nodist_libSoXtWidgets_la_SOURCES = \
 	$(SoGui_src_Inventor_Gui_widgets_BuiltFiles) \

@@ -303,3 +303,7 @@ SoXtPlaneViewer::createViewerButtons(Widget parent,
 }
 
 // *************************************************************************
+
+#undef PRIVATE
+#undef PUBLIC
+

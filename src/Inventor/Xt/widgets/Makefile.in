@@ -590,7 +590,7 @@ DISTCLEANFILES = \
 
 
 ############################################################################
-libSoXtWidgets_la_SOURCES = \
+RegularSources = \
 	SoXtGLArea.h \
 	SoXtGLAreaP.h \
 	SoXtGLArea.cpp \
@@ -601,6 +601,19 @@ libSoXtWidgets_la_SOURCES = \
 	SoXtThumbWheel.cpp \
 	SoXtSlider.h \
 	SoXtSlider.cpp
+
+
+LinkHackSources = \
+	all-widgets-cpp.cpp
+
+@HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
+
+@HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_FALSE@ExtraSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_TRUE@ExtraSources = $(RegularSources)
+
+libSoXtWidgets_la_SOURCES = \
+	$(BuildSources)
 
 
 nodist_libSoXtWidgets_la_SOURCES = \
@@ -622,12 +635,20 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 
 libSoXtWidgets_la_LDFLAGS =
 libSoXtWidgets_la_LIBADD =
-am_libSoXtWidgets_la_OBJECTS = SoXtGLArea.lo XtNativePopupMenu.lo \
-	SoXtThumbWheel.lo SoXtSlider.lo
-am__objects_1 = SoAnyThumbWheel.lo So@Gui@PopupMenu.lo
-@BUILD_METAFILES_TRUE@am__objects_2 =
-@BUILD_METAFILES_FALSE@am__objects_2 =
-nodist_libSoXtWidgets_la_OBJECTS = $(am__objects_1) $(am__objects_2)
+am__libSoXtWidgets_la_SOURCES_DIST = SoXtGLArea.h SoXtGLAreaP.h \
+	SoXtGLArea.cpp XtNativePopupMenu.h XtNativePopupMenu.cpp \
+	SoXtThumbWheel.h SoXtThumbWheelP.h SoXtThumbWheel.cpp \
+	SoXtSlider.h SoXtSlider.cpp all-widgets-cpp.cpp
+am__objects_1 = all-widgets-cpp.lo
+am__objects_2 = SoXtGLArea.lo XtNativePopupMenu.lo SoXtThumbWheel.lo \
+	SoXtSlider.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
+am_libSoXtWidgets_la_OBJECTS = $(am__objects_3)
+am__objects_4 = SoAnyThumbWheel.lo So@Gui@PopupMenu.lo
+@BUILD_METAFILES_TRUE@am__objects_5 =
+@BUILD_METAFILES_FALSE@am__objects_5 =
+nodist_libSoXtWidgets_la_OBJECTS = $(am__objects_4) $(am__objects_5)
 libSoXtWidgets_la_OBJECTS = $(am_libSoXtWidgets_la_OBJECTS) \
 	$(nodist_libSoXtWidgets_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -637,7 +658,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoXtGLArea.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoXtSlider.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoXtThumbWheel.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/XtNativePopupMenu.Plo
+@AMDEP_TRUE@	./$(DEPDIR)/XtNativePopupMenu.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-widgets-cpp.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -653,7 +675,7 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libSoXtWidgets_la_SOURCES)
+DIST_SOURCES = $(am__libSoXtWidgets_la_SOURCES_DIST)
 HEADERS = $(SoXtWidgetsinc_HEADERS) $(nodist_SoXtWidgetsinc_HEADERS)
 
 DIST_COMMON = $(SoXtWidgetsinc_HEADERS) \
@@ -694,6 +716,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoXtSlider.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoXtThumbWheel.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XtNativePopupMenu.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-widgets-cpp.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

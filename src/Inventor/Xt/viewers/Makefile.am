@@ -5,7 +5,7 @@ include ../common/Makefile.common
 
 noinst_LTLIBRARIES = libSoXtViewers.la
 
-DEFAULT_INCLUDES = -I$(top_builddir)/src  -I$(top_srcdir)/src
+DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)/src  -I$(top_srcdir)/src
 LIBS =
 
 BUILT_SOURCES = \
@@ -20,7 +20,7 @@ DISTCLEANFILES = \
 
 ############################################################################
 
-libSoXtViewers_la_SOURCES = \
+RegularSources = \
 	So@Gui@FullViewerP.h \
 	FullViewer.cpp \
 	So@Gui@ExaminerViewerP.h \
@@ -28,9 +28,28 @@ libSoXtViewers_la_SOURCES = \
 	So@Gui@PlaneViewerP.h \
 	PlaneViewer.cpp
 
-nodist_libSoXtViewers_la_SOURCES = \
+BuiltSources = \
 	$(SoGui_src_Inventor_Gui_viewers_BuiltFiles) \
 	$(SoGui_src_Inventor_Gui_viewers_BuiltMetaFiles)
+
+LinkHackSources = \
+	all-viewers-cpp.cpp
+
+if HACKING_COMPACT_BUILD
+BuildSources = $(LinkHackSources)
+NoDistSources =
+ExtraSources = $(RegularSources)
+else
+BuildSources = $(RegularSources)
+NoDistSources = $(BuiltSources)
+ExtraSources = $(LinkHackSources)
+endif
+
+libSoXtViewers_la_SOURCES = \
+	$(BuildSources)
+
+nodist_libSoXtViewers_la_SOURCES = \
+	$(NoDistSources)
 
 ############################################################################
 

@@ -32,7 +32,7 @@ RegularSources = \
 	So@Gui@LinuxJoystick.cpp \
 	6DOFEvents.h
 LinkHackSources = \
-	soxtdevices-all-cpp.cpp
+	all-devices-cpp.cpp
 
 if HACKING_COMPACT_BUILD
 BuildSources = $(LinkHackSources)

@@ -603,7 +603,7 @@ RegularSources = \
 	6DOFEvents.h
 
 LinkHackSources = \
-	soxtdevices-all-cpp.cpp
+	all-devices-cpp.cpp
 
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
@@ -669,8 +669,8 @@ libSoXtDevices_la_LIBADD =
 am__libSoXtDevices_la_SOURCES_DIST = So@Gui@DeviceP.h So@Gui@Device.cpp \
 	So@Gui@InputFocus.cpp So@Gui@Keyboard.cpp So@Gui@Mouse.cpp \
 	So@Gui@SpaceballP.h So@Gui@Spaceball.cpp So@Gui@LinuxJoystick.h \
-	So@Gui@LinuxJoystick.cpp 6DOFEvents.h soxtdevices-all-cpp.cpp
-am__objects_1 = soxtdevices-all-cpp.lo
+	So@Gui@LinuxJoystick.cpp 6DOFEvents.h all-devices-cpp.cpp
+am__objects_1 = all-devices-cpp.lo
 am__objects_2 = So@Gui@Device.lo So@Gui@InputFocus.lo So@Gui@Keyboard.lo \
 	So@Gui@Mouse.lo So@Gui@Spaceball.lo So@Gui@LinuxJoystick.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
@@ -695,7 +695,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/So@Gui@MouseCommon.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/So@Gui@Spaceball.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/So@Gui@SpaceballCommon.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/soxtdevices-all-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-devices-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/spwinput_win32.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/spwinput_x11.Plo
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -759,7 +759,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/So@Gui@MouseCommon.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/So@Gui@Spaceball.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/So@Gui@SpaceballCommon.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/soxtdevices-all-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-devices-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spwinput_win32.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spwinput_x11.Plo@am__quote@
 

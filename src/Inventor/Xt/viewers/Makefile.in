@@ -573,7 +573,7 @@ SoQt_ExtraBuiltMetaFiles = \
 
 noinst_LTLIBRARIES = libSoXtViewers.la
 
-DEFAULT_INCLUDES = -I$(top_builddir)/src  -I$(top_srcdir)/src
+DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)/src  -I$(top_srcdir)/src
 
 BUILT_SOURCES = \
 	$(SoGuiAllBuiltFiles)
@@ -590,7 +590,7 @@ DISTCLEANFILES = \
 
 
 ############################################################################
-libSoXtViewers_la_SOURCES = \
+RegularSources = \
 	So@Gui@FullViewerP.h \
 	FullViewer.cpp \
 	So@Gui@ExaminerViewerP.h \
@@ -599,9 +599,28 @@ libSoXtViewers_la_SOURCES = \
 	PlaneViewer.cpp
 
 
-nodist_libSoXtViewers_la_SOURCES = \
+BuiltSources = \
 	$(SoGui_src_Inventor_Gui_viewers_BuiltFiles) \
 	$(SoGui_src_Inventor_Gui_viewers_BuiltMetaFiles)
+
+
+LinkHackSources = \
+	all-viewers-cpp.cpp
+
+@HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
+
+@HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_FALSE@NoDistSources = $(BuiltSources)
+@HACKING_COMPACT_BUILD_TRUE@NoDistSources = 
+@HACKING_COMPACT_BUILD_FALSE@ExtraSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_TRUE@ExtraSources = $(RegularSources)
+
+libSoXtViewers_la_SOURCES = \
+	$(BuildSources)
+
+
+nodist_libSoXtViewers_la_SOURCES = \
+	$(NoDistSources)
 
 
 
@@ -627,14 +646,23 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 
 libSoXtViewers_la_LDFLAGS =
 libSoXtViewers_la_LIBADD =
-am_libSoXtViewers_la_OBJECTS = FullViewer.lo ExaminerViewer.lo \
-	PlaneViewer.lo
-am__objects_1 = So@Gui@Viewer.lo So@Gui@ConstrainedViewer.lo \
+am__libSoXtViewers_la_SOURCES_DIST = So@Gui@FullViewerP.h FullViewer.cpp \
+	So@Gui@ExaminerViewerP.h ExaminerViewer.cpp \
+	So@Gui@PlaneViewerP.h PlaneViewer.cpp all-viewers-cpp.cpp
+am__objects_1 = all-viewers-cpp.lo
+am__objects_2 = FullViewer.lo ExaminerViewer.lo PlaneViewer.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
+am_libSoXtViewers_la_OBJECTS = $(am__objects_3)
+am__objects_4 = So@Gui@Viewer.lo So@Gui@ConstrainedViewer.lo \
 	So@Gui@FlyViewer.lo So@Gui@FullViewer.lo \
 	So@Gui@ExaminerViewer.lo So@Gui@PlaneViewer.lo
-@BUILD_METAFILES_TRUE@am__objects_2 =
-@BUILD_METAFILES_FALSE@am__objects_2 =
-nodist_libSoXtViewers_la_OBJECTS = $(am__objects_1) $(am__objects_2)
+@BUILD_METAFILES_TRUE@am__objects_5 =
+@BUILD_METAFILES_FALSE@am__objects_5 =
+am__objects_6 = $(am__objects_4) $(am__objects_5)
+@HACKING_COMPACT_BUILD_TRUE@am__objects_7 =
+@HACKING_COMPACT_BUILD_FALSE@am__objects_7 = $(am__objects_6)
+nodist_libSoXtViewers_la_OBJECTS = $(am__objects_7)
 libSoXtViewers_la_OBJECTS = $(am_libSoXtViewers_la_OBJECTS) \
 	$(nodist_libSoXtViewers_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -647,7 +675,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/So@Gui@FlyViewer.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/So@Gui@FullViewer.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/So@Gui@PlaneViewer.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/So@Gui@Viewer.Plo
+@AMDEP_TRUE@	./$(DEPDIR)/So@Gui@Viewer.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-viewers-cpp.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -663,7 +692,7 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libSoXtViewers_la_SOURCES)
+DIST_SOURCES = $(am__libSoXtViewers_la_SOURCES_DIST)
 HEADERS = $(SoXtViewersinc_HEADERS) $(nodist_SoXtViewersinc_HEADERS)
 
 DIST_COMMON = $(SoXtViewersinc_HEADERS) \
@@ -707,6 +736,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/So@Gui@FullViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/So@Gui@PlaneViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/So@Gui@Viewer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-viewers-cpp.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

@@ -66,6 +66,9 @@
 #include <Inventor/Xt/common/pixmaps/perspective.xpm>
 #endif // HAVE_LIBXPM
 
+#define PRIVATE(obj) ((obj)->pimpl)
+#define PUBLIC(obj) ((obj)->pub)
+
 // *************************************************************************
 
 // SoXtExaminerViewerP "private implementation" class.
@@ -281,3 +284,7 @@ SoXtExaminerViewer::setCamera(SoCamera * camera)
 }
 
 // *************************************************************************
+
+#undef PRIVATE
+#undef PUBLIC
+

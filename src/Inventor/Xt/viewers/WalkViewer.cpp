@@ -354,3 +354,7 @@ SoXtWalkViewer::wheeldisarmedCB(Widget, XtPointer closure, XtPointer)
 }
 
 // *************************************************************************
+
+#undef PRIVATE
+#undef PUBLIC
+
