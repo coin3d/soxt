@@ -165,13 +165,19 @@ SoXtP::X11Errorhandler(Display * d, XErrorEvent * ee)
 
   SoDebugError::post("SoXtP::X11Errorhandler",
                      "Detected internal SoXt bug. %s %s",
+
                      SoXtP::SOXT_XSYNC == 1 ? "" :
                      "Set environment variable SOXT_XSYNC to \"1\" and "
                      "re-run the application in a debugger with a breakpoint "
-                     "set on _XError to get a valid backtrace. Then please "
-                     "forward the following information in an e-mail to "
-                     "<coin-bugs@coin3d.org> along with the backtrace. ",
+                     "set on SoXtP::X11Errorhandler() to get a valid "
+                     "backtrace. "
+
+                     "Then please forward the following information in an "
+                     "e-mail to <coin-bugs@coin3d.org> along with the "
+                     "backtrace. ",
+
                      depthsstr.getString());
+
   SoXtP::previous_handler(d, ee);
   return -1; // shouldn't get here, the system handler will normally exit
 }
