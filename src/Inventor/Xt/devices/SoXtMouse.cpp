@@ -188,7 +188,7 @@ SoLocation2Event *
 SoXtMouse::makeLocationEvent( // private
   XMotionEvent * event )
 {
-#if 0 // SOXT_DEBUG
+#if SOXT_DEBUG && 0
   SoDebugError::postInfo( "SoXtMouse::makeLocationEvent",
     "pointer at (%d, %d)", event->x, this->getWindowSize()[1] - event->y );
 #endif // 0 was SOXT_DEBUG
@@ -234,10 +234,10 @@ SoXtMouse::makeButtonEvent( // private
   case 1: button = SoMouseButtonEvent::BUTTON1; break;
   case 3: button = SoMouseButtonEvent::BUTTON2; break;
   case 2: button = SoMouseButtonEvent::BUTTON3; break;
-#ifdef HAVE_SOMOUSEBUTTONEVENT_BUTTONS
+#ifdef HAVE_SOMOUSEBUTTONEVENT_BUTTON5
   case 4: button = SoMouseButtonEvent::BUTTON4; break;
   case 5: button = SoMouseButtonEvent::BUTTON5; break;
-#endif // HAVE_SOMOUSEBUTTONEVENT_BUTTONS
+#endif // HAVE_SOMOUSEBUTTONEVENT_BUTTON5
   default:
     break;
   } // switch ( event->button )
