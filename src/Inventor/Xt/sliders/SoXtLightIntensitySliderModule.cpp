@@ -44,6 +44,8 @@ SoXtLightIntensitySliderModule::SoXtLightIntensitySliderModule(
   SoNode * const node )
 : inherited( parent, name, embed, node, FALSE )
 {
+  Widget module = this->buildWidget( this->getParentWidget() );
+  this->setBaseWidget( module );
 } // SoXtLightIntensitySliderModule()
 
 /*!

@@ -112,30 +112,30 @@ LIBS =
 libSoXtSliderSets_la_SOURCES = \
 	SoXtSliderSetModule.h \
 	SoXtSliderSetModule.cpp \
-	SoXtLightIntensitySliderModule.h \
-	SoXtLightIntensitySliderModule.cpp \
-	SoXtLightColorSliderModule.h \
-	SoXtLightColorSliderModule.cpp \
-	SoXtTranslateSliderModule.h \
-	SoXtTranslateSliderModule.cpp \
-	SoXtScaleSliderModule.h \
-	SoXtScaleSliderModule.cpp \
-	SoXtRotateSliderModule.h \
-	SoXtRotateSliderModule.cpp \
-	SoXtCenterSliderModule.h \
-	SoXtCenterSliderModule.cpp \
-	SoXtAmbientColorSliderModule.h \
 	SoXtAmbientColorSliderModule.cpp \
-	SoXtDiffuseColorSliderModule.h \
+	SoXtAmbientColorSliderModule.h \
+	SoXtCenterSliderModule.cpp \
+	SoXtCenterSliderModule.h \
 	SoXtDiffuseColorSliderModule.cpp \
-	SoXtSpecularColorSliderModule.h \
-	SoXtSpecularColorSliderModule.cpp \
-	SoXtEmissiveColorSliderModule.h \
+	SoXtDiffuseColorSliderModule.h \
 	SoXtEmissiveColorSliderModule.cpp \
-	SoXtShininessSliderModule.h \
+	SoXtEmissiveColorSliderModule.h \
+	SoXtLightColorSliderModule.cpp \
+	SoXtLightColorSliderModule.h \
+	SoXtLightIntensitySliderModule.cpp \
+	SoXtLightIntensitySliderModule.h \
+	SoXtRotateSliderModule.cpp \
+	SoXtRotateSliderModule.h \
+	SoXtScaleSliderModule.cpp \
+	SoXtScaleSliderModule.h \
 	SoXtShininessSliderModule.cpp \
-	SoXtTransparencySliderModule.h \
-	SoXtTransparencySliderModule.cpp
+	SoXtShininessSliderModule.h \
+	SoXtSpecularColorSliderModule.cpp \
+	SoXtSpecularColorSliderModule.h \
+	SoXtTranslateSliderModule.cpp \
+	SoXtTranslateSliderModule.h \
+	SoXtTransparencySliderModule.cpp \
+	SoXtTransparencySliderModule.h
 
 subdir = src/Inventor/Xt/sliders
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -154,12 +154,12 @@ X_PRE_LIBS = @X_PRE_LIBS@
 libSoXtSliderSets_la_LDFLAGS = 
 libSoXtSliderSets_la_LIBADD = 
 am_libSoXtSliderSets_la_OBJECTS =  SoXtSliderSetModule.lo \
-SoXtLightIntensitySliderModule.lo SoXtLightColorSliderModule.lo \
-SoXtTranslateSliderModule.lo SoXtScaleSliderModule.lo \
-SoXtRotateSliderModule.lo SoXtCenterSliderModule.lo \
-SoXtAmbientColorSliderModule.lo SoXtDiffuseColorSliderModule.lo \
-SoXtSpecularColorSliderModule.lo SoXtEmissiveColorSliderModule.lo \
-SoXtShininessSliderModule.lo SoXtTransparencySliderModule.lo
+SoXtAmbientColorSliderModule.lo SoXtCenterSliderModule.lo \
+SoXtDiffuseColorSliderModule.lo SoXtEmissiveColorSliderModule.lo \
+SoXtLightColorSliderModule.lo SoXtLightIntensitySliderModule.lo \
+SoXtRotateSliderModule.lo SoXtScaleSliderModule.lo \
+SoXtShininessSliderModule.lo SoXtSpecularColorSliderModule.lo \
+SoXtTranslateSliderModule.lo SoXtTransparencySliderModule.lo
 libSoXtSliderSets_la_OBJECTS =  $(am_libSoXtSliderSets_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)

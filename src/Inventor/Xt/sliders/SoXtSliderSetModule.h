@@ -24,7 +24,7 @@
 
 #include <Inventor/Xt/SoXtSliderSetBase.h>
 
-class SoXtSliderSet;
+class SoXtSliderManager;
 
 // *************************************************************************
 
@@ -32,6 +32,8 @@ class SoXtSliderSetModule : public SoXtSliderSetBase {
   typedef SoXtSliderSetBase inherited;
 
 public:
+  void setSliderSetSize( int sliders );
+  int getSliderSetSize(void) const;
 
 protected:
   SoXtSliderSetModule(
@@ -43,11 +45,16 @@ protected:
 
   virtual ~SoXtSliderSetModule(void);
 
+  virtual const char * getDefaultWidgetName(void) const;
   virtual void valueChanged( float value, int slider ) = 0;
 
-  virtual const char * getDefaultWidgetName(void) const;
+  Widget buildWidget( Widget parent );
 
 private:
+  static void valueChangedCB( void * user, float value, int slider );
+
+  SoXtSliderManager * sliderset;
+  int slidersetSize;
 
 }; // SoXtSliderSetModule
 

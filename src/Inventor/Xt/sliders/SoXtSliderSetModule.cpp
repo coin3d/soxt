@@ -24,6 +24,8 @@ static const char rcsid[] =
 
 #include <assert.h>
 
+#include <Inventor/Xt/widgets/compound/SoXtSliderManager.h>
+
 #include <Inventor/Xt/sliders/SoXtSliderSetModule.h>
 
 /*!
@@ -47,7 +49,14 @@ SoXtSliderSetModule::SoXtSliderSetModule( // protected
   const SbBool build )
 : inherited( parent, name, embed, node )
 {
-  assert( ! build );
+  this->sliderset = NULL;
+  this->slidersetSize = 1;
+  this->setClassName( this->getDefaultWidgetName() );
+
+  if ( build ) {
+    Widget module = this->buildWidget( this->getParentWidget() );
+    this->setBaseWidget( module );
+  }
 } // SoXtSliderSetModule()
 
 /*!
@@ -60,6 +69,49 @@ SoXtSliderSetModule::~SoXtSliderSetModule( // protected
 } // ~SoXtSliderSetModule()
 
 // *************************************************************************
+
+/*!
+*/
+
+void
+SoXtSliderSetModule::setSliderSetSize(
+  int sliders )
+{
+  assert( this->sliderset == NULL );
+  this->slidersetSize = sliders;
+} // setSliderSetSize()
+
+/*!
+*/
+
+int
+SoXtSliderSetModule::getSliderSetSize(
+  void ) const
+{
+  return this->slidersetSize;
+} // getSliderSetSize()
+
+// *************************************************************************
+
+/*!
+*/
+
+Widget
+SoXtSliderSetModule::buildWidget(
+  Widget parent )
+{
+  assert( this->sliderset == NULL );
+  this->sliderset = new SoXtSliderManager( parent,
+    this->getDefaultWidgetName(), this->slidersetSize );
+  Widget sliders = this->sliderset->getBaseWidget();
+  this->registerWidget( sliders );
+  return sliders;
+} // buildWidget()
+
+// *************************************************************************
+
+/*!
+*/
 
 const char *
 SoXtSliderSetModule::getDefaultWidgetName( // virtual
@@ -74,6 +126,22 @@ SoXtSliderSetModule::getDefaultWidgetName( // virtual
 /*!
   \fn void SoXtSliderSetModule::valueChanged( float, int ) = 0
 */
+
+/*!
+*/
+
+void
+SoXtSliderSetModule::valueChangedCB(
+  void * user,
+  float value,
+  int slider )
+{
+  assert( user != NULL );
+  SoXtSliderSetModule * const sliderset = (SoXtSliderSetModule *) user;
+  sliderset->valueChanged( value, slider );
+} // valueChangedCB()
+
+// *************************************************************************
 
 #if SOXT_DEBUG
 static const char * getSoXtSliderSetModuleRCSId(void) { return rcsid; }
