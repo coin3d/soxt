@@ -1737,6 +1737,48 @@ if test x"$with_opengl" != xno; then
 fi
 ])
 
+
+# Usage:
+#  SIM_AC_GLU_NURBSOBJECT([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find out whether the interface struct against the GLU
+#  library NURBS functions is called "GLUnurbs" or "GLUnurbsObj".
+#  (This seems to have changed somewhere between release 1.1 and
+#  release 1.3 of GLU).
+#
+#  The variable $sim_ac_glu_nurbsobject is set to the correct name
+#  if the nurbs structure is found.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN(SIM_AC_GLU_NURBSOBJECT, [
+AC_CACHE_CHECK(
+  [what structure to use in the GLU NURBS interface],
+  sim_cv_func_glu_nurbsobject,
+  [sim_cv_func_glu_nurbsobject=NONE
+   for sim_ac_glu_structname in GLUnurbs GLUnurbsObj; do
+    if test "$sim_cv_func_glu_nurbsobject" = NONE; then
+      AC_TRY_LINK([#ifdef _WIN32
+                  #include <windows.h>
+                  #endif
+                  #include <GL/gl.h>
+                  #include <GL/glu.h>],
+                  [$sim_ac_glu_structname * hepp = gluNewNurbsRenderer();
+                   gluDeleteNurbsRenderer(hepp)],
+                  [sim_cv_func_glu_nurbsobject=$sim_ac_glu_structname])
+    fi
+  done
+])
+
+if test $sim_cv_func_glu_nurbsobject = NONE; then
+  sim_ac_glu_nurbsobject=
+  $2
+else
+  sim_ac_glu_nurbsobject=$sim_cv_func_glu_nurbsobject
+  $1
+fi
+])
+
 # Usage:
 #  SIM_AC_CHECK_PTHREAD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
@@ -1844,7 +1886,17 @@ if test x"$with_inventor" != xno; then
     fi
   fi
 
-  sim_ac_oiv_libs="-lInventor -limage"
+  if test x"$sim_ac_linking_style" = xmswin; then
+    cat <<EOF > conftest.c
+#include <Inventor/SbBasic.h>
+PeekInventorVersion: TGS_VERSION
+EOF
+    iv_version=`$CXX -E conftest.c 2>/dev/null | grep "^PeekInventorVersion" | sed -e 's/.* //g' -e 's/.$//'`
+    rm -f conftest.c
+    sim_ac_oiv_libs="inv{$iv_version}.lib"
+  else
+    sim_ac_oiv_libs="-lInventor -limage"
+  fi
 
   sim_ac_save_cppflags=$CPPFLAGS
   sim_ac_save_ldflags=$LDFLAGS
@@ -2005,6 +2057,7 @@ if test "x$with_coin" != "xno"; then
   sim_ac_coin_cppflags=`$sim_ac_conf_cmd --cppflags`
   sim_ac_coin_ldflags=`$sim_ac_conf_cmd --ldflags`
   sim_ac_coin_libs=`$sim_ac_conf_cmd --libs`
+  sim_ac_coin_version=`$sim_ac_conf_cmd --version`
 
   AC_CACHE_CHECK([whether the Coin library is available],
     sim_cv_lib_coin_avail, [
@@ -2471,6 +2524,44 @@ fi
 
 
 # Usage:
+#  SIM_AC_DOXYGEN_TOOL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+# Description:
+#   This macro locates the doxygen executable. If it is found, the
+#   variable $sim_ac_doxygen_exe is set to the full path- and
+#   executable name (if not found, it is set to "false") and
+#   $sim_ac_doxygen_avail is set to the version number (if not
+#   found, it is set to "no").
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN(SIM_AC_DOXYGEN_TOOL, [
+AC_ARG_WITH(
+  [doxygen],
+  AC_HELP_STRING([--with-doxygen=DIR],
+                 [DIR is the directory where the doxygen executable resides]),
+  [],
+  [with_doxygen=yes])
+
+sim_ac_doxygen_avail=no
+
+if test x"$with_doxygen" != xno; then
+  sim_ac_path=$PATH
+  if test x"$with_doxygen" != xyes; then
+    sim_ac_path=${with_doxygen}:$PATH
+  fi
+
+  AC_PATH_PROG(sim_ac_doxygen_exe, doxygen, false, $sim_ac_path)
+  if test x"$sim_ac_doxygen_exe" = xfalse; then
+    ifelse([$2], , :, [$2])
+  else
+    sim_ac_doxygen_avail=`$sim_ac_doxygen_exe -help 2> /dev/null | head -1 | sed 's%[[^ ]]\+ [[^ ]]\+ %%'`
+    $1
+  fi
+fi
+])
+
+# Usage:
 #   SIM_EXPAND_DIR_VARS
 #
 # Description:
@@ -2483,8 +2574,20 @@ fi
 AC_DEFUN([SIM_EXPAND_DIR_VARS], [
 test x"$prefix" = x"NONE" && prefix="$ac_default_prefix"
 test x"$exec_prefix" = x"NONE" && exec_prefix="${prefix}"
-includedir="`eval echo $includedir`"
-libdir="`eval echo $libdir`"
+
+# This is the list of all install-path variables found in configure
+# scripts. FIXME: use another "eval-nesting" to move assignments into
+# a for-loop. 20000704 mortene.
+bindir="`eval echo $bindir`"
+sbindir="`eval echo $sbindir`"
+libexecdir="`eval echo $libexecdir`"
 datadir="`eval echo $datadir`"
+sysconfdir="`eval echo $sysconfdir`"
+sharedstatedir="`eval echo $sharedstatedir`"
+localstatedir="`eval echo $localstatedir`"
+libdir="`eval echo $libdir`"
+includedir="`eval echo $includedir`"
+infodir="`eval echo $infodir`"
+mandir="`eval echo $mandir`"
 ])
 
