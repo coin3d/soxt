@@ -7,8 +7,9 @@ work better with Mesa, and later customized by Lars J. Aas for integration
 in SoXt for use without the possibility of name collisions with the
 existing Mesa/SGI GL widgets.
 
-These files are NOT covered by SoXt's QPL license nor Mesa's GNU
-copyright.  The real copyright is as follows:
+The sourcecode in these files are NOT covered by Systems in Motion's
+copyright nor any of Mesa's copyrights.  The real copyright is as
+follows:
 
  * (C) Copyright 1993, Silicon Graphics, Inc.
  *
