@@ -81,9 +81,11 @@ public:
   Widget mainlayout;
   void showDecorationWidgets(SbBool enable);
 
+  Widget buildAppButtonsForm(Widget parent);
   Widget appButtonsForm;
   SbPList * appButtonsList;
-  void layoutAppPushButtons(Widget parent);
+  void resetAppPushButtons(void);
+  void layoutAppPushButtons(void);
 
   Widget viewerButtonsForm;
 

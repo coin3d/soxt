@@ -387,8 +387,9 @@ SoXtFullViewer::getAppPushButtonParent(void) const
 void
 SoXtFullViewer::addAppPushButton(Widget button)
 {
+  PRIVATE(this)->resetAppPushButtons();
   PRIVATE(this)->appButtonsList->append(button);
-  PRIVATE(this)->layoutAppPushButtons(this->getAppPushButtonParent());
+  PRIVATE(this)->layoutAppPushButtons();
 }
 
 /*!
@@ -399,8 +400,9 @@ void
 SoXtFullViewer::insertAppPushButton(Widget button,
                                     int idx)
 {
+  PRIVATE(this)->resetAppPushButtons();
   PRIVATE(this)->appButtonsList->insert(button, idx);
-  PRIVATE(this)->layoutAppPushButtons(this->getAppPushButtonParent());
+  PRIVATE(this)->layoutAppPushButtons();
 }
 
 /*!
@@ -412,8 +414,9 @@ SoXtFullViewer::removeAppPushButton(Widget button)
 {
   int idx = PRIVATE(this)->appButtonsList->find(button);
   assert(idx != -1 && "tried to remove non-existant button");
+  PRIVATE(this)->resetAppPushButtons();
   PRIVATE(this)->appButtonsList->remove(idx);
-  PRIVATE(this)->layoutAppPushButtons(this->getAppPushButtonParent());
+  PRIVATE(this)->layoutAppPushButtons();
 }
 
 /*!
@@ -434,16 +437,6 @@ int
 SoXtFullViewer::lengthAppPushButton(void) const
 {
   return PRIVATE(this)->appButtonsList->getLength();
-}
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtFullViewerP::layoutAppPushButtons(Widget parent)
-{
-  SOXT_STUB();
 }
 
 // *************************************************************************
@@ -570,15 +563,13 @@ SoXtFullViewer::buildLeftTrim(Widget parent)
       xmFormWidgetClass, parent,
       NULL);
 
-#if 0
   // build application buttons
-  this->appButtonsForm = this->buildAppButtonsForm(trim);
-  XtVaSetValues(this->appButtonsForm,
+  PRIVATE(this)->appButtonsForm = PRIVATE(this)->buildAppButtonsForm(trim);
+  XtVaSetValues(PRIVATE(this)->appButtonsForm,
     XmNleftAttachment, XmATTACH_FORM,
     XmNtopAttachment, XmATTACH_FORM,
     XmNrightAttachment, XmATTACH_FORM,
     NULL);
-#endif
 
   // add left thumb wheel
   this->leftWheel = XtVaCreateManagedWidget("LeftWheel",
@@ -603,6 +594,16 @@ SoXtFullViewer::buildLeftTrim(Widget parent)
                 XmNdisarmCallback, SoXtFullViewerP::leftWheelFinishCB, this);
   XtAddCallback(this->leftWheel,
                 XmNvalueChangedCallback, SoXtFullViewerP::leftWheelMotionCB, this);
+
+#if 0
+  Widget iconBar3D = this->getAppPushButtonParent();
+  Widget XButton = XmCreatePushButton(iconBar3D, (char *) "X", NULL, 0);
+  this->addAppPushButton(XButton);
+  Widget YButton = XmCreatePushButton(iconBar3D, (char *) "Y", NULL, 0);
+  this->addAppPushButton(YButton);
+  Widget ZButton = XmCreatePushButton(iconBar3D, (char *) "Z", NULL, 0);
+  this->addAppPushButton(ZButton);
+#endif
 
   return trim;
 }
@@ -1187,19 +1188,63 @@ SoXtFullViewer::setRightWheelString(const char * const string)
 
 // *************************************************************************
 
-/*!
-  Not implemented.
-*/
+void
+SoXtFullViewerP::resetAppPushButtons(void)
+{
+  int i;
+  const int widgets = this->appButtonsList->getLength();
+  for ( i = 0; i < widgets; i++ ) {
+    Widget w = (Widget) (*(this->appButtonsList))[i];
+    XtUnmanageChild(w);
+  }
+}
 
 Widget
-SoXtFullViewer::buildAppButtonsForm(Widget parent)
+SoXtFullViewerP::buildAppButtonsForm(Widget parent)
 {
   Widget form = XtVaCreateManagedWidget("appbuttons",
                                         xmFormWidgetClass, parent,
                                         NULL);
-
-  SOXT_STUB();
   return form;
+}
+
+void
+SoXtFullViewerP::layoutAppPushButtons(void)
+{
+  int i;
+  const int widgets = this->appButtonsList->getLength();
+  Widget prev = NULL;
+  for ( i = 0; i < widgets; i++ ) {
+    Widget w = (Widget) (*(this->appButtonsList))[i];
+    if ( i == 0 ) {
+      XtVaSetValues(w,
+        XmNtopAttachment, XmATTACH_FORM,
+        XmNtopOffset, 0,
+        XmNleftAttachment, XmATTACH_FORM,
+        XmNleftOffset, 0,
+        XmNrightAttachment, XmATTACH_FORM,
+        XmNrightOffset, 0,
+        XmNbottomOffset, 0,
+        XmNwidth, 28,
+        XmNheight, 28,
+        NULL);
+    } else {
+      XtVaSetValues(w,
+        XmNtopAttachment, XmATTACH_WIDGET,
+        XmNtopWidget, prev,
+        XmNleftAttachment, XmATTACH_FORM,
+        XmNleftOffset, 0,
+        XmNrightAttachment, XmATTACH_FORM,
+        XmNrightOffset, 0,
+        XmNbottomOffset, 0,
+        XmNwidth, 28,
+        XmNheight, 28,
+        NULL);
+    }
+    XtManageChild(w);
+    prev = w;
+  }
+  // SOXT_STUB();
 }
 
 // *************************************************************************
