@@ -24,7 +24,7 @@
 #ifndef SOXTPLANEVIEWERP_H
 #define SOXTPLANEVIEWERP_H
 
-#include <SoGuiPlaneViewerP.h>
+#include <Inventor/Xt/viewers/SoGuiPlaneViewerP.h>
 
 // ************************************************************************
 

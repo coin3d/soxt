@@ -25,7 +25,7 @@
 #define SOXTFULLVIEWERP_H
 
 #include <Inventor/SbBasic.h>
-#include <SoGuiFullViewerP.h>
+#include <Inventor/Xt/viewers/SoGuiFullViewerP.h>
 
 class SoXtFullViewer;
 

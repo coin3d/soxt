@@ -47,7 +47,7 @@
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 
 #include <soxtdefs.h>
-#include <../SoXtInternal.h>
+#include <Inventor/Xt/SoXtInternal.h>
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtResource.h>

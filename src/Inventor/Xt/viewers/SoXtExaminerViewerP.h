@@ -24,7 +24,7 @@
 #ifndef SOXTEXAMINERVIEWERP_H
 #define SOXTEXAMINERVIEWERP_H
 
-#include <SoGuiExaminerViewerP.h>
+#include <Inventor/Xt/viewers/SoGuiExaminerViewerP.h>
 
 class SoXtExaminerViewer;
 
