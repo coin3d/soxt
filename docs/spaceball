@@ -11,7 +11,10 @@ the type SoMotion3Event and SoSpaceballButtonEvent types are sent
 into the scene graph.  These events do not cause any changes to the
 scene by default, but the events can be picked up by the user by
 using an SoEventCallback node or deriving a dragger and calling the
-getEvent() method.
+getEvent() method of the SoEventCallback node.
+
+For an example, view the code attached to the coin-discuss posting
+archived at <URL:http://www.coin3d.org/coin/coin-discuss/0212.html>.
 
 
 X Input Extension
