@@ -12,7 +12,9 @@ BUILT_SOURCES = \
 	SoAnyFullViewer.h \
 	SoAnyFullViewer.cpp \
 	SoAnyExaminerViewer.h \
-	SoAnyExaminerViewer.cpp
+	SoAnyExaminerViewer.cpp \
+	SoAnyPlaneViewer.h \
+	SoAnyPlaneViewer.cpp
 
 ############################################################################
 ##
@@ -65,6 +67,16 @@ SoAnyExaminerViewer.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyExaminerViewer.cpp.in
 	@( cd $(top_builddir); \
 	   $(MAKE) src/Inventor/Xt/viewers/SoAnyExaminerViewer.cpp )
+
+SoAnyPlaneViewer.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyPlaneViewer.h.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyPlaneViewer.h )
+
+SoAnyPlaneViewer.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyPlaneViewer.cpp.in
+	@( cd $(top_builddir); \
+	   $(MAKE) src/Inventor/Xt/viewers/SoAnyPlaneViewer.cpp )
 
 ############################################################################
 ##
