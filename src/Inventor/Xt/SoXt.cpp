@@ -17,11 +17,6 @@
  *
  **************************************************************************/
 
-#if SOXT_DEBUG
-static const char rcsid[] =
-  "$Id$";
-#endif // SOXT_DEBUG
-
 // *************************************************************************
 
 
@@ -164,7 +159,7 @@ SoXtP::X11Errorhandler(Display * d, XErrorEvent * ee)
   // Then the instructions:
 
   SoDebugError::post("SoXtP::X11Errorhandler",
-                     "Detected internal SoXt bug. %s %s",
+                     "Detected possibly internal SoXt bug. %s %s",
 
                      SoXtP::SOXT_XSYNC == 1 ? "" :
                      "Set environment variable SOXT_XSYNC to \"1\" and "
@@ -185,69 +180,17 @@ SoXtP::X11Errorhandler(Display * d, XErrorEvent * ee)
 // *************************************************************************
 
 /*!
-  This method will fill in the integers pointed to by the arguments with the
-  corresponding part of the version id.  NULL pointers are ignored.
+  \fn Widget SoXt::init(int & argc, char ** argv, const char * appname, const char * appclass)
 
-  This method is not part of the original InventorXt API from SGI.
-*/
-
-void
-SoXt::getVersionInfo(// static
-  int * const major,
-  int * const minor,
-  int * const micro)
-{
-  // FIXME: this is generic code, move to SoGuiCommon.cpp.in. 20011220 mortene.
-
-  if (major) *major = SOXT_MAJOR_VERSION;
-  if (minor) *minor = SOXT_MINOR_VERSION;
-  if (micro) *micro = SOXT_MICRO_VERSION;
-} // getVersionInfo()
-
-/*!
-  This method returns a string containing the version id of the library.
-
-  This method is not part of the original SoXt API from SGI.
-*/
-
-const char *
-SoXt::getVersionString(// static
-  void)
-{
-  static const char version[] = SOXT_VERSION;
-  return version;
-} // getVersionString()
-
-// *************************************************************************
-
-/*!
   This function initializes the SoXt library.
 
   The returned Widget is a toplevel shell widget for the application, which
   can be used as a shell for the main component.
 */
-
 Widget
-SoXt::init(// static
-  const char * const appName,
-  const char * const appClass)
-{
-  int argc = 1;
-  char * argv[] = { (char *) appName, NULL };
-  return SoXt::init(argc, argv, appName, appClass);
-} // init()
-
-/*!
-  This function initializes the SoXt library.
-
-  The returned Widget is a toplevel shell widget for the application, which
-  can be used as a shell for the main component.
-*/
-
-Widget  // static
-SoXt::init(int & argc, char ** argv,
-           const char * const appName,
-           const char * const appClass)
+SoXt::internal_init(int & argc, char ** argv,
+                    const char * appname,
+                    const char * appclass)
 {
   assert(SoXtP::previous_handler == NULL && "call SoXt::init() only once!");
   // Intervene upon X11 errors.
@@ -260,10 +203,10 @@ SoXt::init(int & argc, char ** argv,
   // Also investigate our other So*-libraries to see if they contain
   // this Coin-specific init() method. 20010919 mortene.
 
-  if (appName)
-    SoXtP::appname = strcpy(new char [strlen(appName) + 1], appName);
-  if (appClass)
-    SoXtP::appclass = strcpy(new char [strlen(appClass) + 1], appClass);
+  if (appname)
+    SoXtP::appname = strcpy(new char [strlen(appname) + 1], appname);
+  if (appclass)
+    SoXtP::appclass = strcpy(new char [strlen(appclass) + 1], appclass);
 
   XtAppContext tempcontext; // SoXtP::xtappcontext is set later
 
@@ -284,28 +227,27 @@ SoXt::init(int & argc, char ** argv,
       XmNcolormap, colormap,
       NULL);
   } else {
-    SoDebugError::postInfo("SoXt::init", "default toplevel! (error)");
+    SoDebugError::postInfo("SoXt::internal_init", "default toplevel! (error)");
     toplevel = XtVaOpenApplication(
       &tempcontext, SoXtP::appclass, NULL, 0, &argc, argv,
       SoXtP::fallbackresources, topLevelShellWidgetClass,
       NULL);
   }
-  if (appName)
+  if (appname)
     XtVaSetValues(toplevel, XmNtitle, SoXtP::appname, NULL);
 
-  SoXt::init(toplevel);
+  SoXt::internal_init(toplevel);
   return toplevel;
-} // init()
+}
 
 // documented in common/SoGuiObject.cpp.in
 void
-SoXtObject::init(// static
-  void)
+SoXtObject::init(void)
 {
   SoXtObject::initClass();
   SoXtDevice::initClasses();
   SoXtComponent::initClasses();
-} // init()
+}
 
 /*
   \internal
@@ -339,15 +281,15 @@ wm_close_handler(
 } // wm_close_handler()
 
 /*!
+  \fn void SoXt::init(Widget toplevel)
+
   This function initializes the SoXt library.
 
   It should be called for applications that want to create the toplevel
   shell widget themselves.
 */
-
 void
-SoXt::init(// static
-  Widget toplevel)
+SoXt::internal_init(Widget toplevel)
 {
   // Intervene upon X11 errors.
   if (SoXtP::previous_handler == NULL) {
@@ -1487,8 +1429,3 @@ SoXtP::fallbackresources[] =
 }; // fallback_resources
 
 // *************************************************************************
-
-#if SOXT_DEBUG
-static const char * getSoXtRCSId(void) { return rcsid; }
-#endif // SOXT_DEBUG
-
