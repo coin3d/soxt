@@ -85,14 +85,14 @@ public:
   static const char * getAppName(void);
   static const char * getAppClass(void);
 
+  static void selectBestVisual(
+    Display * & dpy, Visual * & visual, Colormap & cmap, int & depth );
+
 protected:
   static void getExtensionEventHandler( XEvent * event, Widget & widget,
                   XtEventHandler & proc, XtPointer & clientData );
 
 private:
-  static void selectBestVisual(
-    Display *& dpy, Visual *& visual, Colormap & cmap, int & depth );
-
   static Display * display;
   static XtAppContext xtAppContext;
   static Widget mainWidget;
