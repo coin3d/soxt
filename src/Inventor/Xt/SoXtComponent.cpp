@@ -34,6 +34,7 @@
 #include <soxtdefs.h>
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
+#include <Inventor/Xt/SoXtInternal.h>
 
 #include <Inventor/Xt/SoXtComponent.h>
 #include <Inventor/Xt/SoXtComponentP.h>
@@ -166,8 +167,8 @@ SoXtComponent::SoXtComponent(const Widget parent,
     assert(dpy != NULL);
 
     PRIVATE(this)->parent = XtVaAppCreateShell(
-      SoXt::getAppName(), // didn't work
-      SoXt::getAppClass(),
+      SoXtInternal::getAppName(), // didn't work
+      SoXtInternal::getAppClass(),
       topLevelShellWidgetClass,
       dpy,
       XmNvisual, visual,

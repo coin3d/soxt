@@ -45,6 +45,8 @@
 
 #include <Inventor/Xt/SoXtInternal.h>
 
+char * SoXtInternal::appname = NULL;
+char * SoXtInternal::appclass = NULL;
 
 /*
   \internal
@@ -145,3 +147,38 @@ SoXtInternal::createPixmapFromXpm(Widget widget, const char ** xpm, SbBool ghost
 #endif // HAVE_LIBXPM
   return pixels;
 }
+
+void
+SoXtInternal::setAppName(const char * appname)
+{
+  if ( SoXtInternal::appname != NULL ) {
+    free(SoXtInternal::appname);
+    SoXtInternal::appname = NULL;
+  }
+  if ( appname )
+    SoXtInternal::appname = strcpy(new char [strlen(appname) + 1], appname);
+}
+
+void
+SoXtInternal::setAppClass(const char * appclass)
+{
+  if ( SoXtInternal::appclass != NULL ) {
+    free(SoXtInternal::appclass);
+    SoXtInternal::appclass = NULL;
+  }
+  if ( appclass )
+    SoXtInternal::appclass = strcpy(new char [strlen(appclass) + 1], appclass);
+}
+
+const char *
+SoXtInternal::getAppName(void)
+{
+  return SoXtInternal::appname;
+}
+
+const char *
+SoXtInternal::getAppClass(void)
+{
+  return SoXtInternal::appclass;
+}
+

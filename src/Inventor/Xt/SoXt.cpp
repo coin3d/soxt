@@ -70,6 +70,7 @@
 #include <soxtdefs.h>
 
 #include <Inventor/Xt/SoXt.h>
+#include <Inventor/Xt/SoXtInternal.h>
 #include <Inventor/Xt/SoGuiP.h>
 #include <Inventor/Xt/SoXtObject.h>
 #include <Inventor/Xt/devices/SoXtDevice.h>
@@ -115,9 +116,6 @@ public:
   static XtIntervalId idlesensorid;
   static SbBool idlesensoractive;
 
-  static char * appname;
-  static char * appclass;
-
   static SbPList * eventhandlers;
   static String fallbackresources[];
 
@@ -128,6 +126,7 @@ public:
   static void timerSensorCB(XtPointer, XtIntervalId *);
   static void delaySensorCB(XtPointer, XtIntervalId *);
   static Boolean idleSensorCB(XtPointer);
+
 };
 
 Display * SoXtP::display = NULL;
@@ -140,8 +139,6 @@ SbBool SoXtP::delaysensoractive = FALSE;
 XtIntervalId SoXtP::idlesensorid = 0;
 SbBool SoXtP::idlesensoractive = FALSE;
 SbPList * SoXtP::eventhandlers = NULL;
-char * SoXtP::appname = NULL;
-char * SoXtP::appclass = NULL;
 
 #define ENVVAR_NOT_INITED INT_MAX
 int SoXtP::SOXT_XSYNC = ENVVAR_NOT_INITED;
@@ -218,10 +215,8 @@ SoXt::init(int & argc, char ** argv,
   // Also investigate our other So*-libraries to see if they contain
   // this Coin-specific init() method. 20010919 mortene.
 
-  if (appname)
-    SoXtP::appname = strcpy(new char [strlen(appname) + 1], appname);
-  if (appclass)
-    SoXtP::appclass = strcpy(new char [strlen(appclass) + 1], appclass);
+  SoXtInternal::setAppName(appname);
+  SoXtInternal::setAppClass(appclass);
 
   XtAppContext tempcontext; // SoXtP::xtappcontext is set later
 
@@ -255,7 +250,7 @@ SoXt::init(int & argc, char ** argv,
 
   Widget toplevel = (Widget) NULL;
   if ( visual ) {
-    toplevel = XtVaOpenApplication(&tempcontext, SoXtP::appclass, NULL, 0,
+    toplevel = XtVaOpenApplication(&tempcontext, SoXtInternal::getAppClass(), NULL, 0,
                                    &argc, argv,
                                    SoXtP::fallbackresources, applicationShellWidgetClass,
                                    XmNvisual, visual,
@@ -267,13 +262,13 @@ SoXt::init(int & argc, char ** argv,
     SoDebugError::postInfo("SoXt::init", "could not find an appropriate visual - trying with the default");
     // FIXME: if we get here, a segfault comes up later for me on
     // embla.trh.sim.no, at least. 20020117 mortene.
-    toplevel = XtVaOpenApplication(&tempcontext, SoXtP::appclass, NULL, 0,
+    toplevel = XtVaOpenApplication(&tempcontext, SoXtInternal::getAppClass(), NULL, 0,
                                    &argc, argv,
                                    SoXtP::fallbackresources, applicationShellWidgetClass,
                                    NULL);
   }
-  if ( appname ) {
-    XtVaSetValues(toplevel, XmNtitle, SoXtP::appname, NULL);
+  if ( SoXtInternal::getAppName() ) {
+    XtVaSetValues(toplevel, XmNtitle, SoXtInternal::getAppName(), NULL);
   }
   SoXt::init(toplevel);
   return toplevel;
@@ -491,26 +486,6 @@ Widget
 SoXt::getTopLevelWidget(void)
 {
   return SoXtP::mainwidget;
-}
-
-// *************************************************************************
-
-/*!
-  This function returns the application name, given to SoXt::init().
-*/
-const char *
-SoXt::getAppName(void)
-{
-  return SoXtP::appname;
-}
-
-/*!
-  This function returns the application class, given to SoXt::init().
-*/
-const char *
-SoXt::getAppClass(void)
-{
-  return SoXtP::appclass;
 }
 
 // *************************************************************************

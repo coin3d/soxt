@@ -34,8 +34,16 @@ public:
   static Pixmap createPixmapFromXpm(Widget button, const char ** xpm,
                                     SbBool ghost = FALSE);
 
+  static void setAppName(const char * appname);
+  static void setAppClass(const char * appclass);
+  static const char * getAppName(void);
+  static const char * getAppClass(void);
+
 private:
   static const char * xpmErrorString(int error);
+
+  static char * appname;
+  static char * appclass;
 };
 
 // ************************************************************************
