@@ -977,13 +977,8 @@ SoXt::sensorQueueChanged(void *)
 
 // *************************************************************************
 
-/*
-  \internal
-*/
-
 static const char *
-_visualClassName(
-  const int vclass)
+debug_visualclassname(const int vclass)
 {
   switch (vclass) {
   case StaticGray:   return "StaticGray";
@@ -994,31 +989,29 @@ _visualClassName(
   case DirectColor:  return "DirectColor";
   default:           return "<unknown>";
   }
-} // _visualClassName()
+}
 
 /*!
-  This function tries to find the best visual type, depth, and colormap
-  combination for the display.  The display argument may be given, or set
-  to NULL - then the default display will be used and returned.
+  This function tries to find the best visual type, depth, and
+  colormap combination for the display.  The display argument may be
+  given, or set to \c NULL - then the default display will be used and
+  returned.
 
-  When SoXt doesn't get it's graphics displayed correctly, this routine may
-  be the root of the problem.  Let's hope it solves more problems than it
-  introduces...
+  When SoXt doesn't get it's graphics displayed correctly, this
+  routine may be the root of the problem.  Let's hope it solves more
+  problems than it introduces...
 
   Misc Links:
 
   "Beyond the Default Visual", by John Cwikla
     http://www.motifzone.com/tmd/articles/DefaultVisual/DefaultVisual.html
 
-  This function is not standard for the SGI SoXt API.
+  This function is not part of the original SGI InventorXt API.
 */
 
 void
-SoXt::selectBestVisual(// static
-  Display * & dpy,
-  Visual * & visual,
-  Colormap & colormap,
-  int & depth)
+SoXt::selectBestVisual(Display * & dpy, Visual * & visual,
+                       Colormap & colormap, int & depth)
 {
   if (dpy == NULL) {
      dpy = XOpenDisplay(NULL);
@@ -1081,8 +1074,8 @@ SoXt::selectBestVisual(// static
     if (XMatchVisualInfo(dpy, snum, pri[i].depth, pri[i].vclass, &vinfo)) {
 #if SOXT_DEBUG && 0
       SoDebugError::postInfo("SoXt::selectBestVisual",
-        "visual: depth=%d, class=%s", vinfo.depth,
-        _visualClassName(vinfo.c_class));
+                             "visual: depth=%d, class=%s", vinfo.depth,
+                             debug_visualclassname(vinfo.c_class));
 #endif // SOXT_DEBUG
       visual = vinfo.visual;
       depth = vinfo.depth;
@@ -1092,9 +1085,10 @@ SoXt::selectBestVisual(// static
 
 #ifdef HAVE_LIBXMU
       if (XmuLookupStandardColormap(dpy, vinfo.screen, vinfo.visualid,
-             vinfo.depth, XA_RGB_DEFAULT_MAP, False, True)
-        && XGetRGBColormaps(dpy, RootWindow(dpy, vinfo.screen),
-             &stdcolormaps, &numcmaps, XA_RGB_DEFAULT_MAP)) {
+                                    vinfo.depth, XA_RGB_DEFAULT_MAP,
+                                    False, True)
+          && XGetRGBColormaps(dpy, RootWindow(dpy, vinfo.screen),
+                              &stdcolormaps, &numcmaps, XA_RGB_DEFAULT_MAP)) {
         SbBool found = FALSE;
         for (i = 0; i < numcmaps && ! found; i++) {
           if (stdcolormaps[i].visualid == vinfo.visualid) {
@@ -1104,29 +1098,29 @@ SoXt::selectBestVisual(// static
         }
         if (! found) {
           SoDebugError::postInfo("SoXt::selectBestVisual",
-            "standard RGB colormaps did not work with visual - creating own colormap");
-          colormap = XCreateColormap(
-            dpy, RootWindow(dpy, vinfo.screen), vinfo.visual, AllocNone);
+                                 "standard RGB colormaps did not work with visual - creating own colormap");
+          colormap = XCreateColormap(dpy, RootWindow(dpy, vinfo.screen),
+                                     vinfo.visual, AllocNone);
         }
-      } else {
+      }
+      else {
         SoDebugError::postInfo("SoXt::selectBestVisual",
-          "no standard RGB colormaps - creating own colormap");
-        colormap = XCreateColormap(
-          dpy, RootWindow(dpy, vinfo.screen), vinfo.visual, AllocNone);
+                               "no standard RGB colormaps - creating own colormap");
+        colormap = XCreateColormap(dpy, RootWindow(dpy, vinfo.screen),
+                                   vinfo.visual, AllocNone);
       }
       XtFree((char *) stdcolormaps);
 #else
       SoDebugError::postInfo("SoXt::selectBestVisual",
-        "SoXt does not support detecting best visual/colormap without the Xmu library (yet)");
+                             "SoXt does not support detecting best visual/colormap without the Xmu library (yet)");
+      // FIXME: couldn't we do better than this? Exiting here doesn't
+      // seem particularly robust.. 20020117 mortene.
       exit(1);
 #endif /* ! HAVE_LIBXMU */
       return;
     }
   }
-#if SOXT_DEBUG
-  SoDebugError::postInfo("SoXt::selectBestVisual", "yikes!");
-#endif // SOXT_DEBUG
-} // selectBestVisual()
+}
 
 // *************************************************************************
 
@@ -1134,209 +1128,210 @@ SoXt::selectBestVisual(// static
   \var SoXtP::fallbackresources
 
   This is an array of X resources.
-  They are not really in use yet - the implementation is mostly experimental,
-  and resource names will change in the future.
+
+  They are not really in use yet - the implementation is mostly
+  experimental, and resource names will change in the future.
 */
 
 String
 SoXtP::fallbackresources[] =
 {
-#define _COMPONENT "*SoXtGLWidget"
-  _COMPONENT     ".background:"				"white", // not used
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtGLWidget"
+  SOXT_COMPONENT ".background:" "white", // not used
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtRenderArea"
-  _COMPONENT     ".border:"				"false",
-  _COMPONENT     ".borderThickness:"			"2",
-  _COMPONENT     ".background:"				"black",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtRenderArea"
+  SOXT_COMPONENT ".border:" "false",
+  SOXT_COMPONENT ".borderThickness:" "2",
+  SOXT_COMPONENT ".background:" "black",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtExaminerViewer"
-  _COMPONENT	".title:"				"Examiner Viewer",
-  _COMPONENT	"*LeftWheelLabel.labelString:"		"Rot Y",
-  _COMPONENT	"*BottomWheelLabel.labelString:"	"Rot X",
-  _COMPONENT	"*RightWheelLabel.dollyString:"		"Dolly",
-  _COMPONENT	"*RightWheelLabel.zoomString:"		"Zoom",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtExaminerViewer"
+  SOXT_COMPONENT ".title:" "Examiner Viewer",
+  SOXT_COMPONENT "*LeftWheelLabel.labelString:" "Rot Y",
+  SOXT_COMPONENT "*BottomWheelLabel.labelString:" "Rot X",
+  SOXT_COMPONENT "*RightWheelLabel.dollyString:" "Dolly",
+  SOXT_COMPONENT "*RightWheelLabel.zoomString:" "Zoom",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtPlaneViewer"
-  _COMPONENT	".title:"				"Plane Viewer",
-  _COMPONENT	"*LeftWheelLabel.labelString:"		"Trans Y",
-  _COMPONENT	"*BottomWheelLabel.labelString:"	"Trans X",
-  _COMPONENT	"*RightWheelLabel.dollyString:"		"Dolly",
-  _COMPONENT	"*RightWheelLabel.zoomString:"		"Zoom",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtPlaneViewer"
+  SOXT_COMPONENT ".title:" "Plane Viewer",
+  SOXT_COMPONENT "*LeftWheelLabel.labelString:" "Trans Y",
+  SOXT_COMPONENT "*BottomWheelLabel.labelString:" "Trans X",
+  SOXT_COMPONENT "*RightWheelLabel.dollyString:" "Dolly",
+  SOXT_COMPONENT "*RightWheelLabel.zoomString:" "Zoom",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtWalkViewer"
-  _COMPONENT	".title:"				"Walk Viewer",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtWalkViewer"
+  SOXT_COMPONENT ".title:" "Walk Viewer",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtFlyViewer"
-  _COMPONENT	".title:"				"Fly Viewer",
-  _COMPONENT	".LeftWheelLabel:"			"Tilt",
-  _COMPONENT	".BottomWheelLabel:"			"Rotate",
-  _COMPONENT	".RotateWheelLabel:"			"Dolly",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtFlyViewer"
+  SOXT_COMPONENT ".title:" "Fly Viewer",
+  SOXT_COMPONENT ".LeftWheelLabel:" "Tilt",
+  SOXT_COMPONENT ".BottomWheelLabel:" "Rotate",
+  SOXT_COMPONENT ".RotateWheelLabel:" "Dolly",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtDirectionalLightEditor"
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtDirectionalLightEditor"
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtMaterialEditor"
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtMaterialEditor"
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtLightSliderSet"
-  _COMPONENT	".title:"				"Light Sliders",
-  _COMPONENT	".sliderset1:"				"LightIntensity",
-  _COMPONENT	".sliderset2:"				"LightColor",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtLightSliderSet"
+  SOXT_COMPONENT ".title:" "Light Sliders",
+  SOXT_COMPONENT ".sliderset1:" "LightIntensity",
+  SOXT_COMPONENT ".sliderset2:" "LightColor",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtMaterialSliderSet"
-  _COMPONENT	".title:"				"Material Sliders",
-  _COMPONENT	".sliderset1:"				"AmbientColor",
-  _COMPONENT	".sliderset2:"				"DiffuseColor",
-  _COMPONENT	".sliderset3:"				"SpecularColor",
-  _COMPONENT	".sliderset4:"				"EmissiveColor",
-  _COMPONENT	".sliderset5:"				"Shininess",
-  _COMPONENT	".sliderset6:"				"Transparency",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtMaterialSliderSet"
+  SOXT_COMPONENT ".title:" "Material Sliders",
+  SOXT_COMPONENT ".sliderset1:" "AmbientColor",
+  SOXT_COMPONENT ".sliderset2:" "DiffuseColor",
+  SOXT_COMPONENT ".sliderset3:" "SpecularColor",
+  SOXT_COMPONENT ".sliderset4:" "EmissiveColor",
+  SOXT_COMPONENT ".sliderset5:" "Shininess",
+  SOXT_COMPONENT ".sliderset6:" "Transparency",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtTransformSliderSet"
-  _COMPONENT	".title:"				"Transform Sliders",
-  _COMPONENT	".sliderset1:"				"Translations",
-  _COMPONENT	".sliderset2:"				"Scales",
-  _COMPONENT	".sliderset3:"				"Rotations",
-  _COMPONENT	".sliderset4:"				"ScaleOrientation",
-  _COMPONENT	".sliderset5:"				"Center",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtTransformSliderSet"
+  SOXT_COMPONENT ".title:" "Transform Sliders",
+  SOXT_COMPONENT ".sliderset1:" "Translations",
+  SOXT_COMPONENT ".sliderset2:" "Scales",
+  SOXT_COMPONENT ".sliderset3:" "Rotations",
+  SOXT_COMPONENT ".sliderset4:" "ScaleOrientation",
+  SOXT_COMPONENT ".sliderset5:" "Center",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtMaterialList"
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtMaterialList"
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtPrintDialog"
-  _COMPONENT	"*title:"				"Print",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtPrintDialog"
+  SOXT_COMPONENT "*title:" "Print",
+#undef SOXT_COMPONENT
 
-// *************************************************************************
+  // *************************************************************************
 
-#define _COMPONENT "*SoXtAmbientColorSliderModule"
-  _COMPONENT	".title:"				"AMBIENT COLOR",
-  _COMPONENT	".slider1Title:"			"Ambient Red",
-  _COMPONENT	".slider1Field:"			"ambientColor[0]",
-  _COMPONENT	".slider2Title:"			"Ambient Green",
-  _COMPONENT	".slider2Field:"			"ambientColor[1]",
-  _COMPONENT	".slider3Title:"			"Ambient Blue",
-  _COMPONENT	".slider3Field:"			"ambientColor[2]",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtAmbientColorSliderModule"
+  SOXT_COMPONENT ".title:" "AMBIENT COLOR",
+  SOXT_COMPONENT ".slider1Title:" "Ambient Red",
+  SOXT_COMPONENT ".slider1Field:" "ambientColor[0]",
+  SOXT_COMPONENT ".slider2Title:" "Ambient Green",
+  SOXT_COMPONENT ".slider2Field:" "ambientColor[1]",
+  SOXT_COMPONENT ".slider3Title:" "Ambient Blue",
+  SOXT_COMPONENT ".slider3Field:" "ambientColor[2]",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtCenterSliderModule"
-  _COMPONENT	".title:"				"CENTER",
-  _COMPONENT	".slider1Title:"			"X Center",
-  _COMPONENT	".slider1Field:"			"center[0]",
-  _COMPONENT	".slider2Title:"			"Y Center",
-  _COMPONENT	".slider2Field:"			"center[1]",
-  _COMPONENT	".slider3Title:"			"Z Center",
-  _COMPONENT	".slider3Field:"			"center[2]",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtCenterSliderModule"
+  SOXT_COMPONENT ".title:" "CENTER",
+  SOXT_COMPONENT ".slider1Title:" "X Center",
+  SOXT_COMPONENT ".slider1Field:" "center[0]",
+  SOXT_COMPONENT ".slider2Title:" "Y Center",
+  SOXT_COMPONENT ".slider2Field:" "center[1]",
+  SOXT_COMPONENT ".slider3Title:" "Z Center",
+  SOXT_COMPONENT ".slider3Field:" "center[2]",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtDiffuseColorSliderModule"
-  _COMPONENT	".title:"				"DIFFUSE COLOR",
-  _COMPONENT	".slider1Title:"			"Diffuse Red",
-  _COMPONENT	".slider1Field:"			"diffuseColor[0]",
-  _COMPONENT	".slider2Title:"			"Diffuse Green",
-  _COMPONENT	".slider2Field:"			"diffuseColor[1]",
-  _COMPONENT	".slider3Title:"			"Diffuse Blue",
-  _COMPONENT	".slider3Field:"			"diffuseColor[2]",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtDiffuseColorSliderModule"
+  SOXT_COMPONENT ".title:" "DIFFUSE COLOR",
+  SOXT_COMPONENT ".slider1Title:" "Diffuse Red",
+  SOXT_COMPONENT ".slider1Field:" "diffuseColor[0]",
+  SOXT_COMPONENT ".slider2Title:" "Diffuse Green",
+  SOXT_COMPONENT ".slider2Field:" "diffuseColor[1]",
+  SOXT_COMPONENT ".slider3Title:" "Diffuse Blue",
+  SOXT_COMPONENT ".slider3Field:" "diffuseColor[2]",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtEmissiveColorSliderModule"
-  _COMPONENT	".title:"				"EMISSIVE COLOR",
-  _COMPONENT	".slider1Title:"			"Emissive Red",
-  _COMPONENT	".slider1Field:"			"emissiveColor[0]",
-  _COMPONENT	".slider2Title:"			"Emissive Green",
-  _COMPONENT	".slider2Field:"			"emissiveColor[1]",
-  _COMPONENT	".slider3Title:"			"Emissive Blue",
-  _COMPONENT	".slider3Field:"			"emissiveColor[2]",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtEmissiveColorSliderModule"
+  SOXT_COMPONENT ".title:" "EMISSIVE COLOR",
+  SOXT_COMPONENT ".slider1Title:" "Emissive Red",
+  SOXT_COMPONENT ".slider1Field:" "emissiveColor[0]",
+  SOXT_COMPONENT ".slider2Title:" "Emissive Green",
+  SOXT_COMPONENT ".slider2Field:" "emissiveColor[1]",
+  SOXT_COMPONENT ".slider3Title:" "Emissive Blue",
+  SOXT_COMPONENT ".slider3Field:" "emissiveColor[2]",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtLightColorSliderModule"
-  _COMPONENT	".title:"				"COLOR",
-  _COMPONENT	".slider1Title:"			"Red",
-  _COMPONENT	".slider1Field:"			"color[0]",
-  _COMPONENT	".slider2Title:"			"Green",
-  _COMPONENT	".slider2Field:"			"color[1]",
-  _COMPONENT	".slider3Title:"			"Blue",
-  _COMPONENT	".slider3Field:"			"color[2]",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtLightColorSliderModule"
+  SOXT_COMPONENT ".title:" "COLOR",
+  SOXT_COMPONENT ".slider1Title:" "Red",
+  SOXT_COMPONENT ".slider1Field:" "color[0]",
+  SOXT_COMPONENT ".slider2Title:" "Green",
+  SOXT_COMPONENT ".slider2Field:" "color[1]",
+  SOXT_COMPONENT ".slider3Title:" "Blue",
+  SOXT_COMPONENT ".slider3Field:" "color[2]",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtLightIntensitySliderModule"
-  _COMPONENT	".title:"				"INTENSITY",
-  _COMPONENT	".slider1Title:"			"Intensity",
-  _COMPONENT	".slider1Field:"			"intensity",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtLightIntensitySliderModule"
+  SOXT_COMPONENT ".title:" "INTENSITY",
+  SOXT_COMPONENT ".slider1Title:" "Intensity",
+  SOXT_COMPONENT ".slider1Field:" "intensity",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtRotationsSliderModule"
-  _COMPONENT	".title:"				"ROTATIONS",
-  _COMPONENT	".slider1Title:"			"X Rotate",
-  _COMPONENT	".slider1Field:"			"rotation[0]",
-  _COMPONENT	".slider2Title:"			"Y Rotate",
-  _COMPONENT	".slider2Field:"			"rotation[1]",
-  _COMPONENT	".slider3Title:"			"Z Rotate",
-  _COMPONENT	".slider3Field:"			"rotation[2]",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtRotationsSliderModule"
+  SOXT_COMPONENT ".title:" "ROTATIONS",
+  SOXT_COMPONENT ".slider1Title:" "X Rotate",
+  SOXT_COMPONENT ".slider1Field:" "rotation[0]",
+  SOXT_COMPONENT ".slider2Title:" "Y Rotate",
+  SOXT_COMPONENT ".slider2Field:" "rotation[1]",
+  SOXT_COMPONENT ".slider3Title:" "Z Rotate",
+  SOXT_COMPONENT ".slider3Field:" "rotation[2]",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtScalesSliderModule"
-  _COMPONENT	".title:"				"SCALES",
-  _COMPONENT	".slider1Title:"			"X Scale",
-  _COMPONENT	".slider1Field:"			"scaleFactor[0]",
-  _COMPONENT	".slider2Title:"			"Y Scale",
-  _COMPONENT	".slider2Field:"			"scaleFactor[1]",
-  _COMPONENT	".slider3Title:"			"Z Scale",
-  _COMPONENT	".slider3Field:"			"scaleFactor[2]",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtScalesSliderModule"
+  SOXT_COMPONENT ".title:" "SCALES",
+  SOXT_COMPONENT ".slider1Title:" "X Scale",
+  SOXT_COMPONENT ".slider1Field:" "scaleFactor[0]",
+  SOXT_COMPONENT ".slider2Title:" "Y Scale",
+  SOXT_COMPONENT ".slider2Field:" "scaleFactor[1]",
+  SOXT_COMPONENT ".slider3Title:" "Z Scale",
+  SOXT_COMPONENT ".slider3Field:" "scaleFactor[2]",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtScaleOrientationSliderModule"
-  _COMPONENT	".title:"				"SCALE ORIENTATION",
-  _COMPONENT	".slider1Title:"			"X Rotate",
-  _COMPONENT	".slider1Field:"			"scaleOrientation[0]",
-  _COMPONENT	".slider2Title:"			"Y Rotate",
-  _COMPONENT	".slider2Field:"			"scaleOrientation[1]",
-  _COMPONENT	".slider3Title:"			"Z Rotate",
-  _COMPONENT	".slider3Field:"			"scaleOrientation[2]",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtScaleOrientationSliderModule"
+  SOXT_COMPONENT ".title:" "SCALE ORIENTATION",
+  SOXT_COMPONENT ".slider1Title:" "X Rotate",
+  SOXT_COMPONENT ".slider1Field:" "scaleOrientation[0]",
+  SOXT_COMPONENT ".slider2Title:" "Y Rotate",
+  SOXT_COMPONENT ".slider2Field:" "scaleOrientation[1]",
+  SOXT_COMPONENT ".slider3Title:" "Z Rotate",
+  SOXT_COMPONENT ".slider3Field:" "scaleOrientation[2]",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtShininessSliderModule"
-  _COMPONENT	".title:"				"SHININESS",
-  _COMPONENT	".slider1Title:"			"Shininess",
-  _COMPONENT	".slider1Field:"			"shininess",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtShininessSliderModule"
+  SOXT_COMPONENT ".title:" "SHININESS",
+  SOXT_COMPONENT ".slider1Title:" "Shininess",
+  SOXT_COMPONENT ".slider1Field:" "shininess",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtSpecularColorSliderModule"
-  _COMPONENT	".title:"				"SPECULAR COLOR",
-  _COMPONENT	".slider1Title:"			"Specular Red",
-  _COMPONENT	".slider1Field:"			"specularColor[0]",
-  _COMPONENT	".slider2Title:"			"Specular Green",
-  _COMPONENT	".slider2Field:"			"specularColor[1]",
-  _COMPONENT	".slider3Title:"			"Specular Blue",
-  _COMPONENT	".slider3Field:"			"specularColor[2]",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtSpecularColorSliderModule"
+  SOXT_COMPONENT ".title:" "SPECULAR COLOR",
+  SOXT_COMPONENT ".slider1Title:" "Specular Red",
+  SOXT_COMPONENT ".slider1Field:" "specularColor[0]",
+  SOXT_COMPONENT ".slider2Title:" "Specular Green",
+  SOXT_COMPONENT ".slider2Field:" "specularColor[1]",
+  SOXT_COMPONENT ".slider3Title:" "Specular Blue",
+  SOXT_COMPONENT ".slider3Field:" "specularColor[2]",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtTranslationsSliderModule"
-  _COMPONENT	".title:"				"TRANSLATIONS",
-  _COMPONENT	".slider1Title:"			"X Translation",
-  _COMPONENT	".slider1Field:"			"translation[0]",
-  _COMPONENT	".slider2Title:"			"Y Translation",
-  _COMPONENT	".slider2Field:"			"translation[1]",
-  _COMPONENT	".slider3Title:"			"Z Translation",
-  _COMPONENT	".slider3Field:"			"translation[2]",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtTranslationsSliderModule"
+  SOXT_COMPONENT ".title:" "TRANSLATIONS",
+  SOXT_COMPONENT ".slider1Title:" "X Translation",
+  SOXT_COMPONENT ".slider1Field:" "translation[0]",
+  SOXT_COMPONENT ".slider2Title:" "Y Translation",
+  SOXT_COMPONENT ".slider2Field:" "translation[1]",
+  SOXT_COMPONENT ".slider3Title:" "Z Translation",
+  SOXT_COMPONENT ".slider3Field:" "translation[2]",
+#undef SOXT_COMPONENT
 
-#define _COMPONENT "*SoXtTransparencySliderModule"
-  _COMPONENT	".title:"				"TRANSPARENCY",
-  _COMPONENT	".slider1Title:"			"Transparency",
-  _COMPONENT	".slider1Field:"			"transparency",
-#undef _COMPONENT
+#define SOXT_COMPONENT "*SoXtTransparencySliderModule"
+  SOXT_COMPONENT ".title:" "TRANSPARENCY",
+  SOXT_COMPONENT ".slider1Title:" "Transparency",
+  SOXT_COMPONENT ".slider1Field:" "transparency",
+#undef SOXT_COMPONENT
 
   NULL
-}; // fallback_resources
+};
 
 // *************************************************************************
