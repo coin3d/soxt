@@ -1,0 +1,145 @@
+This is a list of issues that needs to be investigated and fixed.  The
+number is just the chronologic numeric id, and has no bearing on what
+priority the item has.
+
+========================================================================
+
+001 With SoXt, when doing a deco on/off, I get a bad size on my views.
+    Mainly the decoartion size is badly taken into account at the level
+    of the GL widget.
+
+    In the join .diff file I propose to fix that by introducing a
+    resizeCB on the GLWidget that will take into account the needed
+    corrections to handle decoration size on this widget.
+
+    [patches was attached]
+
+    Reported by Guy Barrand
+
+    Update 20030204 larsa:
+
+    The proposed solution needs at least /some/ reworking to not drag
+    Widget-specific stuff into the public API of the generic components. 
+
+========================================================================
+
+002 When I have a program that creates a SoGtkExaminerViewer or an
+    SoXtExaminerViewer; by default the viewer is in viewing mode (which
+    is ok) but the cursor is in picking mode!
+
+    Reported by Guy Barrand
+
+========================================================================
+
+003 Assertion failed: visual != (Visual *) NULL && colormap != 0, file
+    SoXtThumbWheel.cpp, line 455 (when running under Uim/X)
+
+    Reported by Mark Anderson
+
+========================================================================
+
+004 "Dark Screen" e.g. the colors are all wrong, very dark, can't see
+    any menu items or popup text
+
+    Reported by Mark Anderson
+
+========================================================================
+
+005 Porting Coin/SoXt to work with NuTCracker from MKS.  NuTCracker
+    is pretty similar to cygwin but I'm not sure of all the differences.
+    We are having problems running the config scripts because they
+    recognize the system as Windows-based instead of Unix-based, like
+    a cygwin system would.  However, NuTCracker uses Visual C++ and
+    Absoft Fortran for compilers, not gcc.
+
+    Reported by Mark Anderson
+
+========================================================================
+
+006 The SoXtColorEditor is missing.
+
+    This widget is part of the SoXtMaterialEditor.  It was made public
+    in TGS Inventor 3.0, reportedly.
+
+    Reported by Mark Anderson
+
+========================================================================
+
+007 The SoXtMAterialEditor is missing
+
+    Assuming people are interested in this one too.
+
+    Reported by Lars J. Aas
+
+========================================================================
+
+008 The class hierarchy doesn't match the original SGI hierarchy in the
+    protected: sections of different classes.
+
+    Reported by Mark Anderson
+
+========================================================================
+
+009 On HP-UX, configure misses the presence of gl.h.  The file is
+    located at /opt/graphics/OpenGL/include/GL/gl.h.  The gl.h in
+    src/Inventor/Xt/common fails.  Defining HAVE_GL_GL_H (of course)
+    fixes this problem.
+
+    Reported by Mark Anderson
+
+========================================================================
+
+010 Something in the configure script messes up and uses
+    @SOQT_EXTRA_CPPFLAGS@, @SOQT_VERSION@, etc. instead of the SoXt
+    versions, so that I have to manually go in and edit each Makefile
+    to use the correct cppflags, cxxflags, etc.
+
+    Reported by Mark Anderson
+
+========================================================================
+
+011 Even though the Xmu check failed, the functions using Xmu still get
+    written (e.g. in SoXt.cpp).  I don't have a version of Xmu compiled
+    with X11R6 so I have not been able to get everything to compile
+    correctly (it is somehow mixing R5, which I have Xmu compiled for,
+    with R6, which is where /usr/include/X11 is pointing to).
+
+    Reported by Mark Anderson
+
+========================================================================
+
+012 Finally, I'm having problems now with the Xmu library.  On HP, it's
+    installed in a non-standard location (/usr/contrib/X11R6) and I have
+    to hack my way through the code (by forcing HAVE_LIBXMU to be
+    defined) to get it to compile.
+
+    Reported by Mark Anderson
+
+========================================================================
+
+013 Something is fishy with how the default visual, colormap and depth
+    are picked out (SoXtInternal, SoXtThumbWheel) - cause X errors on
+    IRIX.
+    
+    Reported by Morten Eriksen
+
+========================================================================
+
+014 SoXtComponent::setFullScreen() does not work
+
+    Code that works for non-realized widgets was submitted, but not
+    code that can toggle already opened windows.
+
+    Reported by Fabian May?
+
+========================================================================
+
+015 New windows pop up in the top-left corner at coordinate (0,0),
+    while for the other toolkits, they pop up centered.  This is with
+    the larswm window manager - don't know if this is a problem with
+    any other wm.  Nevertheless, it clearly indicates that something
+    is non-standard with the initial window attributes.
+
+    Reported by Lars J. Aas
+
+========================================================================
