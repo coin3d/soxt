@@ -17,7 +17,9 @@ if test ! -f autogen.sh; then
 fi
 
 # required autotrio tool versions
-AUTOCONF_VER=2.14a   # CVS development version
+
+# Autoconf snapshot from ftp://alpha.gnu.org/gnu/autoconf/autoconf-2.49a.tar.gz
+AUTOCONF_VER=2.49a
 AUTOMAKE_VER=1.4a    # CVS development version
 LIBTOOL_VER=1.3.5
 
@@ -59,12 +61,9 @@ if test -z "`autoconf --version | grep \" $AUTOCONF_VER\" 2> /dev/null`"; then
   ---------------------------
   You must use the CVS development version of autoconf ($AUTOCONF_VER)
   to generate configure information and Makefiles for $PROJECT.
+  You can find the pre-release snapshot at:
 
-  The CVS autoconf repository can be fetched by running the following
-  set of commands:
-
-  $ cvs -d :pserver:anoncvs@subversions.gnu.org:/cvs login    # (no password)
-  $ cvs -d :pserver:anoncvs@subversions.gnu.org:/cvs co autoconf
+  ftp://alpha.gnu.org/gnu/autoconf/autoconf-2.49a.tar.gz
 
 EOF
   DIE=true

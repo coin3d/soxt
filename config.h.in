@@ -36,6 +36,9 @@
 /* Define this to use libXpm */
 #undef HAVE_LIBXPM
 
+/* Define to enable use of SoMouseButtonEvent::BUTTON5 */
+#undef HAVE_SOMOUSEBUTTONEVENT_BUTTONS
+
 /* Define this to true if the __FUNCTION__ variable contains the current
    function name */
 #undef HAVE_VAR___FUNCTION__
@@ -43,6 +46,10 @@
 /* Define this to true if the __PRETTY_FUNCTION__ variable contains the
    current function name */
 #undef HAVE_VAR___PRETTY_FUNCTION__
+
+/* Define this to true if the __func__ variable contains the current function
+   name */
+#undef HAVE_VAR___func__
 
 /* Name of package */
 #undef PACKAGE
