@@ -46,7 +46,7 @@ oldincludedir = /usr/include
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
-top_builddir = ../../..
+top_builddir = ../../../..
 
 ACLOCAL = @ACLOCAL@
 AUTOCONF = @AUTOCONF@
@@ -466,116 +466,57 @@ SoQt_ExtraBuiltMetaFiles = \
   $(top_builddir)/src/Inventor/Qt/widgets/moc_SoQtGLArea.cpp
 
 
-SUBDIRS = devices editors engines nodes viewers widgets .
+noinst_LTLIBRARIES = libSoGuiEngines.la
 
-DEFAULT_INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src -I$(top_builddir)/data
+DEFAULT_INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
+LIBS = 
 
 BUILT_SOURCES = \
 	$(SoGuiAllBuiltFiles)
 
 
 CLEANFILES = \
-	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
+	$(SoGui_src_Inventor_Gui_engines_BuiltMetaFiles)
 
 
 DISTCLEANFILES = \
-	$(SoGui_src_Inventor_Gui_BuiltFiles) \
-	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
+	$(SoGui_src_Inventor_Gui_engines_BuiltFiles) \
+	$(SoGui_src_Inventor_Gui_engines_BuiltMetaFiles)
 
 
 
 ############################################################################
-lib_LTLIBRARIES = libSoXt.la
 
-libSoXt_la_SOURCES = \
-	SoXtInternal.cpp SoXtInternal.h \
-	SoXt.cpp \
-	SoXtComponent.cpp \
-	SoXtComponentP.h \
-	SoXtGLWidget.cpp \
-	SoXtGLWidgetP.h \
-	SoXtResource.cpp SoXtResource.h
-
-
-nodist_libSoXt_la_SOURCES = \
-	$(SoGui_src_Inventor_Gui_BuiltFiles) \
-	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
-
-
-libSoXt_la_LIBADD = \
-	devices/libSoXtDevices.la \
-	editors/libSoXtEditors.la \
-	engines/libSoGuiEngines.la \
-	nodes/libSoGuiNodes.la \
-	viewers/libSoXtViewers.la \
-	widgets/libSoXtWidgets.la
-
-
-libSoXt_la_LDFLAGS = \
-	-no-undefined \
-	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
+# libSoGuiEngines_la_SOURCES =
+nodist_libSoGuiEngines_la_SOURCES = \
+	$(SoGui_src_Inventor_Gui_engines_BuiltFiles)
 
 
 
 ############################################################################
-SoXtincdir = $(includedir)/Inventor/Xt
 
-SoXtinc_HEADERS = \
-	SoXtResource.h \
-	SoXtColorEditor.h
+# The engines are kept internal for now.  We know people will ask for them
+# to be made public, but until then we'll let them mature.  Only headers
+# that other public headers depend on are installed for now.
+SoGuiEnginesincdir = $(includedir)/Inventor/@Gui@/engines
 
-
-nodist_SoXtinc_HEADERS = \
-	SoXt.h \
-	SoXtBasic.h \
-	SoXtObject.h \
-	SoXtCursor.h \
-	SoXtComponent.h \
-	SoXtGLWidget.h \
-	SoXtRenderArea.h
-
-subdir = src/Inventor/Xt
+SoGuiEnginesinc_HEADERS = 
+subdir = src/Inventor/Xt/engines
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/src/config.h
 CONFIG_CLEAN_FILES =
-LTLIBRARIES = $(lib_LTLIBRARIES)
+LTLIBRARIES = $(noinst_LTLIBRARIES)
 
-libSoXt_la_DEPENDENCIES = devices/libSoXtDevices.la \
-	editors/libSoXtEditors.la engines/libSoGuiEngines.la \
-	nodes/libSoGuiNodes.la viewers/libSoXtViewers.la \
-	widgets/libSoXtWidgets.la
-am_libSoXt_la_OBJECTS = SoXtInternal.lo SoXt.lo SoXtComponent.lo \
-	SoXtGLWidget.lo SoXtResource.lo
-@BUILD_METAFILES_TRUE@nodist_libSoXt_la_OBJECTS = SoAny.lo \
-@BUILD_METAFILES_TRUE@	So@Gui@Cursor.lo So@Gui@Object.lo \
-@BUILD_METAFILES_TRUE@	So@Gui@Common.lo \
-@BUILD_METAFILES_TRUE@	So@Gui@ComponentCommon.lo \
-@BUILD_METAFILES_TRUE@	So@Gui@GLWidgetCommon.lo \
-@BUILD_METAFILES_TRUE@	So@Gui@RenderArea.lo
-@BUILD_METAFILES_FALSE@nodist_libSoXt_la_OBJECTS = SoAny.lo \
-@BUILD_METAFILES_FALSE@	So@Gui@Cursor.lo So@Gui@Object.lo \
-@BUILD_METAFILES_FALSE@	So@Gui@Common.lo \
-@BUILD_METAFILES_FALSE@	So@Gui@ComponentCommon.lo \
-@BUILD_METAFILES_FALSE@	So@Gui@GLWidgetCommon.lo \
-@BUILD_METAFILES_FALSE@	So@Gui@RenderArea.lo
-libSoXt_la_OBJECTS = $(am_libSoXt_la_OBJECTS) \
-	$(nodist_libSoXt_la_OBJECTS)
+libSoGuiEngines_la_LDFLAGS =
+libSoGuiEngines_la_LIBADD =
+nodist_libSoGuiEngines_la_OBJECTS = Engines.lo RadioGroup.lo
+libSoGuiEngines_la_OBJECTS = $(nodist_libSoGuiEngines_la_OBJECTS)
 
 DEFS = @DEFS@
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
-LIBS = @LIBS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/So@Gui@Common.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@ComponentCommon.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@Cursor.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@GLWidgetCommon.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@Object.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/So@Gui@RenderArea.Plo $(DEPDIR)/SoAny.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoXt.Plo $(DEPDIR)/SoXtComponent.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoXtGLWidget.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoXtInternal.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoXtResource.Plo
+@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/Engines.Plo $(DEPDIR)/RadioGroup.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -593,20 +534,14 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libSoXt_la_SOURCES)
-HEADERS = $(SoXtinc_HEADERS) $(nodist_SoXtinc_HEADERS)
+DIST_SOURCES =
+HEADERS = $(SoGuiEnginesinc_HEADERS)
 
-
-RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
-	uninstall-info-recursive all-recursive install-data-recursive \
-	install-exec-recursive installdirs-recursive install-recursive \
-	uninstall-recursive check-recursive installcheck-recursive
-DIST_COMMON = $(SoXtinc_HEADERS) Makefile.am Makefile.in
-DIST_SUBDIRS = $(SUBDIRS)
-SOURCES = $(libSoXt_la_SOURCES) $(nodist_libSoXt_la_SOURCES)
+DIST_COMMON = $(SoGuiEnginesinc_HEADERS) Makefile.am Makefile.in
+SOURCES = $(nodist_libSoGuiEngines_la_SOURCES)
 
 all: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) all-recursive
+	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
 .SUFFIXES: .cpp .lo .o .obj
@@ -619,44 +554,20 @@ clean-libtool:
 
 distclean-libtool:
 	-rm -f libtool
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(srcdir)/common/Makefile.common $(top_srcdir)/configure.ac $(ACLOCAL_M4)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(srcdir)/../common/Makefile.common $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  src/Inventor/Xt/Makefile
+	  $(AUTOMAKE) --gnu  src/Inventor/Xt/engines/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
-install-libLTLIBRARIES: $(lib_LTLIBRARIES)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libdir)
-	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
-	  if test -f $$p; then \
-	    echo " $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p"; \
-	    $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p; \
-	  else :; fi; \
-	done
 
-uninstall-libLTLIBRARIES:
-	@$(NORMAL_UNINSTALL)
-	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
-	  echo " $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p"; \
-	  $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
-	done
-
-clean-libLTLIBRARIES:
-	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
-SoAny.lo: $(top_builddir)/src/Inventor/@Gui@/SoAny.cpp
-So@Gui@Cursor.lo: $(top_builddir)/src/Inventor/@Gui@/So@Gui@Cursor.cpp
-So@Gui@Object.lo: $(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.cpp
-So@Gui@Common.lo: $(top_builddir)/src/Inventor/@Gui@/So@Gui@Common.cpp
-So@Gui@ComponentCommon.lo: \
-	$(top_builddir)/src/Inventor/@Gui@/So@Gui@ComponentCommon.cpp
-So@Gui@GLWidgetCommon.lo: \
-	$(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidgetCommon.cpp
-So@Gui@RenderArea.lo: \
-	$(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.cpp
-libSoXt.la: $(libSoXt_la_OBJECTS) $(libSoXt_la_DEPENDENCIES) 
-	$(CXXLINK) -rpath $(libdir) $(libSoXt_la_LDFLAGS) $(libSoXt_la_OBJECTS) $(libSoXt_la_LIBADD) $(LIBS)
+clean-noinstLTLIBRARIES:
+	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
+Engines.lo: $(top_builddir)/src/Inventor/@Gui@/engines/Engines.cpp
+RadioGroup.lo: $(top_builddir)/src/Inventor/@Gui@/engines/RadioGroup.cpp
+libSoGuiEngines.la: $(libSoGuiEngines_la_OBJECTS) $(libSoGuiEngines_la_DEPENDENCIES) 
+	$(CXXLINK)  $(libSoGuiEngines_la_LDFLAGS) $(libSoGuiEngines_la_OBJECTS) $(libSoGuiEngines_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT) core *.core
@@ -664,18 +575,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@Common.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@ComponentCommon.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@Cursor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@GLWidgetCommon.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@Object.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/So@Gui@RenderArea.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAny.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXt.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtComponent.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtGLWidget.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtInternal.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtResource.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Engines.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/RadioGroup.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -698,203 +599,59 @@ distclean-depend:
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(LTCXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 
-SoAny.o: $(top_builddir)/src/Inventor/@Gui@/SoAny.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/SoAny.cpp' object='SoAny.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/SoAny.Po' tmpdepfile='$(DEPDIR)/SoAny.TPo' @AMDEPBACKSLASH@
+Engines.o: $(top_builddir)/src/Inventor/@Gui@/engines/Engines.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/engines/Engines.cpp' object='Engines.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/Engines.Po' tmpdepfile='$(DEPDIR)/Engines.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SoAny.o `test -f $(top_builddir)/src/Inventor/@Gui@/SoAny.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/SoAny.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Engines.o `test -f $(top_builddir)/src/Inventor/@Gui@/engines/Engines.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/engines/Engines.cpp
 
-SoAny.obj: $(top_builddir)/src/Inventor/@Gui@/SoAny.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/SoAny.cpp' object='SoAny.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/SoAny.Po' tmpdepfile='$(DEPDIR)/SoAny.TPo' @AMDEPBACKSLASH@
+Engines.obj: $(top_builddir)/src/Inventor/@Gui@/engines/Engines.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/engines/Engines.cpp' object='Engines.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/Engines.Po' tmpdepfile='$(DEPDIR)/Engines.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SoAny.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/SoAny.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/SoAny.cpp ) | xargs cygpath -w`
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Engines.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/engines/Engines.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/engines/Engines.cpp ) | xargs cygpath -w`
 
-SoAny.lo: $(top_builddir)/src/Inventor/@Gui@/SoAny.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/SoAny.cpp' object='SoAny.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/SoAny.Plo' tmpdepfile='$(DEPDIR)/SoAny.TPlo' @AMDEPBACKSLASH@
+Engines.lo: $(top_builddir)/src/Inventor/@Gui@/engines/Engines.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/engines/Engines.cpp' object='Engines.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/Engines.Plo' tmpdepfile='$(DEPDIR)/Engines.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SoAny.lo `test -f $(top_builddir)/src/Inventor/@Gui@/SoAny.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/SoAny.cpp
+	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Engines.lo `test -f $(top_builddir)/src/Inventor/@Gui@/engines/Engines.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/engines/Engines.cpp
 
-So@Gui@Cursor.o: $(top_builddir)/src/Inventor/@Gui@/So@Gui@Cursor.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@Cursor.cpp' object='So@Gui@Cursor.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@Cursor.Po' tmpdepfile='$(DEPDIR)/So@Gui@Cursor.TPo' @AMDEPBACKSLASH@
+RadioGroup.o: $(top_builddir)/src/Inventor/@Gui@/engines/RadioGroup.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/engines/RadioGroup.cpp' object='RadioGroup.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/RadioGroup.Po' tmpdepfile='$(DEPDIR)/RadioGroup.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@Cursor.o `test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@Cursor.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/So@Gui@Cursor.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o RadioGroup.o `test -f $(top_builddir)/src/Inventor/@Gui@/engines/RadioGroup.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/engines/RadioGroup.cpp
 
-So@Gui@Cursor.obj: $(top_builddir)/src/Inventor/@Gui@/So@Gui@Cursor.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@Cursor.cpp' object='So@Gui@Cursor.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@Cursor.Po' tmpdepfile='$(DEPDIR)/So@Gui@Cursor.TPo' @AMDEPBACKSLASH@
+RadioGroup.obj: $(top_builddir)/src/Inventor/@Gui@/engines/RadioGroup.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/engines/RadioGroup.cpp' object='RadioGroup.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/RadioGroup.Po' tmpdepfile='$(DEPDIR)/RadioGroup.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@Cursor.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@Cursor.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/So@Gui@Cursor.cpp ) | xargs cygpath -w`
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o RadioGroup.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/engines/RadioGroup.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/engines/RadioGroup.cpp ) | xargs cygpath -w`
 
-So@Gui@Cursor.lo: $(top_builddir)/src/Inventor/@Gui@/So@Gui@Cursor.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@Cursor.cpp' object='So@Gui@Cursor.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@Cursor.Plo' tmpdepfile='$(DEPDIR)/So@Gui@Cursor.TPlo' @AMDEPBACKSLASH@
+RadioGroup.lo: $(top_builddir)/src/Inventor/@Gui@/engines/RadioGroup.cpp
+@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/engines/RadioGroup.cpp' object='RadioGroup.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/RadioGroup.Plo' tmpdepfile='$(DEPDIR)/RadioGroup.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@Cursor.lo `test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@Cursor.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/So@Gui@Cursor.cpp
-
-So@Gui@Object.o: $(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.cpp' object='So@Gui@Object.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@Object.Po' tmpdepfile='$(DEPDIR)/So@Gui@Object.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@Object.o `test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.cpp
-
-So@Gui@Object.obj: $(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.cpp' object='So@Gui@Object.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@Object.Po' tmpdepfile='$(DEPDIR)/So@Gui@Object.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@Object.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.cpp ) | xargs cygpath -w`
-
-So@Gui@Object.lo: $(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.cpp' object='So@Gui@Object.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@Object.Plo' tmpdepfile='$(DEPDIR)/So@Gui@Object.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@Object.lo `test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.cpp
-
-So@Gui@Common.o: $(top_builddir)/src/Inventor/@Gui@/So@Gui@Common.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@Common.cpp' object='So@Gui@Common.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@Common.Po' tmpdepfile='$(DEPDIR)/So@Gui@Common.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@Common.o `test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@Common.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/So@Gui@Common.cpp
-
-So@Gui@Common.obj: $(top_builddir)/src/Inventor/@Gui@/So@Gui@Common.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@Common.cpp' object='So@Gui@Common.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@Common.Po' tmpdepfile='$(DEPDIR)/So@Gui@Common.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@Common.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@Common.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/So@Gui@Common.cpp ) | xargs cygpath -w`
-
-So@Gui@Common.lo: $(top_builddir)/src/Inventor/@Gui@/So@Gui@Common.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@Common.cpp' object='So@Gui@Common.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@Common.Plo' tmpdepfile='$(DEPDIR)/So@Gui@Common.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@Common.lo `test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@Common.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/So@Gui@Common.cpp
-
-So@Gui@ComponentCommon.o: $(top_builddir)/src/Inventor/@Gui@/So@Gui@ComponentCommon.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@ComponentCommon.cpp' object='So@Gui@ComponentCommon.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@ComponentCommon.Po' tmpdepfile='$(DEPDIR)/So@Gui@ComponentCommon.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@ComponentCommon.o `test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@ComponentCommon.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/So@Gui@ComponentCommon.cpp
-
-So@Gui@ComponentCommon.obj: $(top_builddir)/src/Inventor/@Gui@/So@Gui@ComponentCommon.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@ComponentCommon.cpp' object='So@Gui@ComponentCommon.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@ComponentCommon.Po' tmpdepfile='$(DEPDIR)/So@Gui@ComponentCommon.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@ComponentCommon.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@ComponentCommon.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/So@Gui@ComponentCommon.cpp ) | xargs cygpath -w`
-
-So@Gui@ComponentCommon.lo: $(top_builddir)/src/Inventor/@Gui@/So@Gui@ComponentCommon.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@ComponentCommon.cpp' object='So@Gui@ComponentCommon.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@ComponentCommon.Plo' tmpdepfile='$(DEPDIR)/So@Gui@ComponentCommon.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@ComponentCommon.lo `test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@ComponentCommon.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/So@Gui@ComponentCommon.cpp
-
-So@Gui@GLWidgetCommon.o: $(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidgetCommon.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidgetCommon.cpp' object='So@Gui@GLWidgetCommon.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@GLWidgetCommon.Po' tmpdepfile='$(DEPDIR)/So@Gui@GLWidgetCommon.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@GLWidgetCommon.o `test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidgetCommon.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidgetCommon.cpp
-
-So@Gui@GLWidgetCommon.obj: $(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidgetCommon.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidgetCommon.cpp' object='So@Gui@GLWidgetCommon.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@GLWidgetCommon.Po' tmpdepfile='$(DEPDIR)/So@Gui@GLWidgetCommon.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@GLWidgetCommon.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidgetCommon.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidgetCommon.cpp ) | xargs cygpath -w`
-
-So@Gui@GLWidgetCommon.lo: $(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidgetCommon.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidgetCommon.cpp' object='So@Gui@GLWidgetCommon.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@GLWidgetCommon.Plo' tmpdepfile='$(DEPDIR)/So@Gui@GLWidgetCommon.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@GLWidgetCommon.lo `test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidgetCommon.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/So@Gui@GLWidgetCommon.cpp
-
-So@Gui@RenderArea.o: $(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.cpp' object='So@Gui@RenderArea.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@RenderArea.Po' tmpdepfile='$(DEPDIR)/So@Gui@RenderArea.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@RenderArea.o `test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.cpp
-
-So@Gui@RenderArea.obj: $(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.cpp' object='So@Gui@RenderArea.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@RenderArea.Po' tmpdepfile='$(DEPDIR)/So@Gui@RenderArea.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@RenderArea.obj `( test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.cpp || echo -n '$(srcdir)/'; echo -n $(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.cpp ) | xargs cygpath -w`
-
-So@Gui@RenderArea.lo: $(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.cpp
-@AMDEP_TRUE@	source='$(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.cpp' object='So@Gui@RenderArea.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/So@Gui@RenderArea.Plo' tmpdepfile='$(DEPDIR)/So@Gui@RenderArea.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o So@Gui@RenderArea.lo `test -f $(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.cpp
+	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o RadioGroup.lo `test -f $(top_builddir)/src/Inventor/@Gui@/engines/RadioGroup.cpp || echo '$(srcdir)/'`$(top_builddir)/src/Inventor/@Gui@/engines/RadioGroup.cpp
 CXXDEPMODE = @CXXDEPMODE@
 uninstall-info-am:
-
-uninstall-SoXtincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(SoXtinc_HEADERS)'; for p in $$list; do \
+install-SoGuiEnginesincHEADERS: $(SoGuiEnginesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(SoGuiEnginesincdir)
+	@list='$(SoGuiEnginesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(SoXtincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(SoXtincdir)/$$f; \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(SoGuiEnginesincdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(SoGuiEnginesincdir)/$$f; \
 	done
 
-uninstall-nodist_SoXtincHEADERS:
+uninstall-SoGuiEnginesincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(nodist_SoXtinc_HEADERS)'; for p in $$list; do \
+	@list='$(SoGuiEnginesinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(SoXtincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(SoXtincdir)/$$f; \
-	done
-
-# This directory's subdirectories are mostly independent; you can cd
-# into them and run `make' without going through this Makefile.
-# To change the values of `make' variables: instead of editing Makefiles,
-# (1) if the variable is set in `config.status', edit `config.status'
-#     (which will cause the Makefiles to be regenerated when you run `make');
-# (2) otherwise, pass the desired values on the `make' command line.
-$(RECURSIVE_TARGETS):
-	@set fnord $(MAKEFLAGS); amf=$$2; \
-	dot_seen=no; \
-	target=`echo $@ | sed s/-recursive//`; \
-	list='$(SUBDIRS)'; for subdir in $$list; do \
-	  echo "Making $$target in $$subdir"; \
-	  if test "$$subdir" = "."; then \
-	    dot_seen=yes; \
-	    local_target="$$target-am"; \
-	  else \
-	    local_target="$$target"; \
-	  fi; \
-	  (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
-	   || case "$$amf" in *=*) exit 1;; *k*) fail=yes;; *) exit 1;; esac; \
-	done; \
-	if test "$$dot_seen" = "no"; then \
-	  $(MAKE) $(AM_MAKEFLAGS) "$$target-am" || exit 1; \
-	fi; test -z "$$fail"
-
-mostlyclean-recursive clean-recursive distclean-recursive \
-maintainer-clean-recursive:
-	@set fnord $(MAKEFLAGS); amf=$$2; \
-	dot_seen=no; \
-	case "$@" in \
-	  distclean-* | maintainer-clean-*) list='$(DIST_SUBDIRS)' ;; \
-	  *) list='$(SUBDIRS)' ;; \
-	esac; \
-	rev=''; for subdir in $$list; do \
-	  if test "$$subdir" = "."; then :; else \
-	    rev="$$subdir $$rev"; \
-	  fi; \
-	done; \
-	rev="$$rev ."; \
-	target=`echo $@ | sed s/-recursive//`; \
-	for subdir in $$rev; do \
-	  echo "Making $$target in $$subdir"; \
-	  if test "$$subdir" = "."; then \
-	    local_target="$$target-am"; \
-	  else \
-	    local_target="$$target"; \
-	  fi; \
-	  (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
-	   || case "$$amf" in *=*) exit 1;; *k*) fail=yes;; *) exit 1;; esac; \
-	done && test -z "$$fail"
-tags-recursive:
-	list='$(SUBDIRS)'; for subdir in $$list; do \
-	  test "$$subdir" = . || (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) tags); \
+	  echo " rm -f $(DESTDIR)$(SoGuiEnginesincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(SoGuiEnginesincdir)/$$f; \
 	done
 
 tags: TAGS
@@ -908,15 +665,10 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	       END { for (i in files) print i; }'`; \
 	mkid -fID $$unique $(LISP)
 
-TAGS: tags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
-	list='$(SUBDIRS)'; for subdir in $$list; do \
-	  if test "$$subdir" = .; then :; else \
-	    test -f $$subdir/TAGS && tags="$$tags -i $$here/$$subdir/TAGS"; \
-	  fi; \
-	done; \
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
 	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
@@ -936,7 +688,7 @@ distclean-tags:
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
-top_distdir = ../../..
+top_distdir = ../../../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
@@ -955,35 +707,22 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
-	for subdir in $(SUBDIRS); do \
-	  if test "$$subdir" = .; then :; else \
-	    test -d $(distdir)/$$subdir \
-	    || mkdir $(distdir)/$$subdir \
-	    || exit 1; \
-	    (cd $$subdir && \
-	      $(MAKE) $(AM_MAKEFLAGS) \
-	        top_distdir="$(top_distdir)" \
-	        distdir=../$(distdir)/$$subdir \
-	        distdir) \
-	      || exit 1; \
-	  fi; \
-	done
 check-am: all-am
-check: check-recursive
+check: check-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
-installdirs: installdirs-recursive
-installdirs-am:
-	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(SoXtincdir) $(DESTDIR)$(SoXtincdir)
 
-install: install-recursive
-install-exec: install-exec-recursive
-install-data: install-data-recursive
-uninstall: uninstall-recursive
+installdirs:
+	$(mkinstalldirs) $(DESTDIR)$(SoGuiEnginesincdir)
+
+install: install-am
+install-exec: install-exec-am
+install-data: install-data-am
+uninstall: uninstall-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 
-installcheck: installcheck-recursive
+installcheck: installcheck-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
 	  `test -z '$(STRIP)' || \
@@ -1001,68 +740,56 @@ maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
 	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
-clean: clean-recursive
+clean: clean-am
 
-clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
+clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
 	mostlyclean-am
 
-distclean: distclean-recursive
+distclean: distclean-am
 
 distclean-am: clean-am distclean-compile distclean-depend \
 	distclean-generic distclean-libtool distclean-tags
 
-dvi: dvi-recursive
+dvi: dvi-am
 
 dvi-am:
 
-info: info-recursive
+info: info-am
 
 info-am:
 
-install-data-am: install-SoXtincHEADERS install-nodist_SoXtincHEADERS
+install-data-am: install-SoGuiEnginesincHEADERS
 
-install-exec-am: install-libLTLIBRARIES
+install-exec-am:
 
-install-info: install-info-recursive
+install-info: install-info-am
 
 install-man:
 
 installcheck-am:
 
-maintainer-clean: maintainer-clean-recursive
+maintainer-clean: maintainer-clean-am
 
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
-mostlyclean: mostlyclean-recursive
+mostlyclean: mostlyclean-am
 
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
-uninstall-am: uninstall-SoXtincHEADERS uninstall-info-am \
-	uninstall-libLTLIBRARIES uninstall-local \
-	uninstall-nodist_SoXtincHEADERS
+uninstall-am: uninstall-SoGuiEnginesincHEADERS uninstall-info-am
 
-uninstall-info: uninstall-info-recursive
-
-.PHONY: $(RECURSIVE_TARGETS) GTAGS all all-am check check-am clean \
-	clean-generic clean-libLTLIBRARIES clean-libtool \
-	clean-recursive distclean distclean-compile distclean-depend \
-	distclean-generic distclean-libtool distclean-recursive \
-	distclean-tags distdir dvi dvi-am dvi-recursive info info-am \
-	info-recursive install install-SoXtincHEADERS install-am \
-	install-data install-data-am install-data-recursive \
-	install-exec install-exec-am install-exec-recursive \
-	install-info install-info-am install-info-recursive \
-	install-libLTLIBRARIES install-man \
-	install-nodist_SoXtincHEADERS install-recursive install-strip \
-	installcheck installcheck-am installdirs installdirs-am \
-	installdirs-recursive maintainer-clean maintainer-clean-generic \
-	maintainer-clean-recursive mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
-	tags tags-recursive uninstall uninstall-SoXtincHEADERS \
-	uninstall-am uninstall-info-am uninstall-info-recursive \
-	uninstall-libLTLIBRARIES uninstall-local \
-	uninstall-nodist_SoXtincHEADERS uninstall-recursive
+.PHONY: GTAGS all all-am check check-am clean clean-generic \
+	clean-libtool clean-noinstLTLIBRARIES distclean \
+	distclean-compile distclean-depend distclean-generic \
+	distclean-libtool distclean-tags distdir dvi dvi-am info \
+	info-am install install-SoGuiEnginesincHEADERS install-am \
+	install-data install-data-am install-exec install-exec-am \
+	install-info install-info-am install-man install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool tags uninstall \
+	uninstall-SoGuiEnginesincHEADERS uninstall-am uninstall-info-am
 
 
 ############################################################################
@@ -1416,51 +1143,6 @@ $(top_builddir)/man/man1/so@gui@-config.1: $(top_srcdir)/src/Inventor/@Gui@/comm
 @BUILD_METAFILES_TRUE@	$(MOC) -i -o src/Inventor/@Gui@/widgets/@meta_prefix@@Gui@NativePopupMenu.icc `$(UNIX2WINPATH) $(top_srcdir)/src/Inventor/@Gui@/widgets/@Gui@NativePopupMenu.h` )
 
 ############################################################################
-
-install-SoXtincHEADERS: $(SoXtinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(SoXtincdir)
-	@list='$(SoXtinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(SoXtincdir)/$$f"; \
-	  if cmp -s "$$src" "$$dst"; then :; else \
-	    echo " $(INSTALL_HEADER) $$src $$dst"; \
-	    $(INSTALL_HEADER) "$$src" "$$dst"; \
-	  fi \
-	done
-
-install-nodist_SoXtincHEADERS: $(nodist_SoXtinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(SoXtincdir)
-	@list='$(nodist_SoXtinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(SoXtincdir)/$$f"; \
-	  if cmp -s "$$src" "$$dst"; then :; else \
-	    echo " $(INSTALL_HEADER) $$src $$dst"; \
-	    $(INSTALL_HEADER) "$$src" "$$dst"; \
-	  fi \
-	done
-
-############################################################################
-
-uninstall-local: uninstall-SoXtincHEADERS uninstall-nodist_SoXtincHEADERS
-	@baseincdir="$(DESTDIR)$(includedir)/Inventor"; \
-	for dir in \
-	  "$$baseincdir/Xt/devices" \
-	  "$$baseincdir/Xt/editors" \
-	  "$$baseincdir/Xt/nodes" \
-	  "$$baseincdir/Xt/viewers" \
-	  "$$baseincdir/Xt/widgets" \
-	  "$$baseincdir/Xt" \
-	  "$$baseincdir"; do \
-	  if test -d "$$dir"; then \
-	    echo " rmdir" "$$dir"; \
-	    rmdir "$$dir" &>/dev/null; \
-	  fi \
-	done; \
-	:
 
 ############################################################################
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

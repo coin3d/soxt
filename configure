@@ -13937,7 +13937,7 @@ exec_prefix=$sim_ac_save_exec_prefix
 # script -- not just from the Makefile -- as the data/configure script
 # depends on it. (data/configure is temporarily disabled, BTW, but anyway..)
 
-ac_config_files="$ac_config_files soxt-$CONFIG.cfg:src/Inventor/Xt/common/sogui.cfg.in Makefile src/Makefile src/Inventor/Makefile src/Inventor/Xt/Makefile src/Inventor/Xt/devices/Makefile src/Inventor/Xt/editors/Makefile src/Inventor/Xt/nodes/Makefile src/Inventor/Xt/viewers/Makefile src/Inventor/Xt/widgets/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile test-code/Makefile build/soxt.spec"
+ac_config_files="$ac_config_files soxt-$CONFIG.cfg:src/Inventor/Xt/common/sogui.cfg.in Makefile src/Makefile src/Inventor/Makefile src/Inventor/Xt/Makefile src/Inventor/Xt/devices/Makefile src/Inventor/Xt/editors/Makefile src/Inventor/Xt/engines/Makefile src/Inventor/Xt/nodes/Makefile src/Inventor/Xt/viewers/Makefile src/Inventor/Xt/widgets/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile test-code/Makefile build/soxt.spec"
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
 # tests run on this system so they can be shared between configure
@@ -14427,6 +14427,7 @@ do
   "src/Inventor/Xt/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/Inventor/Xt/Makefile" ;;
   "src/Inventor/Xt/devices/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/Inventor/Xt/devices/Makefile" ;;
   "src/Inventor/Xt/editors/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/Inventor/Xt/editors/Makefile" ;;
+  "src/Inventor/Xt/engines/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/Inventor/Xt/engines/Makefile" ;;
   "src/Inventor/Xt/nodes/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/Inventor/Xt/nodes/Makefile" ;;
   "src/Inventor/Xt/viewers/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/Inventor/Xt/viewers/Makefile" ;;
   "src/Inventor/Xt/widgets/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/Inventor/Xt/widgets/Makefile" ;;
