@@ -113,6 +113,12 @@ priority the item has.
  
     Update 20030422 larsa:  Couldn't reproduce.
 
+    Maybe if I reverse this part about configuring the IRIX Xserver to
+    use 24-bit visuals by default in question 71 in the
+    comp.sys.sgi.graphics FAQ
+    <URL:http://www-viz.tamu.edu/~sgi-faq/faq/html-1/graphics.html>,
+    I might be able to reproduce?
+
 ========================================================================
 
 014 SoXtComponent::setFullScreen() does not work

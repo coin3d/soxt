@@ -8,9 +8,6 @@ Open Inventor from SGI or TGS.  A goal is to eventually become 100% source
 code compatible with the InventorXt library, which is still way off,
 especially when it comes to creating derived classes.
 
-When using SoXt, bear in mind that SoXt is in its alpha release phase,
-so expect the worst...
-
 
 INSTALLATION
 ============
@@ -45,48 +42,4 @@ contains no extra information.  Anyways, here are some common problems:
   it is.  The solution is to either add {Coin-prefix}/bin to $PATH, or you
   can run SoXt/configure with the "--with-coin={Coin-prefix}" option.
 
-
-The Build Phase
----------------
-
-* compilation fails because the _source_ file isn't found by the compiler
-
-  Weird - I thought this problem was fixed.  Anyways, it's your make
-  program's fault.  It uses $VPATH to find the source files, but doesn't
-  prefix the file path when a rule uses $<.  You have three options.
-  You can install GNU make (gmake on some systems) and use that instead of
-  your system's faulty make.  You can also build the library in the
-  source directory instead of in a separate directory.  A third solution
-  is to use "lndir" to create a duplicate directory structure with symlinks
-  to all the files in the source directory, and run configure and make in
-  the duplicate instead.  Be aware that lndir might fail to work if you
-  don't write absolute path-names for both of its arguments.
-
-* compilation fail because SoXtBasic.h.in can't be created
-
-  You don't have write permission in the source directory.  This will be
-  fixed in the future.  In the mean time, copy the source hierarchy to
-  somewhere you have write access before building.
-
-
-RUNNING
-=======
-
-[
-Read about configuring the IRIX Xserver to use 24-bit visuals by default
-in question 71 in the comp.sys.sgi.graphics FAQ:
-
-<URL:http://www-viz.tamu.edu/~sgi-faq/faq/html-1/graphics.html>
-]
-
-ENVIRONMENT
-===========
-
-  SOXT_JOYSTICK_DEVICE
-
-  SO_MATERIAL_DIR
-
-  COIN_HOME
-
-  OIVHOME
 
