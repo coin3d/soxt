@@ -1351,8 +1351,7 @@ SoXtFullViewer::buildDrawStyleSubmenu(
 */
 
 void
-SoXtFullViewer::openPopupMenu(
-  const SbVec2s position)
+SoXtFullViewer::openPopupMenu(const SbVec2s position)
 {
   if (! this->isPopupMenuEnabled())
     return;
@@ -1362,18 +1361,9 @@ SoXtFullViewer::openPopupMenu(
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtFullViewer::openPopupMenu", "[invoked]");
 #endif // SOXT_DEBUG && 0
-  Dimension x = 0, y = 0, xt = 0, yt = 0;
-  Widget widget = this->getGLWidget();
-  assert(widget != NULL);
-  do {
-    xt = yt = 0;
-    XtVaGetValues(widget, XmNx, &xt, XmNy, &yt, NULL);
-    x += xt; y += yt;
-    widget = XtParent(widget);
-  } while (widget && ! XtIsShell(widget));
-  XtVaGetValues(this->getShellWidget(), XmNx, &xt, XmNy, &yt, NULL);
-  x += xt + position[0] + 2;
-  y += yt + this->getGLSize()[1] - position[1] + 2;
+
+  int x = position[0] + 2;
+  int y = this->getGLSize()[1] - position[1] + 2;
 
   this->common->prepareMenu(this->prefmenu);
   this->prefmenu->popUp(this->getGLWidget(), x, y);

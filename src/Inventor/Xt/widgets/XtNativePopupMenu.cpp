@@ -581,19 +581,12 @@ XtNativePopupMenu::removeMenuItem(
 
 // *************************************************************************
 
-/*!
-  This method invokes the popup menu.
-
-  If -1 is returned, no menu item was selected.  The itemid of the selected
-  item is returned otherwise.
-*/
-
+// Doc in superclass.
 void
-XtNativePopupMenu::popUp(
-  Widget inside,
-  int x,
-  int y)
+XtNativePopupMenu::popUp(Widget inside, int x, int y)
 {
+  assert(inside != NULL);
+
   MenuRecord * root = this->getMenuRecord(0);
   if (root == NULL) {
 #if SOXT_DEBUG
@@ -609,30 +602,19 @@ XtNativePopupMenu::popUp(
     this->popup = this->build(inside);
   }
   this->dirty = FALSE;
-  int x_off = 0, y_off = 0;
 
-  Widget parent = inside;
-  while (parent) {
-    Dimension xoff = 0, yoff = 0;
-    XtVaGetValues(parent,
-      XmNx, &xoff,
-      XmNy, &yoff,
-      NULL);
-    x_off += xoff;
-    y_off += yoff;
-    parent = XtParent(parent);
-    if (! parent || XtIsShell(parent))
-      break;
-  }
+  Widget toplevel = inside;
+  while (!XtIsShell(toplevel)) { toplevel = XtParent(toplevel); }
+
+  Dimension shellx = 0, shelly = 0;
+  XtVaGetValues(toplevel, XmNx, &shellx, XmNy, &shelly, NULL);
 
   XButtonEvent pos;
-  pos.x_root = x - x_off + 2;
-  pos.y_root = y - y_off + 2;
-//  SoDebugError::postInfo("XtNativePopupMenu::PopUp", "PopUp() at (%3d, %3d) - (%3d, %3d)",
-//    x, y, x_off, y_off);
+  pos.x_root = x + shellx + 2;
+  pos.y_root = y + shelly + 2;
+
   XmMenuPosition(this->popup, &pos);
   XtManageChild(this->popup);
-//  SoDebugError::postInfo("XtNativePopupMenu::PopUp", "menu popped up");
 } // popUp()
 
 // *************************************************************************
