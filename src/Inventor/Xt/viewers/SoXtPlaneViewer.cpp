@@ -51,7 +51,13 @@ static const char rcsid[] =
 #include <Inventor/Xt/common/pixmaps/x.xpm>
 #include <Inventor/Xt/common/pixmaps/y.xpm>
 #include <Inventor/Xt/common/pixmaps/z.xpm>
-#endif // HAVE_LIBXPM
+#else // !HAVE_LIBXPM
+static char ** ortho_xpm = NULL;
+static char ** perspective_xpm = NULL;
+static char ** x_xpm = NULL;
+static char ** y_xpm = NULL;
+static char ** z_xpm = NULL;
+#endif // !HAVE_LIBXPM
 
 // *************************************************************************
 
