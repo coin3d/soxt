@@ -574,8 +574,10 @@ set_values(
   ArgList args,
   Cardinal * num_args )
 {
-  Boolean redisplay = False;
+  Boolean redisplay = True;
+#if SOXT_DEBUG
   SOXT_STUB();
+#endif // SOXT_DEBUG
   return redisplay;
 } // set_values()
 
