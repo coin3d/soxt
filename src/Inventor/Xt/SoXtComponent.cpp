@@ -90,6 +90,9 @@ SoXtComponent::SoXtComponent( // protected
   this->firstRealize = TRUE;
   this->widget = NULL;
 
+  this->close_callbacks = NULL;
+  this->visibility_callbacks = NULL;
+
   this->size = SbVec2s( -1, -1 );
 
   if ( name && strlen(name) > 0 )
@@ -140,6 +143,7 @@ SoXtComponent::SoXtComponent( // protected
   if ( parent ) {
     if ( parent == SoXt::getTopLevelWidget() )
       this->embedded = FALSE;
+// FIXME: decide on this issue
 //    else if ( XtIsShell(parent) )
 //      this->embedded = FALSE;
   }
@@ -157,6 +161,18 @@ SoXtComponent::~SoXtComponent( // virtual
   delete [] this->widgetClass;
   delete [] this->title;
   delete [] this->iconTitle;
+  if ( this->close_callbacks != NULL ) {
+    const int num = this->close_callbacks->getLength();
+    for ( int i = 0; i < num; i++ )
+      delete (*this->close_callbacks)[i];
+    delete this->close_callbacks;
+  }
+  if ( this->visibility_callbacks != NULL ) {
+    const int num = this->visibility_callbacks->getLength();
+    for ( int i = 0; i < num; i++ )
+      delete (*this->visibility_callbacks)[i];
+    delete this->visibility_callbacks;
+  }
 } // ~SoXtComponent()
 
 // *************************************************************************
@@ -430,17 +446,88 @@ SoXtComponent::getIconTitle(
   return this->iconTitle ? this->iconTitle : this->getDefaultIconTitle();
 } // getIconTitle()
 
+// *************************************************************************
+
+struct SoXtWindowCloseCallbackInfo {
+  SoXtComponentCB * callback;
+  void * closure;
+};
+
 /*!
-  This method should be 
+  This method adds window close callbacks to the Component window.
 */
 
-void      
+void
 SoXtComponent::setWindowCloseCallback(
-  SoXtComponentCB * func,
-  void * data )
+  SoXtComponentCB * callback,
+  void * closure )
 {
-  SOXT_STUB();
+  this->addWindowCloseCallback( callback, closure );
 } // setWindowCloseAction()
+
+/*!
+  This method is not standard for Open Inventor.
+*/
+
+void
+SoXtComponent::addWindowCloseCallback(
+  SoXtComponentCB * callback,
+  void * closure )
+{
+  if ( this->close_callbacks == NULL )
+    this->close_callbacks = new SbPList;
+  SoXtWindowCloseCallbackInfo * info = new SoXtWindowCloseCallbackInfo;
+  info->callback = callback;
+  info->closure = closure;
+  this->close_callbacks->append( info );
+} // addWindowCloseCallback()
+
+/*!
+  This method is not standard for Open Inventor.
+*/
+
+void
+SoXtComponent::removeWindowCloseCallback(
+  SoXtComponentCB * callback,
+  void * closure )
+{
+  if ( this->close_callbacks != NULL ) {
+    const int num = this->close_callbacks->getLength();
+    for ( int i = 0; i < num; i++ ) {
+      SoXtWindowCloseCallbackInfo * info =
+        (SoXtWindowCloseCallbackInfo *) (*this->close_callbacks)[i];
+      if ( info->callback == callback && info->closure == closure ) {
+        this->close_callbacks->remove( i );
+        delete info;
+        return;
+      }
+    }
+  }
+#if SOXT_DEBUG
+  SoDebugError::post( "SoXtComponent::removeWindowCloseCallback",
+    "trying to remove nonexisting callback" );
+#endif // SOXT_DEBUG
+} // removeWindowCloseCallback()
+
+/*!
+  This method is not standard for Open Inventor.
+*/
+
+void
+SoXtComponent::invokeWindowCloseCallbacks( // protected
+  void ) const
+{
+  if ( this->close_callbacks == NULL )
+    return;
+  const int num = this->close_callbacks->getLength();
+  for ( int i = 0; i < num; i++ ) {
+    SoXtWindowCloseCallbackInfo * info =
+      (SoXtWindowCloseCallbackInfo *) (*this->close_callbacks)[i];
+    info->callback( info->closure, this );
+  }
+} // invokeWindowCloseCallbacks()
+
+// *************************************************************************
 
 /*!
   This method returns the SoXtComponent object \a widget is registered
@@ -635,24 +722,72 @@ SoXtComponent::unregisterWidget( // protected
 
 // *************************************************************************
 
+struct SoXtComponentVisibilityCallbackInfo {
+  SoXtComponentVisibilityCB * callback;
+  void * closure;
+};
+
 /*!
 */
 
 void
 SoXtComponent::addVisibilityChangeCallback( // protected
-  SoXtComponentVisibilityCB * func,
-  void * user )
+  SoXtComponentVisibilityCB * callback,
+  void * closure )
 {
-  SOXT_STUB();
+  if ( this->visibility_callbacks == NULL )
+    this->visibility_callbacks = new SbPList;
+  SoXtComponentVisibilityCallbackInfo * info =
+    new SoXtComponentVisibilityCallbackInfo;
+  this->visibility_callbacks->append( info );
 } // addVisibilityChangeCallback()
+
+/*!
+*/
 
 void
 SoXtComponent::removeVisibilityChangeCallback( // protected
-  SoXtComponentVisibilityCB * func,
-  void * user )
+  SoXtComponentVisibilityCB * callback,
+  void * closure )
 {
-  SOXT_STUB();
+  if ( this->visibility_callbacks != NULL ) {
+    const int num = this->visibility_callbacks->getLength();
+    for ( int i = 0; i < num; i++ ) {
+      SoXtComponentVisibilityCallbackInfo * info =
+        (SoXtComponentVisibilityCallbackInfo *)
+          (*this->visibility_callbacks)[i];
+      if ( info->callback == callback && info->closure == closure ) {
+        this->visibility_callbacks->remove( i );
+        delete info;
+        return;
+      }
+    }
+  }
+#if SOXT_DEBUG
+  SoDebugError::post( "SoXtComponent::removeVisibilityChangeCallback",
+    "Tried to remove nonexistent callback." );
+#endif // SOXT_DEBUG
 } // removeVisibilityChangeCallback()
+
+/*!
+*/
+
+void
+SoXtComponent::invokeVisibilityChangeCallbacks( // protected
+  const SbBool enable ) const
+{
+  if ( this->visibility_callbacks == NULL )
+    return;
+  const int num = this->visibility_callbacks->getLength();
+  for ( int i = 0; i < num; i++ ) {
+    SoXtComponentVisibilityCallbackInfo * info =
+      (SoXtComponentVisibilityCallbackInfo *)
+        (*this->visibility_callbacks)[i];
+    info->callback( info->closure, enable );
+  }
+} // invokeVisibilityChangeCallbacks()
+
+// *************************************************************************
 
 /*!
   This method is used to open component help cards.  \a name is the name of

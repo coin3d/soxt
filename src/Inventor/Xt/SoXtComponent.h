@@ -34,8 +34,8 @@ class SoXtComponent;
 
 // *************************************************************************
 
-typedef void SoXtComponentCB( void * user, SoXtComponent * component );
-typedef void SoXtComponentVisibilityCB( void * user, SbBool enable );
+typedef void SoXtComponentCB( void * closure, SoXtComponent * component );
+typedef void SoXtComponentVisibilityCB( void * closure, SbBool enable );
 
 class SOXT_DLL_EXPORT SoXtComponent {
 public:
@@ -67,7 +67,11 @@ public:
   const char * getIconTitle(void) const;
 
   void setWindowCloseCallback(
-    SoXtComponentCB * func, void * user = NULL );
+    SoXtComponentCB * callback, void * closure = NULL );
+  void addWindowCloseCallback(
+    SoXtComponentCB * callback, void * closure = NULL );
+  void removeWindowCloseCallback(
+    SoXtComponentCB * callback, void * closure = NULL );
 
   static SoXtComponent * getComponent( Widget widget );
 
@@ -91,9 +95,12 @@ protected:
   void unregisterWidget( Widget widget );
 
   void addVisibilityChangeCallback(
-    SoXtComponentVisibilityCB * func, void * user = NULL );
+    SoXtComponentVisibilityCB * callback, void * closure = NULL );
   void removeVisibilityChangeCallback(
-    SoXtComponentVisibilityCB * func, void * user = NULL );
+    SoXtComponentVisibilityCB * callback, void * closure = NULL );
+
+  void invokeVisibilityChangeCallbacks( const SbBool enable ) const;
+  void invokeWindowCloseCallbacks(void) const;
 
   void openHelpCard( const char * name );
 
@@ -116,6 +123,9 @@ private:
 
   static SbPList * widgets;
   static SbPList * components;
+
+  SbPList * close_callbacks;
+  SbPList * visibility_callbacks;
 
 }; // class SoXtComponent
 
