@@ -76,22 +76,16 @@ So@Gui@Basic.h: $(srcdir)/common/SoGuiBasic.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 So@Gui@Cursors.h: $(srcdir)/common/SoGuiCursors.h.in
-	@( cd $(top_builddir); $(MAKE) src/Inventor/@Gui@/So@Gui@Cursors.h )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 So@Gui@Cursors.cpp: $(srcdir)/common/SoGuiCursors.cpp.in
-	@( cd $(top_builddir); $(MAKE) src/Inventor/@Gui@/So@Gui@Cursors.cpp )
-
-SoAny.h: $(srcdir)/common/SoAny.h.in
-	@( cd $(top_builddir); $(MAKE) src/Inventor/@Gui@/SoAny.h )
-
-SoAny.cpp: $(srcdir)/common/SoAny.cpp.in
-	@( cd $(top_builddir); $(MAKE) src/Inventor/@Gui@/SoAny.cpp )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 So@Gui@Object.h: $(srcdir)/common/SoGuiObject.h.in
-	@( cd $(top_builddir); $(MAKE) src/Inventor/@Gui@/So@Gui@Object.h )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 So@Gui@Object.cpp: $(srcdir)/common/SoGuiObject.cpp.in
-	@( cd $(top_builddir); $(MAKE) src/Inventor/@Gui@/So@Gui@Object.cpp )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 So@Gui@RenderArea.h: $(srcdir)/common/SoGuiRenderArea.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
