@@ -166,7 +166,7 @@ SoXtDevice::setWindowSize(const SbVec2s size)
   This method returns the cached window size.
 */
 
-const SbVec2s
+SbVec2s
 SoXtDevice::getWindowSize(void) const
 {
   return PRIVATE(this)->size;
@@ -245,16 +245,25 @@ SoXtDevice::removeEventHandler(Widget widget,
 */
 
 void
-SoXtDevice::invokeHandlers(XEvent * const event)
+SoXtDevice::invokeHandlers(XAnyEvent * event)
 {
   if (PRIVATE(this)->handlers) {
     Boolean dispatch = False;
     for (int i = 0; i < PRIVATE(this)->handlers->getLength(); i++) {
       SoXtDeviceHandlerInfo * info =
         (SoXtDeviceHandlerInfo *) (*PRIVATE(this)->handlers)[i];
-      info->handler(info->widget, info->closure, event, &dispatch);
+      info->handler(info->widget, info->closure, (XEvent *)event, &dispatch);
     }
   }
+}
+
+// *************************************************************************
+
+SbVec2s
+SoXtDevice::getLastEventPosition(void)
+{
+  SOXT_STUB();
+  return SbVec2s(0, 0);
 }
 
 // *************************************************************************

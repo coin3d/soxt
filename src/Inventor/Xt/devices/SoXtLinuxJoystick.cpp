@@ -529,7 +529,7 @@ SoXtLinuxJoystickP::input(int * source, XtInputId * id)
     xevent.button = button;
     xevent.buttons = this->numbuttons;
 
-    PUBLIC(this)->invokeHandlers((XEvent *) &xevent);
+    PUBLIC(this)->invokeHandlers((XAnyEvent *) &xevent);
   }
 
   if (motion != FALSE) {
@@ -569,7 +569,7 @@ SoXtLinuxJoystickP::input(int * source, XtInputId * id)
         this->rotationScaleFactor * float(this->axisvalues[5]);
     } while (FALSE);
 
-    PUBLIC(this)->invokeHandlers((XEvent *) &xevent);
+    PUBLIC(this)->invokeHandlers((XAnyEvent *) &xevent);
   }
 #endif // HAVE_JOYSTICK_LINUX
 }
