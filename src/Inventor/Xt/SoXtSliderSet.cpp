@@ -156,6 +156,17 @@ SoXtSliderSet::setNode( // virtual
 
 /*!
 */
+void
+SoXtSliderSet::updateLayout(
+  void )
+{
+  SOXT_STUB();
+}
+
+// *************************************************************************
+
+/*!
+*/
 
 Widget
 SoXtSliderSet::buildWidget( // protected

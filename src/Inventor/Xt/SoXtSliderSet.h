@@ -40,6 +40,7 @@ public:
     SoNode * const node );
 
   virtual void setNode( SoNode * node );
+  void updateLayout( void );
 
 protected:
   SoXtSliderSet(
