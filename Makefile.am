@@ -31,12 +31,10 @@ CLEANFILES = \
 
 DISTCLEANFILES = \
 	$(SoGui_BuiltFiles) \
-	$(SoGui_BuiltMetaFiles) \
-	build/so@gui@.doxygen
+	$(SoGui_BuiltMetaFiles)
 
 EXTRA_DIST = \
 	build/so@gui@.spec.in \
-	build/so@gui@.doxygen.in \
 	$(SoGuiCommonDistFiles)
 
 if BUILD_LIBRARY
