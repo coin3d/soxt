@@ -39,8 +39,6 @@ static const char rcsid[] =
   \class SoXtResource Inventor/Xt/SoXtResource.h
   \brief The SoXtResource class is a utility class for fetching X resource
   values for widgets.  Special care is taken for SoXt components.
-
-  The SoXtResource objects are
 */
 
 // *************************************************************************
@@ -74,8 +72,11 @@ SoXtResource::SoXtResource(
   Widget stop = NULL;
 
   SoXtComponent * component = SoXtComponent::getComponent( widget );
-  if ( component )
-    stop = XtParent( component->getWidget() );
+  if ( component != NULL ) {
+    Widget cwidget = component->getWidget();
+    if ( cwidget != NULL )
+      stop = XtParent( cwidget );
+  }
 
   Widget w = widget;
   while ( w && w != stop ) {
@@ -86,7 +87,9 @@ SoXtResource::SoXtResource(
       break;
     if ( (component == NULL) &&
          ((component = SoXtComponent::getComponent( w )) != NULL) ) {
-      stop = XtParent( component->getWidget() );
+      Widget cwidget = component->getWidget();
+      if ( cwidget != NULL )
+        stop = XtParent( cwidget );
     }
     w = XtParent( w );
   }
@@ -125,7 +128,11 @@ SoXtResource::~SoXtResource(
   delete [] this->class_hierarchy;
 } // ~SoXtResource()
 
+// *************************************************************************
+
 /*!
+  This method just dumps the name and class hierarchy of the widget the
+  SoXtResource object is set to.
 */
 
 void
@@ -209,6 +216,8 @@ SoXtResource::getResource(
   return FALSE;
 } // getResource()
 
+// *************************************************************************
+
 /*!
   This method retrieves the given X resource and puts it into the
   short \a retval.
@@ -224,17 +233,29 @@ SoXtResource::getResource(
 {
   GET_RESOURCE();
 
-  if ( ! formatstr ) {
-    SoDebugError::postInfo( "getResource", "resource format (quark) = %s\n",
-      XrmQuarkToString(format) );
-  } else {
-    SoDebugError::postInfo( "getResource", "resource format = %s\n",
-      formatstr );
+  XrmQuark shortq = XrmStringToQuark( XmRShort );
+  XrmQuark stringq = XrmStringToQuark( XmRString );
+
+  if ( formatstr != NULL )
+    format = XrmStringToQuark( formatstr );
+
+  if ( format == shortq ) {
+    retval = *((short *) value.addr);
+    return TRUE;
+  }
+  if ( format == stringq ) {
+    retval = atoi( (char *) value.addr );
+    return TRUE;
   }
 
-  SOXT_STUB_ONCE();
+#if SOXT_DEBUG
+  SoDebugError::postInfo( "getResource",
+    "resource format \"%s\" not supported\n", XrmQuarkToString( format ) );
+#endif // SOXT_DEBUG
   return FALSE;
 } // getResource()
+
+// *************************************************************************
 
 /*!
   This method retrieves the given X resource and puts it into the
@@ -251,17 +272,30 @@ SoXtResource::getResource(
 {
   GET_RESOURCE();
 
-  if ( ! formatstr ) {
-    SoDebugError::postInfo( "getResource", "resource format (quark) = %s\n",
-      XrmQuarkToString(format) );
-  } else {
-    SoDebugError::postInfo( "getResource", "resource format = %s\n",
-      formatstr );
+  XrmQuark stringq = XrmStringToQuark( XmRString );
+  XrmQuark shortq = XrmStringToQuark( XmRShort );
+
+  if ( formatstr != NULL )
+    format = XrmStringToQuark( formatstr );
+
+  if ( format == shortq ) {
+    retval = *((unsigned short *) value.addr);
+    return TRUE;
   }
 
-  SOXT_STUB_ONCE();
+  if ( format == stringq ) {
+    retval = atoi( (char *) value.addr );
+    return TRUE;
+  }
+  
+#if SOXT_DEBUG
+  SoDebugError::postInfo( "getResource",
+    "resource format \"%s\" not supported\n", XrmQuarkToString( format ) );
+#endif // SOXT_DEBUG
   return FALSE;
 } // getResource()
+
+// *************************************************************************
 
 /*!
   This method retrieves the given X resource and points the \a retval
@@ -278,18 +312,24 @@ SoXtResource::getResource(
 {
   GET_RESOURCE();
 
-  XrmQuark strq = XrmStringToQuark( XmRString );
+  XrmQuark stringq = XrmStringToQuark( XmRString );
+
   if ( formatstr != NULL )
     format = XrmStringToQuark( formatstr );
 
-  if ( strq != format ) {
-    SoDebugError::postInfo( "getResource",
-      "resource format \"%s\" not supported\n", XrmQuarkToString( format ) );
-    return FALSE;
+  if ( format == stringq ) {
+    retval = (char *) value.addr;
+    return TRUE;
   }
-  retval = (char *) value.addr;
-  return TRUE;
+
+#if SOXT_DEBUG
+  SoDebugError::postInfo( "getResource",
+    "resource format \"%s\" not supported\n", XrmQuarkToString( format ) );
+#endif // SOXT_DEBUG
+  return FALSE;
 } // getResource()
+
+// *************************************************************************
 
 /*!
   This method retrieves the given X resource and puts it into the
@@ -306,17 +346,47 @@ SoXtResource::getResource(
 {
   GET_RESOURCE();
 
-  if ( ! formatstr ) {
-    SoDebugError::postInfo( "getResource", "resource format (quark) = %s\n",
-      XrmQuarkToString(format) );
-  } else {
-    SoDebugError::postInfo( "getResource", "resource format = %s\n",
-      formatstr );
+  XrmQuark stringq = XrmStringToQuark( XmRString );
+  XrmQuark booleanq = XrmStringToQuark( XmRBoolean );
+
+  if ( formatstr != NULL )
+    format = XrmStringToQuark( formatstr );
+
+  if ( format == booleanq ) {
+    retval = *((Boolean *) value.addr) ? TRUE : FALSE;
+    return TRUE;
   }
 
-  SOXT_STUB_ONCE();
+  if ( format == stringq ) {
+    if ( strcasecmp( (char *) value.addr, "true" ) == 0 ||
+         strcasecmp( (char *) value.addr, "on" ) == 0 ||
+         strcasecmp( (char *) value.addr, "yes" ) == 0 ||
+         strcasecmp( (char *) value.addr, "enable" ) == 0 ||
+         strcasecmp( (char *) value.addr, "1" ) == 0 ) {
+      retval = TRUE;
+      return TRUE;
+    } else if ( strcasecmp( (char *) value.addr, "false" ) == 0 ||
+                strcasecmp( (char *) value.addr, "off" ) == 0 ||
+                strcasecmp( (char *) value.addr, "no" ) == 0 ||
+                strcasecmp( (char *) value.addr, "disable" ) == 0 ||
+                strcasecmp( (char *) value.addr, "0" ) == 0 ) {
+      retval = FALSE;
+      return TRUE;
+    } else {
+      SoDebugError::postWarning( "getResource",
+        "string \"%s\" not understood", (char *) value.addr );
+      return FALSE;
+    }
+  }
+
+#if SOXT_DEBUG
+  SoDebugError::postInfo( "getResource",
+    "resource format \"%s\" not supported\n", XrmQuarkToString( format ) );
+#endif // SOXT_DEBUG
   return FALSE;
 } // getResource()
+
+// *************************************************************************
 
 /*!
   This method retrieves the given X resource and puts it into the
@@ -333,15 +403,26 @@ SoXtResource::getResource(
 {
   GET_RESOURCE();
 
-  if ( ! formatstr ) {
-    SoDebugError::postInfo( "getResource", "resource format (quark) = %s\n",
-      XrmQuarkToString(format) );
-  } else {
-    SoDebugError::postInfo( "getResource", "resource format = %s\n",
-      formatstr );
+  XrmQuark stringq = XrmStringToQuark( XmRString );
+  XrmQuark floatq = XrmStringToQuark( XmRFloat );
+
+  if ( formatstr != NULL )
+    format = XrmStringToQuark( formatstr );
+
+  if ( format == floatq ) {
+    retval = *((float *) value.addr);
+    return TRUE;
   }
 
-  SOXT_STUB_ONCE();
+  if ( format == stringq ) {
+    retval = atof( (char *) value.addr );
+    return TRUE;
+  }
+
+#if SOXT_DEBUG
+  SoDebugError::postInfo( "getResource",
+    "resource format \"%s\" not supported\n", XrmQuarkToString( format ) );
+#endif // SOXT_DEBUG
   return FALSE;
 } // getResource()
 
