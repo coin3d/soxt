@@ -421,7 +421,11 @@ init_pixmaps(SoXtThumbWheelWidget widget)
                 XmNcolormap, &colormap,
                 XmNdepth, &depth,
                 NULL);
-  assert(visual != (Visual *) NULL);
+  //assert(visual != (Visual *) NULL);
+  if(!visual) {
+    int snum = XDefaultScreen(dpy);
+    visual = XDefaultVisual(dpy, snum);
+  }
 
   if ( colormap == 0 )
     colormap = DefaultColormapOfScreen(screen);

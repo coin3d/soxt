@@ -110,6 +110,12 @@ SoXtInternal::createPixmapFromXpm(Widget widget, const char ** xpm, SbBool ghost
                 XmNvisual,   &attrs.visual,
                 NULL);
 
+  // CAT_MOD
+  if(!attrs.visual) {
+    int snum = XDefaultScreen(dpy);
+    attrs.visual = XDefaultVisual(dpy, snum);
+  }
+
   attrs.valuemask = XpmVisual | XpmColormap | XpmDepth;
 
   Drawable draw = RootWindow(dpy, DefaultScreen(dpy));
