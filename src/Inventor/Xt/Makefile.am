@@ -21,20 +21,6 @@ noinst_DATA = $(BUILT_SOURCES)
 ############################################################################
 ##
 
-# libSoXtVPATH = . $(srcdir)
-# 
-# .cpp.lo:
-# 	@( source='$<'; \
-# 	for dir in $(libSoXtVPATH); do \
-# 	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
-# 	done; \
-# 	eval "$(CXXDEPMODE)"; \
-# 	: $${depmode=none}; \
-# 	source="$$source" \
-# 	object='$@' libtool=no \
-# 	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
-# 	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
-
 libSoXt_la_SOURCES = \
 	$(BUILT_SOURCES) \
 	SoXt.h \
@@ -136,23 +122,5 @@ libSoXtinc_HEADERS = \
 	SoXtTransformSliderSet.h \
 	$(top_builddir)/src/Inventor/Xt/SoXtBasic.h \
 	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.h
-
-install-libSoXtincHEADERS: $(libSoXtinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libSoXtincdir)
-	@list='$(libSoXtinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtincdir)/$$f; \
-	done
-
-uninstall-libSoXtincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libSoXtinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libSoXtincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libSoXtincdir)/$$f; \
-	done
 
 ############################################################################

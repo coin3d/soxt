@@ -128,8 +128,6 @@ BUILT_SOURCES = \
 
 ############################################################################
 
-libSoXtViewersVPATH = . $(srcdir)
-
 libSoXtViewers_la_SOURCES = \
 	$(BUILT_SOURCES) \
 	SoXtViewerExtra.cpp \
@@ -260,6 +258,24 @@ maintainer-clean-libtool:
 libSoXtViewers.la: $(libSoXtViewers_la_OBJECTS) $(libSoXtViewers_la_DEPENDENCIES)
 	$(CXXLINK)  $(libSoXtViewers_la_LDFLAGS) $(libSoXtViewers_la_OBJECTS) $(libSoXtViewers_la_LIBADD) $(LIBS)
 
+install-libSoXtViewersincHEADERS: $(libSoXtViewersinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libSoXtViewersincdir)
+	@list='$(libSoXtViewersinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtViewersincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtViewersincdir)/$$f; \
+	done
+
+uninstall-libSoXtViewersincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libSoXtViewersinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libSoXtViewersincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libSoXtViewersincdir)/$$f; \
+	done
+
 tags: TAGS
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
@@ -325,6 +341,12 @@ maintainer-clean-depend:
 @AMDEP@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(CXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
+
+.cpp.lo:
+@AMDEP@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
+@AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LTCXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
@@ -424,18 +446,6 @@ distclean-generic clean-generic maintainer-clean-generic clean \
 mostlyclean distclean maintainer-clean
 
 
-.cpp.lo:
-	@( source='$<'; \
-	for dir in $(libSoXtViewersVPATH); do \
-	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
-	done; \
-	eval "$(CXXDEPMODE)"; \
-	: $${depmode=none}; \
-	source="$$source" \
-	object='$@' libtool=no \
-	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
-	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
-
 ############################################################################
 #
 
@@ -490,24 +500,6 @@ SoAnyWalkViewer.h: \
 SoAnyWalkViewer.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoAnyWalkViewer.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
-
-install-libSoXtViewersincHEADERS: $(libSoXtViewersinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libSoXtViewersincdir)
-	@list='$(libSoXtViewersinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtViewersincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtViewersincdir)/$$f; \
-	done
-
-uninstall-libSoXtViewersincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libSoXtViewersinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libSoXtViewersincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libSoXtViewersincdir)/$$f; \
-	done
 
 ############################################################################
 

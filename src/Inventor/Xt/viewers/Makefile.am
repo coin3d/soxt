@@ -26,20 +26,6 @@ BUILT_SOURCES = \
 ############################################################################
 ##
 
-libSoXtViewersVPATH = . $(srcdir)
-
-.cpp.lo:
-	@( source='$<'; \
-	for dir in $(libSoXtViewersVPATH); do \
-	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
-	done; \
-	eval "$(CXXDEPMODE)"; \
-	: $${depmode=none}; \
-	source="$$source" \
-	object='$@' libtool=no \
-	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
-	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
-
 libSoXtViewers_la_SOURCES = \
 	$(BUILT_SOURCES) \
 	SoXtViewerExtra.cpp \
@@ -127,23 +113,5 @@ libSoXtViewersinc_HEADERS = \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtFlyViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtWalkViewer.h \
 	$(top_srcdir)/src/Inventor/Xt/viewers/SoXtCollisionViewer.h
-
-install-libSoXtViewersincHEADERS: $(libSoXtViewersinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libSoXtViewersincdir)
-	@list='$(libSoXtViewersinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtViewersincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtViewersincdir)/$$f; \
-	done
-
-uninstall-libSoXtViewersincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libSoXtViewersinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libSoXtViewersincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libSoXtViewersincdir)/$$f; \
-	done
 
 ############################################################################

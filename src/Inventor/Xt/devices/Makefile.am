@@ -32,21 +32,6 @@ libSoXtDevicesConditionalHeaders = \
 	$(libSoXtDevicesLinuxJoystickHeaders)
 
 ############################################################################
-## Build rule that accommodates for poor VPATH support
-
-libSoXtDevicesVPATH = . $(srcdir)
-
-.cpp.lo:
-	@( source='$<'; \
-	for dir in $(libSoXtDevicesVPATH); do \
-	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
-	done; \
-	eval "$(CXXDEPMODE)"; \
-	: $${depmode=none}; \
-	source="$$source" \
-	object='$@' libtool=no \
-	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
-	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
 
 libSoXtDevices_la_SOURCES = \
 	SoXtDevice.h \
@@ -90,22 +75,3 @@ libSoXtDevicesinc_HEADERS = \
 	SoXtMouse.h \
 	SoXtSpaceball.h \
 	$(libSoXtDevicesConditionalHeaders)
-
-install-libSoXtDevicesincHEADERS: $(libSoXtDevicesinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libSoXtDevicesincdir)
-	@list='$(libSoXtDevicesinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtDevicesincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtDevicesincdir)/$$f; \
-	done
-
-uninstall-libSoXtDevicesincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libSoXtDevicesinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libSoXtDevicesincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libSoXtDevicesincdir)/$$f; \
-	done
-

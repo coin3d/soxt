@@ -123,20 +123,6 @@ noinst_DATA = $(BUILT_SOURCES)
 
 ############################################################################
 
-# libSoXtVPATH = . $(srcdir)
-# 
-# .cpp.lo:
-# 	@( source='$<'; \
-# 	for dir in $(libSoXtVPATH); do \
-# 	  test ! -f "$$source" && test -f "$$dir/$<" && source="$$dir/$<"; \
-# 	done; \
-# 	eval "$(CXXDEPMODE)"; \
-# 	: $${depmode=none}; \
-# 	source="$$source" \
-# 	object='$@' libtool=no \
-# 	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
-# 	depmode=$$depmode $(depcomp) $(LTCXXCOMPILE) -c -o $@ "$$source"; )
-
 libSoXt_la_SOURCES = \
 	$(BUILT_SOURCES) \
 	SoXt.h \
@@ -325,6 +311,24 @@ maintainer-clean-libtool:
 
 libSoXt.la: $(libSoXt_la_OBJECTS) $(libSoXt_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libSoXt_la_LDFLAGS) $(libSoXt_la_OBJECTS) $(libSoXt_la_LIBADD) $(LIBS)
+
+install-libSoXtincHEADERS: $(libSoXtinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libSoXtincdir)
+	@list='$(libSoXtinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtincdir)/$$f; \
+	done
+
+uninstall-libSoXtincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libSoXtinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libSoXtincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libSoXtincdir)/$$f; \
+	done
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run `make' without going through this Makefile.
@@ -608,24 +612,6 @@ SoAnyMaterialList.cpp: $(srcdir)/common/SoAnyMaterialList.cpp.in
 
 SoAnyMaterialListBuiltins.cpp: $(srcdir)/common/SoAnyMaterialListBuiltins.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
-
-install-libSoXtincHEADERS: $(libSoXtinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libSoXtincdir)
-	@list='$(libSoXtinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtincdir)/$$f; \
-	done
-
-uninstall-libSoXtincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libSoXtinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libSoXtincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libSoXtincdir)/$$f; \
-	done
 
 ############################################################################
 
