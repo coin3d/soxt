@@ -82,6 +82,7 @@ SoXtGLWidgetP::SoXtGLWidgetP(SoXtGLWidget * w)
   this->overlaycontext = NULL;
   this->overlayvisual = NULL;
   this->doublebuffer = TRUE;
+  this->enablealphachannel = FALSE;
 }
 
 SoXtGLWidgetP::~SoXtGLWidgetP()
@@ -388,6 +389,33 @@ SbBool
 SoXtGLWidget::getStencilBuffer(void) const
 {
   return FALSE;
+}
+
+/*!
+  Enables/disables an alpha channel for the rendering context.
+*/
+void 
+SoXtGLWidget::setAlphaChannel(const SbBool enable)
+{
+
+  SOXT_STUB();
+  PRIVATE(this)->enablealphachannel = FALSE;
+
+  // FIXME: As the GLX context is initialized at startup, changing the
+  // 'enablealphachannel' flag will have no effect on the current
+  // context. A proper destruction and reconstruction of the context
+  // must be done here to make this work. (20031201 handegar)
+
+}
+
+/*!
+  Returns whether the an alpha channel is enabled.
+*/
+SbBool 
+SoXtGLWidget::getAlphaChannel(void) const
+{
+  SOXT_STUB();
+  return PRIVATE(this)->enablealphachannel; // See fixme in 'setAlphaChannel'
 }
 
 void 
@@ -706,6 +734,7 @@ buildGLAttrs(int * attrs, int trynum)
   attrs[pos++] = None;
   return pos;
 }
+
 
 // Documented in common/SoGuiGLWidgetCommon.cpp.in.
 Widget

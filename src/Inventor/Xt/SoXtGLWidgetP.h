@@ -58,6 +58,7 @@ public:
   GLXContext overlaycontext;
   XVisualInfo * overlayvisual;
   SbBool doublebuffer;
+  SbBool enablealphachannel;
 
 protected:
   virtual SbBool isDirectRendering(void);
