@@ -22,20 +22,6 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-// *************************************************************************
-
-/*!
-  \class SoXtFullViewer Inventor/Xt/SoXtFullViewer.h
-  \brief The SoXtFullViewer class adds GUI decorations to the viewer component.
-  \ingroup components viewers
-*/
-
-// *************************************************************************
-
-#if HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
@@ -60,6 +46,20 @@ static const char rcsid[] =
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 
+#include <soxtdefs.h>
+#include <Inventor/Xt/SoXtBasic.h>
+#include <Inventor/Xt/SoXt.h>
+#include <Inventor/Xt/SoXtResource.h>
+#include <Inventor/Xt/widgets/SoXtThumbWheel.h>
+#include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
+
+#include <Inventor/Xt/viewers/SoAnyFullViewer.h>
+#include <Inventor/Xt/viewers/SoXtFullViewer.h>
+
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #if HAVE_LIBXPM
 #include <X11/xpm.h>
 #include <Inventor/Xt/common/pixmaps/pick.xpm>
@@ -71,19 +71,23 @@ static const char rcsid[] =
 #include <Inventor/Xt/common/pixmaps/seek.xpm>
 #endif // HAVE_LIBXPM
 
-#include <soxtdefs.h>
-#include <Inventor/Xt/SoXtBasic.h>
-#include <Inventor/Xt/SoXt.h>
-#include <Inventor/Xt/SoXtResource.h>
-#include <Inventor/Xt/widgets/SoXtThumbWheel.h>
-#include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
-
-#include <Inventor/Xt/viewers/SoAnyFullViewer.h>
-#include <Inventor/Xt/viewers/SoXtFullViewer.h>
-
 #ifndef M_PI
 #define M_PI 3.1415926535f
 #endif // ! M_PI
+
+// *************************************************************************
+
+/*!
+  \class SoXtFullViewer Inventor/Xt/SoXtFullViewer.h
+  \brief The SoXtFullViewer class adds GUI decorations to the viewer component.
+  \ingroup components viewers
+*/
+
+// *************************************************************************
+
+SOXT_TYPED_ABSTRACT_OBJECT_SOURCE(SoXtFullViewer, SoXtViewer);
+
+// *************************************************************************
 
 enum DefaultViewerButtons {
   INTERACT_BUTTON = 0,

@@ -22,15 +22,6 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-// *************************************************************************
-
-/*!
-  \class SoXtTransformSliderSet Inventor/Xt/SoXtTransformSliderSet.h
-  \brief The SoXtTransformSliderSet class is yet to be documented.
-*/
-
-// *************************************************************************
-
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #include <Xm/Form.h>
@@ -41,6 +32,17 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXtResource.h>
 
 #include <Inventor/Xt/SoXtTransformSliderSet.h>
+
+// *************************************************************************
+
+/*!
+  \class SoXtTransformSliderSet Inventor/Xt/SoXtTransformSliderSet.h
+  \brief The SoXtTransformSliderSet class is yet to be documented.
+*/
+
+// *************************************************************************
+
+SOXT_TYPED_OBJECT_SOURCE(SoXtTransformSliderSet, SoXtSliderSet);
 
 // *************************************************************************
 

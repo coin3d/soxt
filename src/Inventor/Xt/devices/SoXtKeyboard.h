@@ -31,6 +31,7 @@ class SoKeyboardEvent;
 // *************************************************************************
 
 class SOXT_DLL_EXPORT SoXtKeyboard : public SoXtDevice {
+  SOXT_TYPED_OBJECT_HEADER(SoXtKeyboard);
   typedef SoXtDevice inherited;
 
 public:

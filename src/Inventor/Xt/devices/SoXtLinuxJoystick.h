@@ -35,6 +35,7 @@ class SoSpaceballButtonEvent;
 // *************************************************************************
 
 class SOXT_DLL_EXPORT SoXtLinuxJoystick : public SoXtDevice {
+  SOXT_TYPED_OBJECT_HEADER(SoXtLinuxJoystick);
   typedef SoXtDevice inherited;
 
 public:

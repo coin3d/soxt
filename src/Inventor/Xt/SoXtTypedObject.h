@@ -22,6 +22,8 @@
 #ifndef SOXT_TYPEDOBJECT_H
 #define SOXT_TYPEDOBJECT_H
 
+#include <assert.h>
+
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>

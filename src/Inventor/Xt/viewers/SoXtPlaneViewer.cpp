@@ -22,25 +22,11 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-// *************************************************************************
-
-/*!
-  \class SoXtPlaneViewer Inventor/Xt/viewers/SoXtPlaneViewer.h
-  \brief The SoXtPlaneViewer class is an alternative to the examiner viewer.
-  \ingroup components viewers
-*/
-
-// *************************************************************************
-
 #include <assert.h>
 
 #include <X11/keysym.h>
 
 #include <Xm/PushB.h>
-
-#if HAVE_CONFIG_H
-#include <config.h> // for HAVE_LIBXPM
-#endif // HAVE_CONFIG_H
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
@@ -55,6 +41,10 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/viewers/SoXtPlaneViewer.h>
 
+#if HAVE_CONFIG_H
+#include <config.h> // for HAVE_LIBXPM
+#endif // HAVE_CONFIG_H
+
 #if HAVE_LIBXPM
 #include <Inventor/Xt/common/pixmaps/ortho.xpm>
 #include <Inventor/Xt/common/pixmaps/perspective.xpm>
@@ -62,6 +52,18 @@ static const char rcsid[] =
 #include <Inventor/Xt/common/pixmaps/y.xpm>
 #include <Inventor/Xt/common/pixmaps/z.xpm>
 #endif // HAVE_LIBXPM
+
+// *************************************************************************
+
+/*!
+  \class SoXtPlaneViewer Inventor/Xt/viewers/SoXtPlaneViewer.h
+  \brief The SoXtPlaneViewer class is an alternative to the examiner viewer.
+  \ingroup components viewers
+*/
+
+// *************************************************************************
+
+SOXT_TYPED_OBJECT_SOURCE(SoXtPlaneViewer, SoXtFullViewer);
 
 // *************************************************************************
 

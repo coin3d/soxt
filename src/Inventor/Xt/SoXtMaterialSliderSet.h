@@ -27,6 +27,7 @@
 // *************************************************************************
 
 class SOXT_DLL_EXPORT SoXtMaterialSliderSet : public SoXtSliderSet {
+  SOXT_TYPED_OBJECT_HEADER(SoXtMaterialSliderSet);
   typedef SoXtSliderSet inherited;
 
 public:

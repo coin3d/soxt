@@ -22,6 +22,13 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+#include <Inventor/errors/SoDebugError.h>
+
+#include <soxtdefs.h>
+#include <Inventor/Xt/SoXtBasic.h>
+#include <Inventor/Xt/viewers/SoAnyConstrainedViewer.h>
+#include <Inventor/Xt/viewers/SoXtConstrainedViewer.h>
+
 // *************************************************************************
 
 /*!
@@ -32,12 +39,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-#include <Inventor/errors/SoDebugError.h>
-
-#include <soxtdefs.h>
-#include <Inventor/Xt/SoXtBasic.h>
-#include <Inventor/Xt/viewers/SoAnyConstrainedViewer.h>
-#include <Inventor/Xt/viewers/SoXtConstrainedViewer.h>
+SOXT_TYPED_ABSTRACT_OBJECT_SOURCE(SoXtConstrainedViewer, SoXtFullViewer);
 
 // *************************************************************************
 

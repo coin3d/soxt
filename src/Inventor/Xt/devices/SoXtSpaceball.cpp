@@ -22,21 +22,6 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-// *************************************************************************
-
-/*!
-  \class SoXtSpaceball Inventor/Xt/devices/SoXtSpaceball.h
-  \brief The SoXtSpaceball class is the glue between Xt/Motif spaceball
-  handling and Inventor spaceball handling.
-  \ingroup devices
-
-  This class is not implemented yet.  Do not purchase a spaceball for use
-  with Coin unless you intend to use it through the Linux Joystick driver
-  (SoXtLinuxJoystick) at this moment.
-*/
-
-// *************************************************************************
-
 #include <assert.h>
 
 #include <X11/extensions/XInput.h>
@@ -53,6 +38,23 @@ typedef void * XPContext;
 #include <Inventor/Xt/SoXt.h>
 
 #include <Inventor/Xt/devices/SoXtSpaceball.h>
+
+// *************************************************************************
+
+/*!
+  \class SoXtSpaceball Inventor/Xt/devices/SoXtSpaceball.h
+  \brief The SoXtSpaceball class is the glue between Xt/Motif spaceball
+  handling and Inventor spaceball handling.
+  \ingroup devices
+
+  This class is not implemented yet.  Do not purchase a spaceball for use
+  with Coin unless you intend to use it through the Linux Joystick driver
+  (SoXtLinuxJoystick) at this moment.
+*/
+
+// *************************************************************************
+
+SOXT_TYPED_OBJECT_SOURCE(SoXtSpaceball, SoXtDevice);
 
 // *************************************************************************
 

@@ -31,6 +31,7 @@
 // *************************************************************************
 
 class SOXT_DLL_EXPORT SoXtSpaceball : public SoXtDevice {
+  SOXT_TYPED_OBJECT_HEADER(SoXtSpaceball);
   typedef SoXtDevice inherited;
 
 public:

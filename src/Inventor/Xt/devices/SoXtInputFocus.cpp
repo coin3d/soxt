@@ -22,6 +22,15 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+#include <X11/X.h>
+
+#include <Inventor/misc/SoBasic.h>
+
+#include <soxtdefs.h>
+#include <Inventor/Xt/SoXtBasic.h>
+
+#include <Inventor/Xt/devices/SoXtInputFocus.h>
+
 // *************************************************************************
 
 /*!
@@ -38,14 +47,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-#include <X11/X.h>
-
-#include <Inventor/misc/SoBasic.h>
-
-#include <soxtdefs.h>
-#include <Inventor/Xt/SoXtBasic.h>
-
-#include <Inventor/Xt/devices/SoXtInputFocus.h>
+SOXT_TYPED_OBJECT_SOURCE(SoXtInputFocus, SoXtDevice);
 
 // *************************************************************************
 

@@ -29,6 +29,7 @@ class SoNode;
 // *************************************************************************
 
 class SOXT_DLL_EXPORT SoXtTransformSliderSet : public SoXtSliderSet {
+  SOXT_TYPED_OBJECT_HEADER(SoXtTransformSliderSet);
   typedef SoXtSliderSet inherited;
 
 public:

@@ -37,6 +37,11 @@ static const char rcsid[] =
 #include <soxtdefs.h>
 
 #include <Inventor/Xt/devices/SoXtDevice.h>
+#include <Inventor/Xt/devices/SoXtInputFocus.h>
+#include <Inventor/Xt/devices/SoXtKeyboard.h>
+#include <Inventor/Xt/devices/SoXtMouse.h>
+#include <Inventor/Xt/devices/SoXtSpaceball.h>
+#include <Inventor/Xt/devices/SoXtLinuxJoystick.h>
 
 // *************************************************************************
 
@@ -51,10 +56,18 @@ static const char rcsid[] =
 
 // *************************************************************************
 
+SOXT_TYPED_ABSTRACT_OBJECT_SOURCE(SoXtDevice, SoXtTypedObject);
+
 void
 SoXtDevice::initClasses(
   void )
 {
+  SoXtDevice::initClass();
+  SoXtInputFocus::initClass();
+  SoXtKeyboard::initClass();
+  SoXtMouse::initClass();
+  SoXtSpaceball::initClass();
+  SoXtLinuxJoystick::initClass();
 } // initClasses()
 
 // *************************************************************************

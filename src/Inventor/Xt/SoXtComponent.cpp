@@ -47,6 +47,20 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXtGLWidget.h>
 #include <Inventor/Xt/SoXtRenderArea.h>
 #include <Inventor/Xt/viewers/SoXtViewer.h>
+#include <Inventor/Xt/viewers/SoXtFullViewer.h>
+#include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
+#include <Inventor/Xt/viewers/SoXtPlaneViewer.h>
+#include <Inventor/Xt/viewers/SoXtConstrainedViewer.h>
+#include <Inventor/Xt/viewers/SoXtWalkViewer.h>
+#include <Inventor/Xt/viewers/SoXtFlyViewer.h>
+#include <Inventor/Xt/SoXtSliderSetBase.h>
+#include <Inventor/Xt/SoXtSliderSet.h>
+#include <Inventor/Xt/SoXtLightSliderSet.h>
+#include <Inventor/Xt/SoXtMaterialSliderSet.h>
+#include <Inventor/Xt/SoXtTransformSliderSet.h>
+#include <Inventor/Xt/SoXtMaterialList.h>
+#include <Inventor/Xt/SoXtMaterialEditor.h>
+#include <Inventor/Xt/SoXtPrintDialog.h>
 
 // *************************************************************************
 
@@ -68,6 +82,20 @@ SoXtComponent::initClasses(
   SoXtGLWidget::initClass();
   SoXtRenderArea::initClass();
   SoXtViewer::initClass();
+  SoXtFullViewer::initClass();
+  SoXtExaminerViewer::initClass();
+  SoXtPlaneViewer::initClass();
+  SoXtConstrainedViewer::initClass();
+  SoXtWalkViewer::initClass();
+  SoXtFlyViewer::initClass();
+  SoXtSliderSetBase::initClass();
+  SoXtSliderSet::initClass();
+  SoXtLightSliderSet::initClass();
+  SoXtMaterialSliderSet::initClass();
+  SoXtTransformSliderSet::initClass();
+  SoXtMaterialList::initClass();
+  SoXtMaterialEditor::initClass();
+  SoXtPrintDialog::initClass();
 } // initClasses()
 
 // *************************************************************************

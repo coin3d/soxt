@@ -22,20 +22,6 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-// *************************************************************************
-
-/*!
-  \class SoXtLinuxJoystick Inventor/Xt/devices/SoXtLinuxJoystick.h
-  \brief The SoXtLinuxJoystick class is for enabling use of joysticks with
-  SoXt through the Linux Joystick driver.
-  \ingroup devices
-
-  This class is an SoXt-specific extension.  It is not included with
-  Open Inventor.
-*/
-
-// *************************************************************************
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -66,6 +52,22 @@ static const char rcsid[] =
 #ifndef M_PI
 #define M_PI 3.141592653579
 #endif
+
+// *************************************************************************
+
+/*!
+  \class SoXtLinuxJoystick Inventor/Xt/devices/SoXtLinuxJoystick.h
+  \brief The SoXtLinuxJoystick class is for enabling use of joysticks with
+  SoXt through the Linux Joystick driver.
+  \ingroup devices
+
+  This class is an SoXt-specific extension.  It is not included with
+  Open Inventor.
+*/
+
+// *************************************************************************
+
+SOXT_TYPED_OBJECT_SOURCE(SoXtLinuxJoystick, SoXtDevice);
 
 // *************************************************************************
 

@@ -39,6 +39,7 @@ class SoNode;
 typedef void SoXtPrintDialogCB( void * userdata, SoXtPrintDialog * dialog );
 
 class SOXT_DLL_EXPORT SoXtPrintDialog : public SoXtComponent {
+  SOXT_TYPED_OBJECT_HEADER(SoXtPrintDialog);
   typedef SoXtComponent inherited;
 
 public:

@@ -33,6 +33,7 @@ typedef void SoXtMaterialEditorCB( void * userdata,
   const SoMaterial * material );
 
 class SOXT_DLL_EXPORT SoXtMaterialEditor : public SoXtComponent {
+  SOXT_TYPED_OBJECT_HEADER(SoXtMaterialEditor);
   typedef SoXtComponent inherited;
 
 public:

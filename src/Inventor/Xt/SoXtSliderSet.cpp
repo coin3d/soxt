@@ -22,18 +22,6 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-// *************************************************************************
-
-/*!
-  \class SoXtSliderSet Inventor/Xt/SoXtSliderSet.h
-  \brief The SoXtSliderSet class is yet to be documented.
-  \ingroup components slidersets
-
-  This class is not implemented (not compatible with InventorXt at least).
-*/
-
-// *************************************************************************
-
 #include <assert.h>
 
 #include <X11/Xlib.h>
@@ -62,6 +50,19 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXtSliderSet.h>
 
 // *************************************************************************
+
+/*!
+  \class SoXtSliderSet Inventor/Xt/SoXtSliderSet.h
+  \brief The SoXtSliderSet class is yet to be documented.
+  \ingroup components slidersets
+
+  This class is not implemented (not compatible with InventorXt at least).
+*/
+
+// *************************************************************************
+
+SOXT_TYPED_ABSTRACT_OBJECT_SOURCE(SoXtSliderSet, SoXtSliderSetBase);
+
 // *************************************************************************
 
 struct SoXtSliderSetClosure {

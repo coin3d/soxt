@@ -30,6 +30,7 @@ class SoAnyPopupMenu;
 // *************************************************************************
 
 class SOXT_DLL_EXPORT SoXtFullViewer : public SoXtViewer {
+  SOXT_TYPED_ABSTRACT_OBJECT_HEADER(SoXtFullViewer);
   typedef SoXtViewer inherited;
   friend class SoAnyFullViewer;
 

@@ -22,17 +22,6 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-// *************************************************************************
-
-/*!
-  \class SoXtWalkViewer Inventor/Xt/viewers/SoXtWalkViewer.h
-  \brief The SoXtWalkViewer class is a viewer for giving a "walk"-like
-  experience in the scene.
-  \ingroup components viewers
-*/
-
-// *************************************************************************
-
 #include <assert.h>
 
 #include <Xm/Xm.h>
@@ -47,6 +36,19 @@ static const char rcsid[] =
 #include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
 #include <Inventor/Xt/viewers/SoAnyWalkViewer.h>
 #include <Inventor/Xt/viewers/SoXtWalkViewer.h>
+
+// *************************************************************************
+
+/*!
+  \class SoXtWalkViewer Inventor/Xt/viewers/SoXtWalkViewer.h
+  \brief The SoXtWalkViewer class is a viewer for giving a "walk"-like
+  experience in the scene.
+  \ingroup components viewers
+*/
+
+// *************************************************************************
+
+SOXT_TYPED_OBJECT_SOURCE(SoXtWalkViewer, SoXtConstrainedViewer);
 
 // *************************************************************************
 

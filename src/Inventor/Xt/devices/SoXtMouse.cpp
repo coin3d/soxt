@@ -22,23 +22,11 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-// *************************************************************************
-
-/*!
-  \class SoXtMouse Inventor/Xt/devices/SoXtMouse.h
-  \brief The SoXtMouse class is the glue between Xt/Motif mouse handling
-  and mouse interaction in the Inventor scene graph.
-  \ingroup devices
-*/
-
-// *************************************************************************
-
 #include <X11/X.h>
 
 #if SOXT_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // SOXT_DEBUG
-
 #include <Inventor/misc/SoBasic.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
@@ -51,6 +39,21 @@ static const char rcsid[] =
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
+
+// *************************************************************************
+
+/*!
+  \class SoXtMouse Inventor/Xt/devices/SoXtMouse.h
+  \brief The SoXtMouse class is the glue between Xt/Motif mouse handling
+  and mouse interaction in the Inventor scene graph.
+  \ingroup devices
+*/
+
+// *************************************************************************
+
+SOXT_TYPED_OBJECT_SOURCE(SoXtMouse, SoXtDevice);
+
+// *************************************************************************
 
 /*
   FIXME: implement BUTTON_MOTION filtering

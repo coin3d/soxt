@@ -24,6 +24,14 @@ static const char rcsid[] =
 
 // *************************************************************************
 
+#include <Inventor/errors/SoDebugError.h>
+
+#include <soxtdefs.h>
+
+#include <Inventor/Xt/SoXtSliderSetBase.h>
+
+// *************************************************************************
+
 /*!
   \class SoXtSliderSetBase Inventor/Xt/SoXtSliderSetBase.h
   \brief The SoXtSliderSetBase class is yet to be documented.
@@ -31,11 +39,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-#include <Inventor/errors/SoDebugError.h>
-
-#include <soxtdefs.h>
-
-#include <Inventor/Xt/SoXtSliderSetBase.h>
+SOXT_TYPED_ABSTRACT_OBJECT_SOURCE(SoXtSliderSetBase, SoXtComponent);
 
 // *************************************************************************
 

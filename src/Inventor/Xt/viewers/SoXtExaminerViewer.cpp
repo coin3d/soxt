@@ -22,20 +22,6 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-// *************************************************************************
-
-/*!
-  \class SoXtExaminerViewer Inventor/Xt/viewers/SoXtExaminerViewer.h
-  \brief The SoXtExaminerViewer class is the most used viewer component.
-  \ingroup components viewers
-*/
-
-// *************************************************************************
-
-#if HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
 #include <assert.h>
 #include <string.h>
 
@@ -68,10 +54,26 @@ static const char rcsid[] =
 
 #include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
 
+#if HAVE_CONFIG_H
+#include <config.h> // for HAVE_LIBXPM
+#endif // HAVE_CONFIG_H
+
 #if HAVE_LIBXPM
 #include <Inventor/Xt/common/pixmaps/ortho.xpm>
 #include <Inventor/Xt/common/pixmaps/perspective.xpm>
 #endif // HAVE_LIBXPM
+
+// *************************************************************************
+
+/*!
+  \class SoXtExaminerViewer Inventor/Xt/viewers/SoXtExaminerViewer.h
+  \brief The SoXtExaminerViewer class is the most used viewer component.
+  \ingroup components viewers
+*/
+
+// *************************************************************************
+
+SOXT_TYPED_OBJECT_SOURCE(SoXtExaminerViewer, SoXtFullViewer);
 
 // *************************************************************************
 

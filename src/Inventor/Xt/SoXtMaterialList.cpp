@@ -22,16 +22,6 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-// *************************************************************************
-
-/*!
-  \class SoXtMaterialList Inventor/Xt/SoXtMaterialList.h
-  \brief The SoXtMaterialList class is a component for adding material
-  selection to scene graph editors.
-*/
-
-// *************************************************************************
-
 #include <assert.h>
 #include <stdlib.h>
 
@@ -54,6 +44,18 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoAnyMaterialList.h>
 
 #include <Inventor/Xt/SoXtMaterialList.h>
+
+// *************************************************************************
+
+/*!
+  \class SoXtMaterialList Inventor/Xt/SoXtMaterialList.h
+  \brief The SoXtMaterialList class is a component for adding material
+  selection to scene graph editors.
+*/
+
+// *************************************************************************
+
+SOXT_TYPED_OBJECT_SOURCE(SoXtMaterialList, SoXtComponent);
 
 // *************************************************************************
 
