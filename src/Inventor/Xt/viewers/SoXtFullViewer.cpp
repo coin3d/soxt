@@ -336,8 +336,9 @@ Widget
 SoXtFullViewer::buildWidget( // protected
   Widget parent )
 {
-  this->viewerbase = XtVaCreateManagedWidget( "ViewerRoot",
-      xmFormWidgetClass, parent, NULL );
+  this->viewerbase = XtVaCreateManagedWidget( this->getClassName(),
+    xmFormWidgetClass, parent, NULL );
+  this->registerWidget( this->viewerbase );
 
   this->buildDecoration( this->viewerbase );
   
