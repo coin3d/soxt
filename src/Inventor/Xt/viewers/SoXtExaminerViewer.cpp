@@ -566,6 +566,7 @@ SoXtExaminerViewer::createViewerButtons( // virtual
 
   buttonlist->append( this->camerabutton );
 
+#ifdef HAVE_LIBXPM
   this->camerapixmaps.ortho =
     createPixmapFromXpmData( this->camerabutton, ortho_xpm );
   this->camerapixmaps.ortho_ins =
@@ -574,6 +575,7 @@ SoXtExaminerViewer::createViewerButtons( // virtual
     createPixmapFromXpmData( this->camerabutton, perspective_xpm );
   this->camerapixmaps.perspective_ins =
     createInsensitivePixmapFromXpmData( this->camerabutton, perspective_xpm );
+#endif
 
 } // createViewerButtons()
 
@@ -657,6 +659,7 @@ SoXtExaminerViewer::setCamera( // virtual
   }
 
   XtUnmanageChild( this->camerabutton );
+#if HAVE_LIBXPM
   XtVaSetValues( this->camerabutton,
     XmNlabelType, XmPIXMAP,
     XmNlabelPixmap, pixmap,
@@ -664,6 +667,7 @@ SoXtExaminerViewer::setCamera( // virtual
     XmNlabelInsensitivePixmap, pixmap_ins,
     XmNselectInsensitivePixmap, pixmap_ins,
     NULL );
+#endif
   XtVaSetValues( this->camerabutton,
     XmNwidth, 30, XmNheight, 30, NULL );
   XtManageChild( this->camerabutton );
