@@ -32,24 +32,6 @@
 #include <X11/Xutil.h>
 #include <X11/Xmu/StdCmap.h>
 
-#ifdef HAVE_GL_GLWMDRAWA_H
-#include <GL/GLwMDrawA.h>
-#else
-#ifdef HAVE_X11_GLW_GLWMDRAWA_H
-#include <X11/GLw/GLwMDrawA.h>
-#else
-#ifdef HAVE_GL_GLWDRAWA_H
-#include <GL/GLwDrawA.h>
-#else
-#ifdef HAVE_X11_GLW_GLWDRAWA_H
-#include <X11/GLw/GLwDrawA.h>
-#else
-#error No header file for GL widget defined
-#endif
-#endif
-#endif
-#endif
-
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoBasic.h>
 #include <Inventor/SbViewportRegion.h>
@@ -57,10 +39,7 @@
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtGLWidget.h>
-
-#ifndef XT_GLWIDGET
-#error No define for which GL widget class to use
-#endif
+#include <Inventor/Xt/widgets/SoXtGLArea.h>
 
 static const int SOXT_BORDER_WIDTH = 2;
 
@@ -554,15 +533,19 @@ SoXtGLWidget::buildWidget( // protected
   int nmaps;
 
   if ( XmuLookupStandardColormap(
-           display, this->normalVisual->screen, this->normalVisual->visualid,
-           this->normalVisual->depth, XA_RGB_DEFAULT_MAP, False, True ) &&
+         display, this->normalVisual->screen, this->normalVisual->visualid,
+         this->normalVisual->depth, XA_RGB_DEFAULT_MAP, False, True ) &&
        XGetRGBColormaps( display,
-           RootWindow( display, this->normalVisual->screen ), &cmaps, &nmaps,
-           XA_RGB_DEFAULT_MAP ) )
+         RootWindow( display, this->normalVisual->screen ), &cmaps, &nmaps,
+         XA_RGB_DEFAULT_MAP ) )
   {
     SbBool found = FALSE;
     for ( int i = 0; i < nmaps && ! found; i++ ) {
       if ( cmaps[i].visualid == this->normalVisual->visualid ) {
+#if SOXT_DEBUG && 0
+        SoDebugError::postInfo( "SoXtGLWidget::buildWidget",
+          "got shared color map" );
+#endif // SOXT_DEBUG
         colors = cmaps[i].colormap;
         XFree( cmaps );
         found = TRUE;
@@ -578,12 +561,9 @@ SoXtGLWidget::buildWidget( // protected
                  this->normalVisual->visual, AllocNone );
   }
 
-  this->glxWidget = XtVaCreateManagedWidget(
-    "GLWidget", XT_GLWIDGET, this->glxManager,
-#ifdef GLwNvisualInfo
-    GLwNvisualInfo, this->normalVisual,
-// any alternatives?
-#endif
+  this->glxWidget = XtVaCreateManagedWidget( "GLWidget",
+    soxtGLAreaWidgetClass, this->glxManager,
+    SoXtNvisualInfo, this->normalVisual,
     XtNcolormap, colors,
     XmNleftAttachment,   XmATTACH_FORM,
     XmNtopAttachment,    XmATTACH_FORM,
@@ -594,8 +574,8 @@ SoXtGLWidget::buildWidget( // protected
   this->setBorder( this->isBorder() ); // set the widget parent-form offsets
 
   XtAddEventHandler( this->glxWidget,
-      ExposureMask | StructureNotifyMask | ButtonPressMask | ButtonReleaseMask
-      | PointerMotionMask | KeyPressMask | KeyReleaseMask,
+      ExposureMask | StructureNotifyMask | ButtonPressMask |
+      ButtonReleaseMask | PointerMotionMask | KeyPressMask | KeyReleaseMask,
       False,
       // Our callback has this signature:
       // (void (*)(_WidgetRec *, SoXtGLWidget *, XAnyEvent *, char *))
@@ -695,7 +675,7 @@ SoXtGLWidget::glInit( // virtual
   assert( this->glxWidget != (Widget) NULL );
   XVisualInfo * visual;
   Display * display = SoXt::getDisplay();
-  XtVaGetValues( this->glxWidget, GLwNvisualInfo, &visual, NULL );
+  XtVaGetValues( this->glxWidget, SoXtNvisualInfo, &visual, NULL );
 
   this->normalContext = glXCreateContext( display, visual, None, GL_TRUE );
   if ( ! this->normalContext ) {
