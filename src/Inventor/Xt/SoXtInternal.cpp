@@ -21,6 +21,8 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <assert.h>
+
 #if HAVE_LIBXPM
 #include <X11/xpm.h>
 #endif // HAVE_LIBXPM
@@ -38,10 +40,10 @@
 #include <Xm/TextF.h>
 #include <Xm/Scale.h>
 
-#include <assert.h>
 #include <soxtdefs.h>
-#include <SoXtInternal.h>
 #include <Inventor/errors/SoDebugError.h>
+
+#include <Inventor/Xt/SoXtInternal.h>
 
 
 /*
