@@ -599,10 +599,10 @@ SoXt::getShellWidget(const Widget widget)
     if (XtIsShell(p)) { return p; }
     p = XtParent(p);
   }
-#if SOXT_DEBUG
+#if SOXT_DEBUG && 0 // debug
   SoDebugError::postInfo("SoXt::getShellWidget",
                          "couldn't find shell for widget at %p", widget);
-#endif // SOXT_DEBUG
+#endif // debug
   return (Widget) NULL;
 }
 
