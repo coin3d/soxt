@@ -1109,7 +1109,7 @@ SoXt::selectBestVisual(Display * dpy, Visual * & visual,
       debug_dumpallvisualsinfo(dpy);
     }
   }
-  if ( wantedid != 0 ) { // no speciufic requests
+  if ( wantedid != 0 ) { // we have a specific requests
     int num;
     XVisualInfo templ;
     templ.c_class = TrueColor;
