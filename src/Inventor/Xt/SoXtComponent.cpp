@@ -45,12 +45,6 @@
 #include <Inventor/Xt/viewers/SoXtConstrainedViewer.h>
 #include <Inventor/Xt/viewers/SoXtWalkViewer.h>
 #include <Inventor/Xt/viewers/SoXtFlyViewer.h>
-#include <Inventor/Xt/SoXtSliderSetBase.h>
-#include <Inventor/Xt/SoXtSliderSet.h>
-#include <Inventor/Xt/SoXtLightSliderSet.h>
-#include <Inventor/Xt/SoXtMaterialSliderSet.h>
-#include <Inventor/Xt/SoXtTransformSliderSet.h>
-#include <Inventor/Xt/SoXtMaterialList.h>
 #include <Inventor/Xt/SoXtCursor.h>
 
 #include <X11/Xlib.h>
@@ -135,12 +129,6 @@ SoXtComponent::initClasses(void)
   SoXtConstrainedViewer::initClass();
   SoXtWalkViewer::initClass();
   SoXtFlyViewer::initClass();
-  SoXtSliderSetBase::initClass();
-  SoXtSliderSet::initClass();
-  SoXtLightSliderSet::initClass();
-  SoXtMaterialSliderSet::initClass();
-  SoXtTransformSliderSet::initClass();
-  SoXtMaterialList::initClass();
 }
 
 // *************************************************************************

@@ -27,13 +27,7 @@ libSoXt_la_SOURCES = \
 	SoXt.cpp \
 	SoXtComponent.cpp \
 	SoXtGLWidget.cpp \
-	SoXtLightSliderSet.cpp SoXtLightSliderSet.h \
-	SoXtMaterialSliderSet.cpp SoXtMaterialSliderSet.h \
-	SoXtSliderSet.cpp SoXtSliderSet.h \
-	SoXtSliderSetBase.cpp SoXtSliderSetBase.h \
-	SoXtTransformSliderSet.cpp SoXtTransformSliderSet.h \
-	SoXtResource.cpp SoXtResource.h \
-	SoXtMaterialList.cpp
+	SoXtResource.cpp SoXtResource.h
 
 nodist_libSoXt_la_SOURCES = \
 	$(SoGui_src_Inventor_Gui_BuiltFiles) \
@@ -53,12 +47,7 @@ libSoXt_la_LDFLAGS = \
 SoXtincdir = $(includedir)/Inventor/Xt
 
 SoXtinc_HEADERS = \
-	SoXtLightSliderSet.h \
-	SoXtMaterialSliderSet.h \
-	SoXtResource.h \
-	SoXtSliderSet.h \
-	SoXtSliderSetBase.h \
-	SoXtTransformSliderSet.h
+	SoXtResource.h
 
 nodist_SoXtinc_HEADERS = \
 	SoXt.h \
@@ -67,8 +56,7 @@ nodist_SoXtinc_HEADERS = \
 	SoXtCursor.h \
 	SoXtComponent.h \
 	SoXtGLWidget.h \
-	SoXtRenderArea.h \
-	SoXtMaterialList.h
+	SoXtRenderArea.h
 
 
 install-SoXtincHEADERS: $(SoXtinc_HEADERS)
