@@ -392,6 +392,16 @@ SIM_AC_UNIQIFY_LIST(LIBS, $LIBS)
 # script -- not just from the Makefile -- as the data/configure script
 # depends on it. (data/configure is temporarily disabled, BTW, but anyway..)
 
+# MKS will have "\c" as $ECHO_C, but that string in the config.status
+# substitution command will cause config.status to hang because it is
+# somehow translated to "&c".  We therefore blank it here, and restore
+# it further below, after AC_OUTPUT.
+
+sim_ac_ECHO_C=$ECHO_C
+case $build in
+*-mks ) ECHO_C="" ;;
+esac
+
 AC_OUTPUT([
 	soxt-$CONFIG.cfg:src/Inventor/Xt/common/sogui.cfg.in
 	Makefile
@@ -411,6 +421,8 @@ AC_OUTPUT([
 	test-code/Makefile
 	build/soxt.spec
 ])
+
+ECHO_C=$sim_ac_ECHO_C
 
 SIM_AC_CONFIGURATION_SETTING([Installation Prefix], [$prefix])
 
