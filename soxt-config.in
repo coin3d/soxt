@@ -1,12 +1,13 @@
 #! /bin/sh
-############################################################################
+# **************************************************************************
+# soxt-config -- a utility for retrieving configuration information about
+# the installed SoXt library.
 
-usage()
-{
-cat <<EOF
-Usage: soxt-config [OPTIONS]
+me=`echo $0 | sed 's,^.*[/\\],,g'`
+
+usage="\
+Usage: $me [OPTIONS]
 Options:
-  --help | --usage
   --cppflags
   --ldflags
   --libs
@@ -15,33 +16,28 @@ Options:
   --have-feature <feature>
   --build <program> <sourcefile> [<sourcefile>]...
   --version
-EOF
-  exit $1
-}
+  --help | --usage"
 
-while test $# -gt 0; do
+version="@SOXT_VERSION@"
+
+# NOTE: If the first argument is changed in the following variables, it is
+# also necessary to update configure.in, since that argument is shifted off.
+
+cppflags="-I@includedir@ @SOXT_EXTRA_CPPFLAGS@"
+ldflags="-L@libdir@ @SOXT_EXTRA_LDFLAGS@"
+libs="-lSoXt @SOXT_EXTRA_LIBS@"
+
+datadir="@soxt_data_dir@"
+
+while test $# -gt 0
+do
   case $1 in
-    --cppflags)
-      # NOTE: if we for some reason changes this so "includedir" is
-      # not first, we need to fix up the examples/ and ivexamples/
-      # configure.in scripts, as they shift off the first argument.
-      echo -I@includedir@ @SOXT_EXTRA_CPPFLAGS@
-      ;;
-    --ldflags)
-      echo -L@libdir@ @SOXT_EXTRA_LDFLAGS@
-      ;;
-    --libs)
-      echo -lSoXt @SOXT_EXTRA_LIBS@
-      ;;
-    --datadir)
-      echo @soxt_data_dir@
-      ;;
-    --version)
-      echo @SOXT_VERSION@
-      ;;
-    --help | --usage)
-      usage 0
-      ;;
+    --help | --usage)  echo "$usage"    ;;
+    --version)         echo "$version"  ;;
+    --cppflags)        echo "$cppflags" ;;
+    --ldflags)         echo "$ldflags"  ;;
+    --libs)            echo "$libs"     ;;
+    --datadir)         echo "$datadir"  ;;
     --ac-subst)
       shift
       case $1 in
@@ -53,7 +49,7 @@ while test $# -gt 0; do
         EVENT)           echo "@EVENT@" ;;
         COMPONENTHEADER) echo "@COMPONENTHEADER@" ;;
         *)
-          echo "Error: no such AC_SUBST: $1" >&2
+          echo >&2 "$me: Invalid AC_SUBST: \"$1\""
           exit 1
           ;;
       esac
@@ -61,30 +57,29 @@ while test $# -gt 0; do
     --have-feature)
       shift
       case $1 in
-        renderarea)       exit 0 ;;
-        examinerviewer)   exit 0 ;;
-        planeviewer)      exit 0 ;;
-        walkviewer)       exit 0 ;;
-        flyviewer)        exit 0 ;;
-        materiallist)     exit 0 ;;
-        *)                exit 1 ;;
+        renderarea)      exit 0 ;;
+        examinerviewer)  exit 0 ;;
+        planeviewer)     exit 0 ;;
+        walkviewer)      exit 0 ;;
+        flyviewer)       exit 0 ;;
+        materiallist)    exit 0 ;;
+        *)               exit 1 ;;
       esac
       ;;
     --build)
       shift
       program=$1
       shift
-      set -x
-      @CXX@ \
-        ${CPPFLAGS} -I@includedir@ @SOXT_EXTRA_CPPFLAGS@ \
-        ${LDFLAGS} -L@libdir@ @SOXT_EXTRA_LDFLAGS@ \
-        -o ${program} $@ \
-        ${LIBS} -lSoXt @SOXT_EXTRA_LIBS@
-      set +x
+      exec @CXX@ \
+        $CPPFLAGS $cppflags \
+        $LDFLAGS $ldflags \
+        -o $program $@ \
+        $LIBS $libs
       ;;
     *)
-      echo "Unknown option: \"$1\""
-      usage 1 1>&2
+      echo >&2 "$me: Invalid option: \"$1\""
+      echo >&2 "$usage"
+      exit 1
       ;;
   esac
   shift
