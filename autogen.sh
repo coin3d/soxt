@@ -17,6 +17,7 @@ PROJECT=So$GUI
 MACRODIR=conf-macros
 SUBPROJECTS="$MACRODIR examples"
 
+AUTOMAKE_ADD=
 if test "$1" = "--clean"; then
   rm -f aclocal.m4 \
 	config.guess \

@@ -1402,16 +1402,29 @@ AC_ARG_WITH(
   [],
   [with_mesa=yes])
 
-if test "x$with_mesa" = "xyes"; then
-  sim_ac_gl_first_gl=-lMesaGL
-  sim_ac_gl_first_glu=-lMesaGLU
-  sim_ac_gl_second_gl=-lGL
-  sim_ac_gl_second_glu=-lGLU
+if test x"$sim_ac_linking_style" = xmswin; then
+  sim_ac_gl_glname=opengl32.lib
+  sim_ac_gl_gluname=glu32.lib
+  # FIXME: are these two names correct? Probably not. 20000602 mortene.
+  sim_ac_gl_mesaglname=mesagl.lib
+  sim_ac_gl_mesagluname=mesaglu.lib
 else
-  sim_ac_gl_first_gl=-lGL
-  sim_ac_gl_first_glu=-lGLU
-  sim_ac_gl_second_gl=-lMesaGL
-  sim_ac_gl_second_glu=-lMesaGLU
+  sim_ac_gl_glname=-lGL
+  sim_ac_gl_gluname=-lGLU
+  sim_ac_gl_mesaglname=-lMesaGL
+  sim_ac_gl_mesagluname=-lMesaGLU
+fi
+
+if test "x$with_mesa" = "xyes"; then
+  sim_ac_gl_first_gl=$sim_ac_gl_mesaglname
+  sim_ac_gl_first_glu=$sim_ac_gl_mesagluname
+  sim_ac_gl_second_gl=$sim_ac_gl_glname
+  sim_ac_gl_second_glu=$sim_ac_gl_gluname
+else
+  sim_ac_gl_first_gl=$sim_ac_gl_glname
+  sim_ac_gl_first_glu=$sim_ac_gl_gluname
+  sim_ac_gl_second_gl=$sim_ac_gl_mesaglname
+  sim_ac_gl_second_glu=$sim_ac_gl_mesagluname
 fi
 
 AC_ARG_WITH(
@@ -1426,12 +1439,12 @@ if test x"$with_opengl" != xno; then
     sim_ac_gl_cppflags="-I${with_opengl}/include"
     sim_ac_gl_ldflags="-L${with_opengl}/lib"
   else
-    case "$host_os" in
-      hpux*)
-        # This is a common location for the OpenGL libraries on HPUX.
-        sim_ac_gl_cppflags="-I/opt/graphics/OpenGL/include"
-        sim_ac_gl_ldflags="-L/opt/graphics/OpenGL/lib" ;;
-    esac
+    # This is a common location for the OpenGL libraries on HPUX.
+    sim_ac_gl_hpux=/opt/graphics/OpenGL
+    if test -d $sim_ac_gl_hpux; then
+      sim_ac_gl_cppflags=-I$sim_ac_gl_hpux/include
+      sim_ac_gl_ldflags=-L$sim_ac_gl_hpux/lib
+    fi
   fi
 
   sim_ac_save_cppflags=$CPPFLAGS
@@ -2169,6 +2182,55 @@ else
 
     $1
   fi
+fi
+])
+
+
+# Usage:
+#   SIM_COMPILE_DEBUG( ACTION-IF-DEBUG, ACTION-IF-NOT-DEBUG )
+#
+# Description:
+#   Let the user decide if compilation should be done in "debug mode".
+#   If compilation is not done in debug mode, all assert()'s in the code
+#   will be disabled.
+#
+#   Also sets enable_debug variable to either "yes" or "no", so the
+#   configure.in writer can add package-specific actions. Default is "yes".
+#   This was also extended to enable the developer to set up the two first
+#   macro arguments following the well-known ACTION-IF / ACTION-IF-NOT
+#   concept.
+#
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+#
+# Authors:
+#   Morten Eriksen, <mortene@sim.no>
+#   Lars J. Aas, <larsa@sim.no>
+#
+# TODO:
+# * [larsa:20000220] Set up ATTRIBUTE-LIST for developer-configurable
+#   default-value.
+#
+
+AC_DEFUN([SIM_COMPILE_DEBUG], [
+AC_PREREQ([2.13])
+
+AC_ARG_ENABLE(
+  [debug],
+  AC_HELP_STRING([--enable-debug], [compile in debug mode [default=yes]]),
+  [case "${enableval}" in
+    yes) enable_debug=yes ;;
+    no)  enable_debug=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-debug) ;;
+  esac],
+  [enable_debug=yes])
+
+if test x"$enable_debug" = x"yes"; then
+  ifelse([$1], , :, [$1])
+else
+  CFLAGS="$CFLAGS -DNDEBUG"
+  CXXFLAGS="$CXXFLAGS -DNDEBUG"
+  $2
 fi
 ])
 

@@ -185,7 +185,7 @@ SIM_CHECK_MOTIF([
 ], AC_MSG_ERROR([couldn't compile and link with Motif]))
 
 
-CXXFLAGS="$CXXFLAGS -DSOXT_DEBUG=1"
+SIM_COMPILE_DEBUG(CXXFLAGS="$CXXFLAGS -DSOXT_DEBUG=1", CXXFLAGS="$CXXFLAGS -DSOXT_DEBUG=0")
 
 dnl ************************************************************************
 
