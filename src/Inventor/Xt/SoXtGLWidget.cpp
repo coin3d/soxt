@@ -488,9 +488,13 @@ SoXtGLWidget::redrawOverlay( // virtual, protected
 } // redrawOverlay()
 
 /*!
-  This method handles X events.
-*/
+  Any events from the native window system that goes to the OpenGL
+  canvas gets piped through this method.
 
+  It is overloaded in the subclasses to catch user interaction with
+  the render canvas in the viewers, aswell as forwarding relevant
+  events to the scenegraph.
+*/
 void
 SoXtGLWidget::processEvent( // virtual, protected
   XAnyEvent * event )
