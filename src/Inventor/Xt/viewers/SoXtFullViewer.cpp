@@ -2721,9 +2721,9 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 // *************************************************************************
 
 /*!
-  This method returns the current camera zoom value (degrees in field of
-  view) or 0.0f if "zoom" has no meaning (no camera or a non-perspective
-  camera).
+  This method returns the current camera zoom value (degrees used in the
+  camera field of view) or 0.0f if "zoom" has no meaning (no camera or a
+  non-perspective camera).
 */
 
 float
@@ -2739,7 +2739,8 @@ SoXtFullViewer::getCameraZoom(
     return 0.0f;
   }
 
-  if ( ! camera->isOfType( SoPerspectiveCamera::getClassTypeId() ) ) {
+  const SoType camtype( camera->getTypeId() );
+  if ( ! camtype.isDerivedFrom( SoPerspectiveCamera::getClassTypeId() ) ) {
 #if SOXT_DEBUG
     SoDebugError::postInfo( "SoXtFullViewer::getCameraZoom",
       "not using a perspective camera!" );
@@ -2747,11 +2748,14 @@ SoXtFullViewer::getCameraZoom(
     return 0.0f;
   }
 
-  SOXT_STUB_ONCE();
-  return 2.0f;
+  SoPerspectiveCamera * const pCamera = (SoPerspectiveCamera *) camera;
+  return pCamera->heightAngle.getValue() * 180 / M_PI;
 } // getCameraZoom()
 
 /*!
+  This method sets the camera zoom value (given the scene graph camera is a
+  perspecive camera).  \a zoom must be within the range between 0 and 180
+  (degrees to use as field of view).
 */
 
 void
@@ -2759,7 +2763,7 @@ SoXtFullViewer::setCameraZoom(
   float zoom )
 {
   SoCamera * const camera = this->getCamera();
-  if ( ! camera ) {
+  if ( camera == NULL ) {
 #if SOXT_DEBUG
     SoDebugError::postInfo( "SoXtFullViewer::setCameraZoom",
       "no camera!" );
@@ -2767,7 +2771,8 @@ SoXtFullViewer::setCameraZoom(
     return;
   }
 
-  if ( ! camera->isOfType( SoPerspectiveCamera::getClassTypeId() ) ) {
+  const SoType camtype( camera->getTypeId() );
+  if ( ! camtype.isDerivedFrom( SoPerspectiveCamera::getClassTypeId() ) ) {
 #if SOXT_DEBUG
     SoDebugError::postInfo( "SoXtFullViewer::getCameraZoom",
       "not using a perspective camera!" );
@@ -2775,7 +2780,8 @@ SoXtFullViewer::setCameraZoom(
     return;
   }
 
-  SOXT_STUB_ONCE();
+  SoPerspectiveCamera * const pCamera = (SoPerspectiveCamera *) camera;
+  pCamera->heightAngle = zoom * M_PI / 180.0f;
 } // setCameraZoom()
 
 // *************************************************************************
