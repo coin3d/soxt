@@ -17,11 +17,6 @@
  *
  **************************************************************************/
 
-#if SOXT_DEBUG
-static const char rcsid[] =
-  "$Id$";
-#endif // SOXT_DEBUG
-
 #include <string.h>
 
 #include <X11/keysym.h>
@@ -411,18 +406,6 @@ SoXtPlaneViewer::processEvent(
 */
 
 void
-SoXtPlaneViewer::setSeekMode(
-  SbBool enable)
-{
-  SOXT_STUB_ONCE();
-  inherited::setSeekMode(enable);
-} // setSeekMode()
-
-/*!
-  FIXME: write doc
-*/
-
-void
 SoXtPlaneViewer::actualRedraw(
   void)
 {
@@ -553,8 +536,3 @@ SoXtPlaneViewer::buttonCB(// static, private
 } /// camerabuttonCB()
 
 // *************************************************************************
-
-#if SOXT_DEBUG
-static const char * getSoXtPlaneViewerRCSId(void) { return rcsid; }
-#endif // SOXT_DEBUG
-
