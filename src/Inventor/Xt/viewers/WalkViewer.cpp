@@ -17,6 +17,12 @@
  *
  **************************************************************************/
 
+// ************************************************************************
+
+// Class is documented in common/viewers/SoGuiWalkViewer.cpp.in.
+
+// *************************************************************************
+
 #include <Xm/Xm.h>
 #include <Xm/Label.h>
 
@@ -29,17 +35,6 @@
 #include <Inventor/Xt/widgets/SoXtPopupMenu.h>
 #include <Inventor/Xt/viewers/SoXtWalkViewer.h>
 #include <Inventor/Xt/viewers/SoGuiWalkViewerP.h>
-
-// *************************************************************************
-
-/*!
-  \class SoXtWalkViewer Inventor/Xt/viewers/SoXtWalkViewer.h
-  \brief The SoXtWalkViewer class is a viewer for giving a "walk"-like
-  experience in the scene.
-  \ingroup components viewers
-
-  FIXME: proper class doc. 20020117 mortene.
-*/
 
 // *************************************************************************
 
