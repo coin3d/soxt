@@ -1078,7 +1078,7 @@ SoXt::selectBestVisual( // static
 
   int snum = XDefaultScreen( dpy );
 
-  if ( XDefaultDepth( dpy, snum ) >= 24 ) { // me like...
+  if ( XDefaultDepth( dpy, snum ) >= 16 ) { // me like...
     depth = XDefaultDepth( dpy, snum );
     visual = XDefaultVisual( dpy, snum );
     colormap = XDefaultColormap( dpy, snum );
