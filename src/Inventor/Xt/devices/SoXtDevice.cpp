@@ -56,8 +56,7 @@ SOXT_OBJECT_ABSTRACT_SOURCE(SoXtDevice);
 */
 
 void
-SoXtDevice::initClasses(
-  void)
+SoXtDevice::initClasses(void)
 {
   SoXtDevice::initClass();
   SoXtInputFocus::initClass();
@@ -65,7 +64,7 @@ SoXtDevice::initClasses(
   SoXtMouse::initClass();
   SoXtSpaceball::initClass();
   SoXtLinuxJoystick::initClass();
-} // initClasses()
+}
 
 // *************************************************************************
 
@@ -83,19 +82,16 @@ struct SoXtDeviceHandlerInfo {
   classes.
 */
 
-SoXtDevice::SoXtDevice(// protected
-  void)
-: size(0, 0)
-, handlers(NULL)
+SoXtDevice::SoXtDevice(void)
+  : size(0, 0), handlers(NULL)
 {
-} // SoXtDevice()
+}
 
 /*!
   Public virtual destructor.
 */
 
-SoXtDevice::~SoXtDevice(// virtual
-  void)
+SoXtDevice::~SoXtDevice()
 {
   if (this->handlers) {
     for (int i = 0; i < this->handlers->getLength(); i++) {
@@ -105,7 +101,7 @@ SoXtDevice::~SoXtDevice(// virtual
     }
     delete this->handlers;
   }
-} // ~SoXtDevice()
+}
 
 // *************************************************************************
 
@@ -139,22 +135,20 @@ SoXtDevice::~SoXtDevice(// virtual
 */
 
 void
-SoXtDevice::setWindowSize(
-  const SbVec2s size)
+SoXtDevice::setWindowSize(const SbVec2s size)
 {
   this->size = size;
-} // setWindowSize()
+}
 
 /*!
   This method returns the cached window size.
 */
 
 const SbVec2s
-SoXtDevice::getWindowSize(
-  void) const
+SoXtDevice::getWindowSize(void) const
 {
   return this->size;
-} // getWindowSize()
+}
 
 // *************************************************************************
 
@@ -164,10 +158,9 @@ SoXtDevice::getWindowSize(
 */
 
 void
-SoXtDevice::setEventPosition(
-  SoEvent * event,
-  int x,
-  int y) const
+SoXtDevice::setEventPosition(SoEvent * event,
+                             int x,
+                             int y) const
 {
   assert(event != NULL);
   SbVec2s position(x, this->size[1] - y - 1);
@@ -176,7 +169,7 @@ SoXtDevice::setEventPosition(
   SoDebugError::postInfo("SoXtDevice::setEventPosition",
     "position = (%d, %d)", position[0], position[1]);
 #endif // 0 was SOXT_DEBUG
-} // setEventPosition()
+}
 
 // *************************************************************************
 
@@ -198,7 +191,7 @@ SoXtDevice::addEventHandler(Widget widget,
   info->closure = closure;
   info->window = window;
   this->handlers->append(info);
-} // addEventHandler()
+}
 
 /*!
   This method removes an event handler.
@@ -225,7 +218,7 @@ SoXtDevice::removeEventHandler(Widget widget,
   SoDebugError::post("SoXtDevice::removeEventHandler",
                      "tried to remove nonexisting handler");
 #endif // SOXT_DEBUG
-} // removeEventHandler()
+}
 
 /*!
   This method invokes all the event handlers.
@@ -242,6 +235,6 @@ SoXtDevice::invokeHandlers(XEvent * const event)
       info->handler(info->widget, info->closure, event, &dispatch);
     }
   }
-} // invokeEventHandlers()
+}
 
 // *************************************************************************
