@@ -26,6 +26,9 @@
 
 // *************************************************************************
 
+struct MenuRecord;
+struct ItemRecord;
+
 class SoXtPopupMenu {
 public:
   SoXtPopupMenu( SoAnyPopupMenu * handler );
@@ -33,8 +36,14 @@ public:
 
   SOANY_POPUPMENU_INTERFACE
 
+protected:
+  MenuRecord * getMenuRecord( int menuid );
+  ItemRecord * getItemRecord( int itemid );
+
 private:
   SoAnyPopupMenu * handler;
+  SbPList * menus;
+  SbPList * items;
 
 }; // class SoXtPopupMenu
 
