@@ -23,6 +23,8 @@
 #define SOXT_SPACEBALL_H
 
 #include <Inventor/SbBasic.h>
+#include <Inventor/events/SoMotion3Event.h>                                     
+#include <Inventor/events/SoSpaceballButtonEvent.h>                             
 
 #include <Inventor/Xt/devices/SoXtDevice.h>
 
