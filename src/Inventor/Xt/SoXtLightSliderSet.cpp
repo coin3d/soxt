@@ -106,7 +106,7 @@ SoXtLightSliderSet::~SoXtLightSliderSet(
 
 Widget
 SoXtLightSliderSet::buildWidget( // protected
-  const Widget parent )
+  Widget parent )
 {
   return inherited::buildWidget( parent );
 } // buildWidget()

@@ -39,9 +39,9 @@ static const char rcsid[] =
 */
 
 SoXtSliderSetBase::SoXtSliderSetBase( // protected
-  Widget parent,
+  const Widget parent,
   const char * const name,
-  SbBool embed,
+  const SbBool embed,
   SoNode * const node )
 : inherited( parent, name, embed )
 {
