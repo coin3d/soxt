@@ -21,6 +21,7 @@
 #define SOXTINTERNALUTILS_H
 
 #include <X11/Intrinsic.h>
+#include <Inventor/SbBasic.h> // SbBool
 
 // ************************************************************************
 
