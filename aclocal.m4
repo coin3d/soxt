@@ -934,6 +934,160 @@ fi
 
 
 # Usage:
+#   SIM_COMPILE_DEBUG( ACTION-IF-DEBUG, ACTION-IF-NOT-DEBUG )
+#
+# Description:
+#   Let the user decide if compilation should be done in "debug mode".
+#   If compilation is not done in debug mode, all assert()'s in the code
+#   will be disabled.
+#
+#   Also sets enable_debug variable to either "yes" or "no", so the
+#   configure.in writer can add package-specific actions. Default is "yes".
+#   This was also extended to enable the developer to set up the two first
+#   macro arguments following the well-known ACTION-IF / ACTION-IF-NOT
+#   concept.
+#
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+#
+# Authors:
+#   Morten Eriksen, <mortene@sim.no>
+#   Lars J. Aas, <larsa@sim.no>
+#
+# TODO:
+# * [larsa:20000220] Set up ATTRIBUTE-LIST for developer-configurable
+#   default-value.
+#
+
+AC_DEFUN([SIM_COMPILE_DEBUG], [
+AC_PREREQ([2.13])
+
+AC_ARG_ENABLE(
+  [debug],
+  AC_HELP_STRING([--enable-debug], [compile in debug mode [default=yes]]),
+  [case "${enableval}" in
+    yes) enable_debug=yes ;;
+    no)  enable_debug=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-debug) ;;
+  esac],
+  [enable_debug=yes])
+
+if test x"$enable_debug" = x"yes"; then
+  ifelse([$1], , :, [$1])
+else
+  CFLAGS="$CFLAGS -DNDEBUG"
+  CXXFLAGS="$CXXFLAGS -DNDEBUG"
+  $2
+fi
+])
+
+
+# Usage:
+#   SIM_COMPILER_WARNINGS
+#
+# Description:
+#   Take care of making a sensible selection of warning messages
+#   to turn on or off.
+# 
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+# 
+# Author: Morten Eriksen, <mortene@sim.no>.
+# 
+# TODO:
+#   * [mortene:19991114] find out how to get GCC's
+#     -Werror-implicit-function-declaration option to work as expected
+# 
+
+AC_DEFUN([SIM_COMPILER_WARNINGS], [
+AC_PREREQ([2.14])
+AC_ARG_ENABLE(
+  [warnings],
+  AC_HELP_STRING([--enable-warnings],
+                 [turn on warnings when compiling [default=yes]]),
+  [case "${enableval}" in
+    yes) enable_warnings=yes ;;
+    no)  enable_warnings=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-warnings) ;;
+  esac],
+  [enable_warnings=yes])
+
+if test x"$enable_warnings" = x"yes"; then
+  if test x"$GXX" = x"yes" || test x"$GCC" = x"yes"; then
+    SIM_COMPILER_OPTION([-Wno-multichar], [_warn_flags=-Wno-multichar])
+    _warn_flags="-W -Wall -Wno-unused $_warn_flags"
+
+    CFLAGS="$CFLAGS $_warn_flags"
+    CXXFLAGS="$CXXFLAGS $_warn_flags"
+  else
+    case $host in
+    *-*-irix*) 
+      if test x"$CC" = xcc || test x"$CXX" = xCC; then
+        _warn_flags=
+        _woffs=""
+        ### Turn on all warnings ######################################
+        SIM_COMPILER_OPTION([-fullwarn],
+                            [_warn_flags="$_warn_flags -fullwarn"])
+
+
+        ### Turn off specific (bogus) warnings ########################
+
+        ### SGI MipsPro v?.?? (our compiler on IRIX 6.2) ##############
+
+        # Turn off ``type qualifiers are meaningless in this declaration''
+        # warnings.
+        SIM_COMPILER_OPTION([-woff 3115], [_woffs="$_woffs 3115"])
+        # Turn off warnings on unused variables.
+        SIM_COMPILER_OPTION([-woff 3262], [_woffs="$_woffs 3262"])
+
+        ### SGI MipsPro v7.30 #########################################
+
+	# "The function was declared but never referenced."
+        SIM_COMPILER_OPTION([-woff 1174], [_woffs="$_woffs 1174"])
+        # "The controlling expression is constant." (kill warning on
+        # if (0), assert(FALSE), etc).
+        SIM_COMPILER_OPTION([-woff 1209], [_woffs="$_woffs 1209"])
+        # Kill warnings on extra semicolons (which happens with some
+        # of the Coin macros).
+        SIM_COMPILER_OPTION([-woff 1355], [_woffs="$_woffs 1355"])
+        # Non-virtual destructors in base classes.
+        SIM_COMPILER_OPTION([-woff 1375], [_woffs="$_woffs 1375"])
+        # Unused argument to a function.
+        SIM_COMPILER_OPTION([-woff 3201], [_woffs="$_woffs 3201"])
+        # Meaningless type qualifier on return type (happens with the
+        # SoField macros in Coin).
+        SIM_COMPILER_OPTION([-woff 3303], [_woffs="$_woffs 3303"])
+        # Statement is not reachable (the Lex/Flex generated code in
+        # Coin/src/engines makes lots of shitty code which needs this).
+        SIM_COMPILER_OPTION([-woff 1110], [_woffs="$_woffs 1110"])
+
+        ###############################################################
+
+        # Convert to a comma-separated list behind the "-woff" option.
+        if test x"$_woffs" != x; then
+                _woffs=`echo $_woffs | sed "s%^ %%"`
+                _woffs=`echo $_woffs | sed "s% %,%g"`
+                _woffs=`echo $_woffs | sed "s%^%\-woff %"`
+                _warn_flags="$_warn_flags $_woffs"
+        fi
+
+        ###############################################################
+
+        CFLAGS="$CFLAGS $_warn_flags"
+        CXXFLAGS="$CXXFLAGS $_warn_flags"
+      fi
+    ;;
+    esac
+  fi
+else
+  if test x"$GXX" != x"yes" && test x"$GCC" != x"yes"; then
+    AC_MSG_WARN([--enable-warnings only has effect when using GNU gcc or g++])
+  fi
+fi
+])
+
+
+# Usage:
 #  SIM_CHECK_DL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 #  Try to find the dynamic link loader library. If it is found, these
@@ -2182,55 +2336,6 @@ else
 
     $1
   fi
-fi
-])
-
-
-# Usage:
-#   SIM_COMPILE_DEBUG( ACTION-IF-DEBUG, ACTION-IF-NOT-DEBUG )
-#
-# Description:
-#   Let the user decide if compilation should be done in "debug mode".
-#   If compilation is not done in debug mode, all assert()'s in the code
-#   will be disabled.
-#
-#   Also sets enable_debug variable to either "yes" or "no", so the
-#   configure.in writer can add package-specific actions. Default is "yes".
-#   This was also extended to enable the developer to set up the two first
-#   macro arguments following the well-known ACTION-IF / ACTION-IF-NOT
-#   concept.
-#
-#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
-#   in the configure.in script.
-#
-# Authors:
-#   Morten Eriksen, <mortene@sim.no>
-#   Lars J. Aas, <larsa@sim.no>
-#
-# TODO:
-# * [larsa:20000220] Set up ATTRIBUTE-LIST for developer-configurable
-#   default-value.
-#
-
-AC_DEFUN([SIM_COMPILE_DEBUG], [
-AC_PREREQ([2.13])
-
-AC_ARG_ENABLE(
-  [debug],
-  AC_HELP_STRING([--enable-debug], [compile in debug mode [default=yes]]),
-  [case "${enableval}" in
-    yes) enable_debug=yes ;;
-    no)  enable_debug=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-debug) ;;
-  esac],
-  [enable_debug=yes])
-
-if test x"$enable_debug" = x"yes"; then
-  ifelse([$1], , :, [$1])
-else
-  CFLAGS="$CFLAGS -DNDEBUG"
-  CXXFLAGS="$CXXFLAGS -DNDEBUG"
-  $2
 fi
 ])
 

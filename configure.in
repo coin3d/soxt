@@ -104,6 +104,8 @@ rm -f a.out
 SIM_AC_RTTI_SUPPORT
 SIM_EXCEPTION_HANDLING
 SIM_AC_CHECK_VAR_FUNCTIONNAME
+SIM_COMPILE_DEBUG(CXXFLAGS="$CXXFLAGS -DSOXT_DEBUG=1", CXXFLAGS="$CXXFLAGS -DSOXT_DEBUG=0")
+SIM_COMPILER_WARNINGS
 
 dnl *******************************************************************
 dnl * Search for and set up stuff we depend on.
@@ -184,8 +186,6 @@ SIM_CHECK_MOTIF([
   SOXT_EXTRA_LIBS="$sim_ac_motif_libs $SOXT_EXTRA_LIBS"
 ], AC_MSG_ERROR([couldn't compile and link with Motif]))
 
-
-SIM_COMPILE_DEBUG(CXXFLAGS="$CXXFLAGS -DSOXT_DEBUG=1", CXXFLAGS="$CXXFLAGS -DSOXT_DEBUG=0")
 
 dnl ************************************************************************
 
