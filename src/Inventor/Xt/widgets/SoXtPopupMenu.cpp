@@ -264,7 +264,7 @@ SoXtPopupMenu::GetMenuItemTitle(
 */
 
 void
-SoXtPopupMenu::SetMenuItemEnabled(
+SoXtPopupMenu::SetMenuItemEnabled( // virtual
   int itemid,
   SbBool enabled )
 {
@@ -301,7 +301,7 @@ SoXtPopupMenu::GetMenuItemEnabled(
 */
 
 void
-SoXtPopupMenu::SetMenuItemMarked(
+SoXtPopupMenu::_setMenuItemMarked( // virtual
   int itemid,
   SbBool marked )
 {
