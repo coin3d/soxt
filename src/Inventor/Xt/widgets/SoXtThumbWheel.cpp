@@ -484,7 +484,7 @@ init_pixmaps(SoXtThumbWheelWidget widget)
   const int height = widget->core.height;
 
   int frame = 0;
-  for (frame = widget->thumbwheel.numpixmaps - 1; frame > 0; frame--) {
+  for (frame = widget->thumbwheel.numpixmaps - 1; frame >= 0; frame--) {
     widget->thumbwheel.pixmaps[frame] =
       XCreatePixmap(dpy, drawable, width, height, depth);
     assert(widget->thumbwheel.pixmaps[frame]);
