@@ -85,6 +85,17 @@ SoXtSliderSetBase::getNode(
 */
 
 void
+SoXtSliderSetBase::getLayoutSize( // virtual
+  int & width,
+  int & height )
+{
+  SOXT_STUB();
+}
+
+/*!
+*/
+
+void
 SoXtSliderSetBase::show( // virtual
   void )
 {

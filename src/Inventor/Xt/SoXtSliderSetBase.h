@@ -35,6 +35,7 @@ public:
   virtual void setNode( SoNode * node );
   SoNode * getNode(void) const;
 
+  virtual void getLayoutSize(int & width, int & height);
   virtual void show(void);
 
 protected:
