@@ -92,7 +92,9 @@ priority the item has.
 
     Assuming people are interested in this one too.
 
-    Reported by Lars J. Aas
+    Update 20030422 larsa:
+
+    Should be only cosmetics left on this one.
 
 ========================================================================
 
