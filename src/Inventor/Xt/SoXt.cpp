@@ -640,13 +640,7 @@ close_dialog_cb(Widget, XtPointer closure, XtPointer)
   XtDestroyWidget(dialogshell);
 }
 
-/*!
-  This function creates a simple error dialog window and places it on
-  the display over the given \a parent widget.
-
-  If \a parent is \c NULL, the main toplevel widget of the application
-  will be used.
-*/
+// Documented in common/SoGuiCommon.cpp.in.
 void
 SoXt::createSimpleErrorDialog(Widget parent, const char * title,
                               const char * string1, const char * string2)
