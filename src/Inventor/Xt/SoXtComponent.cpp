@@ -750,13 +750,20 @@ SoXtComponent::sysEventHandler(Widget widget, XEvent * event)
     SoDebugError::postInfo("SoXtComponent::sysEventHandler",
                            "base widget event (%d)", event->type);
 #endif // SOXT_DEBUG
-    if (event->type == ConfigureNotify) {
+    if ( event->type == ConfigureNotify ) {
       XConfigureEvent * conf = (XConfigureEvent *) event;
       if (PRIVATE(this)->size != SbVec2s(conf->width, conf->height)) {
         PRIVATE(this)->size = SbVec2s(conf->width, conf->height);
         this->sizeChanged(PRIVATE(this)->size);
       }
-    } else if (event->type == MapNotify) {
+    }
+    else if ( event->type == UnmapNotify || event->type == DestroyNotify ) {
+      if (PRIVATE(this)->visibilitystate != FALSE) {
+        PRIVATE(this)->visibilitystate = FALSE;
+        this->invokeVisibilityChangeCallbacks(PRIVATE(this)->visibilitystate);
+      }
+    }
+    else if ( event->type == MapNotify ) {
       Dimension width = 0, height = 0;
       XtVaGetValues(this->getBaseWidget(),
         XmNwidth, &width,
@@ -764,13 +771,13 @@ SoXtComponent::sysEventHandler(Widget widget, XEvent * event)
         NULL);
       PRIVATE(this)->size = SbVec2s(width, height);
       this->sizeChanged(PRIVATE(this)->size);
-    } else if (event->type == VisibilityNotify) {
-//    SoDebugError::postInfo("SoXtComponent::sysEventHandler", "Visibility");
+    }
+    else if ( event->type == VisibilityNotify ) {
       XVisibilityEvent * visibility = (XVisibilityEvent *) event;
       SbBool newvisibility = TRUE;
       if (visibility->state == VisibilityFullyObscured)
         newvisibility = FALSE;
-      if (PRIVATE(this)->visibilitystate != newvisibility) {
+      if ( PRIVATE(this)->visibilitystate != newvisibility ) {
         PRIVATE(this)->visibilitystate = newvisibility;
         this->invokeVisibilityChangeCallbacks(PRIVATE(this)->visibilitystate);
       }
@@ -781,7 +788,13 @@ SoXtComponent::sysEventHandler(Widget widget, XEvent * event)
                            "shell widget event (%d)", event->type);
 #endif // SOXT_DEBUG
 
-    if (event->type == ConfigureNotify) {
+    if ( event->type == UnmapNotify || event->type == DestroyNotify ) {
+      if (PRIVATE(this)->visibilitystate != FALSE) {
+        PRIVATE(this)->visibilitystate = FALSE;
+        this->invokeVisibilityChangeCallbacks(PRIVATE(this)->visibilitystate);
+      }
+    }
+    else if ( event->type == ConfigureNotify ) {
       XConfigureEvent * conf = (XConfigureEvent *) event;
       if (PRIVATE(this)->size != SbVec2s(conf->width, conf->height)) {
         PRIVATE(this)->size = SbVec2s(conf->width, conf->height);

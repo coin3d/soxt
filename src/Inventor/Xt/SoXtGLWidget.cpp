@@ -475,9 +475,11 @@ SoXtGLWidget::processEvent(XAnyEvent * event)
   case ConfigureNotify:
     if (PRIVATE(this)->glxwidget != (Widget) NULL) {
       Dimension width, height;
-      XtVaGetValues(PRIVATE(this)->glxwidget,
+      // XtVaGetValues(PRIVATE(this)->glxwidget,
+      //               XmNwidth, &width, XmNheight, &height, NULL);
+      XtVaGetValues(this->getWidget(),
                     XmNwidth, &width, XmNheight, &height, NULL);
-      PRIVATE(this)->glsize = SbVec2s(width, height);
+      this->sizeChanged(SbVec2s(width, height));
     }
     break;
 
@@ -577,8 +579,8 @@ SoXtGLWidget::hasNormalGLArea(void) const
 void    // virtual, protected
 SoXtGLWidget::sizeChanged(const SbVec2s & size)
 {
-  //  SoDebugError::postInfo("SoXtGLWidget::sizeChanged", "[invoked (%d, %d)]",
-  //    size[0], size[1]);
+  SoDebugError::postInfo("SoXtGLWidget::sizeChanged", "[invoked (%d, %d)]",
+    size[0], size[1]);
   if (this->isBorder()) {
     PRIVATE(this)->glsize[0] = size[0] - 2 * PRIVATE(this)->borderwidth;
     PRIVATE(this)->glsize[1] = size[1] - 2 * PRIVATE(this)->borderwidth;
@@ -612,8 +614,14 @@ SoXtGLWidget::widgetChanged(Widget widget)
 void
 SoXtGLWidget::setGLSize(const SbVec2s size)
 {
+  // SoDebugError::postInfo("SoXtGLWidget::setGLSize", "[invoked (%d, %d)]",
+  //   size[0], size[1]);
   PRIVATE(this)->glsize = size;
-  if (PRIVATE(this)->glxwidget != (Widget) NULL) {
+  Dimension oldwidth, oldheight;
+  XtVaGetValues(PRIVATE(this)->glxwidget,
+                XmNwidth, &oldwidth, XmNheight, &oldheight, NULL);
+  if ( PRIVATE(this)->glxwidget != (Widget) NULL &&
+       (oldwidth != size[0] || oldheight != size[1]) ) {
     Dimension width = size[0];
     Dimension height = size[1];
     XtVaSetValues(PRIVATE(this)->glxwidget,
