@@ -617,7 +617,7 @@ SoXtExaminerViewer::setFeedbackSize(
     XmTextSetString(this->axessizefield, buf);
     XmTextSetCursorPosition(this->axessizefield, (long) strlen(buf));
   }
-  this->setFeedbackSize(size);
+  this->setGenericFeedbackSize(size);
 } // setFeedbackSize()
 
 // *************************************************************************
