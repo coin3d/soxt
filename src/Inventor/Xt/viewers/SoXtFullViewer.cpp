@@ -22,11 +22,23 @@ static const char rcsid[] =
 
 #include <Xm/Xm.h>
 #include <Xm/Form.h>
+#include <Xm/Label.h>
+#include <Xm/PushB.h>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoBasic.h>
 
 #include <Inventor/Xt/viewers/SoXtFullViewer.h>
+
+enum DefaultViewerButtons {
+  INTERACT_BUTTON = 0,
+  EXAMINE_BUTTON,
+  HELP_BUTTON,
+  HOME_BUTTON,
+  SET_HOME_BUTTON,
+  VIEW_ALL_BUTTON,
+  SEEK_BUTTON
+};
 
 // *************************************************************************
 
@@ -45,6 +57,8 @@ SoXtFullViewer::SoXtFullViewer( // protected
 {
   this->setClassName( "SoXtFullViewer" );
   this->setSize( SbVec2s( 500, 390 ) );
+  this->viewerButtons = new SbPList;
+  this->appButtons = new SbPList;
   if ( build != FALSE )
     this->buildWidget( parent );
 } // SoXtFullViewer()
@@ -56,6 +70,8 @@ SoXtFullViewer::SoXtFullViewer( // protected
 SoXtFullViewer::~SoXtFullViewer( // protected
   void )
 {
+  delete this->viewerButtons;
+  delete this->appButtons;
 } // ~SoXtFullViewer()
 
 // *************************************************************************
@@ -94,8 +110,11 @@ SoXtFullViewer::buildDecoration( // virtual
   Widget parent )
 {
   this->decorform[BOTTOMDECORATION] = this->buildBottomTrim( parent );
+  XtManageChild( this->decorform[BOTTOMDECORATION] );
   this->decorform[LEFTDECORATION]   = this->buildLeftTrim( parent );
+  XtManageChild( this->decorform[LEFTDECORATION] );
   this->decorform[RIGHTDECORATION]  = this->buildRightTrim( parent );
+  XtManageChild( this->decorform[RIGHTDECORATION] );
 } // buildDecorations()
 
 /*!
@@ -113,6 +132,25 @@ SoXtFullViewer::buildBottomTrim( // virtual
       XmNbottomAttachment, XmATTACH_FORM,
       XmNheight, 30,
       NULL );
+
+  Widget label1 = XtVaCreateManagedWidget( "Roty", xmLabelWidgetClass,
+    trim, XmNleftAttachment, XmATTACH_FORM, XmNtopAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNleftOffset, 5,
+    NULL );
+
+  Widget label2 = XtVaCreateManagedWidget( "Rotx", xmLabelWidgetClass,
+    trim, XmNleftAttachment, XmATTACH_WIDGET, XmNleftWidget, label1,
+    XmNtopAttachment, XmATTACH_FORM, XmNbottomAttachment, XmATTACH_FORM,
+    XmNleftOffset, 5,
+    NULL );
+
+
+  Widget label3 = XtVaCreateManagedWidget( "Dolly", xmLabelWidgetClass,
+    trim, XmNtopAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM, XmNrightAttachment, XmATTACH_FORM,
+    XmNrightOffset, 5, NULL );
+
   return trim;
 } // buildBottomTrim()
 /*!
@@ -144,6 +182,7 @@ SoXtFullViewer::buildRightTrim( // virtual
 {
   Widget trim = XtVaCreateManagedWidget( "RightTrim",
       xmFormWidgetClass, parent, NULL );
+
   XtVaSetValues( trim,
       XmNwidth, 30,
       XmNtopAttachment, XmATTACH_FORM,
@@ -151,6 +190,12 @@ SoXtFullViewer::buildRightTrim( // virtual
       XmNbottomAttachment, XmATTACH_WIDGET,
       XmNbottomWidget, this->decorform[BOTTOMDECORATION],
       NULL );
+
+  Widget buttonForm = this->buildViewerButtons( trim );
+  XtManageChild( buttonForm );
+
+  // add right thumb wheel
+
   return trim;
 } // buildRightTrim()
 
@@ -226,12 +271,60 @@ SoXtFullViewer::eventFilter( // virtual
   COIN_STUB();
 } // eventFilter()
 
+Widget
+SoXtFullViewer::buildViewerButtons(
+  Widget parent )
+{
+  Widget form = XtVaCreateManagedWidget( "ViewerButtons",
+      xmFormWidgetClass, parent,
+      XmNleftAttachment, XmATTACH_FORM,
+      XmNtopAttachment, XmATTACH_FORM,
+      XmNrightAttachment, XmATTACH_FORM,
+      NULL );
+
+  this->createViewerButtons( form, this->viewerButtons );
+
+  for ( int i = 0; i < this->viewerButtons->getLength(); i++ ) {
+    Widget button = (Widget) (*this->viewerButtons)[i];
+    if ( i == 0 )
+      XtVaSetValues( button,
+         XmNleftOffset, 0,
+         XmNtopOffset, 0,
+         XmNrightOffset, 0,
+         XmNbottomOffset, 0,
+         XmNleftAttachment, XmATTACH_FORM,
+         XmNtopAttachment, XmATTACH_FORM,
+         XmNrightAttachment, XmATTACH_FORM,
+         XmNwidth, 30, XmNheight, 30,
+         NULL );
+    else
+      XtVaSetValues( button,
+         XmNleftOffset, 0,
+         XmNtopOffset, 0,
+         XmNrightOffset, 0,
+         XmNbottomOffset, 0,
+         XmNleftAttachment, XmATTACH_FORM,
+         XmNtopAttachment, XmATTACH_WIDGET,
+         XmNtopWidget, (Widget) (*this->viewerButtons)[i-1],
+         XmNrightAttachment, XmATTACH_FORM,
+         XmNwidth, 30, XmNheight, 30,
+         NULL );
+  }
+
+  return form;
+} // buildViewerButtons()
+
 void
 SoXtFullViewer::createViewerButtons(
   Widget parent,
-  SbPList buttonlist )
+  SbPList * buttonlist )
 {
-  COIN_STUB();
+  assert( buttonlist != NULL );
+  for ( int i = 0; i <= SEEK_BUTTON; i++ ) {
+    Widget button = XtVaCreateManagedWidget( "b",
+        xmPushButtonWidgetClass, parent, NULL );
+    buttonlist->append( button );
+  }
 }
 
 void

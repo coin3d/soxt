@@ -75,7 +75,7 @@ protected:
   virtual Widget buildRightTrim(Widget parent);
   Widget buildAppButtons(Widget parent);
   Widget buildViewerButtons(Widget parent);
-  virtual void createViewerButtons(Widget parent, SbPList buttonlist);
+  virtual void createViewerButtons(Widget parent, SbPList * buttonlist);
 
   virtual void buildPopupMenu(void);
   void setPopupMenuString(const char * title);
@@ -120,6 +120,8 @@ private:
 
   Widget viewerbase, canvas;
   Widget decorform[NUMDECORATIONS];
+
+  SbPList * viewerButtons, * appButtons;
 
 }; // class SoXtFullViewer
 
