@@ -22,6 +22,16 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtCollisionViewer Inventor/Xt/viewers/SoXtCollisionViewer.h
+  \brief The SoXtCollisionViewer class is yet to be documented.
+  \ingroup viewers
+*/
+
+// *************************************************************************
+
 #include <assert.h>
 
 #include <soxtdefs.h>
@@ -31,6 +41,16 @@ static const char rcsid[] =
 // *************************************************************************
 
 /*!
+  \fn SbBool SoXtCollisionViewer::getZBufferOptimistation(void) const
+
+  This is a function name with a couple of typos in it, included purely for
+  OIV compatibility reasons.
+*/
+
+// *************************************************************************
+
+/*!
+  Public constructor.
 */
 
 SoXtCollisionViewer::SoXtCollisionViewer(
@@ -45,6 +65,7 @@ SoXtCollisionViewer::SoXtCollisionViewer(
 } // SoXtCollisionViewer()
 
 /*!
+  Destructor.
 */
 
 SoXtCollisionViewer::~SoXtCollisionViewer(
@@ -55,6 +76,7 @@ SoXtCollisionViewer::~SoXtCollisionViewer(
 // *************************************************************************
 
 /*!
+  Returns the viewer.
 */
 
 SoXtViewer *
@@ -65,6 +87,7 @@ SoXtCollisionViewer::getViewer(
 } // getViewer()
 
 /*!
+  Sets the collision distance.
 */
 
 void
@@ -75,6 +98,7 @@ SoXtCollisionViewer::setDistance(
 } // setDistance()
 
 /*!
+  Returns the collision distance.
 */
 
 float
@@ -85,6 +109,7 @@ SoXtCollisionViewer::getDistance(
 } // getDistance()
 
 /*!
+  Sets the number of steps?
 */
 
 void
@@ -95,6 +120,7 @@ SoXtCollisionViewer::setNumSteps(
 } // setNumSteps()
 
 /*!
+  Returns the number of steps.
 */
 
 int
@@ -105,6 +131,7 @@ SoXtCollisionViewer::getNumSteps(
 } // getNumSteps()
 
 /*!
+  Enables or disables collision detection.
 */
 
 void
@@ -115,6 +142,7 @@ SoXtCollisionViewer::setCollisionDetection(
 } // setCollisionDetection()
 
 /*!
+  Returns whether collision detection is enabled or not.
 */
 
 SbBool
@@ -125,6 +153,7 @@ SoXtCollisionViewer::getCollisionDetection(
 } // getCollisionDetection()
 
 /*!
+  Sets whether the Z buffer should be used to optimize or not.
 */
 
 void
@@ -135,6 +164,7 @@ SoXtCollisionViewer::setZBufferOptimization(
 } // setZBufferOptimization()
 
 /*!
+  Returns whether the Z buffer is used to optimize or not.
 */
 
 SbBool
@@ -147,6 +177,7 @@ SoXtCollisionViewer::getZBufferOptimization(
 // *************************************************************************
 
 /*!
+  Adds a callback.
 */
 
 void
@@ -157,6 +188,7 @@ SoXtCollisionViewer::addCallback(
 } // addCallback()
 
 /*!
+  Removes a callback.
 */
 
 void

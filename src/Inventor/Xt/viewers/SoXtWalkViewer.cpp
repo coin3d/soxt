@@ -22,6 +22,17 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtWalkViewer Inventor/Xt/viewers/SoXtWalkViewer.h
+  \brief The SoXtWalkViewer class is a viewer for giving a "walk"-like
+  experience in the scene.
+  \ingroup viewers
+*/
+
+// *************************************************************************
+
 #include <assert.h>
 
 #include <Xm/Xm.h>
@@ -40,6 +51,7 @@ static const char rcsid[] =
 // *************************************************************************
 
 /*!
+  Public constructor.
 */
 
 SoXtWalkViewer::SoXtWalkViewer(
@@ -55,6 +67,7 @@ SoXtWalkViewer::SoXtWalkViewer(
 } // SoXtWalkViewer()
 
 /*!
+  Protected constructor for derived classes.
 */
 
 SoXtWalkViewer::SoXtWalkViewer( // protected
@@ -71,6 +84,7 @@ SoXtWalkViewer::SoXtWalkViewer( // protected
 } // SoXtWalkViewer()
 
 /*!
+  Common constructor code.
 */
 
 void
@@ -95,6 +109,7 @@ SoXtWalkViewer::constructor(
 } // constructor()
 
 /*!
+  Destructor.
 */
 
 SoXtWalkViewer::~SoXtWalkViewer(
@@ -106,6 +121,7 @@ SoXtWalkViewer::~SoXtWalkViewer(
 // *************************************************************************
 
 /*!
+  FIXME: write doc.
 */
 
 void
@@ -116,6 +132,7 @@ SoXtWalkViewer::setViewing( // virtual
 } // setViewing()
 
 /*!
+  FIXME: write doc.
 */
 
 void
@@ -126,6 +143,7 @@ SoXtWalkViewer::setCamera( // virtual
 } // setCamera()
 
 /*!
+  FIXME: write doc.
 */
 
 void
@@ -136,6 +154,7 @@ SoXtWalkViewer::setCursorEnabled( // virtual
 } // setCursorEnabled()
 
 /*!
+  FIXME: write doc.
 */
 
 void
@@ -148,6 +167,7 @@ SoXtWalkViewer::setCameraType( // virtual
 // *************************************************************************
 
 /*!
+  FIXME: write doc.
 */
 
 const char *
@@ -159,6 +179,7 @@ SoXtWalkViewer::getDefaultWidgetName( // virtual, protected
 } // getDefaultWidgetName()
 
 /*!
+  FIXME: write doc.
 */
 
 const char *
@@ -170,6 +191,7 @@ SoXtWalkViewer::getDefaultTitle( // virtual, protected
 } // getDefaultTitle()
 
 /*!
+  FIXME: write doc.
 */
 
 const char *
@@ -183,6 +205,7 @@ SoXtWalkViewer::getDefaultIconTitle( // virtual, protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc.
 */
 
 void
@@ -207,6 +230,7 @@ SoXtWalkViewer::processEvent( // virtual, protected
 } // processEvent()
 
 /*!
+  FIXME: write doc.
 */
 
 void
@@ -217,6 +241,7 @@ SoXtWalkViewer::setSeekMode( // virtual, protected
 } // setSeekMode()
 
 /*!
+  FIXME: write doc.
 */
 
 void
@@ -242,6 +267,7 @@ SoXtWalkViewer::rightWheelMotion( // virtual, protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc.
 */
 
 Widget
@@ -286,6 +312,7 @@ SoXtWalkViewer::buildLeftTrim( // virtual, protected
 } // buildLeftTrim()
 
 /*!
+  FIXME: write doc.
 */
 
 void
@@ -306,6 +333,7 @@ SoXtWalkViewer::createPrefSheet( // virtual, protected
 } // createPrefSheet()
 
 /*!
+  FIXME: write doc.
 */
 
 void
@@ -318,6 +346,7 @@ SoXtWalkViewer::openViewerHelpCard( // virtual, protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc.
 */
 
 void
@@ -327,6 +356,7 @@ SoXtWalkViewer::leftWheel2Start( // virtual, protected
 } // leftWheel2Start()
 
 /*!
+  FIXME: write doc.
 */
 
 void
@@ -338,6 +368,7 @@ SoXtWalkViewer::leftWheel2Motion( // virtual, protected
 } // rightWheelMotion()
 
 /*!
+  FIXME: write doc.
 */
 
 void
@@ -347,6 +378,7 @@ SoXtWalkViewer::leftWheel2Finish( // virtual, protected
 } // leftWheel2Finish()
 
 /*!
+  FIXME: write doc.
 */
 
 float
@@ -357,35 +389,91 @@ SoXtWalkViewer::getLeftWheel2Value( // virtual, protected
 } // getLeftWheel2Value()
 
 /*!
+  FIXME: write doc
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtWalkViewer,
-  wheelarmed )
+void
+SoXtWalkViewer::setLeftWheel2String(
+  char * string )
+{
+  SOXT_STUB();
+} // setLeftWheel2String()
+
+/*!
+  FIXME: write doc.
+*/
+
+void
+SoXtWalkViewer::wheelarmed(
+  void )
 {
   this->leftWheel2Start();
 } // wheelarmed()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtWalkViewer,
-  wheelchanged )
+void
+SoXtWalkViewer::wheelarmedCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
 {
-  SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
-  this->leftWheel2Motion( data->current );
+  SoXtWalkViewer * viewer = (SoXtWalkViewer *) closure;
+  viewer->wheelarmed();
+} // wheelarmedCB()
+
+/*!
+  FIXME: write doc.
+*/
+
+void
+SoXtWalkViewer::wheelchanged(
+  float value )
+{
+  this->leftWheel2Motion( value );
 } // wheelchanged()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtWalkViewer,
-  wheeldisarmed )
+void
+SoXtWalkViewer::wheelchangedCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer call_data )
+{
+  SoXtWalkViewer * viewer = (SoXtWalkViewer *) closure;
+  SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
+  viewer->wheelchanged( data->current );
+} // wheelchangedCB()
+
+/*!
+  FIXME: write doc.
+*/
+
+void
+SoXtWalkViewer::wheeldisarmed(
+  void )
 {
   this->leftWheel2Finish();
 } // wheeldisarmed()
+
+/*!
+  static callback
+*/
+
+void
+SoXtWalkViewer::wheeldisarmedCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtWalkViewer * viewer = (SoXtWalkViewer *) closure;
+  viewer->wheeldisarmed();
+} // wheeldisarmedCB()
 
 // *************************************************************************
 

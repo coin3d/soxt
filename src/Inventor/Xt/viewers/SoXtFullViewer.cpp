@@ -22,6 +22,16 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtFullViewer Inventor/Xt/SoXtFullViewer.h
+  \brief The SoXtFullViewer class adds GUI decorations to the viewer component.
+  \ingroup viewers components
+*/
+
+// *************************************************************************
+
 #if HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
@@ -90,11 +100,128 @@ enum DefaultViewerButtons {
 
 #define VIEWERBUTTON(button) ((Widget) ((*this->viewerButtonWidgets)[button]))
 
+// *************************************************************************
+
 /*!
-  \class SoXtFullViewer Inventor/Xt/SoXtFullViewer.h
-  \brief The SoXtFullViewer class adds GUI decorations to the viewer
-  component.
+  \var float SoXtFullViewer::leftWheelVal
+
+  The value of the left thumb wheel.  Do not set directly, use access method.
 */
+
+/*!
+  \var Widget SoXtFullViewer::leftWheel
+
+  The widget for the left thumb wheel.
+*/
+
+/*!
+  \var Widget SoXtFullViewer::leftWheelLabel
+
+  The widget for the label below the left thumb wheel.
+*/
+
+/*!
+  \var char * SoXtFullViewer::leftWheelStr
+
+  The string used in the label under the left thumb wheel.
+*/
+
+/*!
+  \var float SoXtFullViewer::bottomWheelVal
+
+  The value of the bottom thumb wheel.  Do not set directly, use access method.
+*/
+
+/*!
+  \var Widget SoXtFullViewer::bottomWheel
+
+  The widget for the bottom thumb wheel.
+*/
+
+/*!
+  \var Widget SoXtFullViewer::bottomWheelLabel
+
+  The widget for the label besides the bottom thumb wheel.
+*/
+
+/*!
+  \var char * SoXtFullViewer::bottomWheelStr
+
+  The string used in the label besides the bottom thumb wheel.
+*/
+
+/*!
+  \var float SoXtFullViewer::rightWheelVal
+
+  The value of the right thumb wheel.  Do not set directly, use access method.
+*/
+
+/*!
+  \var Widget SoXtFullViewer::rightWheel
+
+  The widget for the right thumb wheel.
+*/
+
+/*!
+  \var Widget SoXtFullViewer::rightWheelLabel
+
+  The widget for the label below the right thumb wheel.
+*/
+
+/*!
+  \var char * SoXtFullViewer::rightWheelStr
+
+  The string used in the label below the right thumb wheel.
+*/
+
+/*!
+  \enum SoXtFullViewer::BuildFlag
+
+  Flags for building various parts of the viewer.
+*/
+
+/*!
+  \var SbPList * SoXtFullViewer::viewerButtonWidgets
+
+  The list of button widgets for the right viewer decoration.
+*/
+
+/*!
+  \var Widget SoXtFullViewer::prefsheet
+
+  The preferences sheet.
+*/
+
+/*!
+  \var Widget SoXtFullViewer::prefshell
+
+  The shell for the preferences window.
+*/
+
+/*!
+  \var char * SoXtFullViewer::prefstring
+
+  The title string for the preferences window.
+*/
+
+/*!
+  \var SbBool SoXtFullViewer::popupEnabled
+
+  Whether the popup menu is enabled or not.
+*/
+
+/*!
+  \var SoAnyPopupMenu * SoXtFullViewer::prefmenu
+
+  The popup menu manager object.
+*/
+
+/*!
+  \var char * SoXtFullViewer::popupTitle
+
+  The title for the popup menu,
+*/
+
 
 // *************************************************************************
 
@@ -188,6 +315,7 @@ static const int SOXT_VIEWER_MIN_HEIGHT_BASE = 30 + 90 + 8;
 static const int SOXT_VIEWER_MIN_WIDTH = 300;
 
 /*!
+  This method sets whether the decorations should be shown or not.
 */
 
 void
@@ -229,6 +357,7 @@ SoXtFullViewer::setDecoration(
 } // setDecoration()
 
 /*!
+  This method returns whether the decorations are shown or not.
 */
 
 SbBool
@@ -241,6 +370,7 @@ SoXtFullViewer::isDecoration(
 // *************************************************************************
 
 /*!
+  This method sets whether the popup menu should be enabled or not.
 */
 
 void
@@ -251,6 +381,7 @@ SoXtFullViewer::setPopupMenuEnabled(
 } // setPopupMenuEnabled()
 
 /*!
+  This method returns whether the popup menu is enabled or not.
 */
 
 SbBool
@@ -260,10 +391,23 @@ SoXtFullViewer::isPopupMenuEnabled(
   return this->popupEnabled;
 } // isPopupMenuEnabled()
 
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::setPopupMenuString(
+  const char * const title )
+{
+  SOXT_STUB()
+} // setPopupMenuString()
+
 // *************************************************************************
 
 /*!
   Return value is either NULL or a widget of type xmFormWidgetClass (Xm/Form.h)
+
+  AppPushButtons are on the left decoration.
 */
 
 Widget
@@ -274,6 +418,10 @@ SoXtFullViewer::getAppPushButtonParent(
 } // getAppPushButtonParent()
 
 /*!
+  Not implemented.
+
+  Each button will be set to 30x30 pixels, and they will appear on the left
+  viewer decoration.
 */
 
 void
@@ -285,6 +433,7 @@ SoXtFullViewer::addAppPushButton(
 } // addAppPushButton()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -297,6 +446,7 @@ SoXtFullViewer::insertAppPushButton(
 } // insertAppPushButton()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -316,6 +466,7 @@ SoXtFullViewer::removeAppPushButton(
 } // removeAppPushButton()
 
 /*!
+  FIXME: write doc
 */
 
 int
@@ -326,6 +477,7 @@ SoXtFullViewer::findAppPushButton(
 } // findAppPushButton()
 
 /*!
+  FIXME: write doc
 */
 
 int
@@ -336,6 +488,7 @@ SoXtFullViewer::lengthAppPushButton(
 } // lengthAppPushButton()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -348,6 +501,7 @@ SoXtFullViewer::layoutAppPushButtons(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -360,6 +514,7 @@ SoXtFullViewer::getRenderAreaWidget(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -420,6 +575,7 @@ SoXtFullViewer::buildWidget( // protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -466,6 +622,9 @@ SoXtFullViewer::buildDecoration( // virtual
 
 /*!
   This method creates the left decoration form.
+
+  Return value is a Motif widget of the xmFormWidgetClass type.
+  The left decoration is 30 pixels wide.
 */
 
 Widget
@@ -517,6 +676,9 @@ SoXtFullViewer::buildLeftTrim( // virtual
 
 /*!
   This method creates the right decoration form.
+
+  Returned value is a Motif widget of the xmFormWidgetClass type.
+  The form is 30 pixels wide.
 */
 
 Widget
@@ -568,6 +730,9 @@ SoXtFullViewer::buildRightTrim( // virtual
 
 /*!
   This method created the bottom decoration form.
+
+  Return value is a Motif widget of the xmFormWidgetClass type.
+  It is 30 pixels high.
 */
 
 Widget
@@ -647,6 +812,8 @@ SoXtFullViewer::buildBottomTrim( // virtual
 // *************************************************************************
 
 /*!
+  This method sets whether the viewer should be in view mode or interaction
+  mode.
 */
 
 void
@@ -686,6 +853,7 @@ SoXtFullViewer::setViewing( // virtual
 } // setViewing()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -698,6 +866,7 @@ SoXtFullViewer::setHeadlight( // virtual
 } // setHeadlight()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -711,6 +880,7 @@ SoXtFullViewer::setDrawStyle( // virtual
 } // setDrawStyle()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -738,6 +908,7 @@ SoXtFullViewer::setBufferingType( // virtual
 } // setBufferingType()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -779,6 +950,7 @@ SoXtFullViewer::setCamera( // virtual
 } // setCamera()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -793,6 +965,7 @@ SoXtFullViewer::hide( // virtual
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -1035,6 +1208,7 @@ SoXtFullViewer::createInsensitivePixmapFromXpmData(
 } // createInsensitivePixmapFromXpmData()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -1197,6 +1371,7 @@ SoXtFullViewer::createViewerButtons(
 } // createViewerButtons()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -1218,9 +1393,32 @@ SoXtFullViewer::buildPopupMenu(
   this->prefmenu->SetMenuItemEnabled( SEEK_ITEM, this->isViewing() );
 } // buildPopupMenu()
 
+/*!
+  FIXME: write doc
+*/
+
+Widget
+SoXtFullViewer::buildFunctionsSubmenu(
+  Widget popup )
+{
+  SOXT_STUB();
+} // buildFunctionsSubmenu()
+
+/*!
+  FIXME: write doc
+*/
+
+Widget
+SoXtFullViewer::buildDrawStyleSubmenu(
+  Widget popup )
+{
+  SOXT_STUB();
+} // buildDrawStyleSubmenu()
+
 // *************************************************************************
 
 /*!
+  This method is invoked when the left thumb wheel is pressed.
 */
 
 void
@@ -1231,16 +1429,21 @@ SoXtFullViewer::leftWheelStart( // virtual
 } // leftWheelStart()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  leftWheelStart )
+void
+SoXtFullViewer::leftWheelStartCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
 {
-  this->leftWheelStart();
-} // leftWheelStart()
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->leftWheelStart();
+} // leftWheelStartCB()
 
 /*!
+  This method is invoked when the left thumb wheel is moved.
 */
 
 void
@@ -1251,17 +1454,22 @@ SoXtFullViewer::leftWheelMotion( // virtual
 } // leftWheelMotion()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  leftWheelMotion )
+void
+SoXtFullViewer::leftWheelMotionCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer call_data )
 {
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
-  this->leftWheelMotion( data->current );
+  viewer->leftWheelMotion( data->current );
 } // leftWheelMotionCB()
 
 /*!
+  This method is invoked when the left thumb wheel is released.
 */
 
 void
@@ -1272,16 +1480,21 @@ SoXtFullViewer::leftWheelFinish( // virtual
 } // leftWheelFinished()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  leftWheelFinish )
+void
+SoXtFullViewer::leftWheelFinishCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
 {
-  this->leftWheelFinish();
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->leftWheelFinish();
 } // leftWheelFinishCB()
 
 /*!
+  This method returns the value for the left thumb wheel.
 */
 
 float
@@ -1292,6 +1505,7 @@ SoXtFullViewer::getLeftWheelValue(
 } // getLeftWheelValue()
 
 /*!
+  This method sets the value for the left thumb wheel.
 */
 
 void
@@ -1305,6 +1519,7 @@ SoXtFullViewer::setLeftWheelValue(
 // *************************************************************************
 
 /*!
+  This method is invoked when the bottom thumb wheel is pressed.
 */
 
 void
@@ -1315,16 +1530,21 @@ SoXtFullViewer::bottomWheelStart( // virtual
 } // bottomWheelStart()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  bottomWheelStart )
+void
+SoXtFullViewer::bottomWheelStartCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
 {
-  this->bottomWheelStart();
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->bottomWheelStart();
 } // bottomWheelStart()
 
 /*!
+  This method is invoked when the bottom thumb wheel is moved.
 */
 
 void
@@ -1335,17 +1555,22 @@ SoXtFullViewer::bottomWheelMotion( // virtual
 } // bottomWheelMode()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  bottomWheelMotion )
+void
+SoXtFullViewer::bottomWheelMotionCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer call_data )
 {
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
-  this->bottomWheelMotion( data->current );
+  viewer->bottomWheelMotion( data->current );
 } // bottomWheelStart()
 
 /*!
+  This method is invoked when the bottom thumb wheel is released
 */
 
 void
@@ -1356,16 +1581,21 @@ SoXtFullViewer::bottomWheelFinish( // virtual
 } // bottomWheelFinish()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  bottomWheelFinish )
+void
+SoXtFullViewer::bottomWheelFinishCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
 {
-  this->bottomWheelFinish();
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->bottomWheelFinish();
 } // bottomWheelStart()
 
 /*!
+  This method returns the value for the bottom thumb wheel.
 */
 
 float
@@ -1376,6 +1606,7 @@ SoXtFullViewer::getBottomWheelValue(
 } // getBottomWheelValue()
 
 /*!
+  This method sets the value of the bottom thumb wheel.
 */
 
 void
@@ -1389,6 +1620,7 @@ SoXtFullViewer::setBottomWheelValue(
 // *************************************************************************
 
 /*!
+  This method is invoked when the right thumb wheel is pressed.
 */
 
 void
@@ -1399,16 +1631,21 @@ SoXtFullViewer::rightWheelStart( // virtual
 } // rightWheelStart()
 
 /*!
+  FIXME: write doc
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  rightWheelStart )
+void
+SoXtFullViewer::rightWheelStartCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
 {
-  this->rightWheelStart();
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->rightWheelStart();
 } // rightWheelStartCB()
 
 /*!
+  This method is invoked when the right thumb wheel is moved.
 */
 
 void
@@ -1419,17 +1656,22 @@ SoXtFullViewer::rightWheelMotion( // virtual
 } // rightWheelMotion()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  rightWheelMotion )
+void
+SoXtFullViewer::rightWheelMotionCB(
+  Widget,
+  XtPointer closure,
+  XtPointer call_data )
 {
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
-  this->rightWheelMotion( data->current );
+  viewer->rightWheelMotion( data->current );
 } // rightWheelMotionCB()
 
 /*!
+  This method is invoked when the right thumb wheel is released.
 */
 
 void
@@ -1440,16 +1682,21 @@ SoXtFullViewer::rightWheelFinish( // virtual
 } // rightWheelFinish()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  rightWheelFinish )
+void
+SoXtFullViewer::rightWheelFinishCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
 {
-  this->rightWheelFinish();
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->rightWheelFinish();
 } // rightWheelFinishCB()
 
 /*!
+  This method returns the value of the right thumb wheel.
 */
 
 float
@@ -1460,6 +1707,7 @@ SoXtFullViewer::getRightWheelValue(
 } // getRightWheelValue()
 
 /*!
+  This method sets the value of the right thumb wheel.
 */
 
 void
@@ -1496,6 +1744,8 @@ SoXtFullViewer::setLeftWheelString(
 } // setLeftWheelString()
 
 /*!
+  this method returns the Motif widget for the label below the left thumb wheel.
+  The widget is of the xmLabelWidgetClass type.
 */
 
 Widget
@@ -1529,6 +1779,8 @@ SoXtFullViewer::setBottomWheelString(
 } // setBottomWheelString()
 
 /*!
+  This method returns the Motif widget for the label beside the bottom
+  thumb wheel.  The widget is of the xmLabelWidgetClass type.
 */
 
 Widget
@@ -1567,6 +1819,8 @@ SoXtFullViewer::setRightWheelString(
 } // setRightWheelString()
 
 /*!
+  This method returns the widget for the label below the right thumb wheel.
+  The widget is of the xmLabelWidgetClass type.
 */
 
 Widget
@@ -1588,13 +1842,14 @@ SoXtFullViewer::openViewerHelpCard( // virtual
 {
 #if SOXT_DEBUG
   SoDebugError::postInfo( "SoXtFullViewer::openViewerHelpCard",
-    "no help card for base viewer class" );
+    "should be overloaded" );
 #endif // SOXT_DEBUG
 } // openViewerHelpCard()
 
 // *************************************************************************
 
 /*!
+  Not implemented.
 */
 
 Widget
@@ -1610,6 +1865,11 @@ SoXtFullViewer::buildAppButtonsForm(
 } // buildAppButtonsForm()
 
 // *************************************************************************
+
+/*!
+  This method shows or hides the decoration widgets, depending on the
+  \a enable argument.
+*/
 
 void
 SoXtFullViewer::showDecorationWidgets(
@@ -1683,6 +1943,7 @@ SoXtFullViewer::setPrefSheetString( // protected
     }
     layoutPartsAndMapPrefSheet( this->prefparts, this->numprefparts,
       this->prefsheet, this->prefshell );
+  \endcode
 */
 
 void
@@ -1690,11 +1951,12 @@ SoXtFullViewer::createPrefSheet( // protected, virtual
   void )
 {
 /*¡
-  Method could be made abstract.
+  Method could be made abstract.?
 */
 } // createPrefSheet()
 
 /*!
+  This method creates the preferences sheet shell.
 */
 
 void
@@ -1740,6 +2002,7 @@ SoXtFullViewer::createPrefSheetShellAndForm(  // protected
 } // createPrefSheetShellAndForm()
 
 /*!
+  This method creates all the preference sheel parts.
 */
 
 void
@@ -1767,6 +2030,7 @@ SoXtFullViewer::createDefaultPrefSheetParts( // protected
 } // createDefaultPrefSheetParts()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -1867,6 +2131,7 @@ SoXtFullViewer::createFramedSeekDistPrefSheetGuts( // protected
 } // createFramedSeekDistPrefSheetGuts()
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -1892,6 +2157,7 @@ SoXtFullViewer::createFramedZoomPrefSheetGuts( // protected
 } // createFramedZoomPrefSheetGuts()
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -1919,6 +2185,7 @@ SoXtFullViewer::createFramedClippingPrefSheetGuts(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -1943,6 +2210,7 @@ SoXtFullViewer::createFramedStereoPrefSheetGuts(
 } // createFramedStereoPrefSheetGuts()
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -1969,6 +2237,7 @@ SoXtFullViewer::createFramedSpeedPrefSheetGuts(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -2076,6 +2345,7 @@ SoXtFullViewer::createSeekPrefSheetGuts( // protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -2491,6 +2761,7 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -2519,6 +2790,7 @@ SoXtFullViewer::createStereoPrefSheetGuts( // protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -2576,9 +2848,9 @@ SoXtFullViewer::createSpeedPrefSheetGuts( // protected
   window.
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  prefSheetDestroy )
+void
+SoXtFullViewer::prefSheetDestroy(
+  void )
 {
   XtUnrealizeWidget( this->prefshell );
   this->prefshell = NULL;
@@ -2586,15 +2858,44 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // prefSheetDestroy()
 
 /*!
+  static callback
+*/
+
+void
+SoXtFullViewer::prefSheetDestroyCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->prefSheetDestroy();
+} // prefSheetDestroyCB()
+
+/*!
   \internal
   This callback is hooked up to the "seconds" preferences sheet text field.
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  seekPrefSheetField )
+void
+SoXtFullViewer::seekPrefSheetField(
+  void )
 {
   SOXT_STUB();
+} // seekPrefSheetField()
+
+/*!
+  \internal
+  static callback
+*/
+
+void
+SoXtFullViewer::seekPrefSheetFieldCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->seekPrefSheetField();
 } // seekPrefSheetFieldCB()
 
 /*!
@@ -2604,11 +2905,25 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   widgets.
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  seekPrefSheetToggle1 )
+void
+SoXtFullViewer::seekPrefSheetToggle1(
+  void )
 {
   SOXT_STUB();
+} // seekPrefSheetToggle1CB()
+
+/*!
+  static callback
+*/
+
+void
+SoXtFullViewer::seekPrefSheetToggle1CB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->seekPrefSheetToggle1();
 } // seekPrefSheetToggle1CB()
 
 /*!
@@ -2617,19 +2932,34 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   widgets.
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  seekPrefSheetToggle2 )
+void
+SoXtFullViewer::seekPrefSheetToggle2(
+  void )
 {
   SOXT_STUB();
 } // seekPrefSheetToggle2CB()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  autocliptoggled )
+void
+SoXtFullViewer::seekPrefSheetToggle2CB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->seekPrefSheetToggle2();
+} // seekPrefSheetToggle2CB()
+
+/*!
+  \internal
+*/
+
+void
+SoXtFullViewer::autocliptoggled(
+  void )
 {
   Boolean enable = False;
   XtVaGetValues( this->autocliptoggle, XmNset, &enable, NULL );
@@ -2669,11 +2999,26 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // autocliptoggled()
 
 /*!
+  FIXME: write doc
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  nearwheelvaluechanged )
+void
+SoXtFullViewer::autocliptoggledCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->autocliptoggled();
+} // autocliptoggledCB()
+
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::nearwheelvaluechanged(
+  void )
 {
   assert( this->nearwheel != NULL && this->farwheel != NULL );
 
@@ -2707,11 +3052,26 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // nearwheelvaluechanged()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  farwheelvaluechanged )
+void
+SoXtFullViewer::nearwheelvaluechangedCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->nearwheelvaluechanged();
+} // nearwheelvaluechangedCB()
+
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::farwheelvaluechanged(
+  void )
 {
   assert( this->nearwheel != NULL && this->farwheel != NULL );
 
@@ -2741,11 +3101,26 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // farwheelvaluechanged()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  nearvaluechanged )
+void
+SoXtFullViewer::farwheelvaluechangedCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->farwheelvaluechanged();
+} // farwheelvaluechangedCB()
+
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::nearvaluechanged(
+  void )
 {
   float val = atof( XmTextGetString( this->nearvalue ) );
   float farval = SoXtThumbWheelGetValue( this->farwheel );
@@ -2769,11 +3144,26 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // nearvaluechanged()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  farvaluechanged )
+void
+SoXtFullViewer::nearvaluechangedCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->nearvaluechanged();
+} // nearvaluechangedCB()
+
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::farvaluechanged(
+  void )
 {
   float nearval = SoXtThumbWheelGetValue( this->nearwheel );
   float val = atof( XmTextGetString( this->farvalue ) );
@@ -2796,9 +3186,25 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   camera->farDistance = val;
 } // farvaluechanged()
 
+/*!
+  \internal
+  static callback
+*/
+
+void
+SoXtFullViewer::farvaluechangedCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->farvaluechanged();
+} // farvaluechangedCB()
+
 // *************************************************************************
   
 /*!
+  FIXME: write doc
 */
 
 void
@@ -2809,6 +3215,7 @@ SoXtFullViewer::selectedViewing(
 } // selectedViewing()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -2819,6 +3226,7 @@ SoXtFullViewer::selectedDecoration(
 } // selectedDecoration();
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -2829,6 +3237,7 @@ SoXtFullViewer::selectedHeadlight(
 } // selectedHeadlight();
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -2844,6 +3253,7 @@ SoXtFullViewer::selectedPrefs(
 } // selectedPrefs()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -2861,25 +3271,21 @@ SoXtFullViewer::interactbuttonClicked(
 } // interactbuttonClicked()
 
 /*!
+  staitc callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  interactbutton )
+void
+SoXtFullViewer::interactbuttonCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
 {
-  this->interactbuttonClicked( TRUE );
-/*
-  XmToggleButtonCallbackStruct * data =
-    (XmToggleButtonCallbackStruct *) call_data;
-  if ( ! data->set ) {
-    
-  } else {
-    ((SoXtFullViewer *) client_data)->interactbuttonClicked( data->set );
-  }
-*/
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->interactbuttonClicked( TRUE );
 } // interactbuttonCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -2897,29 +3303,21 @@ SoXtFullViewer::examinebuttonClicked(
 } // examinebuttonClicked();
 
 /*!
+  FIXME: write doc
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  examinebutton )
-{
-  this->examinebuttonClicked( TRUE );
-} // examinebutton()
-
-/*
 void
 SoXtFullViewer::examinebuttonCB(
   Widget,
-  XtPointer client_data,
-  XtPointer call_data )
+  XtPointer closure,
+  XtPointer )
 {
-  XmToggleButtonCallbackStruct * data =
-    (XmToggleButtonCallbackStruct *) call_data;
-  ((SoXtFullViewer *) client_data)->examinebuttonClicked( data->set );
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->examinebuttonClicked( TRUE );
 } // examinebuttonCB()
-*/
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -2930,6 +3328,7 @@ SoXtFullViewer::helpbuttonClicked(
 } // helpbuttonClicked()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -2942,6 +3341,7 @@ SoXtFullViewer::helpbuttonCB(
 } // helpbuttonCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -2952,6 +3352,7 @@ SoXtFullViewer::homebuttonClicked(
 } // homebuttonClicked()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -2964,6 +3365,7 @@ SoXtFullViewer::homebuttonCB(
 } // homebuttonCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -2974,6 +3376,7 @@ SoXtFullViewer::sethomebuttonClicked(
 } // sethomebuttonClicked()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -2986,6 +3389,7 @@ SoXtFullViewer::sethomebuttonCB(
 } // sethomebuttonCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -2996,6 +3400,7 @@ SoXtFullViewer::viewallbuttonClicked(
 } // viewallbuttonClicked()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -3008,6 +3413,7 @@ SoXtFullViewer::viewallbuttonCB(
 } // viewallbuttonCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -3025,6 +3431,7 @@ SoXtFullViewer::seekbuttonClicked(
 } // seekbuttonClicked()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -3037,6 +3444,7 @@ SoXtFullViewer::seekbuttonCB(
 } // seekbuttonCB()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -3047,6 +3455,7 @@ SoXtFullViewer::copyviewSelected(
 } // copyviewSelected()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -3057,6 +3466,7 @@ SoXtFullViewer::pasteviewSelected(
 } // pasteviewSelected()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -3069,33 +3479,64 @@ SoXtFullViewer::drawstyleActivated(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  increaseInteractiveCount )
+void
+SoXtFullViewer::increaseInteractiveCount(
+  void )
 {
   this->interactiveCountInc();
 } // increaseInteractiveCount()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  decreaseInteractiveCount )
+void
+SoXtFullViewer::increaseInteractiveCountCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->increaseInteractiveCount();
+} // increaseInteractiveCountCB()
+
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::decreaseInteractiveCount(
+  void )
 {
   this->interactiveCountDec();
-} // increaseInteractiveCount()
+} // decreaseInteractiveCount()
+
+/*!
+  static callback
+*/
+
+void
+SoXtFullViewer::decreaseInteractiveCountCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->decreaseInteractiveCount();
+} // decreaseInteractiveCountCB()
 
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  seektimechanged )
+void
+SoXtFullViewer::seektimechanged(
+  void )
 {
   float newtime = (float) atof( XmTextGetString( this->seektimefield ) );
   this->setSeekTime( newtime );
@@ -3106,11 +3547,26 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // seektimechanged()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  pointtoggled )
+void
+SoXtFullViewer::seektimechangedCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->seektimechanged();
+} // seektimechangedCB()
+
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::pointtoggled(
+  void )
 {
   XtVaSetValues( this->pointtoggle, XmNset, True, NULL );
   XtVaSetValues( this->objecttoggle, XmNset, False, NULL );
@@ -3119,11 +3575,26 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // pointtoggled()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  objecttoggled )
+void
+SoXtFullViewer::pointtoggledCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->pointtoggled();
+} // pointtoggledCB()
+
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::objecttoggled(
+  void )
 {
   XtVaSetValues( this->pointtoggle, XmNset, False, NULL );
   XtVaSetValues( this->objecttoggle, XmNset, True, NULL );
@@ -3132,11 +3603,26 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // objecttoggled()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  seekdistancechanged )
+void
+SoXtFullViewer::objecttoggledCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->objecttoggled();
+} // objecttoggledCB()
+
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::seekdistancechanged(
+  void )
 {
   float newdist = (float) atof( XmTextGetString( this->seekdistancefield ) );
   if ( newdist < 0.0f )
@@ -3149,11 +3635,26 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // seekdistancechanged()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  percenttoggled )
+void
+SoXtFullViewer::seekdistancechangedCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->seekdistancechanged();
+} // seekdistancechangedCB()
+
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::percenttoggled(
+  void )
 {
   XtVaSetValues( this->percenttoggle, XmNset, True, NULL );
   XtVaSetValues( this->absolutetoggle, XmNset, False, NULL );
@@ -3161,22 +3662,55 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // percenttoggled()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  absolutetoggled )
+void
+SoXtFullViewer::percenttoggledCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->percenttoggled();
+} // percenttoggledCB()
+
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::absolutetoggled(
+  void )
 {
   XtVaSetValues( this->percenttoggle, XmNset, False, NULL );
   XtVaSetValues( this->absolutetoggle, XmNset, True, NULL );
   this->seekdistaspercentage = FALSE;
 } // absolutetoggled()
 
+/*!
+  static callback
+*/
+
+void
+SoXtFullViewer::absolutetoggledCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->absolutetoggled();
+} // absolutetoggledCB()
+
 // *************************************************************************
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  stereotoggled )
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::stereotoggled(
+  void )
 {
   Boolean enable = False;
   XtVaGetValues( this->stereotoggle, XmNset, &enable, NULL );
@@ -3185,6 +3719,20 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
     XmNset, this->isStereoViewing() ? True : False,
     NULL );
 } // stereotoggled()
+
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::stereotoggledCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->stereotoggled();
+} // stereotoggledCB()
 
 // *************************************************************************
 
@@ -3255,11 +3803,12 @@ SoXtFullViewer::setCameraZoom(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  zoomfromchanged )
+void
+SoXtFullViewer::zoomfromchanged(
+  void )
 {
   float value = atof( XmTextGetString( this->zoomfrom ) );
   if ( value < 0.001f )
@@ -3299,11 +3848,26 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // zoomfromchanged()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  zoomsliderchanged )
+void
+SoXtFullViewer::zoomfromchangedCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->zoomfromchanged();
+} // zoomfromchangedCB()
+
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::zoomsliderchanged(
+  void )
 {
   Boolean editable = True;
   XtVaGetValues( this->zoomslider, XmNsensitive, &editable, NULL );
@@ -3338,11 +3902,26 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // zoomsliderchanged()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  zoomtochanged )
+void
+SoXtFullViewer::zoomsliderchangedCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->zoomsliderchanged();
+} // zoomsliderchangedCB()
+
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::zoomtochanged(
+  void )
 {
   float value = atof( XmTextGetString( this->zoomto ) );
   if ( value > 180.0f )
@@ -3384,11 +3963,25 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // zoomtochanged()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  zoomvaluechanged )
+void
+SoXtFullViewer::zoomtochangedCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->zoomtochanged();
+} // zoomtochangedCB()
+
+/*!
+*/
+
+void
+SoXtFullViewer::zoomvaluechanged(
+  void )
 {
   float value = atof( XmTextGetString( this->zoomvalue ) );
   if ( value < this->zoomrange[0] )
@@ -3413,9 +4006,24 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   this->setCameraZoom( value );
 } // zoomvaluechanged()
 
+/*!
+  static callback
+*/
+
+void
+SoXtFullViewer::zoomvaluechangedCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->zoomvaluechanged();
+} // zoomvaluechangedCB()
+
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -3438,24 +4046,54 @@ SoXtFullViewer::getThumbWheel(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  speedInc )
+void
+SoXtFullViewer::speedInc(
+  void )
 {
   SOXT_STUB_ONCE();
 } // speedInc()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtFullViewer,
-  speedDec )
+void
+SoXtFullViewer::speedIncCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->speedInc();
+} // speedIncCB()
+
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtFullViewer::speedDec(
+  void )
 {
   SOXT_STUB_ONCE();
 } // speedDec()
+
+/*!
+  static callback
+*/
+
+void
+SoXtFullViewer::speedDecCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
+  viewer->speedDec();
+} // speedDecCB()
 
 // *************************************************************************
 

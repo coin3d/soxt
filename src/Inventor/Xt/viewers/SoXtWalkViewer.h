@@ -82,9 +82,12 @@ private:
   Widget tiltwheel, heightwheel;
   float heightvalue;
 
-  SOXT_WIDGET_CALLBACK( wheelarmed );
-  SOXT_WIDGET_CALLBACK( wheelchanged );
-  SOXT_WIDGET_CALLBACK( wheeldisarmed );
+  void wheelarmed(void);
+  static void wheelarmedCB( Widget, XtPointer, XtPointer );
+  void wheelchanged( float value );
+  static void wheelchangedCB( Widget, XtPointer, XtPointer );
+  void wheeldisarmed(void);
+  static void wheeldisarmedCB( Widget, XtPointer, XtPointer );
 
 }; // class SoXtWalkViewer
 

@@ -22,6 +22,17 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtFlyViewer Inventor/Xt/viewers/SoXtFlyViewer.h
+  \brief The SoXtFlyViewer class is for making the browsing experience more
+  like in a flight simulator.
+  \ingroup viewers
+*/
+
+// *************************************************************************
+
 #include <assert.h>
 
 #include <Xm/Xm.h>
@@ -36,6 +47,7 @@ static const char rcsid[] =
 // *************************************************************************
 
 /*!
+  Public constructor.
 */
 
 SoXtFlyViewer::SoXtFlyViewer( // public
@@ -103,6 +115,7 @@ SoXtFlyViewer::~SoXtFlyViewer(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -113,6 +126,7 @@ SoXtFlyViewer::setViewing( // virtual
 } // setViewing()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -123,6 +137,7 @@ SoXtFlyViewer::resetToHomePosition( // virtual
 } // resetToHomePosition()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -133,6 +148,7 @@ SoXtFlyViewer::setCamera( // virtual
 } // setCamera()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -143,6 +159,7 @@ SoXtFlyViewer::setCursorEnabled( // virtual
 } // setCursorEnabled()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -156,6 +173,7 @@ SoXtFlyViewer::setCameraType( // virtual
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -167,6 +185,7 @@ SoXtFlyViewer::getDefaultWidgetName( // virtual, protected
 } // getDefaultWidgetName()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -178,6 +197,7 @@ SoXtFlyViewer::getDefaultTitle( // virtual, protected
 } // getDefaultTitle()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -191,6 +211,7 @@ SoXtFlyViewer::getDefaultIconTitle( // virtual, protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -204,6 +225,7 @@ SoXtFlyViewer::processEvent( // virtual, protected
 } // processEvent()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -214,6 +236,7 @@ SoXtFlyViewer::setSeekMode( // virtual, protected
 } // setSeekMode()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -225,6 +248,7 @@ SoXtFlyViewer::actualRedraw( // virtual, protected
 } // actualRedraw()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -236,6 +260,7 @@ SoXtFlyViewer::rightWheelMotion( // virtual, protected
 } // rightWheelMotion()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -256,6 +281,7 @@ SoXtFlyViewer::createPrefSheet( // virtual, protected
 } // createPrefSheet()
 
 /*!
+  FIXME: write doc
 */
 
 void

@@ -99,15 +99,20 @@ protected:
   Widget createFramedSpinAnimPrefSheetGuts( Widget parent );
   Widget createSpinAnimPrefSheetGuts( Widget parent );
   Widget spinanimtoggle;
-  SOXT_WIDGET_CALLBACK( spinanimtoggled );
+  void spinanimtoggled(void);
+  static void spinanimtoggledCB( Widget, XtPointer, XtPointer );
 
   Widget createRotAxisPrefSheetGuts( Widget parent );
   Widget createFramedRotAxisPrefSheetGuts( Widget parent );
   Widget rotpointaxestoggle, rotaxesoverlaytoggle, axessizewheel, axessizefield;
-  SOXT_WIDGET_CALLBACK( rotpointtoggled );
-  SOXT_WIDGET_CALLBACK( rotaxesoverlaytoggled );
-  SOXT_WIDGET_CALLBACK( axeswheelmoved );
-  SOXT_WIDGET_CALLBACK( axesfieldchanged );
+  void rotpointtoggled(void);
+  static void rotpointtoggledCB( Widget, XtPointer, XtPointer );
+  void rotaxesoverlaytoggled(void);
+  static void rotaxesoverlaytoggledCB( Widget, XtPointer, XtPointer );
+  void axeswheelmoved( int ticks );
+  static void axeswheelmovedCB( Widget, XtPointer, XtPointer );
+  void axesfieldchanged(void);
+  static void axesfieldchangedCB( Widget, XtPointer, XtPointer );
 
 private:
   void constructor( SbBool build );

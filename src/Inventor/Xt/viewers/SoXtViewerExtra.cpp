@@ -42,6 +42,9 @@ static const char rcsid[] =
     this->appEventHandler = apphandler; \
   } while ( FALSE )
 
+/*!
+  This method processes X events for common viewer purposes.
+*/
 
 SbBool
 SoXtViewer::processCommonEvents(

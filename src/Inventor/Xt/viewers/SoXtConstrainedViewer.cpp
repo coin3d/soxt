@@ -22,12 +22,33 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtConstrainedViewer Inventor/Xt/viewers/SoXtConstrainedViewer.h
+  \brief The SoXtConstrainedViewer is yet to be documented.
+*/
+
+// *************************************************************************
+
 #include <Inventor/errors/SoDebugError.h>
 
 #include <soxtdefs.h>
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/viewers/SoAnyConstrainedViewer.h>
 #include <Inventor/Xt/viewers/SoXtConstrainedViewer.h>
+
+// *************************************************************************
+
+/*!
+  \var SbVec3f SoXtConstrainedViewer::upDirection
+  Vector controlling the up direction.
+*/
+
+/*!
+  \var float SoXtConstrainedViewer::sceneHeight
+  FIXME: write doc
+*/
 
 // *************************************************************************
 
@@ -66,6 +87,7 @@ SoXtConstrainedViewer::~SoXtConstrainedViewer(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -90,6 +112,7 @@ SoXtConstrainedViewer::getUpDirection(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -101,6 +124,7 @@ SoXtConstrainedViewer::setCamera( // virtual
 } // setCamera()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -112,6 +136,7 @@ SoXtConstrainedViewer::saveHomePosition( // virtual
 } // saveHomePosition()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -124,6 +149,7 @@ SoXtConstrainedViewer::resetToHomePosition( // virtual
 } // resetToHomePosition()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -138,6 +164,7 @@ SoXtConstrainedViewer::recomputeSceneSize( // virtual
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -148,6 +175,7 @@ SoXtConstrainedViewer::tiltCamera( // virtual, protected
 } // tiltCamera()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -159,6 +187,7 @@ SoXtConstrainedViewer::bottomWheelMotion( // virtual, protected
 } // bottomWheelMotion()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -170,6 +199,7 @@ SoXtConstrainedViewer::leftWheelMotion( // virtual, protected
 } // leftWheelMotion()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -180,6 +210,7 @@ SoXtConstrainedViewer::changeCameraValues( // virtual, protected
 } // changeCameraValues()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -190,6 +221,7 @@ SoXtConstrainedViewer::findUpDirection( // protected
 } // findUpDirection()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -200,6 +232,7 @@ SoXtConstrainedViewer::checkForCameraUpConstrain( // protected
 } // checkForCamerUpConstrain()
 
 /*!
+  FIXME: write doc
 */
 
 void

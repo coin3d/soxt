@@ -22,6 +22,16 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtExaminerViewer Inventor/Xt/viewers/SoXtExaminerViewer.h
+  \brief The SoXtExaminerViewer class is the most used viewer component.
+  \ingroup viewers components
+*/
+
+// *************************************************************************
+
 #if HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
@@ -61,6 +71,44 @@ static const char rcsid[] =
 #include <Inventor/Xt/common/pixmaps/ortho.xpm>
 #include <Inventor/Xt/common/pixmaps/perspective.xpm>
 #endif // HAVE_LIBXPM
+
+// *************************************************************************
+
+/*!
+  \var Widget SoXtExaminerViewer::spinanimtoggle
+  Widget for toggling spin animation.
+*/
+
+/*!
+  \var Widget SoXtExaminerViewer::rotpointaxestoggle
+  Widget for toggling rotation point axes graphics.
+*/
+
+/*!
+  \var Widget SoXtExaminerViewer::rotaxesoverlaytoggle
+  Widget for toggling if rotation point axes should be drawn in overlay
+  graphics or not.
+*/
+
+/*!
+  \var Widget SoXtExaminerViewer::axessizewheel
+  Widget for wheel controlling axes size.
+*/
+
+/*!
+  \var Widget SoXtExaminerViewer::axessizefield
+  Widget for field for setting axes size.
+*/
+
+/*!
+  \var XtIntervalId SoXtExaminerViewer::spindetecttimerId
+  Id for spin detect timer.
+*/
+
+/*!
+  \var SbBool SoXtExaminerViewer::spindetecttimerActive
+  Variable telling whether spin detect timer is active or not.
+*/
 
 // *************************************************************************
 
@@ -146,6 +194,7 @@ SoXtExaminerViewer::~SoXtExaminerViewer(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -352,6 +401,7 @@ SoXtExaminerViewer::leftWheelStart( // virtual, protected
 } // leftWheelStart()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -376,6 +426,7 @@ SoXtExaminerViewer::bottomWheelStart( // virtual, protected
 } // bottomWheelStart()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -387,6 +438,7 @@ SoXtExaminerViewer::bottomWheelMotion( // virtual, protected
 } // bottomWheelMotion()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -400,6 +452,7 @@ SoXtExaminerViewer::rightWheelMotion( // virtual, protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -411,6 +464,7 @@ SoXtExaminerViewer::getDefaultWidgetName(
 } // getDefaultWidgetName()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -422,6 +476,7 @@ SoXtExaminerViewer::getDefaultTitle(
 } // getDefaultTitle()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -435,6 +490,7 @@ SoXtExaminerViewer::getDefaultIconTitle(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -629,6 +685,7 @@ SoXtExaminerViewer::spindetecttimerCB( // static
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -665,6 +722,7 @@ SoXtExaminerViewer::createViewerButtons( // virtual
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -677,6 +735,7 @@ SoXtExaminerViewer::camerabuttonClicked(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -692,6 +751,7 @@ SoXtExaminerViewer::camerabuttonCB( // static
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -768,6 +828,10 @@ SoXtExaminerViewer::setCamera( // virtual
 
 // *************************************************************************
 
+/*!
+  FIXME: write doc
+*/
+
 void
 SoXtExaminerViewer::setSeekMode(
   SbBool enable )
@@ -804,7 +868,14 @@ SoXtExaminerViewer::actualRedraw( // virtual
 
 // *************************************************************************
 
-void SoXtExaminerViewer::setAnimationEnabled( const SbBool enable ) {
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtExaminerViewer::setAnimationEnabled(
+  const SbBool enable )
+{
   common->setAnimationEnabled( enable );
   if ( this->spinanimtoggle ) {
     Boolean enabled = False;
@@ -816,27 +887,67 @@ void SoXtExaminerViewer::setAnimationEnabled( const SbBool enable ) {
   }
 } // setAnimationEnabled()
 
-SbBool SoXtExaminerViewer::isAnimationEnabled(void) const {
+/*!
+  FIXME: write doc
+*/
+
+SbBool
+SoXtExaminerViewer::isAnimationEnabled(
+  void ) const
+{
   return common->isAnimationEnabled();
 } // isAnimationEnabled()
 
-void SoXtExaminerViewer::stopAnimating(void) {
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtExaminerViewer::stopAnimating(
+  void )
+{
   common->stopAnimating();
 } // stopAnimating()
 
-SbBool SoXtExaminerViewer::isAnimating(void) const {
+/*!
+  FIXME: write doc
+*/
+
+SbBool
+SoXtExaminerViewer::isAnimating(
+  void ) const
+{
   return common->isAnimating();
 } // isAnimating()
 
-void SoXtExaminerViewer::setFeedbackVisibility( const SbBool enable ) {
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtExaminerViewer::setFeedbackVisibility(
+  const SbBool enable )
+{
   common->setFeedbackVisibility( enable );
 } // setFeedbackVisibility()
 
-SbBool SoXtExaminerViewer::isFeedbackVisible(void) const {
+/*!
+  FIXME: write doc
+*/
+
+SbBool
+SoXtExaminerViewer::isFeedbackVisible(
+  void ) const
+{
   return common->isFeedbackVisible();
 } // isFeedbackVisible()
 
-void SoXtExaminerViewer::setFeedbackSize(
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtExaminerViewer::setFeedbackSize(
   const int size )
 {
   if ( this->axessizefield ) {
@@ -848,13 +959,21 @@ void SoXtExaminerViewer::setFeedbackSize(
   common->setFeedbackSize( size );
 } // setFeedbackSize()
 
-int SoXtExaminerViewer::getFeedbackSize(void) const {
+/*!
+  FIXME: write doc
+*/
+
+int
+SoXtExaminerViewer::getFeedbackSize(
+  void ) const
+{
   return common->getFeedbackSize();
 } // getFeedbackSize()
 
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -891,6 +1010,7 @@ SoXtExaminerViewer::createPrefSheet( // protected, virtual
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -915,6 +1035,7 @@ SoXtExaminerViewer::createFramedSpinAnimPrefSheetGuts(
 } // createFramedSpinAnimPrefSheetGuts()
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -943,11 +1064,12 @@ SoXtExaminerViewer::createSpinAnimPrefSheetGuts(
 } // createSpinAnimPrefSheetGuts()
 
 /*!
+  FIXME: write doc
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtExaminerViewer,
-  spinanimtoggled )
+void
+SoXtExaminerViewer::spinanimtoggled(
+  void )
 {
   Boolean enable = False;
   XtVaGetValues( this->spinanimtoggle, XmNset, &enable, NULL );
@@ -955,6 +1077,20 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   if ( ! enable && this->isAnimating() )
     this->stopAnimating();
 } // spinanimtoggled()
+
+/*!
+  static callback
+*/
+
+void
+SoXtExaminerViewer::spinanimtoggledCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
+  viewer->spinanimtoggled();
+} // spinanimtoggledCB()
 
 // *************************************************************************
 
@@ -985,6 +1121,7 @@ SoXtExaminerViewer::createFramedRotAxisPrefSheetGuts(
 } // createFramedRotAxisPrefSheetGuts()
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -1103,11 +1240,12 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
 } // createRotAxisPrefSheetGuts()
 
 /*!
+  FIXME: write doc
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtExaminerViewer,
-  rotpointtoggled )
+void
+SoXtExaminerViewer::rotpointtoggled(
+  void )
 {
   Boolean enable = False;
   XtVaGetValues( this->rotpointaxestoggle, XmNset, &enable, NULL );
@@ -1125,15 +1263,28 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // rotpointtoggled()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtExaminerViewer,
-  axeswheelmoved )
+void
+SoXtExaminerViewer::rotpointtoggledCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
 {
-  SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
+  SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
+  viewer->rotpointtoggled();
+} // rotpointtoggledCB()
 
-  int size = this->getFeedbackSize() + data->ticks;
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtExaminerViewer::axeswheelmoved(
+  int ticks )
+{
+  int size = this->getFeedbackSize() + ticks;
   if ( size < 3 )
     size = 3;
   else if ( size > 200 )
@@ -1142,11 +1293,27 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // axeswheelmoved()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtExaminerViewer,
-  axesfieldchanged )
+void
+SoXtExaminerViewer::axeswheelmovedCB(
+  Widget,
+  XtPointer closure,
+  XtPointer call_data )
+{
+  SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
+  SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
+  viewer->axeswheelmoved( data->ticks );
+} // axeswheelmovedCB()
+
+/*!
+  FIXME: write doc
+*/
+
+void
+SoXtExaminerViewer::axesfieldchanged(
+  void )
 {
   int size = atoi( XmTextGetString( this->axessizefield ) );
   if ( size < 3 )
@@ -1157,19 +1324,47 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // axesfieldchanged()
 
 /*!
+  static callback
+*/
+
+void
+SoXtExaminerViewer::axesfieldchangedCB(
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
+  viewer->axesfieldchanged();
+} // axesfieldchangedCB()
+
+/*!
   This callback should toggle wether the point of rotation should be embedded
   in the model Z-buffer wise, or be printed as overlay data.
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtExaminerViewer,
-  rotaxesoverlaytoggled )
+void
+SoXtExaminerViewer::rotaxesoverlaytoggled(
+  void )
 {
 #if SOXT_DEBUG
   SOXT_STUB_ONCE();
 #endif // SOXT_DEBUG
   XtVaSetValues( this->rotaxesoverlaytoggle, XmNset, True, NULL );
 } // rotpointoverlaytoggled()
+
+/*!
+  static callback
+*/
+
+void
+SoXtExaminerViewer::rotaxesoverlaytoggledCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtExaminerViewer * viewer = (SoXtExaminerViewer *) closure;
+  viewer->rotaxesoverlaytoggled();
+} // rotaxesoverlaytoggledCB()
 
 // *************************************************************************
 

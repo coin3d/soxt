@@ -22,6 +22,16 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
+/*!
+  \class SoXtPlaneViewer Inventor/Xt/viewers/SoXtPlaneViewer.h
+  \brief The SoXtPlaneViewer class is an alternative to the examiner viewer.
+  \ingroup viewers
+*/
+
+// *************************************************************************
+
 #include <assert.h>
 
 #include <X11/keysym.h>
@@ -52,6 +62,21 @@ static const char rcsid[] =
 #include <Inventor/Xt/common/pixmaps/y.xpm>
 #include <Inventor/Xt/common/pixmaps/z.xpm>
 #endif // HAVE_LIBXPM
+
+// *************************************************************************
+
+/*!
+  \enum SoXtPlaneViewer::PlaneViewerMode
+
+  Misc viewer modes.
+*/
+
+/*!
+  \var SoXtPlaneViewer::PlaneViewerMode SoXtPlaneViewer::mode
+
+  The current viewer mode.
+*/
+
 
 // *************************************************************************
 
@@ -669,19 +694,33 @@ SoXtPlaneViewer::createPrefSheet(
 /*!
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtPlaneViewer,
-  xbutton )
+void
+SoXtPlaneViewer::xbutton(
+  void )
 {
   common->viewPlaneX();
 } // xbutton()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtPlaneViewer,
-  ybutton )
+void
+SoXtPlaneViewer::xbuttonCB( // xbutton
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtPlaneViewer * viewer = (SoXtPlaneViewer *) closure;
+  viewer->xbutton();
+} // xbuttonCB()
+
+/*!
+*/
+
+void
+SoXtPlaneViewer::ybutton(
+  void )
 {
   common->viewPlaneY();
 } // ybutton()
@@ -689,22 +728,63 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 /*!
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtPlaneViewer,
-  zbutton )
+void
+SoXtPlaneViewer::ybuttonCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtPlaneViewer * viewer = (SoXtPlaneViewer *) closure;
+  viewer->ybutton();
+} // ybuttonCB()
+
+/*!
+*/
+
+void
+SoXtPlaneViewer::zbutton(
+  void )
 {
   common->viewPlaneZ();
 } // zbutton()
 
 /*!
+  static callback
 */
 
-SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
-  SoXtPlaneViewer,
-  camerabutton )
+void
+SoXtPlaneViewer::zbuttonCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtPlaneViewer * viewer = (SoXtPlaneViewer *) closure;
+  viewer->zbutton();
+} // zbuttonCB()
+
+/*!
+*/
+
+void
+SoXtPlaneViewer::camerabutton(
+  void )
 {
   this->toggleCameraType();
 } // camerabutton()
+
+/*!
+  static callbacks
+*/
+
+void
+SoXtPlaneViewer::camerabuttonCB( // static
+  Widget,
+  XtPointer closure,
+  XtPointer )
+{
+  SoXtPlaneViewer * viewer = (SoXtPlaneViewer *) closure;
+  viewer->camerabutton();
+} /// camerabuttonCB()
 
 // *************************************************************************
 

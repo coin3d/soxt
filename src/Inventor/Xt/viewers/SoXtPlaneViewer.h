@@ -101,10 +101,14 @@ private:
   Widget prefshell, prefsheet, * prefparts;
   int numprefparts;
 
-  SOXT_WIDGET_CALLBACK( xbutton );
-  SOXT_WIDGET_CALLBACK( ybutton );
-  SOXT_WIDGET_CALLBACK( zbutton );
-  SOXT_WIDGET_CALLBACK( camerabutton );
+  void xbutton(void);
+  static void xbuttonCB( Widget, XtPointer, XtPointer );
+  void ybutton(void);
+  static void ybuttonCB( Widget, XtPointer, XtPointer );
+  void zbutton(void);
+  static void zbuttonCB( Widget, XtPointer, XtPointer );
+  void camerabutton(void);
+  static void camerabuttonCB( Widget, XtPointer, XtPointer );
 
   void zoom( const float difference );
 
