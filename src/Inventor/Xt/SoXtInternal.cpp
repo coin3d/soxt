@@ -288,6 +288,14 @@ SoXtInternal::selectBestVisual(Display * dpy, Visual * & visual,
 {
   assert(dpy != NULL);
 
+#ifdef USE_DEFAULT_VISUAL
+  const int screen = DefaultScreen(dpy);
+  visual = DefaultVisual(dpy, screen);
+  colormap = DefaultColormap(dpy, screen);
+  depth = DefaultDepth(dpy, screen);
+  return;
+#endif
+
   int DEBUG_VISUAL = 0;
   const char * env = SoAny::getenv("SOXT_DEBUG_VISUAL");
   if ( env ) DEBUG_VISUAL = atoi(env);
