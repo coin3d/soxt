@@ -172,6 +172,11 @@ libSoXt_la_LIBADD = \
 	viewers/libSoXtViewers.la
 
 
+libSoXt_la_LDFLAGS = \
+	-no-undefined \
+	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
+
+
 ############################################################################
 
 libSoXtincdir = $(includedir)/Inventor/Xt
@@ -211,7 +216,6 @@ X_CFLAGS = @X_CFLAGS@
 X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
-libSoXt_la_LDFLAGS = 
 libSoXt_la_DEPENDENCIES =  devices/libSoXtDevices.la \
 widgets/libSoXtWidgets.la viewers/libSoXtViewers.la
 am_libSoXt_la_OBJECTS =  SoXtRenderArea.lo SoAnyMaterialList.lo \

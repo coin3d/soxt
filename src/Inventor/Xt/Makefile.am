@@ -62,6 +62,10 @@ libSoXt_la_LIBADD = \
 	widgets/libSoXtWidgets.la \
 	viewers/libSoXtViewers.la
 
+libSoXt_la_LDFLAGS = \
+	-no-undefined \
+	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
+
 ############################################################################
 ##
 
