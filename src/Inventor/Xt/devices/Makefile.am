@@ -20,7 +20,7 @@ DISTCLEANFILES = \
 
 ############################################################################
 
-libSoXtDevices_la_SOURCES = \
+RegularSources = \
 	So@Gui@DeviceP.h \
 	So@Gui@Device.cpp \
 	So@Gui@InputFocus.cpp \
@@ -31,6 +31,20 @@ libSoXtDevices_la_SOURCES = \
 	So@Gui@LinuxJoystick.h \
 	So@Gui@LinuxJoystick.cpp \
 	6DOFEvents.h
+LinkHackSources = \
+	soxtdevices-all-cpp.cpp
+
+if HACKING_COMPACT_BUILD
+BuildSources = $(LinkHackSources)
+ExtraSources = $(RegularSources)
+else
+BuildSources = $(RegularSources)
+ExtraSources = $(LinkHackSources)
+endif
+
+libSoXtDevices_la_SOURCES = \
+	$(BuildSources)
+
 
 nodist_libSoXtDevices_la_SOURCES = \
 	$(SoGui_src_Inventor_Gui_devices_BuiltFiles)
