@@ -25,12 +25,16 @@ SUBDIRS = . data src/Inventor/Xt $(TESTDIR) $(EXAMPLEDIR) $(IVEXAMPLEDIR)
 SUFFIXES = .h .cpp .in .lo .o
 
 bin_SCRIPTS = soxt-config
+soxt-config: $(top_srcdir)/soxt-config.in
 
 BUILT_SOURCES = \
 	soxtdefs.h \
 	src/Inventor/Xt/SoXtBasic.h \
 	src/Inventor/Xt/SoXtRenderArea.h \
 	src/Inventor/Xt/SoXtRenderArea.cpp \
+	src/Inventor/Xt/SoAnyMaterialList.h \
+	src/Inventor/Xt/SoAnyMaterialList.cpp \
+	src/Inventor/Xt/SoAnyMaterialListBuiltins.cpp \
 	src/Inventor/Xt/viewers/SoXtViewer.h \
 	src/Inventor/Xt/viewers/SoXtViewer.cpp \
 	src/Inventor/Xt/viewers/SoAnyFullViewer.h \
@@ -54,8 +58,6 @@ BUILT_SOURCES = \
 
 # to force code to be generated at once
 noinst_DATA = $(BUILT_SOURCES)
-
-soxt-config: soxt-config.in
 
 EXTRA_DIST = conf-macros/soxt.m4 conf-macros/modifierlist.m4
 
@@ -86,6 +88,24 @@ src/Inventor/Xt/SoXtRenderArea.cpp: \
   $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.cpp.in
 	@CONFIG_HEADERS= \
 	CONFIG_FILES=$@:src/Inventor/Xt/common/SoGuiRenderArea.cpp.in \
+	./config.status
+
+src/Inventor/Xt/SoAnyMaterialList.h: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyMaterialList.h.in
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyMaterialList.h.in \
+	./config.status
+
+src/Inventor/Xt/SoAnyMaterialList.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyMaterialList.cpp.in
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyMaterialList.cpp.in \
+	./config.status
+
+src/Inventor/Xt/SoAnyMaterialListBuiltins.cpp: \
+  $(top_srcdir)/src/Inventor/Xt/common/SoAnyMaterialListBuiltins.cpp.in
+	@CONFIG_HEADERS= \
+	CONFIG_FILES=$@:src/Inventor/Xt/common/SoAnyMaterialListBuiltins.cpp.in \
 	./config.status
 
 src/Inventor/Xt/viewers/SoXtViewer.h: \

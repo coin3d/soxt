@@ -11,7 +11,10 @@ INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src -I$(top_builddir)/data
 BUILT_SOURCES = \
 	SoXtBasic.h \
 	SoXtRenderArea.h \
-	SoXtRenderArea.cpp
+	SoXtRenderArea.cpp \
+	SoAnyMaterialList.h \
+	SoAnyMaterialList.cpp \
+	SoAnyMaterialListBuiltins.cpp
 
 noinst_DATA = $(BUILT_SOURCES)
 
@@ -49,7 +52,6 @@ libSoXt_la_SOURCES = \
 	SoXtIcons.h \
 	SoXtIcons.cpp \
 	SoXtLightSliderSet.h \
-	SoXtLightSliderSet.cpp \
 	SoXtMaterialEditor.h \
 	SoXtMaterialEditor.cpp \
 	SoXtMaterialList.h \
@@ -92,13 +94,22 @@ SoXtSliderSet.cpp: SoXtBasic.h
 SoXtSliderSetBase.cpp: SoXtBasic.h
 SoXtTransformSliderSet.cpp: SoXtBasic.h
 
-SoXtBasic.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiBasic.h.in
+SoXtBasic.h: $(srcdir)/common/SoGuiBasic.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoXtRenderArea.h: $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.h.in
+SoXtRenderArea.h: $(srcdir)/common/SoGuiRenderArea.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
-SoXtRenderArea.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoGuiRenderArea.cpp.in
+SoXtRenderArea.cpp: $(srcdir)/common/SoGuiRenderArea.cpp.in
+	@( cd $(top_builddir); $(MAKE) built-sources )
+
+SoAnyMaterialList.h: $(srcdir)/common/SoAnyMaterialList.h.in
+	@( cd $(top_builddir); $(MAKE) built-sources )
+
+SoAnyMaterialList.cpp: $(srcdir)/common/SoAnyMaterialList.cpp.in
+	@( cd $(top_builddir); $(MAKE) built-sources )
+
+SoAnyMaterialListBuiltins.cpp: $(srcdir)/common/SoAnyMaterialListBuiltins.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 ############################################################################
@@ -108,6 +119,7 @@ libSoXtincdir = $(includedir)/Inventor/Xt
 
 libSoXtinc_HEADERS = \
 	SoXt.h \
+	SoXtBasic.h \
 	SoXtClipboard.h \
 	SoXtComponent.h \
 	SoXtCursors.h \

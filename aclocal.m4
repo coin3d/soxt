@@ -1027,17 +1027,17 @@ fi
 AC_DEFUN([SIM_COMPILE_DEBUG], [
 AC_PREREQ([2.13])
 
+sim_ac_enable_debug=true
 AC_ARG_ENABLE(
   [debug],
   AC_HELP_STRING([--enable-debug], [compile in debug mode [default=yes]]),
   [case "${enableval}" in
-    yes) enable_debug=yes ;;
-    no)  enable_debug=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-debug) ;;
-  esac],
-  [enable_debug=yes])
+    yes) sim_ac_enable_debug=true ;;
+    no)  sim_av_enable_debug=false ;;
+    *)   AC_MSG_ERROR(bad value \"${enableval}\" for --enable-debug) ;;
+  esac])
 
-if test x"$enable_debug" = x"yes"; then
+if $sim_ac_enable_debug; then
   ifelse([$1], , :, [$1])
 else
   CFLAGS="$CFLAGS -DNDEBUG"
