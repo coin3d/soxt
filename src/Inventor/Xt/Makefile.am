@@ -27,8 +27,7 @@ RegularSources = \
 	SoXt.cpp \
 	SoXtComponent.cpp \
 	SoXtGLWidget.cpp \
-	SoXtResource.cpp \
-	SoXtClipboard.cpp
+	SoXtResource.cpp
 BuiltSources = \
 	$(SoGui_src_Inventor_Gui_BuiltFiles) \
 	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
@@ -69,7 +68,6 @@ libSoXt_la_LDFLAGS = \
 SoXtincdir = $(includedir)/Inventor/Xt
 
 SoXtinc_HEADERS = \
-	SoXtClipboard.h \
 	SoXtResource.h
 
 nodist_SoXtinc_HEADERS = \

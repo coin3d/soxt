@@ -33,5 +33,4 @@
 #include <Inventor/Xt/SoXtRenderArea.cpp>
 #include <Inventor/Xt/SoXtResource.cpp>
 #include <Inventor/Xt/SoXtCursor.cpp>
-#include <Inventor/Xt/SoXtClipboard.cpp>
 
