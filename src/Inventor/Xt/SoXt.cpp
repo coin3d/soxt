@@ -461,7 +461,15 @@ SoXt::sensorQueueChanged( // static, private
 String
 SoXt::fallback_resources[] =
 {
-  "SoXtRenderArea*Background: white",
+
+#define COMPONENT "*SoXtExaminerViewer*"
+// X Resources for the SoXtExaminerViewer Component:
+  COMPONENT	"LeftWheelLabel.labelString:"		"Rot Y",
+  COMPONENT	"BottomWheelLabel.labelString:"		"Rot X",
+  COMPONENT	"RightWheelLabel.dollyString:"		"Dolly",
+  COMPONENT	"RightWheelLabel.zoomString:"		"Zoom",
+#undef COMPONENT
+
   NULL
 }; // fallback_resources
 
