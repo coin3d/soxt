@@ -30,6 +30,13 @@ static const char rcsid[] =
 #include <Inventor/Xt/widgets/SoAnyThumbWheel.h>
 #include <Inventor/Xt/widgets/SoXtThumbWheelP.h>
 
+/*
+  TODO:
+    - interactivity and callbacks
+    - implement use of a virtual Colormap instead of creating graphics
+      the way it is now.
+*/
+
 // *************************************************************************
 // RESOURCES
 
@@ -119,12 +126,7 @@ static XtGeometryResult query_geometry(
                           Widget, XtWidgetGeometry *, XtWidgetGeometry * );
 static Boolean set_values( Widget, Widget, Widget, ArgList, Cardinal * );
 
-static
-void
-realize(
-  Widget widget,
-  XtValueMask * valueMask,
-  XSetWindowAttributes * attributes );
+static void realize( Widget, XtValueMask *, XSetWindowAttributes * );
 
 // *************************************************************************
 // CLASS RECORD INITIALIZATION
@@ -251,7 +253,8 @@ create_thumbwheel(
   SoAnyThumbWheel * wheel = new SoAnyThumbWheel;
   wheel->SetWheelSize( diameter, thickness );
   wheel->SetGraphicsByteOrder( SoAnyThumbWheel::ABGR );
-  wheel->SetWheelRangeBoundaryHandling( SoAnyThumbWheel::CLAMP );
+  wheel->SetWheelMotionMethod( SoAnyThumbWheel::UNIFORM );
+  wheel->SetWheelRangeBoundaryHandling( SoAnyThumbWheel::ACCUMULATE );
   return wheel;
 } // create_thumbwheel()
 
@@ -551,6 +554,9 @@ expose(
   }
 } // expose()
 
+/*!
+*/
+
 static
 Boolean
 set_values(
@@ -565,6 +571,9 @@ set_values(
   return redisplay;
 } // set_values()
 
+/*!
+*/
+
 static
 void
 resize(
@@ -575,6 +584,9 @@ resize(
   // schedule edisplay
 } // resize()
 
+/*!
+*/
+
 static
 XtGeometryResult
 query_geometry(
@@ -584,6 +596,9 @@ query_geometry(
 {
   SOXT_STUB();
 } // query_geometry()
+
+/*!
+*/
 
 static
 void
@@ -600,36 +615,108 @@ destroy(
 // *************************************************************************
 // ACTION FUNCTION DEFINITIONS
 
+/*!
+*/
+
 void
 Arm(
-  Widget wheel,
-  XEvent * event,
+  Widget w,
+  XEvent * e,
   String *,
   Cardinal * )
 {
-  SOXT_STUB();
-  
+  assert( e->type == ButtonPress );
+  XButtonPressedEvent * event = (XButtonPressedEvent *) e;
+
+  SoXtThumbWheelWidget widget = (SoXtThumbWheelWidget) w;
+  SoAnyThumbWheel * wheel = (SoAnyThumbWheel *) widget->thumbwheel.thumbwheel;
+
+  int width = 0, height = 0;
+  int tpadding = 0, lpadding = 0;
+
+  switch ( widget->thumbwheel.orientation ) {
+  case XmHORIZONTAL:
+    wheel->GetWheelSize( width, height );
+    tpadding = widget->primitive.shadow_thickness + 1 + WHEEL_THICKNESS_PADDING;
+    lpadding = widget->primitive.shadow_thickness + 1 + WHEEL_DIAMETER_PADDING;
+    widget->thumbwheel.arm_position = event->x - lpadding;
+    break;
+  case XmVERTICAL:
+    wheel->GetWheelSize( height, width );
+    tpadding = widget->primitive.shadow_thickness + 1 + WHEEL_DIAMETER_PADDING;
+    lpadding = widget->primitive.shadow_thickness + 1 + WHEEL_THICKNESS_PADDING;
+    widget->thumbwheel.arm_position = event->y - tpadding;
+    break;
+  default:
+    assert( 0 && "not possible" );
+    break;
+  } // switch ( widget->thumbwheel.orientation )
+
+  if ( event->x < lpadding || event->x >= (widget->core.width - lpadding) ||
+       event->y < tpadding || event->y >= (widget->core.height - tpadding) )
+    return; // pointer missed wheel
+
+  widget->thumbwheel.arm_value = widget->thumbwheel.value;
+  widget->thumbwheel.armed = True;
+
+  XtCallCallbackList( w, widget->thumbwheel.arm_callback, NULL );
 } // Arm()
+
+/*!
+*/
 
 void
 Disarm(
-  Widget wheel,
+  Widget w,
   XEvent *,
   String *,
   Cardinal * )
 {
-  SOXT_STUB();
+  SoXtThumbWheelWidget widget = (SoXtThumbWheelWidget) w;
+  if ( ! widget->thumbwheel.armed ) return;
+  widget->thumbwheel.armed = False;
+  XtCallCallbackList( w, widget->thumbwheel.disarm_callback, NULL );
 } // Disarm()
 
 void
 Roll(
-  Widget,
-  XEvent *,
+  Widget w,
+  XEvent * e,
   String *,
   Cardinal * )
 {
-  SOXT_STUB();
+  assert( e->type == MotionNotify );
+  XMotionEvent * event = (XMotionEvent *) e;
+  SoXtThumbWheelWidget widget = (SoXtThumbWheelWidget) w;
+  if ( ! widget->thumbwheel.armed )
+    return;
+  int pos = 0;
+  switch ( widget->thumbwheel.orientation ) {
+  case XmHORIZONTAL:
+    pos = event->x - widget->primitive.shadow_thickness - 1 -
+          WHEEL_DIAMETER_PADDING;
+    break;
+  case XmVERTICAL:
+    pos = event->y - widget->primitive.shadow_thickness - 1 -
+          WHEEL_DIAMETER_PADDING;
+    break;
+  default:
+    assert( 0 );
+    break;
+  } // switch ( widget->thumbwheel.orientation )
+
+  widget->thumbwheel.value =
+    ((SoAnyThumbWheel *) widget->thumbwheel.thumbwheel)->
+      CalculateValue( widget->thumbwheel.arm_value,
+                      widget->thumbwheel.arm_position,
+                      (pos - widget->thumbwheel.arm_position) );
+
+  XtCallCallbackList( w, widget->thumbwheel.valuechanged_callback,
+                      &(widget->thumbwheel.value) );
 } // Roll()
+
+/*!
+*/
 
 void
 WheelUp(
@@ -640,6 +727,9 @@ WheelUp(
 {
   SOXT_STUB();
 } // WheelUp()
+
+/*!
+*/
 
 void
 WheelDown(

@@ -48,8 +48,8 @@ typedef struct _SoXtThumbWheelPart {
   /* resources */
   int orientation;
   float value;
-//  Pixel foreground;
-//  Pixel foreground_insensitive;
+//  Pixel sensitive_color; // ABGR format
+//  Pixel insensitive_color; // ABGR format
   XtCallbackList arm_callback;
   XtCallbackList disarm_callback;
   XtCallbackList valuechanged_callback;
