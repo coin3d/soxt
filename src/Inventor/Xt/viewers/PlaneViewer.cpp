@@ -17,6 +17,12 @@
  *
  **************************************************************************/
 
+// *************************************************************************
+
+// Class is documented in common/viewers/SoGuiPlaneViewer.cpp.in.
+
+// *************************************************************************
+
 #include <string.h>
 
 #include <X11/keysym.h>
@@ -53,18 +59,6 @@ static char ** x_xpm = NULL;
 static char ** y_xpm = NULL;
 static char ** z_xpm = NULL;
 #endif // !HAVE_LIBXPM
-
-// *************************************************************************
-
-/*!
-  \class SoXtPlaneViewer Inventor/Xt/viewers/SoXtPlaneViewer.h
-  \brief The SoXtPlaneViewer class is an alternative to the examiner viewer.
-  \ingroup components viewers
-*/
-
-// *************************************************************************
-
-SOXT_OBJECT_SOURCE(SoXtPlaneViewer);
 
 // *************************************************************************
 
@@ -377,47 +371,6 @@ SoXtPlaneViewer::openViewerHelpCard(// virtual
 {
   this->openHelpCard("SoXtPlaneViewer.help");
 } // openViewerHelpCard()
-
-// *************************************************************************
-
-/*!
-  This method set up the bottom wheel to control camera translation in the
-  horizontal direction.
-*/
-
-void
-SoXtPlaneViewer::bottomWheelMotion(// virtual
-  float value)
-{
-  this->translateX(value - this->getBottomWheelValue());
-  inherited::bottomWheelMotion(value);
-} // bottomWheelMotion()
-
-/*!
-  This method set up the left wheel to control camera translation in the
-  vertical direction.
-*/
-
-void
-SoXtPlaneViewer::leftWheelMotion(// virtual
-  float value)
-{
-  this->translateY(value - this->getLeftWheelValue());
-  inherited::leftWheelMotion(value);
-} // leftWheelMotion()
-
-/*!
-  This method set up the right wheel to control camera movement in the
-  inwards direction.
-*/
-
-void
-SoXtPlaneViewer::rightWheelMotion(// virtual
-  float value)
-{
-  this->zoom(this->getRightWheelValue() - value);
-  inherited::rightWheelMotion(value);
-} // rightWheelMotion()
 
 // *************************************************************************
 
