@@ -841,18 +841,9 @@ SoXtComponent::setFullScreen(const SbBool enable)
 
   if ( this->getParentWidget() == this->getShellWidget() ) {
     Widget shell = this->getShellWidget();
-    Window window = XtWindow(shell);
     if ( enable ) {
-      // tell wm to leave window alone
       Display * display = SoXt::getDisplay(); // XGetDisplay(NULL);
-      XSetWindowAttributes attr;
-      attr.override_redirect = true;
-      // XChangeWindowAttributes(display, window, CWOverrideRedirect, &attr);
 
-      // remove window border
-      // XSetWindowBorderWidth(display, window, 0);
-
-      // resize to fit screen
       Dimension width = DisplayWidth(display, DefaultScreen(display));
       Dimension height = DisplayHeight(display, DefaultScreen(display));
 
@@ -862,30 +853,39 @@ SoXtComponent::setFullScreen(const SbBool enable)
       request.width = width;
       request.height = height;
       request.border_width = 0;
-      request.stack_mode = Above;
+      request.stack_mode = 0;
       request.sibling = 0;
-      request.request_mode = 0;
-      reply.x = 1;
-      reply.y = 1;
+      request.request_mode = CWX | CWY | CWWidth | CWHeight | CWBorderWidth | XtCWQueryOnly;
+      reply.x = 0;
+      reply.y = 0;
       reply.width = 0;
       reply.height = 0;
-      reply.border_width = 1;
+      reply.border_width = 0;
       reply.stack_mode = 0;
       reply.sibling = 0;
-      reply.request_mode = 0;
+      reply.request_mode = CWX | CWY | CWWidth | CWHeight | CWBorderWidth | XtCWQueryOnly;
       XtGeometryResult res = XtMakeGeometryRequest(shell, &request, &reply);
-      if ( res != XtGeometryYes )
-        fprintf(stderr, "res = %d\n", res);
-      else {
-	fprintf(stderr, "reply: %dx%d+%d+%d:%d\n", reply.width, reply.height, reply.x, reply.y, reply.border_width);
-      }
+      // if ( res != XtGeometryYes ) {
+      //   fprintf(stderr, "res = %d\n", res);
+      //   fprintf(stderr, "reply: %dx%d+%d+%d:%d\n", reply.width, reply.height, reply.x, reply.y, reply.border_width);
+      // } else {
+      //   fprintf(stderr, "reply: %dx%d+%d+%d:%d\n", reply.width, reply.height, reply.x, reply.y, reply.border_width);
+      // }
       PRIVATE(this)->fullscreen = TRUE;
 
-      // XMoveResizeWindow(display, window, 0, 0, width, height);
-      // XtConfigureWidget(shell, 0, 0, width, height, 0);
+      // resize to fit screen, remove window border
+      XtConfigureWidget(shell, 0, 0, width, height, 0);
+
+      // tell wm to leave window alone (makes sub-widgets not resize when enabled)
+      // XSetWindowAttributes attr;
+      // attr.override_redirect = true;
+      // XChangeWindowAttributes(display, window, CWOverrideRedirect, &attr);
+
     } else {
+      // need to save size
       SOXT_STUB();
       return FALSE;
+      // PRIVATE(this)->fullscreen = FALSE;
     }
     return TRUE;
   } else {
