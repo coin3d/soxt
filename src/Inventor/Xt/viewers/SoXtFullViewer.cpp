@@ -491,21 +491,12 @@ SoXtFullViewer::setViewing( // virtual
   XtVaSetValues( this->viewerbuttons.pick,
                  XmNset, enable ? False : True, NULL );
 
-/*
-  FIXME: desensitize seek button on view mode changes
-  - neither of the following lines manages to preserve the layout of
-    the viewer buttons row when changing seek button sensitivity - WTFIGO?
-
-Alt 1:
-  XtSetSensitive( this->viewerbuttons.seek, // VIEWERBUTTON(SEEK_BUTTON),
+  XtUnmanageChild( this->viewerbuttons.seek );
+  XtSetSensitive( this->viewerbuttons.seek,
     enable ? True : False );
-
-Alt 2:
-  XtVaSetValues( this->viewerbuttons.seek, // VIEWERBUTTON(SEEK_BUTTON),
-    XmNsensitive, enable ? True : False,
-    XmNwidth, 30, XmNheight, 30,
-    NULL );
-*/
+  XtVaSetValues( this->viewerbuttons.seek,
+    XmNwidth, 30, XmNheight, 30, NULL );
+  XtManageChild( this->viewerbuttons.seek );
 } // setViewing()
 
 /*!
@@ -683,6 +674,7 @@ SoXtFullViewer::createPixmapFromXpmData(
   Pixmap retval = XCreatePixmap( dpy, draw, width, height, image->depth );
   GC gc = XCreateGC( dpy, draw, 0, NULL );
   XPutImage( dpy, retval, gc, image, 0, 0, 0, 0, width, height );
+  XFreeGC( dpy, gc );
   XDestroyImage( image );
   return retval;
 #endif // HAVE_LIBXPM
@@ -709,7 +701,7 @@ SoXtFullViewer::createInsensitivePixmapFromXpmData(
   for ( int x = 0; x < image->width; x++ ) {
     for ( int y = 0; y < image->height; y++ ) {
       Pixel pixel = XGetPixel( image, x, y );
-      if ( (pixel == 0) || (((x+y) % 1) == 1) )
+      if ( (pixel == 0) || (((x+y) & 1) == 1) )
         XPutPixel( image, x, y, bg );
     }
   }
@@ -718,6 +710,7 @@ SoXtFullViewer::createInsensitivePixmapFromXpmData(
   Pixmap retval = XCreatePixmap( dpy, draw, width, height, image->depth );
   GC gc = XCreateGC( dpy, draw, 0, NULL );
   XPutImage( dpy, retval, gc, image, 0, 0, 0, 0, width, height );
+  XFreeGC( dpy, gc );
   XDestroyImage( image );
   return retval;
 #endif // HAVE_LIBXPM
