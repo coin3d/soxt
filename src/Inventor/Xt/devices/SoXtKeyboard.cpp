@@ -28,6 +28,10 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/devices/SoXtKeyboard.h>
 
+#include <X11/keysym.h>
+
+#include <ctype.h> // toupper()
+
 // *************************************************************************
 
 /*!
@@ -85,12 +89,10 @@ SoXtKeyboard::translateEvent( // virtual
 
   // events we should catch:
   case KeyPress:
+    return this->makeKeyboardEvent( (XKeyEvent *) event, SoButtonEvent::DOWN);
+    break;
   case KeyRelease:
-    do {
-      SOXT_STUB();
-    } while ( FALSE );
-    // return SoEvent * here
-    // return this->makeKeyboardEvent( event ); ??
+    return this->makeKeyboardEvent( (XKeyEvent *) event, SoButtonEvent::UP );
     break;
 
   // events we should ignore:
@@ -107,11 +109,51 @@ SoXtKeyboard::translateEvent( // virtual
 
 SoKeyboardEvent *
 SoXtKeyboard::makeKeyboardEvent( // private
-  XKeyEvent *, //  event,
-  SoButtonEvent::State ) // state )
+  XKeyEvent * event,
+  SoButtonEvent::State state)
 {
-  SOXT_STUB();
-  return (SoKeyboardEvent *) NULL;
+  delete this->keyboardEvent;
+  this->keyboardEvent = new SoKeyboardEvent;
+  this->setEventPosition( this->keyboardEvent, event->x, event->y );
+  this->keyboardEvent->setState( state );
+
+  char           buffer[1024], number;
+  KeySym         keysym;
+  SoKeyboardEvent::Key key = SoKeyboardEvent::ANY;
+
+  // FIXME:
+  //   do modifiers correctly
+  //   0-9, HOME, prior, all pad keys, function keys
+  //   backspace, tab, next, end,enter, pause, scroll lock, escape, delete,
+  //   print insert, *lock, space, ', ,, -, ., /, ;, =, [, ],\, GRAVE (?)
+  if (number = XLookupString(event, buffer, 1024, &keysym, 0)) {
+    if (keysym  == XK_Return || keysym == XK_Linefeed)
+      key = SoKeyboardEvent::RETURN;
+    else {
+      char cap = toupper(buffer[0]);
+      if (cap >= 'A' && cap <= 'Z') {
+        key = (SoKeyboardEvent::Key) ((int) SoKeyboardEvent::A +  (cap - 'A'));
+      } 
+    }
+  }
+  if (key == SoKeyboardEvent::ANY) {
+    switch (keysym) {
+      case XK_Shift_R: key = SoKeyboardEvent::RIGHT_SHIFT; break;
+      case XK_Shift_L: key = SoKeyboardEvent::LEFT_SHIFT; break;
+      case XK_Control_R: key = SoKeyboardEvent::RIGHT_CONTROL; break;
+      case XK_Control_L: key = SoKeyboardEvent::LEFT_CONTROL; break;
+      case XK_Left: key = SoKeyboardEvent::LEFT_ARROW; break;
+      case XK_Right: key = SoKeyboardEvent::RIGHT_ARROW; break;
+      case XK_Up: key = SoKeyboardEvent::UP_ARROW; break;
+      case XK_Down: key = SoKeyboardEvent::DOWN_ARROW; break;
+      case XK_Page_Up: key = SoKeyboardEvent::PAGE_UP; break;
+      case XK_Page_Down: key = SoKeyboardEvent::PAGE_DOWN; break;
+
+      default: SOXT_STUB();
+    }
+  }
+  this->keyboardEvent->setKey(key);
+  return this->keyboardEvent;
 } // makeKeyboardEvent()
 
 // *************************************************************************
