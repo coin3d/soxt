@@ -25,8 +25,16 @@ static const char rcsid[] =
 #endif // HAVE_CONFIG_H
 
 #include <assert.h>
+#include <string.h>
 
+#include <Xm/Form.h>
+#include <Xm/Frame.h>
+#include <Xm/Label.h>
+#include <Xm/LabelG.h>
+#include <Xm/Text.h>
+#include <Xm/TextF.h>
 #include <Xm/PushB.h>
+#include <Xm/ToggleB.h>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
@@ -41,6 +49,7 @@ static const char rcsid[] =
 #include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
 
 #include <Inventor/Xt/widgets/SoAnyPopupMenu.h>
+#include <Inventor/Xt/widgets/SoXtThumbWheel.h>
 
 #if HAVE_LIBXPM
 #include <Inventor/Xt/common/pixmaps/ortho.xpm>
@@ -759,8 +768,32 @@ SoXtExaminerViewer::setSeekMode(
 
 // *************************************************************************
 
+/*!
+  This method is overloaded to draw the poin-of-rotation axis cross on
+  each redraw, if user-configured.
+*/
+
+void
+SoXtExaminerViewer::actualRedraw( // virtual
+  void )
+{
+  inherited::actualRedraw();
+  if ( this->isFeedbackVisible() )
+    common->drawAxisCross();
+} // actualRedraw()
+
+// *************************************************************************
+
 void SoXtExaminerViewer::setAnimationEnabled( const SbBool enable ) {
   common->setAnimationEnabled( enable );
+  if ( this->spinanimtoggle ) {
+    Boolean enabled = False;
+    XtVaGetValues( this->spinanimtoggle, XmNset, &enabled, NULL );
+    if ( enable != enabled )
+      XtVaSetValues( this->spinanimtoggle,
+        XmNset, enable ? True : False,
+        NULL );
+  }
 } // setAnimationEnabled()
 
 SbBool SoXtExaminerViewer::isAnimationEnabled(void) const {
@@ -783,7 +816,15 @@ SbBool SoXtExaminerViewer::isFeedbackVisible(void) const {
   return common->isFeedbackVisible();
 } // isFeedbackVisible()
 
-void SoXtExaminerViewer::setFeedbackSize( const int size ) {
+void SoXtExaminerViewer::setFeedbackSize(
+  const int size )
+{
+  if ( this->axessizefield ) {
+    char buf[8];
+    sprintf( buf, "%d", size );
+    XmTextSetString( this->axessizefield, buf );
+    XmTextSetCursorPosition( this->axessizefield, strlen(buf) );
+  }
   common->setFeedbackSize( size );
 } // setFeedbackSize()
 
@@ -805,7 +846,7 @@ SoXtExaminerViewer::createPrefSheet( // protected, virtual
     SoDebugError::postInfo( "SoXtExaminerViewer::createPrefSheet",
       "creating preferences window" );
 #endif // SOXT_DEBUG
-    this->prefparts = new Widget [ 10 ];
+    this->prefparts = new Widget [ 16 ];
     this->createPrefSheetShellAndForm( this->prefshell, this->prefsheet );
     this->createDefaultPrefSheetParts( this->prefparts, this->numprefparts,
       this->prefsheet );
@@ -814,9 +855,258 @@ SoXtExaminerViewer::createPrefSheet( // protected, virtual
       "numparts = %d", this->numprefparts );
 #endif // SOXT_DEBUG
     // add parts specific for derived viewer
+
+    this->prefparts[this->numprefparts] =
+      this->createFramedSpinAnimPrefSheetGuts( this->prefsheet );
+    if ( this->prefparts[this->numprefparts] != NULL ) this->numprefparts++;
+
+    this->prefparts[this->numprefparts] =
+      this->createFramedRotAxisPrefSheetGuts( this->prefsheet );
+    if ( this->prefparts[this->numprefparts] != NULL ) this->numprefparts++;
   }
   this->layoutPartsAndMapPrefSheet( this->prefparts, this->numprefparts,
     this->prefsheet, this->prefshell );
 } // createPrefSheet()
+
+// *************************************************************************
+
+/*!
+*/
+
+Widget
+SoXtExaminerViewer::createFramedSpinAnimPrefSheetGuts(
+  Widget parent )
+{
+  Widget frame = XtVaCreateManagedWidget( "spinanimframe",
+    xmFrameWidgetClass, parent, NULL );
+
+  XmString labelstring = SoXt::encodeString( "Spin Animation Settings" );
+  Widget label = XtVaCreateManagedWidget( "spinanimlabel",
+    xmLabelGadgetClass, frame,
+    XmNchildType, XmFRAME_TITLE_CHILD,
+    XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  this->createSpinAnimPrefSheetGuts( frame );
+
+  return frame;
+} // createFramedSpinAnimPrefSheetGuts()
+
+/*!
+*/
+
+Widget
+SoXtExaminerViewer::createSpinAnimPrefSheetGuts(
+  Widget parent )
+{
+  //  [] enable spin animation
+  Widget form = XtVaCreateManagedWidget( "spinanimguts",
+    xmFormWidgetClass, parent, NULL );
+
+  XmString labelstring = SoXt::encodeString( "enable spin animation" );
+  this->spinanimtoggle = XtVaCreateManagedWidget( "spinanimtoggle",
+    xmToggleButtonWidgetClass, form,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNbottomAttachment, XmATTACH_FORM,
+    XmNlabelString, labelstring,
+    XmNset, common->isAnimationEnabled(),
+    NULL );
+  XtFree( (char *) labelstring );
+
+  XtAddCallback( this->spinanimtoggle, XmNvalueChangedCallback,
+    SoXtExaminerViewer::spinanimtoggledCB, (XtPointer) this );
+
+  return form;
+} // createSpinAnimPrefSheetGuts()
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtExaminerViewer,
+  spinanimtoggled )
+{
+  Boolean enable = False;
+  XtVaGetValues( this->spinanimtoggle, XmNset, &enable, NULL );
+  this->setAnimationEnabled( enable ? TRUE : FALSE );
+  if ( ! enable && this->isAnimating() )
+    this->stopAnimating();
+} // spinanimtoggled()
+
+// *************************************************************************
+
+/*!
+  This method is a wrapper for createRotAxisPrefSheetGuts() to include a
+  titled frame around the widgets.
+*/
+
+Widget
+SoXtExaminerViewer::createFramedRotAxisPrefSheetGuts(
+  Widget parent )
+{
+  Widget frame = XtVaCreateManagedWidget( "rotaxisframe",
+    xmFrameWidgetClass, parent, NULL );
+
+  XmString labelstring = SoXt::encodeString( "Rotation Point Axes Settings" );
+  Widget label = XtVaCreateManagedWidget( "rotaxislabel",
+    xmLabelGadgetClass, frame,
+    XmNchildType, XmFRAME_TITLE_CHILD,
+    XmNchildVerticalAlignment, XmALIGNMENT_CENTER,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  this->createRotAxisPrefSheetGuts( frame );
+
+  return frame;
+} // createFramedRotAxisPrefSheetGuts()
+
+/*!
+*/
+
+Widget
+SoXtExaminerViewer::createRotAxisPrefSheetGuts(
+  Widget parent )
+{
+  //  [] display point of rotation
+  //  axes size   |||||||||||||||||||||||||  |NN| pixels
+
+  Widget form = XtVaCreateManagedWidget( "rotaxisguts",
+    xmFormWidgetClass, parent, NULL );
+
+  XmString labelstring = SoXt::encodeString( "display rotation point" );
+  this->rotpointaxestoggle = XtVaCreateManagedWidget( "rotpointaxestoggle",
+    xmToggleButtonWidgetClass, form,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNleftAttachment, XmATTACH_FORM,
+    XmNlabelString, labelstring,
+    XmNset, this->isFeedbackVisible(),
+    NULL );
+  XtFree( (char *) labelstring );
+  XtAddCallback( this->rotpointaxestoggle, XmNvalueChangedCallback,
+    SoXtExaminerViewer::rotpointtoggledCB, (XtPointer) this );
+
+  labelstring = SoXt::encodeString( "pixels" );
+  Widget pixelslabel = XtVaCreateWidget( "pixelslabel",
+    xmLabelWidgetClass, form,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  Dimension width;
+  XtVaGetValues( pixelslabel, XmNwidth, &width, NULL );
+  this->axessizefield = XtVaCreateManagedWidget( "axessizefield",
+    xmTextFieldWidgetClass, form,
+    XmNtopAttachment, XmATTACH_WIDGET,
+    XmNtopWidget, this->rotpointaxestoggle,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNrightOffset, width + 5,
+    XmNwidth, 40,
+    XmNsensitive, this->isFeedbackVisible() ? True : False,
+    XmNeditable, this->isFeedbackVisible() ? True : False,
+    NULL );
+  XmTextSetMaxLength( this->axessizefield, 3 );
+  char buffer[16];
+  sprintf( buffer, "%d", this->getFeedbackSize() );
+  XmTextSetString( this->axessizefield, buffer );
+  XmTextSetCursorPosition( this->axessizefield, strlen(buffer) );
+
+  XtAddCallback( this->axessizefield, XmNactivateCallback,
+    SoXtExaminerViewer::axesfieldchangedCB, (XtPointer) this );
+  XtAddCallback( this->axessizefield, XmNlosingFocusCallback,
+    SoXtExaminerViewer::axesfieldchangedCB, (XtPointer) this );
+
+  XtVaSetValues( pixelslabel,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNrightOffset, 2,
+    XmNtopAttachment, XmATTACH_OPPOSITE_WIDGET,
+    XmNtopWidget, this->axessizefield,
+    XmNbottomAttachment, XmATTACH_OPPOSITE_WIDGET,
+    XmNbottomWidget, this->axessizefield,
+    NULL );
+  XtManageChild( pixelslabel );
+
+  this->axessizewheel = XtVaCreateManagedWidget( "axeswheel",
+    soxtThumbWheelWidgetClass, form,
+    XmNtopAttachment, XmATTACH_OPPOSITE_WIDGET,
+    XmNtopWidget, this->axessizefield,
+    XmNtopOffset, 2,
+    XmNrightAttachment, XmATTACH_WIDGET,
+    XmNrightWidget, this->axessizefield,
+    XmNrightOffset, 2,
+    XmNheight, 26,
+    XmNwidth, 90,
+    XmNorientation, XmHORIZONTAL,
+    XmNsensitive, this->isFeedbackVisible() ? True : False,
+    NULL );
+  XtAddCallback( this->axessizewheel, XmNvalueChangedCallback,
+    SoXtExaminerViewer::axeswheelmovedCB, (XtPointer) this );
+
+  labelstring = SoXt::encodeString( "axes size" );
+  Widget label = XtVaCreateManagedWidget( "axeslabel",
+    xmLabelWidgetClass, form,
+    XmNtopAttachment, XmATTACH_OPPOSITE_WIDGET,
+    XmNtopWidget, this->axessizewheel,
+    XmNrightAttachment, XmATTACH_WIDGET,
+    XmNrightWidget, this->axessizewheel,
+    XmNrightOffset, 2,
+    XmNbottomAttachment, XmATTACH_OPPOSITE_WIDGET,
+    XmNbottomWidget, this->axessizewheel,
+    XmNlabelString, labelstring,
+    NULL );
+  XtFree( (char *) labelstring );
+
+  return form;
+} // createRotAxisPrefSheetGuts()
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtExaminerViewer,
+  rotpointtoggled )
+{
+  Boolean enable = False;
+  XtVaGetValues( this->rotpointaxestoggle, XmNset, &enable, NULL );
+
+  XtVaSetValues( this->axessizewheel,
+    XmNsensitive, enable,
+    NULL );
+  XtVaSetValues( this->axessizefield,
+    XmNsensitive, enable,
+    XmNeditable, enable,
+    NULL );
+
+  this->setFeedbackVisibility( enable ? TRUE : FALSE );
+} // rotpointtoggled()
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtExaminerViewer,
+  axeswheelmoved )
+{
+  SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
+  SOXT_STUB();
+} // axeswheelmoved()
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtExaminerViewer,
+  axesfieldchanged )
+{
+  int size = atoi( XmTextGetString( this->axessizefield ) );
+  if ( size < 3 )
+    size = 3;
+  else if ( size > 200 )
+    size = 200;
+  this->setFeedbackSize( size );
+} // axesfieldchanged()
 
 // *************************************************************************

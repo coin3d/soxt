@@ -60,6 +60,8 @@ protected:
       SbBool inParent, SoXtFullViewer::BuildFlag flags,
       SoXtViewer::Type type, SbBool build );
 
+  virtual void actualRedraw( void );
+
   virtual void setCamera( SoCamera * camera );
   virtual void setSeekMode( SbBool enable );
 
@@ -86,6 +88,18 @@ protected:
   static void camerabuttonCB( Widget, XtPointer, XtPointer );
 
   virtual void createPrefSheet( void );
+
+  Widget createFramedSpinAnimPrefSheetGuts( Widget parent );
+  Widget createSpinAnimPrefSheetGuts( Widget parent );
+  Widget spinanimtoggle;
+  SOXT_WIDGET_CALLBACK( spinanimtoggled );
+
+  Widget createRotAxisPrefSheetGuts( Widget parent );
+  Widget createFramedRotAxisPrefSheetGuts( Widget parent );
+  Widget rotpointaxestoggle, axessizewheel, axessizefield;
+  SOXT_WIDGET_CALLBACK( rotpointtoggled );
+  SOXT_WIDGET_CALLBACK( axeswheelmoved );
+  SOXT_WIDGET_CALLBACK( axesfieldchanged );
 
 private:
   void constructor( SbBool build );
