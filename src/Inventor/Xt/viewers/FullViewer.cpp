@@ -779,13 +779,6 @@ SoXtFullViewer::setViewing(SbBool enable)
   }
 }
 
-// Documented in superclass.
-void
-SoXtFullViewer::setCamera(SoCamera * camera)
-{
-  inherited::setCamera(camera);
-}
-
 // *************************************************************************
 
 /*!
