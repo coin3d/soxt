@@ -36,7 +36,6 @@ DISTCLEANFILES = \
 
 EXTRA_DIST = \
 	LICENSE.GPL \
-	bootstrap \
 	build/so@gui@.spec.in \
 	docs/announcement-1_1_0.txt \
 	$(SoGuiCommonDistFiles)
