@@ -39,6 +39,10 @@ AC_DEFINE_UNQUOTED(SOXT_MINOR_VERSION, $SOXT_MINOR_VERSION,
   [SoXt minor version])
 AC_DEFINE_UNQUOTED(SOXT_MICRO_VERSION, $SOXT_MICRO_VERSION,
   [SoXt micro version])
+if test x"$SOXT_BETA_VERSION" = x""; then :; else
+  AC_DEFINE_UNQUOTED([SOXT_BETA_VERSION], [$SOXT_BETA_VERSION],
+    [define this to the SoXt beta version letter])
+fi
 AC_DEFINE_UNQUOTED(SOXT_VERSION, "$SOXT_VERSION",
   [Version string for SoXt (major.minor.micro)])
 
