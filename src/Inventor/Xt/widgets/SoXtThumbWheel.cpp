@@ -49,7 +49,7 @@ static float default_value = 0.0f;
 
 static
 XtResource
-resources[] = {
+SoXtThumbWheel_resources[] = {
   {
     XmNorientation, XmCOrientation, XmROrientation,
     sizeof(int), offset(orientation),
@@ -98,18 +98,22 @@ static void WheelDown(Widget, XEvent *, String *, Cardinal *);
 // *************************************************************************
 // ACTIONS TABLE
 
-static XtActionsRec actions[] = {
+static
+XtActionsRec
+SoXtThumbWheel_actions[] = {
   { "Arm", Arm },
   { "Disarm", Disarm },
   { "Roll", Roll },
   { "WheelUp", WheelUp },
   { "WheelDown", WheelDown }
-}; // actions()
+}; // SoXtThumbWheel_actions()
 
 // *************************************************************************
 // DEFAULT TRANSLATION TABLE
 
-static char defaultTranslations[] = "\
+static
+char
+SoXtThumbWheel_defaultTranslations[] = "\
    <Btn1Down>:    Arm()            \n\
    <Btn1Up>:      Disarm()         \n\
    <Btn1Motion>:  Roll()           \n\
@@ -127,7 +131,7 @@ static void expose(Widget, XExposeEvent *, Region);
   static XtGeometryResult query_geometry(
   Widget, XtWidgetGeometry *, XtWidgetGeometry *);
 */
-static Boolean set_values(Widget, Widget, Widget, ArgList, Cardinal *);
+static Boolean SoXtThumbWheel_set_values(Widget, Widget, Widget, ArgList, Cardinal *);
 static void realize(Widget, XtValueMask *, XSetWindowAttributes *);
 
 // *************************************************************************
@@ -144,10 +148,10 @@ SoXtThumbWheelClassRec soxtThumbWheelClassRec = {
     (XtInitProc) initialize,               // initialize
     (XtArgsProc) NULL,                     // initialize_hook
     (XtRealizeProc) XtInheritRealize,      // realize
-    actions,                               // actions
-    XtNumber(actions),                     // num_actions
-    resources,                             // resources
-    XtNumber(resources),                   // num_resources
+    SoXtThumbWheel_actions,                // actions
+    XtNumber(SoXtThumbWheel_actions),      // num_actions
+    SoXtThumbWheel_resources,              // resources
+    XtNumber(SoXtThumbWheel_resources),    // num_resources
     NULLQUARK,                             // xrm_class
     True,                                  // compress_motion
     XtExposeCompressMultiple,              // compress_exposure
@@ -156,14 +160,14 @@ SoXtThumbWheelClassRec soxtThumbWheelClassRec = {
     (XtWidgetProc) destroy,                // destroy
     (XtWidgetProc) resize,                 // resize
     (XtExposeProc) expose,                 // expose
-    (XtSetValuesFunc) set_values,          // set_values
+    (XtSetValuesFunc) SoXtThumbWheel_set_values, // set_values
     (XtArgsFunc) NULL,                     // set_values_hook
     XtInheritSetValuesAlmost,              // set_values_almost
     (XtArgsProc) NULL,                     // get_values_hook
     (XtAcceptFocusProc) NULL,              // accept_focus
     XtVersion,                             // version
     NULL,                                  // callback offsets
-    defaultTranslations,                   // tm_table
+    SoXtThumbWheel_defaultTranslations,    // tm_table
     NULL,
     // (XtGeometryHandler) query_geometry,    // query_geometry
     (XtStringProc) NULL,                   // display_accelerator
@@ -692,8 +696,9 @@ expose(Widget w,XExposeEvent * event, Region region)
 /*!
  */
 
-static Boolean
-set_values(Widget current, Widget request, Widget new_widget,
+static
+Boolean
+SoXtThumbWheel_set_values(Widget current, Widget request, Widget new_widget,
            ArgList args, Cardinal * num_args)
 {
   Boolean redisplay = False;

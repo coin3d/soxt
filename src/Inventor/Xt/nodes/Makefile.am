@@ -22,8 +22,27 @@ DISTCLEANFILES = \
 
 # libSoGuiNodes_la_SOURCES =
 
-nodist_libSoGuiNodes_la_SOURCES = \
+RegularSources =
+BuiltSources = \
 	$(SoGui_src_Inventor_Gui_nodes_BuiltFiles)
+LinkHackSources = \
+	all-nodes-cpp.cpp
+
+if HACKING_COMPACT_BUILD
+BuildSources = $(LinkHackSources)
+NoDistSources =
+ExtraSources = $(RegularSources)
+else
+BuildSources = $(RegularSources)
+NoDistSources = $(BuiltSources)
+ExtraSources = $(LinkHackSources)
+endif
+
+libSoGuiNodes_la_SOURCES = \
+	$(BuildSources)
+	
+nodist_libSoGuiNodes_la_SOURCES = \
+	$(NoDistSources)
 
 ############################################################################
 ## Header file installation information.

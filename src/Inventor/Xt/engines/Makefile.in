@@ -592,8 +592,27 @@ DISTCLEANFILES = \
 ############################################################################
 
 # libSoGuiEngines_la_SOURCES =
-nodist_libSoGuiEngines_la_SOURCES = \
+RegularSources = 
+LinkHackSources = \
+	all-engines-cpp.cpp
+
+BuiltSources = \
 	$(SoGui_src_Inventor_Gui_engines_BuiltFiles)
+
+@HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
+
+@HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_FALSE@NoDistSources = $(BuiltSources)
+@HACKING_COMPACT_BUILD_TRUE@NoDistSources = 
+@HACKING_COMPACT_BUILD_FALSE@ExtraSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_TRUE@ExtraSources = $(RegularSources)
+
+libSoGuiEngines_la_SOURCES = \
+	$(BuildSources)
+
+
+nodist_libSoGuiEngines_la_SOURCES = \
+	$(NoDistSources)
 
 
 
@@ -614,13 +633,24 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 
 libSoGuiEngines_la_LDFLAGS =
 libSoGuiEngines_la_LIBADD =
-am__objects_1 = Engines.lo RadioGroup.lo Format.lo
-nodist_libSoGuiEngines_la_OBJECTS = $(am__objects_1)
-libSoGuiEngines_la_OBJECTS = $(nodist_libSoGuiEngines_la_OBJECTS)
+am__libSoGuiEngines_la_SOURCES_DIST = all-engines-cpp.cpp
+am__objects_1 = all-engines-cpp.lo
+am__objects_2 =
+@HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
+am_libSoGuiEngines_la_OBJECTS = $(am__objects_3)
+am__objects_4 = Engines.lo RadioGroup.lo Format.lo
+am__objects_5 = $(am__objects_4)
+@HACKING_COMPACT_BUILD_TRUE@am__objects_6 =
+@HACKING_COMPACT_BUILD_FALSE@am__objects_6 = $(am__objects_5)
+nodist_libSoGuiEngines_la_OBJECTS = $(am__objects_6)
+libSoGuiEngines_la_OBJECTS = $(am_libSoGuiEngines_la_OBJECTS) \
+	$(nodist_libSoGuiEngines_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/Engines.Plo ./$(DEPDIR)/Format.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/RadioGroup.Plo
+@AMDEP_TRUE@	./$(DEPDIR)/RadioGroup.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-engines-cpp.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -636,12 +666,12 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES =
+DIST_SOURCES = $(am__libSoGuiEngines_la_SOURCES_DIST)
 HEADERS = $(SoGuiEnginesinc_HEADERS)
 
 DIST_COMMON = $(SoGuiEnginesinc_HEADERS) \
 	$(srcdir)/../common/Makefile.common Makefile.am Makefile.in
-SOURCES = $(nodist_libSoGuiEngines_la_SOURCES)
+SOURCES = $(libSoGuiEngines_la_SOURCES) $(nodist_libSoGuiEngines_la_SOURCES)
 
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -674,6 +704,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Engines.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Format.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/RadioGroup.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-engines-cpp.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

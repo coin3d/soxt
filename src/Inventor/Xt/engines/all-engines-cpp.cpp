@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
-#include "Engines.cpp"
-#include "RadioGroup.cpp"
-#include "Format.cpp"
+#include <Inventor/Xt/engines/Engines.cpp>
+#include <Inventor/Xt/engines/RadioGroup.cpp>
+#include <Inventor/Xt/engines/Format.cpp>
+

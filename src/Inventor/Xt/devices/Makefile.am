@@ -5,7 +5,7 @@ include ../common/Makefile.common
 
 noinst_LTLIBRARIES = libSoXtDevices.la
 
-DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)/src -I$(top_srcdir)/src
+DEFAULT_INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 LIBS =
 
 BUILT_SOURCES = \

@@ -21,20 +21,21 @@
  *
 \**************************************************************************/
 
-#include "Nodes.cpp"
-#include "SceneTexture2.cpp"
-#include "ViewportFix.cpp"
-#include "ViewpointWrapper.cpp"
-#include "Pane.cpp"
-#include "Position.cpp"
-#include "Translation.cpp"
-#include "Frame.cpp"
-#include "Image.cpp"
-#include "Label.cpp"
-#include "ToggleButton.cpp"
-#include "RadioButton.cpp"
-#include "ClickCounter.cpp"
-#include "Slider1.cpp"
-#include "Slider2.cpp"
-#include "ColorEditor.cpp"
-#include "MaterialEditor.cpp"
+#include <Inventor/Xt/nodes/Nodes.cpp>
+#include <Inventor/Xt/nodes/SceneTexture2.cpp>
+#include <Inventor/Xt/nodes/ViewportFix.cpp>
+#include <Inventor/Xt/nodes/ViewpointWrapper.cpp>
+#include <Inventor/Xt/nodes/Pane.cpp>
+#include <Inventor/Xt/nodes/Position.cpp>
+#include <Inventor/Xt/nodes/Translation.cpp>
+#include <Inventor/Xt/nodes/Frame.cpp>
+#include <Inventor/Xt/nodes/Image.cpp>
+#include <Inventor/Xt/nodes/Label.cpp>
+#include <Inventor/Xt/nodes/ToggleButton.cpp>
+#include <Inventor/Xt/nodes/RadioButton.cpp>
+#include <Inventor/Xt/nodes/ClickCounter.cpp>
+#include <Inventor/Xt/nodes/Slider1.cpp>
+#include <Inventor/Xt/nodes/Slider2.cpp>
+#include <Inventor/Xt/nodes/ColorEditor.cpp>
+#include <Inventor/Xt/nodes/MaterialEditor.cpp>
+

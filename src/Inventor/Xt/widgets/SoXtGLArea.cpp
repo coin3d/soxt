@@ -55,11 +55,6 @@
  *     19th may 2000
  */
 
-#if SOXT_DEBUG
-static const char rcsid[] =
-  "$Id$";
-#endif // SOXT_DEBUG
-
 #include <assert.h>
 #include <stdio.h>
 
@@ -86,11 +81,13 @@ static void Redraw(SoXtGLAreaWidget, XEvent *, Region);
 static void Resize(SoXtGLAreaWidget);
 static void Destroy(SoXtGLAreaWidget);
 static void glwInput(SoXtGLAreaWidget, XEvent *, String *, Cardinal *);
-static Boolean set_values(Widget, Widget, Widget, ArgList, Cardinal *);
+static Boolean SoXtGLArea_set_values(Widget, Widget, Widget, ArgList, Cardinal *);
 
 // *************************************************************************
 
-static char defaultTranslations[] =
+static
+char
+SoXtGLArea_defaultTranslations[] =
     "<Key>osfHelp:PrimitiveHelp() \n\
      <KeyDown>:   glwInput() \n\
      <KeyUp>:     glwInput() \n\
@@ -98,7 +95,9 @@ static char defaultTranslations[] =
      <BtnUp>:     glwInput() \n\
      <BtnMotion>: glwInput() ";
 
-static XtActionsRec actions[] = {
+static
+XtActionsRec
+SoXtGLArea_actions[] = {
   { "glwInput", (XtActionProc) glwInput }, // key or mouse input
 }; // actions
 
@@ -120,7 +119,9 @@ static XtActionsRec actions[] = {
 #define poffset(field) XtOffset(SoXtGLAreaWidget, primitive.field)
 #define offset(field)  XtOffset(SoXtGLAreaWidget, soxtGLArea.field)
 
-static XtResource resources[] =
+static
+XtResource
+SoXtGLArea_resources[] =
 {
   // The GLX attributes.  Add any new attributes here
   {
@@ -323,10 +324,10 @@ SoXtGLAreaClassRec soxtGLAreaClassRec = {
     (XtInitProc) Initialize,               // initialize
     NULL,                                  // initialize_hook
     Realize,                               // realize
-    actions,                               // actions
-    XtNumber(actions),                     // num_actions
-    resources,                             // resources
-    XtNumber(resources),                   // num_resources
+    SoXtGLArea_actions,                    // actions
+    XtNumber(SoXtGLArea_actions),          // num_actions
+    SoXtGLArea_resources,                  // resources
+    XtNumber(SoXtGLArea_resources),        // num_resources
     NULLQUARK,                             // xrm_class
     TRUE,                                  // compress_motion
     TRUE,                                  // compress_exposure
@@ -335,14 +336,14 @@ SoXtGLAreaClassRec soxtGLAreaClassRec = {
     (XtWidgetProc) Destroy,                // destroy
     (XtWidgetProc) Resize,                 // resize
     (XtExposeProc) Redraw,                 // expose
-    set_values,                            // set_values
+    SoXtGLArea_set_values,                 // set_values
     NULL,                                  // set_values_hook
     XtInheritSetValuesAlmost,              // set_values_almost
     NULL,                                  // get_values_hook
     NULL,                                  // accept_focus
     XtVersion,                             // version
     NULL,                                  // callback_private
-    defaultTranslations,                   // tm_table
+    SoXtGLArea_defaultTranslations,        // tm_table
     XtInheritQueryGeometry,                // query_geometry
     XtInheritDisplayAccelerator,           // display_accelerator
     NULL                                   // extension
@@ -751,7 +752,7 @@ SoXtGLAreaSwapBuffers(
 // *************************************************************************
 
 Boolean
-set_values(
+SoXtGLArea_set_values(
   Widget current,
   Widget request,
   Widget new_widget,
@@ -769,11 +770,7 @@ set_values(
   }
 
   return redisplay;
-} // set_values()
+} // SoXtGLArea_set_values()
 
 // *************************************************************************
-
-#if SOXT_DEBUG
-static const char * getSoXtGLAreaRCSId(void) { return rcsid; }
-#endif // SOXT_DEBUG
 

@@ -21,11 +21,6 @@
  *
 \**************************************************************************/
 
-#if SOXT_DEBUG
-static const char rcsid[] =
-  "$Id$";
-#endif // SOXT_DEBUG
-
 #include <assert.h>
 #include <stdio.h>
 
@@ -881,8 +876,4 @@ XtNativePopupMenu::itemSelectionCallback(// private, static
 } // itemSelectionCallback()
 
 // *************************************************************************
-
-#if SOXT_DEBUG
-static const char * getXtNativePopupMenuRCSId(void) { return rcsid; }
-#endif // SOXT_DEBUG
 

@@ -21,16 +21,16 @@
  *
 \**************************************************************************/
 
-#include "SoXtDevice.cpp"
-#include "SoXtDeviceCommon.cpp"
-#include "SoXtInputFocus.cpp"
-#include "SoXtInputFocusCommon.cpp"
-#include "SoXtKeyboard.cpp"
-#include "SoXtKeyboardCommon.cpp"
-#include "SoXtMouse.cpp"
-#include "SoXtMouseCommon.cpp"
-#include "SoXtSpaceball.cpp"
-#include "SoXtSpaceballCommon.cpp"
-#include "SoXtLinuxJoystick.cpp"
-#include "spwinput_win32.c"
-#include "spwinput_x11.cpp"
+#include <Inventor/Xt/devices/SoXtDevice.cpp>
+#include <Inventor/Xt/devices/SoXtDeviceCommon.cpp>
+#include <Inventor/Xt/devices/SoXtInputFocus.cpp>
+#include <Inventor/Xt/devices/SoXtInputFocusCommon.cpp>
+#include <Inventor/Xt/devices/SoXtKeyboard.cpp>
+#include <Inventor/Xt/devices/SoXtKeyboardCommon.cpp>
+#include <Inventor/Xt/devices/SoXtMouse.cpp>
+#include <Inventor/Xt/devices/SoXtMouseCommon.cpp>
+#include <Inventor/Xt/devices/SoXtSpaceball.cpp>
+#include <Inventor/Xt/devices/SoXtSpaceballCommon.cpp>
+#include <Inventor/Xt/devices/SoXtLinuxJoystick.cpp>
+#include <Inventor/Xt/devices/spwinput_win32.c>
+#include <Inventor/Xt/devices/spwinput_x11.cpp>

@@ -1,3 +1,6 @@
+#ifndef SOXT_THUMBWHEEL_H_PRIVATE
+#define SOXT_THUMBWHEEL_H_PRIVATE
+
 /**************************************************************************\
  *
  *  This file is part of the Coin family of 3D visualization libraries.
@@ -23,9 +26,7 @@
 
 /* $Id$ */
 
-#ifndef SOXT_THUMBWHEEL_H_PRIVATE
-#define SOXT_THUMBWHEEL_H_PRIVATE
-
+#include <Xm/Xm.h>
 #include <Xm/PrimitiveP.h>
 
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
@@ -79,8 +80,13 @@ typedef struct _SoXtThumbWheelRec {
   SoXtThumbWheelPart  thumbwheel;
 } SoXtThumbWheelRec;
 
+#ifndef SoXtNrefresh
 #define SoXtNrefresh "refresh"
-#define SoXtCRefresh "refresh"
+#endif
+
+#ifndef SoXtCRefresh
+#define SoXtCRefresh "Refresh"
+#endif
 
 /* ********************************************************************** */
 

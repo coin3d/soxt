@@ -36,11 +36,17 @@ RegularSources = \
 LinkHackSources = \
 	all-widgets-cpp.cpp
 
+BuiltSources = \
+	$(SoGui_src_Inventor_Gui_widgets_BuiltFiles) \
+	$(SoGui_src_Inventor_Gui_widgets_BuiltMetaFiles)
+
 if HACKING_COMPACT_BUILD
 BuildSources = $(LinkHackSources)
+NoDistSources =
 ExtraSources = $(RegularSources)
 else
 BuildSources = $(RegularSources)
+NoDistSources = $(BuiltSources)
 ExtraSources = $(LinkHackSources)
 endif
 
@@ -48,8 +54,7 @@ libSoXtWidgets_la_SOURCES = \
 	$(BuildSources)
 
 nodist_libSoXtWidgets_la_SOURCES = \
-	$(SoGui_src_Inventor_Gui_widgets_BuiltFiles) \
-	$(SoGui_src_Inventor_Gui_widgets_BuiltMetaFiles)
+	$(NoDistSources)
 
 ############################################################################
 

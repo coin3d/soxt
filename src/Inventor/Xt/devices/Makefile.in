@@ -573,7 +573,7 @@ SoQt_ExtraBuiltMetaFiles = \
 
 noinst_LTLIBRARIES = libSoXtDevices.la
 
-DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)/src -I$(top_srcdir)/src
+DEFAULT_INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src
 
 BUILT_SOURCES = \
 	$(SoGuiAllBuiltFiles)

@@ -21,12 +21,13 @@
  *
 \**************************************************************************/
 
-#include "SoXtViewer.cpp"
-#include "SoXtConstrainedViewer.cpp"
-#include "SoXtFlyViewer.cpp"
-#include "SoXtFullViewer.cpp"
-#include "SoXtExaminerViewer.cpp"
-#include "SoXtPlaneViewer.cpp"
-#include "FullViewer.cpp"
-#include "ExaminerViewer.cpp"
-#include "PlaneViewer.cpp"
+#include <Inventor/Xt/viewers/SoXtViewer.cpp>
+#include <Inventor/Xt/viewers/SoXtConstrainedViewer.cpp>
+#include <Inventor/Xt/viewers/SoXtFlyViewer.cpp>
+#include <Inventor/Xt/viewers/SoXtFullViewer.cpp>
+#include <Inventor/Xt/viewers/SoXtExaminerViewer.cpp>
+#include <Inventor/Xt/viewers/SoXtPlaneViewer.cpp>
+#include <Inventor/Xt/viewers/FullViewer.cpp>
+#include <Inventor/Xt/viewers/ExaminerViewer.cpp>
+#include <Inventor/Xt/viewers/PlaneViewer.cpp>
+

@@ -606,9 +606,16 @@ RegularSources = \
 LinkHackSources = \
 	all-widgets-cpp.cpp
 
+
+BuiltSources = \
+	$(SoGui_src_Inventor_Gui_widgets_BuiltFiles) \
+	$(SoGui_src_Inventor_Gui_widgets_BuiltMetaFiles)
+
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_FALSE@NoDistSources = $(BuiltSources)
+@HACKING_COMPACT_BUILD_TRUE@NoDistSources = 
 @HACKING_COMPACT_BUILD_FALSE@ExtraSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_TRUE@ExtraSources = $(RegularSources)
 
@@ -617,8 +624,7 @@ libSoXtWidgets_la_SOURCES = \
 
 
 nodist_libSoXtWidgets_la_SOURCES = \
-	$(SoGui_src_Inventor_Gui_widgets_BuiltFiles) \
-	$(SoGui_src_Inventor_Gui_widgets_BuiltMetaFiles)
+	$(NoDistSources)
 
 
 
@@ -648,7 +654,10 @@ am_libSoXtWidgets_la_OBJECTS = $(am__objects_3)
 am__objects_4 = SoAnyThumbWheel.lo So@Gui@PopupMenu.lo
 @BUILD_METAFILES_TRUE@am__objects_5 =
 @BUILD_METAFILES_FALSE@am__objects_5 =
-nodist_libSoXtWidgets_la_OBJECTS = $(am__objects_4) $(am__objects_5)
+am__objects_6 = $(am__objects_4) $(am__objects_5)
+@HACKING_COMPACT_BUILD_TRUE@am__objects_7 =
+@HACKING_COMPACT_BUILD_FALSE@am__objects_7 = $(am__objects_6)
+nodist_libSoXtWidgets_la_OBJECTS = $(am__objects_7)
 libSoXtWidgets_la_OBJECTS = $(am_libSoXtWidgets_la_OBJECTS) \
 	$(nodist_libSoXtWidgets_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp

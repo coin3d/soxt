@@ -21,11 +21,6 @@
  *
 \**************************************************************************/
 
-#if SOXT_DEBUG
-static const char rcsid[] =
-  "$Id$";
-#endif // SOXT_DEBUG
-
 #include <assert.h>
 #include <stdlib.h>
 
@@ -881,8 +876,4 @@ SoXtSlider::max_value_cb(
 } // max_value_cb()
 
 // *************************************************************************
-
-#if SOXT_DEBUG
-static const char * getSoXtSliderRCSId(void) { return rcsid; }
-#endif // SOXT_DEBUG
 
