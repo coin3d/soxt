@@ -28,16 +28,13 @@ nodist_libSoGuiNodes_la_SOURCES = \
 ############################################################################
 ## Header file installation information.
 
-# These nodes are kept internal for now.  We know people will ask for them
-# to be made public, but until then we'll let them mature.  Besides, the
-# nodes can be used indirectly already through getTypeByName(),
-# createInstance(), getFieldByName() and such indirect methods, which will
-# allow us to change the nodes without any consequences for others.
+# Most nodes are kept internal for now.  We know people will ask for them
+# to be made public, but until then we'll let them mature.  Only headers
+# that other public headers depend on are installed for now.
 
-# SoGuiNodesincdir = $(includedir)/Inventor/@Gui@/nodes
-# 
-# SoGuiNodesinc_HEADERS = \
-# 	SoGuiNode.h \
-# 	SoGuiSlider1.h
+SoGuiNodesincdir = $(includedir)/Inventor/@Gui@/nodes
+
+SoGuiNodesinc_HEADERS = \
+	SoGuiColorEditor.h
 
 ############################################################################
