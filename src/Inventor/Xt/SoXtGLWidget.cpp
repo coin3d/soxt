@@ -674,7 +674,7 @@ SoXtGLWidget::getDisplayListShareGroup( // protected
 */
 
 void
-SoXtGLWidget::eventHandler( // static, protected
+SoXtGLWidget::event_handler( // static, protected
   Widget widget,
   void * closure,
   XEvent * event,
@@ -843,7 +843,7 @@ SoXtGLWidget::buildWidget( // protected
       ButtonReleaseMask | PointerMotionMask | KeyPressMask | KeyReleaseMask,
       False,
       (void (*)(_WidgetRec *, void *, _XEvent *, char *))
-        SoXtGLWidget::eventHandler,
+        SoXtGLWidget::event_handler,
       this );
 
 #if SOXT_DEBUG && 0
