@@ -2,8 +2,6 @@
 ## SoXt/src/Inventor/Xt/Makefile.am
 ## $Id$
 
-lib_LTLIBRARIES = libSoXt.la
-
 SUBDIRS = devices widgets viewers .
 
 INCLUDES = -I$(top_srcdir)/src -I$(top_builddir)/data
@@ -25,9 +23,13 @@ BUILT_SOURCES = \
 	SoAnyMaterialList.cpp \
 	SoAnyMaterialListBuiltins.cpp
 
-DISTCLEANFILES = $(BUILT_SOURCES) common/gl.h
+DISTCLEANFILES = \
+	$(BUILT_SOURCES) \
+	common/gl.h
 
 ############################################################################
+
+lib_LTLIBRARIES = libSoXt.la
 
 libSoXt_la_SOURCES = \
 	So@Gui@.cpp \
@@ -73,9 +75,9 @@ libSoXt_la_LDFLAGS = \
 ############################################################################
 
 SoXtincdir = $(includedir)/Inventor/@Gui@
+
 SoXtinc_HEADERS = \
 	So@Gui@Clipboard.h \
-	So@Gui@Cursors.h \
 	So@Gui@DirectionalLightEditor.h \
 	So@Gui@Icons.h \
 	So@Gui@LightSliderSet.h \
@@ -86,13 +88,42 @@ SoXtinc_HEADERS = \
 	So@Gui@Resource.h \
 	So@Gui@SliderSet.h \
 	So@Gui@SliderSetBase.h \
-	So@Gui@TransformSliderSet.h \
+	So@Gui@TransformSliderSet.h
+
+nodist_SoXtinc_HEADERS = \
 	So@Gui@.h \
 	So@Gui@Basic.h \
-	So@Gui@Object.h \
+	So@Gui@Cursors.h \
 	So@Gui@Component.h \
+	So@Gui@Object.h \
 	So@Gui@GLWidget.h \
 	So@Gui@RenderArea.h
+
+install-SoXtincHEADERS: $(SoXtinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(SoXtincdir)
+	@list='$(SoXtinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(SoXtincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
+
+install-nodist_SoXtincHEADERS: $(nodist_SoXtinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(SoXtincdir)
+	@list='$(nodist_SoXtinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(SoXtincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 ############################################################################
 
@@ -140,5 +171,22 @@ SoAnyMaterialList.cpp: $(srcdir)/common/SoAnyMaterialList.cpp.in
 
 SoAnyMaterialListBuiltins.cpp: $(srcdir)/common/SoAnyMaterialListBuiltins.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
+
+############################################################################
+
+uninstall-local: uninstall-SoXtincHEADERS uninstall-nodist_SoXtincHEADERS
+	@baseincdir="$(DESTDIR)$(includedir)/Inventor"; \
+	for dir in \
+	  "$$baseincdir/Xt/devices" \
+	  "$$baseincdir/Xt/viewers" \
+	  "$$baseincdir/Xt/widgets" \
+	  "$$baseincdir/Xt" \
+	  "$$baseincdir"; do \
+	  if test -d "$$dir"; then \
+	    echo " rmdir" "$$dir"; \
+	    rmdir "$$dir" &>/dev/null; \
+	  fi \
+	done; \
+	:
 
 ############################################################################

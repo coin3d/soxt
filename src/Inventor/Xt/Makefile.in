@@ -124,8 +124,6 @@ soxt_build_dir = @soxt_build_dir@
 soxt_configure_date = @soxt_configure_date@
 soxt_src_dir = @soxt_src_dir@
 
-lib_LTLIBRARIES = libSoXt.la
-
 SUBDIRS = devices widgets viewers .
 
 INCLUDES = -I$(top_srcdir)/src -I$(top_builddir)/data
@@ -148,10 +146,15 @@ BUILT_SOURCES = \
 	SoAnyMaterialListBuiltins.cpp
 
 
-DISTCLEANFILES = $(BUILT_SOURCES) common/gl.h
+DISTCLEANFILES = \
+	$(BUILT_SOURCES) \
+	common/gl.h
+
 
 
 ############################################################################
+lib_LTLIBRARIES = libSoXt.la
+
 libSoXt_la_SOURCES = \
 	So@Gui@.cpp \
 	So@Gui@Clipboard.h \
@@ -200,9 +203,9 @@ libSoXt_la_LDFLAGS = \
 
 ############################################################################
 SoXtincdir = $(includedir)/Inventor/@Gui@
+
 SoXtinc_HEADERS = \
 	So@Gui@Clipboard.h \
-	So@Gui@Cursors.h \
 	So@Gui@DirectionalLightEditor.h \
 	So@Gui@Icons.h \
 	So@Gui@LightSliderSet.h \
@@ -213,11 +216,15 @@ SoXtinc_HEADERS = \
 	So@Gui@Resource.h \
 	So@Gui@SliderSet.h \
 	So@Gui@SliderSetBase.h \
-	So@Gui@TransformSliderSet.h \
+	So@Gui@TransformSliderSet.h
+
+
+nodist_SoXtinc_HEADERS = \
 	So@Gui@.h \
 	So@Gui@Basic.h \
-	So@Gui@Object.h \
+	So@Gui@Cursors.h \
 	So@Gui@Component.h \
+	So@Gui@Object.h \
 	So@Gui@GLWidget.h \
 	So@Gui@RenderArea.h
 
@@ -286,7 +293,7 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(libSoXt_la_SOURCES)
-HEADERS = $(SoXtinc_HEADERS)
+HEADERS = $(SoXtinc_HEADERS) $(nodist_SoXtinc_HEADERS)
 
 
 RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
@@ -390,19 +397,18 @@ distclean-depend:
 	$(LTCXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 CXXDEPMODE = @CXXDEPMODE@
 uninstall-info-am:
-install-SoXtincHEADERS: $(SoXtinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(SoXtincdir)
-	@list='$(SoXtinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(SoXtincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(SoXtincdir)/$$f; \
-	done
 
 uninstall-SoXtincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(SoXtinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(SoXtincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(SoXtincdir)/$$f; \
+	done
+
+uninstall-nodist_SoXtincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(nodist_SoXtinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(SoXtincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(SoXtincdir)/$$f; \
@@ -539,7 +545,7 @@ check: check-recursive
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 installdirs: installdirs-recursive
 installdirs-am:
-	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(SoXtincdir)
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(SoXtincdir) $(DESTDIR)$(SoXtincdir)
 
 install: install-recursive
 install-exec: install-exec-recursive
@@ -584,7 +590,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-SoXtincHEADERS
+install-data-am: install-SoXtincHEADERS install-nodist_SoXtincHEADERS
 
 install-exec-am: install-libLTLIBRARIES
 
@@ -604,7 +610,8 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
 uninstall-am: uninstall-SoXtincHEADERS uninstall-info-am \
-	uninstall-libLTLIBRARIES
+	uninstall-libLTLIBRARIES uninstall-local \
+	uninstall-nodist_SoXtincHEADERS
 
 uninstall-info: uninstall-info-recursive
 
@@ -617,16 +624,43 @@ uninstall-info: uninstall-info-recursive
 	install-data install-data-am install-data-recursive \
 	install-exec install-exec-am install-exec-recursive \
 	install-info install-info-am install-info-recursive \
-	install-libLTLIBRARIES install-man install-recursive \
-	install-strip installcheck installcheck-am installdirs \
-	installdirs-am installdirs-recursive maintainer-clean \
-	maintainer-clean-generic maintainer-clean-recursive mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	mostlyclean-recursive tags tags-recursive uninstall \
-	uninstall-SoXtincHEADERS uninstall-am uninstall-info-am \
-	uninstall-info-recursive uninstall-libLTLIBRARIES \
-	uninstall-recursive
+	install-libLTLIBRARIES install-man \
+	install-nodist_SoXtincHEADERS install-recursive install-strip \
+	installcheck installcheck-am installdirs installdirs-am \
+	installdirs-recursive maintainer-clean maintainer-clean-generic \
+	maintainer-clean-recursive mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
+	tags tags-recursive uninstall uninstall-SoXtincHEADERS \
+	uninstall-am uninstall-info-am uninstall-info-recursive \
+	uninstall-libLTLIBRARIES uninstall-local \
+	uninstall-nodist_SoXtincHEADERS uninstall-recursive
 
+
+install-SoXtincHEADERS: $(SoXtinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(SoXtincdir)
+	@list='$(SoXtinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(SoXtincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
+
+install-nodist_SoXtincHEADERS: $(nodist_SoXtinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(SoXtincdir)
+	@list='$(nodist_SoXtinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(SoXtincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 ############################################################################
 
@@ -674,6 +708,23 @@ SoAnyMaterialList.cpp: $(srcdir)/common/SoAnyMaterialList.cpp.in
 
 SoAnyMaterialListBuiltins.cpp: $(srcdir)/common/SoAnyMaterialListBuiltins.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
+
+############################################################################
+
+uninstall-local: uninstall-SoXtincHEADERS uninstall-nodist_SoXtincHEADERS
+	@baseincdir="$(DESTDIR)$(includedir)/Inventor"; \
+	for dir in \
+	  "$$baseincdir/Xt/devices" \
+	  "$$baseincdir/Xt/viewers" \
+	  "$$baseincdir/Xt/widgets" \
+	  "$$baseincdir/Xt" \
+	  "$$baseincdir"; do \
+	  if test -d "$$dir"; then \
+	    echo " rmdir" "$$dir"; \
+	    rmdir "$$dir" &>/dev/null; \
+	  fi \
+	done; \
+	:
 
 ############################################################################
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
