@@ -1218,6 +1218,7 @@ SoXtFullViewerP::layoutAppPushButtons(void)
     Widget w = (Widget) (*(this->appButtonsList))[i];
     if ( i == 0 ) {
       XtVaSetValues(w,
+        XmNhighlightThickness, 0,
         XmNtopAttachment, XmATTACH_FORM,
         XmNtopOffset, 0,
         XmNleftAttachment, XmATTACH_FORM,
@@ -1230,6 +1231,7 @@ SoXtFullViewerP::layoutAppPushButtons(void)
         NULL);
     } else {
       XtVaSetValues(w,
+        XmNhighlightThickness, 0,
         XmNtopAttachment, XmATTACH_WIDGET,
         XmNtopWidget, prev,
         XmNleftAttachment, XmATTACH_FORM,
