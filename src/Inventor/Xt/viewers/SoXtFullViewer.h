@@ -215,6 +215,9 @@ private:
     Widget leftwheel, bottomwheel, rightwheel;
   } labels;
 
+  float seekdistance;
+  SbBool seekdistaspercentage;
+
 private:
   void selectedViewing(void);
   void selectedDecoration(void);
@@ -237,6 +240,17 @@ private:
   void copyviewSelected(void);
   void pasteviewSelected(void);
   void drawstyleActivated( int );
+
+  Widget seektimefield;
+  Widget pointtoggle, objecttoggle;
+  SOXT_WIDGET_CALLBACK( seektimechanged );
+  SOXT_WIDGET_CALLBACK( pointtoggled );
+  SOXT_WIDGET_CALLBACK( objecttoggled );
+  Widget seekdistancefield;
+  Widget percenttoggle, absolutetoggle;
+  SOXT_WIDGET_CALLBACK( seekdistancechanged );
+  SOXT_WIDGET_CALLBACK( percenttoggled );
+  SOXT_WIDGET_CALLBACK( absolutetoggled );
 
   // clipping preferences widgets
   Widget autoclipplanes, nearwheel, farwheel, nearvalue, farvalue;

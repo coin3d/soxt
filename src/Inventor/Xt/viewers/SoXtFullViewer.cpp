@@ -26,6 +26,7 @@ static const char rcsid[] =
 
 #include <assert.h>
 #include <string.h>
+#include <stdlib.h>
 
 #if HAVE_LIBXPM
 #include <X11/xpm.h>
@@ -1587,7 +1588,7 @@ SoXtFullViewer::createSeekPrefSheetGuts( // protected
     NULL );
   XtFree( (char *) labelstring );
 
-  Widget input = XtVaCreateManagedWidget( "seektimeinput",
+  this->seektimefield = XtVaCreateManagedWidget( "seektimeinput",
     xmTextFieldWidgetClass, line1,
     XmNtopAttachment, XmATTACH_FORM,
     XmNleftAttachment, XmATTACH_WIDGET,
@@ -1595,14 +1596,22 @@ SoXtFullViewer::createSeekPrefSheetGuts( // protected
     XmNbottomAttachment, XmATTACH_FORM,
     XmNwidth, 60,
     NULL );
+  XtAddCallback( this->seektimefield, XmNactivateCallback,
+    SoXtFullViewer::seektimechangedCB, (XtPointer) this );
+  XtAddCallback( this->seektimefield, XmNlosingFocusCallback,
+    SoXtFullViewer::seektimechangedCB, (XtPointer) this );
+  char buffer[16];
+  sprintf( buffer, "%g", this->getSeekTime() );
+  XmTextSetString( this->seektimefield, buffer );
+  XmTextSetCursorPosition( this->seektimefield, strlen(buffer) );
 
-  Widget denotion = XtVaCreateManagedWidget( "seconds",
+  Widget fieldlabed = XtVaCreateManagedWidget( "seconds",
     xmLabelWidgetClass, line1,
     XmNtopAttachment, XmATTACH_FORM,
     XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, input,
+    XmNleftWidget, this->seektimefield,
     XmNbottomAttachment, XmATTACH_FORM,
-    XmNbottomWidget, input,
+    XmNbottomWidget, this->seektimefield,
     NULL );
 
   Widget line2 = XtVaCreateManagedWidget( "line 2",
@@ -1624,23 +1633,29 @@ SoXtFullViewer::createSeekPrefSheetGuts( // protected
     NULL );
   XtFree( (char *) labelstring );
 
-  Widget pointb = XtVaCreateManagedWidget( "point",
+  this->pointtoggle = XtVaCreateManagedWidget( "point",
     xmToggleButtonWidgetClass, line2,
     XmNindicatorType, XmONE_OF_MANY,
     XmNleftAttachment, XmATTACH_WIDGET,
     XmNleftWidget, tolabel,
     XmNtopAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
+    XmNset, this->isDetailSeek() ? True : False,
     NULL );
+  XtAddCallback( this->pointtoggle, XmNvalueChangedCallback,
+    SoXtFullViewer::pointtoggledCB, (XtPointer) this );
 
-  Widget objectb = XtVaCreateManagedWidget( "object",
+  this->objecttoggle = XtVaCreateManagedWidget( "object",
     xmToggleButtonWidgetClass, line2,
     XmNindicatorType, XmONE_OF_MANY,
     XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, pointb,
+    XmNleftWidget, this->pointtoggle,
     XmNtopAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
+    XmNset, this->isDetailSeek() ? False : True,
     NULL );
+  XtAddCallback( this->objecttoggle, XmNvalueChangedCallback,
+    SoXtFullViewer::objecttoggledCB, (XtPointer) this );
 
   return form;
 } // createSeekPrefSheetGuts()
@@ -1693,14 +1708,21 @@ SoXtFullViewer::createSeekDistPrefSheetGuts( // protected
     XmNwidth, 90,
     NULL );
 
-  Widget input = XtVaCreateManagedWidget( "input",
+  this->seekdistancefield = XtVaCreateManagedWidget( "seekdistancefield",
     xmTextFieldWidgetClass, line1,
     XmNtopAttachment, XmATTACH_FORM,
     XmNleftAttachment, XmATTACH_WIDGET,
     XmNleftWidget, wheel,
     XmNwidth, 80,
     NULL );
-
+  XtAddCallback( this->seekdistancefield, XmNlosingFocusCallback,
+    SoXtFullViewer::seekdistancechangedCB, (XtPointer) this );
+  XtAddCallback( this->seekdistancefield, XmNactivateCallback,
+    SoXtFullViewer::seekdistancechangedCB, (XtPointer) this );
+  char buffer[16];
+  sprintf( buffer, "%g", this->seekdistance );
+  XmTextSetString( this->seekdistancefield, buffer );
+  XmTextSetCursorPosition( this->seekdistancefield, strlen(buffer) );
 
   Widget line2 = XtVaCreateManagedWidget( "line 2",
     xmFormWidgetClass, form,
@@ -1711,27 +1733,33 @@ SoXtFullViewer::createSeekDistPrefSheetGuts( // protected
     NULL );
 
   labelstring = SoXt::encodeString( "percentage" );
-  Widget percentb = XtVaCreateManagedWidget( "percentage",
+  this->percenttoggle = XtVaCreateManagedWidget( "percentagetoggle",
     xmToggleButtonWidgetClass, line2,
     XmNtopAttachment, XmATTACH_FORM,
     XmNleftAttachment, XmATTACH_FORM,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNlabelString, labelstring,
     XmNindicatorType, XmONE_OF_MANY,
+    XmNset, this->seekdistaspercentage ? True : False,
     NULL );
   XtFree( (char *) labelstring );
+  XtAddCallback( this->percenttoggle, XmNvalueChangedCallback,
+    SoXtFullViewer::percenttoggledCB, (XtPointer) this );
 
   labelstring = SoXt::encodeString( "absolute" );
-  Widget absb = XtVaCreateManagedWidget( "absolute",
+  this->absolutetoggle = XtVaCreateManagedWidget( "absolutetoggle",
     xmToggleButtonWidgetClass, line2,
     XmNtopAttachment, XmATTACH_FORM,
     XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, percentb,
+    XmNleftWidget, this->percenttoggle,
     XmNbottomAttachment, XmATTACH_FORM,
     XmNindicatorType, XmONE_OF_MANY,
     XmNlabelString, labelstring,
+    XmNset, this->seekdistaspercentage ? False : True,
     NULL );
   XtFree( (char *) labelstring );
+  XtAddCallback( this->absolutetoggle, XmNvalueChangedCallback,
+    SoXtFullViewer::absolutetoggledCB, (XtPointer) this );
 
   return form;
 } // createSeekDistPrefSheetGuts()
@@ -2469,5 +2497,89 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 {
   this->interactiveCountDec();
 } // increaseInteractiveCount()
+
+// *************************************************************************
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtFullViewer,
+  seektimechanged )
+{
+  float newtime = (float) atof( XmTextGetString( this->seektimefield ) );
+  this->setSeekTime( newtime );
+  char buf[16];
+  sprintf( buf, "%g", newtime );
+  XmTextSetString( this->seektimefield, buf );
+  XmTextSetCursorPosition( this->seektimefield, strlen(buf) );
+} // seektimechanged()
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtFullViewer,
+  pointtoggled )
+{
+  XtVaSetValues( this->pointtoggle, XmNset, True, NULL );
+  XtVaSetValues( this->objecttoggle, XmNset, False, NULL );
+  if ( ! this->isDetailSeek() )
+    this->setDetailSeek( TRUE );
+} // pointtoggled()
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtFullViewer,
+  objecttoggled )
+{
+  XtVaSetValues( this->pointtoggle, XmNset, False, NULL );
+  XtVaSetValues( this->objecttoggle, XmNset, True, NULL );
+  if ( this->isDetailSeek() )
+    this->setDetailSeek( FALSE );
+} // objecttoggled()
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtFullViewer,
+  seekdistancechanged )
+{
+  float newdist = (float) atof( XmTextGetString( this->seekdistancefield ) );
+  if ( newdist < 0.0f )
+    newdist = 0.0f;
+  this->seekdistance = newdist;
+  char buf[16];
+  sprintf( buf, "%g", newdist );
+  XmTextSetString( this->seekdistancefield, buf );
+  XmTextSetCursorPosition( this->seekdistancefield, strlen(buf) );
+} // seekdistancechanged()
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtFullViewer,
+  percenttoggled )
+{
+  XtVaSetValues( this->percenttoggle, XmNset, True, NULL );
+  XtVaSetValues( this->absolutetoggle, XmNset, False, NULL );
+  this->seekdistaspercentage = TRUE;
+} // percenttoggled()
+
+/*!
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtFullViewer,
+  absolutetoggled )
+{
+  XtVaSetValues( this->percenttoggle, XmNset, False, NULL );
+  XtVaSetValues( this->absolutetoggle, XmNset, True, NULL );
+  this->seekdistaspercentage = FALSE;
+} // absolutetoggled()
 
 // *************************************************************************
