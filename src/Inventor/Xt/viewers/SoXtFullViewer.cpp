@@ -28,16 +28,7 @@ static const char rcsid[] =
 #include <string.h>
 #include <stdlib.h>
 
-#if HAVE_LIBXPM
-#include <X11/xpm.h>
-#include <Inventor/Xt/common/pixmaps/pick.xpm>
-#include <Inventor/Xt/common/pixmaps/view.xpm>
-#include <Inventor/Xt/common/pixmaps/help.xpm>
-#include <Inventor/Xt/common/pixmaps/home.xpm>
-#include <Inventor/Xt/common/pixmaps/set_home.xpm>
-#include <Inventor/Xt/common/pixmaps/view_all.xpm>
-#include <Inventor/Xt/common/pixmaps/seek.xpm>
-#endif // HAVE_LIBXPM
+#include <X11/IntrinsicP.h>
 
 #include <Xm/Xm.h>
 #include <Xm/Form.h>
@@ -56,6 +47,17 @@ static const char rcsid[] =
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 
+#if HAVE_LIBXPM
+#include <X11/xpm.h>
+#include <Inventor/Xt/common/pixmaps/pick.xpm>
+#include <Inventor/Xt/common/pixmaps/view.xpm>
+#include <Inventor/Xt/common/pixmaps/help.xpm>
+#include <Inventor/Xt/common/pixmaps/home.xpm>
+#include <Inventor/Xt/common/pixmaps/set_home.xpm>
+#include <Inventor/Xt/common/pixmaps/view_all.xpm>
+#include <Inventor/Xt/common/pixmaps/seek.xpm>
+#endif // HAVE_LIBXPM
+
 #include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/SoXtResource.h>
@@ -72,7 +74,10 @@ enum DefaultViewerButtons {
   HOME_BUTTON,
   SET_HOME_BUTTON,
   VIEW_ALL_BUTTON,
-  SEEK_BUTTON
+  SEEK_BUTTON,
+
+  FIRST_BUTTON = INTERACT_BUTTON,
+  LAST_BUTTON = SEEK_BUTTON
 };
 
 #define VIEWERBUTTON(button) ((Widget) ((*this->viewerButtonsList)[button]))
@@ -357,10 +362,46 @@ Widget
 SoXtFullViewer::buildWidget( // protected
   Widget parent )
 {
-  this->viewerbase = XtVaCreateManagedWidget( this->getClassName(),
-    xmFormWidgetClass, parent,
-    NULL );
+  Display * dpy = XtDisplay( parent );
+  Screen * screen = XtScreen( parent );
+  Visual * visual = DefaultVisual( dpy, DefaultScreen(dpy) );
+  int depth = DefaultDepthOfScreen( screen );
+  if ( depth < 16 ) {
+    SoDebugError::postInfo( "SoXtFullViewer::buildWidget",
+      "depth = %d - trying to get bettea visual", depth );
+    XVisualInfo * visInfo = new XVisualInfo;
+    assert( visInfo != NULL );
+    // FIXME - fix screen param (0)
+    if ( XMatchVisualInfo( dpy, DefaultScreen(dpy), 24, TrueColor, visInfo ) ||
+        XMatchVisualInfo( dpy, DefaultScreen(dpy), 24, PseudoColor, visInfo ) ||
+        XMatchVisualInfo( dpy, DefaultScreen(dpy), 24, StaticColor, visInfo ) ||
+        XMatchVisualInfo( dpy, DefaultScreen(dpy), 24, DirectColor, visInfo ) ||
+        XMatchVisualInfo( dpy, DefaultScreen(dpy), 16, TrueColor, visInfo ) ||
+        XMatchVisualInfo( dpy, DefaultScreen(dpy), 16, PseudoColor, visInfo ) ||
+        XMatchVisualInfo( dpy, DefaultScreen(dpy), 16, StaticColor, visInfo ) ||
+        XMatchVisualInfo( dpy, DefaultScreen(dpy), 16, DirectColor, visInfo ) )
+    {
+//      visual = visInfo.visual;
+//      depth = 24;
+//      this->setNormalVisual( visInfo );
+      SoDebugError::postInfo( "SoXtFullViewer::buildWidget",
+        "found alternative visual" );
+    } else {
+      SoDebugError::postInfo( "SoXtFullViewer::buildWidget",
+        "no such luck" );
+    }
+  }
 
+  if ( this->getNormalVisual() != NULL ) {
+    this->viewerbase = XtVaCreateManagedWidget( this->getClassName(),
+      xmFormWidgetClass, parent,
+      XtNvisual, this->getNormalVisual()->visual,
+      NULL );
+  } else {
+    this->viewerbase = XtVaCreateManagedWidget( this->getClassName(),
+      xmFormWidgetClass, parent,
+      NULL );
+  }
   this->registerWidget( this->viewerbase );
 
   char * titleString = NULL;
@@ -863,13 +904,23 @@ SoXtFullViewer::createPixmapFromXpmData(
   Widget button,
   char ** xpm )
 {
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXtFullViewer::createPixmapFromXpmData",
+    "[enter]" );
+#endif // SOXT_DEBUG
 #if HAVE_LIBXPM
   Pixel bg;
   XtVaGetValues( button, XmNbackground, &bg, NULL );
-  Display * dpy = SoXt::getDisplay();
+  Display * dpy = XtDisplay( button );
   XImage * image, * stencil;
   int error = XpmCreateImageFromData( dpy, xpm, &image, &stencil, NULL );
-  if ( error != XpmSuccess ) return 0;
+  if ( error != XpmSuccess ) {
+#if SOXT_DEBUG
+    SoDebugError::postInfo( "SoXtFullViewer::createPixmapFromXpmData",
+      "XpmCreateImageFromData failed" );
+#endif // SOXT_DEBUG
+    return 0;
+  }
   for ( int x = 0; x < image->width; x++ ) {
     for ( int y = 0; y < image->height; y++ ) {
       Pixel pixel = XGetPixel( stencil, x, y );
@@ -886,8 +937,9 @@ SoXtFullViewer::createPixmapFromXpmData(
   XDestroyImage( image );
   XDestroyImage( stencil );
   return retval;
-#endif // HAVE_LIBXPM
+#else // ! HAVE_LIBXPM
   return (Pixmap) 0;
+#endif // ! HAVE_LIBXPM
 } // ButtonPixmap()
 
 /*!
@@ -906,7 +958,14 @@ SoXtFullViewer::createInsensitivePixmapFromXpmData(
   Display * dpy = SoXt::getDisplay();
   XImage * image, * stencil;
   int error = XpmCreateImageFromData( dpy, xpm, &image, &stencil, NULL );
-  if ( error != XpmSuccess ) return 0;
+  if ( error != XpmSuccess ) {
+#if SOXT_DEBUG
+    SoDebugError::postInfo(
+      "SoXtFullViewer::createInsensitivePixmapFromXpmData",
+      "XpmCreateImageFromData failed" );
+#endif // SOXT_DEBUG
+    return 0;
+  }
   for ( int x = 0; x < image->width; x++ ) {
     for ( int y = 0; y < image->height; y++ ) {
       Pixel pixel = XGetPixel( stencil, x, y );
@@ -923,8 +982,9 @@ SoXtFullViewer::createInsensitivePixmapFromXpmData(
   XDestroyImage( image );
   XDestroyImage( stencil );
   return retval;
-#endif // HAVE_LIBXPM
+#else // ! HAVE_LIBXPM
   return (Pixmap) 0;
+#endif // ! HAVE_LIBXPM
 } // createInsensitivePixmapFromXpmData()
 
 /*!
@@ -937,8 +997,14 @@ SoXtFullViewer::createViewerButtons(
 {
   assert( buttonlist != NULL );
 
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXtFullViewer::createViewerButtons", "[enter]" );
+#endif // SOXT_DEBUG
+
   int viewerbutton;
-  for ( viewerbutton = 0; viewerbutton <= SEEK_BUTTON; viewerbutton++ ) {
+  for ( viewerbutton = FIRST_BUTTON;
+        viewerbutton <= LAST_BUTTON;
+        viewerbutton++ ) {
     XtCallbackProc proc = NULL;
     char label[2];
     label[1] = '\0';
@@ -1059,24 +1125,26 @@ SoXtFullViewer::createViewerButtons(
         createPixmapFromXpmData( button, view_all_xpm );
       break;
     case SEEK_BUTTON:
-      pixmap = pixmaps.seek =
+      pixmap = pixmap_ins = pixmaps.seek =
         createPixmapFromXpmData( button, seek_xpm );
-      pixmap_ins = pixmaps.seek_ins =
-        createInsensitivePixmapFromXpmData( button, seek_xpm );
+//      pixmap_ins = pixmaps.seek_ins =
+//        createInsensitivePixmapFromXpmData( button, seek_xpm );
       break;
     default:
       assert( 0 && "impossible" );
       break;
     } // switch ( viewerbutton )
-    XtVaSetValues( button,
-      XmNlabelType, XmPIXMAP,
-      XmNlabelPixmap, pixmap,
-      XmNlabelInsensitivePixmap, pixmap_ins,
-      XmNselectPixmap, pixmap,
-      XmNselectInsensitivePixmap, pixmap_ins,
-      XmNwidth, 30,
-      XmNheight, 30,
-      NULL );
+    if ( pixmap ) {
+      XtVaSetValues( button,
+        XmNlabelType, XmPIXMAP,
+        XmNlabelPixmap, pixmap,
+        XmNlabelInsensitivePixmap, pixmap_ins,
+        XmNselectPixmap, pixmap,
+        XmNselectInsensitivePixmap, pixmap_ins,
+        XmNwidth, 30,
+        XmNheight, 30,
+        NULL );
+    }
 #endif // HAVE_LIBXPM
 
     if ( proc != NULL ) {
@@ -1088,6 +1156,9 @@ SoXtFullViewer::createViewerButtons(
     }
     buttonlist->append( button );
   }
+#if SOXT_DEBUG && 0
+  SoDebugError::postInfo( "SoXtFullViewer::createViewerButtons", "[exit]" );
+#endif // SOXT_DEBUG
 } // createViewerButtons()
 
 /*!
@@ -1871,7 +1942,7 @@ SoXtFullViewer::createSeekPrefSheetGuts( // protected
   char buffer[16];
   sprintf( buffer, "%g", this->getSeekTime() );
   XmTextSetString( this->seektimefield, buffer );
-  XmTextSetCursorPosition( this->seektimefield, strlen(buffer) );
+  XmTextSetCursorPosition( this->seektimefield, (long) strlen(buffer) );
 
   Widget fieldlabed = XtVaCreateManagedWidget( "seconds",
     xmLabelWidgetClass, line1,
@@ -1991,7 +2062,7 @@ SoXtFullViewer::createSeekDistPrefSheetGuts( // protected
   char buffer[16];
   sprintf( buffer, "%g", this->seekdistance );
   XmTextSetString( this->seekdistancefield, buffer );
-  XmTextSetCursorPosition( this->seekdistancefield, strlen(buffer) );
+  XmTextSetCursorPosition( this->seekdistancefield, (long) strlen(buffer) );
 
   Widget line2 = XtVaCreateManagedWidget( "line 2",
     xmFormWidgetClass, form,
@@ -2071,7 +2142,7 @@ SoXtFullViewer::createZoomPrefSheetGuts( // protected
   char buf[16];
   sprintf( buf, "%.1f", this->zoomrange[0] );
   XmTextSetString( this->zoomfrom, buf );
-  XmTextSetCursorPosition( this->zoomfrom, strlen(buf) );
+  XmTextSetCursorPosition( this->zoomfrom, (long) strlen(buf) );
 
   XtVaSetValues( this->zoomfrom,
     XmNsensitive, enable,
@@ -2093,7 +2164,7 @@ SoXtFullViewer::createZoomPrefSheetGuts( // protected
 
   sprintf( buf, "%.1f", this->getCameraZoom() );
   XmTextSetString( this->zoomvalue, buf );
-  XmTextSetCursorPosition( this->zoomvalue, strlen(buf) );
+  XmTextSetCursorPosition( this->zoomvalue, (long) strlen(buf) );
 
   XtVaSetValues( this->zoomvalue,
     XmNsensitive, enable,
@@ -2127,7 +2198,7 @@ SoXtFullViewer::createZoomPrefSheetGuts( // protected
 
   sprintf( buf, "%.1f", this->zoomrange[1] );
   XmTextSetString( this->zoomto, buf );
-  XmTextSetCursorPosition( this->zoomto, strlen(buf) );
+  XmTextSetCursorPosition( this->zoomto, (long) strlen(buf) );
 
   XtVaSetValues( this->zoomto,
     XmNsensitive, enable,
@@ -2227,7 +2298,7 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
   char buf[16];
   sprintf( buf, "%g", fardistance );
   XmTextSetString( this->farvalue, buf );
-  XmTextSetCursorPosition( this->farvalue, strlen(buf) );
+  XmTextSetCursorPosition( this->farvalue, (long) strlen(buf) );
 
   XtAddCallback( this->farvalue, XmNactivateCallback,
     SoXtFullViewer::farvaluechangedCB, (XtPointer) this );
@@ -2292,7 +2363,7 @@ SoXtFullViewer::createClippingPrefSheetGuts( // protected
 
   sprintf( buf, "%g", neardistance );
   XmTextSetString( this->nearvalue, buf );
-  XmTextSetCursorPosition( this->nearvalue, strlen(buf) );
+  XmTextSetCursorPosition( this->nearvalue, (long) strlen(buf) );
 
   XtAddCallback( this->nearvalue, XmNactivateCallback,
     SoXtFullViewer::nearvaluechangedCB, (XtPointer) this );
@@ -2542,7 +2613,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   char valuestring[32];
   sprintf( valuestring, "%.3f", val );
   XmTextSetString( this->nearvalue, valuestring );
-  XmTextSetCursorPosition( this->nearvalue, strlen(valuestring) );
+  XmTextSetCursorPosition( this->nearvalue, (long) strlen(valuestring) );
 
   SoCamera * const cam = this->getCamera();
   if ( ! cam ) {
@@ -2577,7 +2648,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   char valuestring[32];
   sprintf( valuestring, "%.3f", val );
   XmTextSetString( this->farvalue, valuestring );
-  XmTextSetCursorPosition( this->farvalue, strlen(valuestring) );
+  XmTextSetCursorPosition( this->farvalue, (long) strlen(valuestring) );
 
   SoCamera * const cam = this->getCamera();
   if ( ! cam ) {
@@ -2608,7 +2679,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   char buf[16];
   sprintf( buf, "%g", val );
   XmTextSetString( this->nearvalue, buf );
-  XmTextSetCursorPosition( this->nearvalue, strlen(buf) );
+  XmTextSetCursorPosition( this->nearvalue, (long) strlen(buf) );
 
   SoCamera * const camera = this->getCamera();
   if ( ! camera ) {
@@ -2636,7 +2707,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   char buf[16];
   sprintf( buf, "%g", val );
   XmTextSetString( this->farvalue, buf );
-  XmTextSetCursorPosition( this->farvalue, strlen(buf) );
+  XmTextSetCursorPosition( this->farvalue, (long) strlen(buf) );
 
   SoCamera * const camera = this->getCamera();
   if ( ! camera ) {
@@ -2953,7 +3024,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   char buf[16];
   sprintf( buf, "%g", newtime );
   XmTextSetString( this->seektimefield, buf );
-  XmTextSetCursorPosition( this->seektimefield, strlen(buf) );
+  XmTextSetCursorPosition( this->seektimefield, (long) strlen(buf) );
 } // seektimechanged()
 
 /*!
@@ -2996,7 +3067,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   char buf[16];
   sprintf( buf, "%g", newdist );
   XmTextSetString( this->seekdistancefield, buf );
-  XmTextSetCursorPosition( this->seekdistancefield, strlen(buf) );
+  XmTextSetCursorPosition( this->seekdistancefield, (long) strlen(buf) );
 } // seekdistancechanged()
 
 /*!
@@ -3122,7 +3193,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   char buf[16];
   sprintf( buf, "%.1f", value );
   XmTextSetString( this->zoomfrom, buf );
-  XmTextSetCursorPosition( this->zoomfrom, strlen(buf) );
+  XmTextSetCursorPosition( this->zoomfrom, (long) strlen(buf) );
 
   float zoom = this->getCameraZoom();
   if ( zoom < this->zoomrange[0] ) {
@@ -3130,13 +3201,13 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
     this->setCameraZoom( zoom );
     sprintf( buf, "%.1f", zoom );
     XmTextSetString( this->zoomvalue, buf );
-    XmTextSetCursorPosition( this->zoomvalue, strlen(buf) );
+    XmTextSetCursorPosition( this->zoomvalue, (long) strlen(buf) );
   } else if ( zoom > this->zoomrange[1] ) {
     zoom = this->zoomrange[1];
     this->setCameraZoom( zoom );
     sprintf( buf, "%.1f", zoom );
     XmTextSetString( this->zoomvalue, buf );
-    XmTextSetCursorPosition( this->zoomvalue, strlen(buf) );
+    XmTextSetCursorPosition( this->zoomvalue, (long) strlen(buf) );
   }
 
   if ( this->zoomrange[0] == this->zoomrange[1] ) {
@@ -3183,7 +3254,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
     char buf[16];
     sprintf( buf, "%.1f", realval );
     XmTextSetString( this->zoomvalue, buf );
-    XmTextSetCursorPosition( this->zoomvalue, strlen(buf) );
+    XmTextSetCursorPosition( this->zoomvalue, (long) strlen(buf) );
     this->setCameraZoom( realval );
   }
 } // zoomsliderchanged()
@@ -3204,7 +3275,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   char buf[16];
   sprintf( buf, "%.1f", value );
   XmTextSetString( this->zoomto, buf );
-  XmTextSetCursorPosition( this->zoomto, strlen(buf) );
+  XmTextSetCursorPosition( this->zoomto, (long) strlen(buf) );
 
   this->zoomrange[1] = value;
   float zoom = this->getCameraZoom();
@@ -3213,14 +3284,14 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
     this->setCameraZoom( zoom );
     sprintf( buf, "%.1f", zoom );
     XmTextSetString( this->zoomvalue, buf );
-    XmTextSetCursorPosition( this->zoomvalue, strlen(buf) );
+    XmTextSetCursorPosition( this->zoomvalue, (long) strlen(buf) );
     this->setCameraZoom( value );
   } else if ( zoom > this->zoomrange[1] ) {
     zoom = this->zoomrange[1];
     this->setCameraZoom( zoom );
     sprintf( buf, "%.1f", zoom );
     XmTextSetString( this->zoomvalue, buf );
-    XmTextSetCursorPosition( this->zoomvalue, strlen(buf) );
+    XmTextSetCursorPosition( this->zoomvalue, (long) strlen(buf) );
     this->setCameraZoom( value );
   }
 
@@ -3250,7 +3321,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   char buf[16];
   sprintf( buf, "%.1f", value );
   XmTextSetString( this->zoomvalue, buf );
-  XmTextSetCursorPosition( this->zoomvalue, strlen(buf) );
+  XmTextSetCursorPosition( this->zoomvalue, (long) strlen(buf) );
 
   if ( this->zoomrange[0] == this->zoomrange[1] ) {
     XmScaleSetValue( this->zoomslider, 0 );
@@ -3300,3 +3371,6 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
 } // speedDec()
 
 // *************************************************************************
+
+static const char * getSoXtFullViewerRCSId(void) { return rcsid; }
+
