@@ -40,11 +40,7 @@ nodist_libSoXtWidgets_la_SOURCES = \
 ############################################################################
 
 SoXtWidgetsincdir = $(includedir)/Inventor/Xt/widgets
-
-SoXtWidgetsinc_HEADERS = \
-	SoXtThumbWheel.h \
-	SoXtThumbWheelP.h \
-	SoXtGLArea.h \
-	SoXtGLAreaP.h
+SoXtWidgetsinc_HEADERS =
+nodist_SoXtWidgetsinc_HEADERS = SoXtPopupMenu.h
 
 ############################################################################
