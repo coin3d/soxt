@@ -1,4 +1,5 @@
-SoXt 1.2.1a (so far):
+SoXt 1.2.1 (2004-09-24):
+* Did a doxygen razzia, fixed a doc build problem
 
 SoXt 1.2.0 (2004-09-21):
 * New classes SoQtColorEditor, SoQtMaterialEditor

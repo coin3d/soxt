@@ -4,7 +4,7 @@
 m4_define([SOXT_MAJOR], [1])
 m4_define([SOXT_MINOR], [2])
 m4_define([SOXT_MICRO], [1])
-m4_define([SOXT_BETA], [a])
+m4_define([SOXT_BETA], [])
 
 m4_define([VERSION_STRING], [SOXT_MAJOR.SOXT_MINOR.SOXT_MICRO[]SOXT_BETA])
 
