@@ -29,6 +29,7 @@ main(int argc, char ** argv)
   viewer->setSceneGraph(root = makescene());
   viewer->show();
 
+#if 0
   // we want ColorEditor in scene
   SoSeparator * editorscene = new SoSeparator;
   SoTranslation * trans = new SoTranslation;
@@ -49,7 +50,7 @@ main(int argc, char ** argv)
   editorscene->addChild(inscene);
   root->insertChild(editorscene, 0);
 
-#if 0
+#else
   SoXtColorEditor * editor = new SoXtColorEditor;
   editor->attach(&(material->diffuseColor));
   editor->show();
