@@ -193,14 +193,7 @@ SoXtP::X11Errorhandler(Display * d, XErrorEvent * ee)
 
 // *************************************************************************
 
-/*!
-  \fn Widget SoXt::init(int & argc, char ** argv, const char * appname, const char * appclass)
-
-  This function initializes the SoXt library.
-
-  The returned Widget is a toplevel shell widget for the application, which
-  can be used as a shell for the main component.
-*/
+// init()-method documented in common/SoGuiCommon.cpp.in.
 Widget
 SoXt::internal_init(int & argc, char ** argv,
                     const char * appname, const char * appclass)
@@ -297,14 +290,7 @@ wm_close_handler(Widget widget, XtPointer user, XEvent * e, Boolean * dispatch)
   }
 }
 
-/*!
-  \fn void SoXt::init(Widget toplevel)
-
-  This function initializes the SoXt library.
-
-  It should be called for applications that want to create the toplevel
-  shell widget themselves.
-*/
+// init()-method documented in common/SoGuiCommon.cpp.in.
 void
 SoXt::internal_init(Widget toplevel)
 {
