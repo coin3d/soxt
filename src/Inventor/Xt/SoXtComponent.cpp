@@ -22,11 +22,15 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+// *************************************************************************
+
 /*!
   \class SoXtComponent Inventor/Xt/SoXtComponent.h
   \brief The SoXtComponent class is the base class for all SoXt components.
-
+  \ingroup components
 */
+
+// *************************************************************************
 
 #include <assert.h>
 #include <string.h>
@@ -63,6 +67,12 @@ struct SoXtComponentVisibilityCallbackInfo {
   SoXtComponentVisibilityCB * callback;
   void * closure;
 };
+
+/*!
+  \var SoXtComponent::firstRealize
+
+  This member is used to detect the first realization of the component.
+*/
 
 // *************************************************************************
 

@@ -17,48 +17,126 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
+
+// *************************************************************************
+
+/*!
+  \class SoXtDirectionalLightEditor Inventor/Xt/SoXtDirectionalLightEditor.h
+  \brief The SoXtDirectionalLightEditor class is yet to be documented.
+  \ingroup components editors
+
+  This class is not implemented.
+*/
+
+// *************************************************************************
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 
 #include <soxtdefs.h>
+
 #include <Inventor/Xt/SoXtDirectionalLightEditor.h>
 
+// *************************************************************************
+
 /*!
-  \class SoXtDirectionalLightEditor Inventor/Xt/SoXtDirectionalLightEditor.h
-  \brief The SoXtDirectionalLightEditor class is yet to be documented.
+  \var SoDirectionalLight * SoXtDirectionalLightEditor::dirLight
+  FIXME: write doc
+*/
+/*!
+  \var SoSeparator * SoXtDirectionalLightEditor::root
+  FIXME: write doc
+*/
+/*!
+  \var SoSeparator * SoXtDirectionalLightEditor::litStuff
+  FIXME: write doc
+*/
+/*!
+  \var SoPerspectiveCamera * SoXtDirectionalLightEditor::myCamera
+  FIXME: write doc
+*/
+/*!
+  \var SoCamera * SoXtDirectionalLightEditor::cameraToWatch
+  FIXME: write doc
+*/
+/*!
+  \var _SoXtColorEditor * SoXtDirectionalLightEditor::colorEditor
+  FIXME: write doc
+*/
+/*!
+  \var _SoXtColorSlider * SoXtDirectionalLightEditor::intensitySlider
+  FIXME: write doc
+*/
+/*!
+  \var SoXtRenderArea * SoXtDirectionalLightEditor::renderArea
+  FIXME: write doc
+*/
+/*!
+  \var SoNodeSensor * SoXtDirectionalLightEditor::lightSensor
+  FIXME: write doc
+*/
+/*!
+  \var SoNodeSensor * SoXtDirectionalLightEditor::cameraSensor
+  FIXME: write doc
+*/
+/*!
+  \var SoDirectionalLightManip * SoXtDirectionalLightEditor::dirLightManip
+  FIXME: write doc
+*/
+/*!
+  \var static char * SoXtDirectionalLightEditor::geomBuffer
+  FIXME: write doc
+*/
+/*!
+  \var SbBool SoXtDirectionalLightEditor::ignoreCallback
+  FIXME: write doc
+*/
+/*!
+  \var SoCallbackList * SoXtDirectionalLightEditor::callbackList
+  FIXME: write doc
+*/
+/*!
+  \var SoXtClipboard * SoXtDirectionalLightEditor::clipboard
+  FIXME: write doc
 */
 
 // *************************************************************************
 
 /*!
+  Constructor.
 */
 
 SoXtDirectionalLightEditor::SoXtDirectionalLightEditor(
   Widget parent,
   const char * const name,
-  SbBool inParent )
+  SbBool embed )
+: inherited( parent, name, embed )
 {
   SOXT_STUB();
   this->constructor( TRUE );
 } // SoXtDirectionalLightEditor()
 
 /*!
+  Constructor.
 */
 
 SoXtDirectionalLightEditor::SoXtDirectionalLightEditor( // protected
   Widget parent,
   const char * const name,
-  SbBool inParent,
+  SbBool embed,
   SbBool build )
+: inherited( parent, name, embed )
 {
   SOXT_STUB();
   this->constructor( build );
 } // SoXtDirectionalLightEditor()
 
 /*!
+  Destructor.
 */
 
 SoXtDirectionalLightEditor::~SoXtDirectionalLightEditor(
@@ -67,6 +145,12 @@ SoXtDirectionalLightEditor::~SoXtDirectionalLightEditor(
   SOXT_STUB();
 } // ~SoXtDirectionalLightEditor()
 
+// *************************************************************************
+
+/*!
+  FIXME: write doc
+*/
+
 void
 SoXtDirectionalLightEditor::attach(
   SoPath * pathToLight )
@@ -74,12 +158,20 @@ SoXtDirectionalLightEditor::attach(
   SOXT_STUB();
 } // attach()
 
+/*!
+  FIXME: write doc
+*/
+
 void
 SoXtDirectionalLightEditor::detach(
   void )
 {
   SOXT_STUB();
 } // detach()
+
+/*!
+  FIXME: write doc
+*/
 
 SbBool
 SoXtDirectionalLightEditor::isAttached(
@@ -89,12 +181,20 @@ SoXtDirectionalLightEditor::isAttached(
   return FALSE;
 } // isAttached()
 
+/*!
+  FIXME: write doc
+*/
+
 void
 SoXtDirectionalLightEditor::setLight(
   const SoDirectionalLight & light )
 {
   SOXT_STUB();
 } // setLight()
+
+/*!
+  FIXME: write doc
+*/
 
 const SoDirectionalLight &
 SoXtDirectionalLightEditor::getLight(
@@ -104,6 +204,10 @@ SoXtDirectionalLightEditor::getLight(
   return *((SoDirectionalLight *) SoDirectionalLight::getClassTypeId().createInstance());
 } // getLight()
 
+/*!
+  FIXME: write doc
+*/
+
 void
 SoXtDirectionalLightEditor::addLightChangedCallback(
   SoXtDirectionalLightEditorCB * callback,
@@ -111,6 +215,10 @@ SoXtDirectionalLightEditor::addLightChangedCallback(
 {
   SOXT_STUB();
 } // addLightChangedCallback()
+
+/*!
+  FIXME: write doc
+*/
 
 void
 SoXtDirectionalLightEditor::removeLightChangedCallback(
@@ -120,12 +228,20 @@ SoXtDirectionalLightEditor::removeLightChangedCallback(
   SOXT_STUB();
 } // removeLightChangedCallback()
 
+/*!
+  FIXME: write doc
+*/
+
 void
 SoXtDirectionalLightEditor::show( // virtual
   void )
 {
   SOXT_STUB();
 } // show()
+
+/*!
+  FIXME: write doc
+*/
 
 void
 SoXtDirectionalLightEditor::hide( // virtual
@@ -137,6 +253,7 @@ SoXtDirectionalLightEditor::hide( // virtual
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -148,6 +265,7 @@ SoXtDirectionalLightEditor::getDefaultWidgetName( // virtual, protected
 } // getDefaultWidgetName()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -159,6 +277,7 @@ SoXtDirectionalLightEditor::getDefaultTitle( // virtual, protected
 } // getDefaultTitle()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -170,6 +289,7 @@ SoXtDirectionalLightEditor::getDefaultIconTitle( // virtual, protected
 } // getDefaultIconTitle()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -181,6 +301,7 @@ SoXtDirectionalLightEditor::copyLight( // protected
 } // copyLight()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -193,6 +314,7 @@ SoXtDirectionalLightEditor::updateLocalComponents( // protected
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 // this method will be moved to protected - no point otherwise...
@@ -206,6 +328,7 @@ SoXtDirectionalLightEditor::buildWidget( // private
 } // buildWidget()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -216,3 +339,8 @@ SoXtDirectionalLightEditor::constructor( // private
 } // constructor()
 
 // *************************************************************************
+
+#if SOXT_DEBUG
+static const char * getSoXtDirectionalLightEditorRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
+

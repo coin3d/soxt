@@ -50,7 +50,7 @@ public:
   SoXtDirectionalLightEditor(
     Widget parent = NULL,
     const char * const name = NULL,
-    SbBool inParent = TRUE );
+    SbBool embed = TRUE );
   ~SoXtDirectionalLightEditor(void);
 
   void attach( SoPath * pathToLight );
@@ -72,8 +72,8 @@ protected:
   SoXtDirectionalLightEditor(
     Widget parent,
     const char * const name,
-    SbBool buildInsideParent,
-    SbBool buildNow );
+    SbBool embed,
+    SbBool build );
 
   virtual const char * getDefaultWidgetName(void) const;
   virtual const char * getDefaultTitle(void) const;
