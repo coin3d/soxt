@@ -97,6 +97,8 @@ private:
 
   static void sensorQueueChanged( void * user );
 
+  static String fallback_resources[];
+
 }; // class SoXt
 
 // *************************************************************************

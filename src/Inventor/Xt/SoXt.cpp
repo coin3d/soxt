@@ -67,7 +67,7 @@ SoXt::init( // static
 {
   XtAppContext context;
   Widget toplevel = XtAppInitialize( &context, className,
-                        NULL, 0, &argc, argv, NULL, NULL, 0 );
+    NULL, 0, &argc, argv, SoXt::fallback_resources, NULL, 0 );
   SoXt::init( toplevel );
   return toplevel;
 } // init()
@@ -86,6 +86,7 @@ SoXt::init( // static
 
   SoDB::getSensorManager()->setChangedCallback( SoXt::sensorQueueChanged, NULL);
 
+  XtAppSetFallbackResources( SoXt::getAppContext(), SoXt::fallback_resources );
 } // init()
 
 // *************************************************************************
@@ -447,5 +448,21 @@ SoXt::sensorQueueChanged( // static, private
     }
   }
 } // sensorQueueChange()
+
+// *************************************************************************
+
+/*!
+  \var SoXt::fallback_resources
+
+  This is an array of X resources.
+  They are not in use yet - the implementation is purely experimental.
+*/
+
+String
+SoXt::fallback_resources[] =
+{
+  "SoXtRenderArea*Background: white",
+  NULL
+}; // fallback_resources
 
 // *************************************************************************
