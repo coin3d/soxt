@@ -32,8 +32,7 @@ typedef void SoXtMaterialListCB( void * closure, const SoMaterial * material );
 // *************************************************************************
 
 class SOXT_DLL_EXPORT SoXtMaterialList : public SoXtComponent {
-  SOXT_TYPED_OBJECT_HEADER(SoXtMaterialList);
-  typedef SoXtComponent inherited;
+  SOXT_OBJECT_HEADER(SoXtMaterialList, SoXtComponent);
 
 public:
   SoXtMaterialList(

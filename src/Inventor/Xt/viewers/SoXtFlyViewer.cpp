@@ -22,8 +22,6 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-#include <assert.h>
-
 #include <Xm/Xm.h>
 
 #include <Inventor/errors/SoDebugError.h>
@@ -44,7 +42,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-SOXT_TYPED_OBJECT_SOURCE(SoXtFlyViewer, SoXtConstrainedViewer);
+SOXT_OBJECT_SOURCE(SoXtFlyViewer);
 
 // *************************************************************************
 

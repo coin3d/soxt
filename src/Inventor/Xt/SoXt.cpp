@@ -57,6 +57,7 @@ static const char rcsid[] =
 #include <soxtdefs.h>
 
 #include <Inventor/Xt/SoXt.h>
+#include <Inventor/Xt/SoXtObject.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -260,6 +261,7 @@ SoXt::init( // static
   SoDB::init();
   SoNodeKit::init();
   SoInteraction::init();
+  SoXtObject::init();
 
   SoDB::getSensorManager()->setChangedCallback( SoXt::sensorQueueChanged, NULL);
 

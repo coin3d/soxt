@@ -27,7 +27,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbLinear.h>
 
-#include <Inventor/Xt/SoXtTypedObject.h>
+#include <Inventor/Xt/SoXtObject.h>
 
 class SbPList;
 class SoXtComponent;
@@ -37,8 +37,8 @@ class SoXtComponent;
 typedef void SoXtComponentCB( void * closure, SoXtComponent * component );
 typedef void SoXtComponentVisibilityCB( void * closure, SbBool enable );
 
-class SOXT_DLL_EXPORT SoXtComponent : public SoXtTypedObject {
-  SOXT_TYPED_ABSTRACT_OBJECT_HEADER(SoXtComponent);
+class SOXT_DLL_EXPORT SoXtComponent : public SoXtObject {
+  SOXT_OBJECT_ABSTRACT_HEADER(SoXtComponent, SoXtObject);
 
 public:
   virtual ~SoXtComponent(void);

@@ -22,8 +22,6 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-#include <assert.h>
-
 #include <X11/keysym.h>
 
 #include <Xm/PushB.h>
@@ -63,7 +61,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-SOXT_TYPED_OBJECT_SOURCE(SoXtPlaneViewer, SoXtFullViewer);
+SOXT_OBJECT_SOURCE(SoXtPlaneViewer);
 
 // *************************************************************************
 

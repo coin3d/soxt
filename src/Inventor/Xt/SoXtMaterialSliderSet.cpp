@@ -38,7 +38,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-SOXT_TYPED_OBJECT_SOURCE(SoXtMaterialSliderSet, SoXtSliderSet);
+SOXT_OBJECT_SOURCE(SoXtMaterialSliderSet);
 
 // *************************************************************************
 

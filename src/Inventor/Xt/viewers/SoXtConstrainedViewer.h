@@ -29,8 +29,7 @@ class SoAnyConstrainedViewer;
 // *************************************************************************
 
 class SOXT_DLL_EXPORT SoXtConstrainedViewer : public SoXtFullViewer {
-  SOXT_TYPED_ABSTRACT_OBJECT_HEADER(SoXtConstrainedViewer);
-  typedef SoXtFullViewer inherited;
+  SOXT_OBJECT_ABSTRACT_HEADER(SoXtConstrainedViewer, SoXtFullViewer);
   friend class SoAnyConstrainedViewer;
 
 public:

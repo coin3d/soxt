@@ -26,7 +26,7 @@
 
 #include <Inventor/SbLinear.h>
 
-#include <Inventor/Xt/SoXtTypedObject.h>
+#include <Inventor/Xt/SoXtObject.h>
 
 class SoEvent;
 class SbPList;
@@ -35,8 +35,8 @@ class SbPList;
 
 typedef XtEventHandler SoXtEventHandlerPtr;
 
-class SOXT_DLL_EXPORT SoXtDevice : public SoXtTypedObject {
-  SOXT_TYPED_ABSTRACT_OBJECT_HEADER(SoXtDevice);
+class SOXT_DLL_EXPORT SoXtDevice : public SoXtObject {
+  SOXT_OBJECT_ABSTRACT_HEADER(SoXtDevice, SoXtObject);
 
 public:
   virtual ~SoXtDevice(void);

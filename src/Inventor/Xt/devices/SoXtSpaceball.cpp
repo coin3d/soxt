@@ -22,8 +22,6 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-#include <assert.h>
-
 #include <X11/extensions/XInput.h>
 
 #include <Inventor/misc/SoBasic.h>
@@ -54,7 +52,7 @@ typedef void * XPContext;
 
 // *************************************************************************
 
-SOXT_TYPED_OBJECT_SOURCE(SoXtSpaceball, SoXtDevice);
+SOXT_OBJECT_SOURCE(SoXtSpaceball);
 
 // *************************************************************************
 

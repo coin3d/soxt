@@ -22,8 +22,6 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-#include <assert.h>
-
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #include <Xm/Form.h>
@@ -49,7 +47,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-SOXT_TYPED_OBJECT_SOURCE(SoXtLightSliderSet, SoXtSliderSet);
+SOXT_OBJECT_SOURCE(SoXtLightSliderSet);
 
 // *************************************************************************
 

@@ -22,20 +22,9 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
-#include <assert.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <math.h>
-
-#ifdef HAVE_JOYSTICK_LINUX
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <linux/joystick.h>
-#endif // HAVE_JOYSTICK_LINUX
 
 #include <X11/Intrinsic.h>
 
@@ -48,6 +37,16 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXt.h>
 
 #include <Inventor/Xt/devices/SoXtLinuxJoystick.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_JOYSTICK_LINUX
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <linux/joystick.h>
+#endif // HAVE_JOYSTICK_LINUX
 
 #ifndef M_PI
 #define M_PI 3.141592653579
@@ -67,7 +66,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-SOXT_TYPED_OBJECT_SOURCE(SoXtLinuxJoystick, SoXtDevice);
+SOXT_OBJECT_SOURCE(SoXtLinuxJoystick);
 
 // *************************************************************************
 

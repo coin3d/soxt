@@ -72,7 +72,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-SOXT_TYPED_ABSTRACT_OBJECT_SOURCE(SoXtComponent, SoXtTypedObject);
+SOXT_OBJECT_ABSTRACT_SOURCE(SoXtComponent);
 
 void
 SoXtComponent::initClasses(

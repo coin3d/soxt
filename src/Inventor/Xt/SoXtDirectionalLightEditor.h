@@ -44,7 +44,7 @@ typedef void SoXtDirectionalLightEditorCB(
   void * user, const SoDirectionalLight * light );
 
 class SOXT_DLL_EXPORT SoXtDirectionalLightEditor : public SoXtComponent {
-  typedef SoXtComponent inherited;
+  SOXT_OBJECT_HEADER(SoXtDirectionalLightEditor, SoXtComponent);
 
 public:
   SoXtDirectionalLightEditor(

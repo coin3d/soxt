@@ -22,10 +22,6 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-// *************************************************************************
-
-#include <assert.h>
-
 #if SOXT_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // SOXT_DEBUG
@@ -56,7 +52,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-SOXT_TYPED_ABSTRACT_OBJECT_SOURCE(SoXtDevice, SoXtTypedObject);
+SOXT_OBJECT_ABSTRACT_SOURCE(SoXtDevice);
 
 void
 SoXtDevice::initClasses(

@@ -22,7 +22,6 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-#include <assert.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -85,7 +84,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-SOXT_TYPED_ABSTRACT_OBJECT_SOURCE(SoXtFullViewer, SoXtViewer);
+SOXT_OBJECT_ABSTRACT_SOURCE(SoXtFullViewer);
 
 // *************************************************************************
 

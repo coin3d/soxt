@@ -22,6 +22,13 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/nodes/SoDirectionalLight.h>
+
+#include <soxtdefs.h>
+
+#include <Inventor/Xt/SoXtDirectionalLightEditor.h>
+
 // *************************************************************************
 
 /*!
@@ -34,12 +41,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/nodes/SoDirectionalLight.h>
-
-#include <soxtdefs.h>
-
-#include <Inventor/Xt/SoXtDirectionalLightEditor.h>
+SOXT_OBJECT_SOURCE(SoXtDirectionalLightEditor);
 
 // *************************************************************************
 

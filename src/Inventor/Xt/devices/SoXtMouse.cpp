@@ -51,7 +51,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-SOXT_TYPED_OBJECT_SOURCE(SoXtMouse, SoXtDevice);
+SOXT_OBJECT_SOURCE(SoXtMouse);
 
 // *************************************************************************
 

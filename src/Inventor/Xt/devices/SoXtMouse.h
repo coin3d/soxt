@@ -32,8 +32,7 @@ class SoMouseButtonEvent;
 // *************************************************************************
 
 class SOXT_DLL_EXPORT SoXtMouse : public SoXtDevice {
-  SOXT_TYPED_OBJECT_HEADER(SoXtMouse);
-  typedef SoXtDevice inherited;
+  SOXT_OBJECT_HEADER(SoXtMouse, SoXtDevice);
 
 public:
   enum MouseEvents {

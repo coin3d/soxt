@@ -31,8 +31,7 @@ class SoAnyExaminerViewer;
 // *************************************************************************
 
 class SOXT_DLL_EXPORT SoXtExaminerViewer : public SoXtFullViewer {
-  SOXT_TYPED_OBJECT_HEADER(SoXtExaminerViewer);
-  typedef SoXtFullViewer inherited;
+  SOXT_OBJECT_HEADER(SoXtExaminerViewer, SoXtFullViewer);
   friend class SoAnyExaminerViewer;
 
 public:

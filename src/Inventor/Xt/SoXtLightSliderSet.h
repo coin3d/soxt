@@ -27,8 +27,7 @@
 // *************************************************************************
 
 class SOXT_DLL_EXPORT SoXtLightSliderSet : public SoXtSliderSet {
-  SOXT_TYPED_OBJECT_HEADER(SoXtLightSliderSet);
-  typedef SoXtSliderSet inherited;
+  SOXT_OBJECT_HEADER(SoXtLightSliderSet, SoXtSliderSet);
 
 public:
   SoXtLightSliderSet(

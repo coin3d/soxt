@@ -31,8 +31,7 @@
 // *************************************************************************
 
 class SOXT_DLL_EXPORT SoXtSpaceball : public SoXtDevice {
-  SOXT_TYPED_OBJECT_HEADER(SoXtSpaceball);
-  typedef SoXtDevice inherited;
+  SOXT_OBJECT_HEADER(SoXtSpaceball, SoXtDevice);
 
 public:
   enum Mask {

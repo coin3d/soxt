@@ -40,7 +40,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-SOXT_TYPED_OBJECT_SOURCE(SoXtPrintDialog, SoXtComponent);
+SOXT_OBJECT_SOURCE(SoXtPrintDialog);
 
 // *************************************************************************
 

@@ -17,45 +17,57 @@
  *
  **************************************************************************/
 
-// $Id$
+#if SOXT_DEBUG
+static const char rcsid[] =
+  "$Id$";
+#endif // SOXT_DEBUG
 
-#ifndef SOXT_MATERIALSLIDERSET_H
-#define SOXT_MATERIALSLIDERSET_H
+#include <Inventor/Xt/SoXtObject.h>
+#include <Inventor/Xt/devices/SoXtDevice.h>
+#include <Inventor/Xt/SoXtComponent.h>
 
-#include <Inventor/Xt/SoXtSliderSet.h>
+/*!
+  \class SoXtObject Inventor/Xt/SoXtObject.h
+  \brief The SoXtObject class is for run-time type checking of SoXt
+  objects.
 
-// *************************************************************************
-
-class SOXT_DLL_EXPORT SoXtMaterialSliderSet : public SoXtSliderSet {
-  SOXT_OBJECT_HEADER(SoXtMaterialSliderSet, SoXtSliderSet);
-
-public:
-  SoXtMaterialSliderSet(
-    Widget parent = NULL,
-    const char * const name = NULL,
-    SbBool embed = TRUE,
-    SoNode * const node = NULL );
-  ~SoXtMaterialSliderSet(void);
-
-protected:
-  SoXtMaterialSliderSet(
-    Widget parent,
-    const char * const name,
-    SbBool embed,
-    SoNode * const node,
-    SbBool build);
-
-  Widget buildWidget( Widget parent );
-
-  virtual const char * getDefaultWidgetName(void) const;
-  virtual const char * getDefaultTitle(void) const;
-  virtual const char * getDefaultIconTitle(void) const;
-
-private:
-  void constructor( SbBool build );
-
-}; // class SoXtMaterialSliderSet
+  This class is an extension to the original InventorXt API.
+*/
 
 // *************************************************************************
 
-#endif // ! SOXT_MATERIALSLIDERSET_H
+SoType SoXtObject::classTypeId; // static
+
+void
+SoXtObject::init( // static
+  void )
+{
+  SoXtObject::initClass();
+  SoXtDevice::initClasses();
+  SoXtComponent::initClasses();
+} // init()
+
+void
+SoXtObject::initClass( // static
+  void )
+{
+  assert( SoXtObject::classTypeId == SoType::badType() );
+  SoXtObject::classTypeId =
+    SoType::createType( SoType::badType(), "SoXtObject");
+} // initClass()
+
+SbBool
+SoXtObject::isOfType(
+  SoType type ) const
+{
+  return this->getTypeId().isDerivedFrom(type);
+} // isOfType()
+
+SoType
+SoXtObject::getClassTypeId( // static
+  void ) 
+{
+  return SoXtObject::classTypeId;
+} // getClassTypeId()
+
+// *************************************************************************

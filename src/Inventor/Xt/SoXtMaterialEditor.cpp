@@ -41,7 +41,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-SOXT_TYPED_OBJECT_SOURCE(SoXtMaterialEditor, SoXtComponent);
+SOXT_OBJECT_SOURCE(SoXtMaterialEditor);
 
 // *************************************************************************
 

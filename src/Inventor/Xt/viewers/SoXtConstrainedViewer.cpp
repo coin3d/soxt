@@ -39,7 +39,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-SOXT_TYPED_ABSTRACT_OBJECT_SOURCE(SoXtConstrainedViewer, SoXtFullViewer);
+SOXT_OBJECT_ABSTRACT_SOURCE(SoXtConstrainedViewer);
 
 // *************************************************************************
 

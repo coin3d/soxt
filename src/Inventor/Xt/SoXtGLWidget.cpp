@@ -57,7 +57,7 @@ static const char rcsid[] =
   \ingroup components
 */
 
-SOXT_TYPED_ABSTRACT_OBJECT_SOURCE(SoXtGLWidget, SoXtComponent);
+SOXT_OBJECT_ABSTRACT_SOURCE(SoXtGLWidget);
 
 // *************************************************************************
 

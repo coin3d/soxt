@@ -22,8 +22,6 @@ static const char rcsid[] =
   "$Id$";
 #endif // SOXT_DEBUG
 
-#include <assert.h>
-
 #include <Xm/Xm.h>
 #include <Xm/Label.h>
 
@@ -48,7 +46,7 @@ static const char rcsid[] =
 
 // *************************************************************************
 
-SOXT_TYPED_OBJECT_SOURCE(SoXtWalkViewer, SoXtConstrainedViewer);
+SOXT_OBJECT_SOURCE(SoXtWalkViewer);
 
 // *************************************************************************
 

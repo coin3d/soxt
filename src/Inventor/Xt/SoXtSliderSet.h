@@ -30,8 +30,7 @@ struct SoXtSliderSetClosure;
 // *************************************************************************
 
 class SOXT_DLL_EXPORT SoXtSliderSet : public SoXtSliderSetBase {
-  SOXT_TYPED_ABSTRACT_OBJECT_HEADER(SoXtSliderSet);
-  typedef SoXtSliderSetBase inherited;
+  SOXT_OBJECT_ABSTRACT_HEADER(SoXtSliderSet, SoXtSliderSetBase);
 
 public:
   SoXtSliderSet(

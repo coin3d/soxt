@@ -27,8 +27,7 @@
 // *************************************************************************
 
 class SOXT_DLL_EXPORT SoXtInputFocus : public SoXtDevice {
-  SOXT_TYPED_OBJECT_HEADER(SoXtInputFocus);
-  typedef SoXtDevice inherited;
+  SOXT_OBJECT_HEADER(SoXtInputFocus, SoXtDevice);
 
 public:
   enum InputFocusEvents {

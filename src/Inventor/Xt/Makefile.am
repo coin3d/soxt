@@ -27,8 +27,8 @@ libSoXt_la_SOURCES = \
 	So@Gui@.cpp \
 	So@Gui@Clipboard.h \
 	So@Gui@Clipboard.cpp \
-	So@Gui@TypedObject.h \
-	So@Gui@TypedObject.cpp \
+	So@Gui@Object.h \
+	So@Gui@Object.cpp \
 	So@Gui@Component.h \
 	So@Gui@Component.cpp \
 	So@Gui@Cursors.h \
@@ -96,7 +96,7 @@ libSoXtincdir = $(includedir)/Inventor/@Gui@
 libSoXtinc_HEADERS = \
 	So@Gui@.h \
 	So@Gui@Clipboard.h \
-	So@Gui@TypedObject.h \
+	So@Gui@Object.h \
 	So@Gui@Component.h \
 	So@Gui@Cursors.h \
 	So@Gui@DirectionalLightEditor.h \
