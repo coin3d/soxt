@@ -52,9 +52,7 @@ libSoXt_la_LDFLAGS = \
 SoXtincdir = $(includedir)/Inventor/Xt
 
 SoXtinc_HEADERS = \
-	SoXtResource.h \
-	SoXtColorEditor.h \
-	SoXtMaterialEditor.h
+	SoXtResource.h
 
 nodist_SoXtinc_HEADERS = \
 	SoXt.h \
@@ -63,7 +61,9 @@ nodist_SoXtinc_HEADERS = \
 	SoXtCursor.h \
 	SoXtComponent.h \
 	SoXtGLWidget.h \
-	SoXtRenderArea.h
+	SoXtRenderArea.h \
+	SoXtColorEditor.h \
+	SoXtMaterialEditor.h
 
 
 install-SoXtincHEADERS: $(SoXtinc_HEADERS)
