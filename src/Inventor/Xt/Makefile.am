@@ -42,7 +42,9 @@ libSoXt_la_SOURCES = \
 	SoXtResource.h \
 	SoXtResource.cpp \
 	SoXtClipboard.h \
-	SoXtClipboard.cpp
+	SoXtClipboard.cpp \
+	SoXtSliderSetBase.h \
+	SoXtSliderSetBase.cpp
 
 libSoXt_la_LIBADD = \
 	devices/libSoXtDevices.la \
