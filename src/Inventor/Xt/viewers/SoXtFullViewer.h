@@ -27,6 +27,10 @@
 class SoAnyFullViewer;
 class SoAnyPopupMenu;
 
+#define SOXT_WIDGET_CALLBACK( name ) \
+  void name( Widget, XtPointer ); \
+  static void SO__CONCAT(name,CB)( Widget, XtPointer, XtPointer )
+
 // *************************************************************************
 
 class SoXtFullViewer : public SoXtViewer {
@@ -84,33 +88,29 @@ protected:
   Widget buildFunctionsSubmenu( Widget popup );
   Widget buildDrawStyleSubmenu( Widget popup );
 
-#define WIDGET_CB(name) static void name( Widget, XtPointer, XtPointer )
-
   virtual void leftWheelStart(void);
-  WIDGET_CB( leftWheelStartCB );
+  SOXT_WIDGET_CALLBACK( leftWheelStart );
   virtual void leftWheelMotion( float value );
-  WIDGET_CB( leftWheelMotionCB );
+  SOXT_WIDGET_CALLBACK( leftWheelMotion );
   virtual void leftWheelFinish(void);
-  WIDGET_CB( leftWheelFinishCB );
+  SOXT_WIDGET_CALLBACK( leftWheelFinish );
   float getLeftWheelValue(void) const;
 
   virtual void bottomWheelStart(void);
-  WIDGET_CB( bottomWheelStartCB );
+  SOXT_WIDGET_CALLBACK( bottomWheelStart );
   virtual void bottomWheelMotion( float value );
-  WIDGET_CB( bottomWheelMotionCB );
+  SOXT_WIDGET_CALLBACK( bottomWheelMotion );
   virtual void bottomWheelFinish(void);
-  WIDGET_CB( bottomWheelFinishCB );
+  SOXT_WIDGET_CALLBACK( bottomWheelFinish );
   float getBottomWheelValue(void) const;
 
   virtual void rightWheelStart(void);
-  WIDGET_CB( rightWheelStartCB );
+  SOXT_WIDGET_CALLBACK( rightWheelStart );
   virtual void rightWheelMotion( float value );
-  WIDGET_CB( rightWheelMotionCB );
+  SOXT_WIDGET_CALLBACK( rightWheelMotion );
   virtual void rightWheelFinish(void);
-  WIDGET_CB( rightWheelFinishCB );
+  SOXT_WIDGET_CALLBACK( rightWheelFinish );
   float getRightWheelValue(void) const;
-
-#undef WIDGET_CB
 
   void setLeftWheelString( const char * const name );
   void setBottomWheelString( const char * const name );
@@ -161,17 +161,18 @@ protected: // preference sheet routines
   Widget createStereoPrefSheetGuts( Widget parent );
   Widget createSpeedPrefSheetGuts( Widget parent );
 
-  static void prefSheetDestroyCB( Widget, XtPointer, XtPointer );
+  Widget createFramedSeekPrefSheetGuts( Widget parent );
+  Widget createFramedZoomPrefSheetGuts( Widget parent );
+  Widget createFramedClippingPrefSheetGuts( Widget parent );
+
+  SOXT_WIDGET_CALLBACK( prefSheetDestroy );
+  SOXT_WIDGET_CALLBACK( seekPrefSheetField );
+  SOXT_WIDGET_CALLBACK( seekPrefSheetToggle1 );
+  SOXT_WIDGET_CALLBACK( seekPrefSheetToggle2 );
 
   char * prefstring;
   Widget prefshell;
   Widget prefsheet;
-
-/*
-  static void seekPrefSheetFieldCB( Widget, SoXtFullViewer *, void * );
-  static void seekPrefSheetToggle1CB( Widget, Widget, void * );
-  static void seekPrefSheetToggle2CB( Widget, Widget, void * );
-*/
 
 private:
   SbBool decorations;
@@ -237,10 +238,40 @@ private:
   void pasteviewSelected(void);
   void drawstyleActivated( int );
 
+  // clipping preferences widgets
+  Widget autoclipplanes, nearwheel, farwheel, nearvalue, farvalue;
+
+  SOXT_WIDGET_CALLBACK( autoclipplanestoggled );
+  SOXT_WIDGET_CALLBACK( nearwheelvaluechanged );
+  SOXT_WIDGET_CALLBACK( farwheelvaluechanged );
+  SOXT_WIDGET_CALLBACK( nearvaluechanged );
+  SOXT_WIDGET_CALLBACK( farvaluechanged );
+
+  SOXT_WIDGET_CALLBACK( increaseInteractiveCount );
+  SOXT_WIDGET_CALLBACK( decreaseInteractiveCount );
+
 private:
   SoAnyFullViewer * const common;
 
 }; // class SoXtFullViewer
+
+// *************************************************************************
+
+#define SOXT_WIDGET_CALLBACK_IMPLEMENTATION( soxtclass, name ) \
+void                                                           \
+soxtclass::SO__CONCAT( name, CB )(                             \
+  Widget widget,                                               \
+  XtPointer client_data,                                       \
+  XtPointer call_data )                                        \
+{                                                              \
+  soxtclass * const viewer = (soxtclass *) client_data;        \
+  viewer->name( widget, call_data );                           \
+}                                                              \
+                                                               \
+void                                                           \
+soxtclass::name(                                               \
+  Widget widget,                                               \
+  XtPointer call_data )
 
 // *************************************************************************
 
