@@ -314,34 +314,21 @@ dirty_pixmaps(
   \internal
 */
 
-inline
-unsigned long
-fromABCtoC5B6A5(
-  unsigned long source )
-{
-  unsigned long target  = (source >> 19) & 0x001f; // A
-                target |= (source >>  5) & 0x07e0; // B
-  return        target |  (source <<  8) & 0xf800; // C
-} // ()
+static unsigned long r_mask, g_mask, b_mask;
+static int r_shift, g_shift, b_shift;
 
-inline
 unsigned long
-fromABCtoA5B6C5(
-  unsigned long source )
+twiddlebits(
+  unsigned long abgr )
 {
-  unsigned long target  = (source >> 3) & 0x001f; // C
-                target |= (source >> 5) & 0x07e0; // B
-  return        target |  (source >> 8) & 0xf800; // A
-} // ()
-
-inline
-unsigned long
-fromABCtoCBA(
-  unsigned long source )
-{
-  unsigned long target  = (source >> 16);            // A
-                target |= (source)       &   0xff00; // B
-  return        target |  (source << 16) & 0xff0000; // C
+  unsigned long target = 0;
+  if ( r_shift >= 0 ) target |= ((abgr & 0x000000ff) << r_shift) & r_mask;
+  else                target |= ((abgr & 0x000000ff) >> (0-r_shift)) & r_mask;
+  if ( b_shift >= 0 ) target |= ((abgr & 0x0000ff00) << g_shift) & g_mask;
+  else                target |= ((abgr & 0x0000ff00) >> (0-g_shift)) & g_mask;
+  if ( b_shift >= 0 ) target |= ((abgr & 0x00ff0000) << b_shift) & b_mask;
+  else                target |= ((abgr & 0x00ff0000) >> (0-b_shift)) & b_mask;
+  return target;
 } // fromABCtoCBA()
 
 /*!
@@ -349,12 +336,8 @@ fromABCtoCBA(
 */
 
 static enum _rgb_target_mode {
-  UNKNOWN,
-  R5G6B5,
-  B5G6R5,
-  RGBA,
-  ABGR,
-  CUSTOM
+  CUSTOM,
+  UNKNOWN
 } rgb_target_mode = UNKNOWN;
 static Display * rgb_dpy = NULL;
 static Colormap rgb_colormap = 0;
@@ -367,10 +350,7 @@ abgr2pixel(
   unsigned long abgr )
 {
   switch ( rgb_target_mode ) {
-  case R5G6B5:   return fromABCtoC5B6A5( abgr );
-  case B5G6R5:   return fromABCtoA5B6C5( abgr );
-  case RGBA:     return fromABCtoCBA( abgr ) << 8;
-  case ABGR:     return abgr;
+  case CUSTOM:   return twiddlebits( abgr );
   default:       break;
   }
  
@@ -394,9 +374,9 @@ abgr2pixel(
 
   // lookup pixel
   static XColor cdata, ign;
-  cdata.red   = (abgr << 8) & 0xff00;
-  cdata.green = (abgr     ) & 0xff00;
-  cdata.blue  = (abgr >> 8) & 0xff00;
+  cdata.red   = (unsigned short) ((abgr << 8) & 0xff00);
+  cdata.green = (unsigned short) ((abgr     ) & 0xff00);
+  cdata.blue  = (unsigned short) ((abgr >> 8) & 0xff00);
   if ( XAllocColor( rgb_dpy, rgb_colormap, &cdata ) ) {
     fallback = cdata.pixel;
   } else {
@@ -478,30 +458,25 @@ init_pixmaps(
   rgb_dpy = dpy;
   rgb_colormap = colormap;
 
-  if (        visual->red_mask   == 0x000000ff &&
-              visual->green_mask == 0x0000ff00 &&
-              visual->blue_mask  == 0x00ff0000 ) {
-    SoDebugError::postInfo( "", "ABGR" );
-    rgb_target_mode = ABGR;
-  } else if ( visual->red_mask   == 0xff000000 &&
-              visual->green_mask == 0x00ff0000 &&
-              visual->blue_mask  == 0x0000ff00 ) {
-    SoDebugError::postInfo( "", "RGBA" );
-    rgb_target_mode = RGBA;
-  } else if ( visual->red_mask   == 0x0000001f &&
-              visual->green_mask == 0x000007e0 &&
-              visual->blue_mask  == 0x0000f800 ) {
-    SoDebugError::postInfo( "", "B5G6R5" );
-    rgb_target_mode = B5G6R5;
-  } else if ( visual->red_mask   == 0x0000f800 &&
-              visual->green_mask == 0x000007e0 &&
-              visual->blue_mask  == 0x0000001f ) {
-    SoDebugError::postInfo( "", "R5G6B5" );
-    rgb_target_mode = R5G6B5;
-  } else if ( visual->red_mask   != 0x00000000 &&
-              visual->green_mask != 0x00000000 &&
-              visual->blue_mask  != 0x00000000 ) {
+  if ( visual->red_mask   != 0x00000000 &&
+       visual->green_mask != 0x00000000 &&
+       visual->blue_mask  != 0x00000000 ) {
     // analyze masks for custom rotate+mask converter
+
+    // SGI fix - the 8th bit seems to have some special meaning
+    rgb_target_mode = UNKNOWN;
+    unsigned long white_probe = abgr2pixel( 0x00ffffff );
+
+    r_mask = visual->red_mask   & white_probe;
+    g_mask = visual->green_mask & white_probe;
+    b_mask = visual->blue_mask  & white_probe;
+    r_shift =  -8; // xxxxRR
+    g_shift = -16; // xxGGxx
+    b_shift = -24; // BBxxxx
+    unsigned long mask;
+    mask = r_mask; while ( mask ) { mask >>= 1; r_shift++; }
+    mask = g_mask; while ( mask ) { mask >>= 1; g_shift++; }
+    mask = b_mask; while ( mask ) { mask >>= 1; b_shift++; }
     rgb_target_mode = CUSTOM;
   }
 
