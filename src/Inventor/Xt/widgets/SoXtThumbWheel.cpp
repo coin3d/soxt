@@ -800,7 +800,7 @@ Roll(
     widget->thumbwheel.currentpixmap = pixmap;
   }
 
-  struct SoXtThumbWheelCallbackData data = {
+  SoXtThumbWheelCallbackData data = {
     SoXtCR_MOVE,
     e,
     widget->thumbwheel.value,
