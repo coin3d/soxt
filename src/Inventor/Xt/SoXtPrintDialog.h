@@ -31,6 +31,8 @@
 
 class SoGLRenderAction;
 class SoXtPrintDialog;
+class SoPath;
+class SoNode;
 
 // *************************************************************************
 
