@@ -236,3 +236,45 @@ priority the item has.
     20030217 mortene.
 
 ========================================================================
+
+017 Wrong cursor at start-up.
+
+    The following dead-simple example demonstrates a bug with SoXt. At
+    start-up, the mode is "interact with camera", but the cursor
+    graphics is as for "interact with scene graph". (Click LMB and
+    drag, and then the cursor graphics gets corrected to what it
+    should be from the start.)
+
+    ------8<---- [snip] -----------8<---- [snip] -----------8<---
+    #include <Inventor/Xt/SoXt.h>
+    #include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
+    #include <Inventor/nodes/SoSeparator.h>
+    #include <Inventor/nodes/SoCube.h>
+    
+    int
+    main(int argc, char ** argv) 
+    {
+      Widget top = SoXt::init(argv[0]);
+    
+      SoSeparator * root = new SoSeparator;
+      root->ref();
+    
+      SoCube* cube = new SoCube;
+      root->addChild(cube);
+    
+      SoXtExaminerViewer* viewer = new SoXtExaminerViewer(top);
+      viewer->setSceneGraph(root);
+    
+      SoXt::show(top);
+      SoXt::mainLoop();
+    
+      root->unref();
+      delete viewer;
+    
+      return 0;
+    }
+    ------8<---- [snip] -----------8<---- [snip] -----------8<---
+
+    20030409 mortene. Reported by Guy Barrand.
+
+========================================================================
