@@ -307,9 +307,9 @@ SoXtFullViewer::buildWidget( // protected
   this->canvas = inherited::buildWidget( this->viewerbase );
 
   XtVaSetValues( this->canvas,
-      XmNtopAttachment, XmATTACH_FORM,
       XmNleftAttachment, XmATTACH_FORM,
       XmNleftOffset, 30,
+      XmNtopAttachment, XmATTACH_FORM,
       XmNbottomAttachment, XmATTACH_FORM,
       XmNbottomOffset, 30,
       XmNrightAttachment, XmATTACH_FORM,
@@ -427,11 +427,12 @@ SoXtFullViewer::buildLeftTrim( // virtual
 {
   Widget trim = XtVaCreateManagedWidget( "LeftTrim",
       xmFormWidgetClass, parent,
-      XmNwidth, 30,
       XmNleftAttachment, XmATTACH_FORM,
       XmNtopAttachment, XmATTACH_FORM,
       XmNbottomAttachment, XmATTACH_WIDGET,
       XmNbottomWidget, this->decorform[BOTTOMDECORATION],
+      XmNrightAttachment, XmATTACH_OPPOSITE_FORM,
+      XmNrightOffset, -30,
       NULL );
 
   // build application buttons
@@ -480,11 +481,12 @@ SoXtFullViewer::buildRightTrim( // virtual
 {
   Widget trim = XtVaCreateManagedWidget( "RightTrim",
       xmFormWidgetClass, parent,
-      XmNwidth, 30,
       XmNtopAttachment, XmATTACH_FORM,
       XmNrightAttachment, XmATTACH_FORM,
       XmNbottomAttachment, XmATTACH_WIDGET,
       XmNbottomWidget, this->decorform[BOTTOMDECORATION],
+      XmNleftAttachment, XmATTACH_OPPOSITE_FORM,
+      XmNleftOffset, -30,
       NULL );
 
   Widget buttonForm = this->buildViewerButtons( trim );
@@ -538,16 +540,31 @@ SoXtFullViewer::setViewing( // virtual
     this->prefmenu->SetMenuItemEnabled( SEEK_ITEM, enable );
   }
 
+  XtUnmanageChild( this->viewerbuttons.view );
+  XtSetSensitive( this->viewerbuttons.view, enable ? False : True );
   XtVaSetValues( this->viewerbuttons.view,
-                 XmNset, enable ? True : False, NULL );
+                 XmNset, enable ? True : False,
+                 XmNwidth, 30,
+                 XmNheight, 30,
+                 NULL );
+  XtManageChild( this->viewerbuttons.view );
+
+  XtUnmanageChild( this->viewerbuttons.pick );
+  XtSetSensitive( this->viewerbuttons.pick, enable ? True : False );
   XtVaSetValues( this->viewerbuttons.pick,
-                 XmNset, enable ? False : True, NULL );
+                 XmNset, enable ? False : True,
+                 XmNwidth, 30,
+                 XmNheight, 30,
+                 NULL );
+  XtManageChild( this->viewerbuttons.pick );
 
   XtUnmanageChild( this->viewerbuttons.seek );
   XtSetSensitive( this->viewerbuttons.seek,
     enable ? True : False );
   XtVaSetValues( this->viewerbuttons.seek,
-    XmNwidth, 30, XmNheight, 30, NULL );
+    XmNwidth, 30,
+    XmNheight, 30,
+    NULL );
   XtManageChild( this->viewerbuttons.seek );
 } // setViewing()
 
@@ -672,6 +689,25 @@ SoXtFullViewer::buildViewerButtons(
        XmNleftPosition, 0, XmNtopPosition, i,
        NULL );
   }
+
+  XtUnmanageChild( this->viewerbuttons.view );
+  XtSetSensitive( this->viewerbuttons.view, this->isViewing() ? False : True );
+  XtVaSetValues( this->viewerbuttons.view,
+                 XmNset, this->isViewing() ? True : False,
+                 XmNwidth, 30,
+                 XmNheight, 30,
+                 NULL );
+  XtManageChild( this->viewerbuttons.view );
+
+  XtUnmanageChild( this->viewerbuttons.pick );
+  XtSetSensitive( this->viewerbuttons.pick, this->isViewing() ? True : False );
+  XtVaSetValues( this->viewerbuttons.pick,
+                 XmNset, this->isViewing() ? False : True,
+                 XmNwidth, 30,
+                 XmNheight, 30,
+                 NULL );
+  XtManageChild( this->viewerbuttons.pick );
+
   return form;
 } // buildViewerButtons()
 
@@ -2193,15 +2229,20 @@ SoXtFullViewer::interactbuttonClicked(
 /*!
 */
 
-void
-SoXtFullViewer::interactbuttonCB(
-  Widget,
-  XtPointer client_data,
-  XtPointer call_data )
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtFullViewer,
+  interactbutton )
 {
+  this->interactbuttonClicked( TRUE );
+/*
   XmToggleButtonCallbackStruct * data =
     (XmToggleButtonCallbackStruct *) call_data;
-  ((SoXtFullViewer *) client_data)->interactbuttonClicked( data->set );
+  if ( ! data->set ) {
+    
+  } else {
+    ((SoXtFullViewer *) client_data)->interactbuttonClicked( data->set );
+  }
+*/
 } // interactbuttonCB()
 
 /*!
@@ -2224,6 +2265,14 @@ SoXtFullViewer::examinebuttonClicked(
 /*!
 */
 
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtFullViewer,
+  examinebutton )
+{
+  this->examinebuttonClicked( TRUE );
+} // examinebutton()
+
+/*
 void
 SoXtFullViewer::examinebuttonCB(
   Widget,
@@ -2234,6 +2283,7 @@ SoXtFullViewer::examinebuttonCB(
     (XmToggleButtonCallbackStruct *) call_data;
   ((SoXtFullViewer *) client_data)->examinebuttonClicked( data->set );
 } // examinebuttonCB()
+*/
 
 /*!
 */

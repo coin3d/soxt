@@ -221,9 +221,9 @@ private:
   void selectedHeadlight(void);
   void selectedPrefs(void);
   void interactbuttonClicked( Boolean set );
-  static void interactbuttonCB( Widget, XtPointer, XtPointer );
   void examinebuttonClicked( Boolean set );
-  static void examinebuttonCB( Widget, XtPointer, XtPointer );
+  SOXT_WIDGET_CALLBACK( interactbutton );
+  SOXT_WIDGET_CALLBACK( examinebutton );
   void helpbuttonClicked(void);
   static void helpbuttonCB( Widget, XtPointer, XtPointer );
   void homebuttonClicked(void);
