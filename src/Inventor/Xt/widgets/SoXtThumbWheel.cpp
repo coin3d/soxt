@@ -374,8 +374,9 @@ abgr2pixel(
   // lookup pixel
   static XColor cdata, ign;
   cdata.red   = (unsigned short) ((abgr << 8) & 0xff00);
-  cdata.green = (unsigned short) ((abgr    ) & 0xff00);
+  cdata.green = (unsigned short) ((abgr     ) & 0xff00);
   cdata.blue  = (unsigned short) ((abgr >> 8) & 0xff00);
+  assert(rgb_colormap != 0); // initialized in init_pixmaps()
   if (XAllocColor(rgb_dpy, rgb_colormap, &cdata)) {
     fallback = cdata.pixel;
   } else {
@@ -408,16 +409,14 @@ abgr2pixel(
   \internal
 */
 
-static
-void
-init_pixmaps(
-  SoXtThumbWheelWidget widget)
+static void
+init_pixmaps(SoXtThumbWheelWidget widget)
 {
   assert(widget != NULL);
   if (widget->thumbwheel.pixmaps != NULL) {
 #if SOXT_DEBUG
     SoDebugError::postInfo("SoXtThumbWheel:init_pixmaps",
-      "pixmaps already initialized");
+                           "pixmaps already initialized");
 #endif // SOXT_DEBUG
     return;
   }
@@ -429,30 +428,14 @@ init_pixmaps(
   widget->thumbwheel.numpixmaps = wheel->getNumBitmaps();
   widget->thumbwheel.pixmaps = new Pixmap [ widget->thumbwheel.numpixmaps ];
 
-  const int width = widget->core.width;
-  const int height = widget->core.height;
-  const int pixels = width * height;
-  int diameter = 0, thickness = 0;
-  wheel->getSize(diameter, thickness);
+  Display * dpy = XtDisplay(widget);
+  Screen * screen = XtScreen(widget);
 
-  Widget shell = (Widget) widget;
-  while (! XtIsShell(shell) && shell != (Widget) NULL)
-    shell = XtParent(shell);
-  assert(shell != (Widget) NULL);
-
-  Display * dpy = XtDisplay(shell);
-  Screen * screen = XtScreen(shell);
-
-  Colormap colormap = 0;
-  Visual * visual = (Visual *) NULL;
-  int depth = 0;
-
-  XtVaGetValues(shell,
-                XmNvisual, &visual,
-                XmNcolormap, &colormap,
-                XmNdepth, &depth,
-                NULL);
-  assert(visual != (Visual *) NULL && colormap != 0);
+  Colormap colormap = XDefaultColormapOfScreen(screen);
+  assert(colormap != 0);
+  Visual * visual = XDefaultVisualOfScreen(screen);
+  assert(visual != (Visual *)NULL);
+  int depth = XDefaultDepthOfScreen(screen);
 
   rgb_dpy = dpy;
   rgb_colormap = colormap;
@@ -486,13 +469,19 @@ init_pixmaps(
   const int t = widget->primitive.shadow_thickness;
 
   Drawable drawable = XtWindow(widget);
-  if (! drawable)
+  if (!drawable)
     drawable = DefaultRootWindow(dpy);
   assert(drawable != 0);
+
+  int diameter = 0, thickness = 0;
+  wheel->getSize(diameter, thickness);
 
   unsigned long * const rgbdata = new unsigned long [ diameter * thickness ];
   assert(rgbdata != NULL);
   wheel->setGraphicsByteOrder(SoAnyThumbWheel::ABGR);
+
+  const int width = widget->core.width;
+  const int height = widget->core.height;
 
   int frame = 0;
   for (frame = widget->thumbwheel.numpixmaps - 1; frame > 0; frame--) {
@@ -501,7 +490,8 @@ init_pixmaps(
     assert(widget->thumbwheel.pixmaps[frame]);
 
     XImage * img = XGetImage(dpy, widget->thumbwheel.pixmaps[frame],
-      0, 0, width, height, 0xffffffff, ZPixmap);
+                             0, 0, width, height, 0xffffffff, ZPixmap);
+    assert(img != NULL);
 
     int rect_top = 0, rect_left = 0, rect_bottom = 0, rect_right = 0;
     switch (widget->thumbwheel.orientation) {
