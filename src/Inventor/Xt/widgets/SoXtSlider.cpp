@@ -38,7 +38,6 @@ static const char rcsid[] =
 
 #include <soxtdefs.h>
 #include <Inventor/Xt/SoXtBasic.h>
-#include <Inventor/Xt/sliders/SoXtSliderSetModule.h>
 
 #include <Inventor/Xt/widgets/SoXtSlider.h>
 
