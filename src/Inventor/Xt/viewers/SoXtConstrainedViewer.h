@@ -62,6 +62,8 @@ protected:
   virtual void computeSeekFinalOrientation(void);
 
 private:
+  SbVec3f prevUpDirection;
+
   SoAnyConstrainedViewer * const common;
 
 }; // class SoXtConstrainedViewer

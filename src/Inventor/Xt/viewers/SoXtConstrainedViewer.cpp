@@ -22,6 +22,7 @@ static const char rcsid[] =
 
 #include <Inventor/errors/SoDebugError.h>
 
+#include <Inventor/Xt/SoXtBasic.h>
 #include <Inventor/Xt/viewers/SoAnyConstrainedViewer.h>
 #include <Inventor/Xt/viewers/SoXtConstrainedViewer.h>
 
@@ -41,7 +42,12 @@ SoXtConstrainedViewer::SoXtConstrainedViewer( // protected
 : inherited( parent, name, inParent, flag, type, FALSE )
 , common( new SoAnyConstrainedViewer( this ) )
 {
-  this->upDirection.setValue( 0, 0, 1 );
+  this->upDirection.setValue( 0, 1, 0 );
+  this->prevUpDirection.setValue( 0, 1, 0 );
+//  this->sceneHeight = 1.0f;
+  this->setLeftWheelString( "Tilt" );
+  this->setBottomWheelString( "Rotate" );
+  this->setRightWheelString( "Dolly" );
 } // SoXtConstrainedViewer()
 
 /*!
@@ -51,6 +57,7 @@ SoXtConstrainedViewer::SoXtConstrainedViewer( // protected
 SoXtConstrainedViewer::~SoXtConstrainedViewer(
   void )
 {
+  delete this->common;
 } // ~SoXtConstrainedViewer()
 
 // *************************************************************************
@@ -86,6 +93,7 @@ void
 SoXtConstrainedViewer::setCamera( // virtual
   SoCamera * camera )
 {
+  // enforce camera up direction? or get camera up direction?
   inherited::setCamera( camera );
 } // setCamera()
 
@@ -96,7 +104,7 @@ void
 SoXtConstrainedViewer::saveHomePosition( // virtual
   void )
 {
-  // store upDirection
+  this->prevUpDirection = this->upDirection;
   inherited::saveHomePosition();
 } // saveHomePosition()
 
@@ -107,7 +115,8 @@ void
 SoXtConstrainedViewer::resetToHomePosition( // virtual
   void )
 {
-  // restore upDirection
+  // restore upDirection in camera
+  this->upDirection = this->prevUpDirection;
   inherited::resetToHomePosition();
 } // resetToHomePosition()
 
@@ -119,6 +128,7 @@ SoXtConstrainedViewer::recomputeSceneSize( // virtual
   void )
 {
   // do anything?
+  SOXT_STUB();
   inherited::recomputeSceneSize();
 } // recomputeSceneSize()
 
@@ -131,6 +141,7 @@ void
 SoXtConstrainedViewer::tiltCamera( // virtual, protected
   float delta )
 {
+  common->tiltCamera( delta );
 } // tiltCamera()
 
 /*!
@@ -140,6 +151,7 @@ void
 SoXtConstrainedViewer::bottomWheelMotion( // virtual, protected
   float value )
 {
+  common->rotateCamera( value - this->getBottomWheelValue() );
   inherited::bottomWheelMotion( value );
 } // bottomWheelMotion()
 
@@ -150,6 +162,7 @@ void
 SoXtConstrainedViewer::leftWheelMotion( // virtual, protected
   float value )
 {
+  this->tiltCamera( value - this->getLeftWheelValue() );
   inherited::leftWheelMotion( value );
 } // leftWheelMotion()
 
@@ -160,6 +173,7 @@ void
 SoXtConstrainedViewer::changeCameraValues( // virtual, protected
   SoCamera * camera )
 {
+  SOXT_STUB();
 } // changeCameraValues()
 
 /*!
@@ -169,6 +183,7 @@ void
 SoXtConstrainedViewer::findUpDirection( // protected
   SbVec2s mousepos )
 {
+  SOXT_STUB();
 } // findUpDirection()
 
 /*!
@@ -178,6 +193,7 @@ void
 SoXtConstrainedViewer::checkForCameraUpConstrain( // protected
   void )
 {
+  SOXT_STUB();
 } // checkForCamerUpConstrain()
 
 /*!
@@ -187,6 +203,7 @@ void
 SoXtConstrainedViewer::computeSeekFinalOrientation( // virtual, protected
   void )
 {
+  SOXT_STUB();
 } // computeSeekFinalOrientation()
 
 // *************************************************************************
