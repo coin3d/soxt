@@ -270,6 +270,7 @@ SoXtFullViewer::SoXtFullViewer(// protected
 
   this->prefshell = NULL;
   this->prefmenu = NULL;
+  this->prefstring = NULL;
 
   pixmaps.pick = 0;
   pixmaps.pick_ins = 0;
