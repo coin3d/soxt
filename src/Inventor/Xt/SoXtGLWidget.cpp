@@ -27,6 +27,13 @@
 
 // *************************************************************************
 
+// FIXME: as far as I can see, this implementation doesn't support
+// destructing and re-making the gl-widget if for instance the
+// doublebuffer flag is flipped. That's an ugly limitation, which is
+// not present in at least SoQtGLWidget. 20020612 mortene.
+
+// *************************************************************************
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -171,9 +178,11 @@ SoXtGLWidget::SoXtGLWidget(// protected
   The destructor.
 */
 
-SoXtGLWidget::~SoXtGLWidget(// virtual, protected
-  void)
+SoXtGLWidget::~SoXtGLWidget()
 {
+  this->unregisterWidget(PRIVATE(this)->glxmanager);
+  this->unregisterWidget(PRIVATE(this)->glxwidget);
+
   if (PRIVATE(this)->normalcontext) {
     SoAny::si()->unregisterGLContext((void *)this);
   }

@@ -86,8 +86,6 @@ SoXtComponentP::~SoXtComponentP()
 {
 }
 
-SbPList * SoXtComponentP::widgets = NULL;
-SbPList * SoXtComponentP::components = NULL;
 SbDict * SoXtComponentP::cursordict = NULL;
 
 // *************************************************************************
@@ -199,6 +197,10 @@ SoXtComponent::SoXtComponent(const Widget parent,
 // documented in common/SoGuiComponentCommon.cpp.in.
 SoXtComponent::~SoXtComponent()
 {
+  if (PRIVATE(this)->widget) {
+    this->unregisterWidget(PRIVATE(this)->widget);
+  }
+
   delete [] PRIVATE(this)->widgetname;
   delete [] PRIVATE(this)->widgetclass;
   delete [] PRIVATE(this)->title;
@@ -543,22 +545,6 @@ SoXtComponent::invokeWindowCloseCallbacks(// protected
 // *************************************************************************
 
 /*!
-  This method returns a pointer to the SoXtComponent object which the
-  \a widget argument is registered for.
-*/
-
-SoXtComponent *
-SoXtComponent::getComponent(// static
-  Widget const widget)
-{
-  assert(SoXtComponentP::widgets != NULL);
-  int pos = SoXtComponentP::widgets->find((void *) widget);
-  if (pos == -1)
-    return NULL;
-  return (SoXtComponent *) (*SoXtComponentP::components)[pos];
-}
-
-/*!
   This method returns the name of the component.
 */
 
@@ -593,10 +579,12 @@ SoXtComponent::setBaseWidget(Widget widget)
 //    EnterWindowMask | LeaveWindowMask |
 
   if (PRIVATE(this)->widget) {
-    // remove event handler
+    this->unregisterWidget(PRIVATE(this)->widget);
+    // FIXME: remove event handler
   }
 
   PRIVATE(this)->widget = widget;
+  this->registerWidget(PRIVATE(this)->widget);
 
   // really resize widget?  after all, size has been touched...
   if (PRIVATE(this)->size[0] != -1)
@@ -663,53 +651,6 @@ SoXtComponent::afterRealizeHook(void)
                     NULL);
     }
   }
-}
-
-// *************************************************************************
-
-/*!
-  This method registers the widget as part of the component.
-
-  All components should at least register it's base widget.  This database
-  is used by the SoXtResource class.
-
-  \sa SoXtComponent::unregisterWidget()
-*/
-
-// FIXME: Should base widgets get registered when setBaseWidget is called?
-
-void
-SoXtComponent::registerWidget(// protected
-  Widget widget)
-{
-  if (SoXtComponentP::widgets == NULL) {
-    SoXtComponentP::widgets = new SbPList;
-    SoXtComponentP::components = new SbPList;
-  }
-  SoXtComponentP::widgets->append((void *) widget);
-  SoXtComponentP::components->append((void *) this);
-}
-
-/*!
-  This method unregisters \a widget.
-
-  \sa SoXtComponent::registerWidget()
-*/
-
-void
-SoXtComponent::unregisterWidget(// protected
-  Widget widget)
-{
-  assert(SoXtComponentP::widgets != NULL);
-  assert(widget != NULL);
-  int pos = SoXtComponentP::widgets->find((void *) widget);
-  if (pos == -1) {
-    SoDebugError::post("SoXtComponent::unregisterWidget",
-      "widget (%s) not registered", XtName(widget));
-  }
-  assert(SoXtComponentP::components != NULL);
-  SoXtComponentP::widgets->remove(pos);
-  SoXtComponentP::components->remove(pos);
 }
 
 // *************************************************************************

@@ -51,9 +51,6 @@ public:
 
   SbVec2s size;
 
-  static SbPList * widgets;
-  static SbPList * components;
-
   SbPList * closecbs;
   SbPList * visibilitycbs;
   SbBool visibilitystate, fullscreen;
