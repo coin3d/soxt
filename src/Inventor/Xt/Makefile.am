@@ -13,11 +13,11 @@ BUILT_SOURCES = \
 
 CLEANFILES = \
 	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
-	
+
 DISTCLEANFILES = \
 	$(SoGui_src_Inventor_Gui_BuiltFiles) \
 	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
-	
+
 ############################################################################
 
 lib_LTLIBRARIES = libSoXt.la
@@ -86,7 +86,6 @@ nodist_SoXtinc_HEADERS = \
 	So@Gui@.h \
 	So@Gui@Basic.h \
 	So@Gui@Cursor.h \
-	So@Gui@Cursors.h \
 	So@Gui@Component.h \
 	So@Gui@Object.h \
 	So@Gui@GLWidget.h \
