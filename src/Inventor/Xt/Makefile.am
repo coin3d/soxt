@@ -40,7 +40,9 @@ libSoXt_la_SOURCES = \
 	SoXtGLWidget.cpp \
 	SoXtRenderAreaExtra.cpp \
 	SoXtResource.h \
-	SoXtResource.cpp
+	SoXtResource.cpp \
+	SoXtClipboard.h \
+	SoXtClipboard.cpp
 
 libSoXt_la_LIBADD = \
 	devices/libSoXtDevices.la \

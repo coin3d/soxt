@@ -129,7 +129,9 @@ libSoXt_la_SOURCES = \
 	SoXtGLWidget.cpp \
 	SoXtRenderAreaExtra.cpp \
 	SoXtResource.h \
-	SoXtResource.cpp
+	SoXtResource.cpp \
+	SoXtClipboard.h \
+	SoXtClipboard.cpp
 
 
 libSoXt_la_LIBADD = \
@@ -167,7 +169,7 @@ libSoXt_la_LDFLAGS =
 libSoXt_la_DEPENDENCIES =  devices/libSoXtDevices.la \
 viewers/libSoXtViewers.la widgets/libSoXtWidgets.la
 am_libSoXt_la_OBJECTS =  SoXtRenderArea.lo SoXt.lo SoXtComponent.lo \
-SoXtGLWidget.lo SoXtRenderAreaExtra.lo SoXtResource.lo
+SoXtGLWidget.lo SoXtRenderAreaExtra.lo SoXtResource.lo SoXtClipboard.lo
 libSoXt_la_OBJECTS =  $(am_libSoXt_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -189,9 +191,10 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
 GZIP_ENV = --best
 depcomp = $(SHELL) $(top_srcdir)/depcomp
-DEP_FILES =  @AMDEP@ $(DEPDIR)/SoXt.Plo $(DEPDIR)/SoXtComponent.Plo \
-$(DEPDIR)/SoXtGLWidget.Plo $(DEPDIR)/SoXtRenderArea.Plo \
-$(DEPDIR)/SoXtRenderAreaExtra.Plo $(DEPDIR)/SoXtResource.Plo
+DEP_FILES =  @AMDEP@ $(DEPDIR)/SoXt.Plo $(DEPDIR)/SoXtClipboard.Plo \
+$(DEPDIR)/SoXtComponent.Plo $(DEPDIR)/SoXtGLWidget.Plo \
+$(DEPDIR)/SoXtRenderArea.Plo $(DEPDIR)/SoXtRenderAreaExtra.Plo \
+$(DEPDIR)/SoXtResource.Plo
 SOURCES = $(libSoXt_la_SOURCES)
 OBJECTS = $(am_libSoXt_la_OBJECTS)
 
@@ -371,6 +374,7 @@ distdir: $(DISTFILES)
 	done
 
 @AMDEP@include $(DEPDIR)/SoXt.Plo
+@AMDEP@include $(DEPDIR)/SoXtClipboard.Plo
 @AMDEP@include $(DEPDIR)/SoXtComponent.Plo
 @AMDEP@include $(DEPDIR)/SoXtGLWidget.Plo
 @AMDEP@include $(DEPDIR)/SoXtRenderArea.Plo
