@@ -1456,41 +1456,38 @@ else
 fi
 ])
 
-dnl ************************************************************************
-dnl Usage:
-dnl   SIM_CHECK_COIN( ACTION-IF-FOUND, ACTION-IF-NOT-FOUND, ATTRIBUTE-LIST )
-dnl
-dnl Description:
-dnl   This macro locates the Coin development system.  If it is found, the
-dnl   set of variables listed below are set up as described and made available
-dnl   to the configure script.
-dnl
-dnl ATTRIBUTE-LIST Options:
-dnl   [no]default              whether --with-coin is default or not
-dnl                            (default on)
-dnl   [no]searchprefix         whether to look for Coin where --prefix is set
-dnl                            (default off)
-dnl
-dnl Autoconf Variables:
-dnl   $sim_ac_coin_avail       yes | no
-dnl   $sim_ac_coin_cppflags    (extra flags the compiler needs for Coin)
-dnl   $sim_ac_coin_ldflags     (extra flags the linker needs for Coin)
-dnl   $sim_ac_coin_libs        (link libraries the linker needs for Coin)
-dnl   $CPPFLAGS                $CPPFLAGS $sim_ac_coin_cppflags
-dnl   $LDFLAGS                 $LDFLAGS $sim_ac_coin_ldflags
-dnl   $LIBS                    $sim_ac_coin_libs $LIBS
-dnl
-dnl Authors:
-dnl   Morten Eriksen, <mortene@sim.no>
-dnl   Lars J. Aas, <larsa@sim.no>
-dnl
-dnl TODO:
-dnl * [mortene:20000123] make sure this work on MSWin (with Cygwin)
-dnl * [larsa:20000216] find a less strict AC_PREREQ (investigate used features)
-dnl
+# Usage:
+#   SIM_CHECK_COIN( ACTION-IF-FOUND, ACTION-IF-NOT-FOUND, ATTRIBUTE-LIST )
+#
+# Description:
+#   This macro locates the Coin development system.  If it is found, the
+#   set of variables listed below are set up as described and made available
+#   to the configure script.
+#
+# ATTRIBUTE-LIST Options:
+#   [no]default              whether --with-coin is default or not
+#                            (default on)
+#   [no]searchprefix         whether to look for Coin where --prefix is set
+#                            (default off)
+#
+# Autoconf Variables:
+#   $sim_ac_coin_avail       yes | no
+#   $sim_ac_coin_cppflags    (extra flags the compiler needs for Coin)
+#   $sim_ac_coin_ldflags     (extra flags the linker needs for Coin)
+#   $sim_ac_coin_libs        (link libraries the linker needs for Coin)
+#   $CPPFLAGS                $CPPFLAGS $sim_ac_coin_cppflags
+#   $LDFLAGS                 $LDFLAGS $sim_ac_coin_ldflags
+#   $LIBS                    $sim_ac_coin_libs $LIBS
+#
+# Authors:
+#   Morten Eriksen, <mortene@sim.no>
+#   Lars J. Aas, <larsa@sim.no>
+#
+# TODO:
+# * [mortene:20000123] make sure this work on MSWin (with Cygwin)
+# * [larsa:20000216] find a less strict AC_PREREQ (investigate used features)
 
-AC_DEFUN(SIM_CHECK_COIN,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_DEFUN([SIM_CHECK_COIN], [
 AC_PREREQ([2.14.1])
 
 SIM_PARSE_MODIFIER_LIST([$3],[
@@ -1548,12 +1545,12 @@ if test "x$with_coin" != "xno"; then
     CPPFLAGS="$CPPFLAGS $sim_ac_coin_cppflags"
     LDFLAGS="$LDFLAGS $sim_ac_coin_ldflags"
     LIBS="$sim_ac_coin_libs $LIBS"
-    ifelse($1, , :, $1)
+    $1
   else
-    ifelse($2, , :, $2)
+    ifelse([$2], , :, [$2])
   fi
 else
-  ifelse($2, , :, $2)
+  ifelse([$2], , :, [$2])
 fi
 ])
 
@@ -1911,4 +1908,18 @@ fi
 ])
 
 dnl ************************************************************************
+
+dnl  Expand these variables into their correct full directory paths:
+dnl   $prefix  $exec_prefix  $includedir  $libdir
+dnl
+dnl  Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+
+AC_DEFUN(SIM_EXPAND_DIR_VARS,
+[
+test "x$prefix" = xNONE && prefix=$ac_default_prefix
+test "x$exec_prefix" = xNONE && exec_prefix=${prefix}
+includedir=`eval echo $includedir`
+libdir=`eval echo $libdir`
+])
 
