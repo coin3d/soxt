@@ -591,6 +591,26 @@ SoXtExaminerViewer::setCamera( // virtual
 
 // *************************************************************************
 
+void
+SoXtExaminerViewer::setSeekMode(
+  SbBool enable )
+{
+#if SOXT_DEBUG
+  if ( enable == this->isSeekMode() ) {
+    SoDebugError::postWarning("SoWtExaminerViewer::setSeekMode",
+      "seek mode already %sset", enable ? "" : "un");
+    return;
+  }
+#endif // SOXT_DEBUG
+
+  if ( common->isAnimating() )
+    common->stopAnimating();
+  inherited::setSeekMode( enable );
+  this->setMode( enable ? WAITING_FOR_SEEK : EXAMINE );
+} // setSeekMode()
+
+// *************************************************************************
+
 void SoXtExaminerViewer::setAnimationEnabled( const SbBool enable ) {
   common->setAnimationEnabled( enable );
 }

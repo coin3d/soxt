@@ -60,6 +60,7 @@ protected:
 
 
   virtual void setCamera( SoCamera * camera );
+  virtual void setSeekMode( SbBool enable );
 
   virtual void processEvent( XAnyEvent * event );
 
