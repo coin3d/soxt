@@ -23,8 +23,8 @@
 #define SOXT_COLLISIONVIEWER_H
 
 #include <Inventor/SbBasic.h>
-
 #include <Inventor/Xt/SoXtBasic.h>
+#include <stddef.h>
 
 class SoXtViewer;
 class SoXtCollisionViewer;
