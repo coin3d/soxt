@@ -320,28 +320,31 @@ SoXtExaminerViewer::getDefaultIconTitle(
 */
 
 void
-SoXtExaminerViewer::openViewerHelpCard(
-  void)
+SoXtExaminerViewer::openViewerHelpCard(void)
 {
   this->openHelpCard("SoXtExaminerViewer.help");
 } // openViewerHelpCard()
 
 // *************************************************************************
 
-/*!
-  This method overloaded from parent class to make sure the mouse
-  pointer cursor is updated.
-*/
-
+// Documented in superclass.  This method overridden from parent class
+// to make sure the mouse pointer cursor is updated.
 void
-SoXtExaminerViewer::setViewing(// virtual
-  SbBool enable)
+SoXtExaminerViewer::setViewing(SbBool enable)
 {
+  if ((this->isViewing() && enable) || (!this->isViewing() && !enable)) {
+#if SOXT_DEBUG
+    SoDebugError::postWarning("SoXtFullViewer::setViewing",
+                              "current state already %s", enable ? "TRUE" : "FALSE");
+#endif // SOXT_DEBUG
+    return;
+  }
+
   this->common->setMode(enable ?
-                         SoAnyExaminerViewer::EXAMINE :
-                         SoAnyExaminerViewer::INTERACT);
+                        SoAnyExaminerViewer::EXAMINE :
+                        SoAnyExaminerViewer::INTERACT);
   inherited::setViewing(enable);
-} // setViewing()
+}
 
 // *************************************************************************
 
@@ -462,13 +465,9 @@ SoXtExaminerViewer::camerabuttonCB(// static
 
 // *************************************************************************
 
-/*!
-  FIXME: write doc
-*/
-
+// Documented in superclass.
 void
-SoXtExaminerViewer::setCamera(// virtual
-  SoCamera * camera)
+SoXtExaminerViewer::setCamera(SoCamera * camera)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtExaminerViewer::setCamera", "[enter]");
@@ -503,11 +502,7 @@ SoXtExaminerViewer::setCamera(// virtual
   }
 
 #if HAVE_LIBXPM
-  SbBool extra = FALSE;
-  if (XtIsRealized(this->camerabutton)) {
-    extra = TRUE;
-  }
-  extra = FALSE;
+  SbBool extra = XtIsRealized(this->camerabutton) ? TRUE : FALSE;
 
   if (extra) {
     XtUnmapWidget(this->camerabutton);
@@ -515,16 +510,16 @@ SoXtExaminerViewer::setCamera(// virtual
   }
   if (pixmap) {
     XtVaSetValues(this->camerabutton,
-      XmNlabelType, XmPIXMAP,
-      XmNlabelPixmap, pixmap,
-      XmNselectPixmap, pixmap,
-      XmNlabelInsensitivePixmap, pixmap_ins,
-      XmNselectInsensitivePixmap, pixmap_ins,
-      NULL);
+                  XmNlabelType, XmPIXMAP,
+                  XmNlabelPixmap, pixmap,
+                  XmNselectPixmap, pixmap,
+                  XmNlabelInsensitivePixmap, pixmap_ins,
+                  XmNselectInsensitivePixmap, pixmap_ins,
+                  NULL);
     XtVaSetValues(this->camerabutton,
-      XmNwidth, 30,
-      XmNheight, 30,
-      NULL);
+                  XmNwidth, 30,
+                  XmNheight, 30,
+                  NULL);
   }
   if (extra) {
     XtRealizeWidget(this->camerabutton);
