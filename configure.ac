@@ -1,16 +1,38 @@
 # **************************************************************************
 # SoXt/configure.in
 
-AC_INIT(src/Inventor/Xt/SoXt.cpp)
-AC_CONFIG_AUX_DIR(cfg)
+m4_define([SOXT_MAJOR], [1])
+m4_define([SOXT_MINOR], [1])
+m4_define([SOXT_MICRO], [1])
+m4_define([SOXT_BETA], [a])
+
+m4_define([VERSION_STRING], [SOXT_MAJOR.SOXT_MINOR.SOXT_MICRO[]SOXT_BETA])
+
+m4_define([SOXT_ABI_CURRENT], [m4_eval((SOXT_MAJOR*20)+SOXT_MINOR)])
+m4_define([SOXT_ABI_REVISION], [SOXT_MICRO])
+m4_define([SOXT_ABI_AGE], [SOXT_MINOR])
+
+# only used for Debian Linux (and not even there yet)
+m4_define([SO_NUMBER], [m4_eval(SOXT_MAJOR*20)])
+
+m4_define([MAC_FRAMEWORK_NAME_DEFAULT], [SoXt])
+m4_define([MAC_FRAMEWORK_PREFIX_DEFAULT], [/Library/Frameworks])
+m4_define([MAC_FRAMEWORK_VERSION_DEFAULT], [A])
+
+# **************************************************************************
+
+AC_INIT([SoXt], [VERSION_STRING], [coin-support@coin3d.org])
+
+AC_CONFIG_AUX_DIR([cfg])
+AC_CONFIG_SRCDIR([src/Inventor/Xt/SoXt.cpp])
 
 # **************************************************************************
 # Library versioning. For information about our versioning strategy, see the
 # document ``HACKING'' in the Coin CVS module.
 
-SOXT_MAJOR_VERSION=1
-SOXT_MINOR_VERSION=1
-SOXT_MICRO_VERSION=1
+SOXT_MAJOR_VERSION=SOXT_MAJOR
+SOXT_MINOR_VERSION=SOXT_MINOR
+SOXT_MICRO_VERSION=SOXT_MICRO
 SOXT_INTERFACE_AGE=0
 SOXT_BINARY_AGE=0
 SOXT_VERSION=$SOXT_MAJOR_VERSION.$SOXT_MINOR_VERSION.$SOXT_MICRO_VERSION

@@ -1,0 +1,1875 @@
+2003-04-23 16:37  larsa
+
+	* configure.ac:
+	
+	set version 1.1.0
+
+2003-04-23 16:03  larsa
+
+	* bootstrap:
+	
+	data isn't needed
+
+2003-04-23 16:03  larsa
+
+	* NEWS:
+	
+	start from scratch
+
+2003-04-23 16:02  larsa
+
+	* LICENSE.GPL, LICENSE.LGPL, Makefile.am, src/Inventor/Xt/SoXt.cpp,
+	src/Inventor/Xt/SoXtComponent.cpp,
+	src/Inventor/Xt/SoXtComponentP.h,
+	src/Inventor/Xt/SoXtDirectionalLightEditor.cpp,
+	src/Inventor/Xt/SoXtDirectionalLightEditor.h,
+	src/Inventor/Xt/SoXtGLWidget.cpp, src/Inventor/Xt/SoXtGLWidgetP.h,
+	src/Inventor/Xt/SoXtIcons.cpp, src/Inventor/Xt/SoXtIcons.h,
+	src/Inventor/Xt/SoXtInternal.cpp, src/Inventor/Xt/SoXtInternal.h,
+	src/Inventor/Xt/SoXtLightSliderSet.cpp,
+	src/Inventor/Xt/SoXtLightSliderSet.h,
+	src/Inventor/Xt/SoXtMaterialList.cpp,
+	src/Inventor/Xt/SoXtMaterialSliderSet.cpp,
+	src/Inventor/Xt/SoXtMaterialSliderSet.h,
+	src/Inventor/Xt/SoXtPrintDialog.cpp,
+	src/Inventor/Xt/SoXtPrintDialog.h,
+	src/Inventor/Xt/SoXtResource.cpp, src/Inventor/Xt/SoXtResource.h,
+	src/Inventor/Xt/SoXtSliderSet.cpp, src/Inventor/Xt/SoXtSliderSet.h,
+	src/Inventor/Xt/SoXtSliderSetBase.cpp,
+	src/Inventor/Xt/SoXtSliderSetBase.h,
+	src/Inventor/Xt/SoXtTransformSliderSet.cpp,
+	src/Inventor/Xt/SoXtTransformSliderSet.h,
+	src/Inventor/Xt/devices/6DOFEvents.h,
+	src/Inventor/Xt/devices/SoXtDevice.cpp,
+	src/Inventor/Xt/devices/SoXtDeviceP.h,
+	src/Inventor/Xt/devices/SoXtInputFocus.cpp,
+	src/Inventor/Xt/devices/SoXtKeyboard.cpp,
+	src/Inventor/Xt/devices/SoXtLinuxJoystick.cpp,
+	src/Inventor/Xt/devices/SoXtLinuxJoystick.h,
+	src/Inventor/Xt/devices/SoXtMouse.cpp,
+	src/Inventor/Xt/devices/SoXtSpaceball.cpp,
+	src/Inventor/Xt/devices/SoXtSpaceballP.h,
+	src/Inventor/Xt/viewers/ExaminerViewer.cpp,
+	src/Inventor/Xt/viewers/FullViewer.cpp,
+	src/Inventor/Xt/viewers/PlaneViewer.cpp,
+	src/Inventor/Xt/viewers/SoXtExaminerViewerP.h,
+	src/Inventor/Xt/viewers/SoXtFullViewerP.h,
+	src/Inventor/Xt/viewers/SoXtPlaneViewerP.h,
+	src/Inventor/Xt/viewers/WalkViewer.cpp,
+	src/Inventor/Xt/widgets/SoXtSlider.cpp,
+	src/Inventor/Xt/widgets/SoXtSlider.h,
+	src/Inventor/Xt/widgets/SoXtThumbWheel.cpp,
+	src/Inventor/Xt/widgets/SoXtThumbWheel.h,
+	src/Inventor/Xt/widgets/SoXtThumbWheelP.h,
+	src/Inventor/Xt/widgets/XtNativePopupMenu.cpp,
+	src/Inventor/Xt/widgets/XtNativePopupMenu.h:
+	
+	license change
+
+2003-04-23 15:32  larsa
+
+	* AUTHORS:
+	
+	compact file
+
+2003-04-23 15:32  larsa
+
+	* BUGS.txt, README:
+	
+	doc updates
+
+2003-04-23 15:29  larsa
+
+	* Makefile.am:
+	
+	make archive bootstrappable
+
+2003-04-23 14:20  larsa
+
+	* docs/announcement-1_1_0.txt:
+	
+	the release announcement
+
+2003-04-23 14:16  larsa
+
+	* src/Inventor/Xt/: SoXt.cpp, SoXtComponent.cpp, SoXtInternal.cpp,
+	SoXtInternal.h:
+	
+	move selectBestVisual() out of the public API
+
+2003-04-22 17:51  larsa
+
+	* BUGS.txt:
+	
+	update
+
+2003-04-22 17:39  larsa
+
+	* BUGS.txt:
+	
+	update
+
+2003-04-22 17:33  larsa
+
+	* src/Inventor/Xt/: SoXt.cpp, SoXtComponent.cpp, SoXtInternal.cpp,
+	SoXtInternal.h:
+	
+	remove getAppName/getAppClass method pair from the public API
+
+2003-04-22 11:11  larsa
+
+	* Makefile.am:
+	
+	forgotten file
+
+2003-04-22 10:22  larsa
+
+	* src/Inventor/Xt/viewers/PlaneViewer.cpp:
+	
+	make fallbacks match struct-declaration on constness
+
+2003-04-11 14:37  larsa
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	remove SoXt's getlabel(), move firstRealize variable beneath the
+	afterRealizeHook() function
+
+2003-04-11 14:09  larsa
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	comment fix
+
+2003-04-11 13:58  larsa
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	setFullScreen() update
+
+2003-04-11 11:49  larsa
+
+	* src/.cvsignore:
+	
+	make dist fixes
+
+2003-04-11 11:42  larsa
+
+	* src/Inventor/Xt/: Makefile.am, devices/Makefile.am,
+	nodes/Makefile.am, viewers/Makefile.am:
+	
+	make dist fixes
+
+2003-04-10 16:56  larsa
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	fix for viewer embedding
+
+2003-04-10 16:46  larsa
+
+	* configure.ac:
+	
+	bugfixes
+
+2003-04-09 18:35  larsa
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	make visual-selection debugging a run-time option through the
+	SOXT_DEBUG_VISUAL environment variable
+
+2003-04-09 18:01  larsa
+
+	* src/Inventor/Xt/viewers/FullViewer.cpp:
+	
+	no longer needed test code
+
+2003-04-09 17:51  larsa
+
+	* src/Inventor/Xt/viewers/FullViewer.cpp:
+	
+	remove highlight border on AppPushButtons so they look like the
+	ViewerPushButtons
+
+2003-04-09 17:46  larsa
+
+	* src/Inventor/Xt/viewers/: FullViewer.cpp, SoXtFullViewerP.h:
+	
+	addAppPushButton() implementation
+
+2003-04-09 16:46  larsa
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	create application shell in init(), use portable getenv
+	implementation
+
+2003-04-09 10:01  mortene
+
+	* BUGS.txt:
+	
+	Cursor bug.
+
+2003-04-08 16:43  larsa
+
+	* BUGS.txt:
+	
+	update
+
+2003-04-08 16:18  larsa
+
+	* configure.ac:
+	
+	test for SoVRMLMaterial node existence
+
+2003-04-08 16:11  larsa
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	new Visual selection strategy
+
+2003-04-02 14:37  larsa
+
+	* configure.ac:
+	
+	generate Makefile in new engines subdir
+
+2003-04-02 14:36  larsa
+
+	* src/Inventor/Xt/: editors/Makefile.am, nodes/Makefile.am:
+	
+	install MaterialEditor headers
+
+2003-04-02 14:35  larsa
+
+	* src/Inventor/Xt/: Makefile.am, engines/Makefile.am:
+	
+	include engines
+
+2003-04-02 14:35  larsa
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	initialize engines
+
+2003-03-28 16:42  larsa
+
+	* src/Inventor/Xt/editors/: oldSoXtMaterialEditor.cpp,
+	oldSoXtMaterialEditor.h:
+	
+	just stubs anyway
+
+2003-03-28 14:38  larsa
+
+	* BUGS.txt:
+	
+	these bugs have apparently disappeared
+
+2003-03-28 14:35  larsa
+
+	* src/Inventor/Xt/nodes/Makefile.am:
+	
+	SoGuiColorEditor.h needs to be public
+
+2003-03-21 15:22  larsa
+
+	* src/Inventor/Xt/widgets/SoXtThumbWheel.cpp:
+	
+	try using default colormap if none is returned
+
+2003-03-17 18:49  larsa
+
+	* src/Inventor/Xt/: SoXtMaterialEditor.cpp, SoXtMaterialEditor.h,
+	editors/oldSoXtMaterialEditor.cpp, editors/oldSoXtMaterialEditor.h:
+	
+	move old file sout of the way
+
+2003-03-17 18:19  larsa
+
+	* BUGS.txt:
+	
+	update
+
+2003-03-12 13:55  larsa
+
+	* src/Inventor/Xt/: Makefile.am, SoXtColorEditor.h:
+	
+	install forwarding header
+
+2003-03-11 16:37  larsa
+
+	* Makefile.am, bootstrap:
+	
+	enter test-code subdir
+
+2003-03-11 16:37  larsa
+
+	* configure.ac, configure.in:
+	
+	rename
+
+2003-03-11 16:36  larsa
+
+	* src/Inventor/Xt/: Makefile.am, devices/Makefile.am,
+	editors/Makefile.am, nodes/Makefile.am, viewers/Makefile.am,
+	widgets/Makefile.am:
+	
+	be stricter on include paths
+
+2003-03-11 16:34  larsa
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	init SoGui nodes
+
+2003-03-11 16:33  larsa
+
+	* src/Inventor/Xt/viewers/: ExaminerViewer.cpp, FullViewer.cpp,
+	PlaneViewer.cpp, SoXtExaminerViewerP.h, SoXtFullViewerP.h,
+	SoXtPlaneViewerP.h:
+	
+	include paths
+
+2003-03-11 16:33  larsa
+
+	* src/Inventor/Xt/SoXtInternal.cpp:
+	
+	header ordering
+
+2003-03-11 16:32  larsa
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	some setFullScreen code that doesn't really work yet
+
+2003-03-11 16:31  larsa
+
+	* src/Inventor/Xt/SoXtColorEditor.h:
+	
+	forward header file
+
+2003-03-10 16:44  larsa
+
+	* BUGS.txt:
+	
+	update
+
+2003-03-03 14:31  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Make sure Coin is initialized before SoDebugError is attempted
+	used.
+
+2003-02-17 09:00  mortene
+
+	* BUGS.txt:
+	
+	Bug reported by Kai Benndorf.
+
+2003-02-05 10:08  larsa
+
+	* BUGS.txt:
+	
+	correct attribution
+
+2003-02-05 10:06  larsa
+
+	* BUGS.txt:
+	
+	start running the list
+
+2002-11-08 09:31  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	FIXME notice.
+
+2002-10-25 12:56  kyrah
+
+	* src/Inventor/Xt/widgets/: SoXtGLArea.cpp, SoXtThumbWheel.cpp:
+	
+	Redhat 7.3 compile fixes
+
+2002-10-23 09:57  mortene
+
+	* BUGS.txt:
+	
+	Add (so far) empty file, as I'm making it part of the common dist.
+
+2002-09-18 14:59  mortene
+
+	* src/Inventor/Xt/: SoXtGLWidget.cpp, SoXtGLWidgetP.h:
+	
+	Implements isDirectRendering().
+
+2002-07-12 13:01  pederb
+
+	* src/Inventor/Xt/SoXtInternal.h:
+	
+	Compile fix.
+
+2002-06-30 20:56  mortene
+
+	* src/Inventor/Xt/widgets/SoXtThumbWheel.cpp:
+	
+	Additional debug code. Kill unnecessary robustness (assert upon
+	internal errors instead of handling with SoDebugError + fix-up).
+
+2002-06-30 20:46  mortene
+
+	* src/Inventor/Xt/devices/Makefile.am:
+	
+	Build fixes: include built sources when making sub-lib, don't
+	install SoXtInputFocus.h (not part of public API yet).
+
+2002-06-26 11:58  mortene
+
+	* src/Inventor/Xt/devices/: SoXtSpaceball.cpp, SoXtSpaceballP.h:
+	
+	Extract common code and doc for the spaceball device
+	implementation.
+
+2002-06-26 11:18  mortene
+
+	* src/Inventor/Xt/devices/SoXtSpaceball.cpp:
+	
+	Clean up class declaration for So@Gui@Spaceball, move private data
+	into hidden implementation class.
+
+2002-06-25 21:40  mortene
+
+	* src/Inventor/Xt/devices/SoXtInputFocus.cpp:
+	
+	Updated to compile with Cheshire Cat pattern.
+
+2002-06-25 17:15  mortene
+
+	* src/Inventor/Xt/devices/: SoXtKeyboard.cpp, SoXtMouse.cpp:
+	
+	Sets up hidden implementation classes for mouse and keyboard
+	devices, and collects common code and documentation.
+
+2002-06-25 14:25  mortene
+
+	* src/Inventor/Xt/devices/: SoXtDevice.cpp, SoXtDeviceP.h:
+	
+	Reorganize to share lots of implementation code for the
+	So@Gui@Device class.
+
+2002-06-24 17:58  mortene
+
+	* src/Inventor/Xt/devices/: SoXtDevice.cpp, SoXtDevice.h,
+	SoXtLinuxJoystick.cpp:
+	
+	Use templatized SoXtDevice.h file.
+
+2002-06-24 16:48  mortene
+
+	* src/Inventor/Xt/devices/: SoXtDevice.cpp, SoXtDevice.h,
+	SoXtInputFocus.cpp, SoXtKeyboard.cpp, SoXtLinuxJoystick.cpp,
+	SoXtLinuxJoystick.h, SoXtMouse.cpp, SoXtSpaceball.cpp:
+	
+	Removes SoXt-specific additional argument to
+	So@Gui@Device::enable(). Codestyle fixes.
+
+2002-06-24 15:07  mortene
+
+	* src/Inventor/Xt/devices/: SoXtDevice.cpp, SoXtDevice.h:
+	
+	Cheshire Cat.
+
+2002-06-24 15:02  mortene
+
+	* src/Inventor/Xt/devices/SoXtDevice.cpp:
+	
+	Codestyle fixes.
+
+2002-06-24 14:54  mortene
+
+	* src/Inventor/Xt/devices/: SoXtDevice.cpp, SoXtInputFocus.cpp,
+	SoXtKeyboard.cpp, SoXtMouse.cpp, SoXtSpaceball.cpp:
+	
+	Codestyle fixes.
+
+2002-06-24 14:50  mortene
+
+	* src/Inventor/Xt/devices/: SoXtLinuxJoystick.cpp,
+	SoXtLinuxJoystick.h:
+	
+	Cheshire Cat.
+
+2002-06-24 14:49  mortene
+
+	* src/Inventor/Xt/devices/: 6DOFEvents.h, SoXtDevice.h:
+	
+	Split out 6-DOF specific stuff in an internal header file.
+
+2002-06-24 12:21  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Makes the static clean-up method public.
+
+2002-06-24 11:15  mortene
+
+	* build/soxt.spec.in, src/Inventor/Xt/SoXt.cpp,
+	src/Inventor/Xt/SoXtComponent.cpp,
+	src/Inventor/Xt/viewers/Makefile.am:
+	
+	Tmp disable WalkViewer, as it is not yet properly implemented.
+
+2002-06-18 17:29  mortene
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	Doc fixes.
+
+2002-06-17 18:56  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Reorganization of init methods. Hide private method
+	sensorQueueChanged().
+
+2002-06-13 16:36  mortene
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	Make the methods for getting widget context private.
+
+2002-06-13 15:09  mortene
+
+	* src/Inventor/Xt/viewers/FullViewer.cpp:
+	
+	Doc fix.
+
+2002-06-13 15:09  mortene
+
+	* src/Inventor/Xt/: SoXtGLWidget.cpp, SoXtGLWidgetP.h:
+	
+	Moves SoXt-specific method to hidden implementation class.
+
+2002-06-12 11:25  mortene
+
+	* src/Inventor/Xt/: SoXtComponent.cpp, SoXtComponentP.h,
+	SoXtGLWidget.cpp:
+	
+	registerWidget() etc moved to common template code.
+
+2002-06-11 15:20  mortene
+
+	* src/Inventor/Xt/: Makefile.am, SoXtComponent.cpp,
+	SoXtComponentP.h, SoXtGLWidget.cpp, SoXtGLWidgetP.h:
+	
+	Some refactoring; private implementation classes moved to separate
+	files.
+
+2002-06-07 10:36  mortene
+
+	* src/Inventor/Xt/viewers/: FullViewer.cpp, SoXtFullViewerP.h:
+	
+	Removes unused private methods setCameraZoom() and getCameraZoom().
+
+2002-06-07 10:32  mortene
+
+	* src/Inventor/Xt/viewers/ExaminerViewer.cpp:
+	
+	setAnimationEnabled() and setFeedbackSize() now made completely
+	generic.
+
+2002-06-07 10:19  mortene
+
+	* src/Inventor/Xt/viewers/FullViewer.cpp:
+	
+	Removes unnecessary overriding of setCamera().
+
+2002-06-07 10:04  mortene
+
+	* src/Inventor/Xt/: SoXtComponent.cpp, SoXtIcons.h,
+	viewers/FullViewer.cpp, viewers/SoXtFullViewerP.h,
+	viewers/WalkViewer.cpp:
+	
+	Removes unimplemented help-card system.
+
+2002-06-07 09:46  mortene
+
+	* src/Inventor/Xt/: SoXtClipboard.cpp, SoXtClipboard.h,
+	viewers/FullViewer.cpp, viewers/SoXtFullViewerP.h:
+	
+	Removed unimplemented methods copyView() and pasteView() and the
+	stubbed clipboard class.
+
+2002-06-06 20:30  mortene
+
+	* src/Inventor/Xt/viewers/: ExaminerViewer.cpp, FullViewer.cpp,
+	PlaneViewer.cpp, SoXtExaminerViewerP.h, SoXtFullViewerP.h,
+	SoXtPlaneViewerP.h, WalkViewer.cpp, killed-prefs.diff:
+	
+	Remove all code related to handling preference sheets, as we've
+	decided to not support them.
+
+2002-06-06 14:41  mortene
+
+	* src/Inventor/Xt/viewers/PlaneViewer.cpp:
+	
+	Moves constructor and destructor functions to common template code.
+
+2002-06-06 11:07  mortene
+
+	* src/Inventor/Xt/viewers/WalkViewer.cpp:
+	
+	Class doc is in common template.
+
+2002-06-04 17:35  mortene
+
+	* src/Inventor/Xt/viewers/: FullViewer.cpp, SoXtFullViewerP.h:
+	
+	Do thumbwheel handling through a proxy method on the internal
+	class.
+
+2002-06-04 16:54  mortene
+
+	* src/Inventor/Xt/widgets/SoXtThumbWheel.cpp:
+	
+	Don't override default thumbwheel boundary handling. Codestyle
+	fixes.
+
+2002-06-03 21:19  mortene
+
+	* src/Inventor/Xt/viewers/: ExaminerViewer.cpp,
+	SoXtExaminerViewerP.h:
+	
+	Moves private data for SoXtExaminerViewer to hidden implementation
+	class.
+
+2002-06-03 20:56  mortene
+
+	* src/Inventor/Xt/viewers/: ExaminerViewer.cpp,
+	SoXtExaminerViewerP.h:
+	
+	Compile fixes after private data was moved to hidden implementation
+	class.
+
+2002-06-03 18:32  mortene
+
+	* src/Inventor/Xt/viewers/ExaminerViewer.cpp:
+	
+	Moves common code and doc for setViewing(), leftWheelMotion(),
+	bottomWheelMotion(), rightWheelMotion(), setCursorRepresentation()
+	and afterRealizeHook() to template file.
+
+2002-06-03 18:31  mortene
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	Codestyle fixes.
+
+2002-06-03 18:31  mortene
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	afterRealizeHook() now documented in common template.
+
+2002-06-03 14:17  mortene
+
+	* configure.in:
+	
+	Update to match semantic changes in SIM_AC_CHECK_OPENGL().
+
+2002-05-31 15:36  mortene
+
+	* src/Inventor/Xt/viewers/WalkViewer.cpp:
+	
+	Set up internal hidden implementation class.
+
+2002-05-30 11:25  mortene
+
+	* src/Inventor/Xt/viewers/: FullViewer.cpp, SoXtFullViewerP.h:
+	
+	Moves private methods and data from SoXtFullViewer to
+	SoXtFullViewerP implementation class.
+
+2002-05-30 09:41  mortene
+
+	* configure.in:
+	
+	Change macro names.
+
+2002-05-29 19:52  mortene
+
+	* src/Inventor/Xt/viewers/: FullViewer.cpp, SoXtFullViewerP.h:
+	
+	Set up internal, hidden implementation class. Compile fixes.
+
+2002-05-29 14:53  mortene
+
+	* src/Inventor/Xt/viewers/: FullViewer.cpp, PlaneViewer.cpp:
+	
+	createPrefSheet() doc moved to SoGuiFullViewer.cpp.in.
+
+2002-05-29 14:52  mortene
+
+	* html/Makefile.am:
+	
+	Install PNGs.
+
+2002-05-29 13:48  mortene
+
+	* src/Inventor/Xt/viewers/FullViewer.cpp:
+	
+	More common code and doc moved to SoGuiFullViewer.cpp.in template.
+
+2002-05-24 15:51  mortene
+
+	* src/Inventor/Xt/viewers/: ExaminerViewer.cpp, FullViewer.cpp,
+	PlaneViewer.cpp:
+	
+	Moves over methods with only common/templatized code. Minor doc
+	fixes.
+
+2002-05-24 12:38  mortene
+
+	* src/Inventor/Xt/viewers/: ExaminerViewer.cpp, FullViewer.cpp,
+	PlaneViewer.cpp:
+	
+	Doc and codestyle fixes.
+
+2002-05-16 11:10  mortene
+
+	* src/Inventor/Xt/: Makefile.am, SoXtComponent.cpp:
+	
+	Remove classes not ready for the public API.
+
+2002-05-16 10:28  mortene
+
+	* Makefile.am, configure.in:
+	
+	Tmp disable configure, build and installation of material data.
+
+2002-05-16 10:25  mortene
+
+	* src/Inventor/Xt/Makefile.am:
+	
+	Typo fix.
+
+2002-05-15 23:04  mortene
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	Minor doc fix.
+
+2002-05-15 23:00  mortene
+
+	* src/Inventor/Xt/viewers/: FullViewer.cpp, PlaneViewer.cpp:
+	
+	Doc fixes.
+
+2002-05-15 22:30  mortene
+
+	* src/Inventor/Xt/viewers/: PlaneViewer.cpp, WalkViewer.cpp:
+	
+	Removes unneeded processEvent(.
+
+2002-05-15 17:33  mortene
+
+	* src/Inventor/Xt/viewers/PlaneViewer.cpp:
+	
+	Moves actualRedraw() to comon code.
+
+2002-05-15 09:13  mortene
+
+	* src/Inventor/Xt/viewers/PlaneViewer.cpp:
+	
+	Moves setViewing() to common code.
+
+2002-05-08 10:49  mortene
+
+	* src/Inventor/Xt/viewers/: PlaneViewer.cpp, SoXtPlaneViewerP.h:
+	
+	Moved private data to hidden class.
+
+2002-05-08 10:17  mortene
+
+	* src/Inventor/Xt/viewers/: PlaneViewer.cpp, SoXtPlaneViewerP.h:
+	
+	Compile fixes.
+	
+	Set up a hidden private class.
+
+2002-05-08 10:17  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Allow attempts to call SoXt::getShellWidget() with a NULL argument
+	without spitting out a warning message.
+
+2002-05-08 10:16  mortene
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	Some fixes after the change of semantics on
+	SoXtComponent::getShellWidget().
+
+2002-05-07 15:20  mortene
+
+	* src/Inventor/Xt/viewers/PlaneViewer.cpp:
+	
+	Collects more common code.
+
+2002-05-07 15:10  mortene
+
+	* src/Inventor/Xt/viewers/PlaneViewer.cpp:
+	
+	Moves getDefault*Title() methods to common template.
+
+2002-05-07 12:14  mortene
+
+	* src/Inventor/Xt/viewers/PlaneViewer.cpp:
+	
+	setCursorEnabled() moved to common code.
+
+2002-05-06 12:21  mortene
+
+	* src/Inventor/Xt/viewers/PlaneViewer.cpp:
+	
+	setSeekMode() implemented in
+	common/viewers/SoGuiPlaneViewer.cpp.in.
+
+2002-05-06 11:34  mortene
+
+	* src/Inventor/Xt/viewers/ExaminerViewer.cpp:
+	
+	setSeekMode() moved to template
+	common/viewers/SoGuiExaminerViewer.cpp.in
+
+2002-05-03 13:44  mortene
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	Proper stubbing of unimplemented methods setAccumulationBuffer()
+	and setStencilBuffer().
+
+2002-05-03 13:04  mortene
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	Share code and documentation with other toolkits.
+
+2002-05-02 14:20  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Some doc moved to common/SoGuiCommon.cpp.in
+
+2002-05-02 10:40  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Moved SoXtObject::init() to common code.
+
+2002-04-16 13:13  pederb
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	Add methods to enable/disable OpenGL accumulation and stencil
+	buffer.
+
+2002-03-25 16:27  mortene
+
+	* src/Inventor/Xt/: SoXtInternal.cpp, widgets/SoXtThumbWheel.cpp:
+	
+	Reverse changes as to how the default visual, colormap and depth
+	are picked out, as they caused X errors on SGI IRIX X11.
+
+2002-03-25 15:23  mortene
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	Adds a note about how the code for OpenGL visual allocation
+	strategy has been duplicated in
+	Coin/src/misc/SoOffscreenRenderer.cpp.
+	
+	Assert on array-out-of-bounds.
+
+2002-03-25 08:29  mortene
+
+	* src/Inventor/Xt/widgets/SoXtThumbWheel.cpp:
+	
+	Use uint32_t type where we want a 32-bit datatype, instead of
+	"unsigned long". This fixes the buggy visual appearance of the
+	thumbwheels on 64-bit OSF1 Alpha (and probably other 64-bit
+	system).  Problem reported by Guy Barrand.
+	
+	Use "static" on functions defined within the file scope, to avoid
+	pollution of the global namespace.
+	
+	Make codestyle for function signatures match the Coin sourcecode.
+
+2002-03-22 17:45  mortene
+
+	* src/Inventor/Xt/viewers/FullViewer.cpp:
+	
+	Initialize prefstring variable before use. Bug found and fixed by
+	Guy Barrand.
+
+2002-03-22 17:42  mortene
+
+	* src/Inventor/Xt/widgets/SoXtThumbWheel.cpp:
+	
+	Fix missing initialization of 0-index thumbwheel gfx frame.  Bug
+	found and fixed by Guy Barrand.
+
+2002-03-22 17:24  mortene
+
+	* src/Inventor/Xt/: SoXtInternal.cpp, widgets/SoXtThumbWheel.cpp:
+	
+	Cleans up coed which fetches default root visual, colormap and
+	depth.	Fix suggested by Guy Barrand.
+
+2002-03-22 12:35  mortene
+
+	* src/Inventor/Xt/: SoXtInternal.cpp, SoXtInternal.h,
+	viewers/ExaminerViewer.cpp, viewers/FullViewer.cpp,
+	viewers/PlaneViewer.cpp:
+	
+	Merge the SoXtInternal methods for generating pixmaps (normal and
+	ghosted).
+
+2002-03-22 12:15  mortene
+
+	* src/Inventor/Xt/widgets/XtNativePopupMenu.cpp:
+	
+	Do proper translation from window mouse pointer coordinates to
+	global coordinates for the popup menu. Fix by Guy Barrand.
+
+2002-03-19 16:05  mortene
+
+	* src/Inventor/Xt/viewers/: ExaminerViewer.cpp, FullViewer.cpp,
+	PlaneViewer.cpp:
+	
+	SoXtFullViewer::create*PixmapFromXpmData() methods moved to
+	"hidden" SoXtInternal class.
+
+2002-03-19 16:04  mortene
+
+	* src/Inventor/Xt/: Makefile.am, SoXtInternal.cpp, SoXtInternal.h:
+	
+	Adds new files with common, non-API-public data and methods for the
+	SoXt classes.
+
+2002-03-12 14:23  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Doc for createSimpleErrorDialog() moved to
+	common/SoGuiCommon.cpp.in.
+
+2002-02-26 13:40  mortene
+
+	* src/Inventor/Xt/: SoXt.cpp, SoXtComponent.cpp, SoXtGLWidget.cpp:
+	
+	Compile fixes for OSF1/cxx by Guy Barrand: corrects method
+	signatures, better casting.
+
+2002-01-28 23:21  mortene
+
+	* Makefile.am, configure.in, build/soxt.doxygen.in,
+	html/Makefile.am, man/man3/Makefile.am:
+	
+	Use Doxygen config file from generic template.
+
+2002-01-18 12:01  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Provide much debug information on the select-best-visual process. 
+	Move the initial XOpenDisplay() call from selectBestVisual() to the
+	init() method.
+
+2002-01-18 12:00  mortene
+
+	* src/Inventor/Xt/widgets/SoXtThumbWheel.cpp:
+	
+	Removes unnecessary include dependency on Motif's Xm.h.
+
+2002-01-18 10:42  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Additional debugging information.
+
+2002-01-17 22:14  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Codestyle issues.
+
+2002-01-17 22:09  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Moves callbacks from being private functions of SoXt to belong to
+	SoXtP, to remove some clutter from the generic SoGui.h file.
+	
+	Misc codestyle fixes.
+
+2002-01-17 21:37  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Adapts init()-wrappers from SoWin. Moves getVersion*() methods into
+	generic code. Codestyle fixes.
+
+2002-01-17 15:17  mortene
+
+	* build/soxt.doxygen.in, src/Inventor/Xt/viewers/WalkViewer.cpp:
+	
+	Codestyle and documentation fixes.
+
+2002-01-13 16:15  mortene
+
+	* src/Inventor/Xt/viewers/: ExaminerViewer.cpp, PlaneViewer.cpp:
+	
+	Build fixes.
+
+2002-01-13 15:43  mortene
+
+	* src/Inventor/Xt/viewers/: ExaminerViewer.cpp, PlaneViewer.cpp:
+	
+	Fix event processing.
+
+2002-01-11 16:47  mortene
+
+	* src/Inventor/Xt/viewers/FullViewer.cpp:
+	
+	Removes dependency on SoAnyFullViewer.
+
+2002-01-11 14:28  mortene
+
+	* src/Inventor/Xt/viewers/ExaminerViewer.cpp:
+	
+	Bugfix: avoid recursive calls.
+
+2002-01-11 14:18  mortene
+
+	* src/Inventor/Xt/viewers/ExaminerViewer.cpp:
+	
+	Minor bugfix.
+
+2002-01-11 14:11  mortene
+
+	* src/Inventor/Xt/viewers/ExaminerViewer.cpp:
+	
+	Remove dependencies on SoAnyExaminerViewer.
+
+2002-01-11 12:38  mortene
+
+	* src/Inventor/Xt/viewers/PlaneViewer.cpp:
+	
+	Remove dependency on SoAnyPlaneViewer.
+
+2002-01-11 12:13  mortene
+
+	* src/Inventor/Xt/viewers/WalkViewer.cpp:
+	
+	Compile fix.
+
+2002-01-11 12:02  mortene
+
+	* src/Inventor/Xt/viewers/WalkViewer.cpp:
+	
+	Removes dependency on SoAnyWalkViewer.
+
+2002-01-11 11:23  mortene
+
+	* src/Inventor/Xt/viewers/: SoXtConstrainedViewer.cpp,
+	SoXtConstrainedViewer.h:
+	
+	Obsoleted.
+
+2002-01-11 11:04  mortene
+
+	* src/Inventor/Xt/viewers/: Makefile.am, PlaneViewer.cpp,
+	SoXtPlaneViewer.cpp, SoXtPlaneViewer.h, SoXtWalkViewer.cpp,
+	SoXtWalkViewer.h, WalkViewer.cpp:
+	
+	Use generic templates for WalkViewer and PlaneViewer.
+
+2002-01-09 15:58  mortene
+
+	* src/Inventor/Xt/viewers/: ExaminerViewer.cpp, Makefile.am,
+	SoXtExaminerViewer.cpp, SoXtExaminerViewer.h:
+	
+	Use sourcecode from common templates.
+
+2002-01-09 13:29  mortene
+
+	* src/Inventor/Xt/viewers/: Makefile.am, SoXtFullViewer.cpp,
+	SoXtFullViewer.h:
+	
+	Use common So*FullViewer.[cpp|h] templates. Bootstrap.
+
+2002-01-08 14:06  mortene
+
+	* src/Inventor/Xt/viewers/FullViewer.cpp:
+	
+	Native SoXtFullViewer code.
+
+2002-01-08 09:43  mortene
+
+	* src/Inventor/Xt/viewers/: Makefile.am, SoNativeFlyViewer.cpp:
+	
+	Removes updateCursorRepresentation(), as it's now available from
+	the common code.
+
+2002-01-07 15:22  mortene
+
+	* build/soxt.doxygen.in:
+	
+	Set SORT_MEMBER_DOCS to NO for the Doxygen overload command to work
+	properly.
+
+2002-01-07 15:02  mortene
+
+	* src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp:
+	
+	Misc doc and codestyle issues fixed.
+
+2002-01-07 15:01  mortene
+
+	* src/Inventor/Xt/viewers/SoXtFullViewer.cpp:
+	
+	Misc doc and codestyle issue fixes.
+
+2002-01-07 14:57  mortene
+
+	* src/Inventor/Xt/viewers/: Makefile.am, SoXtCollisionViewer.cpp,
+	SoXtCollisionViewer.h:
+	
+	CollisionViewer class was just a skeleton, and there are no plans
+	to implement it before releasing 1.0.0, so get rid of it.
+
+2002-01-06 13:40  mortene
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	Don't attempt to change the cursor of widgets not yet realized.
+
+2002-01-06 12:00  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Corrects debug message with instructions on how to get a valid
+	backtrace upon X11 errors.
+
+2001-12-30 12:24  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	More verbose output (including debugging info) on X11 errors.
+
+2001-12-29 18:53  mortene
+
+	* src/Inventor/Xt/devices/: SoXtDevice.cpp, SoXtDevice.h,
+	SoXtInputFocus.cpp, SoXtInputFocus.h, SoXtKeyboard.cpp,
+	SoXtKeyboard.h, SoXtLinuxJoystick.cpp, SoXtLinuxJoystick.h,
+	SoXtMouse.cpp, SoXtMouse.h, SoXtSpaceball.cpp, SoXtSpaceball.h:
+	
+	Use headers generated from common templates. Fixes a build error
+	reported by Ben Laurie.
+
+2001-12-20 15:16  mortene
+
+	* HACKING, src/Inventor/Xt/SoXt.cpp:
+	
+	Adds code for intercepting upon X11 errors and spit out information
+	on how to debug the problem.
+
+2001-12-20 14:48  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Introduce envvar check SOXT_XSYNC. If set to "1", call
+	XSynchronize() to help with debugging (sensible backtraces in a
+	debugger).
+
+2001-12-20 14:47  mortene
+
+	* src/Inventor/Xt/devices/SoXtLinuxJoystick.cpp:
+	
+	Use internal getenv() wrapper to get around potential problems on
+	MSWin.
+
+2001-12-20 14:46  mortene
+
+	* configure.in:
+	
+	Look for GetEnvironmentVariable().
+
+2001-12-20 13:22  mortene
+
+	* Makefile.am:
+	
+	More common distfiles. Bootstrap.
+
+2001-12-20 09:54  mortene
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	Don't init unimplemented classes.
+
+2001-12-09 16:54  mortene
+
+	* src/Inventor/Xt/viewers/: SoNativeFlyViewer.cpp,
+	SoXtFlyViewer.cpp, SoXtFlyViewer.h:
+	
+	Old native implementation was made obsolete with the templatized
+	version.
+
+2001-12-09 12:08  mortene
+
+	* Makefile.am:
+	
+	Needs to dist doxy4win.pl, as it's used by the common Makefile
+	stuff.
+
+2001-12-09 12:02  mortene
+
+	* src/Inventor/Xt/Makefile.am:
+	
+	SoXtMaterialList.h is now generated from common template, so remove
+	it from the list of native headers.
+	
+	Removes all stubbed classes which will probably not go into 1.0.0.
+
+2001-12-06 13:03  mortene
+
+	* src/Inventor/Xt/devices/: SoXtKeyboard.cpp, SoXtMouse.cpp:
+	
+	Implements enable() and disable() methods.
+
+2001-12-06 12:45  mortene
+
+	* Makefile.am:
+	
+	Fix make dist. Bootstrap.
+
+2001-12-05 18:13  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Minor doc fixes for \mainpage.
+
+2001-12-02 16:43  mortene
+
+	* HACKING:
+	
+	SoXt-specific hacking information.
+
+2001-11-27 16:04  mortene
+
+	* src/Inventor/Xt/: SoXtComponent.cpp,
+	viewers/SoXtExaminerViewer.cpp:
+	
+	Use a bitmap instead of an enum for a blank shape.
+
+2001-11-27 15:49  mortene
+
+	* src/Inventor/Xt/Makefile.am:
+	
+	Removes obsoleted SoGuiCursors files.
+
+2001-11-27 14:06  mortene
+
+	* src/Inventor/Xt/: viewers/SoXtFullViewer.cpp,
+	widgets/XtNativePopupMenu.cpp:
+	
+	Let position arguments to SoGuiPopupMenu::popUp() be specified
+	relative to canvas widget.
+
+2001-11-27 08:02  mortene
+
+	* src/Inventor/Xt/viewers/: SoXtExaminerViewer.cpp,
+	SoXtExaminerViewer.h:
+	
+	Use the generic mechanism for setting cursors.
+
+2001-11-27 08:02  mortene
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	Skeleton implementation of the handling of native cursor widgets.
+
+2001-11-23 16:13  mortene
+
+	* src/Inventor/Xt/widgets/Makefile.am:
+	
+	Install SoXtPopupMenu, but not the other header files in widgets/
+	(which was erroneously installed up until now).
+
+2001-11-23 16:12  mortene
+
+	* src/Inventor/Xt/: viewers/SoXtExaminerViewer.cpp,
+	viewers/SoXtFullViewer.cpp, viewers/SoXtFullViewer.h,
+	viewers/SoXtWalkViewer.cpp, widgets/XtNativePopupMenu.h:
+	
+	Compile fixes, due to the SoAnyPopupMenu -> SoXtPopupMenu renaming.
+
+2001-11-23 14:31  mortene
+
+	* src/Inventor/Xt/: viewers/SoXtPlaneViewer.cpp,
+	widgets/Makefile.am, widgets/SoXtPopupMenu.cpp,
+	widgets/SoXtPopupMenu.h, widgets/XtNativePopupMenu.cpp,
+	widgets/XtNativePopupMenu.h:
+	
+	Renames SoXtPopupMenu to XtNativePopupMenu.
+
+2001-11-22 14:32  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Use the common classdoc. Better Doxygen \mainpage.
+
+2001-11-21 18:02  mortene
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	Make setComponentCursor() virtual so it can be overridden in
+	subclasses to set cursors for individual native widgets in a
+	composite component (only the rendercanvas of viewers, for
+	instance).
+	
+	Removes getComponentCursor(), as it simplifies the interface to not
+	store the current cursor setting.
+
+2001-11-21 12:37  larsa
+
+	* configure.in:
+	
+	subst more variables
+
+2001-11-20 18:10  pederb
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	Renamed setCursor() to setComponentCursor().
+
+2001-11-19 18:28  pederb
+
+	* src/Inventor/Xt/: Makefile.am, SoXtComponent.cpp:
+	
+	Bootstrap for cursor support.
+
+2001-11-16 16:47  mortene
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	Compile fix.
+
+2001-11-16 16:38  mortene
+
+	* build/soxt.doxygen.in, src/Inventor/Xt/SoXt.cpp:
+	
+	Start using So@Gui@Common.cpp.in sourcefile.
+
+2001-11-16 16:10  mortene
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	Change name from [set|is]OverlayPlanes() to [set|is]OverlayRender()
+	to match TGS SoWin.
+
+2001-11-16 12:01  mortene
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	Stub implementation of new methods setOverlayPlanes() and
+	isOverlayPlanes().
+
+2001-10-24 17:19  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Handle NULL as parent argument to SoXt::createSimpleErrorDialog().
+
+2001-10-24 17:18  mortene
+
+	* src/Inventor/Xt/viewers/SoNativeFlyViewer.cpp:
+	
+	Compile fix.
+
+2001-10-24 14:39  mortene
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	Rename SoXt's eventHandler() function to avoid nameclash with
+	SoXtGLWidget::eventHandler().
+
+2001-10-23 14:47  larsa
+
+	* src/Inventor/Xt/widgets/Makefile.am:
+	
+	bugfix
+
+2001-10-23 13:31  pederb
+
+	* configure.in:
+	
+	Bugfix; missing variable expansion.
+
+2001-10-20 13:24  larsa
+
+	* Makefile.am, src/Inventor/Xt/SoXtMaterialList.cpp,
+	src/Inventor/Xt/SoXtMaterialList.h:
+	
+	templatized SoXtMaterialList.h header.	new bootstrap
+
+2001-10-19 14:02  mortene
+
+	* src/Inventor/Xt/devices/SoXtKeyboard.cpp:
+	
+	Minor doc fixes.
+
+2001-10-19 13:44  larsa
+
+	* Makefile.am, configure.in, build/soxt.doxygen.in,
+	html/Makefile.am, man/Makefile.am, man/man1/Makefile.am,
+	man/man3/Makefile.am, src/Makefile.am, src/Inventor/Makefile.am,
+	src/Inventor/Xt/Makefile.am, src/Inventor/Xt/devices/Makefile.am,
+	src/Inventor/Xt/viewers/Makefile.am,
+	src/Inventor/Xt/viewers/SoNativeFlyViewer.cpp,
+	src/Inventor/Xt/widgets/Makefile.am:
+	
+	Use common/Makefile.common.  New setup for manpage and htmlpages
+	generation.
+
+2001-10-18 21:32  mortene
+
+	* src/Inventor/Xt/: SoXtComponent.cpp, SoXtGLWidget.cpp,
+	viewers/SoXtFullViewer.cpp, viewers/SoXtFullViewer.h:
+	
+	Make signature of sizeChanged() match SGI's InventorXt.
+
+2001-10-18 20:24  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Compile fix: anything behind an #endif must be within code
+	comments.  Thanks to Mark D Anderson for reporting the bug.
+
+2001-10-16 18:53  larsa
+
+	* src/Inventor/Xt/Makefile.am:
+	
+	Changes in install/uninstall rules.
+
+2001-10-15 15:41  larsa
+
+	* Makefile.am, src/Makefile.am, src/Inventor/Xt/Makefile.am,
+	src/Inventor/Xt/devices/Makefile.am,
+	src/Inventor/Xt/viewers/Makefile.am,
+	src/Inventor/Xt/widgets/Makefile.am:
+	
+	make distcheck adjustments
+
+2001-10-14 16:00  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Implements the setFatalErrorHandler() function.
+
+2001-10-13 12:30  mortene
+
+	* Makefile.am, configure.in, src/Inventor/Xt/Makefile.am,
+	src/Inventor/Xt/SoXt.cpp, src/Inventor/Xt/SoXt.h:
+	
+	Generate SoXt.h from common template.
+
+2001-10-13 00:26  mortene
+
+	* src/Inventor/Xt/: SoXt.cpp, SoXt.h:
+	
+	Use an hidden internal class for private data.
+
+2001-10-12 22:48  mortene
+
+	* src/Inventor/Xt/SoXtComponent.cpp:
+	
+	Compile fixes.
+
+2001-10-12 21:26  mortene
+
+	* Makefile.am, src/Inventor/Xt/Makefile.am,
+	src/Inventor/Xt/SoXtComponent.cpp, src/Inventor/Xt/SoXtComponent.h:
+	
+	Generate SoXtComponent.h from common template.
+
+2001-10-12 17:17  mortene
+
+	* src/Inventor/Xt/: SoXtComponent.cpp, SoXtComponent.h:
+	
+	Hide private data in an internal class.
+
+2001-10-12 15:02  mortene
+
+	* Makefile.am, src/Inventor/Xt/Makefile.am,
+	src/Inventor/Xt/SoXtGLWidget.cpp, src/Inventor/Xt/SoXtGLWidget.h:
+	
+	Generate SoXtGLWidget.h from common SoGuiGLWidget.h.in.
+
+2001-10-12 14:38  mortene
+
+	* src/Inventor/Xt/: SoXtGLWidget.cpp, SoXtGLWidget.h,
+	viewers/SoXtExaminerViewer.cpp:
+	
+	Use an internal hidden private class for private data.
+
+2001-10-11 20:07  mortene
+
+	* Makefile.am, configure.in, soxt-config:
+	
+	Generate soxt-config from common template.
+
+2001-10-11 15:27  mortene
+
+	* configure.in:
+	
+	Comment why soxt-$CONFIG.cfg needs to be generated by configure.
+
+2001-10-11 15:21  larsa
+
+	* Makefile.am, configure.in, src/Inventor/Xt/SoXt.cpp,
+	src/Inventor/Xt/SoXtComponent.cpp,
+	src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	Compile and link on Xmu-less systems.  Creating GL widgets is not
+	supported for this configuration yet, though.  Create soxt-config
+	config-file during the configure run, since there is a dependency
+	on it in data/configure.
+
+2001-10-11 14:34  mortene
+
+	* Makefile.am, configure.in, soxt.cfg.in:
+	
+	Generate cfg-file(s) from common template.
+
+2001-10-11 14:13  mortene
+
+	* configure.in, soxt.cfg.in:
+	
+	Remove void references to CFLAGS and CXXFLAGS.
+
+2001-10-11 13:58  mortene
+
+	* configure.in:
+	
+	Bugfix the uniqifying of the CPPFLAGS, LDFLAGS and LIBS (plus the
+	SOGUI_EXTRA_ variants).
+
+2001-10-11 12:58  mortene
+
+	* configure.in:
+	
+	Don't need GLU header.
+	
+	BUILD_WITH_MSVC=false (no MSWin build support yet).
+
+2001-10-11 12:42  mortene
+
+	* configure.in:
+	
+	AC_SUBST CXXFLAGS.
+
+2001-10-11 12:37  mortene
+
+	* configure.in, soxt.cfg.in:
+	
+	SOXT_EXTRA_* -> SOGUI_EXTRA_*, in precipitation of making the
+	so*-config and so*.cfg.in into common files for all So* libraries.
+
+2001-10-11 12:29  mortene
+
+	* configure.in:
+	
+	Bugfix in mathlib check action.
+	
+	AC_SUBST ``COIN_COMPILER''.
+	
+	Mention the library versioning documentation of Coin/HACKING.
+
+2001-10-11 09:47  mortene
+
+	* src/Inventor/Xt/: SoXt.cpp, SoXt.h, SoXtClipboard.cpp,
+	SoXtClipboard.h, SoXtComponent.cpp, SoXtComponent.h,
+	SoXtDirectionalLightEditor.cpp, SoXtDirectionalLightEditor.h,
+	SoXtGLWidget.cpp, SoXtGLWidget.h, SoXtLightSliderSet.cpp,
+	SoXtLightSliderSet.h, SoXtMaterialEditor.cpp, SoXtMaterialEditor.h,
+	SoXtMaterialList.cpp, SoXtMaterialList.h,
+	SoXtMaterialSliderSet.cpp, SoXtMaterialSliderSet.h,
+	SoXtPrintDialog.cpp, SoXtPrintDialog.h, SoXtResource.cpp,
+	SoXtResource.h, SoXtSliderSet.cpp, SoXtSliderSet.h,
+	SoXtSliderSetBase.cpp, SoXtSliderSetBase.h,
+	SoXtTransformSliderSet.cpp, SoXtTransformSliderSet.h,
+	devices/SoXtDevice.cpp, devices/SoXtDevice.h,
+	devices/SoXtInputFocus.cpp, devices/SoXtInputFocus.h,
+	devices/SoXtKeyboard.cpp, devices/SoXtKeyboard.h,
+	devices/SoXtLinuxJoystick.cpp, devices/SoXtLinuxJoystick.h,
+	devices/SoXtMouse.cpp, devices/SoXtMouse.h,
+	devices/SoXtSpaceball.cpp, devices/SoXtSpaceball.h,
+	viewers/SoXtCollisionViewer.cpp, viewers/SoXtCollisionViewer.h,
+	viewers/SoXtConstrainedViewer.cpp, viewers/SoXtConstrainedViewer.h,
+	viewers/SoXtExaminerViewer.cpp, viewers/SoXtExaminerViewer.h,
+	viewers/SoXtFlyViewer.cpp, viewers/SoXtFlyViewer.h,
+	viewers/SoXtFullViewer.cpp, viewers/SoXtFullViewer.h,
+	viewers/SoXtPlaneViewer.cpp, viewers/SoXtPlaneViewer.h,
+	viewers/SoXtWalkViewer.cpp, viewers/SoXtWalkViewer.h,
+	widgets/SoXtGLArea.cpp, widgets/SoXtGLArea.h,
+	widgets/SoXtPopupMenu.cpp, widgets/SoXtPopupMenu.h,
+	widgets/SoXtSlider.cpp, widgets/SoXtSlider.h,
+	widgets/SoXtThumbWheel.cpp, widgets/SoXtThumbWheel.h:
+	
+	Get rid of excessive and inconsistent spacing around parentheses.
+
+2001-10-10 19:00  larsa
+
+	* configure.in:
+	
+	gl.h/glu.h detection rewrite
+
+2001-10-10 15:31  larsa
+
+	* soxt.cfg.in:
+	
+	QT->XT fix.  Problem reported by Mark D Anderson.
+
+2001-10-09 12:20  larsa
+
+	* Makefile.am, configure.in, soxt-config, soxt-config.in,
+	soxt.cfg.in, soxt.m4, soxtdefs.h.in, src/.cvsignore,
+	src/Makefile.am, src/Inventor/Makefile.am,
+	src/Inventor/Xt/Makefile.am, src/Inventor/Xt/devices/Makefile.am,
+	src/Inventor/Xt/viewers/Makefile.am,
+	src/Inventor/Xt/widgets/Makefile.am:
+	
+	modernize soxt-config and build setup
+
+2001-10-09 10:51  larsa
+
+	* configure.in:
+	
+	fix problem with using C mode instead of C++ mode
+
+2001-10-09 10:42  larsa
+
+	* configure.in:
+	
+	fix gl.h problem when compiling against Coin
+
+2001-10-08 14:26  larsa
+
+	* configure.in:
+	
+	Minor adjustments.
+
+2001-10-08 14:16  larsa
+
+	* src/Inventor/Xt/SoXtResource.cpp:
+	
+	added missing #include <stdlib.h>
+
+2001-10-08 14:03  larsa
+
+	* src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp:
+	
+	#include <stdlib.h> for atoi() prototype.
+
+2001-10-08 11:09  larsa
+
+	* Makefile.am, bootstrap, configure.in:
+	
+	Adjustment for the OpenGL detection macro change, and the new
+	internal Inventor/Xt/common/gl.h header file.
+
+2001-10-07 21:06  mortene
+
+	* src/Inventor/Xt/: SoXt.cpp, viewers/SoXtConstrainedViewer.cpp:
+	
+	FIXME comments.
+
+2001-09-26 15:42  pederb
+
+	* src/Inventor/Xt/: SoXt.cpp, SoXt.h:
+	
+	Compile fix: createSimpleErrorDialog() did not have
+	const-arguments.
+
+2001-09-26 12:38  pederb
+
+	* soxtdefs.h.in:
+	
+	Temporary fix for soxdefs.h missing SOXT_OBSOLETED
+
+2001-08-31 16:41  mortene
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	Improve documentation for processEvent().
+
+2001-08-31 15:08  mortene
+
+	* src/Inventor/Xt/SoXtGLWidget.h:
+	
+	SO_GL_DEFAULT_MODE has been obsoleted.
+
+2001-08-27 14:08  mortene
+
+	* Makefile.am, bootstrap, src/Inventor/Xt/Makefile.am:
+	
+	Minor fixes.
+	
+	Re-bootstrap.
+
+2001-08-21 00:46  mortene
+
+	* src/Inventor/Xt/viewers/SoXtFullViewer.cpp:
+	
+	Compile fix.
+	
+	Fix for tiny logical flaw in robustness checks in setViewing().
+
+2001-08-17 16:27  mortene
+
+	* src/Inventor/Xt/: SoXtComponent.cpp, SoXtComponent.h:
+	
+	Rename goFullScreen() to setFullScreen() and fix method signature.
+
+2001-08-10 17:23  mortene
+
+	* src/Inventor/Xt/viewers/SoXtFullViewer.cpp:
+	
+	Forward setPopupMenuString() to common SoAnyFullViewer class.
+
+2001-08-10 15:19  mortene
+
+	* src/Inventor/Xt/widgets/: SoXtPopupMenu.cpp, SoXtPopupMenu.h:
+	
+	Match new SoAnyPopupMenu interface.
+
+2001-08-10 12:13  mortene
+
+	* configure.in:
+	
+	Compile with SOXT_INTERNAL CPP define. Bootstrap.
+
+2001-08-09 23:47  mortene
+
+	* src/Inventor/Xt/: SoXtComponent.cpp, SoXtComponent.h:
+	
+	Stub for goFullScreen().
+
+2001-08-08 11:32  mortene
+
+	* cfg/depcomp:
+	
+	Updates to latest version of depcomp.
+
+2001-08-02 22:23  larsa
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Doc update.
+
+2001-08-02 22:21  larsa
+
+	* .cvsignore, Makefile.am, bootstrap, configure.in,
+	build/soxt.doxygen.in:
+	
+	Modifications for doc-generation.  New bootstrap.
+
+2001-07-09 12:48  pederb
+
+	* src/Inventor/Xt/viewers/SoXtCollisionViewer.h:
+	
+	Added missing stddef.h include.
+
+2001-06-29 15:04  pederb
+
+	* Makefile.am, bootstrap, src/Inventor/Xt/Makefile.am,
+	src/Inventor/Xt/SoXtGLWidget.cpp:
+	
+	Support for GL resource sharing.
+
+2001-06-20 15:44  mortene
+
+	* configure.in:
+	
+	Corrects check to detect against actual Doxygen version we're
+	using.
+
+2001-06-14 13:50  pederb
+
+	* soxtdefs.h.in:
+	
+	Only enable SOXt_STUB message when compiling debug version of
+	library.
+
+2001-06-07 13:22  pederb
+
+	* src/Inventor/Xt/devices/SoXtKeyboard.cpp:
+	
+	Removed debug message.
+
+2001-05-23 17:42  mortene
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Compile fix.
+
+2001-03-20 18:46  pederb
+
+	* src/Inventor/Xt/devices/SoXtKeyboard.cpp:
+	
+	Support all keys.
+
+2001-03-08 13:47  pederb
+
+	* src/Inventor/Xt/: SoXtGLWidget.cpp, SoXtGLWidget.h:
+	
+	Documentation.
+
+2001-03-02 11:37  pederb
+
+	* src/Inventor/Xt/: SoXtGLWidget.cpp, SoXtGLWidget.h:
+	
+	Cleanup and fixes to avoid multiple redraws on expose and resize
+	events.
+
+2001-02-17 21:13  larsa
+
+	* bootstrap:
+	
+	New bootstrap.
+
+2001-02-17 21:12  larsa
+
+	* src/Inventor/Xt/SoXt.cpp:
+	
+	Moved SoXtObject::init() from common/SoGuiObject.cpp.in.
+
+2001-01-10 13:40  larsa
+
+	* bootstrap, configure.in:
+	
+	Added IRIX fix for libtool setup.  Reordered bootstrap ordering, so
+	autoconf is run before autoheader, and automake is run last.
+
+2001-01-03 16:31  larsa
+
+	* bootstrap, configure.in:
+	
+	Accept bootstrapping with Automake 1.4c (latest from CVS).  Create
+	"reconfigure" script when configuring.	Use SIM_AC_CONFIGURATION_*
+	macros for summary at end of configure run.
+

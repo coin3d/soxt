@@ -1,0 +1,33 @@
+SoXt 1.2.0 Released
+===================
+
+SoXt 1.2.0 is a minor release.  It was made because it was about time to
+get SoXt into a release cycle again.  The release contains bugfixes,
+optimizations, documentation improvements, and configure and build setup
+fixes.  It also contains some minor API extensions beyond the previous
+release.
+
+
+NEWS File Excerpt:
+------------------
+
+New in SoXt v1.2.0 (2004-09-21):
+* New classes SoXtColorEditor, SoXtMaterialEditor
+* support Coin's SORTED_LAYERS_BLEND transparency mode
+* --enable-compact configure option, as with Coin
+* misc bugfixes
+* many Mac OS X improvements
+
+Download Information:
+---------------------
+
+Source Code by FTP:
+  ftp://ftp.coin3d.org/pub/coin/src/SoXt-1.2.0.tar.gz
+
+We do not provide pre-compiled binary packages of the SoXt library
+for any platform.
+
+Regards,
+
+  Lars J. Aas
+  Systems in Motion
