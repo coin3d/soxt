@@ -700,7 +700,29 @@ SoXtPopupMenu::build(
 {
   MenuRecord * root = this->getMenuRecord( 0 );
   assert( root != NULL );
-  Widget popup = XmCreatePopupMenu( parent, root->name, NULL, 0 );
+
+  // FIXME: use SoXt::getPopupArgs() instead (when it's implemented).
+  Widget shell = parent;
+  while ( shell && ! XtIsShell(shell) )
+    shell = XtParent(shell);
+  assert( shell != (Widget) NULL );
+
+  Colormap colormap;
+  Visual * visual;
+  int depth;
+  XtVaGetValues( shell,
+    XmNvisual, &visual,
+    XmNdepth, &depth,
+    XmNcolormap,  &colormap,
+    NULL );
+  Arg args[10];
+  int argc = 0;
+  XtSetArg( args[0], XmNvisual, visual ); argc++;
+  XtSetArg( args[0], XmNdepth, depth ); argc++;
+  XtSetArg( args[0], XmNcolormap, colormap ); argc++;
+
+  Widget popup = XmCreatePopupMenu( parent, root->name, args, argc );
+
 //  fprintf( stderr, "%s {\n", root->name );
   (void) this->traverseBuild( popup, root, 2 );
 //  fprintf( stderr, "}\n" );
