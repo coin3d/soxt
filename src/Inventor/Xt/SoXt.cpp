@@ -384,6 +384,16 @@ SoXt::dispatchEvent( // static
   return dispatched;
 } // dispatchEvent()
 
+/*!
+*/
+
+void
+SoXt::exitMainLoop(
+  void )
+{
+  XtAppSetExitFlag( SoXt::getAppContext() );
+} // exitMainLoop()
+
 // *************************************************************************
 
 /*!

@@ -49,6 +49,7 @@ public:
   static void mainLoop(void);
   static void nextEvent( XtAppContext, XEvent * );
   static Boolean dispatchEvent( XEvent * event );
+  static void exitMainLoop(void);
 
   static XtAppContext getAppContext(void);
   static Display * getDisplay(void);
