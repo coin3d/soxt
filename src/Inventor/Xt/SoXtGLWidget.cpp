@@ -41,6 +41,7 @@ static const char rcsid[] =
 #include <Xm/Xm.h>
 #include <Xm/Form.h>
 #include <Xm/DrawingA.h>
+#include <X11/IntrinsicP.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 #include <X11/Xmu/StdCmap.h>
@@ -520,8 +521,15 @@ void
 SoXtGLWidget::sizeChanged( // virtual, protected
   const SbVec2s size )
 {
-//  SoDebugError::postInfo( "SoXtGLWidget::sizeChanged", "[invoked]" );
-  // nothing to do
+//  SoDebugError::postInfo( "SoXtGLWidget::sizeChanged", "[invoked (%d, %d)]",
+//    size[0], size[1] );
+  if ( this->isBorder() ) {
+    this->glSize[0] = size[0] - 2 * this->borderwidth;
+    this->glSize[1] = size[1] - 2 * this->borderwidth;
+  } else {
+    this->glSize = size;
+  }
+  XtResizeWidget( this->glxWidget, this->glSize[0], this->glSize[1], 0 );
 } // sizeChanged()
 
 /*!
@@ -780,7 +788,7 @@ SoXtGLWidget::buildWidget( // protected
     XtAppError( SoXt::getAppContext(), "SoXtGLWidget::buildWidget()" );
   }
 
-  Colormap colors = NULL;
+  Colormap colors = (Colormap) NULL;
   XStandardColormap * cmaps = NULL;
   int nmaps = 0;
 
