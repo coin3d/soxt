@@ -1035,6 +1035,47 @@ fi
 ])
 
 
+
+dnl Usage:
+dnl  SIM_CHECK_X_INTRINSIC([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl
+dnl  Try to find the Xt intrinsic library. Sets this shell variable:
+dnl
+dnl    $sim_ac_xt_libs   (link library the linker needs for X Intrinsic)
+dnl
+dnl  The LIBS flag will also be modified accordingly. In addition, the
+dnl  variable $sim_ac_xt_avail is set to "yes" if the X11 Intrinsic
+dnl  library is found.
+dnl
+dnl
+dnl Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+
+AC_DEFUN(SIM_CHECK_X_INTRINSIC,[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.14.1])
+
+sim_ac_xt_avail=no
+sim_ac_xt_libs="-lXt"
+sim_ac_save_libs=$LIBS
+LIBS="$sim_ac_xt_libs $LIBS"
+
+AC_CACHE_CHECK([whether the X11 Intrinsic library is available],
+  sim_cv_lib_xt_avail,
+  [AC_TRY_LINK([#include <X11/Intrinsic.h>],
+               [(void)XtVaCreateWidget("", 0L, 0L);],
+               sim_cv_lib_xt_avail=yes,
+               sim_cv_lib_xt_avail=no)])
+
+if test x"$sim_cv_lib_xt_avail" = xyes; then
+  sim_ac_xt_avail=yes
+  ifelse($1, , :, $1)
+else
+  LIBS=$sim_ac_save_libs
+  ifelse($2, , :, $2)
+fi
+])
+
 dnl Usage:
 dnl  SIM_CHECK_OPENGL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 dnl
@@ -1089,50 +1130,38 @@ if test x"$with_opengl" != xno; then
   LDFLAGS="$LDFLAGS $sim_ac_gl_ldflags"
 
   sim_ac_save_libs=$LIBS
-  sim_ac_gl_libs="-lMesaGLU -lMesaGL"
-  LIBS="$sim_ac_gl_libs $LIBS"
 
-  AC_CACHE_CHECK([whether OpenGL libraries with the Mesa prefix are available],
-    sim_cv_lib_mesa_avail,
-    [AC_TRY_LINK([#include <GL/gl.h>
-                  #include <GL/glu.h>],
-                 [glPointSize(1.0f); gluSphere(0L, 1.0, 1, 1);],
-                 sim_cv_lib_mesa_avail=yes,
-                 sim_cv_lib_mesa_avail=no)])
-
-  if test x"$sim_cv_lib_mesa_avail" = xyes; then
-    sim_ac_gl_is_mesa=yes
-    sim_ac_gl_avail=yes
-  else
-    sim_ac_gl_libs="-lGLU -lGL"
-    LIBS="$sim_ac_gl_libs $sim_ac_save_libs"
-
-    AC_CACHE_CHECK([whether OpenGL libraries are available],
-      sim_cv_lib_gl_avail,
-      [AC_TRY_LINK([#include <GL/gl.h>
-                    #include <GL/glu.h>],
-                   [glPointSize(1.0f); gluSphere(0L, 1.0, 1, 1);],
-                   sim_cv_lib_gl_avail=yes,
-                   sim_cv_lib_gl_avail=no)])
-
-    if test x"$sim_cv_lib_gl_avail" = xyes; then
-      sim_ac_gl_avail=yes
-      AC_CACHE_CHECK([whether OpenGL libraries actually are the Mesa libraries],
-        sim_cv_lib_gl_ismesa,
-        [AC_TRY_LINK([#include <GL/gl.h>
-                      #include <GL/glu.h>],
-                     [#ifndef MESA
-                      #error not mesa
-                      #endif],
-                     sim_cv_lib_gl_ismesa=yes,
-                     sim_cv_lib_gl_ismesa=no)])
-      if test x"$sim_cv_lib_gl_ismesa" = xyes; then
-        sim_ac_gl_is_mesa=yes
+  AC_CACHE_CHECK([whether OpenGL libraries are available], sim_cv_lib_gl, [
+    sim_cv_lib_gl=UNRESOLVED
+    # Some platforms (like BeOS) have the GLU functionality in the GL library.
+    for i in -lMesaGL -lGL "-lMesaGLU -lMesaGL" "-lGLU -lGL"; do
+      if test "x$sim_cv_lib_gl" = "xUNRESOLVED"; then
+        LIBS="$i $sim_ac_save_libs"
+        AC_TRY_LINK([#include <GL/gl.h>
+                     #include <GL/glu.h>],
+                    [glPointSize(1.0f); gluSphere(0L, 1.0, 1, 1);],
+                    sim_cv_lib_gl="$i")
       fi
-    fi
-  fi
+    done
+  ])
 
-  if test x"$sim_ac_gl_avail" = xyes; then
+
+  if test "x$sim_cv_lib_gl" != "xUNRESOLVED"; then
+    sim_ac_gl_libs="$sim_cv_lib_gl"
+    LIBS="$sim_ac_gl_libs $sim_ac_save_libs"
+    sim_ac_gl_avail=yes
+    AC_CACHE_CHECK([whether OpenGL libraries are the Mesa libraries],
+      sim_cv_lib_gl_ismesa,
+      [AC_TRY_LINK([#include <GL/gl.h>],
+                   [#ifndef MESA
+                    #error not mesa
+                    #endif],
+                   sim_cv_lib_gl_ismesa=yes,
+                   sim_cv_lib_gl_ismesa=no)])
+    if test x"$sim_cv_lib_gl_ismesa" = xyes; then
+      sim_ac_gl_is_mesa=yes
+    fi
+
     ifelse($1, , :, $1)
   else
     CPPFLAGS=$sim_ac_save_cppflags
@@ -1334,7 +1363,7 @@ dnl                                            glwDrawingAreaWidgetClass
 dnl   $sim_ac_motif_glwidget_header            GLwDrawA.h | GLwMDrawA.h
 dnl   $sim_ac_motif_glwidget_library           GLwM | GLw | MesaGLwM | MesaGLw
 dnl
-dnl   $LIBS += -l$sim_ac_motif_glwidget_library
+dnl   $LIBS = -l$sim_ac_motif_glwidget_library $LIBS
 dnl
 dnl Defines:
 dnl

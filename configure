@@ -3170,89 +3170,62 @@ if test x"$with_opengl" != xno; then
   LDFLAGS="$LDFLAGS $sim_ac_gl_ldflags"
 
   sim_ac_save_libs=$LIBS
-  sim_ac_gl_libs="-lMesaGLU -lMesaGL"
-  LIBS="$sim_ac_gl_libs $LIBS"
 
-  echo $ac_n "checking whether OpenGL libraries with the Mesa prefix are available... $ac_c" 1>&6
-echo "configure:3178: checking whether OpenGL libraries with the Mesa prefix are available" 1>&5
-if test "${sim_cv_lib_mesa_avail+set}" = set; then
+  echo $ac_n "checking whether OpenGL libraries are available... $ac_c" 1>&6
+echo "configure:3176: checking whether OpenGL libraries are available" 1>&5
+if test "${sim_cv_lib_gl+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
-  cat >conftest.$ac_ext <<EOF
-#line 3183 "configure"
+  
+    sim_cv_lib_gl=UNRESOLVED
+    # Some platforms (like BeOS) have the GLU functionality in the GL library.
+    for i in -lMesaGL -lGL "-lMesaGLU -lMesaGL" "-lGLU -lGL"; do
+      if test "x$sim_cv_lib_gl" = "xUNRESOLVED"; then
+        LIBS="$i $sim_ac_save_libs"
+        cat >conftest.$ac_ext <<EOF
+#line 3187 "configure"
 #include "confdefs.h"
 #include <GL/gl.h>
-                  #include <GL/glu.h>
+                     #include <GL/glu.h>
 int main() {
 glPointSize(1.0f); gluSphere(0L, 1.0, 1, 1);
 ; return 0; }
 EOF
-if { (eval echo configure:3191: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3195: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
-  sim_cv_lib_mesa_avail=yes
+  sim_cv_lib_gl="$i"
 else
   echo "configure: failed program was:" >&5
   cat conftest.$ac_ext >&5
-  rm -rf conftest*
-  sim_cv_lib_mesa_avail=no
 fi
 rm -f conftest*
+      fi
+    done
+  
 fi
-echo "$ac_t""$sim_cv_lib_mesa_avail" 1>&6
+echo "$ac_t""$sim_cv_lib_gl" 1>&6
 
-  if test x"$sim_cv_lib_mesa_avail" = xyes; then
-    sim_ac_gl_is_mesa=yes
-    sim_ac_gl_avail=yes
-  else
-    sim_ac_gl_libs="-lGLU -lGL"
+
+  if test "x$sim_cv_lib_gl" != "xUNRESOLVED"; then
+    sim_ac_gl_libs="$sim_cv_lib_gl"
     LIBS="$sim_ac_gl_libs $sim_ac_save_libs"
-
-    echo $ac_n "checking whether OpenGL libraries are available... $ac_c" 1>&6
-echo "configure:3212: checking whether OpenGL libraries are available" 1>&5
-if test "${sim_cv_lib_gl_avail+set}" = set; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  cat >conftest.$ac_ext <<EOF
-#line 3217 "configure"
-#include "confdefs.h"
-#include <GL/gl.h>
-                    #include <GL/glu.h>
-int main() {
-glPointSize(1.0f); gluSphere(0L, 1.0, 1, 1);
-; return 0; }
-EOF
-if { (eval echo configure:3225: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
-  rm -rf conftest*
-  sim_cv_lib_gl_avail=yes
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -rf conftest*
-  sim_cv_lib_gl_avail=no
-fi
-rm -f conftest*
-fi
-echo "$ac_t""$sim_cv_lib_gl_avail" 1>&6
-
-    if test x"$sim_cv_lib_gl_avail" = xyes; then
-      sim_ac_gl_avail=yes
-      echo $ac_n "checking whether OpenGL libraries actually are the Mesa libraries... $ac_c" 1>&6
-echo "configure:3241: checking whether OpenGL libraries actually are the Mesa libraries" 1>&5
+    sim_ac_gl_avail=yes
+    echo $ac_n "checking whether OpenGL libraries are the Mesa libraries... $ac_c" 1>&6
+echo "configure:3215: checking whether OpenGL libraries are the Mesa libraries" 1>&5
 if test "${sim_cv_lib_gl_ismesa+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3246 "configure"
+#line 3220 "configure"
 #include "confdefs.h"
 #include <GL/gl.h>
-                      #include <GL/glu.h>
 int main() {
 #ifndef MESA
-                      #error not mesa
-                      #endif
+                    #error not mesa
+                    #endif
 ; return 0; }
 EOF
-if { (eval echo configure:3256: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3229: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_lib_gl_ismesa=yes
 else
@@ -3264,13 +3237,10 @@ fi
 rm -f conftest*
 fi
 echo "$ac_t""$sim_cv_lib_gl_ismesa" 1>&6
-      if test x"$sim_cv_lib_gl_ismesa" = xyes; then
-        sim_ac_gl_is_mesa=yes
-      fi
+    if test x"$sim_cv_lib_gl_ismesa" = xyes; then
+      sim_ac_gl_is_mesa=yes
     fi
-  fi
 
-  if test x"$sim_ac_gl_avail" = xyes; then
     :
   else
     CPPFLAGS=$sim_ac_save_cppflags
@@ -3307,7 +3277,7 @@ if test x"$with_coin" != xno; then
   # Extract the first word of "coin-config", so it can be a program name with args.
 set dummy coin-config; ac_word=$2
 echo $ac_n "checking for $ac_word... $ac_c" 1>&6
-echo "configure:3311: checking for $ac_word" 1>&5
+echo "configure:3281: checking for $ac_word" 1>&5
 if test "${ac_cv_path_sim_ac_conf_cmd+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -3354,19 +3324,19 @@ fi
   LIBS="$sim_ac_coin_libs $LIBS"
 
   echo $ac_n "checking whether the Coin library is available... $ac_c" 1>&6
-echo "configure:3358: checking whether the Coin library is available" 1>&5
+echo "configure:3328: checking whether the Coin library is available" 1>&5
 if test "${sim_cv_lib_coin_avail+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3363 "configure"
+#line 3333 "configure"
 #include "confdefs.h"
 #include <Inventor/SoDB.h>
 int main() {
 SoDB::init();
 ; return 0; }
 EOF
-if { (eval echo configure:3370: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3340: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_lib_coin_avail=yes
 else
@@ -3391,6 +3361,48 @@ echo "$ac_t""$sim_cv_lib_coin_avail" 1>&6
 fi
 
 LIBS="$LIBS $sim_ac_coin_libs"
+
+
+
+
+sim_ac_xt_avail=no
+sim_ac_xt_libs="-lXt"
+sim_ac_save_libs=$LIBS
+LIBS="$sim_ac_xt_libs $LIBS"
+
+echo $ac_n "checking whether the X11 Intrinsic library is available... $ac_c" 1>&6
+echo "configure:3375: checking whether the X11 Intrinsic library is available" 1>&5
+if test "${sim_cv_lib_xt_avail+set}" = set; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  cat >conftest.$ac_ext <<EOF
+#line 3380 "configure"
+#include "confdefs.h"
+#include <X11/Intrinsic.h>
+int main() {
+(void)XtVaCreateWidget("", 0L, 0L);
+; return 0; }
+EOF
+if { (eval echo configure:3387: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+  rm -rf conftest*
+  sim_cv_lib_xt_avail=yes
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -rf conftest*
+  sim_cv_lib_xt_avail=no
+fi
+rm -f conftest*
+fi
+echo "$ac_t""$sim_cv_lib_xt_avail" 1>&6
+
+if test x"$sim_cv_lib_xt_avail" = xyes; then
+  sim_ac_xt_avail=yes
+  :
+else
+  LIBS=$sim_ac_save_libs
+  :
+fi
 
 
 
@@ -3423,19 +3435,19 @@ if test x"$with_motif" != xno; then
   LIBS="$sim_ac_motif_libs $LIBS"
 
   echo $ac_n "checking for a Motif development environment... $ac_c" 1>&6
-echo "configure:3427: checking for a Motif development environment" 1>&5
+echo "configure:3439: checking for a Motif development environment" 1>&5
 if test "${sim_cv_lib_motif_avail+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3432 "configure"
+#line 3444 "configure"
 #include "confdefs.h"
 #include <Xm/Xm.h>
 int main() {
 XmUpdateDisplay(0L);
 ; return 0; }
 EOF
-if { (eval echo configure:3439: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3451: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_lib_motif_avail=yes
 else
@@ -3461,9 +3473,8 @@ fi
 
 
 
-
 echo $ac_n "checking for a GL widget... $ac_c" 1>&6
-echo "configure:3467: checking for a GL widget" 1>&5
+echo "configure:3478: checking for a GL widget" 1>&5
 if test "${sim_cv_motif_glwidget+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -3474,7 +3485,7 @@ else
     if test "x$sim_cv_motif_glwidget" = "xUNKNOWN"; then
       LIBS="-l$lib $SAVELIBS"
       cat >conftest.$ac_ext <<EOF
-#line 3478 "configure"
+#line 3489 "configure"
 #include "confdefs.h"
 
         #include <X11/Intrinsic.h>
@@ -3484,7 +3495,7 @@ int main() {
 Widget glxManager; Widget glxWidget = XtVaCreateManagedWidget("GLWidget", glwMDrawingAreaWidgetClass, glxManager, NULL);
 ; return 0; }
 EOF
-if { (eval echo configure:3488: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3499: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_motif_glwidget="glwMDrawingAreaWidgetClass GLwMDrawA.h $lib"
 else
@@ -3498,7 +3509,7 @@ rm -f conftest*
     if test "x$sim_cv_motif_glwidget" = "xUNKNOWN"; then
       LIBS="-l$lib $SAVELIBS"
       cat >conftest.$ac_ext <<EOF
-#line 3502 "configure"
+#line 3513 "configure"
 #include "confdefs.h"
 
         #include <X11/Intrinsic.h>
@@ -3508,7 +3519,7 @@ int main() {
 Widget glxManager; Widget glxWidget = XtVaCreateManagedWidget("GLWidget", glwDrawingAreaWidgetClass, glxManager, NULL);
 ; return 0; }
 EOF
-if { (eval echo configure:3512: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3523: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_motif_glwidget="glwDrawingAreaWidgetClass GLwDrawA.h $lib"
 else
@@ -3533,7 +3544,7 @@ else
   sim_ac_motif_glwidget_library=`echo $sim_cv_motif_glwidget | cut -d" " -f3`
 
   echo $ac_n "checking the $sim_ac_motif_glwidget_header header location... $ac_c" 1>&6
-echo "configure:3537: checking the $sim_ac_motif_glwidget_header header location" 1>&5
+echo "configure:3548: checking the $sim_ac_motif_glwidget_header header location" 1>&5
 if test "${sim_cv_motif_glwidget_hdrloc+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -3542,13 +3553,13 @@ else
     for location in X11/GLw GL; do
       if test "x$sim_cv_motif_glwidget_hdrloc" = "xUNKNOWN"; then
         cat >conftest.$ac_ext <<EOF
-#line 3546 "configure"
+#line 3557 "configure"
 #include "confdefs.h"
  #include <X11/Intrinsic.h>
                      #include <$location/$sim_ac_motif_glwidget_header> 
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:3552: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:3563: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
