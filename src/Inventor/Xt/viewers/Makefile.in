@@ -1,6 +1,6 @@
-# Makefile.in generated automatically by automake 1.4c from Makefile.am
+# Makefile.in generated automatically by automake 1.4e from Makefile.am
 
-# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -48,6 +48,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_FLAG =
+INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
 
 NORMAL_INSTALL = :
@@ -70,11 +71,10 @@ AS = @AS@
 AWK = @AWK@
 CC = @CC@
 COMPONENTHEADER = @COMPONENTHEADER@
-CPP = @CPP@
 CXX = @CXX@
-CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
+DSUFFIX = @DSUFFIX@
 EVENT = @EVENT@
 GUI = @GUI@
 Gui = @Gui@
@@ -102,6 +102,7 @@ SOXT_MINOR_VERSION = @SOXT_MINOR_VERSION@
 SOXT_VERSION = @SOXT_VERSION@
 VERSION = @VERSION@
 WIDGET = @WIDGET@
+_am_include = @_am_include@
 gui = @gui@
 install_sh = @install_sh@
 sim_ac_coin_configcmd = @sim_ac_coin_configcmd@
@@ -207,14 +208,16 @@ DIST_SOURCES =  $(libSoXtViewers_la_SOURCES)
 HEADERS =  $(libSoXtViewersinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-DEP_FILES =  @AMDEP@ $(DEPDIR)/So@Gui@CollisionViewer.Plo \
-$(DEPDIR)/So@Gui@ConstrainedViewer.Plo \
-$(DEPDIR)/So@Gui@ExaminerViewer.Plo $(DEPDIR)/So@Gui@FlyViewer.Plo \
-$(DEPDIR)/So@Gui@FullViewer.Plo $(DEPDIR)/So@Gui@PlaneViewer.Plo \
-$(DEPDIR)/So@Gui@Viewer.Plo $(DEPDIR)/So@Gui@WalkViewer.Plo \
-$(DEPDIR)/SoAnyConstrainedViewer.Plo $(DEPDIR)/SoAnyExaminerViewer.Plo \
-$(DEPDIR)/SoAnyFlyViewer.Plo $(DEPDIR)/SoAnyFullViewer.Plo \
-$(DEPDIR)/SoAnyPlaneViewer.Plo $(DEPDIR)/SoAnyWalkViewer.Plo
+@AMDEP@DEP_FILES =  $(DEPDIR)/So@Gui@CollisionViewer.Plo \
+@AMDEP@$(DEPDIR)/So@Gui@ConstrainedViewer.Plo \
+@AMDEP@$(DEPDIR)/So@Gui@ExaminerViewer.Plo \
+@AMDEP@$(DEPDIR)/So@Gui@FlyViewer.Plo $(DEPDIR)/So@Gui@FullViewer.Plo \
+@AMDEP@$(DEPDIR)/So@Gui@PlaneViewer.Plo $(DEPDIR)/So@Gui@Viewer.Plo \
+@AMDEP@$(DEPDIR)/So@Gui@WalkViewer.Plo \
+@AMDEP@$(DEPDIR)/SoAnyConstrainedViewer.Plo \
+@AMDEP@$(DEPDIR)/SoAnyExaminerViewer.Plo $(DEPDIR)/SoAnyFlyViewer.Plo \
+@AMDEP@$(DEPDIR)/SoAnyFullViewer.Plo $(DEPDIR)/SoAnyPlaneViewer.Plo \
+@AMDEP@$(DEPDIR)/SoAnyWalkViewer.Plo
 DIST_COMMON =  $(libSoXtViewersinc_HEADERS) Makefile.am Makefile.in
 
 
@@ -232,7 +235,7 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configur
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
 
 
 mostlyclean-noinstLTLIBRARIES:
@@ -247,12 +250,8 @@ maintainer-clean-noinstLTLIBRARIES:
 mostlyclean-compile:
 	-rm -f *.o core *.core
 
-clean-compile:
-
 distclean-compile:
 	-rm -f *.tab.c
-
-maintainer-clean-compile:
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -261,8 +260,7 @@ clean-libtool:
 	-rm -rf .libs _libs
 
 distclean-libtool:
-
-maintainer-clean-libtool:
+	-rm -f libtool
 
 libSoXtViewers.la: $(libSoXtViewers_la_OBJECTS) $(libSoXtViewers_la_DEPENDENCIES)
 	$(CXXLINK)  $(libSoXtViewers_la_LDFLAGS) $(libSoXtViewers_la_OBJECTS) $(libSoXtViewers_la_LIBADD) $(LIBS)
@@ -271,12 +269,10 @@ install-libSoXtViewersincHEADERS: $(libSoXtViewersinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libSoXtViewersincdir)
 	@list='$(libSoXtViewersinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libSoXtViewersincdir)/$$f; then :; else \
-	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtViewersincdir)/$$f"; \
-	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libSoXtViewersincdir)/$$f; \
-	  fi; \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libSoXtViewersincdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libSoXtViewersincdir)/$$f; \
 	done
 
 uninstall-libSoXtViewersincHEADERS:
@@ -298,7 +294,7 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	       END { for (i in files) print i; }'`; \
 	mkid -fID $$unique $(LISP)
 
-TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+TAGS: $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
@@ -316,38 +312,26 @@ GTAGS:
 	  && cd $(top_srcdir) \
 	  && gtags -i $$here
 
-mostlyclean-tags:
-
-clean-tags:
-
 distclean-tags:
 	-rm -f TAGS ID
 
-maintainer-clean-tags:
-
-@AMDEP@include $(DEPDIR)/So@Gui@CollisionViewer.Plo
-@AMDEP@include $(DEPDIR)/So@Gui@ConstrainedViewer.Plo
-@AMDEP@include $(DEPDIR)/So@Gui@ExaminerViewer.Plo
-@AMDEP@include $(DEPDIR)/So@Gui@FlyViewer.Plo
-@AMDEP@include $(DEPDIR)/So@Gui@FullViewer.Plo
-@AMDEP@include $(DEPDIR)/So@Gui@PlaneViewer.Plo
-@AMDEP@include $(DEPDIR)/So@Gui@Viewer.Plo
-@AMDEP@include $(DEPDIR)/So@Gui@WalkViewer.Plo
-@AMDEP@include $(DEPDIR)/SoAnyConstrainedViewer.Plo
-@AMDEP@include $(DEPDIR)/SoAnyExaminerViewer.Plo
-@AMDEP@include $(DEPDIR)/SoAnyFlyViewer.Plo
-@AMDEP@include $(DEPDIR)/SoAnyFullViewer.Plo
-@AMDEP@include $(DEPDIR)/SoAnyPlaneViewer.Plo
-@AMDEP@include $(DEPDIR)/SoAnyWalkViewer.Plo
-
-mostlyclean-depend:
-
-clean-depend:
+@AMDEP@@_am_include@ $(DEPDIR)/So@Gui@CollisionViewer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/So@Gui@ConstrainedViewer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/So@Gui@ExaminerViewer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/So@Gui@FlyViewer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/So@Gui@FullViewer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/So@Gui@PlaneViewer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/So@Gui@Viewer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/So@Gui@WalkViewer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoAnyConstrainedViewer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoAnyExaminerViewer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoAnyFlyViewer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoAnyFullViewer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoAnyPlaneViewer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoAnyWalkViewer.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
-
-maintainer-clean-depend:
 
 @AMDEP@CXXDEPMODE = @CXXDEPMODE@
 
@@ -366,9 +350,9 @@ maintainer-clean-depend:
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
+
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/$(top_builddir)/src/Inventor/@Gui@/viewers \
-	   $(distdir)/$(top_srcdir)/src/Inventor/@Gui@/viewers
+	$(mkinstalldirs) $(distdir)/$(top_builddir)/src/Inventor/@Gui@/viewers $(distdir)/$(top_srcdir)/src/Inventor/@Gui@/viewers $(top_builddir)/src/Inventor/@Gui@/viewers $(top_srcdir)/src/Inventor/@Gui@/viewers
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -388,8 +372,8 @@ check-am: all-am
 check: check-am
 installcheck-am:
 installcheck: installcheck-am
-all-recursive-am: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) all-recursive
+all-redirect: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 install-exec-am:
 install-exec: install-exec-am
@@ -403,7 +387,6 @@ install: install-am
 uninstall-am: uninstall-libSoXtViewersincHEADERS
 uninstall: uninstall-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
-all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs:
@@ -419,49 +402,43 @@ distclean-generic:
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
+	@echo "This command is intended for maintainers to use"
+	@echo "it deletes files that may require special tools to rebuild."
 	-rm -f Makefile.in
 	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
-mostlyclean-am:  mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
-		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
-		mostlyclean-generic
-
-mostlyclean: mostlyclean-am
-
-clean-am:  clean-noinstLTLIBRARIES clean-compile clean-libtool \
-		clean-tags clean-depend clean-generic mostlyclean-am
-
 clean: clean-am
 
-distclean-am:  distclean-noinstLTLIBRARIES distclean-compile \
-		distclean-libtool distclean-tags distclean-depend \
-		distclean-generic clean-am
-	-rm -f libtool
+clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
+	mostlyclean-am
 
 distclean: distclean-am
 
-maintainer-clean-am:  maintainer-clean-noinstLTLIBRARIES \
-		maintainer-clean-compile maintainer-clean-libtool \
-		maintainer-clean-tags maintainer-clean-depend \
-		maintainer-clean-generic distclean-am
-	@echo "This command is intended for maintainers to use;"
-	@echo "it deletes files that may require special tools to rebuild."
+distclean-am: clean-am distclean-compile distclean-depend \
+	distclean-generic distclean-libtool distclean-noinstLTLIBRARIES \
+	distclean-tags
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY: mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
-mostlyclean-compile distclean-compile clean-compile \
-maintainer-clean-compile mostlyclean-libtool distclean-libtool \
-clean-libtool maintainer-clean-libtool \
-uninstall-libSoXtViewersincHEADERS install-libSoXtViewersincHEADERS \
-tags mostlyclean-tags distclean-tags clean-tags maintainer-clean-tags \
-mostlyclean-depend distclean-depend clean-depend \
-maintainer-clean-depend distdir info-am info dvi-am dvi check check-am \
-installcheck-am installcheck all-recursive-am install-exec-am \
-install-exec install-data-am install-data install-am install \
-uninstall-am uninstall all-redirect all-am all install-strip \
-installdirs mostlyclean-generic distclean-generic clean-generic \
-maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+maintainer-clean-am: distclean-am maintainer-clean-generic \
+	maintainer-clean-noinstLTLIBRARIES
+
+mostlyclean: mostlyclean-am
+
+mostlyclean-am: mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool mostlyclean-noinstLTLIBRARIES
+
+.PHONY: all all-am all-redirect check check-am clean clean-generic \
+	clean-libtool clean-noinstLTLIBRARIES distclean \
+	distclean-compile distclean-depend distclean-generic \
+	distclean-libtool distclean-noinstLTLIBRARIES distclean-tags \
+	distdir dvi dvi-am info info-am install install-am install-data \
+	install-data-am install-exec install-exec-am \
+	install-libSoXtViewersincHEADERS install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic maintainer-clean-noinstLTLIBRARIES \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool mostlyclean-noinstLTLIBRARIES tags \
+	uninstall uninstall-am uninstall-libSoXtViewersincHEADERS
 
 
 ############################################################################
