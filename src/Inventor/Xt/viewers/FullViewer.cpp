@@ -77,6 +77,7 @@
 // *************************************************************************
 
 #define PRIVATE(o) (o->pimpl)
+#define PUBLIC(o) (o->pub)
 
 // *************************************************************************
 
@@ -260,38 +261,38 @@ SoXtFullViewer::SoXtFullViewer(Widget parent,
   this->rightDecoration = NULL;
   this->bottomDecoration = NULL;
 
-  this->viewerbase = NULL;
-  this->canvas = NULL;
+  PRIVATE(this)->viewerbase = NULL;
+  PRIVATE(this)->canvas = NULL;
 
-  this->seekdistance = 50.0f;
-  this->seekdistaspercentage = TRUE;
+  PRIVATE(this)->seekdistance = 50.0f;
+  PRIVATE(this)->seekdistaspercentage = TRUE;
 
-  this->zoomrange = SbVec2f(1.0f, 140.0f);
+  PRIVATE(this)->zoomrange = SbVec2f(1.0f, 140.0f);
 
   this->popupEnabled = (flags & SoXtFullViewer::BUILD_POPUP) ? TRUE : FALSE;
-  this->decorations = (flags & SoXtFullViewer::BUILD_DECORATION) ? TRUE : FALSE;
+  PRIVATE(this)->decorations = (flags & SoXtFullViewer::BUILD_DECORATION) ? TRUE : FALSE;
 
-  this->appButtonsList = new SbPList;
+  PRIVATE(this)->appButtonsList = new SbPList;
   this->viewerButtonWidgets = new SbPList;
 
   this->prefshell = NULL;
   this->prefmenu = NULL;
   this->prefstring = NULL;
 
-  pixmaps.pick = 0;
-  pixmaps.pick_ins = 0;
-  pixmaps.view = 0;
-  pixmaps.view_ins = 0;
-  pixmaps.help = 0;
-  pixmaps.help_ins = 0;
-  pixmaps.home = 0;
-  pixmaps.home_ins = 0;
-  pixmaps.set_home = 0;
-  pixmaps.set_home_ins = 0;
-  pixmaps.view_all = 0;
-  pixmaps.view_all_ins = 0;
-  pixmaps.seek = 0;
-  pixmaps.seek_ins = 0;
+  PRIVATE(this)->pixmaps.pick = 0;
+  PRIVATE(this)->pixmaps.pick_ins = 0;
+  PRIVATE(this)->pixmaps.view = 0;
+  PRIVATE(this)->pixmaps.view_ins = 0;
+  PRIVATE(this)->pixmaps.help = 0;
+  PRIVATE(this)->pixmaps.help_ins = 0;
+  PRIVATE(this)->pixmaps.home = 0;
+  PRIVATE(this)->pixmaps.home_ins = 0;
+  PRIVATE(this)->pixmaps.set_home = 0;
+  PRIVATE(this)->pixmaps.set_home_ins = 0;
+  PRIVATE(this)->pixmaps.view_all = 0;
+  PRIVATE(this)->pixmaps.view_all_ins = 0;
+  PRIVATE(this)->pixmaps.seek = 0;
+  PRIVATE(this)->pixmaps.seek_ins = 0;
 
   if (build != FALSE) {
     this->setClassName("SoXtFullViewer");
@@ -307,7 +308,7 @@ SoXtFullViewer::SoXtFullViewer(Widget parent,
 
 SoXtFullViewer::~SoXtFullViewer()
 {
-  delete this->appButtonsList;
+  delete PRIVATE(this)->appButtonsList;
   delete this->viewerButtonWidgets;
 
   delete PRIVATE(this);
@@ -325,11 +326,11 @@ static const int SOXT_VIEWER_MIN_WIDTH = 300;
 void
 SoXtFullViewer::setDecoration(const SbBool enable)
 {
-  if (!!this->decorations && !!enable) { return; }
+  if (!!PRIVATE(this)->decorations && !!enable) { return; }
 
-  if ((this->decorations != enable) && (this->viewerbase != (Widget) NULL))
-    this->showDecorationWidgets(enable);
-  this->decorations = enable;
+  if ((PRIVATE(this)->decorations != enable) && (PRIVATE(this)->viewerbase != (Widget) NULL))
+    PRIVATE(this)->showDecorationWidgets(enable);
+  PRIVATE(this)->decorations = enable;
 
   if (this->isTopLevelShell() || XtIsShell(XtParent(this->getBaseWidget()))) {
     Widget shell = this->getShellWidget();
@@ -367,7 +368,7 @@ SoXtFullViewer::setDecoration(const SbBool enable)
 SbBool
 SoXtFullViewer::isDecoration(void) const
 {
-  return this->decorations;
+  return PRIVATE(this)->decorations;
 }
 
 // *************************************************************************
@@ -404,7 +405,7 @@ SoXtFullViewer::isPopupMenuEnabled(void) const
 Widget
 SoXtFullViewer::getAppPushButtonParent(void) const
 {
-  return this->appButtonsForm;
+  return PRIVATE(this)->appButtonsForm;
 }
 
 /*!
@@ -417,8 +418,8 @@ SoXtFullViewer::getAppPushButtonParent(void) const
 void
 SoXtFullViewer::addAppPushButton(Widget button)
 {
-  this->appButtonsList->append(button);
-  this->layoutAppPushButtons(this->getAppPushButtonParent());
+  PRIVATE(this)->appButtonsList->append(button);
+  PRIVATE(this)->layoutAppPushButtons(this->getAppPushButtonParent());
 }
 
 /*!
@@ -429,8 +430,8 @@ void
 SoXtFullViewer::insertAppPushButton(Widget button,
                                     int idx)
 {
-  this->appButtonsList->insert(button, idx);
-  this->layoutAppPushButtons(this->getAppPushButtonParent());
+  PRIVATE(this)->appButtonsList->insert(button, idx);
+  PRIVATE(this)->layoutAppPushButtons(this->getAppPushButtonParent());
 }
 
 /*!
@@ -440,16 +441,10 @@ SoXtFullViewer::insertAppPushButton(Widget button,
 void
 SoXtFullViewer::removeAppPushButton(Widget button)
 {
-  int idx = this->appButtonsList->find(button);
-  if (idx == -1) {
-#if SOXT_DEBUG
-    SoDebugError::postWarning("SoXtFullViewer::removeAppPushButton",
-                               "tried to remove non-existant button");
-#endif // SOXT_DEBUG
-    return;
-  }
-  this->appButtonsList->remove(idx);
-  this->layoutAppPushButtons(this->getAppPushButtonParent());
+  int idx = PRIVATE(this)->appButtonsList->find(button);
+  assert(idx != -1 && "tried to remove non-existant button");
+  PRIVATE(this)->appButtonsList->remove(idx);
+  PRIVATE(this)->layoutAppPushButtons(this->getAppPushButtonParent());
 }
 
 /*!
@@ -459,7 +454,7 @@ SoXtFullViewer::removeAppPushButton(Widget button)
 int
 SoXtFullViewer::findAppPushButton(Widget button) const
 {
-  return this->appButtonsList->find(button);
+  return PRIVATE(this)->appButtonsList->find(button);
 }
 
 /*!
@@ -469,7 +464,7 @@ SoXtFullViewer::findAppPushButton(Widget button) const
 int
 SoXtFullViewer::lengthAppPushButton(void) const
 {
-  return this->appButtonsList->getLength();
+  return PRIVATE(this)->appButtonsList->getLength();
 }
 
 /*!
@@ -477,7 +472,7 @@ SoXtFullViewer::lengthAppPushButton(void) const
 */
 
 void
-SoXtFullViewer::layoutAppPushButtons(Widget parent)
+SoXtFullViewerP::layoutAppPushButtons(Widget parent)
 {
   SOXT_STUB();
 }
@@ -491,7 +486,7 @@ SoXtFullViewer::layoutAppPushButtons(Widget parent)
 Widget
 SoXtFullViewer::getRenderAreaWidget(void) const
 {
-  return this->canvas;
+  return PRIVATE(this)->canvas;
 }
 
 // *************************************************************************
@@ -503,52 +498,52 @@ SoXtFullViewer::buildWidget(Widget parent)
   int depth = 0;
   XtVaGetValues(parent, XmNdepth, &depth, NULL);
 
-  this->viewerbase = XtVaCreateManagedWidget(this->getWidgetName(),
-    xmFormWidgetClass, parent,
-    NULL);
-  this->registerWidget(this->viewerbase);
+  PRIVATE(this)->viewerbase = XtVaCreateManagedWidget(this->getWidgetName(),
+                                                      xmFormWidgetClass, parent,
+                                                      NULL);
+  this->registerWidget(PRIVATE(this)->viewerbase);
 
   char * titleString = NULL;
-  SoXtResource rsc(this->viewerbase);
+  SoXtResource rsc(PRIVATE(this)->viewerbase);
   rsc.getResource("title", XmRString, titleString);
   if (titleString != NULL)
     this->setTitle(titleString);
 
-  this->canvas = inherited::buildWidget(this->viewerbase);
-  XtVaSetValues(this->canvas,
-      XmNleftAttachment, XmATTACH_FORM,
-      XmNleftOffset, 30,
-      XmNtopAttachment, XmATTACH_FORM,
-      XmNrightAttachment, XmATTACH_FORM,
-      XmNrightOffset, 30,
-      XmNbottomAttachment, XmATTACH_FORM,
-      XmNbottomOffset, 30,
-      NULL);
+  PRIVATE(this)->canvas = inherited::buildWidget(PRIVATE(this)->viewerbase);
+  XtVaSetValues(PRIVATE(this)->canvas,
+                XmNleftAttachment, XmATTACH_FORM,
+                XmNleftOffset, 30,
+                XmNtopAttachment, XmATTACH_FORM,
+                XmNrightAttachment, XmATTACH_FORM,
+                XmNrightOffset, 30,
+                XmNbottomAttachment, XmATTACH_FORM,
+                XmNbottomOffset, 30,
+                NULL);
 
-  this->buildDecoration(this->viewerbase);
+  this->buildDecoration(PRIVATE(this)->viewerbase);
   
   if (this->isTopLevelShell() &&
-       this->decorations != FALSE) {
+      PRIVATE(this)->decorations != FALSE) {
     Widget shell = this->getShellWidget();
     if (shell != NULL) {
       Dimension minheight =
         30 + 122 + 30 * this->viewerButtonWidgets->getLength() + 8;
       Dimension width, height;
       XtVaGetValues(shell,
-        XmNwidth, &width,
-        XmNheight, &height,
-        NULL);
+                    XmNwidth, &width,
+                    XmNheight, &height,
+                    NULL);
       width = SoXtMax(width, (Dimension) 300);
       height = SoXtMax(height, minheight);
       XtVaSetValues(shell,
-        XmNminWidth, 300,
-        XmNminHeight, minheight,
-        XmNwidth, width,
-        XmNheight, height,
-        NULL);
+                    XmNminWidth, 300,
+                    XmNminHeight, minheight,
+                    XmNwidth, width,
+                    XmNheight, height,
+                    NULL);
     }
   }
-  return this->viewerbase;
+  return PRIVATE(this)->viewerbase;
 }
 
 // *************************************************************************
@@ -562,32 +557,32 @@ SoXtFullViewer::buildDecoration(Widget parent)
 {
   this->leftDecoration = this->buildLeftTrim(parent);
   XtVaSetValues(this->leftDecoration,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNrightAttachment, XmATTACH_OPPOSITE_FORM,
-    XmNrightOffset, -30,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNbottomOffset, 30,
-    NULL);
+                XmNleftAttachment, XmATTACH_FORM,
+                XmNtopAttachment, XmATTACH_FORM,
+                XmNrightAttachment, XmATTACH_OPPOSITE_FORM,
+                XmNrightOffset, -30,
+                XmNbottomAttachment, XmATTACH_FORM,
+                XmNbottomOffset, 30,
+                NULL);
 
   this->rightDecoration = this->buildRightTrim(parent);
   XtVaSetValues(this->rightDecoration,
-    XmNleftAttachment, XmATTACH_OPPOSITE_FORM,
-    XmNleftOffset, -30,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNrightAttachment, XmATTACH_FORM,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNbottomOffset, 30,
-    NULL);
+                XmNleftAttachment, XmATTACH_OPPOSITE_FORM,
+                XmNleftOffset, -30,
+                XmNtopAttachment, XmATTACH_FORM,
+                XmNrightAttachment, XmATTACH_FORM,
+                XmNbottomAttachment, XmATTACH_FORM,
+                XmNbottomOffset, 30,
+                NULL);
 
   this->bottomDecoration = this->buildBottomTrim(parent);
   XtVaSetValues(this->bottomDecoration,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNtopAttachment, XmATTACH_OPPOSITE_FORM,
-    XmNtopOffset, -30,
-    XmNrightAttachment, XmATTACH_FORM,
-    XmNbottomAttachment, XmATTACH_FORM,
-    NULL);
+                XmNleftAttachment, XmATTACH_FORM,
+                XmNtopAttachment, XmATTACH_OPPOSITE_FORM,
+                XmNtopOffset, -30,
+                XmNrightAttachment, XmATTACH_FORM,
+                XmNbottomAttachment, XmATTACH_FORM,
+                NULL);
 }
 
 // *************************************************************************
@@ -634,11 +629,11 @@ SoXtFullViewer::buildLeftTrim(Widget parent)
     NULL);
 
   XtAddCallback(this->leftWheel,
-    XmNarmCallback, SoXtFullViewer::leftWheelStartCB, this);
+                XmNarmCallback, SoXtFullViewerP::leftWheelStartCB, this);
   XtAddCallback(this->leftWheel,
-    XmNdisarmCallback, SoXtFullViewer::leftWheelFinishCB, this);
+                XmNdisarmCallback, SoXtFullViewerP::leftWheelFinishCB, this);
   XtAddCallback(this->leftWheel,
-    XmNvalueChangedCallback, SoXtFullViewer::leftWheelMotionCB, this);
+                XmNvalueChangedCallback, SoXtFullViewerP::leftWheelMotionCB, this);
 
   return trim;
 }
@@ -687,11 +682,11 @@ SoXtFullViewer::buildRightTrim(Widget parent)
     NULL);
 
   XtAddCallback(this->rightWheel,
-    XmNarmCallback, SoXtFullViewer::rightWheelStartCB, this);
+                XmNarmCallback, SoXtFullViewerP::rightWheelStartCB, this);
   XtAddCallback(this->rightWheel,
-    XmNdisarmCallback, SoXtFullViewer::rightWheelFinishCB, this);
+                XmNdisarmCallback, SoXtFullViewerP::rightWheelFinishCB, this);
   XtAddCallback(this->rightWheel,
-    XmNvalueChangedCallback, SoXtFullViewer::rightWheelMotionCB, this);
+                XmNvalueChangedCallback, SoXtFullViewerP::rightWheelMotionCB, this);
 
   return trim;
 }
@@ -709,71 +704,71 @@ Widget
 SoXtFullViewer::buildBottomTrim(Widget parent)
 {
   Widget trim = XtVaCreateManagedWidget("BottomTrim",
-    xmFormWidgetClass, parent,
-    NULL);
+                                        xmFormWidgetClass, parent,
+                                        NULL);
 
   this->leftWheelLabel = XtVaCreateManagedWidget("LeftWheelLabel",
-    xmLabelWidgetClass, trim,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNleftOffset, 5,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      this->leftWheelStr, strlen(this->leftWheelStr)+1,
-    NULL);
+                                                 xmLabelWidgetClass, trim,
+                                                 XmNleftAttachment, XmATTACH_FORM,
+                                                 XmNtopAttachment, XmATTACH_FORM,
+                                                 XmNbottomAttachment, XmATTACH_FORM,
+                                                 XmNleftOffset, 5,
+                                                 XtVaTypedArg,
+                                                 XmNlabelString, XmRString,
+                                                 this->leftWheelStr, strlen(this->leftWheelStr)+1,
+                                                 NULL);
 
   this->bottomWheelLabel = XtVaCreateManagedWidget("BottomWheelLabel",
-    xmLabelWidgetClass, trim,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, this->leftWheelLabel,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNleftOffset, 5,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      this->bottomWheelStr, strlen(this->bottomWheelStr)+1,
-    NULL);
+                                                   xmLabelWidgetClass, trim,
+                                                   XmNleftAttachment, XmATTACH_WIDGET,
+                                                   XmNleftWidget, this->leftWheelLabel,
+                                                   XmNtopAttachment, XmATTACH_FORM,
+                                                   XmNbottomAttachment, XmATTACH_FORM,
+                                                   XmNleftOffset, 5,
+                                                   XtVaTypedArg,
+                                                   XmNlabelString, XmRString,
+                                                   this->bottomWheelStr, strlen(this->bottomWheelStr)+1,
+                                                   NULL);
 
   // add bottom thumb wheel
   this->bottomWheel = XtVaCreateManagedWidget("BottomWheel",
-    soxtThumbWheelWidgetClass, trim,
-    XmNorientation, XmHORIZONTAL,
-    XmNshadowType, XmSHADOW_OUT,
-    XmNhighlightThickness, 0,
-    XmNshadowThickness, 2,
-    XmNtraversalOn, False,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, this->bottomWheelLabel,
-    XmNleftOffset, 2,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNtopOffset, 2,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNbottomOffset, 2,
-    XmNwidth, 122,
-    NULL);
+                                              soxtThumbWheelWidgetClass, trim,
+                                              XmNorientation, XmHORIZONTAL,
+                                              XmNshadowType, XmSHADOW_OUT,
+                                              XmNhighlightThickness, 0,
+                                              XmNshadowThickness, 2,
+                                              XmNtraversalOn, False,
+                                              XmNleftAttachment, XmATTACH_WIDGET,
+                                              XmNleftWidget, this->bottomWheelLabel,
+                                              XmNleftOffset, 2,
+                                              XmNtopAttachment, XmATTACH_FORM,
+                                              XmNtopOffset, 2,
+                                              XmNbottomAttachment, XmATTACH_FORM,
+                                              XmNbottomOffset, 2,
+                                              XmNwidth, 122,
+                                              NULL);
 
   XtAddCallback(this->bottomWheel,
-    XmNarmCallback, SoXtFullViewer::bottomWheelStartCB, this);
+                XmNarmCallback, SoXtFullViewerP::bottomWheelStartCB, this);
   XtAddCallback(this->bottomWheel,
-    XmNdisarmCallback, SoXtFullViewer::bottomWheelFinishCB, this);
+                XmNdisarmCallback, SoXtFullViewerP::bottomWheelFinishCB, this);
   XtAddCallback(this->bottomWheel,
-    XmNvalueChangedCallback, SoXtFullViewer::bottomWheelMotionCB, this);
+                XmNvalueChangedCallback, SoXtFullViewerP::bottomWheelMotionCB, this);
 
   this->rightWheelLabel = XtVaCreateManagedWidget("RightWheelLabel",
-    xmLabelWidgetClass, trim,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, this->bottomWheel,
-    XmNalignment, XmALIGNMENT_END,
-    XmNtopAttachment, XmATTACH_OPPOSITE_FORM,
-    XmNtopOffset, -30,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNrightAttachment, XmATTACH_FORM,
-    XmNrightOffset, 5,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      this->rightWheelStr, strlen(this->rightWheelStr)+1,
-    NULL);
+                                                  xmLabelWidgetClass, trim,
+                                                  XmNleftAttachment, XmATTACH_WIDGET,
+                                                  XmNleftWidget, this->bottomWheel,
+                                                  XmNalignment, XmALIGNMENT_END,
+                                                  XmNtopAttachment, XmATTACH_OPPOSITE_FORM,
+                                                  XmNtopOffset, -30,
+                                                  XmNbottomAttachment, XmATTACH_FORM,
+                                                  XmNrightAttachment, XmATTACH_FORM,
+                                                  XmNrightOffset, 5,
+                                                  XtVaTypedArg,
+                                                  XmNlabelString, XmRString,
+                                                  this->rightWheelStr, strlen(this->rightWheelStr)+1,
+                                                  NULL);
 
   return trim;
 }
@@ -794,22 +789,22 @@ SoXtFullViewer::setViewing(SbBool enable)
 
   inherited::setViewing(enable);
 
-  if (this->viewerbuttons.pick != 0) {
-    XtSetSensitive(this->viewerbuttons.pick, enable ? True : False);
-    XtVaSetValues(this->viewerbuttons.pick,
+  if (PRIVATE(this)->viewerbuttons.pick != 0) {
+    XtSetSensitive(PRIVATE(this)->viewerbuttons.pick, enable ? True : False);
+    XtVaSetValues(PRIVATE(this)->viewerbuttons.pick,
                   XmNset, enable ? False : True,
                   NULL);
   }
 
-  if (this->viewerbuttons.view != 0) {
-    XtSetSensitive(this->viewerbuttons.view, enable ? False : True);
-    XtVaSetValues(this->viewerbuttons.view,
+  if (PRIVATE(this)->viewerbuttons.view != 0) {
+    XtSetSensitive(PRIVATE(this)->viewerbuttons.view, enable ? False : True);
+    XtVaSetValues(PRIVATE(this)->viewerbuttons.view,
                   XmNset, enable ? True : False,
                   NULL);
   }
 
-  if (this->viewerbuttons.seek != 0) {
-    XtSetSensitive(this->viewerbuttons.seek, enable ? True : False);
+  if (PRIVATE(this)->viewerbuttons.seek != 0) {
+    XtSetSensitive(PRIVATE(this)->viewerbuttons.seek, enable ? True : False);
   }
 }
 
@@ -820,34 +815,31 @@ SoXtFullViewer::setCamera(SoCamera * camera)
   inherited::setCamera(camera);
 
   if (this->prefshell != NULL) {
-//    this->setZoomSliderPosition(this->getCameraZoom());
-//    this->setZoomFieldString(this->getCameraZoom());
-
     Boolean enable = False;
     if (camera) {
       SoType camtype = camera->getTypeId();
       if (camtype.isDerivedFrom(SoPerspectiveCamera::getClassTypeId()))
         enable = True;
     }
-    XtVaSetValues(this->zoomfrom,
-      XmNsensitive, enable,
-      XmNeditable, enable,
-      XmNcursorPositionVisible, enable,
-      NULL);
-    XtVaSetValues(this->zoomslider,
-      XmNsensitive, enable,
-      XmNeditable, enable,
-      NULL);
-    XtVaSetValues(this->zoomto,
-      XmNsensitive, enable,
-      XmNeditable, enable,
-      XmNcursorPositionVisible, enable,
-      NULL);
-    XtVaSetValues(this->zoomvalue,
-      XmNsensitive, enable,
-      XmNeditable, enable,
-      XmNcursorPositionVisible, enable,
-      NULL);
+    XtVaSetValues(PRIVATE(this)->zoomfrom,
+                  XmNsensitive, enable,
+                  XmNeditable, enable,
+                  XmNcursorPositionVisible, enable,
+                  NULL);
+    XtVaSetValues(PRIVATE(this)->zoomslider,
+                  XmNsensitive, enable,
+                  XmNeditable, enable,
+                  NULL);
+    XtVaSetValues(PRIVATE(this)->zoomto,
+                  XmNsensitive, enable,
+                  XmNeditable, enable,
+                  XmNcursorPositionVisible, enable,
+                  NULL);
+    XtVaSetValues(PRIVATE(this)->zoomvalue,
+                  XmNsensitive, enable,
+                  XmNeditable, enable,
+                  XmNcursorPositionVisible, enable,
+                  NULL);
   }
 }
 
@@ -884,13 +876,13 @@ SoXtFullViewer::buildViewerButtons(Widget parent)
 
   this->createViewerButtons(buttons, this->viewerButtonWidgets);
 
-  XtSetSensitive(this->viewerbuttons.pick, this->isViewing() ? True : False);
-  XtVaSetValues(this->viewerbuttons.pick,
+  XtSetSensitive(PRIVATE(this)->viewerbuttons.pick, this->isViewing() ? True : False);
+  XtVaSetValues(PRIVATE(this)->viewerbuttons.pick,
                 XmNset, this->isViewing() ? False : True,
                 NULL);
 
-  XtSetSensitive(this->viewerbuttons.view, this->isViewing() ? False : True);
-  XtVaSetValues(this->viewerbuttons.view,
+  XtSetSensitive(PRIVATE(this)->viewerbuttons.view, this->isViewing() ? False : True);
+  XtVaSetValues(PRIVATE(this)->viewerbuttons.view,
                 XmNset, this->isViewing() ? True : False,
                 NULL);
 
@@ -898,20 +890,20 @@ SoXtFullViewer::buildViewerButtons(Widget parent)
   for (int i = 0; i < numbuttons; i++) {
     Widget button = (Widget) (*this->viewerButtonWidgets)[i];
     XtVaSetValues(button,
-      XmNshadowType, XmSHADOW_OUT,
-      XmNhighlightThickness, 0,
-      XmNshadowThickness, 2,
-      XmNtraversalOn, False,
-      XmNmarginWidth, 0,
-      XmNmarginHeight, 0,
-      XmNmarginLeft, 0,
-      XmNmarginTop, 0,
-      XmNmarginRight, 0,
-      XmNmarginBottom, 0,
-      XmNrecomputeSize, False,
-      XmNwidth, 28,
-      XmNheight, 28,
-      NULL);
+                  XmNshadowType, XmSHADOW_OUT,
+                  XmNhighlightThickness, 0,
+                  XmNshadowThickness, 2,
+                  XmNtraversalOn, False,
+                  XmNmarginWidth, 0,
+                  XmNmarginHeight, 0,
+                  XmNmarginLeft, 0,
+                  XmNmarginTop, 0,
+                  XmNmarginRight, 0,
+                  XmNmarginBottom, 0,
+                  XmNrecomputeSize, False,
+                  XmNwidth, 28,
+                  XmNheight, 28,
+                  NULL);
   }
 
 /*
@@ -944,31 +936,31 @@ SoXtFullViewer::createViewerButtons(Widget parent,
     label[1] = '\0';
     switch (viewerbutton) {
     case INTERACT_BUTTON:
-      proc = SoXtFullViewer::interactbuttonCB;
+      proc = SoXtFullViewerP::interactbuttonCB;
       label[0] = 'I';
       break;
     case EXAMINE_BUTTON:
-      proc = SoXtFullViewer::examinebuttonCB;
+      proc = SoXtFullViewerP::examinebuttonCB;
       label[0] = 'E';
       break;
     case HELP_BUTTON:
-      proc = SoXtFullViewer::helpbuttonCB;
+      proc = SoXtFullViewerP::helpbuttonCB;
       label[0] = '?';
       break;
     case HOME_BUTTON:
-      proc = SoXtFullViewer::homebuttonCB;
+      proc = SoXtFullViewerP::homebuttonCB;
       label[0] = 'H';
       break;
     case SET_HOME_BUTTON:
-      proc = SoXtFullViewer::sethomebuttonCB;
+      proc = SoXtFullViewerP::sethomebuttonCB;
       label[0] = 'N';
       break;
     case VIEW_ALL_BUTTON:
-      proc = SoXtFullViewer::viewallbuttonCB;
+      proc = SoXtFullViewerP::viewallbuttonCB;
       label[0] = 'V';
       break;
     case SEEK_BUTTON:
-      proc = SoXtFullViewer::seekbuttonCB;
+      proc = SoXtFullViewerP::seekbuttonCB;
       label[0] = 'S';
       break;
     default:
@@ -995,25 +987,25 @@ SoXtFullViewer::createViewerButtons(Widget parent,
 
     switch (viewerbutton) {
     case INTERACT_BUTTON:
-      this->viewerbuttons.pick = button;
+      PRIVATE(this)->viewerbuttons.pick = button;
       break;
     case EXAMINE_BUTTON:
-      this->viewerbuttons.view = button;
+      PRIVATE(this)->viewerbuttons.view = button;
       break;
     case HELP_BUTTON:
-      this->viewerbuttons.help = button;
+      PRIVATE(this)->viewerbuttons.help = button;
       break;
     case HOME_BUTTON:
-      this->viewerbuttons.home = button;
+      PRIVATE(this)->viewerbuttons.home = button;
       break;
     case SET_HOME_BUTTON:
-      this->viewerbuttons.set_home = button;
+      PRIVATE(this)->viewerbuttons.set_home = button;
       break;
     case VIEW_ALL_BUTTON:
-      this->viewerbuttons.view_all = button;
+      PRIVATE(this)->viewerbuttons.view_all = button;
       break;
     case SEEK_BUTTON:
-      this->viewerbuttons.seek = button;
+      PRIVATE(this)->viewerbuttons.seek = button;
       break;
     default:
       assert(0 && "impossible");
@@ -1023,37 +1015,37 @@ SoXtFullViewer::createViewerButtons(Widget parent,
     Pixmap pixmap, pixmap_ins;
     switch (viewerbutton) {
     case INTERACT_BUTTON:
-      pixmap = pixmaps.pick =
+      pixmap = PRIVATE(this)->pixmaps.pick =
         SoXtInternal::createPixmapFromXpm(button, pick_xpm);
-      pixmap_ins = pixmaps.pick_ins =
+      pixmap_ins = PRIVATE(this)->pixmaps.pick_ins =
         SoXtInternal::createPixmapFromXpm(button, pick_xpm, TRUE);
       break;
     case EXAMINE_BUTTON:
-      pixmap = pixmaps.view =
+      pixmap = PRIVATE(this)->pixmaps.view =
         SoXtInternal::createPixmapFromXpm(button, view_xpm);
-      pixmap_ins = pixmaps.view_ins =
+      pixmap_ins = PRIVATE(this)->pixmaps.view_ins =
         SoXtInternal::createPixmapFromXpm(button, view_xpm, TRUE);
       break;
     case HELP_BUTTON:
-      pixmap = pixmap_ins = pixmaps.help =
+      pixmap = pixmap_ins = PRIVATE(this)->pixmaps.help =
         SoXtInternal::createPixmapFromXpm(button, help_xpm);
       break;
     case HOME_BUTTON:
-      pixmap = pixmap_ins = pixmaps.home =
+      pixmap = pixmap_ins = PRIVATE(this)->pixmaps.home =
         SoXtInternal::createPixmapFromXpm(button, home_xpm);
       break;
     case SET_HOME_BUTTON:
-      pixmap = pixmap_ins = pixmaps.set_home =
+      pixmap = pixmap_ins = PRIVATE(this)->pixmaps.set_home =
         SoXtInternal::createPixmapFromXpm(button, set_home_xpm);
       break;
     case VIEW_ALL_BUTTON:
-      pixmap = pixmap_ins = pixmaps.view_all =
+      pixmap = pixmap_ins = PRIVATE(this)->pixmaps.view_all =
         SoXtInternal::createPixmapFromXpm(button, view_all_xpm);
       break;
     case SEEK_BUTTON:
-      pixmap = pixmaps.seek =
+      pixmap = PRIVATE(this)->pixmaps.seek =
         SoXtInternal::createPixmapFromXpm(button, seek_xpm);
-      pixmap_ins = pixmaps.seek_ins =
+      pixmap_ins = PRIVATE(this)->pixmaps.seek_ins =
         SoXtInternal::createPixmapFromXpm(button, seek_xpm, TRUE);
       break;
     default:
@@ -1143,125 +1135,67 @@ SoXtFullViewer::openPopupMenu(const SbVec2s position)
 
 // *************************************************************************
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::leftWheelStartCB(Widget,
-                                 XtPointer closure,
-                                 XtPointer)
+SoXtFullViewerP::leftWheelStartCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->leftWheelStart();
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::leftWheelMotionCB(Widget,
-                                  XtPointer closure,
-                                  XtPointer call_data)
+SoXtFullViewerP::leftWheelMotionCB(Widget, XtPointer closure, XtPointer call_data)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
   viewer->leftWheelMotion(data->current);
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::leftWheelFinishCB(Widget,
-                                  XtPointer closure,
-                                  XtPointer)
+SoXtFullViewerP::leftWheelFinishCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->leftWheelFinish();
 }
 
-// *************************************************************************
-
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::bottomWheelStartCB(Widget,
-                                   XtPointer closure,
-                                   XtPointer)
+SoXtFullViewerP::bottomWheelStartCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->bottomWheelStart();
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::bottomWheelMotionCB(Widget,
-                                    XtPointer closure,
-                                    XtPointer call_data)
+SoXtFullViewerP::bottomWheelMotionCB(Widget, XtPointer closure, XtPointer call_data)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
   viewer->bottomWheelMotion(data->current);
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::bottomWheelFinishCB(Widget,
-                                    XtPointer closure,
-                                    XtPointer)
+SoXtFullViewerP::bottomWheelFinishCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->bottomWheelFinish();
 }
 
-// *************************************************************************
-
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::rightWheelStartCB(Widget,
-                                  XtPointer closure,
-                                  XtPointer)
+SoXtFullViewerP::rightWheelStartCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->rightWheelStart();
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::rightWheelMotionCB(Widget,
-                                   XtPointer closure,
-                                   XtPointer call_data)
+SoXtFullViewerP::rightWheelMotionCB(Widget, XtPointer closure, XtPointer call_data)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
   viewer->rightWheelMotion(data->current);
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::rightWheelFinishCB(Widget,
-                                   XtPointer closure,
-                                   XtPointer)
+SoXtFullViewerP::rightWheelFinishCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->rightWheelFinish();
@@ -1359,44 +1293,41 @@ SoXtFullViewer::buildAppButtonsForm(Widget parent)
 
 // *************************************************************************
 
-/*!
-  This method shows or hides the decoration widgets, depending on the
-  \a enable argument.
-*/
-
+// This method shows or hides the decoration widgets, depending on the
+// \a enable argument.
 void
-SoXtFullViewer::showDecorationWidgets(SbBool enable)
+SoXtFullViewerP::showDecorationWidgets(SbBool enable)
 {
-  if (! this->canvas) return;
-  assert(this->leftDecoration != (Widget) NULL);
-  assert(this->rightDecoration != (Widget) NULL);
-  assert(this->bottomDecoration != (Widget) NULL);
+  if (!this->canvas) return;
+  assert(PUBLIC(this)->leftDecoration != (Widget) NULL);
+  assert(PUBLIC(this)->rightDecoration != (Widget) NULL);
+  assert(PUBLIC(this)->bottomDecoration != (Widget) NULL);
 
   if (enable) {
     XtVaSetValues(this->canvas,
-      XmNleftOffset, 30,
-      XmNrightOffset, 30,
-      XmNbottomOffset, 30,
-      NULL);
-    if (XtWindow(this->leftDecoration) != 0) {
-      XtMapWidget(this->leftDecoration);
-      XtManageChild(this->leftDecoration);
-      XtMapWidget(this->rightDecoration);
-      XtManageChild(this->rightDecoration);
-      XtMapWidget(this->bottomDecoration);
-      XtManageChild(this->bottomDecoration);
+                  XmNleftOffset, 30,
+                  XmNrightOffset, 30,
+                  XmNbottomOffset, 30,
+                  NULL);
+    if (XtWindow(PUBLIC(this)->leftDecoration) != 0) {
+      XtMapWidget(PUBLIC(this)->leftDecoration);
+      XtManageChild(PUBLIC(this)->leftDecoration);
+      XtMapWidget(PUBLIC(this)->rightDecoration);
+      XtManageChild(PUBLIC(this)->rightDecoration);
+      XtMapWidget(PUBLIC(this)->bottomDecoration);
+      XtManageChild(PUBLIC(this)->bottomDecoration);
     }
   } else {
-    if (XtWindow(this->leftDecoration) != 0) {
-      XtUnmapWidget(this->leftDecoration);
-      XtUnmapWidget(this->rightDecoration);
-      XtUnmapWidget(this->bottomDecoration);
+    if (XtWindow(PUBLIC(this)->leftDecoration) != 0) {
+      XtUnmapWidget(PUBLIC(this)->leftDecoration);
+      XtUnmapWidget(PUBLIC(this)->rightDecoration);
+      XtUnmapWidget(PUBLIC(this)->bottomDecoration);
     }
     XtVaSetValues(this->canvas,
-      XmNleftOffset, 0,
-      XmNrightOffset, 0,
-      XmNbottomOffset, 0,
-      NULL);
+                  XmNleftOffset, 0,
+                  XmNrightOffset, 0,
+                  XmNbottomOffset, 0,
+                  NULL);
   }
 }
 
@@ -1462,7 +1393,7 @@ SoXtFullViewer::createPrefSheetShellAndForm(Widget & shell,
     NULL);
 
   XtAddCallback(shell, XmNdestroyCallback,
-    prefSheetDestroyCB, (XtPointer) this);
+                SoXtFullViewerP::prefSheetDestroyCB, (XtPointer) this);
   this->prefshell = shell;
 
   form = XtVaCreateWidget("form", xmFormWidgetClass, shell, NULL);
@@ -1708,96 +1639,96 @@ SoXtFullViewer::createSeekPrefSheetGuts(Widget parent)
   //  Seek to:   <> point   <> object
 
   Widget form = XtVaCreateManagedWidget("seekprefs",
-    xmFormWidgetClass, parent, NULL);
+                                        xmFormWidgetClass, parent, NULL);
 
   Widget line1 = XtVaCreateManagedWidget("line 1",
-    xmFormWidgetClass, form,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNrightAttachment, XmATTACH_FORM,
-    NULL);
+                                         xmFormWidgetClass, form,
+                                         XmNtopAttachment, XmATTACH_FORM,
+                                         XmNleftAttachment, XmATTACH_FORM,
+                                         XmNrightAttachment, XmATTACH_FORM,
+                                         NULL);
 
   Widget label = XtVaCreateManagedWidget("seektime",
-    xmLabelWidgetClass, line1,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      "Seek animation time: ", strlen("Seek animation time: ") + 1, 
-    NULL);
+                                         xmLabelWidgetClass, line1,
+                                         XmNtopAttachment, XmATTACH_FORM,
+                                         XmNleftAttachment, XmATTACH_FORM,
+                                         XmNbottomAttachment, XmATTACH_FORM,
+                                         XtVaTypedArg,
+                                         XmNlabelString, XmRString,
+                                         "Seek animation time: ", strlen("Seek animation time: ") + 1, 
+                                         NULL);
 
-  this->seektimefield = XtVaCreateManagedWidget("seektimeinput",
-    xmTextFieldWidgetClass, line1,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, label,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNwidth, 60,
-    NULL);
+  PRIVATE(this)->seektimefield = XtVaCreateManagedWidget("seektimeinput",
+                                                         xmTextFieldWidgetClass, line1,
+                                                         XmNtopAttachment, XmATTACH_FORM,
+                                                         XmNleftAttachment, XmATTACH_WIDGET,
+                                                         XmNleftWidget, label,
+                                                         XmNbottomAttachment, XmATTACH_FORM,
+                                                         XmNwidth, 60,
+                                                         NULL);
 
-  XtAddCallback(this->seektimefield, XmNactivateCallback,
-    SoXtFullViewer::seektimechangedCB, (XtPointer) this);
-  XtAddCallback(this->seektimefield, XmNlosingFocusCallback,
-    SoXtFullViewer::seektimechangedCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->seektimefield, XmNactivateCallback,
+                SoXtFullViewerP::seektimechangedCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->seektimefield, XmNlosingFocusCallback,
+                SoXtFullViewerP::seektimechangedCB, (XtPointer) this);
   char buffer[16];
   sprintf(buffer, "%g", this->getSeekTime());
-  XmTextSetString(this->seektimefield, buffer);
-  XmTextSetCursorPosition(this->seektimefield, (long) strlen(buffer));
+  XmTextSetString(PRIVATE(this)->seektimefield, buffer);
+  XmTextSetCursorPosition(PRIVATE(this)->seektimefield, (long) strlen(buffer));
 
   Widget fieldlabed = XtVaCreateManagedWidget("seconds",
-    xmLabelWidgetClass, line1,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, this->seektimefield,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNbottomWidget, this->seektimefield,
-    NULL);
+                                              xmLabelWidgetClass, line1,
+                                              XmNtopAttachment, XmATTACH_FORM,
+                                              XmNleftAttachment, XmATTACH_WIDGET,
+                                              XmNleftWidget, PRIVATE(this)->seektimefield,
+                                              XmNbottomAttachment, XmATTACH_FORM,
+                                              XmNbottomWidget, PRIVATE(this)->seektimefield,
+                                              NULL);
 
   Widget line2 = XtVaCreateManagedWidget("line 2",
-    xmFormWidgetClass, form,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNrightAttachment, XmATTACH_FORM,
-    XmNtopAttachment, XmATTACH_WIDGET,
-    XmNtopWidget, line1,
-    XmNbottomAttachment, XmATTACH_FORM,
-    NULL);
+                                         xmFormWidgetClass, form,
+                                         XmNleftAttachment, XmATTACH_FORM,
+                                         XmNrightAttachment, XmATTACH_FORM,
+                                         XmNtopAttachment, XmATTACH_WIDGET,
+                                         XmNtopWidget, line1,
+                                         XmNbottomAttachment, XmATTACH_FORM,
+                                         NULL);
 
   Widget tolabel = XtVaCreateManagedWidget("tolabel",
-    xmLabelWidgetClass, line2,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      "Seek to: ", strlen("Seek to: ") + 1,
-    NULL);
+                                           xmLabelWidgetClass, line2,
+                                           XmNleftAttachment, XmATTACH_FORM,
+                                           XmNtopAttachment, XmATTACH_FORM,
+                                           XmNbottomAttachment, XmATTACH_FORM,
+                                           XtVaTypedArg,
+                                           XmNlabelString, XmRString,
+                                           "Seek to: ", strlen("Seek to: ") + 1,
+                                           NULL);
 
-  this->pointtoggle = XtVaCreateManagedWidget("point",
-    xmToggleButtonWidgetClass, line2,
-    XmNindicatorType, XmONE_OF_MANY,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, tolabel,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNset, this->isDetailSeek() ? True : False,
-    NULL);
+  PRIVATE(this)->pointtoggle = XtVaCreateManagedWidget("point",
+                                                       xmToggleButtonWidgetClass, line2,
+                                                       XmNindicatorType, XmONE_OF_MANY,
+                                                       XmNleftAttachment, XmATTACH_WIDGET,
+                                                       XmNleftWidget, tolabel,
+                                                       XmNtopAttachment, XmATTACH_FORM,
+                                                       XmNbottomAttachment, XmATTACH_FORM,
+                                                       XmNset, this->isDetailSeek() ? True : False,
+                                                       NULL);
 
-  XtAddCallback(this->pointtoggle, XmNvalueChangedCallback,
-    SoXtFullViewer::pointtoggledCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->pointtoggle, XmNvalueChangedCallback,
+                SoXtFullViewerP::pointtoggledCB, (XtPointer) this);
 
-  this->objecttoggle = XtVaCreateManagedWidget("object",
-    xmToggleButtonWidgetClass, line2,
-    XmNindicatorType, XmONE_OF_MANY,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, this->pointtoggle,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNset, this->isDetailSeek() ? False : True,
-    NULL);
+  PRIVATE(this)->objecttoggle = XtVaCreateManagedWidget("object",
+                                                        xmToggleButtonWidgetClass, line2,
+                                                        XmNindicatorType, XmONE_OF_MANY,
+                                                        XmNleftAttachment, XmATTACH_WIDGET,
+                                                        XmNleftWidget, PRIVATE(this)->pointtoggle,
+                                                        XmNtopAttachment, XmATTACH_FORM,
+                                                        XmNbottomAttachment, XmATTACH_FORM,
+                                                        XmNset, this->isDetailSeek() ? False : True,
+                                                        NULL);
 
-  XtAddCallback(this->objecttoggle, XmNvalueChangedCallback,
-    SoXtFullViewer::objecttoggledCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->objecttoggle, XmNvalueChangedCallback,
+                SoXtFullViewerP::objecttoggledCB, (XtPointer) this);
 
   return form;
 }
@@ -1815,94 +1746,94 @@ SoXtFullViewer::createSeekDistPrefSheetGuts(Widget parent)
   //      <> percentage   <> absolute
 
   Widget form = XtVaCreateManagedWidget("seekdistprefs",
-    xmFormWidgetClass, parent, NULL);
+                                        xmFormWidgetClass, parent, NULL);
 
   Widget line1 = XtVaCreateManagedWidget("seekdistprefs",
-    xmFormWidgetClass, form,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNrightAttachment, XmATTACH_FORM,
-    XmNtopAttachment, XmATTACH_FORM,
-    NULL);
+                                         xmFormWidgetClass, form,
+                                         XmNleftAttachment, XmATTACH_FORM,
+                                         XmNrightAttachment, XmATTACH_FORM,
+                                         XmNtopAttachment, XmATTACH_FORM,
+                                         NULL);
 
   Widget label = XtVaCreateManagedWidget("seekdistlabel",
-    xmLabelWidgetClass, line1,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      "Seek distance: ", strlen("Seek distance: ") + 1,
-    NULL);
+                                         xmLabelWidgetClass, line1,
+                                         XmNtopAttachment, XmATTACH_FORM,
+                                         XmNleftAttachment, XmATTACH_FORM,
+                                         XmNbottomAttachment, XmATTACH_FORM,
+                                         XtVaTypedArg,
+                                         XmNlabelString, XmRString,
+                                         "Seek distance: ", strlen("Seek distance: ") + 1,
+                                         NULL);
 
   Widget wheel = XtVaCreateManagedWidget("distance",
-    soxtThumbWheelWidgetClass, line1,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNtopOffset, 2,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, label,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNbottomOffset, 2,
-    XmNorientation, XmHORIZONTAL,
-    XmNshadowType, XmSHADOW_OUT,
-    XmNshadowThickness, 2,
-    XmNtraversalOn, False,
-    XmNwidth, 90,
-    NULL);
+                                         soxtThumbWheelWidgetClass, line1,
+                                         XmNtopAttachment, XmATTACH_FORM,
+                                         XmNtopOffset, 2,
+                                         XmNleftAttachment, XmATTACH_WIDGET,
+                                         XmNleftWidget, label,
+                                         XmNbottomAttachment, XmATTACH_FORM,
+                                         XmNbottomOffset, 2,
+                                         XmNorientation, XmHORIZONTAL,
+                                         XmNshadowType, XmSHADOW_OUT,
+                                         XmNshadowThickness, 2,
+                                         XmNtraversalOn, False,
+                                         XmNwidth, 90,
+                                         NULL);
 
-  this->seekdistancefield = XtVaCreateManagedWidget("seekdistancefield",
-    xmTextFieldWidgetClass, line1,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, wheel,
-    XmNwidth, 80,
-    NULL);
-  XtAddCallback(this->seekdistancefield, XmNlosingFocusCallback,
-    SoXtFullViewer::seekdistancechangedCB, (XtPointer) this);
-  XtAddCallback(this->seekdistancefield, XmNactivateCallback,
-    SoXtFullViewer::seekdistancechangedCB, (XtPointer) this);
+  PRIVATE(this)->seekdistancefield = XtVaCreateManagedWidget("seekdistancefield",
+                                                             xmTextFieldWidgetClass, line1,
+                                                             XmNtopAttachment, XmATTACH_FORM,
+                                                             XmNleftAttachment, XmATTACH_WIDGET,
+                                                             XmNleftWidget, wheel,
+                                                             XmNwidth, 80,
+                                                             NULL);
+  XtAddCallback(PRIVATE(this)->seekdistancefield, XmNlosingFocusCallback,
+                SoXtFullViewerP::seekdistancechangedCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->seekdistancefield, XmNactivateCallback,
+                SoXtFullViewerP::seekdistancechangedCB, (XtPointer) this);
   char buffer[16];
-  sprintf(buffer, "%g", this->seekdistance);
-  XmTextSetString(this->seekdistancefield, buffer);
-  XmTextSetCursorPosition(this->seekdistancefield, (long) strlen(buffer));
+  sprintf(buffer, "%g", PRIVATE(this)->seekdistance);
+  XmTextSetString(PRIVATE(this)->seekdistancefield, buffer);
+  XmTextSetCursorPosition(PRIVATE(this)->seekdistancefield, (long) strlen(buffer));
 
   Widget line2 = XtVaCreateManagedWidget("line 2",
-    xmFormWidgetClass, form,
-    XmNtopAttachment, XmATTACH_WIDGET,
-    XmNtopWidget, line1,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNrightAttachment, XmATTACH_FORM,
-    NULL);
+                                         xmFormWidgetClass, form,
+                                         XmNtopAttachment, XmATTACH_WIDGET,
+                                         XmNtopWidget, line1,
+                                         XmNleftAttachment, XmATTACH_FORM,
+                                         XmNrightAttachment, XmATTACH_FORM,
+                                         NULL);
 
-  this->percenttoggle = XtVaCreateManagedWidget("percentagetoggle",
-    xmToggleButtonWidgetClass, line2,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      "percentage", strlen("percentage") + 1,
-    XmNindicatorType, XmONE_OF_MANY,
-    XmNset, this->seekdistaspercentage ? True : False,
-    NULL);
+  PRIVATE(this)->percenttoggle = XtVaCreateManagedWidget("percentagetoggle",
+                                                         xmToggleButtonWidgetClass, line2,
+                                                         XmNtopAttachment, XmATTACH_FORM,
+                                                         XmNleftAttachment, XmATTACH_FORM,
+                                                         XmNbottomAttachment, XmATTACH_FORM,
+                                                         XtVaTypedArg,
+                                                         XmNlabelString, XmRString,
+                                                         "percentage", strlen("percentage") + 1,
+                                                         XmNindicatorType, XmONE_OF_MANY,
+                                                         XmNset, PRIVATE(this)->seekdistaspercentage ? True : False,
+                                                         NULL);
 
-  XtAddCallback(this->percenttoggle, XmNvalueChangedCallback,
-    SoXtFullViewer::percenttoggledCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->percenttoggle, XmNvalueChangedCallback,
+                SoXtFullViewerP::percenttoggledCB, (XtPointer) this);
 
-  this->absolutetoggle = XtVaCreateManagedWidget("absolutetoggle",
-    xmToggleButtonWidgetClass, line2,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, this->percenttoggle,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNindicatorType, XmONE_OF_MANY,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      "absolute", strlen("absolute") + 1,
-    XmNset, this->seekdistaspercentage ? False : True,
-    NULL);
+  PRIVATE(this)->absolutetoggle = XtVaCreateManagedWidget("absolutetoggle",
+                                                          xmToggleButtonWidgetClass, line2,
+                                                          XmNtopAttachment, XmATTACH_FORM,
+                                                          XmNleftAttachment, XmATTACH_WIDGET,
+                                                          XmNleftWidget, PRIVATE(this)->percenttoggle,
+                                                          XmNbottomAttachment, XmATTACH_FORM,
+                                                          XmNindicatorType, XmONE_OF_MANY,
+                                                          XtVaTypedArg,
+                                                          XmNlabelString, XmRString,
+                                                          "absolute", strlen("absolute") + 1,
+                                                          XmNset, PRIVATE(this)->seekdistaspercentage ? False : True,
+                                                          NULL);
 
-  XtAddCallback(this->absolutetoggle, XmNvalueChangedCallback,
-    SoXtFullViewer::absolutetoggledCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->absolutetoggle, XmNvalueChangedCallback,
+                SoXtFullViewerP::absolutetoggledCB, (XtPointer) this);
 
   return form;
 }
@@ -1921,15 +1852,15 @@ SoXtFullViewer::createZoomPrefSheetGuts(Widget parent)
   //  Zoom slider ranges from:  |N.N|  to |N.N|
 
   Widget form = XtVaCreateManagedWidget("zoomprefs",
-    xmFormWidgetClass, parent,
-    NULL);
+                                        xmFormWidgetClass, parent,
+                                        NULL);
 
-  this->zoomfrom = XtVaCreateManagedWidget("from",
-    xmTextFieldWidgetClass, form,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNwidth, 50,
-    NULL);
+  PRIVATE(this)->zoomfrom = XtVaCreateManagedWidget("from",
+                                                    xmTextFieldWidgetClass, form,
+                                                    XmNtopAttachment, XmATTACH_FORM,
+                                                    XmNleftAttachment, XmATTACH_FORM,
+                                                    XmNwidth, 50,
+                                                    NULL);
 
   SoCamera * const camera = this->getCamera();
   Boolean enable = False;
@@ -1940,111 +1871,111 @@ SoXtFullViewer::createZoomPrefSheetGuts(Widget parent)
   }
 
   char buf[16];
-  sprintf(buf, "%.1f", this->zoomrange[0]);
-  XmTextSetString(this->zoomfrom, buf);
-  XmTextSetCursorPosition(this->zoomfrom, (long) strlen(buf));
+  sprintf(buf, "%.1f", PRIVATE(this)->zoomrange[0]);
+  XmTextSetString(PRIVATE(this)->zoomfrom, buf);
+  XmTextSetCursorPosition(PRIVATE(this)->zoomfrom, (long) strlen(buf));
 
-  XtVaSetValues(this->zoomfrom,
-    XmNsensitive, enable,
-    XmNeditable, enable,
-    XmNcursorPositionVisible, enable,
-    NULL);
+  XtVaSetValues(PRIVATE(this)->zoomfrom,
+                XmNsensitive, enable,
+                XmNeditable, enable,
+                XmNcursorPositionVisible, enable,
+                NULL);
 
-  XtAddCallback(this->zoomfrom, XmNactivateCallback,
-    SoXtFullViewer::zoomfromchangedCB, (XtPointer) this);
-  XtAddCallback(this->zoomfrom, XmNlosingFocusCallback,
-    SoXtFullViewer::zoomfromchangedCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->zoomfrom, XmNactivateCallback,
+                SoXtFullViewerP::zoomfromchangedCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->zoomfrom, XmNlosingFocusCallback,
+                SoXtFullViewerP::zoomfromchangedCB, (XtPointer) this);
 
-  this->zoomvalue = XtVaCreateManagedWidget("zoomvalue",
-    xmTextFieldWidgetClass, form,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNrightAttachment, XmATTACH_FORM,
-    XmNwidth, 60,
-    NULL);
+  PRIVATE(this)->zoomvalue = XtVaCreateManagedWidget("zoomvalue",
+                                                     xmTextFieldWidgetClass, form,
+                                                     XmNtopAttachment, XmATTACH_FORM,
+                                                     XmNrightAttachment, XmATTACH_FORM,
+                                                     XmNwidth, 60,
+                                                     NULL);
 
-  sprintf(buf, "%.1f", this->getCameraZoom());
-  XmTextSetString(this->zoomvalue, buf);
-  XmTextSetCursorPosition(this->zoomvalue, (long) strlen(buf));
+  sprintf(buf, "%.1f", PRIVATE(this)->getCameraZoom());
+  XmTextSetString(PRIVATE(this)->zoomvalue, buf);
+  XmTextSetCursorPosition(PRIVATE(this)->zoomvalue, (long) strlen(buf));
 
-  XtVaSetValues(this->zoomvalue,
-    XmNsensitive, enable,
-    XmNeditable, enable,
-    XmNcursorPositionVisible, enable,
-    NULL);
+  XtVaSetValues(PRIVATE(this)->zoomvalue,
+                XmNsensitive, enable,
+                XmNeditable, enable,
+                XmNcursorPositionVisible, enable,
+                NULL);
 
-  XtAddCallback(this->zoomvalue, XmNactivateCallback,
-    SoXtFullViewer::zoomvaluechangedCB, (XtPointer) this);
-  XtAddCallback(this->zoomvalue, XmNlosingFocusCallback,
-    SoXtFullViewer::zoomvaluechangedCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->zoomvalue, XmNactivateCallback,
+                SoXtFullViewerP::zoomvaluechangedCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->zoomvalue, XmNlosingFocusCallback,
+                SoXtFullViewerP::zoomvaluechangedCB, (XtPointer) this);
 
   Widget valuelabel = XtVaCreateManagedWidget("valuelabel",
-    xmLabelWidgetClass, form,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNrightAttachment, XmATTACH_WIDGET,
-    XmNrightWidget, zoomvalue,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      " Value: ", strlen(" Value: ") + 1,
-    NULL);
+                                              xmLabelWidgetClass, form,
+                                              XmNtopAttachment, XmATTACH_FORM,
+                                              XmNrightAttachment, XmATTACH_WIDGET,
+                                              XmNrightWidget, PRIVATE(this)->zoomvalue,
+                                              XmNbottomAttachment, XmATTACH_FORM,
+                                              XtVaTypedArg,
+                                              XmNlabelString, XmRString,
+                                              " Value: ", strlen(" Value: ") + 1,
+                                              NULL);
 
-  this->zoomto = XtVaCreateManagedWidget("to",
-    xmTextFieldWidgetClass, form,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNrightAttachment, XmATTACH_WIDGET,
-    XmNrightWidget, valuelabel,
-    XmNwidth, 50,
-    NULL);
+  PRIVATE(this)->zoomto = XtVaCreateManagedWidget("to",
+                                                  xmTextFieldWidgetClass, form,
+                                                  XmNtopAttachment, XmATTACH_FORM,
+                                                  XmNrightAttachment, XmATTACH_WIDGET,
+                                                  XmNrightWidget, valuelabel,
+                                                  XmNwidth, 50,
+                                                  NULL);
 
-  sprintf(buf, "%.1f", this->zoomrange[1]);
-  XmTextSetString(this->zoomto, buf);
-  XmTextSetCursorPosition(this->zoomto, (long) strlen(buf));
+  sprintf(buf, "%.1f", PRIVATE(this)->zoomrange[1]);
+  XmTextSetString(PRIVATE(this)->zoomto, buf);
+  XmTextSetCursorPosition(PRIVATE(this)->zoomto, (long) strlen(buf));
 
-  XtVaSetValues(this->zoomto,
-    XmNsensitive, enable,
-    XmNeditable, enable,
-    XmNcursorPositionVisible, enable,
-    NULL);
+  XtVaSetValues(PRIVATE(this)->zoomto,
+                XmNsensitive, enable,
+                XmNeditable, enable,
+                XmNcursorPositionVisible, enable,
+                NULL);
 
-  XtAddCallback(this->zoomto, XmNactivateCallback,
-    SoXtFullViewer::zoomtochangedCB, (XtPointer) this);
-  XtAddCallback(this->zoomto, XmNlosingFocusCallback,
-    SoXtFullViewer::zoomtochangedCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->zoomto, XmNactivateCallback,
+                SoXtFullViewerP::zoomtochangedCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->zoomto, XmNlosingFocusCallback,
+                SoXtFullViewerP::zoomtochangedCB, (XtPointer) this);
 
-  this->zoomslider = XtVaCreateManagedWidget("zoomslider",
-    xmScaleWidgetClass, form,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNtopOffset, 6,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, this->zoomfrom,
-    XmNrightAttachment, XmATTACH_WIDGET,
-    XmNrightWidget, this->zoomto,
-    XmNorientation, XmHORIZONTAL,
-    XmNminimum, 0,
-    XmNmaximum, 1000,
-    XmNdecimalPoints, 1,
-    XmNshowValue, False,
-    NULL);
+  PRIVATE(this)->zoomslider = XtVaCreateManagedWidget("zoomslider",
+                                                      xmScaleWidgetClass, form,
+                                                      XmNtopAttachment, XmATTACH_FORM,
+                                                      XmNtopOffset, 6,
+                                                      XmNleftAttachment, XmATTACH_WIDGET,
+                                                      XmNleftWidget, PRIVATE(this)->zoomfrom,
+                                                      XmNrightAttachment, XmATTACH_WIDGET,
+                                                      XmNrightWidget, PRIVATE(this)->zoomto,
+                                                      XmNorientation, XmHORIZONTAL,
+                                                      XmNminimum, 0,
+                                                      XmNmaximum, 1000,
+                                                      XmNdecimalPoints, 1,
+                                                      XmNshowValue, False,
+                                                      NULL);
 
-  float zoomvalue = this->getCameraZoom();
-  if (zoomvalue == 0.0f || (this->zoomrange[0] == this->zoomrange[1])) {
-    XmScaleSetValue(this->zoomslider, 0);
+  float zoomvalue = PRIVATE(this)->getCameraZoom();
+  if (zoomvalue == 0.0f || (PRIVATE(this)->zoomrange[0] == PRIVATE(this)->zoomrange[1])) {
+    XmScaleSetValue(PRIVATE(this)->zoomslider, 0);
   } else {
-    float normalized = (zoomvalue - this->zoomrange[0]) /
-      (this->zoomrange[1] - this->zoomrange[0]);
+    float normalized = (zoomvalue - PRIVATE(this)->zoomrange[0]) /
+      (PRIVATE(this)->zoomrange[1] - PRIVATE(this)->zoomrange[0]);
     int scaledval = (int) (sqrt(normalized) * 1000.0f);
-    XmScaleSetValue(this->zoomslider, scaledval);
+    XmScaleSetValue(PRIVATE(this)->zoomslider, scaledval);
   }
 
-  XtVaSetValues(this->zoomslider,
-    XmNsensitive, enable,
-    XmNeditable, enable,
-    NULL);
+  XtVaSetValues(PRIVATE(this)->zoomslider,
+                XmNsensitive, enable,
+                XmNeditable, enable,
+                NULL);
 
-  XtAddCallback(this->zoomslider, XmNvalueChangedCallback,
-    SoXtFullViewer::zoomsliderchangedCB, (XtPointer) this);
-  XtAddCallback(this->zoomslider, XmNdragCallback,
-    SoXtFullViewer::zoomsliderchangedCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->zoomslider, XmNvalueChangedCallback,
+                SoXtFullViewerP::zoomsliderchangedCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->zoomslider, XmNdragCallback,
+                SoXtFullViewerP::zoomsliderchangedCB, (XtPointer) this);
 
   return form;
 }
@@ -2061,35 +1992,35 @@ Widget
 SoXtFullViewer::createClippingPrefSheetGuts(Widget parent)
 {
   Widget form = XtVaCreateManagedWidget("clippingprefs",
-    xmFormWidgetClass, parent, NULL);
+                                        xmFormWidgetClass, parent, NULL);
 
 #if 0
   this->autocliptoggle = XtVaCreateManagedWidget("autocliptoggle",
-    xmToggleButtonWidgetClass, form,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNset, this->isAutoClipping() ? True : False,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      "auto", strlen("auto") + 1,
-    NULL);
+                                                 xmToggleButtonWidgetClass, form,
+                                                 XmNleftAttachment, XmATTACH_FORM,
+                                                 XmNtopAttachment, XmATTACH_FORM,
+                                                 XmNset, this->isAutoClipping() ? True : False,
+                                                 XtVaTypedArg,
+                                                 XmNlabelString, XmRString,
+                                                 "auto", strlen("auto") + 1,
+                                                 NULL);
 
   XtAddCallback(this->autocliptoggle, XmNvalueChangedCallback,
-    SoXtFullViewer::autocliptoggledCB, (XtPointer) this);
+                SoXtFullViewer::autocliptoggledCB, (XtPointer) this);
 
   SoCamera * const camera = this->getCamera();
 
   this->farvalue = XtVaCreateManagedWidget("farvalue",
-    xmTextFieldWidgetClass, form,
-    XmNrightAttachment, XmATTACH_FORM,
-    XmNrightOffset, 2,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XmNbottomOffset, 2,
-    XmNwidth, 100,
-    XmNsensitive, this->isAutoClipping() ? False : True,
-    XmNeditable, this->isAutoClipping() ? False : True,
-    XmNcursorPositionVisible, this->isAutoClipping() ? False : True,
-    NULL);
+                                           xmTextFieldWidgetClass, form,
+                                           XmNrightAttachment, XmATTACH_FORM,
+                                           XmNrightOffset, 2,
+                                           XmNbottomAttachment, XmATTACH_FORM,
+                                           XmNbottomOffset, 2,
+                                           XmNwidth, 100,
+                                           XmNsensitive, this->isAutoClipping() ? False : True,
+                                           XmNeditable, this->isAutoClipping() ? False : True,
+                                           XmNcursorPositionVisible, this->isAutoClipping() ? False : True,
+                                           NULL);
 
   float fardistance = 0.002f;
   if (camera != NULL)
@@ -2101,9 +2032,9 @@ SoXtFullViewer::createClippingPrefSheetGuts(Widget parent)
   XmTextSetCursorPosition(this->farvalue, (long) strlen(buf));
 
   XtAddCallback(this->farvalue, XmNactivateCallback,
-    SoXtFullViewer::farvaluechangedCB, (XtPointer) this);
+                SoXtFullViewer::farvaluechangedCB, (XtPointer) this);
   XtAddCallback(this->farvalue, XmNlosingFocusCallback,
-    SoXtFullViewer::farvaluechangedCB, (XtPointer) this);
+                SoXtFullViewer::farvaluechangedCB, (XtPointer) this);
 
 /*
   this->farwheel = XtVaCreateManagedWidget("farwheel",
@@ -2151,26 +2082,26 @@ SoXtFullViewer::createClippingPrefSheetGuts(Widget parent)
     neardistance = camera->nearDistance.getValue();
 
   this->nearvalue = XtVaCreateManagedWidget("nearvalue",
-    xmTextFieldWidgetClass, form,
-    XmNrightAttachment, XmATTACH_WIDGET,
-    XmNrightWidget, this->farvalue,
-    XmNrightOffset, 2,
-    XmNbottomAttachment, XmATTACH_OPPOSITE_WIDGET,
-    XmNbottomWidget, this->farvalue,
-    XmNwidth, 100,
-    XmNsensitive, this->isAutoClipping() ? False : True,
-    XmNeditable, this->isAutoClipping() ? False : True,
-    XmNcursorPositionVisible, this->isAutoClipping() ? False : True,
-    NULL);
+                                            xmTextFieldWidgetClass, form,
+                                            XmNrightAttachment, XmATTACH_WIDGET,
+                                            XmNrightWidget, this->farvalue,
+                                            XmNrightOffset, 2,
+                                            XmNbottomAttachment, XmATTACH_OPPOSITE_WIDGET,
+                                            XmNbottomWidget, this->farvalue,
+                                            XmNwidth, 100,
+                                            XmNsensitive, this->isAutoClipping() ? False : True,
+                                            XmNeditable, this->isAutoClipping() ? False : True,
+                                            XmNcursorPositionVisible, this->isAutoClipping() ? False : True,
+                                            NULL);
 
   sprintf(buf, "%g", neardistance);
   XmTextSetString(this->nearvalue, buf);
   XmTextSetCursorPosition(this->nearvalue, (long) strlen(buf));
 
   XtAddCallback(this->nearvalue, XmNactivateCallback,
-    SoXtFullViewer::nearvaluechangedCB, (XtPointer) this);
+                SoXtFullViewer::nearvaluechangedCB, (XtPointer) this);
   XtAddCallback(this->nearvalue, XmNlosingFocusCallback,
-    SoXtFullViewer::nearvaluechangedCB, (XtPointer) this);
+                SoXtFullViewer::nearvaluechangedCB, (XtPointer) this);
 
 /*
   this->nearwheel = XtVaCreateManagedWidget("nearwheel",
@@ -2225,20 +2156,20 @@ Widget
 SoXtFullViewer::createStereoPrefSheetGuts(Widget parent)
 {
   Widget form = XtVaCreateManagedWidget("stereoguts",
-    xmFormWidgetClass, parent, NULL);
+                                        xmFormWidgetClass, parent, NULL);
 
-  this->stereotoggle = XtVaCreateManagedWidget("stereotoggle",
-    xmToggleButtonWidgetClass, form,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNset, False,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      "stereo viewing", strlen("stereo viewing") + 1,
-    NULL);
+  PRIVATE(this)->stereotoggle = XtVaCreateManagedWidget("stereotoggle",
+                                                        xmToggleButtonWidgetClass, form,
+                                                        XmNleftAttachment, XmATTACH_FORM,
+                                                        XmNtopAttachment, XmATTACH_FORM,
+                                                        XmNset, False,
+                                                        XtVaTypedArg,
+                                                        XmNlabelString, XmRString,
+                                                        "stereo viewing", strlen("stereo viewing") + 1,
+                                                        NULL);
 
-  XtAddCallback(this->stereotoggle, XmNvalueChangedCallback,
-    SoXtFullViewer::stereotoggledCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->stereotoggle, XmNvalueChangedCallback,
+                SoXtFullViewerP::stereotoggledCB, (XtPointer) this);
 
   return form;
 }
@@ -2253,43 +2184,43 @@ Widget
 SoXtFullViewer::createSpeedPrefSheetGuts(Widget parent)
 {
   Widget form = XtVaCreateManagedWidget("speedform",
-    xmFormWidgetClass, parent, NULL);
+                                        xmFormWidgetClass, parent, NULL);
 
   Widget label = XtVaCreateManagedWidget("speedlabel",
-    xmLabelWidgetClass, form,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNbottomAttachment, XmATTACH_FORM,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      "Viewer speed: ", strlen("Viewer speed: ") + 1,
-    NULL);
+                                         xmLabelWidgetClass, form,
+                                         XmNleftAttachment, XmATTACH_FORM,
+                                         XmNtopAttachment, XmATTACH_FORM,
+                                         XmNbottomAttachment, XmATTACH_FORM,
+                                         XtVaTypedArg,
+                                         XmNlabelString, XmRString,
+                                         "Viewer speed: ", strlen("Viewer speed: ") + 1,
+                                         NULL);
 
-  this->incspeedbutton = XtVaCreateManagedWidget("incbutton",
-    xmPushButtonWidgetClass, form,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, label,
-    XmNtopAttachment, XmATTACH_FORM,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      "increase", strlen("increase") + 1,
-    NULL);
+  PRIVATE(this)->incspeedbutton = XtVaCreateManagedWidget("incbutton",
+                                                          xmPushButtonWidgetClass, form,
+                                                          XmNleftAttachment, XmATTACH_WIDGET,
+                                                          XmNleftWidget, label,
+                                                          XmNtopAttachment, XmATTACH_FORM,
+                                                          XtVaTypedArg,
+                                                          XmNlabelString, XmRString,
+                                                          "increase", strlen("increase") + 1,
+                                                          NULL);
 
-  XtAddCallback(this->incspeedbutton, XmNactivateCallback,
-    SoXtFullViewer::speedIncCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->incspeedbutton, XmNactivateCallback,
+                SoXtFullViewerP::speedIncCB, (XtPointer) this);
 
-  this->decspeedbutton = XtVaCreateManagedWidget("decbutton",
-    xmPushButtonWidgetClass, form,
-    XmNleftAttachment, XmATTACH_WIDGET,
-    XmNleftWidget, this->incspeedbutton,
-    XmNtopAttachment, XmATTACH_FORM,
-    XtVaTypedArg,
-      XmNlabelString, XmRString,
-      "decrease", strlen("decrease") + 1,
-    NULL);
+  PRIVATE(this)->decspeedbutton = XtVaCreateManagedWidget("decbutton",
+                                                          xmPushButtonWidgetClass, form,
+                                                          XmNleftAttachment, XmATTACH_WIDGET,
+                                                          XmNleftWidget, PRIVATE(this)->incspeedbutton,
+                                                          XmNtopAttachment, XmATTACH_FORM,
+                                                          XtVaTypedArg,
+                                                          XmNlabelString, XmRString,
+                                                          "decrease", strlen("decrease") + 1,
+                                                          NULL);
 
-  XtAddCallback(this->decspeedbutton, XmNactivateCallback,
-    SoXtFullViewer::speedDecCB, (XtPointer) this);
+  XtAddCallback(PRIVATE(this)->decspeedbutton, XmNactivateCallback,
+                SoXtFullViewerP::speedDecCB, (XtPointer) this);
 
   return form;
 }
@@ -2297,144 +2228,76 @@ SoXtFullViewer::createSpeedPrefSheetGuts(Widget parent)
 // *************************************************************************
 // preferences sheet hooks:
 
-/*!
-  \internal
-  This callback is hooked up to the destruction of the preferences sheet
-  window.
-*/
-
+// This callback is hooked up to the destruction of the preferences
+// sheet window.
 void
-SoXtFullViewer::prefSheetDestroy(void)
+SoXtFullViewerP::prefSheetDestroy(void)
 {
-  XtUnrealizeWidget(this->prefshell);
-  this->prefshell = NULL;
-  this->prefsheet = NULL;
+  XtUnrealizeWidget(PUBLIC(this)->prefshell);
+  PUBLIC(this)->prefshell = NULL;
+  PUBLIC(this)->prefsheet = NULL;
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::prefSheetDestroyCB(Widget,
-                                   XtPointer closure,
-                                   XtPointer)
+SoXtFullViewerP::prefSheetDestroyCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->prefSheetDestroy();
+  PRIVATE(viewer)->prefSheetDestroy();
 }
 
-/*!
-  \internal
-  This callback is hooked up to the "seconds" preferences sheet text field.
-*/
-
+// This callback is hooked up to the "seconds" preferences sheet text
+// field.
 void
-SoXtFullViewer::seekPrefSheetField(void)
+SoXtFullViewerP::seekPrefSheetFieldCB(Widget, XtPointer closure, XtPointer)
 {
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   SOXT_STUB();
 }
 
-/*!
-  \internal
-  static callback
-*/
-
+// This callback is hooked up to the seek-to-point-or-object toggling
+// widgets.
 void
-SoXtFullViewer::seekPrefSheetFieldCB(Widget,
-                                     XtPointer closure,
-                                     XtPointer)
+SoXtFullViewerP::seekPrefSheetToggle1CB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->seekPrefSheetField();
-}
-
-/*!
-  \internal
-
-  This callback is hooked up to the seek-to-point-or-object toggling
-  widgets.
-*/
-
-void
-SoXtFullViewer::seekPrefSheetToggle1(void)
-{
   SOXT_STUB();
 }
 
-/*!
-  static callback
-*/
-
+// This callback is hooked up to the seek-percentage-or-distance
+// toggle widgets.
 void
-SoXtFullViewer::seekPrefSheetToggle1CB(Widget,
-                                       XtPointer closure,
-                                       XtPointer)
+SoXtFullViewerP::seekPrefSheetToggle2CB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->seekPrefSheetToggle1();
-}
-
-/*!
-  \internal
-  This callback is hooked up to the seek-percentage-or-distance toggle
-  widgets.
-*/
-
-void
-SoXtFullViewer::seekPrefSheetToggle2(void)
-{
   SOXT_STUB();
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::seekPrefSheetToggle2CB(Widget,
-                                       XtPointer closure,
-                                       XtPointer)
-{
-  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->seekPrefSheetToggle2();
-}
-
-/*!
-  \internal
-*/
-
-void
-SoXtFullViewer::autocliptoggled(void)
+SoXtFullViewerP::autocliptoggled(void)
 {
   Boolean enable = False;
   XtVaGetValues(this->autocliptoggle, XmNset, &enable, NULL);
-  this->setAutoClipping(enable ? TRUE : FALSE);
+  PUBLIC(this)->setAutoClipping(enable ? TRUE : FALSE);
 
   XtVaSetValues(this->nearwheel,
-    XmNsensitive, enable ? False : True,
-    NULL);
+                XmNsensitive, enable ? False : True,
+                NULL);
   XtVaSetValues(this->farwheel,
-    XmNsensitive, enable ? False : True,
-    NULL);
+                XmNsensitive, enable ? False : True,
+                NULL);
   XtVaSetValues(this->nearvalue,
-    XmNsensitive, enable ? False : True,
-    XmNeditable, enable ? False : True,
-    XmNcursorPositionVisible, enable ? False : True,
-    NULL);
+                XmNsensitive, enable ? False : True,
+                XmNeditable, enable ? False : True,
+                XmNcursorPositionVisible, enable ? False : True,
+                NULL);
   XtVaSetValues(this->farvalue,
-    XmNsensitive, enable ? False : True,
-    XmNeditable, enable ? False : True,
-    XmNcursorPositionVisible, enable ? False : True,
-    NULL);
+                XmNsensitive, enable ? False : True,
+                XmNeditable, enable ? False : True,
+                XmNcursorPositionVisible, enable ? False : True,
+                NULL);
 
-  SoCamera * const camera = this->getCamera();
-  if (! camera) {
-#if SOXT_DEBUG
-    SoDebugError::postInfo("SoXtFullViewer::autocliptoggled", "no camera");
-#endif // SOXT_DEBUG
-    return;
-  }
+  SoCamera * const camera = PUBLIC(this)->getCamera();
+  if (!camera) { return; }
 
   if (! enable) {
     float nearval = SoXtThumbWheelGetValue(this->nearwheel);
@@ -2444,25 +2307,15 @@ SoXtFullViewer::autocliptoggled(void)
   }
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::autocliptoggledCB(Widget,
-                                  XtPointer closure,
-                                  XtPointer)
+SoXtFullViewerP::autocliptoggledCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->autocliptoggled();
+  PRIVATE(viewer)->autocliptoggled();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::nearwheelvaluechanged(void)
+SoXtFullViewerP::nearwheelvaluechanged(void)
 {
   assert(this->nearwheel != NULL && this->farwheel != NULL);
 
@@ -2482,38 +2335,22 @@ SoXtFullViewer::nearwheelvaluechanged(void)
   XmTextSetString(this->nearvalue, valuestring);
   XmTextSetCursorPosition(this->nearvalue, (long) strlen(valuestring));
 
-  SoCamera * const cam = this->getCamera();
-  if (! cam) {
-#if SOXT_DEBUG
-    SoDebugError::postInfo("SoXtFullViewer::nearwheelvaluechanged",
-      "no camera");
-#endif // SOXT_DEBUG
-    return;
-  }
+  SoCamera * const cam = PUBLIC(this)->getCamera();
+  if (!cam) { return; }
 
   // FIXME: cut off at 0.0? And against far clipping value? 990223 mortene.
   cam->nearDistance = val;
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::nearwheelvaluechangedCB(Widget,
-                                        XtPointer closure,
-                                        XtPointer)
+SoXtFullViewerP::nearwheelvaluechangedCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->nearwheelvaluechanged();
+  PRIVATE(viewer)->nearwheelvaluechanged();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::farwheelvaluechanged(void)
+SoXtFullViewerP::farwheelvaluechanged(void)
 {
   assert(this->nearwheel != NULL && this->farwheel != NULL);
 
@@ -2530,37 +2367,21 @@ SoXtFullViewer::farwheelvaluechanged(void)
   XmTextSetString(this->farvalue, valuestring);
   XmTextSetCursorPosition(this->farvalue, (long) strlen(valuestring));
 
-  SoCamera * const cam = this->getCamera();
-  if (! cam) {
-#if SOXT_DEBUG
-    SoDebugError::postInfo("SoXtFullViewer::farwheelvaluechanged",
-      "no camera");
-#endif // SOXT_DEBUG
-    return;
-  }
+  SoCamera * const cam = PUBLIC(this)->getCamera();
+  if (!cam) { return; }
 
   cam->farDistance = val;
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::farwheelvaluechangedCB(Widget,
-                                       XtPointer closure,
-                                       XtPointer)
+SoXtFullViewerP::farwheelvaluechangedCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->farwheelvaluechanged();
+  PRIVATE(viewer)->farwheelvaluechanged();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::nearvaluechanged(void)
+SoXtFullViewerP::nearvaluechanged(void)
 {
   float val = atof(XmTextGetString(this->nearvalue));
   float farval = SoXtThumbWheelGetValue(this->farwheel);
@@ -2574,34 +2395,20 @@ SoXtFullViewer::nearvaluechanged(void)
   XmTextSetString(this->nearvalue, buf);
   XmTextSetCursorPosition(this->nearvalue, (long) strlen(buf));
 
-  SoCamera * const camera = this->getCamera();
-  if (! camera) {
-    SoDebugError::postInfo("SoXtFullViewer::nearvaluechanged",
-      "no camera!");
-    return;
-  }
+  SoCamera * const camera = PUBLIC(this)->getCamera();
+  if (!camera) { return; }
   camera->nearDistance = val;
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::nearvaluechangedCB(Widget,
-                                   XtPointer closure,
-                                   XtPointer)
+SoXtFullViewerP::nearvaluechangedCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->nearvaluechanged();
+  PRIVATE(viewer)->nearvaluechanged();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::farvaluechanged(void)
+SoXtFullViewerP::farvaluechanged(void)
 {
   float nearval = SoXtThumbWheelGetValue(this->nearwheel);
   float val = atof(XmTextGetString(this->farvalue));
@@ -2615,409 +2422,174 @@ SoXtFullViewer::farvaluechanged(void)
   XmTextSetString(this->farvalue, buf);
   XmTextSetCursorPosition(this->farvalue, (long) strlen(buf));
 
-  SoCamera * const camera = this->getCamera();
-  if (! camera) {
-    SoDebugError::postInfo("SoXtFullViewer::nearvaluechanged",
-      "no camera!");
-    return;
-  }
+  SoCamera * const camera = PUBLIC(this)->getCamera();
+  if (!camera) { return; }
   camera->farDistance = val;
 }
 
-/*!
-  \internal
-  static callback
-*/
-
 void
-SoXtFullViewer::farvaluechangedCB(Widget,
-                                  XtPointer closure,
-                                  XtPointer)
+SoXtFullViewerP::farvaluechangedCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->farvaluechanged();
+  PRIVATE(viewer)->farvaluechanged();
 }
 
 // *************************************************************************
   
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::selectedViewing(void)
+SoXtFullViewerP::selectedViewing(void)
 {
-  this->setViewing(this->isViewing() ? FALSE : TRUE);
+  PUBLIC(this)->setViewing(PUBLIC(this)->isViewing() ? FALSE : TRUE);
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::selectedDecoration(void)
+SoXtFullViewerP::selectedDecoration(void)
 {
-  this->setDecoration(this->isDecoration() ? FALSE : TRUE);
+  PUBLIC(this)->setDecoration(PUBLIC(this)->isDecoration() ? FALSE : TRUE);
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::selectedHeadlight(void)
+SoXtFullViewerP::selectedHeadlight(void)
 {
   SOXT_STUB();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::selectedPrefs(void)
+SoXtFullViewerP::selectedPrefs(void)
 {
-  if (! this->prefshell)
-    this->createPrefSheet();
+  if (!PUBLIC(this)->prefshell)
+    PUBLIC(this)->createPrefSheet();
 /*
   else
     FIXME: de-iconify prefshell and push to front
 */
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::interactbuttonClicked(Boolean set)
+SoXtFullViewerP::interactbuttonCB(Widget, XtPointer closure, XtPointer)
 {
-#if SOXT_DEBUG && 0
-  SoDebugError::postInfo("SoXtFullViewer::interactbuttonClicked",
-                         "%s", set ? "Set" : "Unset");
-#endif // SOXT_DEBUG
-  if (this->isViewing() && set)
-    this->setViewing(FALSE);
-  else if (! this->isViewing() && ! set)
-    this->setViewing(TRUE);
+  SoXtFullViewer * viewer = (SoXtFullViewer *)closure;
+  if (viewer->isViewing()) viewer->setViewing(FALSE);
 }
 
-/*!
-  staitc callback
-*/
-
 void
-SoXtFullViewer::interactbuttonCB(Widget,
-                                 XtPointer closure,
-                                 XtPointer)
+SoXtFullViewerP::examinebuttonCB(Widget, XtPointer closure, XtPointer)
 {
-  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->interactbuttonClicked(TRUE);
+  SoXtFullViewer * viewer = (SoXtFullViewer *)closure;
+  if (!viewer->isViewing()) viewer->setViewing(TRUE);
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::examinebuttonClicked(Boolean set)
+SoXtFullViewerP::helpbuttonCB(Widget, XtPointer client_data, XtPointer)
 {
-#if SOXT_DEBUG && 0
-  SoDebugError::postInfo("SoXtFullViewer::examinebuttonClicked",
-                         "%s", set ? "Set" : "Unset");
-#endif // SOXT_DEBUG
-  if (this->isViewing() && ! set)
-    this->setViewing(FALSE);
-  else if (! this->isViewing() && set)
-    this->setViewing(TRUE);
+  ((SoXtFullViewer *)client_data)->openViewerHelpCard();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::examinebuttonCB(Widget,
-                                XtPointer closure,
-                                XtPointer)
+SoXtFullViewerP::homebuttonCB(Widget, XtPointer client_data, XtPointer)
 {
-  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->examinebuttonClicked(TRUE);
+  ((SoXtFullViewer *)client_data)->resetToHomePosition();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::helpbuttonClicked(void)
+SoXtFullViewerP::sethomebuttonCB(Widget, XtPointer client_data, XtPointer)
 {
-  this->openViewerHelpCard();
+  ((SoXtFullViewer *)client_data)->saveHomePosition();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::helpbuttonCB(Widget,
-                             XtPointer client_data,
-                             XtPointer)
+SoXtFullViewerP::viewallbuttonCB(Widget, XtPointer client_data, XtPointer)
 {
-  ((SoXtFullViewer *) client_data)->helpbuttonClicked();
+  ((SoXtFullViewer *)client_data)->viewAll();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::homebuttonClicked(void)
+SoXtFullViewerP::seekbuttonCB(Widget, XtPointer client_data, XtPointer)
 {
-  this->resetToHomePosition();
+  SoXtFullViewer * viewer = (SoXtFullViewer *)client_data;
+  PRIVATE(viewer)->seekbuttonClicked();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::homebuttonCB(Widget,
-                             XtPointer client_data,
-                             XtPointer)
+SoXtFullViewerP::copyviewSelected(void)
 {
-  ((SoXtFullViewer *) client_data)->homebuttonClicked();
+  PUBLIC(this)->copyView(SbTime::getTimeOfDay());
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::sethomebuttonClicked(void)
+SoXtFullViewerP::pasteviewSelected(void)
 {
-  this->saveHomePosition();
-}
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtFullViewer::sethomebuttonCB(Widget,
-                                XtPointer client_data,
-                                XtPointer)
-{
-  ((SoXtFullViewer *) client_data)->sethomebuttonClicked();
-}
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtFullViewer::viewallbuttonClicked(void)
-{
-  this->viewAll();
-}
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtFullViewer::viewallbuttonCB(Widget,
-                                XtPointer client_data,
-                                XtPointer)
-{
-  ((SoXtFullViewer *) client_data)->viewallbuttonClicked();
-}
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtFullViewer::seekbuttonClicked(void)
-{
-  if (! this->isViewing()) {
-#if SOXT_DEBUG
-    SoDebugError::postInfo("SoXtFullViewer::seekbuttonClicked",
-                           "seek button should not be enabled in interaction mode!");
-#endif // SOXT_DEBUG
-    return;
-  }
-  this->setSeekMode(this->isSeekMode() ? FALSE : TRUE);
-}
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtFullViewer::seekbuttonCB(Widget,
-                             XtPointer client_data,
-                             XtPointer)
-{
-  ((SoXtFullViewer *) client_data)->seekbuttonClicked();
-}
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtFullViewer::copyviewSelected(void)
-{
-  this->copyView(SbTime::getTimeOfDay());
-}
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtFullViewer::pasteviewSelected(void)
-{
-  this->pasteView(SbTime::getTimeOfDay());
+  PUBLIC(this)->pasteView(SbTime::getTimeOfDay());
 }
 
 // *************************************************************************
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::increaseInteractiveCount(void)
-{
-  this->interactiveCountInc();
-}
-
-/*!
-  static callback
-*/
-
-void
-SoXtFullViewer::increaseInteractiveCountCB(Widget,
-                                           XtPointer closure,
-                                           XtPointer)
+SoXtFullViewerP::increaseInteractiveCountCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->increaseInteractiveCount();
+  viewer->interactiveCountInc();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::decreaseInteractiveCount(void)
-{
-  this->interactiveCountDec();
-}
-
-/*!
-  static callback
-*/
-
-void
-SoXtFullViewer::decreaseInteractiveCountCB(Widget,
-                                           XtPointer closure,
-                                           XtPointer)
+SoXtFullViewerP::decreaseInteractiveCountCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->decreaseInteractiveCount();
+  viewer->interactiveCountDec();
 }
 
 // *************************************************************************
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::seektimechanged(void)
+SoXtFullViewerP::seektimechanged(void)
 {
   float newtime = (float) atof(XmTextGetString(this->seektimefield));
-  this->setSeekTime(newtime);
+  PUBLIC(this)->setSeekTime(newtime);
   char buf[16];
   sprintf(buf, "%g", newtime);
   XmTextSetString(this->seektimefield, buf);
   XmTextSetCursorPosition(this->seektimefield, (long) strlen(buf));
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::seektimechangedCB(Widget,
-                                  XtPointer closure,
-                                  XtPointer)
+SoXtFullViewerP::seektimechangedCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->seektimechanged();
+  PRIVATE(viewer)->seektimechanged();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::pointtoggled(void)
+SoXtFullViewerP::pointtoggled(void)
 {
   XtVaSetValues(this->pointtoggle, XmNset, True, NULL);
   XtVaSetValues(this->objecttoggle, XmNset, False, NULL);
-  if (! this->isDetailSeek())
-    this->setDetailSeek(TRUE);
+  if (!PUBLIC(this)->isDetailSeek()) PUBLIC(this)->setDetailSeek(TRUE);
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::pointtoggledCB(Widget,
-                               XtPointer closure,
-                               XtPointer)
+SoXtFullViewerP::pointtoggledCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->pointtoggled();
+  PRIVATE(viewer)->pointtoggled();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::objecttoggled(void)
+SoXtFullViewerP::objecttoggled(void)
 {
   XtVaSetValues(this->pointtoggle, XmNset, False, NULL);
   XtVaSetValues(this->objecttoggle, XmNset, True, NULL);
-  if (this->isDetailSeek())
-    this->setDetailSeek(FALSE);
+  if (PUBLIC(this)->isDetailSeek()) PUBLIC(this)->setDetailSeek(FALSE);
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::objecttoggledCB(Widget,
-                                XtPointer closure,
-                                XtPointer)
+SoXtFullViewerP::objecttoggledCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->objecttoggled();
+  PRIVATE(viewer)->objecttoggled();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::seekdistancechanged(void)
+SoXtFullViewerP::seekdistancechanged(void)
 {
   float newdist = (float) atof(XmTextGetString(this->seekdistancefield));
   if (newdist < 0.0f)
@@ -3029,97 +2601,59 @@ SoXtFullViewer::seekdistancechanged(void)
   XmTextSetCursorPosition(this->seekdistancefield, (long) strlen(buf));
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::seekdistancechangedCB(Widget,
-                                      XtPointer closure,
-                                      XtPointer)
+SoXtFullViewerP::seekdistancechangedCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->seekdistancechanged();
+  PRIVATE(viewer)->seekdistancechanged();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::percenttoggled(void)
+SoXtFullViewerP::percenttoggled(void)
 {
   XtVaSetValues(this->percenttoggle, XmNset, True, NULL);
   XtVaSetValues(this->absolutetoggle, XmNset, False, NULL);
   this->seekdistaspercentage = TRUE;
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::percenttoggledCB(Widget,
-                                 XtPointer closure,
-                                 XtPointer)
+SoXtFullViewerP::percenttoggledCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->percenttoggled();
+  PRIVATE(viewer)->percenttoggled();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::absolutetoggled(void)
+SoXtFullViewerP::absolutetoggled(void)
 {
   XtVaSetValues(this->percenttoggle, XmNset, False, NULL);
   XtVaSetValues(this->absolutetoggle, XmNset, True, NULL);
   this->seekdistaspercentage = FALSE;
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::absolutetoggledCB(Widget,
-                                  XtPointer closure,
-                                  XtPointer)
+SoXtFullViewerP::absolutetoggledCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->absolutetoggled();
+  PRIVATE(viewer)->absolutetoggled();
 }
 
-// *************************************************************************
-
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::stereotoggled(void)
+SoXtFullViewerP::stereotoggled(void)
 {
   Boolean enable = False;
   XtVaGetValues(this->stereotoggle, XmNset, &enable, NULL);
-  this->setStereoViewing(enable ? TRUE : FALSE);
+  PUBLIC(this)->setStereoViewing(enable ? TRUE : FALSE);
   XtVaSetValues(this->stereotoggle,
-    XmNset, this->isStereoViewing() ? True : False,
-    NULL);
+                XmNset, PUBLIC(this)->isStereoViewing() ? True : False,
+                NULL);
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::stereotoggledCB(Widget,
-                                XtPointer closure,
-                                XtPointer)
+SoXtFullViewerP::stereotoggledCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->stereotoggled();
+  PRIVATE(viewer)->stereotoggled();
 }
 
 // *************************************************************************
@@ -3131,13 +2665,13 @@ SoXtFullViewer::stereotoggledCB(Widget,
 */
 
 float
-SoXtFullViewer::getCameraZoom(void)
+SoXtFullViewerP::getCameraZoom(void)
 {
-  SoCamera * const camera = this->getCamera();
+  SoCamera * const camera = PUBLIC(this)->getCamera();
   if (! camera) {
 #if SOXT_DEBUG
     SoDebugError::postInfo("SoXtFullViewer::getCameraZoom",
-      "no camera!");
+                           "no camera!");
 #endif // SOXT_DEBUG
     return 0.0f;
   }
@@ -3146,7 +2680,7 @@ SoXtFullViewer::getCameraZoom(void)
   if (! camtype.isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
 #if SOXT_DEBUG
     SoDebugError::postInfo("SoXtFullViewer::getCameraZoom",
-      "not using a perspective camera!");
+                           "not using a perspective camera!");
 #endif // SOXT_DEBUG
     return 0.0f;
   }
@@ -3162,13 +2696,13 @@ SoXtFullViewer::getCameraZoom(void)
 */
 
 void
-SoXtFullViewer::setCameraZoom(float zoom)
+SoXtFullViewerP::setCameraZoom(float zoom)
 {
-  SoCamera * const camera = this->getCamera();
+  SoCamera * const camera = PUBLIC(this)->getCamera();
   if (camera == NULL) {
 #if SOXT_DEBUG
     SoDebugError::postInfo("SoXtFullViewer::setCameraZoom",
-      "no camera!");
+                           "no camera!");
 #endif // SOXT_DEBUG
     return;
   }
@@ -3177,7 +2711,7 @@ SoXtFullViewer::setCameraZoom(float zoom)
   if (! camtype.isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
 #if SOXT_DEBUG
     SoDebugError::postInfo("SoXtFullViewer::getCameraZoom",
-      "not using a perspective camera!");
+                           "not using a perspective camera!");
 #endif // SOXT_DEBUG
     return;
   }
@@ -3188,12 +2722,8 @@ SoXtFullViewer::setCameraZoom(float zoom)
 
 // *************************************************************************
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::zoomfromchanged(void)
+SoXtFullViewerP::zoomfromchanged(void)
 {
   float value = atof(XmTextGetString(this->zoomfrom));
   if (value < 0.001f)
@@ -3232,25 +2762,15 @@ SoXtFullViewer::zoomfromchanged(void)
   }
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::zoomfromchangedCB(Widget,
-                                  XtPointer closure,
-                                  XtPointer)
+SoXtFullViewerP::zoomfromchangedCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->zoomfromchanged();
+  PRIVATE(viewer)->zoomfromchanged();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::zoomsliderchanged(void)
+SoXtFullViewerP::zoomsliderchanged(void)
 {
   Boolean editable = True;
   XtVaGetValues(this->zoomslider, XmNsensitive, &editable, NULL);
@@ -3284,25 +2804,15 @@ SoXtFullViewer::zoomsliderchanged(void)
   }
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::zoomsliderchangedCB(Widget,
-                                    XtPointer closure,
-                                    XtPointer)
+SoXtFullViewerP::zoomsliderchangedCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->zoomsliderchanged();
+  PRIVATE(viewer)->zoomsliderchanged();
 }
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::zoomtochanged(void)
+SoXtFullViewerP::zoomtochanged(void)
 {
   float value = atof(XmTextGetString(this->zoomto));
   if (value > 180.0f)
@@ -3343,24 +2853,15 @@ SoXtFullViewer::zoomtochanged(void)
   }
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::zoomtochangedCB(Widget,
-                                XtPointer closure,
-                                XtPointer)
+SoXtFullViewerP::zoomtochangedCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->zoomtochanged();
+  PRIVATE(viewer)->zoomtochanged();
 }
 
-/*!
-*/
-
 void
-SoXtFullViewer::zoomvaluechanged(void)
+SoXtFullViewerP::zoomvaluechanged(void)
 {
   float value = atof(XmTextGetString(this->zoomvalue));
   if (value < this->zoomrange[0])
@@ -3385,65 +2886,27 @@ SoXtFullViewer::zoomvaluechanged(void)
   this->setCameraZoom(value);
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::zoomvaluechangedCB(Widget,
-                                   XtPointer closure,
-                                   XtPointer)
+SoXtFullViewerP::zoomvaluechangedCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->zoomvaluechanged();
+  PRIVATE(viewer)->zoomvaluechanged();
 }
 
 // *************************************************************************
 
-/*!
-  FIXME: write doc
-*/
-
 void
-SoXtFullViewer::speedInc(void)
+SoXtFullViewerP::speedIncCB(Widget, XtPointer closure, XtPointer)
 {
+  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   SOXT_STUB_ONCE();
 }
 
-/*!
-  static callback
-*/
-
 void
-SoXtFullViewer::speedIncCB(Widget,
-                           XtPointer closure,
-                           XtPointer)
+SoXtFullViewerP::speedDecCB(Widget, XtPointer closure, XtPointer)
 {
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->speedInc();
-}
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SoXtFullViewer::speedDec(void)
-{
   SOXT_STUB_ONCE();
-}
-
-/*!
-  static callback
-*/
-
-void
-SoXtFullViewer::speedDecCB(Widget,
-                           XtPointer closure,
-                           XtPointer)
-{
-  SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
-  viewer->speedDec();
 }
 
 // *************************************************************************
@@ -3469,6 +2932,13 @@ SoXtFullViewerP::SoXtFullViewerP(SoXtFullViewer * publ)
 
 SoXtFullViewerP::~SoXtFullViewerP()
 {
+}
+
+void
+SoXtFullViewerP::seekbuttonClicked(void)
+{
+  assert(PUBLIC(this)->isViewing() && "seek button should not be enabled in interaction mode");
+  PUBLIC(this)->setSeekMode(PUBLIC(this)->isSeekMode() ? FALSE : TRUE);
 }
 
 // *************************************************************************
