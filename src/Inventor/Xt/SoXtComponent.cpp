@@ -165,6 +165,14 @@ SoXtComponent::setTitle(
     delete [] this->title;
     this->title = strcpy( new char [strlen(title)+1], title );
   }
+  // If the component has a parent, set the parent's title, otherwise
+  // set our widget's title
+  // FIXME - probably doesn't work if the widget is already realized
+  if (parent || widget) {
+     XtVaSetValues(parent ? parent : widget,
+                   XmNtitle, this->title,
+                   0, 0);
+  }
 } // setTitle()
 
 const char *
@@ -183,6 +191,14 @@ SoXtComponent::setIconTitle(
   } else {
     delete [] this->iconTitle;
     this->iconTitle = strcpy( new char [strlen(title)+1], title );
+  }
+  // If the component has a parent, set the parent's icon title, otherwise
+  // set our widget's icon title
+  // FIXME - probably doesn't work if the widget is already realized
+  if (parent || widget) {
+     XtVaSetValues(parent ? parent : widget,
+                   XtNiconName, this->iconTitle,
+                   0, 0);
   }
 }
 
