@@ -237,67 +237,67 @@ WARN_FORMAT           = "$file:$line: $text"
 # with spaces. 
 
 INPUT                 = \
-	@soxt_build_dir@/src/Inventor/Xt/SoXtBasic.h \
-	@soxt_src_dir@/src/Inventor/Xt/SoXt.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXt.h \
-	@soxt_build_dir@/src/Inventor/Xt/SoXtObject.cpp \
-	@soxt_build_dir@/src/Inventor/Xt/SoXtObject.h \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtComponent.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtComponent.h \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtGLWidget.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtGLWidget.h \
-	@soxt_build_dir@/src/Inventor/Xt/SoXtRenderArea.cpp \
-	@soxt_build_dir@/src/Inventor/Xt/SoXtRenderArea.h \
-	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtDevice.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtDevice.h \
-	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtInputFocus.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtInputFocus.h \
-	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtKeyboard.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtKeyboard.h \
-	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtMouse.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtMouse.h \
-	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtSpaceball.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtSpaceball.h \
-	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtLinuxJoystick.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/devices/SoXtLinuxJoystick.h \
-	@soxt_build_dir@/src/Inventor/Xt/viewers/SoXtViewer.cpp \
-	@soxt_build_dir@/src/Inventor/Xt/viewers/SoXtViewer.h \
-	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtFullViewer.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtFullViewer.h \
-	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtExaminerViewer.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtExaminerViewer.h \
-	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtPlaneViewer.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtPlaneViewer.h \
-	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtConstrainedViewer.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtConstrainedViewer.h \
-	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtWalkViewer.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtWalkViewer.h \
-	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtFlyViewer.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtFlyViewer.h \
-	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtCollisionViewer.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/viewers/SoXtCollisionViewer.h \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtSliderSetBase.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtSliderSetBase.h \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtSliderSet.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtSliderSet.h \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtLightSliderSet.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtLightSliderSet.h \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtMaterialSliderSet.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtMaterialSliderSet.h \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtTransformSliderSet.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtTransformSliderSet.h \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtMaterialList.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtMaterialList.h \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtResource.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtResource.h \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtClipboard.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtClipboard.h \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtPrintDialog.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtPrintDialog.h \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtMaterialEditor.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtMaterialEditor.h \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtDirectionalLightEditor.cpp \
-	@soxt_src_dir@/src/Inventor/Xt/SoXtDirectionalLightEditor.h
+	@soxt_build_dir@/src/Inventor/@Gui@/So@Gui@Basic.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@.cpp \
+	@soxt_build_dir@/src/Inventor/@Gui@/So@Gui@.h \
+	@soxt_build_dir@/src/Inventor/@Gui@/So@Gui@Object.cpp \
+	@soxt_build_dir@/src/Inventor/@Gui@/So@Gui@Object.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@Component.cpp \
+	@soxt_build_dir@/src/Inventor/@Gui@/So@Gui@Component.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@GLWidget.cpp \
+	@soxt_build_dir@/src/Inventor/@Gui@/So@Gui@GLWidget.h \
+	@soxt_build_dir@/src/Inventor/@Gui@/So@Gui@RenderArea.cpp \
+	@soxt_build_dir@/src/Inventor/@Gui@/So@Gui@RenderArea.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/devices/So@Gui@Device.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/devices/So@Gui@Device.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/devices/So@Gui@InputFocus.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/devices/So@Gui@InputFocus.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/devices/So@Gui@Keyboard.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/devices/So@Gui@Keyboard.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/devices/So@Gui@Mouse.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/devices/So@Gui@Mouse.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/devices/So@Gui@Spaceball.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/devices/So@Gui@Spaceball.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/devices/So@Gui@LinuxJoystick.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/devices/So@Gui@LinuxJoystick.h \
+	@soxt_build_dir@/src/Inventor/@Gui@/viewers/So@Gui@Viewer.cpp \
+	@soxt_build_dir@/src/Inventor/@Gui@/viewers/So@Gui@Viewer.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/viewers/So@Gui@FullViewer.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/viewers/So@Gui@ExaminerViewer.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/viewers/So@Gui@ExaminerViewer.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/viewers/So@Gui@PlaneViewer.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/viewers/So@Gui@PlaneViewer.h \
+	@soxt_build_dir@/src/Inventor/@Gui@/viewers/So@Gui@ConstrainedViewer.cpp \
+	@soxt_build_dir@/src/Inventor/@Gui@/viewers/So@Gui@ConstrainedViewer.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/viewers/So@Gui@WalkViewer.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/viewers/So@Gui@WalkViewer.h \
+	@soxt_build_dir@/src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.cpp \
+	@soxt_build_dir@/src/Inventor/@Gui@/viewers/So@Gui@FlyViewer.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/viewers/So@Gui@CollisionViewer.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/viewers/So@Gui@CollisionViewer.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@SliderSetBase.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@SliderSetBase.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@SliderSet.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@SliderSet.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@LightSliderSet.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@LightSliderSet.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@MaterialSliderSet.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@MaterialSliderSet.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@TransformSliderSet.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@TransformSliderSet.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@MaterialList.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@MaterialList.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@Resource.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@Resource.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@Clipboard.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@Clipboard.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@PrintDialog.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@PrintDialog.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@MaterialEditor.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@MaterialEditor.h \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@DirectionalLightEditor.cpp \
+	@soxt_src_dir@/src/Inventor/@Gui@/So@Gui@DirectionalLightEditor.h
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
@@ -388,7 +388,7 @@ GENERATE_HTML         = @SOXT_DOC_HTML@
 # If a relative path is entered the value of OUTPUT_DIRECTORY will be 
 # put in front of it. If left blank `html' will be used as the default path. 
 
-HTML_OUTPUT           = @HTML_DOC_DIR@
+HTML_OUTPUT           = @path_tag@@soxt_build_dir@/html
 
 # The HTML_HEADER tag can be used to specify a personal HTML header for 
 # each generated HTML page. If it is left blank doxygen will generate a 
@@ -526,7 +526,7 @@ GENERATE_MAN          = @SOXT_DOC_MAN@
 # If a relative path is entered the value of OUTPUT_DIRECTORY will be 
 # put in front of it. If left blank `man' will be used as the default path. 
 
-MAN_OUTPUT            = @mandir@
+MAN_OUTPUT            = @path_tag@@soxt_man_dir@
 
 # The MAN_EXTENSION tag determines the extension that is added to 
 # the generated man pages (default is the subroutine's section .3) 

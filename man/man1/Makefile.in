@@ -46,7 +46,7 @@ oldincludedir = /usr/include
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
-top_builddir = ../../../..
+top_builddir = ../..
 
 ACLOCAL = @ACLOCAL@
 AUTOCONF = @AUTOCONF@
@@ -351,104 +351,39 @@ SoQt_ExtraBuiltMetaFiles = \
   $(top_builddir)/src/Inventor/Qt/widgets/moc_SoQtGLArea.cpp
 
 
-noinst_LTLIBRARIES = libSoXtWidgets.la
 
-INCLUDES = -I$(top_srcdir)/src
-LIBS = 
-
+############################################################################
 BUILT_SOURCES = \
 	$(SoGuiAllBuiltSources)
 
 
 CLEANFILES = \
-	$(SoGui_src_Inventor_Gui_widgets_BuiltMetaFiles)
+	$(SoGui_man_man1_BuiltMetaFiles)
 
 
 DISTCLEANFILES = \
-	$(SoGui_src_Inventor_Gui_widgets_BuiltFiles) \
-	$(SoGui_src_Inventor_Gui_widgets_BuiltMetaFiles)
+	$(SoGui_man_man1_BuiltFiles) \
+	$(SoGui_man_man1_BuiltMetaFiles)
 
 
 
 ############################################################################
-libSoXtWidgets_la_SOURCES = \
-	SoXtGLArea.h \
-	SoXtGLAreaP.h \
-	SoXtGLArea.cpp \
-	SoXtPopupMenu.h \
-	SoXtPopupMenu.cpp \
-	SoXtThumbWheel.h \
-	SoXtThumbWheelP.h \
-	SoXtThumbWheel.cpp \
-	SoXtSlider.h \
-	SoXtSlider.cpp
+@BUILD_LIBRARY_TRUE@man_MANS = \
+@BUILD_LIBRARY_TRUE@	so@gui@-config.1
 
-
-nodist_libSoXtWidgets_la_SOURCES = \
-	$(BUILT_SOURCES)
-
-
-
-############################################################################
-SoXtWidgetsincdir = $(includedir)/Inventor/Xt/widgets
-
-SoXtWidgetsinc_HEADERS = \
-	SoXtThumbWheel.h \
-	SoXtThumbWheelP.h \
-	SoXtGLArea.h \
-	SoXtGLAreaP.h
-
-subdir = src/Inventor/Xt/widgets
+subdir = man/man1
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/src/config.h
 CONFIG_CLEAN_FILES =
-LTLIBRARIES = $(noinst_LTLIBRARIES)
+DIST_SOURCES =
 
-libSoXtWidgets_la_LDFLAGS =
-libSoXtWidgets_la_LIBADD =
-am_libSoXtWidgets_la_OBJECTS = SoXtGLArea.lo SoXtPopupMenu.lo \
-	SoXtThumbWheel.lo SoXtSlider.lo
-nodist_libSoXtWidgets_la_OBJECTS =
-libSoXtWidgets_la_OBJECTS = $(am_libSoXtWidgets_la_OBJECTS) \
-	$(nodist_libSoXtWidgets_la_OBJECTS)
-
-DEFS = @DEFS@
-DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)/src
-CPPFLAGS = @CPPFLAGS@
-LDFLAGS = @LDFLAGS@
-depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/SoXtGLArea.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoXtPopupMenu.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoXtSlider.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoXtThumbWheel.Plo
-CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
-LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
-	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
-	$(AM_CXXFLAGS) $(CXXFLAGS)
-CXXLD = $(CXX)
-CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-CXXFLAGS = @CXXFLAGS@
-CFLAGS = @CFLAGS@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libSoXtWidgets_la_SOURCES)
-HEADERS = $(SoXtWidgetsinc_HEADERS)
-
-DIST_COMMON = $(SoXtWidgetsinc_HEADERS) Makefile.am Makefile.in
-SOURCES = $(libSoXtWidgets_la_SOURCES) $(nodist_libSoXtWidgets_la_SOURCES)
-
+NROFF = nroff
+MANS = $(man_MANS)
+DIST_COMMON = Makefile.am Makefile.in
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
-.SUFFIXES: .cpp .lo .o .obj
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -458,105 +393,60 @@ clean-libtool:
 
 distclean-libtool:
 	-rm -f libtool
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(srcdir)/../common/Makefile.common $(top_srcdir)/configure.in $(ACLOCAL_M4)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(srcdir)/../../src/Inventor/Xt/common/Makefile.common $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  src/Inventor/Xt/widgets/Makefile
+	  $(AUTOMAKE) --gnu  man/man1/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
-
-clean-noinstLTLIBRARIES:
-	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-libSoXtWidgets.la: $(libSoXtWidgets_la_OBJECTS) $(libSoXtWidgets_la_DEPENDENCIES) 
-	$(CXXLINK)  $(libSoXtWidgets_la_LDFLAGS) $(libSoXtWidgets_la_OBJECTS) $(libSoXtWidgets_la_LIBADD) $(LIBS)
-
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT) core *.core
-
-distclean-compile:
-	-rm -f *.tab.c
-
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtGLArea.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtPopupMenu.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtSlider.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoXtThumbWheel.Plo@am__quote@
-
-distclean-depend:
-	-rm -rf $(DEPDIR)
-
-.cpp.o:
-@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
-
-.cpp.obj:
-@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXXCOMPILE) -c -o $@ `cygpath -w $<`
-
-.cpp.lo:
-@AMDEP_TRUE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(LTCXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
-CXXDEPMODE = @CXXDEPMODE@
 uninstall-info-am:
-install-SoXtWidgetsincHEADERS: $(SoXtWidgetsinc_HEADERS)
+
+man1dir = $(mandir)/man1
+install-man1: $(man1_MANS) $(man_MANS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(SoXtWidgetsincdir)
-	@list='$(SoXtWidgetsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(SoXtWidgetsincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(SoXtWidgetsincdir)/$$f; \
+	$(mkinstalldirs) $(DESTDIR)$(man1dir)
+	@list='$(man1_MANS) $(dist_man1_MANS) $(nodist_man1_MANS)'; \
+	l2='$(man_MANS) $(dist_man_MANS) $(nodist_man_MANS)'; \
+	for i in $$l2; do \
+	  case "$$i" in \
+	    *.1*) list="$$list $$i" ;; \
+	  esac; \
+	done; \
+	for i in $$list; do \
+	  if test -f $(srcdir)/$$i; then file=$(srcdir)/$$i; \
+	  else file=$$i; fi; \
+	  ext=`echo $$i | sed -e 's/^.*\\.//'`; \
+	  inst=`echo $$i | sed -e 's/\\.[0-9a-z]*$$//'`; \
+	  inst=`echo $$inst | sed -e 's/^.*\///'`; \
+	  inst=`echo $$inst | sed '$(transform)'`.$$ext; \
+	  echo " $(INSTALL_DATA) $$file $(DESTDIR)$(man1dir)/$$inst"; \
+	  $(INSTALL_DATA) $$file $(DESTDIR)$(man1dir)/$$inst; \
 	done
-
-uninstall-SoXtWidgetsincHEADERS:
+uninstall-man1:
 	@$(NORMAL_UNINSTALL)
-	@list='$(SoXtWidgetsinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(SoXtWidgetsincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(SoXtWidgetsincdir)/$$f; \
+	@list='$(man1_MANS) $(dist_man1_MANS) $(nodist_man1_MANS)'; \
+	l2='$(man_MANS) $(dist_man_MANS) $(nodist_man_MANS)'; \
+	for i in $$l2; do \
+	  case "$$i" in \
+	    *.1*) list="$$list $$i" ;; \
+	  esac; \
+	done; \
+	for i in $$list; do \
+	  ext=`echo $$i | sed -e 's/^.*\\.//'`; \
+	  inst=`echo $$i | sed -e 's/\\.[0-9a-z]*$$//'`; \
+	  inst=`echo $$inst | sed -e 's/^.*\///'`; \
+	  inst=`echo $$inst | sed '$(transform)'`.$$ext; \
+	  echo " rm -f $(DESTDIR)$(man1dir)/$$inst"; \
+	  rm -f $(DESTDIR)$(man1dir)/$$inst; \
 	done
-
 tags: TAGS
+TAGS:
 
-ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
-	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
-	unique=`for i in $$list; do \
-	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
-	  done | \
-	  $(AWK) '    { files[$$0] = 1; } \
-	       END { for (i in files) print i; }'`; \
-	mkid -fID $$unique $(LISP)
-
-TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
-		$(TAGS_FILES) $(LISP)
-	tags=; \
-	here=`pwd`; \
-	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
-	unique=`for i in $$list; do \
-	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
-	  done | \
-	  $(AWK) '    { files[$$0] = 1; } \
-	       END { for (i in files) print i; }'`; \
-	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
-	  || etags $(ETAGS_ARGS) $$tags  $$unique $(LISP)
-
-GTAGS:
-	here=`CDPATH=: && cd $(top_builddir) && pwd` \
-	  && cd $(top_srcdir) \
-	  && gtags -i $(GTAGS_ARGS) $$here
-
-distclean-tags:
-	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
-top_distdir = ../../../..
+top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
@@ -577,10 +467,10 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(MANS)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(SoXtWidgetsincdir)
+	$(mkinstalldirs) $(DESTDIR)$(man1dir)
 
 install: install-am
 install-exec: install-exec-am
@@ -610,13 +500,11 @@ maintainer-clean-generic:
 	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
-clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
-	mostlyclean-am
+clean-am: clean-generic clean-libtool mostlyclean-am
 
 distclean: distclean-am
 
-distclean-am: clean-am distclean-compile distclean-depend \
-	distclean-generic distclean-libtool distclean-tags
+distclean-am: clean-am distclean-generic distclean-libtool
 
 dvi: dvi-am
 
@@ -626,13 +514,13 @@ info: info-am
 
 info-am:
 
-install-data-am: install-SoXtWidgetsincHEADERS
+install-data-am: install-man
 
 install-exec-am:
 
 install-info: install-info-am
 
-install-man:
+install-man: install-man1
 
 installcheck-am:
 
@@ -642,22 +530,21 @@ maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-am
 
-mostlyclean-am: mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool
+mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
-uninstall-am: uninstall-SoXtWidgetsincHEADERS uninstall-info-am
+uninstall-am: uninstall-info-am uninstall-man
 
-.PHONY: GTAGS all all-am check check-am clean clean-generic \
-	clean-libtool clean-noinstLTLIBRARIES distclean \
-	distclean-compile distclean-depend distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am info \
-	info-am install install-SoXtWidgetsincHEADERS install-am \
-	install-data install-data-am install-exec install-exec-am \
-	install-info install-info-am install-man install-strip \
+uninstall-man: uninstall-man1
+
+.PHONY: all all-am check check-am clean clean-generic clean-libtool \
+	distclean distclean-generic distclean-libtool distdir dvi \
+	dvi-am info info-am install install-am install-data \
+	install-data-am install-exec install-exec-am install-info \
+	install-info-am install-man install-man1 install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool tags uninstall \
-	uninstall-SoXtWidgetsincHEADERS uninstall-am uninstall-info-am
+	maintainer-clean-generic mostlyclean mostlyclean-generic \
+	mostlyclean-libtool uninstall uninstall-am uninstall-info-am \
+	uninstall-man uninstall-man1
 
 
 ############################################################################
@@ -936,8 +823,6 @@ $(top_builddir)/man/man1/so@gui@-config.1: $(top_srcdir)/src/Inventor/@Gui@/comm
 @BUILD_METAFILES_TRUE@	@( cd $(top_builddir); \
 @BUILD_METAFILES_TRUE@	echo "$(MOC) -o src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@PopupMenu.cpp `$(UNIX2WINPATH) $(top_srcdir)/src/Inventor/@Gui@/widgets/So@Gui@PopupMenu.h`"; \
 @BUILD_METAFILES_TRUE@	$(MOC) -o src/Inventor/@Gui@/widgets/@meta_prefix@So@Gui@PopupMenu.cpp `$(UNIX2WINPATH) $(top_srcdir)/src/Inventor/@Gui@/widgets/So@Gui@PopupMenu.h` )
-
-############################################################################
 
 ############################################################################
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

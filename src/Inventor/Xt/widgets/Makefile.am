@@ -2,7 +2,7 @@
 ## SoXt/src/Inventor/Xt/widgets/Makefile.am
 ## $Id$
 
-# SUBDIRS = compound
+include ../common/Makefile.common
 
 noinst_LTLIBRARIES = libSoXtWidgets.la
 
@@ -10,13 +10,14 @@ INCLUDES = -I$(top_srcdir)/src
 LIBS =
 
 BUILT_SOURCES = \
-	SoAnyPopupMenu.h \
-	SoAnyPopupMenu.cpp \
-	SoAnyThumbWheel.h \
-	SoAnyThumbWheel.cpp
+	$(SoGuiAllBuiltSources)
+
+CLEANFILES = \
+	$(SoGui_src_Inventor_Gui_widgets_BuiltMetaFiles)
 
 DISTCLEANFILES = \
-	$(BUILT_SOURCES)
+	$(SoGui_src_Inventor_Gui_widgets_BuiltFiles) \
+	$(SoGui_src_Inventor_Gui_widgets_BuiltMetaFiles)
 
 ############################################################################
 
@@ -34,20 +35,6 @@ libSoXtWidgets_la_SOURCES = \
 
 nodist_libSoXtWidgets_la_SOURCES = \
 	$(BUILT_SOURCES)
-
-############################################################################
-
-SoAnyPopupMenu.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyPopupMenu.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-SoAnyPopupMenu.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyPopupMenu.cpp.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-SoAnyThumbWheel.h: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-SoAnyThumbWheel.cpp: $(top_srcdir)/src/Inventor/Xt/common/SoAnyThumbWheel.cpp.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
 
 ############################################################################
 

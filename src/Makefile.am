@@ -1,12 +1,13 @@
+############################################################################
+
+include Inventor/Xt/common/Makefile.common
 
 SUBDIRS = . Inventor
 
 BUILT_SOURCES = \
-	soxtdefs.h
+	$(SoGuiAllBuiltFiles)
 
 DISTCLEANFILES = \
-	$(BUILT_SOURCES)
-
-soxtdefs.h: $(top_builddir)/src/Inventor/Xt/common/soguidefs.h.in
-	@( cd ..; $(MAKE) src/soxtdefs.h )
+	$(SoGui_src_BuiltFiles) \
+	$(SoGui_src_BuiltMetaFiles)
 

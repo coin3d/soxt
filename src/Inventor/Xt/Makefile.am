@@ -2,31 +2,22 @@
 ## SoXt/src/Inventor/Xt/Makefile.am
 ## $Id$
 
+include common/Makefile.common
+
 SUBDIRS = devices widgets viewers .
 
 INCLUDES = -I$(top_srcdir)/src -I$(top_builddir)/data
 
 BUILT_SOURCES = \
-	SoAny.h \
-	SoAny.cpp \
-	So@Gui@Basic.h \
-	So@Gui@Cursors.h \
-	So@Gui@Cursors.cpp \
-	So@Gui@Object.h \
-	So@Gui@Object.cpp \
-	So@Gui@.h \
-	So@Gui@Component.h \
-	So@Gui@GLWidget.h \
-	So@Gui@RenderArea.h \
-	So@Gui@RenderArea.cpp \
-	SoAnyMaterialList.h \
-	SoAnyMaterialList.cpp \
-	SoAnyMaterialListBuiltins.cpp
+	$(SoGuiAllBuiltSources)
 
+CLEANFILES = \
+	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
+	
 DISTCLEANFILES = \
-	$(BUILT_SOURCES) \
-	common/gl.h
-
+	$(SoGui_src_Inventor_Gui_BuiltFiles) \
+	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
+	
 ############################################################################
 
 lib_LTLIBRARIES = libSoXt.la
@@ -61,7 +52,8 @@ libSoXt_la_SOURCES = \
 	So@Gui@TransformSliderSet.cpp
 
 nodist_libSoXt_la_SOURCES = \
-	$(BUILT_SOURCES)
+	$(SoGui_src_Inventor_Gui_BuiltFiles) \
+	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
 
 libSoXt_la_LIBADD = \
 	devices/libSoXtDevices.la \
@@ -124,53 +116,6 @@ install-nodist_SoXtincHEADERS: $(nodist_SoXtinc_HEADERS)
 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
 	  fi \
 	done
-
-############################################################################
-
-So@Gui@Basic.h: $(srcdir)/common/SoGuiBasic.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-So@Gui@Cursors.h: $(srcdir)/common/SoGuiCursors.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-So@Gui@Cursors.cpp: $(srcdir)/common/SoGuiCursors.cpp.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-So@Gui@Object.h: $(srcdir)/common/SoGuiObject.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-So@Gui@Object.cpp: $(srcdir)/common/SoGuiObject.cpp.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-So@Gui@.h: $(srcdir)/common/SoGui.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-So@Gui@Component.h: $(srcdir)/common/SoGuiComponent.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-So@Gui@GLWidget.h: $(srcdir)/common/SoGuiGLWidget.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-So@Gui@RenderArea.h: $(srcdir)/common/SoGuiRenderArea.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-So@Gui@RenderArea.cpp: $(srcdir)/common/SoGuiRenderArea.cpp.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-SoAny.h: $(srcdir)/common/SoAny.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-SoAny.cpp: $(srcdir)/common/SoAny.cpp.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-SoAnyMaterialList.h: $(srcdir)/common/SoAnyMaterialList.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-SoAnyMaterialList.cpp: $(srcdir)/common/SoAnyMaterialList.cpp.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
-
-SoAnyMaterialListBuiltins.cpp: $(srcdir)/common/SoAnyMaterialListBuiltins.cpp.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
 
 ############################################################################
 

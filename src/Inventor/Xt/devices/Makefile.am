@@ -2,12 +2,22 @@
 ## SoXt/src/Inventor/Xt/devices/Makefile.am
 ## $Id$
 
+include ../common/Makefile.common
+
 noinst_LTLIBRARIES = libSoXtDevices.la
 
 INCLUDES = -I$(top_srcdir)/src
 LIBS =
 
-BUILT_SOURCES =
+BUILT_SOURCES = \
+	$(SoGuiAllBuiltSources)
+
+CLEANFILES = \
+	$(SoGui_src_Inventor_Gui_devices_BuiltMetaFiles)
+
+DISTCLEANFILES = \
+	$(SoGui_src_Inventor_Gui_devices_BuiltFiles) \
+	$(SoGui_src_Inventor_Gui_devices_BuiltMetaFiles)
 
 ############################################################################
 
@@ -46,8 +56,8 @@ libSoXtDevices_la_SOURCES = \
 #
 #  20000809 mortene
 
-../../../../src/Inventor/@Gui@/So@Gui@Basic.h: $(top_srcdir)/src/Inventor/@Gui@/common/SoGuiBasic.h.in
-	( cd $(top_builddir); $(MAKE) built-sources )
+# ../../../../src/Inventor/@Gui@/So@Gui@Basic.h: $(top_srcdir)/src/Inventor/@Gui@/common/SoGuiBasic.h.in
+# 	( cd $(top_builddir); $(MAKE) built-sources )
 
 ############################################################################
 ## Header file installation information.
