@@ -500,8 +500,10 @@ SoXtFullViewer::setViewing( // virtual
 #endif // SOXT_DEBUG
 
   inherited::setViewing( enable );
-  if ( this->prefmenu )
+  if ( this->prefmenu ) {
     this->prefmenu->SetMenuItemMarked( EXAMINING_ITEM, enable );
+    this->prefmenu->SetMenuItemEnabled( SEEK_ITEM, enable );
+  }
 
   XtVaSetValues( this->viewerbuttons.view,
                  XmNset, enable ? True : False, NULL );
@@ -896,6 +898,7 @@ SoXtFullViewer::buildPopupMenu(
   this->prefmenu->SetMenuItemMarked( EXAMINING_ITEM, this->isViewing() );
   this->prefmenu->SetMenuItemMarked( DECORATION_ITEM, this->decorations );
   this->prefmenu->SetMenuItemMarked( HEADLIGHT_ITEM, this->isHeadlight() );
+  this->prefmenu->SetMenuItemEnabled( SEEK_ITEM, this->isViewing() );
 } // buildPopupMenu()
 
 /*!
