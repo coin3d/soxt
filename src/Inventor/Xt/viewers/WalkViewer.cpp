@@ -56,12 +56,11 @@ SOXT_OBJECT_SOURCE(SoXtWalkViewer);
 
 SoXtWalkViewer::SoXtWalkViewer(
   Widget parent,
-  const char * const name,
+  const char * name,
   SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type)
 : inherited(parent, name, embed, flag, type, FALSE)
-, common(new SoAnyWalkViewer(this))
 {
   this->constructor(TRUE);
 } // SoXtWalkViewer()
@@ -72,13 +71,12 @@ SoXtWalkViewer::SoXtWalkViewer(
 
 SoXtWalkViewer::SoXtWalkViewer(// protected
   Widget parent,
-  const char * const name,
+  const char * name,
   SbBool embed,
   SoXtFullViewer::BuildFlag flag,
   SoXtViewer::Type type,
   SbBool build)
 : inherited(parent, name, embed, flag, type, FALSE)
-, common(new SoAnyWalkViewer(this))
 {
   this->constructor(build);
 } // SoXtWalkViewer()
@@ -111,10 +109,8 @@ SoXtWalkViewer::constructor(
   Destructor.
 */
 
-SoXtWalkViewer::~SoXtWalkViewer(
-  void)
+SoXtWalkViewer::~SoXtWalkViewer()
 {
-  delete this->common;
 } // ~SoXtWalkViewer()
 
 // *************************************************************************
@@ -259,7 +255,7 @@ void
 SoXtWalkViewer::rightWheelMotion(// virtual, protected
   float value)
 {
-  common->dollyCamera(value - this->getRightWheelValue());
+  this->dollyCamera(value - this->getRightWheelValue());
   inherited::rightWheelMotion(value);
 } // rightWheelMotion()
 
@@ -362,7 +358,7 @@ void
 SoXtWalkViewer::leftWheel2Motion(// virtual, protected
   float value)
 {
-  common->elevateCamera(value - this->getLeftWheel2Value());
+  this->elevateCamera(value - this->getLeftWheel2Value());
   this->heightvalue = value;
 } // rightWheelMotion()
 
