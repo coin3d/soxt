@@ -161,9 +161,9 @@ private:
   void selectedDecoration(void);
   void selectedHeadlight(void);
   void selectedPrefs(void);
-  void interactbuttonClicked(void);
+  void interactbuttonClicked( Boolean set );
   static void interactbuttonCB( Widget, XtPointer, XtPointer );
-  void examinebuttonClicked(void);
+  void examinebuttonClicked( Boolean set );
   static void examinebuttonCB( Widget, XtPointer, XtPointer );
   void helpbuttonClicked(void);
   static void helpbuttonCB( Widget, XtPointer, XtPointer );

@@ -26,6 +26,7 @@ static const char rcsid[] =
 #include <Xm/Form.h>
 #include <Xm/Label.h>
 #include <Xm/PushB.h>
+#include <Xm/ToggleB.h>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoBasic.h>
@@ -56,6 +57,8 @@ enum DefaultViewerButtons {
   VIEW_ALL_BUTTON,
   SEEK_BUTTON
 };
+
+#define VIEWERBUTTON(button) ((Widget) ((*this->viewerButtonsList)[button]))
 
 // *************************************************************************
 
@@ -151,7 +154,6 @@ SoXtFullViewer::setPopupMenuEnabled(
   const SbBool enable )
 {
   this->menuenabled = enable;
-  // FIXME: lazily create menu here? - or better; on first popup?
 } // setPopupMenuEnabled()
 
 /*!
@@ -457,9 +459,11 @@ SoXtFullViewer::setViewing( // virtual
   if ( this->prefmenu )
     this->prefmenu->SetMenuItemMarked( EXAMINING_ITEM, enable );
 
-//  VIEWERBUTTON(EXAMINE_BUTTON)->setOn( enable );
-//  VIEWERBUTTON(INTERACT_BUTTON)->setOn( enable ? FALSE : TRUE);
-//  VIEWERBUTTON(SEEK_BUTTON)->setEnabled( enable );
+  XtVaSetValues( VIEWERBUTTON(EXAMINE_BUTTON),
+                 XmNset, enable ? True : False, NULL );
+  XtVaSetValues( VIEWERBUTTON(INTERACT_BUTTON),
+                 XmNset, enable ? False : True, NULL );
+  XtSetSensitive( VIEWERBUTTON(SEEK_BUTTON), enable ? True : False );
 } // setViewing()
 
 /*!
@@ -586,9 +590,9 @@ SoXtFullViewer::buildViewerButtons(
 
   this->createViewerButtons( form, this->viewerButtonsList );
 
-  for ( int i = 0; i < this->viewerButtonsList->getLength(); i++ ) {
+  for ( int i = 1; i < this->viewerButtonsList->getLength(); i++ ) {
     Widget button = (Widget) (*this->viewerButtonsList)[i];
-    if ( i == 0 )
+    if ( i == 0 ) {
       XtVaSetValues( button,
          XmNleftOffset, 0,
          XmNtopOffset, 0,
@@ -599,7 +603,7 @@ SoXtFullViewer::buildViewerButtons(
          XmNrightAttachment, XmATTACH_FORM,
          XmNwidth, 30, XmNheight, 30,
          NULL );
-    else
+    } else {
       XtVaSetValues( button,
          XmNleftOffset, 0,
          XmNtopOffset, 0,
@@ -611,6 +615,7 @@ SoXtFullViewer::buildViewerButtons(
          XmNrightAttachment, XmATTACH_FORM,
          XmNwidth, 30, XmNheight, 30,
          NULL );
+    }
   }
 
   return form;
@@ -627,37 +632,70 @@ SoXtFullViewer::createViewerButtons(
   assert( buttonlist != NULL );
   int viewerbutton;
   for ( viewerbutton = 0; viewerbutton <= SEEK_BUTTON; viewerbutton++ ) {
-    Widget button = XtVaCreateManagedWidget( "b",
-        xmPushButtonWidgetClass, parent, NULL );
     XtCallbackProc proc = NULL;
+    char label[2];
+    label[1] = '\0';
     switch ( viewerbutton ) {
     case INTERACT_BUTTON:
       proc = SoXtFullViewer::interactbuttonCB;
+      label[0] = 'I';
       break;
     case EXAMINE_BUTTON:
       proc = SoXtFullViewer::examinebuttonCB;
+      label[0] = 'E';
       break;
     case HELP_BUTTON:
       proc = SoXtFullViewer::helpbuttonCB;
+      label[0] = '?';
       break;
     case HOME_BUTTON:
       proc = SoXtFullViewer::homebuttonCB;
+      label[0] = 'H';
       break;
     case SET_HOME_BUTTON:
       proc = SoXtFullViewer::sethomebuttonCB;
+      label[0] = 'N';
       break;
     case VIEW_ALL_BUTTON:
       proc = SoXtFullViewer::viewallbuttonCB;
+      label[0] = 'V';
       break;
     case SEEK_BUTTON:
       proc = SoXtFullViewer::seekbuttonCB;
+      label[0] = 'S';
       break;
     default:
       assert( 0 );
       break;
     } // switch ( viewerbutton )
-    if ( proc != NULL )
-      XtAddCallback( button, XmNactivateCallback, proc, this );
+    Widget button;
+    if ( viewerbutton == EXAMINE_BUTTON || viewerbutton == INTERACT_BUTTON ) {
+      button = XtVaCreateManagedWidget( label,
+        xmToggleButtonWidgetClass, parent,
+        XmNindicatorOn, False,
+        XmNshadowType, XmSHADOW_OUT,
+        XmNhighlightThickness, 2,
+        XmNshadowThickness, 2,
+        XmNwidth, 30,
+        XmNheight, 30,
+        NULL );
+      if ( viewerbutton == EXAMINE_BUTTON ) {
+        XtVaSetValues( button, XmNset, this->isViewing() ? True : False, NULL );
+      }
+      if ( viewerbutton == INTERACT_BUTTON ) {
+        XtVaSetValues( button, XmNset, this->isViewing() ? False : True, NULL );
+      }
+    } else {
+      button = XtVaCreateManagedWidget( label,
+        xmPushButtonWidgetClass, parent, NULL );
+    }
+    if ( proc != NULL ) {
+      if ( viewerbutton == INTERACT_BUTTON || viewerbutton == EXAMINE_BUTTON ) {
+        XtAddCallback( button, XmNdisarmCallback, proc, this );
+      } else {
+        XtAddCallback( button, XmNactivateCallback, proc, this );
+      }
+    }
     buttonlist->append( button );
   }
 } // createViewerButtons()
@@ -679,7 +717,6 @@ SoXtFullViewer::buildPopupMenu(
   this->setBufferingType( this->getBufferingType() );
 
   this->prefmenu->SetMenuItemMarked( EXAMINING_ITEM, this->isViewing() );
-  SoDebugError::postInfo( "SoXtFullViewer::buildPopupMenu", "decorations = %s", this->decorations ? "true" : "false" );
   this->prefmenu->SetMenuItemMarked( DECORATION_ITEM, this->decorations );
   this->prefmenu->SetMenuItemMarked( HEADLIGHT_ITEM, this->isHeadlight() );
 } // buildPopupMenu()
@@ -832,6 +869,7 @@ void
 SoXtFullViewer::openViewerHelpCard( // virtual
   void )
 {
+  SOXT_STUB();
 } // openViewerHelpCard()
 
 // *************************************************************************
@@ -909,52 +947,62 @@ void
 SoXtFullViewer::selectedViewing(
   void )
 {
-  SOXT_STUB();
-}
+  this->setViewing( this->isViewing() ? FALSE : TRUE );
+} // selectedViewing()
 
 void
 SoXtFullViewer::selectedDecoration(
   void )
 {
   SOXT_STUB();
-}
+} // selectedDecoration();
 
 void
 SoXtFullViewer::selectedHeadlight(
   void )
 {
   SOXT_STUB();
-}
+} // selectedHeadlight();
 
 void
 SoXtFullViewer::selectedPrefs(
   void )
 {
   SOXT_STUB();
-}
+} // selectedPrefs()
 
 void
 SoXtFullViewer::interactbuttonClicked(
-  void )
+  Boolean set )
 {
-  if ( this->isViewing() )
+  SoDebugError::postInfo( "SoXtFullViewer::interactbuttonClicked",
+    "%s", set ? "Set" : "Unset" );
+  if ( this->isViewing() && set )
     this->setViewing( FALSE );
+  else if ( ! this->isViewing() && ! set )
+    this->setViewing( TRUE );
 } // interactbuttonClicked()
 
 void
 SoXtFullViewer::interactbuttonCB(
   Widget,
   XtPointer client_data,
-  XtPointer )
+  XtPointer call_data )
 {
-  ((SoXtFullViewer *) client_data)->interactbuttonClicked();
+  XmToggleButtonCallbackStruct * data =
+    (XmToggleButtonCallbackStruct *) call_data;
+  ((SoXtFullViewer *) client_data)->interactbuttonClicked( data->set );
 } // interactbuttonCB()
 
 void
 SoXtFullViewer::examinebuttonClicked(
-  void )
+  Boolean set )
 {
-  if ( ! this->isViewing() )
+  SoDebugError::postInfo( "SoXtFullViewer::examinebuttonClicked",
+    "%s", set ? "Set" : "Unset" );
+  if ( this->isViewing() && ! set )
+    this->setViewing( FALSE );
+  else if ( ! this->isViewing() && set )
     this->setViewing( TRUE );
 } // examinebuttonClicked();
 
@@ -962,9 +1010,11 @@ void
 SoXtFullViewer::examinebuttonCB(
   Widget,
   XtPointer client_data,
-  XtPointer )
+  XtPointer call_data )
 {
-  ((SoXtFullViewer *) client_data)->examinebuttonClicked();
+  XmToggleButtonCallbackStruct * data =
+    (XmToggleButtonCallbackStruct *) call_data;
+  ((SoXtFullViewer *) client_data)->examinebuttonClicked( data->set );
 } // examinebuttonCB()
 
 void
