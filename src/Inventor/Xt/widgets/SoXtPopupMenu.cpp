@@ -642,7 +642,24 @@ SoXtPopupMenu::traverseBuild(
       sub = (MenuRecord *) (*this->menus)[i];
       if ( sub->pos == j && sub->parent == menu ) {
 //        fprintf( stderr, "%s%s {\n", pre, sub->name );
-        Widget submenu = XmCreatePulldownMenu( parent, sub->name, NULL, 0 );
+        Widget shell = parent;
+        while ( shell && ! XtIsShell(shell) )
+          shell = XtParent(shell);
+        assert( shell != (Widget) NULL );
+        Colormap colormap;
+        Visual * visual;
+        int depth;
+        XtVaGetValues( shell,
+          XmNvisual, &visual,
+          XmNdepth, &depth,
+          XmNcolormap, &colormap,
+          NULL );
+        Arg args[10];
+        int argc = 0;
+        XtSetArg( args[0], XmNvisual, visual ); argc++;
+        XtSetArg( args[0], XmNdepth, depth ); argc++;
+        XtSetArg( args[0], XmNcolormap, colormap ); argc++;
+        Widget submenu = XmCreatePulldownMenu( parent, sub->name, args, argc );
         sub->menu = XtVaCreateManagedWidget( sub->name,
           xmCascadeButtonGadgetClass, parent,
           XmNsubMenuId, submenu,
