@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4e from Makefile.am
+# Makefile.in generated automatically by automake 1.4e from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
@@ -47,7 +47,6 @@ INSTALL = @INSTALL@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
-INSTALL_STRIP_FLAG =
 INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
 
@@ -58,13 +57,14 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 
-@SET_MAKE@
 build_alias = @build_alias@
 build_triplet = @build@
 host_alias = @host_alias@
 host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
+
+@SET_MAKE@
 AMDEP = @AMDEP@
 AMTAR = @AMTAR@
 AS = @AS@
@@ -78,6 +78,8 @@ DSUFFIX = @DSUFFIX@
 EVENT = @EVENT@
 GUI = @GUI@
 Gui = @Gui@
+INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
@@ -100,6 +102,7 @@ SOXT_MAJOR_VERSION = @SOXT_MAJOR_VERSION@
 SOXT_MICRO_VERSION = @SOXT_MICRO_VERSION@
 SOXT_MINOR_VERSION = @SOXT_MINOR_VERSION@
 SOXT_VERSION = @SOXT_VERSION@
+STRIP = @STRIP@
 VERSION = @VERSION@
 WIDGET = @WIDGET@
 _am_include = @_am_include@
@@ -122,6 +125,8 @@ SUBDIRS = devices widgets viewers
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src -I$(top_builddir)/data
 
 BUILT_SOURCES = \
+	SoAny.h \
+	SoAny.cpp \
 	So@Gui@Basic.h \
 	So@Gui@Cursors.h \
 	So@Gui@Cursors.cpp \
@@ -208,14 +213,16 @@ libSoXtinc_HEADERS = \
 	$(top_builddir)/src/Inventor/@Gui@/So@Gui@Object.h \
 	$(top_builddir)/src/Inventor/@Gui@/So@Gui@RenderArea.h
 
+EXEEXT =
+OBJEXT = o
 subdir = src/Inventor/Xt
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = ../../../config.h
-CONFIG_CLEAN_FILES = 
-LTLIBRARIES =  $(lib_LTLIBRARIES)
+CONFIG_HEADER = $(top_builddir)/config.h
+CONFIG_CLEAN_FILES =
+LTLIBRARIES = $(lib_LTLIBRARIES)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I../../..
+DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir)
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
@@ -223,9 +230,9 @@ X_CFLAGS = @X_CFLAGS@
 X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
-libSoXt_la_DEPENDENCIES =  devices/libSoXtDevices.la \
+libSoXt_la_DEPENDENCIES = devices/libSoXtDevices.la \
 widgets/libSoXtWidgets.la viewers/libSoXtViewers.la
-am_libSoXt_la_OBJECTS =  So@Gui@Cursors.lo So@Gui@Object.lo \
+am_libSoXt_la_OBJECTS = SoAny.lo So@Gui@Cursors.lo So@Gui@Object.lo \
 So@Gui@RenderArea.lo SoAnyMaterialList.lo SoAnyMaterialListBuiltins.lo \
 So@Gui@.lo So@Gui@Clipboard.lo So@Gui@Component.lo \
 So@Gui@DirectionalLightEditor.lo So@Gui@GLWidget.lo So@Gui@Icons.lo \
@@ -233,7 +240,7 @@ So@Gui@LightSliderSet.lo So@Gui@MaterialEditor.lo \
 So@Gui@MaterialList.lo So@Gui@MaterialSliderSet.lo \
 So@Gui@PrintDialog.lo So@Gui@Resource.lo So@Gui@SliderSet.lo \
 So@Gui@SliderSetBase.lo So@Gui@TransformSliderSet.lo
-libSoXt_la_OBJECTS =  $(am_libSoXt_la_OBJECTS)
+libSoXt_la_OBJECTS = $(am_libSoXt_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 CXXFLAGS = @CXXFLAGS@
@@ -244,76 +251,69 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES =  $(libSoXt_la_SOURCES)
-DATA =  $(noinst_DATA)
+DIST_SOURCES = $(libSoXt_la_SOURCES)
+DATA = $(noinst_DATA)
 
-HEADERS =  $(libSoXtinc_HEADERS)
+HEADERS = $(libSoXtinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP@DEP_FILES =  $(DEPDIR)/So@Gui@.Plo $(DEPDIR)/So@Gui@Clipboard.Plo \
-@AMDEP@$(DEPDIR)/So@Gui@Component.Plo $(DEPDIR)/So@Gui@Cursors.Plo \
-@AMDEP@$(DEPDIR)/So@Gui@DirectionalLightEditor.Plo \
-@AMDEP@$(DEPDIR)/So@Gui@GLWidget.Plo $(DEPDIR)/So@Gui@Icons.Plo \
-@AMDEP@$(DEPDIR)/So@Gui@LightSliderSet.Plo \
-@AMDEP@$(DEPDIR)/So@Gui@MaterialEditor.Plo \
-@AMDEP@$(DEPDIR)/So@Gui@MaterialList.Plo \
-@AMDEP@$(DEPDIR)/So@Gui@MaterialSliderSet.Plo \
-@AMDEP@$(DEPDIR)/So@Gui@Object.Plo $(DEPDIR)/So@Gui@PrintDialog.Plo \
-@AMDEP@$(DEPDIR)/So@Gui@RenderArea.Plo $(DEPDIR)/So@Gui@Resource.Plo \
-@AMDEP@$(DEPDIR)/So@Gui@SliderSet.Plo \
-@AMDEP@$(DEPDIR)/So@Gui@SliderSetBase.Plo \
-@AMDEP@$(DEPDIR)/So@Gui@TransformSliderSet.Plo \
-@AMDEP@$(DEPDIR)/SoAnyMaterialList.Plo \
-@AMDEP@$(DEPDIR)/SoAnyMaterialListBuiltins.Plo
-DIST_COMMON =  $(libSoXtinc_HEADERS) Makefile.am Makefile.in
+@AMDEP@DEP_FILES = $(DEPDIR)/So@Gui@.Plo $(DEPDIR)/So@Gui@Clipboard.Plo \
+@AMDEP@ $(DEPDIR)/So@Gui@Component.Plo $(DEPDIR)/So@Gui@Cursors.Plo \
+@AMDEP@ $(DEPDIR)/So@Gui@DirectionalLightEditor.Plo \
+@AMDEP@ $(DEPDIR)/So@Gui@GLWidget.Plo $(DEPDIR)/So@Gui@Icons.Plo \
+@AMDEP@ $(DEPDIR)/So@Gui@LightSliderSet.Plo \
+@AMDEP@ $(DEPDIR)/So@Gui@MaterialEditor.Plo \
+@AMDEP@ $(DEPDIR)/So@Gui@MaterialList.Plo \
+@AMDEP@ $(DEPDIR)/So@Gui@MaterialSliderSet.Plo \
+@AMDEP@ $(DEPDIR)/So@Gui@Object.Plo $(DEPDIR)/So@Gui@PrintDialog.Plo \
+@AMDEP@ $(DEPDIR)/So@Gui@RenderArea.Plo $(DEPDIR)/So@Gui@Resource.Plo \
+@AMDEP@ $(DEPDIR)/So@Gui@SliderSet.Plo \
+@AMDEP@ $(DEPDIR)/So@Gui@SliderSetBase.Plo \
+@AMDEP@ $(DEPDIR)/So@Gui@TransformSliderSet.Plo $(DEPDIR)/SoAny.Plo \
+@AMDEP@ $(DEPDIR)/SoAnyMaterialList.Plo \
+@AMDEP@ $(DEPDIR)/SoAnyMaterialListBuiltins.Plo
+DIST_COMMON = $(libSoXtinc_HEADERS) Makefile.am Makefile.in
 
-
-DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-
-GZIP_ENV = --best
-DIST_SUBDIRS =  $(SUBDIRS)
+DIST_SUBDIRS = $(SUBDIRS)
 SOURCES = $(libSoXt_la_SOURCES)
 OBJECTS = $(am_libSoXt_la_OBJECTS)
 
-all: all-redirect
+all: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) all-recursive
+
 .SUFFIXES:
-.SUFFIXES: .c .cpp .h .lo .o
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Inventor/Xt/Makefile
+.SUFFIXES: .c .cpp .h .lo .o .obj
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
-	cd $(top_builddir) \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+	cd $(top_srcdir) && \
+	  $(AUTOMAKE) --gnu  src/Inventor/Xt/Makefile
 
-
-mostlyclean-libLTLIBRARIES:
-
-clean-libLTLIBRARIES:
-	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
-
-distclean-libLTLIBRARIES:
-
-maintainer-clean-libLTLIBRARIES:
-
+Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) && \
+	  CONFIG_HEADERS= CONFIG_LINKS= \
+	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
 	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
 	  if test -f $$p; then \
-	    echo " $(LIBTOOL)  --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p"; \
-	    $(LIBTOOL)  --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p; \
+	    echo " $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p; \
 	  else :; fi; \
 	done
 
 uninstall-libLTLIBRARIES:
 	@$(NORMAL_UNINSTALL)
 	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
-	  echo " $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p"; \
-	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	  echo " $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p"; \
+	  $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
 	done
 
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+
 mostlyclean-compile:
-	-rm -f *.o core *.core
+	-rm -f *.$(OBJEXT) core *.core
 
 distclean-compile:
 	-rm -f *.tab.c
@@ -329,7 +329,6 @@ distclean-libtool:
 
 libSoXt.la: $(libSoXt_la_OBJECTS) $(libSoXt_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libSoXt_la_LDFLAGS) $(libSoXt_la_OBJECTS) $(libSoXt_la_LIBADD) $(LIBS)
-
 install-libSoXtincHEADERS: $(libSoXtinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libSoXtincdir)
@@ -355,7 +354,8 @@ uninstall-libSoXtincHEADERS:
 #     (which will cause the Makefiles to be regenerated when you run `make');
 # (2) otherwise, pass the desired values on the `make' command line.
 all-recursive install-data-recursive install-exec-recursive \
-installdirs-recursive install-recursive uninstall-recursive  \
+installdirs-recursive install-recursive uninstall-recursive \
+install-info-recursive uninstall-info-recursive \
 check-recursive installcheck-recursive info-recursive dvi-recursive:
 	@set fnord $(MAKEFLAGS); amf=$$2; \
 	dot_seen=no; \
@@ -460,6 +460,7 @@ distclean-tags:
 @AMDEP@@_am_include@ $(DEPDIR)/So@Gui@SliderSet.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/So@Gui@SliderSetBase.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/So@Gui@TransformSliderSet.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoAny.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoAnyMaterialList.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoAnyMaterialListBuiltins.Plo
 
@@ -480,12 +481,20 @@ distclean-depend:
 @AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(LTCXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 
+.cpp.obj:
+@AMDEP@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXXCOMPILE) -c -o $@ `cygpath -w $<`
 
-distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
+DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+
+top_distdir = ../../..
+distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/$(top_builddir)/src/Inventor/@Gui@ $(top_builddir)/src/Inventor/@Gui@
+	$(mkinstalldirs) $(distdir)/$(top_builddir)/src/Inventor/@Gui@
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -503,39 +512,34 @@ distdir: $(DISTFILES)
 	    || mkdir $(distdir)/$$subdir \
 	    || exit 1; \
 	    (cd $$subdir && \
-	      $(MAKE) $(AM_MAKEFLAGS) top_distdir=../$(top_distdir) distdir=../$(distdir)/$$subdir distdir) \
+	      $(MAKE) $(AM_MAKEFLAGS) \
+	        top_distdir="$(top_distdir)" \
+	        distdir=../$(distdir)/$$subdir \
+	        distdir) \
 	      || exit 1; \
 	  fi; \
 	done
-info-am:
-info: info-recursive
-dvi-am:
-dvi: dvi-recursive
 check-am: all-am
 check: check-recursive
-installcheck-am:
-installcheck: installcheck-recursive
-all-redirect: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) all-recursive
+all-am: Makefile $(LTLIBRARIES) $(DATA) $(HEADERS)
 
-install-exec-am: install-libLTLIBRARIES
+installdirs: installdirs-recursive
+installdirs-am:
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libSoXtincdir)
+
+install: install-recursive
 install-exec: install-exec-recursive
-
-install-data-am: install-libSoXtincHEADERS
 install-data: install-data-recursive
+uninstall: uninstall-recursive
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
-install: install-recursive
-uninstall-am: uninstall-libLTLIBRARIES uninstall-libSoXtincHEADERS
-uninstall: uninstall-recursive
-all-am: Makefile $(LTLIBRARIES) $(DATA) $(HEADERS)
-install-strip:
-	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
-installdirs: installdirs-recursive
-installdirs-am:
-	$(mkinstalldirs)  $(DESTDIR)$(libdir) $(DESTDIR)$(libSoXtincdir)
 
+installcheck: installcheck-recursive
+
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
+	  INSTALL_PROGRAM_ENV='$(INSTALL_STRIP_PROGRAM_ENV)' install
 
 mostlyclean-generic:
 
@@ -558,36 +562,53 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 distclean: distclean-recursive
 
 distclean-am: clean-am distclean-compile distclean-depend \
-	distclean-generic distclean-libLTLIBRARIES distclean-libtool \
-	distclean-tags
+	distclean-generic distclean-libtool distclean-tags
+
+dvi:
+
+dvi-am:
+
+info:
+
+info-am:
+
+install-data-am: install-libSoXtincHEADERS
+
+install-exec-am: install-libLTLIBRARIES
+
+install-info:
+
+install-man:
+
+installcheck-am:
 
 maintainer-clean: maintainer-clean-recursive
 
-maintainer-clean-am: distclean-am maintainer-clean-generic \
-	maintainer-clean-libLTLIBRARIES
+maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-recursive
 
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libLTLIBRARIES mostlyclean-libtool
+	mostlyclean-libtool
 
-.PHONY: all all-am all-recursive all-redirect check check-am \
-	check-recursive clean clean-generic clean-libLTLIBRARIES \
-	clean-libtool clean-recursive distclean distclean-compile \
-	distclean-depend distclean-generic distclean-libLTLIBRARIES \
-	distclean-libtool distclean-recursive distclean-tags distdir \
-	dvi dvi-am dvi-recursive info info-am info-recursive install \
-	install-am install-data install-data-am install-data-recursive \
-	install-exec install-exec-am install-exec-recursive \
-	install-libLTLIBRARIES install-libSoXtincHEADERS \
+uninstall-am: uninstall-libLTLIBRARIES uninstall-libSoXtincHEADERS
+
+.PHONY: all all-am all-recursive check check-am check-recursive clean \
+	clean-generic clean-libLTLIBRARIES clean-libtool \
+	clean-recursive distclean distclean-compile distclean-depend \
+	distclean-generic distclean-libtool distclean-recursive \
+	distclean-tags distdir dvi dvi-am dvi-recursive info info-am \
+	info-recursive install install-am install-data install-data-am \
+	install-data-recursive install-exec install-exec-am \
+	install-exec-recursive install-info install-info-recursive \
+	install-libLTLIBRARIES install-libSoXtincHEADERS install-man \
 	install-recursive install-strip installcheck installcheck-am \
 	installcheck-recursive installdirs installdirs-am \
 	installdirs-recursive maintainer-clean maintainer-clean-generic \
-	maintainer-clean-libLTLIBRARIES maintainer-clean-recursive \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libLTLIBRARIES mostlyclean-libtool \
-	mostlyclean-recursive tags tags-recursive uninstall \
-	uninstall-am uninstall-libLTLIBRARIES \
+	maintainer-clean-recursive mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
+	tags tags-recursive uninstall uninstall-am \
+	uninstall-info-recursive uninstall-libLTLIBRARIES \
 	uninstall-libSoXtincHEADERS uninstall-recursive
 
 
@@ -602,6 +623,12 @@ So@Gui@Cursors.h: $(srcdir)/common/SoGuiCursors.h.in
 So@Gui@Cursors.cpp: $(srcdir)/common/SoGuiCursors.cpp.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/@Gui@/So@Gui@Cursors.cpp )
 
+SoAny.h: $(srcdir)/common/SoAny.h.in
+	@( cd $(top_builddir); $(MAKE) src/Inventor/@Gui@/SoAny.h )
+
+SoAny.cpp: $(srcdir)/common/SoAny.cpp.in
+	@( cd $(top_builddir); $(MAKE) src/Inventor/@Gui@/SoAny.cpp )
+
 So@Gui@Object.h: $(srcdir)/common/SoGuiObject.h.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/@Gui@/So@Gui@Object.h )
 
@@ -612,6 +639,12 @@ So@Gui@RenderArea.h: $(srcdir)/common/SoGuiRenderArea.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 So@Gui@RenderArea.cpp: $(srcdir)/common/SoGuiRenderArea.cpp.in
+	@( cd $(top_builddir); $(MAKE) built-sources )
+
+SoAny.h: $(srcdir)/common/SoAny.h.in
+	@( cd $(top_builddir); $(MAKE) built-sources )
+
+SoAny.cpp: $(srcdir)/common/SoAny.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyMaterialList.h: $(srcdir)/common/SoAnyMaterialList.h.in

@@ -12,6 +12,8 @@ SUBDIRS = . data src/Inventor/Xt
 
 BUILT_SOURCES = \
 	so@gui@defs.h \
+	src/Inventor/@Gui@/SoAny.h \
+	src/Inventor/@Gui@/SoAny.cpp \
 	src/Inventor/@Gui@/So@Gui@Basic.h \
 	src/Inventor/@Gui@/So@Gui@Cursors.h \
 	src/Inventor/@Gui@/So@Gui@Cursors.cpp \
@@ -116,6 +118,16 @@ src/Inventor/@Gui@/viewers/So@Gui@Viewer.cpp: \
   $(srcdir)/src/Inventor/@Gui@/common/SoGuiViewer.cpp.in
 	@./config.status \
 	  --file=$@:src/Inventor/@Gui@/common/SoGuiViewer.cpp.in
+
+src/Inventor/@Gui@/SoAny.h: \
+  $(srcdir)/src/Inventor/@Gui@/common/SoAny.h.in
+	@./config.status \
+	  --file=$@:src/Inventor/@Gui@/common/SoAny.h.in
+
+src/Inventor/@Gui@/SoAny.cpp: \
+  $(srcdir)/src/Inventor/@Gui@/common/SoAny.cpp.in
+	@./config.status \
+	  --file=$@:src/Inventor/@Gui@/common/SoAny.cpp.in
 
 src/Inventor/@Gui@/viewers/SoAnyFullViewer.h: \
   $(srcdir)/src/Inventor/@Gui@/common/SoAnyFullViewer.h.in

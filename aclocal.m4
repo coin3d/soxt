@@ -181,13 +181,8 @@ AC_DEFINE_UNQUOTED(VERSION, "$VERSION", [Version number of package])])
 
 # Autoconf 2.50 wants to disallow AM_ names.  We explicitly allow
 # the ones we care about.
-ifdef([m4_pattern_allow], [m4_pattern_allow([AM_CFLAGS])])
-ifdef([m4_pattern_allow], [m4_pattern_allow([AM_CPPFLAGS])])
-ifdef([m4_pattern_allow], [m4_pattern_allow([AM_CXXFLAGS])])
-ifdef([m4_pattern_allow], [m4_pattern_allow([AM_OBJCFLAGS])])
-ifdef([m4_pattern_allow], [m4_pattern_allow([AM_FFLAGS])])
-ifdef([m4_pattern_allow], [m4_pattern_allow([AM_RFLAGS])])
-ifdef([m4_pattern_allow], [m4_pattern_allow([AM_GCJFLAGS])])
+ifdef([m4_pattern_allow],
+      [m4_pattern_allow([^AM_(C|CPP|CXX|OBJC|F|R|GCJ)FLAGS])])dnl
 
 # Some tools Automake needs.
 AC_REQUIRE([AM_SANITY_CHECK])dnl
@@ -199,6 +194,7 @@ AM_MISSING_PROG(AUTOHEADER, autoheader)
 AM_MISSING_PROG(MAKEINFO, makeinfo)
 AM_MISSING_PROG(AMTAR, tar)
 AM_MISSING_INSTALL_SH
+AM_PROG_INSTALL_STRIP
 # We need awk for the "check" target.  The system "awk" is bad on
 # some platforms.
 AC_REQUIRE([AC_PROG_AWK])dnl
@@ -308,6 +304,82 @@ else
   AC_MSG_WARN([${am_backtick}missing' script is too old or missing])
 fi
 ])
+
+# AM_AUX_DIR_EXPAND
+
+# For projects using AC_CONFIG_AUX_DIR([foo]), Autoconf sets
+# $ac_aux_dir to ${srcdir}/foo.  In other projects, it is set to `.'.
+# Of course, Automake must honor this variable whenever it call a tool
+# from the auxiliary directory.  The problem is that $srcdir (hence
+# $ac_aux_dir) can be either an absolute path or a path relative to
+# $top_srcdir or absolute, this depends on how configure is run.  This
+# is pretty anoying since it makes $ac_aux_dir quite unusable in
+# subdirectories: on the top source directory, any form will work
+# fine, but in subdirectories relative pat needs to be adapted.
+# - calling $top_srcidr/$ac_aux_dir/missing would success if $srcdir is
+#   relative, but fail if $srcdir is absolute
+# - conversly, calling $ax_aux_dir/missing would fail if $srcdir is
+#   absolute, and success on relative paths.
+#
+# Consequently, we define and use $am_aux_dir, the "always absolute"
+# version of $ac_aux_dir.
+
+AC_DEFUN([AM_AUX_DIR_EXPAND], [
+# expand $ac_aux_dir to an absolute path
+am_aux_dir=`CDPATH=:; cd $ac_aux_dir && pwd`
+])
+
+# One issue with vendor `install' (even GNU) is that you can't
+# specify the program used to strip binaries.  This is especially
+# annoying in cross=compiling environments, where the build's strip
+# is unlikely to handle the host's binaries.
+# Fortunately install-sh will honor a STRIPPROG variable, so if we ever
+# need to use a non standard strip, we just have to make sure we use
+# install-sh with the STRIPPROG variable set.
+AC_DEFUN([AM_PROG_INSTALL_STRIP],
+[AC_REQUIRE([AM_MISSING_INSTALL_SH])
+dnl Don't test for $cross_compiling = yes, it might be `maybe'...
+# We'd like to do this but we can't because it will unconditionally
+# require config.guess.  One way would be if autoconf had the capability
+# to let us compile in this code only when config.guess was already
+# a possibility.
+#if test "$cross_compiling" != no; then
+#  # since we are cross-compiling, we need to check for a suitable `strip'
+#  AM_PROG_STRIP
+#  if test -z "$STRIP"; then
+#    AC_MSG_WARN([strip missing, install-strip will not strip binaries])
+#  fi
+#fi
+
+# If $STRIP is defined (either by the user, or by AM_PROG_STRIP),
+# instruct install-strip to use install-sh and the given $STRIP program.
+# Otherwise, just use ${INSTALL}: the idea is to use the vendor install
+# as much as possible, because it's faster.
+if test -z "$STRIP"; then
+  # The top level make will set INSTALL_PROGRAM=$(INSTALL_STRIP_PROGRAM)
+  # and the double dolard below is there to make sure that ${INSTALL}
+  # is substitued in the sub-makes, not at the top-level; this is
+  # needed if ${INSTALL} is a relative path (ajusted in each subdirectory
+  # by config.status).
+  INSTALL_STRIP_PROGRAM='$${INSTALL} -s'
+  INSTALL_STRIP_PROGRAM_ENV=''
+else
+  _am_dirpart="`echo $install_sh | sed -e 's,//*[[^/]]*$,,'`"
+  INSTALL_STRIP_PROGRAM="\${SHELL} \`CDPATH=: && cd $_am_dirpart && pwd\`/install-sh -c -s"
+  INSTALL_STRIP_PROGRAM_ENV="STRIPPROG='\$(STRIP)'"
+fi
+AC_SUBST([STRIP])
+AC_SUBST([INSTALL_STRIP_PROGRAM])
+AC_SUBST([INSTALL_STRIP_PROGRAM_ENV])])
+
+#AC_DEFUN([AM_PROG_STRIP],
+#[# Check for `strip', unless the installer
+# has set the STRIP environment variable.
+# Note: don't explicitly check for -z "$STRIP" here because
+# that will cause problems if AC_CANONICAL_* is AC_REQUIREd after
+# this macro, and anyway it doesn't have an effect anyway.
+#AC_CHECK_TOOL([STRIP],[strip])
+#])
 
 # serial 3
 
@@ -981,13 +1053,24 @@ AC_DEFUN([AM_MAINTAINER_MODE],
 ]
 )
 
-# serial 2
+# serial 3
 
 # AM_CONDITIONAL(NAME, SHELL-CONDITION)
 # -------------------------------------
 # Define a conditional.
+#
+# FIXME: Once using 2.50, use this:
+# m4_match([$1], [^TRUE\|FALSE$], [AC_FATAL([$0: invalid condition: $1])])dnl
 AC_DEFUN([AM_CONDITIONAL],
-[AC_SUBST([$1_TRUE])
+[ifelse([$1], [TRUE],
+        [errprint(__file__:__line__: [$0: invalid condition: $1
+])dnl
+m4exit(1)])dnl
+ifelse([$1], [FALSE],
+       [errprint(__file__:__line__: [$0: invalid condition: $1
+])dnl
+m4exit(1)])dnl
+AC_SUBST([$1_TRUE])
 AC_SUBST([$1_FALSE])
 if $2; then
   $1_TRUE=
@@ -1139,12 +1222,15 @@ AC_LANG_RESTORE
 #
 # Side-Effects:
 #   config.h:
+#     HAVE_VAR___func__              (1 if exists)
 #     HAVE_VAR___PRETTY_FUNCTION__   (1 if exists)
-#     HAVE_VAR___FUNCTION__          (always 0 if __PRETTY_FUNCTION__ exists)
+#     HAVE_VAR___FUNCTION__          (1 if exists)
+#
+# (Note that only one of these will be defined.)
 #
 # Authors:
 #   Lars J. Aas <larsa@sim.no>
-#
+#   Morten Eriksen <mortene@sim.no>
 
 AC_DEFUN([SIM_AC_CHECK_VAR_FUNCTIONNAME], [
 AC_CACHE_CHECK([for function name variable],
@@ -1171,6 +1257,9 @@ AC_CACHE_CHECK([for function name variable],
       [sim_cv_var_functionname=__FUNCTION__],
       [sim_cv_var_functionname=none])
   fi])
+
+# FIXME: these can probably be contracted to a single test inside a loop.
+# 20010330 mortene.
 
 if test x"$sim_cv_var_functionname" = x"__func__"; then
   AC_DEFINE([HAVE_VAR___func__], 1,
@@ -1299,6 +1388,8 @@ AC_SUBST(DSUFFIX)
 # 
 #   * [larsa:20000607] don't check all -woff options to SGI MIPSpro CC,
 #     just put all of them on the same line, to check if the syntax is ok.
+#   * [larsa:20010504] rename to SIM_AC_COMPILER_WARNINGS and clean up
+#     the macro
 
 AC_DEFUN([SIM_COMPILER_WARNINGS], [
 AC_ARG_ENABLE(
@@ -1329,7 +1420,7 @@ if test x"$enable_warnings" = x"yes"; then
   else
     case $host in
     *-*-irix*) 
-      if test x"$CC" = xcc || test x"$CXX" = xCC; then
+      if test x"$CC" = xcc || test x"$CC" = xCC || test x"$CXX" = xCC; then
         _warn_flags=
         _woffs=""
         ### Turn on all warnings ######################################
@@ -1337,21 +1428,28 @@ if test x"$enable_warnings" = x"yes"; then
 
         ### Turn off specific (bogus) warnings ########################
 
-        ## SGI MipsPro v?.?? (our compiler on IRIX 6.2) ##############
-        # 3115: ``type qualifiers are meaningless in this declaration''.
-        # 3262: unused variables.
-        ## SGI MipsPro v7.30 #########################################
-	# 1174: "The function was declared but never referenced."
-        # 1209: "The controlling expression is constant." (kill warning on
-        #       if (0), assert(FALSE), etc).
-        # 1355: Kill warnings on extra semicolons (which happens with some
-        #       of the Coin macros).
-        # 1375: Non-virtual destructors in base classes.
-        # 3201: Unused argument to a function.
-        # 1110: "Statement is not reachable" (the Lex/Flex generated code in
-        #       Coin/src/engines has lots of shitty code which needs this).
+        ### SGI MipsPro v?.?? (our compiler on IRIX 6.2) ##############
+        ##
+        ## 3115: ``type qualifiers are meaningless in this declaration''.
+        ## 3262: unused variables.
+        ##
+        ### SGI MipsPro v7.30 #########################################
+        ##
+	## 1174: "The function was declared but never referenced."
+        ## 1209: "The controlling expression is constant." (kill warning on
+        ##       if (0), assert(FALSE), etc).
+        ## 1355: Kill warnings on extra semicolons (which happens with some
+        ##       of the Coin macros).
+        ## 1375: Non-virtual destructors in base classes.
+        ## 3201: Unused argument to a function.
+        ## 1110: "Statement is not reachable" (the Lex/Flex generated code in
+        ##       Coin/src/engines has lots of shitty code which needs this).
+        ## 1506: Implicit conversion from "unsigned long" to "long".
+        ##       SbTime.h in SGI/TGS Inventor does this, so we need to kill
+        ##       this warning to avoid all the output clutter when compiling
+        ##       the SoQt, SoGtk or SoXt libraries on IRIX with SGI MIPSPro CC.
 
-        sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,1110"
+        sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,1110,1506"
         SIM_AC_CC_COMPILER_OPTION($sim_ac_bogus_warnings,
                                   CPPFLAGS="$CPPFLAGS $sim_ac_bogus_warnings")
       fi
@@ -1470,8 +1568,8 @@ fi
 ]) # SIM_AC_MATHLIB_READY_IFELSE()
 
 
-# Usage:
-#  SIM_AC_CHECK_DL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+# SIM_AC_CHECK_DL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+# ----------------------------------------------------------
 #
 #  Try to find the dynamic link loader library. If it is found, these
 #  shell variables are set:
@@ -1481,9 +1579,6 @@ fi
 #    $sim_ac_dl_libs     (link libraries the linker needs for dl lib)
 #
 #  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
-#  In addition, the variable $sim_ac_dl_avail is set to "yes" if
-#  the dynamic link loader library is found.
-#
 #
 # Author: Morten Eriksen, <mortene@sim.no>.
 
@@ -1495,8 +1590,6 @@ AC_ARG_WITH(
     [include support for the dynamic link loader library [default=yes]])],
   [],
   [with_dl=yes])
-
-sim_ac_dl_avail=no
 
 if test x"$with_dl" != xno; then
   if test x"$with_dl" != xyes; then
@@ -1529,7 +1622,6 @@ if test x"$with_dl" != xno; then
                  [sim_cv_lib_dl_avail=no])])
 
   if test x"$sim_cv_lib_dl_avail" = xyes; then
-    sim_ac_dl_avail=yes
     ifelse([$1], , :, [$1])
   else
     CPPFLAGS=$sim_ac_save_cppflags
@@ -1540,6 +1632,46 @@ if test x"$with_dl" != xno; then
 fi
 ])
 
+# SIM_AC_CHECK_LOADLIBRARY([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+# -------------------------------------------------------------------
+#
+#  Try to use the Win32 dynamic link loader methods LoadLibrary(),
+#  GetProcAddress() and FreeLibrary().
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_CHECK_LOADLIBRARY], [
+AC_ARG_WITH(
+  [loadlibrary],
+  [AC_HELP_STRING(
+    [--with-loadlibrary],
+    [always use run-time link bindings under Win32 [default=yes]])],
+  [],
+  [with_loadlibrary=yes])
+
+if test x"$with_loadlibrary" != xno; then
+  # Use SIM_AC_CHECK_HEADERS instead of .._HEADER to get the
+  # HAVE_DLFCN_H symbol set up in config.h automatically.
+  AC_CHECK_HEADERS([windows.h])
+
+  AC_CACHE_CHECK([whether the Win32 LoadLibrary() method is available],
+    sim_cv_lib_loadlibrary_avail,
+    [AC_TRY_LINK([
+#if HAVE_WINDOWS_H
+#include <windows.h>
+#endif /* HAVE_WINDOWS_H */
+],
+                 [(void)LoadLibrary(0L); (void)GetProcAddress(0L, 0L); (void)FreeLibrary(0L); ],
+                 [sim_cv_lib_loadlibrary_avail=yes],
+                 [sim_cv_lib_loadlibrary_avail=no])])
+
+  if test x"$sim_cv_lib_loadlibrary_avail" = xyes; then
+    ifelse([$1], , :, [$1])
+  else
+    ifelse([$2], , :, [$2])
+  fi
+fi
+])
 
 # Usage:
 #  SIM_AC_CHECK_X11([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
@@ -2768,9 +2900,9 @@ if $sim_ac_coin_desired; then
 
   AC_PATH_PROG(sim_ac_coin_configcmd, coin-config, false, $sim_ac_path)
   if $sim_ac_coin_configcmd; then
-# FIXME: use --alternate=$CONFIG or nothing (in case of old script)
-#    test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
-#      sim_ac_coin_configcmd="$sim_ac_coin_configcmd --debug"
+    test -n "$CONFIG" &&
+      $sim_ac_coin_configcmd --alternate=$CONFIG >/dev/null 2>/dev/null &&
+      sim_ac_coin_configcmd="$sim_ac_coin_configcmd --alternate=$CONFIG"
     sim_ac_coin_cppflags=`$sim_ac_coin_configcmd --cppflags`
     sim_ac_coin_ldflags=`$sim_ac_coin_configcmd --ldflags`
     sim_ac_coin_libs=`$sim_ac_coin_configcmd --libs`

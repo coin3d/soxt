@@ -48,6 +48,7 @@ static const char rcsid[] =
 #include <Inventor/Xt/widgets/SoXtGLArea.h>
 
 #include <Inventor/Xt/SoXtGLWidget.h>
+#include <Inventor/Xt/SoAny.h>
 
 // *************************************************************************
 
@@ -222,6 +223,7 @@ SoXtGLWidget::SoXtGLWidget( // protected
 SoXtGLWidget::~SoXtGLWidget( // virtual, protected
   void )
 {
+  if (this->normalContext) SoAny::si()->unregisterGLContext((void*) this);
 } // ~SoXtGLWidget()
 
 // *************************************************************************
@@ -546,12 +548,21 @@ SoXtGLWidget::initNormalContext(void)
   XVisualInfo * visual;
   Display * display = SoXt::getDisplay();
   XtVaGetValues( this->glxWidget, SoXtNvisualInfo, &visual, NULL );
+  int screen = DefaultScreen(display);
 
-  this->normalContext = glXCreateContext( display, visual, None, GL_TRUE );
+  SoXtGLWidget * share = (SoXtGLWidget*) SoAny::si()->getSharedGLContext((void*) display, 
+                                                                         (void*) screen);
+  
+  this->normalContext = glXCreateContext(display, visual, 
+                                         share ? share->normalContext : None, 
+                                         GL_TRUE);
   if ( ! this->normalContext ) {
     SoDebugError::postInfo( "SoXtGLWidget::glInit",
       "glXCreateContext() returned NULL" );
     XtAppError( SoXt::getAppContext(), "no context" );
+  }
+  else {
+    SoAny::si()->registerGLContext((void*) this, (void*) display, (void*) screen);
   }
 }
 
@@ -859,19 +870,19 @@ SoXtGLWidget::buildWidget( // protected
                  RootWindow( display, this->normalVisual->screen ),
                  this->normalVisual->visual, AllocNone );
   }
-
+  
   this->glxWidget = XtVaCreateManagedWidget( "SoXtGLWidget",
-    soxtGLAreaWidgetClass, this->glxManager,
-    SoXtNvisualInfo, this->normalVisual,
-    XmNcolormap, colors,
-    SoXtNstencilSize, 1,
-    XmNleftAttachment, XmATTACH_FORM,
-    XmNtopAttachment, XmATTACH_FORM,
-    XmNrightAttachment, XmATTACH_FORM,
-    XmNbottomAttachment, XmATTACH_FORM,
-    NULL );
-  this->registerWidget( this->glxWidget );
-
+                                             soxtGLAreaWidgetClass, this->glxManager,
+                                             SoXtNvisualInfo, this->normalVisual,
+                                             XmNcolormap, colors,
+                                             SoXtNstencilSize, 1,
+                                             XmNleftAttachment, XmATTACH_FORM,
+                                             XmNtopAttachment, XmATTACH_FORM,
+                                             XmNrightAttachment, XmATTACH_FORM,
+                                             XmNbottomAttachment, XmATTACH_FORM,
+                                             NULL );
+  this->registerWidget( this->glxWidget );  
+  
   this->setBorder( this->isBorder() ); // "refresh" the widget offsets
 
   // Our callback has this signature:

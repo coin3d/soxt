@@ -9,6 +9,8 @@ SUBDIRS = devices widgets viewers
 INCLUDES = -I$(top_builddir)/src -I$(top_srcdir)/src -I$(top_builddir)/data
 
 BUILT_SOURCES = \
+	SoAny.h \
+	SoAny.cpp \
 	So@Gui@Basic.h \
 	So@Gui@Cursors.h \
 	So@Gui@Cursors.cpp \
@@ -79,6 +81,12 @@ So@Gui@Cursors.h: $(srcdir)/common/SoGuiCursors.h.in
 So@Gui@Cursors.cpp: $(srcdir)/common/SoGuiCursors.cpp.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/@Gui@/So@Gui@Cursors.cpp )
 
+SoAny.h: $(srcdir)/common/SoAny.h.in
+	@( cd $(top_builddir); $(MAKE) src/Inventor/@Gui@/SoAny.h )
+
+SoAny.cpp: $(srcdir)/common/SoAny.cpp.in
+	@( cd $(top_builddir); $(MAKE) src/Inventor/@Gui@/SoAny.cpp )
+
 So@Gui@Object.h: $(srcdir)/common/SoGuiObject.h.in
 	@( cd $(top_builddir); $(MAKE) src/Inventor/@Gui@/So@Gui@Object.h )
 
@@ -89,6 +97,12 @@ So@Gui@RenderArea.h: $(srcdir)/common/SoGuiRenderArea.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 So@Gui@RenderArea.cpp: $(srcdir)/common/SoGuiRenderArea.cpp.in
+	@( cd $(top_builddir); $(MAKE) built-sources )
+
+SoAny.h: $(srcdir)/common/SoAny.h.in
+	@( cd $(top_builddir); $(MAKE) built-sources )
+
+SoAny.cpp: $(srcdir)/common/SoAny.cpp.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
 
 SoAnyMaterialList.h: $(srcdir)/common/SoAnyMaterialList.h.in
