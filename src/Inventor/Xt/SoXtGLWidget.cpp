@@ -240,25 +240,21 @@ SoXtGLWidget::getColorMapSize(
 /*!
   This method returns the Window associated with the normal GL context.
 */
-
 Window
-SoXtGLWidget::getNormalWindow(
-  void)
+SoXtGLWidget::getNormalWindow(void)
 {
   assert(PRIVATE(this)->glxwidget != (Widget) NULL);
   return XtWindow(PRIVATE(this)->glxwidget);
-} // getNormalWindow()
+}
 
 /*!
   This method returns the Window associated with the overlay GL context.
 */
-
 Window
-SoXtGLWidget::getOverlayWindow(
-  void)
+SoXtGLWidget::getOverlayWindow(void)
 {
   return (Window) NULL;
-} // getOverlayWindow()
+}
 
 /*!
   This method returns the normal GL context.
@@ -281,26 +277,24 @@ SoXtGLWidget::getOverlayContext(
 } // getOverlayContext()
 
 /*!
-  This method returns the Widget associated with the normal GL context.
+  This method returns the Widget associated with the normal GL
+  context.
 */
-
 Widget
-SoXtGLWidget::getNormalWidget(
-  void)
+SoXtGLWidget::getNormalWidget(void) const
 {
   return PRIVATE(this)->glxwidget;
-} // getNormalWidget()
+}
 
 /*!
-  This method returns the Widget associated with the overlay GL context.
+  This method returns the Widget associated with the overlay GL
+  context.
 */
-
 Widget
-SoXtGLWidget::getOverlayWidget(
-  void)
+SoXtGLWidget::getOverlayWidget(void) const
 {
   return (Widget) NULL;
-} // getOverlayWidget()
+}
 
 /*!
   This method sets the visual for the normal GL context.
@@ -349,24 +343,20 @@ SoXtGLWidget::getOverlayVisual(
 /*!
   This method sets whether double buffering is to be used or not.
 */
-
-void
-SoXtGLWidget::setDoubleBuffer(// virtual
-  SbBool enable)
+void        // virtual
+SoXtGLWidget::setDoubleBuffer(SbBool enable)
 {
   PRIVATE(this)->doublebuffer = enable;
-} // setDoubleBuffer()
+}
 
 /*!
   This method returns whether double buffering is used or not.
 */
-
 SbBool
-SoXtGLWidget::isDoubleBuffer(
-  void)
+SoXtGLWidget::isDoubleBuffer(void) const
 {
   return PRIVATE(this)->doublebuffer;
-} // isDoubleBuffer()
+}
 
 /*!
   This method sets whether the GL area should be framed by a border or not.
@@ -653,13 +643,11 @@ SoXtGLWidget::setGLSize(// protected
 /*!
   This method returns the size of the GL area.
 */
-
-const SbVec2s
-SoXtGLWidget::getGLSize(// protected
-  void) const
+SbVec2s // protected
+SoXtGLWidget::getGLSize(void) const
 {
   return PRIVATE(this)->glsize;
-} // getGLSize()
+}
 
 /*!
   \fn float SoXtGLWidget::getGlxAspectRatio(void) const
@@ -898,12 +886,11 @@ SoXtGLWidget::getGlxMgrWidget(// protected
 /*!
   This method returns the actual GL widget.
 */
-
 Widget      // protected
-SoXtGLWidget::getGLWidget(void)
+SoXtGLWidget::getGLWidget(void) const
 {
   return PRIVATE(this)->glxwidget;
-} // getGLWidget()
+}
 
 // *************************************************************************
 
