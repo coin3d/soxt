@@ -67,9 +67,6 @@ public:
 
   void seekbuttonClicked(void);
 
-  void setCameraZoom(float zoom);
-  float getCameraZoom(void);
-
   static void increaseInteractiveCountCB(Widget, XtPointer, XtPointer);
   static void decreaseInteractiveCountCB(Widget, XtPointer, XtPointer);
 
