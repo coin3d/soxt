@@ -5,7 +5,12 @@ SoXt is an open source implementation of the SGI InventorXt library, which
 is a GUI binding for using Open Inventor with Xt/Motif.  While SoXt has
 been designed for use with Coin, it is also possible to compile it against
 Open Inventor from SGI or TGS.  A goal is to eventually become 100% source
-code compatible with the InventorXt library, which is still a bit off.
+code compatible with the InventorXt library, which is still a bit off,
+especially when it creating derived classes.
+
+
+INSTALLATION
+============
 
 Installing SoXt is a matter of running the configure script with the right
 options, getting it to pass all its tests, and run "make install" afterwards.
@@ -15,6 +20,11 @@ and described below.
 
 The Configure Phase (running SoXt/configure)
 --------------------------------------------
+
+The file INSTALL contains generic information about running the configure
+script.  It's a good idea to have read that file one time or another, but
+it's the same file as in every other autoconf-based project and this one
+contains no extra information.  Anyways, here are some common problems:
 
 * configure immediately tells you it can't find the source files
 
@@ -46,7 +56,7 @@ The Build Phase
   source directory instead of in a separate directory.  A third solution
   is to use "lndir" to create a duplicate directory structure with symlinks
   to all the files in the source directory, and run configure and make in
-  the duplicate instead.  Be aware that lndir might fail to work if you don't
-  write absolute path-names to both of its arguments.
+  the duplicate instead.  Be aware that lndir might fail to work if you
+  don't write absolute path-names for both of its arguments.
 
 
