@@ -123,17 +123,37 @@ libSoXt_la_SOURCES = \
 	$(BUILT_SOURCES) \
 	SoXt.h \
 	SoXt.cpp \
+	SoXtClipboard.h \
+	SoXtClipboard.cpp \
 	SoXtComponent.h \
 	SoXtComponent.cpp \
+	SoXtCursors.h \
+	SoXtCursors.cpp \
+	SoXtDirectionalLightEditor.h \
+	SoXtDirectionalLightEditor.cpp \
 	SoXtGLWidget.h \
 	SoXtGLWidget.cpp \
+	SoXtIcons.h \
+	SoXtIcons.cpp \
+	SoXtLightSliderSet.h \
+	SoXtLightSliderSet.cpp \
+	SoXtMaterialEditor.h \
+	SoXtMaterialEditor.cpp \
+	SoXtMaterialList.h \
+	SoXtMaterialList.cpp \
+	SoXtMaterialSliderSet.h \
+	SoXtMaterialSliderSet.cpp \
+	SoXtPrintDialog.h \
+	SoXtPrintDialog.cpp \
 	SoXtRenderAreaExtra.cpp \
 	SoXtResource.h \
 	SoXtResource.cpp \
-	SoXtClipboard.h \
-	SoXtClipboard.cpp \
+	SoXtSliderSet.h \
+	SoXtSliderSet.cpp \
 	SoXtSliderSetBase.h \
-	SoXtSliderSetBase.cpp
+	SoXtSliderSetBase.cpp \
+	SoXtTransformSliderSet.h \
+	SoXtTransformSliderSet.cpp
 
 
 libSoXt_la_LIBADD = \
@@ -150,8 +170,19 @@ libSoXtinc_HEADERS = \
 	SoXt.h \
 	SoXtClipboard.h \
 	SoXtComponent.h \
+	SoXtCursors.h \
+	SoXtDirectionalLightEditor.h \
 	SoXtGLWidget.h \
+	SoXtIcons.h \
+	SoXtLightSliderSet.h \
+	SoXtMaterialEditor.h \
+	SoXtMaterialList.h \
+	SoXtMaterialSliderSet.h \
+	SoXtPrintDialog.h \
 	SoXtResource.h \
+	SoXtSliderSet.h \
+	SoXtSliderSetBase.h \
+	SoXtTransformSliderSet.h \
 	$(top_builddir)/src/Inventor/Xt/SoXtRenderArea.h
 
 subdir = src/Inventor/Xt
@@ -172,9 +203,12 @@ X_PRE_LIBS = @X_PRE_LIBS@
 libSoXt_la_LDFLAGS = 
 libSoXt_la_DEPENDENCIES =  devices/libSoXtDevices.la \
 viewers/libSoXtViewers.la widgets/libSoXtWidgets.la
-am_libSoXt_la_OBJECTS =  SoXtRenderArea.lo SoXt.lo SoXtComponent.lo \
-SoXtGLWidget.lo SoXtRenderAreaExtra.lo SoXtResource.lo SoXtClipboard.lo \
-SoXtSliderSetBase.lo
+am_libSoXt_la_OBJECTS =  SoXtRenderArea.lo SoXt.lo SoXtClipboard.lo \
+SoXtComponent.lo SoXtCursors.lo SoXtDirectionalLightEditor.lo \
+SoXtGLWidget.lo SoXtIcons.lo SoXtLightSliderSet.lo \
+SoXtMaterialEditor.lo SoXtMaterialList.lo SoXtMaterialSliderSet.lo \
+SoXtPrintDialog.lo SoXtRenderAreaExtra.lo SoXtResource.lo \
+SoXtSliderSet.lo SoXtSliderSetBase.lo SoXtTransformSliderSet.lo
 libSoXt_la_OBJECTS =  $(am_libSoXt_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -197,9 +231,14 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 GZIP_ENV = --best
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoXt.Plo $(DEPDIR)/SoXtClipboard.Plo \
-$(DEPDIR)/SoXtComponent.Plo $(DEPDIR)/SoXtGLWidget.Plo \
+$(DEPDIR)/SoXtComponent.Plo $(DEPDIR)/SoXtCursors.Plo \
+$(DEPDIR)/SoXtDirectionalLightEditor.Plo $(DEPDIR)/SoXtGLWidget.Plo \
+$(DEPDIR)/SoXtIcons.Plo $(DEPDIR)/SoXtLightSliderSet.Plo \
+$(DEPDIR)/SoXtMaterialEditor.Plo $(DEPDIR)/SoXtMaterialList.Plo \
+$(DEPDIR)/SoXtMaterialSliderSet.Plo $(DEPDIR)/SoXtPrintDialog.Plo \
 $(DEPDIR)/SoXtRenderArea.Plo $(DEPDIR)/SoXtRenderAreaExtra.Plo \
-$(DEPDIR)/SoXtResource.Plo $(DEPDIR)/SoXtSliderSetBase.Plo
+$(DEPDIR)/SoXtResource.Plo $(DEPDIR)/SoXtSliderSet.Plo \
+$(DEPDIR)/SoXtSliderSetBase.Plo $(DEPDIR)/SoXtTransformSliderSet.Plo
 SOURCES = $(libSoXt_la_SOURCES)
 OBJECTS = $(am_libSoXt_la_OBJECTS)
 
@@ -381,11 +420,21 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoXt.Plo
 @AMDEP@include $(DEPDIR)/SoXtClipboard.Plo
 @AMDEP@include $(DEPDIR)/SoXtComponent.Plo
+@AMDEP@include $(DEPDIR)/SoXtCursors.Plo
+@AMDEP@include $(DEPDIR)/SoXtDirectionalLightEditor.Plo
 @AMDEP@include $(DEPDIR)/SoXtGLWidget.Plo
+@AMDEP@include $(DEPDIR)/SoXtIcons.Plo
+@AMDEP@include $(DEPDIR)/SoXtLightSliderSet.Plo
+@AMDEP@include $(DEPDIR)/SoXtMaterialEditor.Plo
+@AMDEP@include $(DEPDIR)/SoXtMaterialList.Plo
+@AMDEP@include $(DEPDIR)/SoXtMaterialSliderSet.Plo
+@AMDEP@include $(DEPDIR)/SoXtPrintDialog.Plo
 @AMDEP@include $(DEPDIR)/SoXtRenderArea.Plo
 @AMDEP@include $(DEPDIR)/SoXtRenderAreaExtra.Plo
 @AMDEP@include $(DEPDIR)/SoXtResource.Plo
+@AMDEP@include $(DEPDIR)/SoXtSliderSet.Plo
 @AMDEP@include $(DEPDIR)/SoXtSliderSetBase.Plo
+@AMDEP@include $(DEPDIR)/SoXtTransformSliderSet.Plo
 
 mostlyclean-depend:
 
