@@ -76,7 +76,7 @@ SoXtDevice::initClasses(
 
 struct SoXtDeviceHandlerInfo {
   Widget widget;
-  XtEventHandler handler;
+  SoXtEventHandler * handler;
   XtPointer closure;
   Window window;
 };
@@ -115,7 +115,7 @@ SoXtDevice::~SoXtDevice(// virtual
 // *************************************************************************
 
 /*!
-  \fn void SoXtDevice::enable(Widget widget, XtEventHandler handler, XtPointer closure, Window window = (Window) NULL) = 0
+  \fn void SoXtDevice::enable(Widget widget, SoXtEventHandler * handler, XtPointer closure, Window window = (Window) NULL) = 0
 
   This method will enable the device for the widget.
 
@@ -125,7 +125,7 @@ SoXtDevice::~SoXtDevice(// virtual
 */
 
 /*!
-  \fn void SoXtDevice::disable(Widget widget, XtEventHandler handler, XtPointer closure) = 0
+  \fn void SoXtDevice::disable(Widget widget, SoXtEventHandler * handler, XtPointer closure) = 0
 
   This method will disable the handler for the device.
 */
@@ -190,11 +190,10 @@ SoXtDevice::setEventPosition(
 */
 
 void
-SoXtDevice::addEventHandler(
-  Widget widget,
-  XtEventHandler handler,
-  XtPointer closure,
-  Window window)
+SoXtDevice::addEventHandler(Widget widget,
+                            SoXtEventHandler * handler,
+                            XtPointer closure,
+                            Window window)
 {
   if (this->handlers == NULL)
     this->handlers = new SbPList;
@@ -211,10 +210,9 @@ SoXtDevice::addEventHandler(
 */
 
 void
-SoXtDevice::removeEventHandler(
-  Widget widget,
-  XtEventHandler handler,
-  XtPointer closure)
+SoXtDevice::removeEventHandler(Widget widget,
+                               SoXtEventHandler * handler,
+                               XtPointer closure)
 {
   if (this->handlers) {
     for (int i = 0; i < this->handlers->getLength(); i++) {
@@ -230,7 +228,7 @@ SoXtDevice::removeEventHandler(
   }
 #if SOXT_DEBUG
   SoDebugError::post("SoXtDevice::removeEventHandler",
-    "tried to remove nonexisting handler");
+                     "tried to remove nonexisting handler");
 #endif // SOXT_DEBUG
 } // removeEventHandler()
 
@@ -239,8 +237,7 @@ SoXtDevice::removeEventHandler(
 */
 
 void
-SoXtDevice::invokeHandlers(
-  XEvent * const event)
+SoXtDevice::invokeHandlers(XEvent * const event)
 {
   if (this->handlers) {
     Boolean dispatch = False;

@@ -76,9 +76,9 @@ SOXT_OBJECT_SOURCE(SoXtMouse);
 SoXtMouse::SoXtMouse(
   int events)
 {
-  this->events = events;
-  this->locationEvent = NULL;
-  this->buttonEvent = NULL;
+  this->eventmask = events;
+  this->locationevent = NULL;
+  this->buttonevent = NULL;
 } // SoXtMouse()
 
 /*!
@@ -88,29 +88,31 @@ SoXtMouse::SoXtMouse(
 SoXtMouse::~SoXtMouse(// virtual
   void)
 {
-  delete this->locationEvent;
-  delete this->buttonEvent;
+  delete this->locationevent;
+  delete this->buttonevent;
 } // ~SoXtMouse()
 
 // *************************************************************************
 
 // Doc in superclass.
 void
-SoXtMouse::enable(Widget widget, XtEventHandler handler,
+SoXtMouse::enable(Widget widget, SoXtEventHandler * handler,
                      XtPointer closure, Window window)
 {
-  XtAddEventHandler(widget, this->events, FALSE, handler, closure);
+  XtAddEventHandler(widget, this->eventmask, FALSE, handler, closure);
 }
 
 // Doc in superclass.
 void
-SoXtMouse::disable(Widget widget, XtEventHandler handler, XtPointer closure)
+SoXtMouse::disable(Widget widget, SoXtEventHandler * handler,
+                   XtPointer closure)
 {
-  XtRemoveEventHandler(widget, this->events, FALSE, handler, closure);
+  XtRemoveEventHandler(widget, this->eventmask, FALSE, handler, closure);
 }
 
 // *************************************************************************
 
+// FIXME: there's better doc in SoQtMouse::translateEvent(). 20011220 mortene.
 /*!
   This method translates from X mouse events to Open Inventor events.
 
@@ -132,19 +134,19 @@ SoXtMouse::translateEvent(// virtual
 
   // events we should catch:
   case ButtonPress:
-    if (! (this->events & SoXtMouse::BUTTON_PRESS)) break;
+    if (! (this->eventmask & SoXtMouse::BUTTON_PRESS)) break;
     state = SoButtonEvent::DOWN;
     soevent = this->makeButtonEvent((XButtonEvent *) event, state);
     break;
 
   case ButtonRelease:
-    if (! (this->events & SoXtMouse::BUTTON_RELEASE)) break;
+    if (! (this->eventmask & SoXtMouse::BUTTON_RELEASE)) break;
     state = SoButtonEvent::UP;
     soevent = this->makeButtonEvent((XButtonEvent *) event, state);
     break;
 
   case MotionNotify:
-    if (! (this->events & SoXtMouse::POINTER_MOTION)) break;
+    if (! (this->eventmask & SoXtMouse::POINTER_MOTION)) break;
     soevent = this->makeLocationEvent((XMotionEvent *) event);
     break;
 
@@ -180,22 +182,22 @@ SoXtMouse::makeLocationEvent(// private
   SoDebugError::postInfo("SoXtMouse::makeLocationEvent",
     "pointer at (%d, %d)", event->x, this->getWindowSize()[1] - event->y);
 #endif // 0 was SOXT_DEBUG
-  delete this->locationEvent;
-  this->locationEvent = new SoLocation2Event;
-  this->setEventPosition(this->locationEvent, event->x, event->y);
+  delete this->locationevent;
+  this->locationevent = new SoLocation2Event;
+  this->setEventPosition(this->locationevent, event->x, event->y);
 
-  this->locationEvent->setShiftDown(
+  this->locationevent->setShiftDown(
     (event->state & ShiftMask) ? TRUE : FALSE);
-  this->locationEvent->setCtrlDown(
+  this->locationevent->setCtrlDown(
     (event->state & ControlMask) ? TRUE : FALSE);
-  this->locationEvent->setAltDown(
+  this->locationevent->setAltDown(
     (event->state & Mod1Mask) ? TRUE : FALSE);
 
   SbTime stamp;
   stamp.setMsecValue(event->time);
-  this->locationEvent->setTime(stamp);
+  this->locationevent->setTime(stamp);
 
-  return this->locationEvent;
+  return this->locationevent;
 } // makeLocationEvent()
 
 /*!
@@ -212,9 +214,9 @@ SoXtMouse::makeButtonEvent(// private
   SoDebugError::postInfo("SoXtMouse::makeButtonEvent",
     "button %d, state %d", event->button, (int) state);
 #endif // 0 was SOXT_DEBUG
-  delete this->buttonEvent;
-  this->buttonEvent = new SoMouseButtonEvent;
-  this->buttonEvent->setState(state);
+  delete this->buttonevent;
+  this->buttonevent = new SoMouseButtonEvent;
+  this->buttonevent->setState(state);
 
   SoMouseButtonEvent::Button button = SoMouseButtonEvent::ANY;
 
@@ -230,22 +232,22 @@ SoXtMouse::makeButtonEvent(// private
     break;
   } // switch (event->button)
 
-  this->buttonEvent->setButton(button);
+  this->buttonevent->setButton(button);
 
-  this->setEventPosition(this->buttonEvent, event->x, event->y);
+  this->setEventPosition(this->buttonevent, event->x, event->y);
 
-  this->buttonEvent->setShiftDown(
+  this->buttonevent->setShiftDown(
     (event->state & ShiftMask) ? TRUE : FALSE);
-  this->buttonEvent->setCtrlDown(
+  this->buttonevent->setCtrlDown(
     (event->state & ControlMask) ? TRUE : FALSE);
-  this->buttonEvent->setAltDown(
+  this->buttonevent->setAltDown(
     (event->state & Mod1Mask) ? TRUE : FALSE);
 
   SbTime stamp;
   stamp.setMsecValue(event->time);
-  this->buttonEvent->setTime(stamp);
+  this->buttonevent->setTime(stamp);
 
-  return this->buttonEvent;
+  return this->buttonevent;
 } // makeButtonEvent()
 
 // *************************************************************************

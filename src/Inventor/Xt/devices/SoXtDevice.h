@@ -31,9 +31,9 @@
 class SoEvent;
 class SbPList;
 
-// *************************************************************************
+typedef void SoXtEventHandler(Widget, XtPointer, XEvent *, Boolean *);
 
-typedef XtEventHandler SoXtEventHandlerPtr;
+// *************************************************************************
 
 class SOXT_DLL_API SoXtDevice : public SoXtObject {
   SOXT_OBJECT_ABSTRACT_HEADER(SoXtDevice, SoXtObject);
@@ -41,10 +41,10 @@ class SOXT_DLL_API SoXtDevice : public SoXtObject {
 public:
   virtual ~SoXtDevice(void);
 
-  virtual void enable(Widget widget, XtEventHandler handler,
-      XtPointer closure, Window window = (Window) NULL) = 0;
-  virtual void disable(Widget widget, XtEventHandler handler,
-      XtPointer closure) = 0;
+  virtual void enable(Widget widget, SoXtEventHandler * handler,
+                      XtPointer closure, Window window = (Window) NULL) = 0;
+  virtual void disable(Widget widget, SoXtEventHandler * handler,
+                       XtPointer closure) = 0;
 
   virtual const SoEvent * translateEvent(XAnyEvent * xevent) = 0;
 
@@ -58,8 +58,8 @@ protected:
 
   void setEventPosition(SoEvent * event, int x, int y) const;
 
-  void addEventHandler(Widget, XtEventHandler, XtPointer, Window);
-  void removeEventHandler(Widget, XtEventHandler, XtPointer);
+  void addEventHandler(Widget, SoXtEventHandler *, XtPointer, Window);
+  void removeEventHandler(Widget, SoXtEventHandler *, XtPointer);
 
   void invokeHandlers(XEvent * const event);
 

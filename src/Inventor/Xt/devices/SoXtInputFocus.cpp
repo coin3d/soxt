@@ -62,61 +62,47 @@ SOXT_OBJECT_SOURCE(SoXtInputFocus);
 /*!
   Public constructor.
 */
-
-SoXtInputFocus::SoXtInputFocus(
-  int events)
+SoXtInputFocus::SoXtInputFocus(int events)
 {
-  this->events = events;
-} // SoXtInputfocus()
+  this->eventmask = events;
+}
 
 /*!
   Destructor.
 */
-
-SoXtInputFocus::~SoXtInputFocus(// virtual
-  void)
+SoXtInputFocus::~SoXtInputFocus()
 {
-} // ~SoXtInputfocus()
+}
 
 // *************************************************************************
 
-/*!
-  This method is not implemented.
-*/
-
+// Documented in superclass.
 void
-SoXtInputFocus::enable(// virtual
-  Widget, // widget,
-  XtEventHandler, // func,
-  XtPointer, // data,
-  Window) // window)
+SoXtInputFocus::enable(Widget, // widget,
+                       SoXtEventHandler *, // func,
+                       XtPointer, // data,
+                       Window) // window)
 {
   SOXT_STUB();
-} // enable()
+}
 
-/*!
-  This method is not implemented.
-*/
-
+// Documented in superclass.
 void
-SoXtInputFocus::disable(// virtual
-  Widget, // widget,
-  XtEventHandler, // func,
-  XtPointer) // data)
+SoXtInputFocus::disable(Widget, // widget,
+                        SoXtEventHandler *, // func,
+                        XtPointer) // data)
 {
   SOXT_STUB();
-} // disable()
+}
 
 // *************************************************************************
 
 /*!
   This method translates between X events and Open Inventor events.
-  NULL is always returned.
+  \c NULL is always returned.
 */
-
 const SoEvent *
-SoXtInputFocus::translateEvent(// virtual
-  XAnyEvent * event)
+SoXtInputFocus::translateEvent(XAnyEvent * event)
 {
   switch (event->type) {
 

@@ -74,8 +74,7 @@ SOXT_OBJECT_SOURCE(SoXtSpaceball);
   Public constructor.
 */
 
-SoXtSpaceball::SoXtSpaceball(
-  int events)
+SoXtSpaceball::SoXtSpaceball(int events)
 {
   this->events = events;
   this->rotationFactor = 1.0f;
@@ -87,12 +86,11 @@ SoXtSpaceball::SoXtSpaceball(
   a given display.
 */
 
-SoXtSpaceball::SoXtSpaceball(
-  Display *, // display,
-  int events)
+SoXtSpaceball::SoXtSpaceball(Display *, // display,
+                             int events)
 {
   this->events = events;
-} // SoXtSpaceball()
+}
 
 /*!
   Destructor.
@@ -105,32 +103,24 @@ SoXtSpaceball::~SoXtSpaceball(// virtual
 
 // *************************************************************************
 
-/*!
-  This method is not implemented.
-*/
-
+// Documented in superclass.
 void
-SoXtSpaceball::enable(// virtual
-  Widget, // widget,
-  XtEventHandler, // func,
-  XtPointer, // data,
-  Window) // window)
+SoXtSpaceball::enable(Widget, // widget,
+                      SoXtEventHandler *, // func,
+                      XtPointer, // data,
+                      Window) // window)
 {
   SOXT_STUB();
-} // enable()
+}
 
-/*!
-  This method is not implemented.
-*/
-
+// Documented in superclass.
 void
-SoXtSpaceball::disable(// virtual
-  Widget, // widget,
-  XtEventHandler, // func,
-  XtPointer) // data)
+SoXtSpaceball::disable(Widget, // widget,
+                       SoXtEventHandler *, // func,
+                       XtPointer) // data)
 {
   SOXT_STUB();
-} // disable()
+}
 
 // *************************************************************************
 
@@ -250,4 +240,3 @@ SoXtSpaceball::isFocusToWindow(
 #if SOXT_DEBUG
 static const char * getSoXtSpaceballRCSId(void) { return rcsid; }
 #endif // SOXT_DEBUG
-

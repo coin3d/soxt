@@ -128,11 +128,10 @@ SoXtLinuxJoystick::~SoXtLinuxJoystick(// virtual
 */
 
 void
-SoXtLinuxJoystick::enable(// virtual
-  Widget widget,
-  XtEventHandler handler,
-  XtPointer closure,
-  Window window)
+SoXtLinuxJoystick::enable(Widget widget,
+                          SoXtEventHandler * handler,
+                          XtPointer closure,
+                          Window window)
 {
 #ifdef HAVE_JOYSTICK_LINUX
   if (! SoXtLinuxJoystick::enabled) {
@@ -199,10 +198,9 @@ SoXtLinuxJoystick::enable(// virtual
 */
 
 void
-SoXtLinuxJoystick::disable(// virtual
-  Widget widget,
-  XtEventHandler handler,
-  XtPointer closure)
+SoXtLinuxJoystick::disable(Widget widget,
+                           SoXtEventHandler * handler,
+                           XtPointer closure)
 {
 #ifdef HAVE_JOYSTICK_LINUX
   this->removeEventHandler(widget, handler, closure);

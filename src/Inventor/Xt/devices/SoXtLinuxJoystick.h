@@ -45,10 +45,10 @@ public:
   SoXtLinuxJoystick(int events = SoXtLinuxJoystick::ALL_EVENTS);
   virtual ~SoXtLinuxJoystick(void);
 
-  virtual void enable(Widget widget, XtEventHandler handler,
-      XtPointer closure, Window window = (Window) NULL);
-  virtual void disable(Widget widget, XtEventHandler handler,
-      XtPointer closure);
+  virtual void enable(Widget widget, SoXtEventHandler * handler,
+                      XtPointer closure, Window window = (Window) NULL);
+  virtual void disable(Widget widget, SoXtEventHandler * handler,
+                       XtPointer closure);
 
   virtual const SoEvent * translateEvent(XAnyEvent * xevent);
 
