@@ -43,7 +43,7 @@ public:
   SoXtMaterialEditor(
     Widget parent = NULL,
     const char * name = NULL,
-    SbBool inParent = TRUE );
+    SbBool embed = TRUE );
   ~SoXtMaterialEditor(void);
 
   void attach( SoMaterial * material, int index = 0 );
@@ -71,7 +71,7 @@ protected:
   SoXtMaterialEditor(
     Widget parent,
     const char * const name,
-    SbBool inParent,
+    SbBool embed,
     SbBool build );
 
   Widget buildWidget( Widget parent );

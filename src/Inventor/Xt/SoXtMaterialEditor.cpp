@@ -17,44 +17,66 @@
  *
  **************************************************************************/
 
+#if SOXT_DEBUG
 static const char rcsid[] =
   "$Id$";
+#endif // SOXT_DEBUG
+
+// *************************************************************************
+
+/*!
+  \class SoXtMaterialEditor Inventor/Xt/SoXtMaterialEditor.h
+  \brief The SoXtMaterialEditor class is yet to be documented.
+  \ingroup editors
+
+  This class is not implemented yet.
+*/
+
+// *************************************************************************
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoMaterial.h>
 
 #include <soxtdefs.h>
+
 #include <Inventor/Xt/SoXtMaterialEditor.h>
 
+// *************************************************************************
+
 /*!
-  \class SoXtMaterialEditor Inventor/Xt/SoXtMaterialEditor.h
-  \brief The SoXtMaterialEditor class is yet to be documented.
+  \enum SoXtMaterialEditor::UpdateFrequency
+  FIXME: write doc
 */
 
 // *************************************************************************
 
 /*!
+  Constructor.
 */
 
 SoXtMaterialEditor::SoXtMaterialEditor(
   Widget parent,
   const char * name,
-  SbBool inParent )
+  SbBool embed )
+: inherited( parent, name, embed )
 {
 } // SoXtMaterialEditor()
 
 /*!
+  Constructor.
 */
 
 SoXtMaterialEditor::SoXtMaterialEditor( // protected
   Widget parent,
   const char * const name,
-  SbBool inParent,
+  SbBool embed,
   SbBool build )
+: inherited( parent, name, embed )
 {
 } // SoXtMaterialEditor()
 
 /*!
+  Destructor.
 */
 
 SoXtMaterialEditor::~SoXtMaterialEditor(
@@ -65,6 +87,7 @@ SoXtMaterialEditor::~SoXtMaterialEditor(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -75,6 +98,7 @@ SoXtMaterialEditor::attach(
 } // attach()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -84,6 +108,7 @@ SoXtMaterialEditor::attach(
 } // attach()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -93,6 +118,7 @@ SoXtMaterialEditor::detach(
 } // detach()
 
 /*!
+  FIXME: write doc
 */
 
 SbBool
@@ -104,6 +130,7 @@ SoXtMaterialEditor::isAttached(
 } // isAttached()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -114,6 +141,7 @@ SoXtMaterialEditor::addMaterialChangedCallback(
 } // addMaterialChangedCallback()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -124,6 +152,7 @@ SoXtMaterialEditor::removeMaterialChangedCallback(
 } // removeMaterialChangedCallback()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -133,6 +162,7 @@ SoXtMaterialEditor::setUpdateFrequency(
 } // setUpdateFrequency()
 
 /*!
+  FIXME: write doc
 */
 
 SoXtMaterialEditor::UpdateFrequency
@@ -144,6 +174,7 @@ SoXtMaterialEditor::getUpdateFrequency(
 } // getUpdateFrequency()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -153,6 +184,7 @@ SoXtMaterialEditor::show( // virtual
 } // show()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -162,6 +194,7 @@ SoXtMaterialEditor::hide( // virtual
 } // hide()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -171,6 +204,7 @@ SoXtMaterialEditor::setMaterial(
 } // setMaterial()
 
 /*!
+  FIXME: write doc
 */
 
 void
@@ -180,6 +214,7 @@ SoXtMaterialEditor::setMaterial(
 } // setMaterial()
 
 /*!
+  FIXME: write doc
 */
 
 const SoMaterial &
@@ -191,6 +226,7 @@ SoXtMaterialEditor::getMaterial(
 } // getMaterial()
 
 /*!
+  FIXME: write doc
 */
 
 SbBool
@@ -203,6 +239,7 @@ SoXtMaterialEditor::isAttachedVRML(
 // *************************************************************************
 
 /*!
+  FIXME: write doc
 */
 
 Widget
@@ -213,6 +250,7 @@ SoXtMaterialEditor::buildWidget( // protected
 } // buildWidget()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -224,6 +262,7 @@ SoXtMaterialEditor::getDefaultWidgetName( // virtual, protected
 } // getDefaultWidgetName()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -235,6 +274,7 @@ SoXtMaterialEditor::getDefaultTitle( // virtual, protected
 } // getDefaultTitle()
 
 /*!
+  FIXME: write doc
 */
 
 const char *
@@ -248,6 +288,7 @@ SoXtMaterialEditor::getDefaultIconTitle( // virtual, protected
 // *************************************************************************
 
 /*!
+  Common constructor code.
 */
 
 void
@@ -257,3 +298,8 @@ SoXtMaterialEditor::constructor(
 } // constructor()
 
 // *************************************************************************
+
+#if SOXT_DEBUG
+static const char * getSoXtMaterialEditorRCSId(void) { return rcsid; }
+#endif // SOXT_DEBUG
+
