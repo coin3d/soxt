@@ -94,6 +94,9 @@ SoXtExaminerViewer::constructor( // private
   this->setClassName( "SoXtExaminerViewer" );
   this->setTitle( "Examiner Viewer" );
   this->camerabutton = (Widget) NULL;
+  this->setLeftWheelString( "Rot Y" );
+  this->setBottomWheelString( "Rot X" );
+  this->setRightWheelString( "Zoom" );
 
   if ( build ) {
     Widget viewer = this->buildWidget( this->getParentWidget() );
@@ -648,7 +651,7 @@ SoXtExaminerViewer::camerabuttonClicked(
   this->toggleCameraType();
 
 /*
-  SoCamera * camera = this->getCamera();
+  SoCamera * const camera = this->getCamera();
   if ( ! camera ) {
 #if SOXT_DEBUG
     SoDebugError::postWarning( "SoXtExaminerViewer::camerabuttonClicked",
@@ -704,9 +707,11 @@ SoXtExaminerViewer::setCamera( // virtual
   } else if ( camera->isOfType( SoPerspectiveCamera::getClassTypeId() ) ) {
     pixmap = this->camerapixmaps.perspective;
     pixmap_ins = this->camerapixmaps.perspective_ins;
+    this->setRightWheelString( "Zoom" );
   } else if ( camera->isOfType( SoOrthographicCamera::getClassTypeId() ) ) {
     pixmap = this->camerapixmaps.ortho;
     pixmap_ins = this->camerapixmaps.ortho_ins;
+    this->setRightWheelString( "Dolly" );
   } else {
     SoDebugError::postWarning( "SoXtExaminerViewer::setCamera",
       "unknown camera type - got no pixmap" );
@@ -728,8 +733,6 @@ SoXtExaminerViewer::setCamera( // virtual
   XtVaSetValues( this->camerabutton,
     XmNwidth, 30, XmNheight, 30, NULL );
   XtManageChild( this->camerabutton );
-
-  // FIXME: update zoom/dolly string
 
   inherited::setCamera( camera );
 } // setCamera()
