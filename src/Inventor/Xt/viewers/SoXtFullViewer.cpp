@@ -404,7 +404,7 @@ void
 SoXtFullViewer::setPopupMenuString(
   const char * const title )
 {
-  this->common->setPopupMenuString( str );
+  this->common->setPopupMenuString( title );
 } // setPopupMenuString()
 
 
@@ -835,7 +835,7 @@ SoXtFullViewer::setViewing( // virtual
       NULL );
   }
 
-  if ( this->viewerbuttons.pick != 0 ) {
+  if ( this->viewerbuttons.view != 0 ) {
     XtSetSensitive( this->viewerbuttons.view, enable ? False : True );
     XtVaSetValues( this->viewerbuttons.view,
       XmNset, enable ? True : False,
