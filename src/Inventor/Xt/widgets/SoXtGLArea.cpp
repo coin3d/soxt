@@ -61,6 +61,7 @@ static const char rcsid[] =
 #endif // SOXT_DEBUG
 
 #include <assert.h>
+#include <stdio.h>
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
