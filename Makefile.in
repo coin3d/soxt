@@ -582,8 +582,9 @@ SoQt_ExtraBuiltMetaFiles = \
 
 @BUILD_HTMLPAGES_TRUE@HTMLDIR = html
 
-SUBDIRS = . $(LIBDIRS) man $(HTMLDIR) # test-code
+SUBDIRS = . $(LIBDIRS) man $(HTMLDIR)
 
+# test-code
 
 ############################################################################
 BUILT_SOURCES = \
@@ -596,7 +597,9 @@ CLEANFILES = \
 
 DISTCLEANFILES = \
 	$(SoGui_BuiltFiles) \
-	$(SoGui_BuiltMetaFiles)
+	$(SoGui_BuiltMetaFiles) \
+	test-code/Makefile \
+	test-code/.deps/*.Po
 
 
 EXTRA_DIST = \

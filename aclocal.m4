@@ -8398,49 +8398,6 @@ else
 fi
 ]) # SIM_AC_X11_READY()
 
-
-# **************************************************************************
-
-AC_DEFUN([SIM_AC_HAVE_LIBX11_IFELSE], [
-: ${sim_ac_have_libx11=false}
-AC_REQUIRE([AC_PATH_X])
-
-# prevent multiple runs
-$sim_ac_have_libx11 || {
-  if test x"$no_x" != xyes; then
-    sim_ac_libx11_cppflags=
-    sim_ac_libx11_ldflags=
-    test x"$x_includes" != x && sim_ac_libx11_cppflags="-I$x_includes"
-    test x"$x_libraries" != x && sim_ac_libx11_ldflags="-L$x_libraries"
-    sim_ac_libx11_libs="-lX11"
-
-    sim_ac_libx11_save_cppflags=$CPPFLAGS
-    sim_ac_libx11_save_ldflags=$LDFLAGS
-    sim_ac_libx11_save_libs=$LIBS
-
-    CPPFLAGS="$CPPFLAGS $sim_ac_libx11_cppflags"
-    LDFLAGS="$LDFLAGS $sim_ac_libx11_ldflags"
-    LIBS="$sim_ac_libx11_libs $LIBS"
-
-    AC_TRY_LINK(
-      [#include <X11/Xlib.h>],
-      [(void)XOpenDisplay(0L);],
-      [sim_ac_have_libx11=true])
-
-    CPPFLAGS=$sim_ac_libx11_save_cppflags
-    LDFLAGS=$sim_ac_libx11_save_ldflags
-    LIBS=$sim_ac_libx11_save_libs
-  fi
-}
-
-if $sim_ac_have_libx11; then
-  ifelse([$1], , :, [$1])
-else
-  ifelse([$2], , :, [$2])
-fi
-]) # SIM_AC_HAVE_LIBX11_IFELSE
-
-
 # **************************************************************************
 # SIM_AC_CHECK_HEADER_SILENT([header], [if-found], [if-not-found], [includes])
 # 
@@ -9380,6 +9337,47 @@ else
 fi
 ])
 
+# Usage:
+#  SIM_CHECK_OIV_QT([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to compile and link against the Qt GUI glue library for
+#  the Open Inventor development system. Sets this shell
+#  variable:
+#
+#    $sim_ac_oivqt_libs     (link libraries the linker needs for InventorQt)
+#
+#  The LIBS variable will also be modified accordingly. In addition,
+#  the variable $sim_ac_oivqt_avail is set to "yes" if the Qt glue
+#  library for the Open Inventor development system is found.
+#
+# Authors:
+#   Morten Eriksen, <mortene@sim.no>.
+#   Lars J. Aas, <larsa@sim.no>.
+#
+
+AC_DEFUN([SIM_CHECK_OIV_QT], [
+sim_ac_oivqt_avail=no
+
+sim_ac_oivqt_libs="-lInventorQt"
+sim_ac_save_libs=$LIBS
+LIBS="$sim_ac_oivqt_libs $LIBS"
+
+AC_CACHE_CHECK([for Qt glue library in the Open Inventor developer kit],
+  sim_cv_lib_oivqt_avail,
+  [AC_TRY_LINK([#include <Inventor/Qt/SoQt.h>],
+               [(void)SoQt::init(0L, 0L);],
+               [sim_cv_lib_oivqt_avail=yes],
+               [sim_cv_lib_oivqt_avail=no])])
+
+if test x"$sim_cv_lib_oivqt_avail" = xyes; then
+  sim_ac_oivqt_avail=yes
+  $1
+else
+  LIBS=$sim_ac_save_libs
+  $2
+fi
+])
+
 # **************************************************************************
 # SIM_AC_WITH_INVENTOR
 # This macro just ensures the --with-inventor option is used.
@@ -9387,8 +9385,8 @@ fi
 AC_DEFUN([SIM_AC_WITH_INVENTOR], [
 : ${sim_ac_want_inventor=false}
 AC_ARG_WITH([inventor],
-  AC_HELP_STRING([--with-inventor], [use another Open Inventor than Coin [[default=no]], with InventorXt])
-AC_HELP_STRING([--with-inventor=PATH], [specify where Open Inventor and InventorXt resides]),
+  AC_HELP_STRING([--with-inventor], [use SGI or TGS Open Inventor rather than Coin [[default=no]]])
+AC_HELP_STRING([--with-inventor=PATH], [specify where SGI or TGS Open Inventor resides]),
   [case "$withval" in
   no)  sim_ac_want_inventor=false ;;
   yes) sim_ac_want_inventor=true
@@ -9399,10 +9397,48 @@ AC_HELP_STRING([--with-inventor=PATH], [specify where Open Inventor and Inventor
 ]) # SIM_AC_WITH_INVENTOR
 
 # **************************************************************************
+# SIM_AC_WITH_INVENTORXT
+# This macro just ensures the --with-inventor-xt option is used.
+
+AC_DEFUN([SIM_AC_WITH_INVENTORXT], [
+: ${sim_ac_want_inventorxt=true}
+AC_ARG_WITH([inventor-xt],
+  AC_HELP_STRING([--with-inventor-xt], [use InventorXt when using SGI or TGS Open Inventor [[default=yes]]])
+AC_HELP_STRING([--with-inventor-xt=PATH], [specify where InventorXt resides]),
+  [case "$withval" in
+  no)  sim_ac_want_inventorxt=false ;;
+  yes) sim_ac_want_inventorxt=true
+       test -n "$OIVHOME" &&
+         SIM_AC_DEBACKSLASH(sim_ac_inventorxt_path, "$OIVHOME") ;;
+  *)   sim_ac_want_inventorxt=true; sim_ac_inventorxt_path="$withval" ;;
+  esac])
+]) # SIM_AC_WITH_INVENTORXT
+
+# **************************************************************************
+# SIM_AC_WITH_INVENTORQT
+# This macro just ensures the --with-inventor-qt option is used.
+
+AC_DEFUN([SIM_AC_WITH_INVENTORQT], [
+: ${sim_ac_want_inventorqt=false}
+AC_ARG_WITH([inventor-qt],
+  AC_HELP_STRING([--with-inventor-qt], [use InventorQt when using SGI or TGS Open Inventor [[default=yes]]])
+AC_HELP_STRING([--with-inventor-qt=PATH], [specify where InventorQt resides]),
+  [case "$withval" in
+  no)  sim_ac_want_inventorqt=false ;;
+  yes) sim_ac_want_inventorqt=true
+       test -n "$OIVHOME" &&
+         SIM_AC_DEBACKSLASH(sim_ac_inventorqt_path, "$OIVHOME") ;;
+  *)   sim_ac_want_inventorqt=true; sim_ac_inventorqt_path="$withval" ;;
+  esac])
+]) # SIM_AC_WITH_INVENTORQT
+
+# **************************************************************************
 # SIM_AC_HAVE_INVENTOR_IMAGE_IFELSE
 
 AC_DEFUN([SIM_AC_HAVE_INVENTOR_IMAGE_IFELSE], [
 AC_REQUIRE([SIM_AC_WITH_INVENTOR])
+AC_REQUIRE([SIM_AC_WITH_INVENTORXT])
+AC_REQUIRE([SIM_AC_WITH_INVENTORQT])
 
 if $sim_ac_want_inventor; then
   sim_ac_inventor_image_save_CPPFLAGS="$CPPFLAGS"
@@ -9450,6 +9486,8 @@ fi
 
 AC_DEFUN([SIM_AC_HAVE_INVENTOR_IFELSE], [
 AC_REQUIRE([SIM_AC_WITH_INVENTOR])
+AC_REQUIRE([SIM_AC_WITH_INVENTORXT])
+AC_REQUIRE([SIM_AC_WITH_INVENTORQT])
 
 if $sim_ac_want_inventor; then
   sim_ac_save_CPPFLAGS="$CPPFLAGS"
