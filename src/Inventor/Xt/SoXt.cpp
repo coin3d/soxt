@@ -274,15 +274,6 @@ SoXt::internal_init(int & argc, char ** argv,
   return toplevel;
 }
 
-// documented in common/SoGuiObject.cpp.in
-void
-SoXtObject::init(void)
-{
-  SoXtObject::initClass();
-  SoXtDevice::initClasses();
-  SoXtComponent::initClasses();
-}
-
 // internal
 static void
 wm_close_handler(Widget widget, XtPointer user, XEvent * e, Boolean * dispatch)
