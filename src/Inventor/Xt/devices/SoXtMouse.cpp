@@ -232,7 +232,7 @@ SoXtMouse::makeButtonEvent( // private
 
   switch ( event->button ) {
   case 1: button = SoMouseButtonEvent::BUTTON1; break;
-#if 0
+#if 1
   case 2: button = SoMouseButtonEvent::BUTTON2; break;
   case 3: button = SoMouseButtonEvent::BUTTON3; break;
 #else
