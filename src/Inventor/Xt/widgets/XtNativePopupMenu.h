@@ -75,7 +75,7 @@ protected:
   ItemRecord * createItemRecord(const char * name);
 
   Widget build(Widget parent);
-  Widget traverseBuild(Widget parent, MenuRecord *  menu, int indent);
+  Widget traverseBuild(Widget parent, MenuRecord * menu, int indent);
 
   void itemSelection(Widget w, XtPointer call);
   static void itemSelectionCallback(Widget, XtPointer client, XtPointer call);

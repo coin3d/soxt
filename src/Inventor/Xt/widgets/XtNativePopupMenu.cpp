@@ -43,6 +43,8 @@ static const char rcsid[] =
 #include <Inventor/Xt/SoXt.h>
 #include <Inventor/Xt/widgets/XtNativePopupMenu.h>
 
+#define SOXT_POPUPMENU_DEBUG 0
+
 // *************************************************************************
 
 struct MenuRecord {
@@ -637,11 +639,14 @@ XtNativePopupMenu::traverseBuild(
   MenuRecord * menu,
   int indent)
 {
+  assert(indent < 24);
+  int i;
+#if SOXT_POPUPMENU_DEBUG
   char pre[24];
-  int i, j;
   for (i = 0; i < indent; i++) pre[i] = ' ';
   pre[i] = '\0';
-  j = 0;
+#endif // SOXT_POPUPMENU_DEBUG
+  int j = 0;
   MenuRecord * sub;
   ItemRecord * item;
   do {
@@ -650,25 +655,15 @@ XtNativePopupMenu::traverseBuild(
     const int numMenus = this->menus->getLength();
     for (i = 0; i < numMenus; i++) {
       sub = (MenuRecord *) (*this->menus)[i];
-      if (sub->pos == j && sub->parent == menu) {
-        // fprintf(stderr, "%s%s {\n", pre, sub->name);
-        Widget shell = parent;
-        while (shell && ! XtIsShell(shell))
-          shell = XtParent(shell);
-        assert(shell != (Widget) NULL);
-        Colormap colormap;
-        Visual * visual;
-        int depth;
+      if ((sub->pos == j) && (sub->parent == menu)) {
+#if SOXT_POPUPMENU_DEBUG
+        fprintf(stderr, "%s%s {\n", pre, sub->name);
+#endif // SOXT_POPUPMENU_DEBUG
         Display * dpy = SoXt::getDisplay();
         const int screen = DefaultScreen(dpy);
-        visual = DefaultVisual(dpy, screen);
-        colormap = DefaultColormap(dpy, screen);
-        depth = DefaultDepth(dpy, screen);
-        // XtVaGetValues(shell,
-        //   XmNvisual, &visual,
-        //   XmNdepth, &depth,
-        //   XmNcolormap, &colormap,
-        //   NULL);
+        Visual * visual = DefaultVisual(dpy, screen);
+        Colormap colormap = DefaultColormap(dpy, screen);
+        int depth = DefaultDepth(dpy, screen);
         Arg args[10];
         int argc = 0;
         XtSetArg(args[argc], XmNvisual, visual); argc++;
@@ -680,10 +675,12 @@ XtNativePopupMenu::traverseBuild(
           XmNsubMenuId, submenu,
           XtVaTypedArg,
             XmNlabelString, XmRString,
-            sub->title, strlen(sub->title)+1,
+            sub->title, strlen(sub->title) + 1,
           NULL);
         this->traverseBuild(submenu, sub, indent + 2);
-        // fprintf(stderr, "%s}\n", pre);
+#if SOXT_POPUPMENU_DEBUG
+        fprintf(stderr, "%s}\n", pre);
+#endif // SOXT_POPUPMENU_DEBUG
         break;
       } else {
         sub = (MenuRecord *) NULL;
@@ -693,8 +690,10 @@ XtNativePopupMenu::traverseBuild(
       const int numItems = this->items->getLength();
       for (i = 0; i < numItems; i++) {
         item = (ItemRecord *) (*this->items)[i];
-        if (item->pos == j && item->parent == menu) {
-//          fprintf(stderr, "%s%s\n", pre, item->name);
+        if ((item->pos == j) && (item->parent == menu)) {
+#if SOXT_POPUPMENU_DEBUG
+          fprintf(stderr, "%s%s\n", pre, item->name);
+#endif // SOXT_POPUPMENU_DEBUG
           if (item->flags & ITEM_SEPARATOR) {
             item->item = XtVaCreateManagedWidget(item->title,
               xmSeparatorGadgetClass, parent, NULL);
@@ -719,7 +718,7 @@ XtNativePopupMenu::traverseBuild(
       }
     }
     j++;
-  } while (sub != NULL || item != NULL);
+  } while ((sub != NULL) || (item != NULL));
   return parent;
 } // traverseBuild()
 
@@ -733,37 +732,31 @@ XtNativePopupMenu::build(
   MenuRecord * root = this->getMenuRecord(0);
   assert(root != NULL);
 
-  // FIXME: use SoXt::getPopupArgs() instead (when it's implemented).
-  Widget shell = parent;
-  while (shell && ! XtIsShell(shell))
-    shell = XtParent(shell);
-  assert(shell != (Widget) NULL);
+#if SOXT_POPUPMENU_DEBUG
+  setbuf(stderr, NULL);
+  fprintf(stderr, "building popup menu\n");
+#endif // SOXT_POPUPMENU_DEBUG
 
   Display * dpy = SoXt::getDisplay();
   const int screen = DefaultScreen(dpy);
-  Colormap colormap;
-  Visual * visual;
-  int depth;
-  visual = DefaultVisual(dpy, screen);
-  colormap = DefaultColormap(dpy, screen);
-  depth = DefaultDepth(dpy, screen);
+  Visual * visual = DefaultVisual(dpy, screen);
+  Colormap colormap = DefaultColormap(dpy, screen);
+  int depth = DefaultDepth(dpy, screen);
 
-  // XtVaGetValues(shell,
-  //   XmNvisual, &visual,
-  //   XmNdepth, &depth,
-  //   XmNcolormap,  &colormap,
-  //   NULL);
   Arg args[10];
   int argc = 0;
   XtSetArg(args[argc], XmNvisual, visual); argc++;
   XtSetArg(args[argc], XmNdepth, depth); argc++;
   XtSetArg(args[argc], XmNcolormap, colormap); argc++;
-
   Widget popup = XmCreatePopupMenu(parent, root->name, args, argc);
 
-  // fprintf(stderr, "%s {\n", root->name);
+#if SOXT_POPUPMENU_DEBUG
+  fprintf(stderr, "%s {\n", root->name);
+#endif // SOXT_POPUPMENU_DEBUG
   (void) this->traverseBuild(popup, root, 2);
-  // fprintf(stderr, "}\n");
+#if SOXT_POPUPMENU_DEBUG
+  fprintf(stderr, "}\n");
+#endif // SOXT_POPUPMENU_DEBUG
   return popup;
 } // build()
 
