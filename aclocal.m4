@@ -2441,8 +2441,7 @@ if test -f "$ltmain" && test -n "$tagnames"; then
 
   # Extract list of available tagged configurations in $ofile.
   # Note that this assumes the entire list is on one line.
-  # available_tags=`grep "^available_tags=" "${ofile}" | $SED -e 's/available_tags=\(.*$\)/\1/' -e 's/\"//g'`
-  available_tags=`grep "^available_tags=" "${ofile}" | $SED -e 's/^available_tags=//' -e 's/\"//g'`
+  available_tags=`grep "^available_tags=" "${ofile}" | $SED -e 's/\"//g' -e 's/^available_tags= *//'`
 
   lt_save_ifs="$IFS"; IFS="${IFS}$PATH_SEPARATOR,"
   for tagname in $tagnames; do
@@ -6715,6 +6714,28 @@ AC_DEFUN([AM_MAINTAINER_MODE],
 )
 
 AU_DEFUN([jm_MAINTAINER_MODE], [AM_MAINTAINER_MODE])
+
+# **************************************************************************
+# SIM_AC_SETUP_MKS
+#
+# This macro contains some customizations needed for being able to use
+# the configure script in the MKS environment.
+#
+#   Lars J
+
+AC_DEFUN([SIM_AC_SETUP_MKS],
+[
+case $build in
+*-mks )
+  AR=ar
+  AC_PATH_PROG([sim_ac_mks_make], [gmake], [make])
+  MAKE="$sim_ac_mks_make"
+  SET_MAKE="MAKE=\"$sim_ac_mks_make\""
+  export AR MAKE
+  ;;
+esac
+])
+
 
 #
 # This file contains misc "macro-containers" for stuff that is

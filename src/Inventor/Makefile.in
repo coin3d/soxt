@@ -189,6 +189,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sim_ac_coin_configcmd = @sim_ac_coin_configcmd@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
+sim_ac_mks_make = @sim_ac_mks_make@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sogui_build_dir = @sogui_build_dir@
 sogui_html_dir = @sogui_html_dir@
