@@ -652,9 +652,11 @@ close_dialog_cb(
 } // close_dialog_cb()
 
 /*!
-  This function creates a simple error dialog window and places it on the
-  display over the given \a parent widget.  Placement is not implemented at
-  the moment.
+  This function creates a simple error dialog window and places it on
+  the display over the given \a parent widget.
+
+  If \a parent is \c NULL, the main toplevel widget of the application
+  will be used.
 */
 void  // static
 SoXt::createSimpleErrorDialog(Widget parent,
@@ -662,6 +664,8 @@ SoXt::createSimpleErrorDialog(Widget parent,
                               const char * string1,
                               const char * string2)
 {
+  // FIXME: placement is not implemented yet. 200XXXXX larsa.
+
   Arg args[10];
   int argc = 0;
 
@@ -674,6 +678,10 @@ SoXt::createSimpleErrorDialog(Widget parent,
   if (! string1) string1 = "";
 
   SoXt::selectBestVisual(dpy, vis, cmap, depth);
+
+  // The XtVaCreatePopupShell() call will exit the application on a
+  // NULL parent pointer.
+  if (parent == NULL) { parent = SoXt::getTopLevelWidget(); }
 
   Widget errdialog = XtVaCreatePopupShell("errordialog",
     topLevelShellWidgetClass, parent,
