@@ -20,7 +20,8 @@ else
 HTMLDIR =
 endif
 
-SUBDIRS = . $(LIBDIRS) man $(HTMLDIR) # test-code
+SUBDIRS = . $(LIBDIRS) man $(HTMLDIR)
+# test-code
 
 ############################################################################
 
@@ -32,7 +33,9 @@ CLEANFILES = \
 
 DISTCLEANFILES = \
 	$(SoGui_BuiltFiles) \
-	$(SoGui_BuiltMetaFiles)
+	$(SoGui_BuiltMetaFiles) \
+	test-code/Makefile \
+	test-code/.deps/*.Po
 
 EXTRA_DIST = \
 	LICENSE.GPL \

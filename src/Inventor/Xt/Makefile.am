@@ -15,6 +15,7 @@ CLEANFILES = \
 	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
 
 DISTCLEANFILES = \
+	stamp-h* \
 	$(SoGui_src_Inventor_Gui_BuiltFiles) \
 	$(SoGui_src_Inventor_Gui_BuiltMetaFiles)
 
