@@ -22,8 +22,6 @@
 #ifndef SOXT_THUMBWHEEL_H_PRIVATE
 #define SOXT_THUMBWHEEL_H_PRIVATE
 
-#ifdef SOXT_THUMBWHEELTEST
-
 #include <Xm/PrimitiveP.h>
 
 #include <Inventor/Xt/widgets/SoXtThumbWheel.h>
@@ -34,10 +32,8 @@ extern "C" {
 
 /* ********************************************************************** */
 
-typedef struct {
-  int orientation;
-  Boolean enabled;
-  
+typedef struct _SoXtThumbWheelClassPart {
+  XtPointer                extension;
 } SoXtThumbWheelClassPart;
 
 typedef struct _SoXtThumbWheelClassRec {
@@ -48,15 +44,28 @@ typedef struct _SoXtThumbWheelClassRec {
 
 /* ********************************************************************** */
 
-typedef struct {
+typedef struct _SoXtThumbWheelPart {
   /* resources */
-  int dummy;
+  int orientation;
+  float value;
+//  Pixel foreground;
+//  Pixel foreground_insensitive;
+  XtCallbackList arm_callback;
+  XtCallbackList disarm_callback;
+  XtCallbackList valuechanged_callback;
 
   /* private data */
+  GC context;
+  Pixmap * pixmaps;
+  int numpixmaps; // or null-terminate?
+  Boolean armed;
+  float arm_value;
+  int arm_position;
+  void * thumbwheel;
 
 } SoXtThumbWheelPart;
 
-typedef struct _SoXtThumbwheelRec {
+typedef struct _SoXtThumbWheelRec {
   CorePart            core;
   XmPrimitivePart     primitive;
   SoXtThumbWheelPart  thumbwheel;
@@ -64,14 +73,8 @@ typedef struct _SoXtThumbwheelRec {
 
 /* ********************************************************************** */
 
-extern SoXtThumbWheelWidgetClass soXtThumbWheelWidgetClass;
-
-/* ********************************************************************** */
-
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
-
-#endif // SOXT_THUMBWHEELTEST
 
 #endif /* ! SOXT_THUMBWHEEL_H_PRIVATE */

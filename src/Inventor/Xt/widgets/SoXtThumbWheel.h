@@ -22,8 +22,6 @@
 #ifndef SOXT_THUMBWHEEL_H
 #define SOXT_THUMBWHEEL_H
 
-#ifdef SOXT_THUMBWHEELTEST
-
 #include <Xm/Xm.h>
 
 #ifdef __cplusplus
@@ -32,13 +30,13 @@ extern "C" {
 
 /* ********************************************************************** */
 
-extern WidgetClass soXtThumbWheelWidgetClass;
+extern WidgetClass soxtThumbWheelWidgetClass;
 
 typedef struct _SoXtThumbWheelRec *       SoXtThumbWheelWidget;
 typedef struct _SoXtThumbWheelClassRec *  SoXtThumbWheelWidgetClass;
 
-#ifndef SoXtIsThumbWheel
-#define SoXtIsThumbWheel(w) XtIsSubclass(w, soXtThumbWheelWidgetClass)
+#ifndef XtIsSoXtThumbWheel
+#define XtIsSoXtThumbWheel(w) XtIsSubclass(w, soxtThumbWheelWidgetClass)
 #endif /* ! SoXtIsThumbWheel */
 
 /* ********************************************************************** */
@@ -46,7 +44,5 @@ typedef struct _SoXtThumbWheelClassRec *  SoXtThumbWheelWidgetClass;
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
-
-#endif // SOXT_THUMBWHEELTEST
 
 #endif /* ! SOXT_THUMBWHEEL_H */
