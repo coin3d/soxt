@@ -27,6 +27,9 @@ static const char rcsid[] =
 #include <assert.h>
 #include <string.h>
 
+#include <X11/cursorfont.h>
+#include <X11/keysym.h>
+
 #include <Xm/Form.h>
 #include <Xm/Frame.h>
 #include <Xm/Label.h>
@@ -55,9 +58,6 @@ static const char rcsid[] =
 #include <Inventor/Xt/common/pixmaps/ortho.xpm>
 #include <Inventor/Xt/common/pixmaps/perspective.xpm>
 #endif // HAVE_LIBXPM
-
-#include <X11/cursorfont.h>
-#include <X11/keysym.h>
 
 // *************************************************************************
 
@@ -117,6 +117,12 @@ SoXtExaminerViewer::constructor( // private
 
   if ( build ) {
     Widget viewer = this->buildWidget( this->getParentWidget() );
+    XtVaSetValues( viewer,
+      XmNleftAttachment, XmATTACH_FORM,
+      XmNtopAttachment, XmATTACH_FORM,
+      XmNrightAttachment, XmATTACH_FORM,
+      XmNbottomAttachment, XmATTACH_FORM,
+      NULL );
     this->setBaseWidget( viewer );
 
     char * dollyString = NULL;
