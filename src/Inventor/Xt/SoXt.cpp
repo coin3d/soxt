@@ -39,12 +39,12 @@ static const char rcsid[] =
   href="http://www.lesstif.org/">Lesstif</a> installed on your system
   to use %SoXt.
 
-  SoXt is still in alpha mode, meaning that it is buggy and lacks
+  %SoXt is still in alpha mode, meaning that it is buggy and lacks
   functionality.  In other words, hope for the best but expect the
   worst.
 
-  The corresponding documentation for Coin is located at
-  <URL:http://doc.coin3d.org/Coin/>.
+  The corresponding documentation for Coin is located 
+  <a href="http://doc.coin3d.org/Coin/">here</a>.
 */
 
 // *************************************************************************
