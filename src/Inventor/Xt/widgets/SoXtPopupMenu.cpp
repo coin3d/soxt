@@ -783,13 +783,18 @@ SoXtPopupMenu::itemSelection( // private
       int groupid = this->GetRadioGroup( rec->itemid );
       if ( data->set && groupid != -1 ) {
         this->SetMenuItemMarked( rec->itemid, TRUE );
+        this->InvokeMenuSelection( rec->itemid );
       } else {
-        if ( groupid == -1 )
+        if ( groupid == -1 ) {
           this->SetMenuItemMarked( rec->itemid, FALSE );
-        else if ( this->GetRadioGroupSize( groupid ) > 1 )
+          this->InvokeMenuSelection( rec->itemid );
+        } else if ( this->GetRadioGroupSize( groupid ) > 1 ) {
           this->SetMenuItemMarked( rec->itemid, TRUE );
-        else
+          this->InvokeMenuSelection( rec->itemid );
+        } else {
           this->SetMenuItemMarked( rec->itemid, FALSE );
+          this->InvokeMenuSelection( rec->itemid );
+        }
       }
     }
   }
