@@ -96,8 +96,9 @@ protected:
 
   Widget createRotAxisPrefSheetGuts( Widget parent );
   Widget createFramedRotAxisPrefSheetGuts( Widget parent );
-  Widget rotpointaxestoggle, axessizewheel, axessizefield;
+  Widget rotpointaxestoggle, rotaxesoverlaytoggle, axessizewheel, axessizefield;
   SOXT_WIDGET_CALLBACK( rotpointtoggled );
+  SOXT_WIDGET_CALLBACK( rotaxesoverlaytoggled );
   SOXT_WIDGET_CALLBACK( axeswheelmoved );
   SOXT_WIDGET_CALLBACK( axesfieldchanged );
 

@@ -105,7 +105,7 @@ SoXtExaminerViewer::constructor( // private
   this->camerabutton = (Widget) NULL;
   this->setLeftWheelString( "Rot Y" );
   this->setBottomWheelString( "Rot X" );
-  this->setRightWheelString( "Zoom" );
+  this->setRightWheelString( "Dolly" );
 
   if ( build ) {
     Widget viewer = this->buildWidget( this->getParentWidget() );
@@ -716,11 +716,11 @@ SoXtExaminerViewer::setCamera( // virtual
   } else if ( camera->isOfType( SoPerspectiveCamera::getClassTypeId() ) ) {
     pixmap = this->camerapixmaps.perspective;
     pixmap_ins = this->camerapixmaps.perspective_ins;
-    this->setRightWheelString( "Zoom" );
+    this->setRightWheelString( "Dolly" );
   } else if ( camera->isOfType( SoOrthographicCamera::getClassTypeId() ) ) {
     pixmap = this->camerapixmaps.ortho;
     pixmap_ins = this->camerapixmaps.ortho_ins;
-    this->setRightWheelString( "Dolly" );
+    this->setRightWheelString( "Zoom" );
   } else {
     SoDebugError::postWarning( "SoXtExaminerViewer::setCamera",
       "unknown camera type - got no pixmap" );
@@ -989,6 +989,18 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
   XtAddCallback( this->rotpointaxestoggle, XmNvalueChangedCallback,
     SoXtExaminerViewer::rotpointtoggledCB, (XtPointer) this );
 
+  labelstring = SoXt::encodeString( "overlay graphics" );
+  this->rotaxesoverlaytoggle = XtVaCreateManagedWidget( "rotaxesoverlaytoggle",
+    xmToggleButtonWidgetClass, form,
+    XmNtopAttachment, XmATTACH_FORM,
+    XmNrightAttachment, XmATTACH_FORM,
+    XmNlabelString, labelstring,
+    XmNset, True,
+    NULL );
+  XtFree( (char *) labelstring );
+  XtAddCallback( this->rotaxesoverlaytoggle, XmNvalueChangedCallback,
+    SoXtExaminerViewer::rotaxesoverlaytoggledCB, (XtPointer) this );
+
   labelstring = SoXt::encodeString( "pixels" );
   Widget pixelslabel = XtVaCreateWidget( "pixelslabel",
     xmLabelWidgetClass, form,
@@ -1007,6 +1019,7 @@ SoXtExaminerViewer::createRotAxisPrefSheetGuts(
     XmNwidth, 40,
     XmNsensitive, this->isFeedbackVisible() ? True : False,
     XmNeditable, this->isFeedbackVisible() ? True : False,
+    XmNcursorPositionVisible, this->isFeedbackVisible() ? True : False,
     NULL );
   XmTextSetMaxLength( this->axessizefield, 3 );
   char buffer[16];
@@ -1078,6 +1091,7 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   XtVaSetValues( this->axessizefield,
     XmNsensitive, enable,
     XmNeditable, enable,
+    XmNcursorPositionVisible, enable,
     NULL );
 
   this->setFeedbackVisibility( enable ? TRUE : FALSE );
@@ -1091,7 +1105,13 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
   axeswheelmoved )
 {
   SoXtThumbWheelCallbackData * data = (SoXtThumbWheelCallbackData *) call_data;
-  SOXT_STUB();
+
+  int size = this->getFeedbackSize() + data->ticks;
+  if ( size < 3 )
+    size = 3;
+  else if ( size > 200 )
+    size = 200;
+  this->setFeedbackSize( size );
 } // axeswheelmoved()
 
 /*!
@@ -1108,5 +1128,20 @@ SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
     size = 200;
   this->setFeedbackSize( size );
 } // axesfieldchanged()
+
+/*!
+  This callback should toggle wether the point of rotation should be embedded
+  in the model Z-buffer wise, or be printed as overlay data.
+*/
+
+SOXT_WIDGET_CALLBACK_IMPLEMENTATION(
+  SoXtExaminerViewer,
+  rotaxesoverlaytoggled )
+{
+#if SOXT_DEBUG
+  SOXT_STUB_ONCE();
+#endif // SOXT_DEBUG
+  XtVaSetValues( this->rotaxesoverlaytoggle, XmNset, True, NULL );
+} // rotpointoverlaytoggled()
 
 // *************************************************************************
