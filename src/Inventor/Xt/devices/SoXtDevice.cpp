@@ -18,11 +18,6 @@
  **************************************************************************/
 
 #if SOXT_DEBUG
-static const char rcsid[] =
-  "$Id$";
-#endif // SOXT_DEBUG
-
-#if SOXT_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // SOXT_DEBUG
 
@@ -250,8 +245,3 @@ SoXtDevice::invokeHandlers(XEvent * const event)
 } // invokeEventHandlers()
 
 // *************************************************************************
-
-#if SOXT_DEBUG
-const char * getSoXtDeviceRCSId(void) { return rcsid; }
-#endif // SOXT_DEBUG
-

@@ -17,11 +17,6 @@
  *
  **************************************************************************/
 
-#if SOXT_DEBUG
-static const char rcsid[] =
-  "$Id$";
-#endif // SOXT_DEBUG
-
 #include <ctype.h> // toupper()
 
 #include <X11/X.h>
@@ -298,8 +293,3 @@ SoXtKeyboard::translateEvent(XAnyEvent * event)
 }
 
 // *************************************************************************
-
-#if SOXT_DEBUG
-static const char * getSoXtKeyboardRCSId(void) { return rcsid; }
-#endif // SOXT_DEBUG
-

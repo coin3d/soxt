@@ -17,11 +17,6 @@
  *
  **************************************************************************/
 
-#if SOXT_DEBUG
-static const char rcsid[] =
-  "$Id$";
-#endif // SOXT_DEBUG
-
 #include <X11/X.h>
 
 #if SOXT_DEBUG
@@ -73,31 +68,29 @@ SOXT_OBJECT_SOURCE(SoXtMouse);
   Public constructor.
 */
 
-SoXtMouse::SoXtMouse(
-  int events)
+SoXtMouse::SoXtMouse(int events)
 {
   this->eventmask = events;
   this->locationevent = NULL;
   this->buttonevent = NULL;
-} // SoXtMouse()
+}
 
 /*!
   Destructor.
 */
 
-SoXtMouse::~SoXtMouse(// virtual
-  void)
+SoXtMouse::~SoXtMouse()
 {
   delete this->locationevent;
   delete this->buttonevent;
-} // ~SoXtMouse()
+}
 
 // *************************************************************************
 
 // Doc in superclass.
 void
 SoXtMouse::enable(Widget widget, SoXtEventHandler * handler,
-                     XtPointer closure, Window window)
+                  XtPointer closure, Window window)
 {
   XtAddEventHandler(widget, this->eventmask, FALSE, handler, closure);
 }
@@ -124,8 +117,7 @@ SoXtMouse::disable(Widget widget, SoXtEventHandler * handler,
 */
 
 const SoEvent *
-SoXtMouse::translateEvent(// virtual
-  XAnyEvent * event)
+SoXtMouse::translateEvent(XAnyEvent * event)
 {
   SoEvent * soevent = (SoEvent *) NULL;
   SoButtonEvent::State state = SoButtonEvent::UNKNOWN;
@@ -162,10 +154,10 @@ SoXtMouse::translateEvent(// virtual
   default:
     break;
 
-  } // switch (event->type)
+  }
 
   return (SoEvent *) soevent;
-} // translateEvent()
+}
 
 // *************************************************************************
 
@@ -175,8 +167,7 @@ SoXtMouse::translateEvent(// virtual
 */
 
 SoLocation2Event *
-SoXtMouse::makeLocationEvent(// private
-  XMotionEvent * event)
+SoXtMouse::makeLocationEvent(XMotionEvent * event)
 {
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtMouse::makeLocationEvent",
@@ -198,7 +189,7 @@ SoXtMouse::makeLocationEvent(// private
   this->locationevent->setTime(stamp);
 
   return this->locationevent;
-} // makeLocationEvent()
+}
 
 /*!
   This method translates from X button events (mouse/pointer) to
@@ -206,9 +197,8 @@ SoXtMouse::makeLocationEvent(// private
 */
 
 SoMouseButtonEvent *
-SoXtMouse::makeButtonEvent(// private
-  XButtonEvent * event,
-  SoButtonEvent::State state)
+SoXtMouse::makeButtonEvent(XButtonEvent * event,
+                           SoButtonEvent::State state)
 {
 #if 0 // SOXT_DEBUG
   SoDebugError::postInfo("SoXtMouse::makeButtonEvent",
@@ -230,7 +220,7 @@ SoXtMouse::makeButtonEvent(// private
 #endif // HAVE_SOMOUSEBUTTONEVENT_BUTTON5
   default:
     break;
-  } // switch (event->button)
+  }
 
   this->buttonevent->setButton(button);
 
@@ -248,11 +238,6 @@ SoXtMouse::makeButtonEvent(// private
   this->buttonevent->setTime(stamp);
 
   return this->buttonevent;
-} // makeButtonEvent()
+}
 
 // *************************************************************************
-
-#if SOXT_DEBUG
-static const char * getSoXtMouseRCSId(void) { return rcsid; }
-#endif // SOXT_DEBUG
-

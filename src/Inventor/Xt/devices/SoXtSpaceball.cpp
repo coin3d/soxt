@@ -17,11 +17,6 @@
  *
  **************************************************************************/
 
-#if SOXT_DEBUG
-static const char rcsid[] =
-  "$Id$";
-#endif // SOXT_DEBUG
-
 #include <X11/extensions/XInput.h>
 
 #include <Inventor/misc/SoBasic.h>
@@ -79,7 +74,7 @@ SoXtSpaceball::SoXtSpaceball(int events)
   this->events = events;
   this->rotationFactor = 1.0f;
   this->translationFactor = 1.0f;
-} // SoXtSpaceball()
+}
 
 /*!
   Alternative constructor, for using a spaceball device attached to
@@ -96,10 +91,9 @@ SoXtSpaceball::SoXtSpaceball(Display *, // display,
   Destructor.
 */
 
-SoXtSpaceball::~SoXtSpaceball(// virtual
-  void)
+SoXtSpaceball::~SoXtSpaceball()
 {
-} // ~SoXtSpaceball()
+}
 
 // *************************************************************************
 
@@ -129,12 +123,11 @@ SoXtSpaceball::disable(Widget, // widget,
 */
 
 const SoEvent *
-SoXtSpaceball::translateEvent(// virtual
- XAnyEvent * event)
+SoXtSpaceball::translateEvent(XAnyEvent * event)
 {
   SOXT_STUB_ONCE();
   return (SoEvent *) NULL;
-} // translateEvent()
+}
 
 // *************************************************************************
 
@@ -143,44 +136,40 @@ SoXtSpaceball::translateEvent(// virtual
 */
 
 void
-SoXtSpaceball::setRotationScaleFactor(
-  float factor)
+SoXtSpaceball::setRotationScaleFactor(float factor)
 {
   this->rotationFactor = factor;
-} // setRotationScaleFactor()
+}
 
 /*!
   This method returns the scale factor for the spaceball rotation vectors.
 */
 
 float
-SoXtSpaceball::getRotationScaleFactor(
-  void) const
+SoXtSpaceball::getRotationScaleFactor(void) const
 {
   return this->rotationFactor;
-} // getRotationScaleFactor()
+}
 
 /*!
   This method sets the scale factor for the spaceball translation vectors.
 */
 
 void
-SoXtSpaceball::setTranslationScaleFactor(
-  float factor)
+SoXtSpaceball::setTranslationScaleFactor(float factor)
 {
   this->translationFactor = factor;
-} // setTranslationScaleFactor()
+}
 
 /*!
   This method returns the scale factor for the spaceball translation vectors.
 */
 
 float
-SoXtSpaceball::getTranslationScaleFactor(
-  void) const
+SoXtSpaceball::getTranslationScaleFactor(void) const
 {
   return this->translationFactor;
-} // getTranslationScaleFactor()
+}
 
 // *************************************************************************
 
@@ -189,8 +178,7 @@ SoXtSpaceball::getTranslationScaleFactor(
 */
 
 SbBool
-SoXtSpaceball::exists(// static
-  Display * display)
+SoXtSpaceball::exists(Display * display)
 {
   if (display == NULL)
     display = SoXt::getDisplay();
@@ -208,7 +196,7 @@ SoXtSpaceball::exists(// static
   }
   XFreeDeviceList(devices);
   return FALSE;
-} // exists()
+}
 
 // *************************************************************************
 
@@ -217,26 +205,20 @@ SoXtSpaceball::exists(// static
 */
 
 void
-SoXtSpaceball::setFocusToWindow(
-  SbBool) // enable)
+SoXtSpaceball::setFocusToWindow(SbBool)
 {
   SOXT_STUB();
-} // setFocusToWindow()
+}
 
 /*!
   This method is not implemented.
 */
 
 SbBool
-SoXtSpaceball::isFocusToWindow(
-  void) const
+SoXtSpaceball::isFocusToWindow(void) const
 {
   SOXT_STUB();
   return FALSE;
-} // isFocusToWindow()
+}
 
 // *************************************************************************
-
-#if SOXT_DEBUG
-static const char * getSoXtSpaceballRCSId(void) { return rcsid; }
-#endif // SOXT_DEBUG
