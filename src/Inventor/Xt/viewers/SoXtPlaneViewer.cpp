@@ -409,6 +409,20 @@ SoXtPlaneViewer::processEvent(
       }
       break;
 
+    case TRANSLATE_MODE:
+      if ( (mousepos_normalized[0] != this->prevMousePosition[0]) ||
+           (mousepos_normalized[1] != this->prevMousePosition[1]) ) {
+        float dx = (mousepos_normalized[0] - this->prevMousePosition[0]) * 2.5f;
+        float dy = (mousepos_normalized[1] - this->prevMousePosition[1]) * 2.5f;
+        float yvalue = this->getLeftWheelValue() - dy;
+        float xvalue = this->getBottomWheelValue() + dx;
+        this->leftWheelMotion( yvalue );
+        this->setLeftWheelValue( yvalue );
+        this->bottomWheelMotion( xvalue );
+        this->setBottomWheelValue( xvalue );
+      }
+      break;
+
     default:
       break;
     } // switch ( this->mode )
