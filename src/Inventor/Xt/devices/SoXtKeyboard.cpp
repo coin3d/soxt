@@ -54,10 +54,10 @@ SoXtKeyboard::~SoXtKeyboard(
 
 void
 SoXtKeyboard::enable( // virtual
-  Widget widget,
-  XtEventHandler func,
-  XtPointer data,
-  Window window )
+  Widget, // widget,
+  XtEventHandler, // func,
+  XtPointer, // data,
+  Window ) // window )
 {
   SOGUI_STUB();
 } // enable()
@@ -67,9 +67,9 @@ SoXtKeyboard::enable( // virtual
 
 void
 SoXtKeyboard::disable( // virtual
-  Widget widget,
-  XtEventHandler func,
-  XtPointer data )
+  Widget, // widget,
+  XtEventHandler, // func,
+  XtPointer ) // data )
 {
   SOGUI_STUB();
 } // disable()
@@ -107,8 +107,8 @@ SoXtKeyboard::translateEvent( // virtual
 
 SoKeyboardEvent *
 SoXtKeyboard::makeKeyboardEvent( // private
-  XKeyEvent * event,
-  SoButtonEvent::State state )
+  XKeyEvent *, //  event,
+  SoButtonEvent::State ) // state )
 {
   SOGUI_STUB();
   return (SoKeyboardEvent *) NULL;

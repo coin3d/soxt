@@ -67,10 +67,10 @@ SoXtMouse::~SoXtMouse(
 
 void
 SoXtMouse::enable( // virtual
-  Widget widget,
-  XtEventHandler func,
-  XtPointer data,
-  Window window )
+  Widget, // widget,
+  XtEventHandler, // func,
+  XtPointer, // data,
+  Window ) // window )
 {
   SOGUI_STUB();
 } // enable()
@@ -80,9 +80,9 @@ SoXtMouse::enable( // virtual
 
 void
 SoXtMouse::disable( // virtual
-  Widget widget,
-  XtEventHandler func,
-  XtPointer data )
+  Widget, // widget,
+  XtEventHandler, // func,
+  XtPointer ) // data )
 {
   SOGUI_STUB();
 } // disable()
@@ -108,14 +108,11 @@ SoXtMouse::translateEvent( // virtual
     if ( ! (this->events & SoXtMouse::BUTTON_RELEASE) ) break;
     if ( state == SoButtonEvent::UNKNOWN )
       state = SoButtonEvent::UP;
-
     return this->makeButtonEvent( (XButtonEvent *) event, state );
-    break;
 
   case MotionNotify:
     if ( ! (this->events & SoXtMouse::POINTER_MOTION) ) break;
     return this->makeLocationEvent( (XMotionEvent *) event );
-    break;
 
   case EnterNotify:
   case LeaveNotify:

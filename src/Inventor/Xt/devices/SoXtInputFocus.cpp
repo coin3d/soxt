@@ -52,10 +52,10 @@ SoXtInputFocus::~SoXtInputFocus(
 
 void
 SoXtInputFocus::enable( // virtual
-  Widget widget,
-  XtEventHandler func,
-  XtPointer data,
-  Window window )
+  Widget, // widget,
+  XtEventHandler, // func,
+  XtPointer, // data,
+  Window ) // window )
 {
   SOGUI_STUB();
 } // enable()
@@ -65,9 +65,9 @@ SoXtInputFocus::enable( // virtual
 
 void
 SoXtInputFocus::disable( // virtual
-  Widget widget,
-  XtEventHandler func,
-  XtPointer data )
+  Widget, // widget,
+  XtEventHandler, // func,
+  XtPointer ) // data )
 {
   SOGUI_STUB();
 } // disable()
