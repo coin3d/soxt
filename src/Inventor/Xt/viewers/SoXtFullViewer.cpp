@@ -1125,16 +1125,16 @@ SoXtFullViewer::createViewerButtons(
         createPixmapFromXpmData( button, view_all_xpm );
       break;
     case SEEK_BUTTON:
-      pixmap = pixmap_ins = pixmaps.seek =
+      pixmap = pixmaps.seek =
         createPixmapFromXpmData( button, seek_xpm );
-//      pixmap_ins = pixmaps.seek_ins =
-//        createInsensitivePixmapFromXpmData( button, seek_xpm );
+      pixmap_ins = pixmaps.seek_ins =
+        createInsensitivePixmapFromXpmData( button, seek_xpm );
       break;
     default:
       assert( 0 && "impossible" );
       break;
     } // switch ( viewerbutton )
-    if ( pixmap ) {
+    if ( pixmap && pixmap_ins ) {
       XtVaSetValues( button,
         XmNlabelType, XmPIXMAP,
         XmNlabelPixmap, pixmap,
