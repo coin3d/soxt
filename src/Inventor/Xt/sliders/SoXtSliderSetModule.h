@@ -22,18 +22,27 @@
 #ifndef SOXT_SLIDERSETMODULE_H
 #define SOXT_SLIDERSETMODULE_H
 
-#include <Inventor/Xt/SoXtSliderSetBase.h>
+#include <Inventor/Xt/SoXtSliderSet.h>
 
-class SoXtSliderManager;
+class SoXtSlider;
 
 // *************************************************************************
 
-class SoXtSliderSetModule : public SoXtSliderSetBase {
-  typedef SoXtSliderSetBase inherited;
+class SoXtSliderSetModule : public SoXtSliderSet {
+  typedef SoXtSliderSet inherited;
 
 public:
-  void setSliderSetSize( int sliders );
-  int getSliderSetSize(void) const;
+  SoXtSliderSetModule(
+    const Widget parent = NULL,
+    const char * const name = NULL,
+    const SbBool embed = TRUE,
+    SoNode * const node = NULL );
+  virtual ~SoXtSliderSetModule(void);
+
+  int getNumSliders(void) const;
+
+  void setFolding(const SbBool enable);
+  SbBool isFolded(void) const;
 
 protected:
   SoXtSliderSetModule(
@@ -43,18 +52,35 @@ protected:
     SoNode * const node,
     const SbBool build );
 
-  virtual ~SoXtSliderSetModule(void);
+  virtual void getLayoutSize( int & width, int & height );
+//  virtual const char * getModuleTitle(void) const = 0;
+//  virtual const char * getSliderTitle(int slider) const = 0;
 
   virtual const char * getDefaultWidgetName(void) const;
-  virtual void valueChanged( float value, int slider ) = 0;
 
   Widget buildWidget( Widget parent );
 
-private:
-  static void valueChangedCB( void * user, float value, int slider );
+  virtual void valueChanged( float value, int slider );
 
-  SoXtSliderManager * sliderset;
-  int slidersetSize;
+private:
+  Widget form;           // XmForm :
+  Widget head;           //   XmForm :
+  Widget styleToggle;    //     XmPushButton
+  Widget foldingToggle;  //     XmToggleButton
+  Widget body;           //   XmForm
+
+  int numSliders;
+  SoXtSlider ** sliders;
+
+  SbBool folded;
+
+private:
+  void constructor( const SbBool build );
+
+  static void toggleFoldingCB( Widget, XtPointer, XtPointer );
+  static void toggleStyleCB( Widget, XtPointer, XtPointer );
+
+  static void valueChangedCB( void * user, float value, int slider );
 
 }; // SoXtSliderSetModule
 

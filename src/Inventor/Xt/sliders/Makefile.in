@@ -111,31 +111,7 @@ LIBS =
 
 libSoXtSliderSets_la_SOURCES = \
 	SoXtSliderSetModule.h \
-	SoXtSliderSetModule.cpp \
-	SoXtAmbientColorSliderModule.cpp \
-	SoXtAmbientColorSliderModule.h \
-	SoXtCenterSliderModule.cpp \
-	SoXtCenterSliderModule.h \
-	SoXtDiffuseColorSliderModule.cpp \
-	SoXtDiffuseColorSliderModule.h \
-	SoXtEmissiveColorSliderModule.cpp \
-	SoXtEmissiveColorSliderModule.h \
-	SoXtLightColorSliderModule.cpp \
-	SoXtLightColorSliderModule.h \
-	SoXtLightIntensitySliderModule.cpp \
-	SoXtLightIntensitySliderModule.h \
-	SoXtRotateSliderModule.cpp \
-	SoXtRotateSliderModule.h \
-	SoXtScaleSliderModule.cpp \
-	SoXtScaleSliderModule.h \
-	SoXtShininessSliderModule.cpp \
-	SoXtShininessSliderModule.h \
-	SoXtSpecularColorSliderModule.cpp \
-	SoXtSpecularColorSliderModule.h \
-	SoXtTranslateSliderModule.cpp \
-	SoXtTranslateSliderModule.h \
-	SoXtTransparencySliderModule.cpp \
-	SoXtTransparencySliderModule.h
+	SoXtSliderSetModule.cpp
 
 subdir = src/Inventor/Xt/sliders
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -153,13 +129,7 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libSoXtSliderSets_la_LDFLAGS = 
 libSoXtSliderSets_la_LIBADD = 
-am_libSoXtSliderSets_la_OBJECTS =  SoXtSliderSetModule.lo \
-SoXtAmbientColorSliderModule.lo SoXtCenterSliderModule.lo \
-SoXtDiffuseColorSliderModule.lo SoXtEmissiveColorSliderModule.lo \
-SoXtLightColorSliderModule.lo SoXtLightIntensitySliderModule.lo \
-SoXtRotateSliderModule.lo SoXtScaleSliderModule.lo \
-SoXtShininessSliderModule.lo SoXtSpecularColorSliderModule.lo \
-SoXtTranslateSliderModule.lo SoXtTransparencySliderModule.lo
+am_libSoXtSliderSets_la_OBJECTS =  SoXtSliderSetModule.lo
 libSoXtSliderSets_la_OBJECTS =  $(am_libSoXtSliderSets_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -173,19 +143,7 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES =  $(libSoXtSliderSets_la_SOURCES)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
-DEP_FILES =  @AMDEP@ $(DEPDIR)/SoXtAmbientColorSliderModule.Plo \
-$(DEPDIR)/SoXtCenterSliderModule.Plo \
-$(DEPDIR)/SoXtDiffuseColorSliderModule.Plo \
-$(DEPDIR)/SoXtEmissiveColorSliderModule.Plo \
-$(DEPDIR)/SoXtLightColorSliderModule.Plo \
-$(DEPDIR)/SoXtLightIntensitySliderModule.Plo \
-$(DEPDIR)/SoXtRotateSliderModule.Plo \
-$(DEPDIR)/SoXtScaleSliderModule.Plo \
-$(DEPDIR)/SoXtShininessSliderModule.Plo \
-$(DEPDIR)/SoXtSliderSetModule.Plo \
-$(DEPDIR)/SoXtSpecularColorSliderModule.Plo \
-$(DEPDIR)/SoXtTranslateSliderModule.Plo \
-$(DEPDIR)/SoXtTransparencySliderModule.Plo
+DEP_FILES =  @AMDEP@ $(DEPDIR)/SoXtSliderSetModule.Plo
 DIST_COMMON =  Makefile.am Makefile.in
 
 
@@ -271,19 +229,7 @@ distclean-tags:
 
 maintainer-clean-tags:
 
-@AMDEP@include $(DEPDIR)/SoXtAmbientColorSliderModule.Plo
-@AMDEP@include $(DEPDIR)/SoXtCenterSliderModule.Plo
-@AMDEP@include $(DEPDIR)/SoXtDiffuseColorSliderModule.Plo
-@AMDEP@include $(DEPDIR)/SoXtEmissiveColorSliderModule.Plo
-@AMDEP@include $(DEPDIR)/SoXtLightColorSliderModule.Plo
-@AMDEP@include $(DEPDIR)/SoXtLightIntensitySliderModule.Plo
-@AMDEP@include $(DEPDIR)/SoXtRotateSliderModule.Plo
-@AMDEP@include $(DEPDIR)/SoXtScaleSliderModule.Plo
-@AMDEP@include $(DEPDIR)/SoXtShininessSliderModule.Plo
 @AMDEP@include $(DEPDIR)/SoXtSliderSetModule.Plo
-@AMDEP@include $(DEPDIR)/SoXtSpecularColorSliderModule.Plo
-@AMDEP@include $(DEPDIR)/SoXtTranslateSliderModule.Plo
-@AMDEP@include $(DEPDIR)/SoXtTransparencySliderModule.Plo
 
 mostlyclean-depend:
 
@@ -399,6 +345,33 @@ install uninstall-am uninstall all-redirect all-am all install-strip \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
+
+#	SoXtColorSliderModule.h \
+#	SoXtColorSliderModule.cpp \
+#	SoXtAmbientColorSliderModule.cpp \
+#	SoXtAmbientColorSliderModule.h \
+#	SoXtCenterSliderModule.cpp \
+#	SoXtCenterSliderModule.h \
+#	SoXtDiffuseColorSliderModule.cpp \
+#	SoXtDiffuseColorSliderModule.h \
+#	SoXtEmissiveColorSliderModule.cpp \
+#	SoXtEmissiveColorSliderModule.h \
+#	SoXtLightColorSliderModule.cpp \
+#	SoXtLightColorSliderModule.h \
+#	SoXtLightIntensitySliderModule.cpp \
+#	SoXtLightIntensitySliderModule.h \
+#	SoXtRotateSliderModule.cpp \
+#	SoXtRotateSliderModule.h \
+#	SoXtScaleSliderModule.cpp \
+#	SoXtScaleSliderModule.h \
+#	SoXtShininessSliderModule.cpp \
+#	SoXtShininessSliderModule.h \
+#	SoXtSpecularColorSliderModule.cpp \
+#	SoXtSpecularColorSliderModule.h \
+#	SoXtTranslateSliderModule.cpp \
+#	SoXtTranslateSliderModule.h \
+#	SoXtTransparencySliderModule.cpp \
+#	SoXtTransparencySliderModule.h
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
