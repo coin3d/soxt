@@ -41,7 +41,7 @@ public:
 
   SoXtSpaceball( int events = SoXtSpaceball::ALL_EVENTS );
   SoXtSpaceball( Display * display, int events = SoXtSpaceball::ALL_EVENTS );
-  ~SoXtSpaceball(void);
+  virtual ~SoXtSpaceball(void);
 
   virtual void enable( Widget widget,
       XtEventHandler func, XtPointer data, Window window = (Window) NULL );

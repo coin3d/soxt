@@ -32,6 +32,8 @@ class SoEvent;
 
 class SoXtDevice {
 public:
+  virtual ~SoXtDevice(void);
+
   virtual void enable( Widget widget,
       XtEventHandler func, XtPointer data, Window window = (Window) NULL ) = 0;
   virtual void disable( Widget widget,

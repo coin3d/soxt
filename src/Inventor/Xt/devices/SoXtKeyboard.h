@@ -41,7 +41,7 @@ public:
   };
 
   SoXtKeyboard( int events = SoXtKeyboard::ALL_EVENTS );
-  ~SoXtKeyboard(void);
+  virtual ~SoXtKeyboard(void);
 
   virtual void enable( Widget widget,
       XtEventHandler func, XtPointer data, Window window = (Window) NULL );

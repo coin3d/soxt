@@ -44,7 +44,7 @@ public:
   };
 
   SoXtMouse( int events = SoXtMouse::ALL_EVENTS );
-  ~SoXtMouse(void);
+  virtual ~SoXtMouse(void);
 
   virtual void enable( Widget widget,
       XtEventHandler func, XtPointer data, Window window = (Window) NULL );

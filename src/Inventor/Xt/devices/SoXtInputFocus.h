@@ -37,7 +37,7 @@ public:
   };
 
   SoXtInputFocus( int events = SoXtInputFocus::ALL_EVENTS );
-  ~SoXtInputFocus(void);
+  virtual ~SoXtInputFocus(void);
 
   virtual void enable( Widget widget,
       XtEventHandler func, XtPointer data, Window window = (Window) NULL );
