@@ -42,7 +42,7 @@ SoXtSpaceball::SoXtSpaceball(
 */
 
 SoXtSpaceball::SoXtSpaceball(
-  Display * display,
+  Display *, // display,
   int events )
 {
   this->events = events;
@@ -61,10 +61,10 @@ SoXtSpaceball::~SoXtSpaceball(
 
 void
 SoXtSpaceball::enable( // virtual
-  Widget widget,
-  XtEventHandler func,
-  XtPointer data,
-  Window window )
+  Widget, // widget,
+  XtEventHandler, // func,
+  XtPointer, // data,
+  Window ) // window )
 {
   SOGUI_STUB();
 } // enable()
@@ -74,9 +74,9 @@ SoXtSpaceball::enable( // virtual
 
 void
 SoXtSpaceball::disable( // virtual
-  Widget widget,
-  XtEventHandler func,
-  XtPointer data )
+  Widget, // widget,
+  XtEventHandler, // func,
+  XtPointer ) // data )
 {
   SOGUI_STUB();
 } // disable()
@@ -152,7 +152,7 @@ SoXtSpaceball::getTranslationScaleFactor(
 
 SbBool
 SoXtSpaceball::exists( // static
-  Display * display )
+  Display * ) // display )
 {
   SOGUI_STUB();
   return FALSE;
@@ -163,7 +163,7 @@ SoXtSpaceball::exists( // static
 
 void
 SoXtSpaceball::setFocusToWindow(
-  SbBool flag )
+  SbBool ) // flag )
 {
   SOGUI_STUB();
 } // setFocusToWindow()
