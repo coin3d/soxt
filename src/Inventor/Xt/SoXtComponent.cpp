@@ -268,8 +268,9 @@ SoXtComponent::show(void)
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtComponent::show", "[enter]");
 #endif // SOXT_DEBUG
-  if (this->isTopLevelShell()) {
-    Widget shell = this->getShellWidget();
+
+  Widget shell = this->getShellWidget();
+  if (shell) {
     XtRealizeWidget(shell);
     if (this->firstRealize == TRUE) {
       this->afterRealizeHook();
@@ -291,8 +292,8 @@ SoXtComponent::hide(void)
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtComponent::hide", "[enter]");
 #endif // SOXT_DEBUG
-  if (this->isTopLevelShell()) {
-    Widget shell = this->getShellWidget();
+  Widget shell = this->getShellWidget();
+  if (shell) {
     XtUnmapWidget(shell);
     XtUnrealizeWidget(shell);
   } else {
@@ -347,13 +348,9 @@ void
 SoXtComponent::setSize(const SbVec2s size)
 {
   PRIVATE(this)->size = size;
-  Widget widget;
-  if (this->isTopLevelShell())
-    widget = this->getShellWidget();
-  else
-    widget = this->getBaseWidget();
-  if (! widget)
-    return;
+  Widget widget = this->getShellWidget();
+  if (!widget) { widget = this->getBaseWidget(); }
+  if (!widget) { return; }
 
   int argc = 0;
   Arg args[2];
@@ -439,13 +436,12 @@ SoXtComponent::setTitle(const char * const title)
     PRIVATE(this)->title = strcpy(new char [strlen(title)+1], title);
   }
 
-  Widget shell = this->isTopLevelShell() ?
-    this->getShellWidget() : (Widget) NULL;
+  Widget shell = this->getShellWidget();
   if (! shell)
     return;
   XtVaSetValues(shell,
-    XmNtitle, PRIVATE(this)->title,
-    NULL);
+                XmNtitle, PRIVATE(this)->title,
+                NULL);
 }
 
 // documented in common/SoGuiComponentCommon.cpp.in.
@@ -466,8 +462,7 @@ SoXtComponent::setIconTitle(const char * const title)
     delete [] PRIVATE(this)->icontitle;
     PRIVATE(this)->icontitle = strcpy(new char [strlen(title)+1], title);
   }
-  Widget shell = this->isTopLevelShell() ?
-    this->getShellWidget() : (Widget) NULL;
+  Widget shell = this->getShellWidget();
   if (! shell)
     return;
   XtVaSetValues(shell,
@@ -696,15 +691,15 @@ SoXtComponent::afterRealizeHook(// virtual, protected
   if (this->isTopLevelShell()) {
 
     XtVaSetValues(this->getShellWidget(),
-      XmNtitle, this->getTitle(),
-      XmNiconName, this->getIconTitle(),
-      NULL);
+                  XmNtitle, this->getTitle(),
+                  XmNiconName, this->getIconTitle(),
+                  NULL);
 
     if (PRIVATE(this)->size[0] > 0) {
       XtVaSetValues(this->getShellWidget(),
-        XmNwidth, PRIVATE(this)->size[0],
-        XmNheight, PRIVATE(this)->size[1],
-        NULL);
+                    XmNwidth, PRIVATE(this)->size[0],
+                    XmNheight, PRIVATE(this)->size[1],
+                    NULL);
     }
   }
 } // afterRealizeHook()
@@ -1016,7 +1011,7 @@ void
 SoXtComponent::setWidgetCursor(Widget w, const SoXtCursor & cursor)
 {
   Window win = XtWindow(w);
-  if (win == NULL) { return; } // widget probably not realized yet
+  if (win == (Window)NULL) { return; } // widget probably not realized yet
 
   Display * d = SoXt::getDisplay();
 
