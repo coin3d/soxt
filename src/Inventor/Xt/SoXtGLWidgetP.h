@@ -59,6 +59,9 @@ public:
   XVisualInfo * overlayvisual;
   SbBool doublebuffer;
   SbBool enablealphachannel;
+  SbBool firstexpose;
+
+  static void exposeCB(Widget w, XtPointer closure, XtPointer call_data);
 
 protected:
   virtual SbBool isDirectRendering(void);

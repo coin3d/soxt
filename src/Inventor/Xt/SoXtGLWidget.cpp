@@ -83,6 +83,7 @@ SoXtGLWidgetP::SoXtGLWidgetP(SoXtGLWidget * w)
   this->overlayvisual = NULL;
   this->doublebuffer = TRUE;
   this->enablealphachannel = FALSE;
+  this->firstexpose = TRUE;
 }
 
 SoXtGLWidgetP::~SoXtGLWidgetP()
@@ -581,8 +582,8 @@ SoXtGLWidget::hasNormalGLArea(void) const
 void    // virtual, protected
 SoXtGLWidget::sizeChanged(const SbVec2s & size)
 {
-  SoDebugError::postInfo("SoXtGLWidget::sizeChanged", "[invoked (%d, %d)]",
-    size[0], size[1]);
+  // SoDebugError::postInfo("SoXtGLWidget::sizeChanged", "[invoked (%d, %d)]",
+  //   size[0], size[1]);
   if (this->isBorder()) {
     PRIVATE(this)->glsize[0] = size[0] - 2 * PRIVATE(this)->borderwidth;
     PRIVATE(this)->glsize[1] = size[1] - 2 * PRIVATE(this)->borderwidth;
@@ -856,6 +857,8 @@ SoXtGLWidget::buildWidget(Widget parent)
                             XmNbottomAttachment, XmATTACH_FORM,
                             NULL);
   this->registerWidget(PRIVATE(this)->glxwidget);  
+  XtAddCallback(PRIVATE(this)->glxwidget, SoXtNexposeCallback,
+                SoXtGLWidgetP::exposeCB, PRIVATE(this));
   
   this->setBorder(this->isBorder()); // "refresh" the widget offsets
 
@@ -988,6 +991,22 @@ SoXtGLWidgetP::isDirectRendering(void)
   Bool isdirect = glXIsDirect(SoXt::getDisplay(), ctx);
   PUBLIC(this)->glUnlockNormal();
   return isdirect ? TRUE : FALSE;
+}
+
+// *************************************************************************
+
+void
+SoXtGLWidgetP::exposeCB(Widget widget, XtPointer closure, XtPointer call_data)
+{
+  SoXtGLWidgetP * thisp = (SoXtGLWidgetP *) closure;
+  assert(thisp);
+  Dimension width = 0, height = 0;
+  XtVaGetValues(widget, XtNwidth, &width, XtNheight, &height, NULL);
+  thisp->glsize = SbVec2s(width, height);
+  if ( thisp->firstexpose ) {
+    PUBLIC(thisp)->sizeChanged(SbVec2s(width, height));
+    thisp->firstexpose = FALSE;
+  }
 }
 
 // *************************************************************************
