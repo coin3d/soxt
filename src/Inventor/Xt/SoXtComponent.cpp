@@ -95,72 +95,56 @@ SoXtComponent::SoXtComponent( // protected
   if ( (parent == (Widget) NULL) || ! embed ) {
     // create own shell
 
-    Display * const display = parent ? XtDisplay( parent ) : SoXt::getDisplay();
-    assert( display != NULL );
+    Visual * visual = NULL; 
+    Colormap colormap = 0;
+    int depth = 0;
+    Display * dpy = SoXt::getDisplay();
 
-    Screen * screen = NULL;
-    if ( this->constructorParent )
-      screen = XtScreen( this->constructorParent );
-    else
-      screen = ScreenOfDisplay( display, DefaultScreen( display ) );
-    const int screennum = XScreenNumberOfScreen( screen );
-
-    Visual * visual = DefaultVisual( display, screennum );
-    int depth = DefaultDepthOfScreen( screen );
-
-    SbBool nondefaultvisual = FALSE;
-
-    if ( depth <= 16 ) {
-      SoDebugError::postInfo( "SoXtComponent::SoXtComponent",
-        "depth = %d - trying to get better visual", depth );
-      XVisualInfo * visInfo = new XVisualInfo;
-      assert( visInfo != NULL );
-      // FIXME - fix screen param (0)
-      if ( XMatchVisualInfo( display, screennum, 24, DirectColor, visInfo ) ||
-          XMatchVisualInfo( display, screennum, 24, TrueColor, visInfo ) ||
-          XMatchVisualInfo( display, screennum, 24, PseudoColor, visInfo ) ||
-          XMatchVisualInfo( display, screennum, 24, StaticColor, visInfo ) ||
-          XMatchVisualInfo( display, screennum, 16, DirectColor, visInfo ) ||
-          XMatchVisualInfo( display, screennum, 16, TrueColor, visInfo ) ||
-          XMatchVisualInfo( display, screennum, 16, PseudoColor, visInfo ) ||
-          XMatchVisualInfo( display, screennum, 16, StaticColor, visInfo ) )
-      {
-        SoDebugError::postInfo( "SoXtComponent::SoXtComponent",
-          "Found visual with depth %d and class %s", visInfo->depth,
-          visInfo->c_class == DirectColor ? "DirectColor"
-          : visInfo->c_class == TrueColor ? "TrueColor"
-          : visInfo->c_class == PseudoColor ? "PseudoColor"
-          : visInfo->c_class == StaticColor ? "StaticColor"
-          : "????Color" );
-        depth = visInfo->depth;
-        visual = visInfo->visual;
-        nondefaultvisual = TRUE;
-      }
+    if ( parent ) {
+      Widget shell = parent;
+      while ( ! XtIsShell( shell ) && shell != (Widget) NULL )
+        shell = XtParent( shell );
+      assert( shell != (Widget) NULL );
+      dpy = XtDisplay(shell);
+      XtVaGetValues( shell, 
+        XmNvisual, &visual,
+        XmNcolormap, &colormap,
+        XmNdepth, &depth,
+        NULL );
+    } else {
+      SoXt::selectBestVisual( dpy, visual, colormap, depth );
     }
+    assert( dpy != NULL );
 
-    this->parent = XtVaAppCreateShell( NULL, // SoXt::getAppName() didn't work
+    XSync( dpy, False );
+    SoDebugError::postInfo( "", "creating shell" );
+    this->parent = XtVaAppCreateShell(
+      SoXt::getAppName(), // didn't work
       SoXt::getAppClass(),
-      topLevelShellWidgetClass, display,
-//      XmNvisual, visual,
-//      XmNdepth, depth,
+      topLevelShellWidgetClass,
+      dpy,
+      XmNvisual, visual,
+      XmNcolormap, colormap,
+      XmNdepth, depth,
       NULL );
+    XSync( dpy, False );
+    SoDebugError::postInfo( "", "shell created" );
 
     XtEventHandler editres_hook = (XtEventHandler) _XEditResCheckMessages;
     XtAddEventHandler( this->parent, (EventMask) 0, True, editres_hook, NULL );
-
-    if ( nondefaultvisual ) {
-      SoDebugError::postInfo( "", "yo" );
-//      XtUnmanageChild( this->parent );
-//      XtCreateWindow( this->parent, InputOutput, visual, 0, NULL );
-//      XtRealizeWidget( this->parent );
-//      XtMapWidget( this->parent );
-    }
 
     this->embedded = FALSE;
   } else {
     this->parent = parent;
     this->embedded = TRUE;
   }
+  if ( parent ) {
+    if ( parent == SoXt::getTopLevelWidget() )
+      this->embedded = FALSE;
+//    else if ( XtIsShell(parent) )
+//      this->embedded = FALSE;
+  }
+
 } // SoXtComponent()
 
 /*!
