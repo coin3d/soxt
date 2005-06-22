@@ -307,9 +307,7 @@ XtNativePopupMenu::getMenuItemEnabled(
 */
 
 void
-XtNativePopupMenu::_setMenuItemMarked(// virtual
-  int itemid,
-  SbBool marked)
+XtNativePopupMenu::_setMenuItemMarked(int itemid, SbBool marked)
 {
   ItemRecord * rec = this->getItemRecord(itemid);
   if (rec == NULL)
@@ -321,10 +319,7 @@ XtNativePopupMenu::_setMenuItemMarked(// virtual
 
   if (rec->item != NULL)
     XmToggleButtonSetState(rec->item, marked ? True : False, False);
-
-  if (marked)
-    this->setRadioGroupMarkedItem(itemid);
-} // _setMenuItemMarked()
+}
 
 /*!
 */
