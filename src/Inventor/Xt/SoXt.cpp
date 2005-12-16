@@ -95,7 +95,6 @@
 
 // The private data for the SoXt class.
 
-#ifndef DOXYGEN_SKIP_THIS
 class SoXtP : public SoGuiP {
 public:
   static Display * display;
@@ -192,8 +191,6 @@ SoXtP::X11Errorhandler(Display * d, XErrorEvent * ee)
   return -1; // shouldn't get here, the system handler will normally exit
 }
 
-#endif // DOXYGEN_SKIP_THIS
-
 // *************************************************************************
 
 // init()-method documented in common/SoGuiCommon.cpp.in.
@@ -267,7 +264,6 @@ wm_close_handler(Widget widget, XtPointer user, XtPointer calldata)
   // XtAppSetExitFlag(SoXt::getAppContext());
 }
 
-#ifndef DOXYGEN_SKIP_THIS
 // FIXME: this code could probably be shared with SoQt.cpp, which also
 // sets up an X11 error handler. 20030912 mortene.
 void
@@ -297,7 +293,6 @@ SoXtP::setUpErrorHandler(void)
     XSynchronize(display, True);
   }
 }
-#endif // DOXYGEN_SKIP_THIS
 
 // Documented in common/SoGuiCommon.cpp.in.
 //
@@ -876,7 +871,6 @@ SoXt::getExtensionEventHandler(XEvent * event, Widget & widget,
 
 // *************************************************************************
 
-#ifndef DOXYGEN_SKIP_THIS
 // private
 void
 SoXtP::timerSensorCB(XtPointer closure, XtIntervalId * id)
@@ -1201,6 +1195,5 @@ SoXtP::fallbackresources[] =
 
   NULL
 };
-#endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
