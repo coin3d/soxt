@@ -318,9 +318,7 @@ SoXt::init(Widget toplevel)
 
   SoXtP::setUpErrorHandler();
   
-  SoXtObject::init();
-  SoGuiNodes::initClasses();
-  SoGuiEngines::initClasses();
+  SoAny::init();
 
   SoDB::getSensorManager()->setChangedCallback(SoGuiP::sensorQueueChanged, NULL);
 
