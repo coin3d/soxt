@@ -57,13 +57,22 @@ public:
   GLXContext overlaycontext;
   XVisualInfo * overlayvisual;
   SbBool doublebuffer;
-  SbBool enablealphachannel;
   SbBool firstexpose;
+  SbBool quadbuffer;
+  SbBool alphachannel;
+  SbBool stencilbuffer;
+  SbBool accumbuffer;
+  SbBool needrebuild;
+  Colormap colormap;
 
   static void exposeCB(Widget w, XtPointer closure, XtPointer call_data);
 
+  int buildGLAttrs(int * attrs, int trynum);
+
 protected:
   virtual SbBool isDirectRendering(void);
+
+
 };
 
 // ************************************************************************

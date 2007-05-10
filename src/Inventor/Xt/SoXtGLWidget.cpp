@@ -85,8 +85,13 @@ SoXtGLWidgetP::SoXtGLWidgetP(SoXtGLWidget * w)
   this->overlaycontext = NULL;
   this->overlayvisual = NULL;
   this->doublebuffer = TRUE;
-  this->enablealphachannel = FALSE;
   this->firstexpose = TRUE;
+  this->quadbuffer = FALSE;
+  this->alphachannel = FALSE;
+  this->stencilbuffer = FALSE;
+  this->accumbuffer = FALSE;
+  
+  this->needrebuild = TRUE;
 }
 
 SoXtGLWidgetP::~SoXtGLWidgetP()
@@ -371,8 +376,10 @@ SoXtGLWidget::isDrawToFrontBufferEnable(void) const
 void 
 SoXtGLWidget::setAccumulationBuffer(const SbBool enable)
 {
-  // FIXME: not implemented yet. 20020503 mortene.
-  SOXT_STUB();
+  if (PRIVATE(this)->accumbuffer != enable) {
+    PRIVATE(this)->accumbuffer = enable;
+    PRIVATE(this)->needrebuild = TRUE;
+  }
 }
 
 /*!
@@ -381,7 +388,7 @@ SoXtGLWidget::setAccumulationBuffer(const SbBool enable)
 SbBool 
 SoXtGLWidget::getAccumulationBuffer(void) const
 {
-  return FALSE;
+  return PRIVATE(this)->accumbuffer;
 }
 
 /*!
@@ -391,8 +398,10 @@ SoXtGLWidget::getAccumulationBuffer(void) const
 void 
 SoXtGLWidget::setStencilBuffer(const SbBool enable)
 {
-  // FIXME: not implemented yet. 20020503 mortene.
-  SOXT_STUB();
+  if (PRIVATE(this)->stencilbuffer != enable) {
+    PRIVATE(this)->stencilbuffer = enable;
+    PRIVATE(this)->needrebuild = TRUE;
+  }
 }
 
 /*!
@@ -401,7 +410,7 @@ SoXtGLWidget::setStencilBuffer(const SbBool enable)
 SbBool 
 SoXtGLWidget::getStencilBuffer(void) const
 {
-  return FALSE;
+  return PRIVATE(this)->stencilbuffer;
 }
 
 /*!
@@ -410,15 +419,10 @@ SoXtGLWidget::getStencilBuffer(void) const
 void 
 SoXtGLWidget::setAlphaChannel(const SbBool enable)
 {
-
-  SOXT_STUB();
-  PRIVATE(this)->enablealphachannel = FALSE;
-
-  // FIXME: As the GLX context is initialized at startup, changing the
-  // 'enablealphachannel' flag will have no effect on the current
-  // context. A proper destruction and reconstruction of the context
-  // must be done here to make this work. (20031201 handegar)
-
+  if (PRIVATE(this)->alphachannel != enable) {
+    PRIVATE(this)->alphachannel = enable;
+    PRIVATE(this)->needrebuild = TRUE;
+  }
 }
 
 /*!
@@ -427,14 +431,16 @@ SoXtGLWidget::setAlphaChannel(const SbBool enable)
 SbBool 
 SoXtGLWidget::getAlphaChannel(void) const
 {
-  SOXT_STUB();
-  return PRIVATE(this)->enablealphachannel; // See fixme in 'setAlphaChannel'
+  return PRIVATE(this)->alphachannel;
 }
 
 void 
 SoXtGLWidget::setQuadBufferStereo(const SbBool enable)
 {
-  // FIXME: do proper implementation. 20001123 mortene.
+  if (PRIVATE(this)->quadbuffer != enable) {
+    PRIVATE(this)->quadbuffer = enable;
+    PRIVATE(this)->needrebuild = TRUE;
+  }
 }
 
 /*!
@@ -443,8 +449,7 @@ SoXtGLWidget::setQuadBufferStereo(const SbBool enable)
 SbBool 
 SoXtGLWidget::isQuadBufferStereo(void) const
 {
-  // FIXME: do proper implementation. 20001123 mortene.
-  return FALSE;
+  return PRIVATE(this)->quadbuffer;
 }
 
 /*!
@@ -734,15 +739,34 @@ SoXtGLWidget::eventHandler(Widget widget,
 // settings is exactly the same as the one applied in Coin's
 // src/misc/SoOffscreenRenderer.cpp. So if you make any fixes or other
 // improvements here, migrate your changes.
-static int
-buildGLAttrs(int * attrs, int trynum)
+int
+SoXtGLWidgetP::buildGLAttrs(int * attrs, int trynum)
 {
   int pos = 0;
   attrs[pos++] = GLX_RGBA;
   attrs[pos++] = GLX_DEPTH_SIZE;
   attrs[pos++] = 1;
-  if (! (trynum & 0x04)) {
+  
+  if (this->quadbuffer) {
+    attrs[pos++] = GLX_STEREO;
+  }
+  if (this->stencilbuffer) {
     attrs[pos++] = GLX_STENCIL_SIZE;
+    attrs[pos++] = 1;
+  }
+  if (this->accumbuffer) {
+    attrs[pos++] = GLX_ACCUM_RED_SIZE;
+    attrs[pos++] = 1;
+    attrs[pos++] = GLX_ACCUM_BLUE_SIZE;
+    attrs[pos++] = 1;
+    attrs[pos++] = GLX_ACCUM_GREEN_SIZE;
+    attrs[pos++] = 1;
+    attrs[pos++] = GLX_ACCUM_ALPHA_SIZE;
+    attrs[pos++] = 1;
+  }
+
+  if (this->alphachannel) {
+    attrs[pos++] = GLX_ALPHA_SIZE;
     attrs[pos++] = 1;
   }
   if (! (trynum & 0x02)) {
@@ -795,11 +819,11 @@ SoXtGLWidget::buildWidget(Widget parent)
 
   Display * const display = SoXt::getDisplay();
   int trynum = 0;
-  const int ARRAYSIZE = 32;
+  const int ARRAYSIZE = 256;
   int attrs[ARRAYSIZE];
   int screen = DefaultScreen(display);
   while (PRIVATE(this)->normalvisual == NULL && trynum < 8) {
-    int arraysize = buildGLAttrs(attrs, trynum);
+    int arraysize = PRIVATE(this)->buildGLAttrs(attrs, trynum);
     assert(arraysize < ARRAYSIZE);
     PRIVATE(this)->normalvisual = glXChooseVisual(display, screen, attrs);
     trynum++;
@@ -873,7 +897,8 @@ SoXtGLWidget::buildWidget(Widget parent)
   this->registerWidget(PRIVATE(this)->glxwidget);  
   XtAddCallback(PRIVATE(this)->glxwidget, SoXtNexposeCallback,
                 SoXtGLWidgetP::exposeCB, PRIVATE(this));
-  
+
+  PRIVATE(this)->colormap = colors;
   this->setBorder(this->isBorder()); // "refresh" the widget offsets
 
   // Our callback has this signature:
@@ -890,6 +915,10 @@ SoXtGLWidget::buildWidget(Widget parent)
   SoDebugError::postInfo("SoXtGLWidget::buildWidget", "[exit]");
 #endif // SOXT_DEBUG
 #endif // HAVE_LIBXMU
+
+  static int cnt = 0;
+  if (cnt++)
+    PRIVATE(this)->needrebuild = FALSE;
   return PRIVATE(this)->glxmanager;
 }
 
@@ -1015,6 +1044,54 @@ SoXtGLWidgetP::exposeCB(Widget widget, XtPointer closure, XtPointer call_data)
 {
   SoXtGLWidgetP * thisp = (SoXtGLWidgetP *) closure;
   assert(thisp);
+
+  if (thisp->needrebuild) {
+    thisp->needrebuild = FALSE;
+    assert(thisp->glxwidget);
+
+    XtRemoveEventHandler(thisp->glxwidget,
+                         ExposureMask | StructureNotifyMask | ButtonPressMask |
+                         ButtonReleaseMask | PointerMotionMask | KeyPressMask | KeyReleaseMask,
+                         False,
+                         (void (*)(_WidgetRec *, void *, _XEvent *, char *))
+                         SoXtGLWidget::eventHandler, PUBLIC(thisp));
+    
+
+    XtRemoveCallback(thisp->glxwidget, SoXtNexposeCallback,
+                     SoXtGLWidgetP::exposeCB, thisp);
+    PUBLIC(thisp)->unregisterWidget(thisp->glxwidget);  
+    thisp->glxwidget = NULL;
+
+    thisp->glxwidget =
+      XtVaCreateManagedWidget("SoXtGLWidget",
+                              soxtGLAreaWidgetClass, thisp->glxmanager,
+                              SoXtNvisualInfo, thisp->normalvisual,
+                              XmNcolormap, thisp->colormap,
+                              SoXtNstencilSize, 1,
+                              XmNleftAttachment, XmATTACH_FORM,
+                              XmNtopAttachment, XmATTACH_FORM,
+                              XmNrightAttachment, XmATTACH_FORM,
+                              XmNbottomAttachment, XmATTACH_FORM,
+                              NULL);
+    PUBLIC(thisp)->registerWidget(thisp->glxwidget);  
+    XtAddCallback(thisp->glxwidget, SoXtNexposeCallback,
+                  SoXtGLWidgetP::exposeCB, thisp);
+    
+    PUBLIC(thisp)->setBorder(PUBLIC(thisp)->isBorder()); // "refresh" the widget offsets
+    
+    // Our callback has this signature:
+    // (void (*)(_WidgetRec *, SoXtGLWidget *, XAnyEvent *, char *))
+    // ..so we need to cast to avoid a compiler warning or error.
+    XtAddEventHandler(thisp->glxwidget,
+                      ExposureMask | StructureNotifyMask | ButtonPressMask |
+                      ButtonReleaseMask | PointerMotionMask | KeyPressMask | KeyReleaseMask,
+                      False,
+                      (void (*)(_WidgetRec *, void *, _XEvent *, char *))
+                      SoXtGLWidget::eventHandler, PUBLIC(thisp));
+    
+  }
+  
+  
   Dimension width = 0, height = 0;
   XtVaGetValues(widget, XtNwidth, &width, XtNheight, &height, NULL);
   thisp->glsize = SbVec2s(width, height);
