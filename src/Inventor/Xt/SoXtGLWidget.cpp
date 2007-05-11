@@ -96,7 +96,7 @@ SoXtGLWidgetP::SoXtGLWidgetP(SoXtGLWidget * w)
 
 SoXtGLWidgetP::~SoXtGLWidgetP()
 {
-  if ( this->normalvisual ) {
+  if (this->normalvisual) {
     XFree(this->normalvisual);
   }
   // FIXME: if this is correct, overlayvisual should also be freed I guess
@@ -139,9 +139,8 @@ SoXtGLWidget::~SoXtGLWidget()
   this->unregisterWidget(PRIVATE(this)->glxmanager);
   this->unregisterWidget(PRIVATE(this)->glxwidget);
 
-  if (PRIVATE(this)->normalcontext) {
-    SoAny::si()->unregisterGLContext((void *)this);
-  }
+  PRIVATE(this)->cleanupContext();
+  PRIVATE(this)->cleanupGLWidget();
   delete PRIVATE(this);
 }
 
@@ -370,8 +369,7 @@ SoXtGLWidget::isDrawToFrontBufferEnable(void) const
 */
 
 /*!  
-  Enables/disables the OpenGL accumulation buffer. Not implemented
-  yet for this toolkit.  
+  Enables/disables the OpenGL accumulation buffer.
 */
 void 
 SoXtGLWidget::setAccumulationBuffer(const SbBool enable)
@@ -392,8 +390,7 @@ SoXtGLWidget::getAccumulationBuffer(void) const
 }
 
 /*!
-  Enables/disables the OpenGL stencil buffer. Not implemented yet
-  for this toolkit.
+  Enables/disables the OpenGL stencil buffer.
 */
 void 
 SoXtGLWidget::setStencilBuffer(const SbBool enable)
@@ -477,14 +474,12 @@ SoXtGLWidget::processEvent(XAnyEvent * event)
   case MapNotify:
     if ( !PRIVATE(this)->normalcontext ) {
       PRIVATE(this)->initNormalContext();
-      this->initGraphic();
     }
     break;
 
   case Expose:
     if ( !PRIVATE(this)->normalcontext ) {
       PRIVATE(this)->initNormalContext();
-      this->initGraphic();
     }
     this->waitForExpose = FALSE; // Gets flipped from TRUE on first expose.
     if (!this->glScheduleRedraw()) {
@@ -531,26 +526,8 @@ void
 SoXtGLWidgetP::initNormalContext(void)
 {
   assert(this->glxwidget != (Widget) NULL);
-  XVisualInfo * visual;
-  Display * display = SoXt::getDisplay();
-  XtVaGetValues(this->glxwidget, SoXtNvisualInfo, &visual, NULL);
-  int screen = DefaultScreen(display);
 
-  SoXtGLWidget * share = (SoXtGLWidget *)
-    SoAny::si()->getSharedGLContext((void *)display, (void *)screen);
-  
-  this->normalcontext =
-    glXCreateContext(display, visual, 
-                     share ? PRIVATE(share)->normalcontext : None, 
-                     GL_TRUE);
-  if (! this->normalcontext) {
-    SoDebugError::postInfo("SoXtGLWidget::glInit",
-                           "glXCreateContext() returned NULL");
-    XtAppError(SoXt::getAppContext(), "no context");
-  }
-  else {
-    SoAny::si()->registerGLContext((void *)PUBLIC(this), (void *)display, (void *)screen);
-  }
+  this->buildContext();
 }
 #endif // DOXYGEN_SKIP_THIS
 
@@ -854,71 +831,42 @@ SoXtGLWidget::buildWidget(Widget parent)
   XStandardColormap * cmaps = NULL;
   int nmaps = 0;
 
-  if (XmuLookupStandardColormap(
-                                display, PRIVATE(this)->normalvisual->screen, PRIVATE(this)->normalvisual->visualid,
+  if (XmuLookupStandardColormap(display, PRIVATE(this)->normalvisual->screen, PRIVATE(this)->normalvisual->visualid,
                                 PRIVATE(this)->normalvisual->depth, XA_RGB_DEFAULT_MAP, False, True) &&
       XGetRGBColormaps(display,
                        RootWindow(display, PRIVATE(this)->normalvisual->screen), &cmaps, &nmaps,
-                       XA_RGB_DEFAULT_MAP))
-    {
-      SbBool found = FALSE;
-      for (int i = 0; i < nmaps && ! found; i++) {
-        if (cmaps[i].visualid == PRIVATE(this)->normalvisual->visualid) {
+                       XA_RGB_DEFAULT_MAP)) {
+    SbBool found = FALSE;
+    for (int i = 0; i < nmaps && ! found; i++) {
+      if (cmaps[i].visualid == PRIVATE(this)->normalvisual->visualid) {
 #if SOXT_DEBUG && 0
-          SoDebugError::postInfo("SoXtGLWidget::buildWidget",
-                                 "got shared color map");
+        SoDebugError::postInfo("SoXtGLWidget::buildWidget",
+                               "got shared color map");
 #endif // SOXT_DEBUG
-          colors = cmaps[i].colormap;
-          XFree(cmaps);
-          found = TRUE;
-        }
+        colors = cmaps[i].colormap;
+        XFree(cmaps);
+        found = TRUE;
       }
-      if (! found)
-        colors = XCreateColormap(display,
-                                 RootWindow(display, PRIVATE(this)->normalvisual->screen),
-                                 PRIVATE(this)->normalvisual->visual, AllocNone);
-    } else {
+    }
+    if (! found) {
       colors = XCreateColormap(display,
                                RootWindow(display, PRIVATE(this)->normalvisual->screen),
                                PRIVATE(this)->normalvisual->visual, AllocNone);
     }
-  
-  PRIVATE(this)->glxwidget =
-    XtVaCreateManagedWidget("SoXtGLWidget",
-                            soxtGLAreaWidgetClass, PRIVATE(this)->glxmanager,
-                            SoXtNvisualInfo, PRIVATE(this)->normalvisual,
-                            XmNcolormap, colors,
-                            SoXtNstencilSize, 1,
-                            XmNleftAttachment, XmATTACH_FORM,
-                            XmNtopAttachment, XmATTACH_FORM,
-                            XmNrightAttachment, XmATTACH_FORM,
-                            XmNbottomAttachment, XmATTACH_FORM,
-                            NULL);
-  this->registerWidget(PRIVATE(this)->glxwidget);  
-  XtAddCallback(PRIVATE(this)->glxwidget, SoXtNexposeCallback,
-                SoXtGLWidgetP::exposeCB, PRIVATE(this));
-
+  } 
+  else {
+    colors = XCreateColormap(display,
+                             RootWindow(display, PRIVATE(this)->normalvisual->screen),
+                             PRIVATE(this)->normalvisual->visual, AllocNone);
+  }
   PRIVATE(this)->colormap = colors;
-  this->setBorder(this->isBorder()); // "refresh" the widget offsets
-
-  // Our callback has this signature:
-  // (void (*)(_WidgetRec *, SoXtGLWidget *, XAnyEvent *, char *))
-  // ..so we need to cast to avoid a compiler warning or error.
-  XtAddEventHandler(PRIVATE(this)->glxwidget,
-                    ExposureMask | StructureNotifyMask | ButtonPressMask |
-                    ButtonReleaseMask | PointerMotionMask | KeyPressMask | KeyReleaseMask,
-                    False,
-                    (void (*)(_WidgetRec *, void *, _XEvent *, char *))
-                    SoXtGLWidget::eventHandler, this);
+  
+  PRIVATE(this)->buildGLWidget();
 
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtGLWidget::buildWidget", "[exit]");
 #endif // SOXT_DEBUG
 #endif // HAVE_LIBXMU
-
-  static int cnt = 0;
-  if (cnt++)
-    PRIVATE(this)->needrebuild = FALSE;
   return PRIVATE(this)->glxmanager;
 }
 
@@ -1037,6 +985,101 @@ SoXtGLWidgetP::isDirectRendering(void)
   return isdirect ? TRUE : FALSE;
 }
 
+
+// *************************************************************************
+
+void 
+SoXtGLWidgetP::buildGLWidget(void)
+{
+  this->cleanupGLWidget();
+
+  this->glxwidget =
+    XtVaCreateManagedWidget("SoXtGLWidget",
+                            soxtGLAreaWidgetClass, this->glxmanager,
+                            SoXtNvisualInfo, this->normalvisual,
+                            XmNcolormap, this->colormap,
+                            SoXtNstencilSize, 1,
+                            XmNleftAttachment, XmATTACH_FORM,
+                            XmNtopAttachment, XmATTACH_FORM,
+                            XmNrightAttachment, XmATTACH_FORM,
+                            XmNbottomAttachment, XmATTACH_FORM,
+                            NULL);
+  PUBLIC(this)->registerWidget(this->glxwidget);  
+  XtAddCallback(this->glxwidget, SoXtNexposeCallback,
+                SoXtGLWidgetP::exposeCB, this);
+  
+  PUBLIC(this)->setBorder(PUBLIC(this)->isBorder()); // "refresh" the widget offsets
+  
+  // Our callback has this signature:
+  // (void (*)(_WidgetRec *, SoXtGLWidget *, XAnyEvent *, char *))
+  // ..so we need to cast to avoid a compiler warning or error.
+  XtAddEventHandler(this->glxwidget,
+                    ExposureMask | StructureNotifyMask | ButtonPressMask |
+                    ButtonReleaseMask | PointerMotionMask | KeyPressMask | KeyReleaseMask,
+                    False,
+                    (void (*)(_WidgetRec *, void *, _XEvent *, char *))
+                    SoXtGLWidget::eventHandler, PUBLIC(this));
+  this->needrebuild = FALSE;
+}
+
+void 
+SoXtGLWidgetP::cleanupGLWidget(void)
+{
+  if (this->glxwidget) {
+    XtRemoveEventHandler(this->glxwidget,
+                         ExposureMask | StructureNotifyMask | ButtonPressMask |
+                         ButtonReleaseMask | PointerMotionMask | KeyPressMask | KeyReleaseMask,
+                         False,
+                         (void (*)(_WidgetRec *, void *, _XEvent *, char *))
+                         SoXtGLWidget::eventHandler, PUBLIC(this));
+    
+    
+    XtRemoveCallback(this->glxwidget, SoXtNexposeCallback,
+                     SoXtGLWidgetP::exposeCB, this);
+    PUBLIC(this)->unregisterWidget(this->glxwidget);  
+    this->glxwidget = NULL;
+  }
+}
+
+void 
+SoXtGLWidgetP::buildContext(void)
+{
+  XVisualInfo * visual;
+  Display * display = SoXt::getDisplay();
+  XtVaGetValues(this->glxwidget, SoXtNvisualInfo, &visual, NULL);
+  int screen = DefaultScreen(display);
+  
+  SoXtGLWidget * share = (SoXtGLWidget *)
+    SoAny::si()->getSharedGLContext((void *)display, (void *)screen);
+  
+  this->normalcontext =
+    glXCreateContext(display, visual, 
+                     share ? PRIVATE(share)->normalcontext : None, 
+                     GL_TRUE);
+  if (!this->normalcontext) {
+    SoDebugError::postInfo("SoXtGLWidget::glInit",
+                           "glXCreateContext() returned NULL");
+    XtAppError(SoXt::getAppContext(), "no context");
+  }
+  else {
+    SoAny::si()->registerGLContext((void *)PUBLIC(this), (void *)display, (void *)screen);
+  }
+  PUBLIC(this)->initGraphic();
+}
+
+void 
+SoXtGLWidgetP::cleanupContext(void)
+{
+  if (this->normalcontext) {
+    Display * display = SoXt::getDisplay();
+    int screen = DefaultScreen(display);
+    SoAny::si()->unregisterGLContext((void *)PUBLIC(this));
+    glXDestroyContext(display, this->normalcontext);
+    this->normalcontext = NULL;
+  }
+}
+
+
 // *************************************************************************
 
 void
@@ -1046,56 +1089,16 @@ SoXtGLWidgetP::exposeCB(Widget widget, XtPointer closure, XtPointer call_data)
   assert(thisp);
 
   if (thisp->needrebuild) {
-    thisp->needrebuild = FALSE;
-    assert(thisp->glxwidget);
-
-    XtRemoveEventHandler(thisp->glxwidget,
-                         ExposureMask | StructureNotifyMask | ButtonPressMask |
-                         ButtonReleaseMask | PointerMotionMask | KeyPressMask | KeyReleaseMask,
-                         False,
-                         (void (*)(_WidgetRec *, void *, _XEvent *, char *))
-                         SoXtGLWidget::eventHandler, PUBLIC(thisp));
-    
-
-    XtRemoveCallback(thisp->glxwidget, SoXtNexposeCallback,
-                     SoXtGLWidgetP::exposeCB, thisp);
-    PUBLIC(thisp)->unregisterWidget(thisp->glxwidget);  
-    thisp->glxwidget = NULL;
-
-    thisp->glxwidget =
-      XtVaCreateManagedWidget("SoXtGLWidget",
-                              soxtGLAreaWidgetClass, thisp->glxmanager,
-                              SoXtNvisualInfo, thisp->normalvisual,
-                              XmNcolormap, thisp->colormap,
-                              SoXtNstencilSize, 1,
-                              XmNleftAttachment, XmATTACH_FORM,
-                              XmNtopAttachment, XmATTACH_FORM,
-                              XmNrightAttachment, XmATTACH_FORM,
-                              XmNbottomAttachment, XmATTACH_FORM,
-                              NULL);
-    PUBLIC(thisp)->registerWidget(thisp->glxwidget);  
-    XtAddCallback(thisp->glxwidget, SoXtNexposeCallback,
-                  SoXtGLWidgetP::exposeCB, thisp);
-    
-    PUBLIC(thisp)->setBorder(PUBLIC(thisp)->isBorder()); // "refresh" the widget offsets
-    
-    // Our callback has this signature:
-    // (void (*)(_WidgetRec *, SoXtGLWidget *, XAnyEvent *, char *))
-    // ..so we need to cast to avoid a compiler warning or error.
-    XtAddEventHandler(thisp->glxwidget,
-                      ExposureMask | StructureNotifyMask | ButtonPressMask |
-                      ButtonReleaseMask | PointerMotionMask | KeyPressMask | KeyReleaseMask,
-                      False,
-                      (void (*)(_WidgetRec *, void *, _XEvent *, char *))
-                      SoXtGLWidget::eventHandler, PUBLIC(thisp));
-    
+    thisp->cleanupContext();
+    thisp->cleanupGLWidget();
+    thisp->buildGLWidget();
+    thisp->buildContext();
+    thisp->firstexpose = TRUE;
   }
-  
-  
   Dimension width = 0, height = 0;
   XtVaGetValues(widget, XtNwidth, &width, XtNheight, &height, NULL);
   thisp->glsize = SbVec2s(width, height);
-  if ( thisp->firstexpose ) {
+  if (thisp->firstexpose) {
     PUBLIC(thisp)->sizeChanged(SbVec2s(width, height));
     thisp->firstexpose = FALSE;
   }

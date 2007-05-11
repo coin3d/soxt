@@ -65,9 +65,15 @@ public:
   SbBool needrebuild;
   Colormap colormap;
 
+  void buildGLWidget(void);
+  void cleanupGLWidget(void);
+
   static void exposeCB(Widget w, XtPointer closure, XtPointer call_data);
 
   int buildGLAttrs(int * attrs, int trynum);
+
+  void buildContext(void);
+  void cleanupContext(void);
 
 protected:
   virtual SbBool isDirectRendering(void);
