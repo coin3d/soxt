@@ -7817,8 +7817,8 @@ sim_ac_var_functionname=
 #
 # * GCC uses __PRETTY_FUNCTION__
 #
-# * FIXME: why was __FUNCTION__ added? for SGI MIPSpro, perhaps?
-#   20040902 mortene.
+# * Visual C++ uses __FUNCDNAME__, __FUNCSIG__, and __FUNCTION__.
+#
 
 for i in "__func__" "__PRETTY_FUNCTION__" "__FUNCTION__"; do
 if test -z "$sim_ac_var_functionname"; then
@@ -8209,8 +8209,8 @@ ifelse($1, [], :, $1)
 AC_DEFUN([SIM_AC_COMPILER_NOBOOL], [
 sim_ac_nobool_CXXFLAGS=
 sim_ac_have_nobool=false
+AC_MSG_CHECKING([whether $CXX accepts /noBool])
 if $BUILD_WITH_MSVC && test x$sim_ac_msvc_version = x6; then
-  AC_MSG_CHECKING([whether $CXX accepts /noBool])
   SIM_AC_CXX_COMPILER_BEHAVIOR_OPTION_QUIET(
     [/noBool],
     [int temp],
