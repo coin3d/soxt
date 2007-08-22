@@ -794,79 +794,12 @@ SoXtGLWidget::buildWidget(Widget parent)
   if (rsc.getResource("border", XmRBoolean, haveborder))
     PRIVATE(this)->border = haveborder;
 
-  Display * const display = SoXt::getDisplay();
-  int trynum = 0;
-  const int ARRAYSIZE = 256;
-  int attrs[ARRAYSIZE];
-  int screen = DefaultScreen(display);
-  while (PRIVATE(this)->normalvisual == NULL && trynum < 8) {
-    int arraysize = PRIVATE(this)->buildGLAttrs(attrs, trynum);
-    assert(arraysize < ARRAYSIZE);
-    PRIVATE(this)->normalvisual = glXChooseVisual(display, screen, attrs);
-    trynum++;
-  }
-
-  if (PRIVATE(this)->normalvisual == NULL) {
-    SoDebugError::post("SoXtGLWidget::buildWidget",
-                       "could not get satisfactory visual for GLX");
-    XtAppError(SoXt::getAppContext(), "SoXtGLWidget::buildWidget()");
-  }
-
-  PRIVATE(this)->doublebuffer = ((trynum-1) & 0x02) ? FALSE : TRUE;
-
-  if ((PRIVATE(this)->normalvisual->c_class != TrueColor) &&
-      (PRIVATE(this)->normalvisual->c_class != PseudoColor)) {
-    SoDebugError::post("SoXtGLWidget::buildWidget",
-                       "Visual hasn't the necessary color capabilities");
-    XtAppError(SoXt::getAppContext(), "SoXtGLWidget::buildWidget()");
-  }
-
-#ifndef HAVE_LIBXMU
-  SoDebugError::post("SoXtGLWidget::buildWidget",
-                     "SoXt does not support detecting best visual/colormap without the Xmu library (yet)");
-  exit(1);
-#else // HAVE_LIBXMU
-
-  Colormap colors = (Colormap) NULL;
-  XStandardColormap * cmaps = NULL;
-  int nmaps = 0;
-
-  if (XmuLookupStandardColormap(display, PRIVATE(this)->normalvisual->screen, PRIVATE(this)->normalvisual->visualid,
-                                PRIVATE(this)->normalvisual->depth, XA_RGB_DEFAULT_MAP, False, True) &&
-      XGetRGBColormaps(display,
-                       RootWindow(display, PRIVATE(this)->normalvisual->screen), &cmaps, &nmaps,
-                       XA_RGB_DEFAULT_MAP)) {
-    SbBool found = FALSE;
-    for (int i = 0; i < nmaps && ! found; i++) {
-      if (cmaps[i].visualid == PRIVATE(this)->normalvisual->visualid) {
-#if SOXT_DEBUG && 0
-        SoDebugError::postInfo("SoXtGLWidget::buildWidget",
-                               "got shared color map");
-#endif // SOXT_DEBUG
-        colors = cmaps[i].colormap;
-        XFree(cmaps);
-        found = TRUE;
-      }
-    }
-    if (! found) {
-      colors = XCreateColormap(display,
-                               RootWindow(display, PRIVATE(this)->normalvisual->screen),
-                               PRIVATE(this)->normalvisual->visual, AllocNone);
-    }
-  } 
-  else {
-    colors = XCreateColormap(display,
-                             RootWindow(display, PRIVATE(this)->normalvisual->screen),
-                             PRIVATE(this)->normalvisual->visual, AllocNone);
-  }
-  PRIVATE(this)->colormap = colors;
-  
+  PRIVATE(this)->createVisual();
   PRIVATE(this)->buildGLWidget();
 
 #if SOXT_DEBUG && 0
   SoDebugError::postInfo("SoXtGLWidget::buildWidget", "[exit]");
 #endif // SOXT_DEBUG
-#endif // HAVE_LIBXMU
   return PRIVATE(this)->glxmanager;
 }
 
@@ -1079,6 +1012,88 @@ SoXtGLWidgetP::cleanupContext(void)
   }
 }
 
+void 
+SoXtGLWidgetP::createVisual(void)
+{
+  Display * const display = SoXt::getDisplay();
+
+  int trynum = 0;
+  const int ARRAYSIZE = 256;
+  int attrs[ARRAYSIZE];
+  int screen = DefaultScreen(display);
+  while (this->normalvisual == NULL && trynum < 8) {
+    int arraysize = this->buildGLAttrs(attrs, trynum);
+    assert(arraysize < ARRAYSIZE);
+    this->normalvisual = glXChooseVisual(display, screen, attrs);
+    trynum++;
+  }
+
+  if (this->normalvisual == NULL) {
+    SoDebugError::post("SoXtGLWidget::buildWidget",
+                       "could not get satisfactory visual for GLX");
+    XtAppError(SoXt::getAppContext(), "SoXtGLWidget::buildWidget()");
+  }
+  
+  this->doublebuffer = ((trynum-1) & 0x02) ? FALSE : TRUE;
+  
+  if ((this->normalvisual->c_class != TrueColor) &&
+      (this->normalvisual->c_class != PseudoColor)) {
+    SoDebugError::post("SoXtGLWidget::buildWidget",
+                       "Visual hasn't the necessary color capabilities");
+    XtAppError(SoXt::getAppContext(), "SoXtGLWidget::buildWidget()");
+  }
+  
+#ifndef HAVE_LIBXMU
+  SoDebugError::post("SoXtGLWidget::buildWidget",
+                     "SoXt does not support detecting best visual/colormap without the Xmu library (yet)");
+  exit(1);
+#else // HAVE_LIBXMU
+
+  Colormap colors = (Colormap) NULL;
+  XStandardColormap * cmaps = NULL;
+  int nmaps = 0;
+  
+  if (XmuLookupStandardColormap(display, this->normalvisual->screen, this->normalvisual->visualid,
+                                this->normalvisual->depth, XA_RGB_DEFAULT_MAP, False, True) &&
+      XGetRGBColormaps(display,
+                       RootWindow(display, this->normalvisual->screen), &cmaps, &nmaps,
+                       XA_RGB_DEFAULT_MAP)) {
+    SbBool found = FALSE;
+    for (int i = 0; i < nmaps && ! found; i++) {
+      if (cmaps[i].visualid == this->normalvisual->visualid) {
+#if SOXT_DEBUG && 0
+        SoDebugError::postInfo("SoXtGLWidget::buildWidget",
+                               "got shared color map");
+#endif // SOXT_DEBUG
+        colors = cmaps[i].colormap;
+        XFree(cmaps);
+        found = TRUE;
+      }
+    }
+    if (! found) {
+      colors = XCreateColormap(display,
+                               RootWindow(display, this->normalvisual->screen),
+                               this->normalvisual->visual, AllocNone);
+    }
+  } 
+  else {
+    colors = XCreateColormap(display,
+                             RootWindow(display, this->normalvisual->screen),
+                             this->normalvisual->visual, AllocNone);
+  }
+  this->colormap = colors;
+#endif // HAVE_LIBXMU
+}
+
+void 
+SoXtGLWidgetP::cleanupVisual(void)
+{
+  if (this->normalvisual) {
+    XFree(this->normalvisual);
+    this->normalvisual = NULL;
+  }
+}
+
 
 // *************************************************************************
 
@@ -1091,6 +1106,8 @@ SoXtGLWidgetP::exposeCB(Widget widget, XtPointer closure, XtPointer call_data)
   if (thisp->needrebuild) {
     thisp->cleanupContext();
     thisp->cleanupGLWidget();
+    thisp->cleanupVisual();
+    thisp->createVisual();
     thisp->buildGLWidget();
     thisp->buildContext();
     thisp->firstexpose = TRUE;
