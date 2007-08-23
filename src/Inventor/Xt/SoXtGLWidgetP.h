@@ -65,6 +65,9 @@ public:
   SbBool needrebuild;
   Colormap colormap;
 
+  void createVisual(void);
+  void cleanupVisual(void);
+
   void buildGLWidget(void);
   void cleanupGLWidget(void);
 
