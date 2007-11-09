@@ -7936,7 +7936,7 @@ if $enable_debug; then
     case $CXX in
     *wrapmsvc* )
       # uninitialized checks
-      if test ${sim_ac_msvc_version-0} -gt 6; then
+      if test ${sim_ac_msc_major_version-0} -gt 6; then
         SIM_AC_CC_COMPILER_OPTION([/RTCu], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /RTCu"])
         SIM_AC_CXX_COMPILER_OPTION([/RTCu], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /RTCu"])
         # stack frame checks
@@ -7986,6 +7986,12 @@ AC_ARG_ENABLE(
   [sim_ac_enable_optimization=true])
 
 if $sim_ac_enable_optimization; then
+  case $CXX in
+  *wrapmsvc* )
+    CFLAGS="/Ox $CFLAGS"
+    CXXFLAGS="/Ox $CXXFLAGS"
+    ;;
+  esac
   :
 else
   CFLAGS="`echo $CFLAGS | sed 's/-O[[0-9]]*[[ ]]*//'`"
@@ -8144,6 +8150,8 @@ AC_DEFUN([SIM_AC_DETECT_COMMON_COMPILER_FLAGS], [
 
 AC_REQUIRE([SIM_AC_CHECK_PROJECT_BETA_STATUS_IFELSE])
 AC_REQUIRE([SIM_AC_CHECK_SIMIAN_IFELSE])
+
+sim_ac_simian=false
 
 SIM_AC_COMPILE_DEBUG([
   if test x"$GCC" = x"yes"; then
@@ -10689,6 +10697,7 @@ if test x"$with_motif" != xno; then
                  [sim_cv_lib_motif_avail=no])])
 
   if test x"$sim_cv_lib_motif_avail" = xyes; then
+    SIM_AC_MOTIF_VERSION
     sim_ac_motif_avail=yes
     $1
   else
@@ -10848,6 +10857,42 @@ else
 fi
 ])
 
+# Usage:
+#  SIM_AC_MOTIF_VERSION
+#
+# Find version number of the Motif library. sim_ac_motif_version will
+# contain the full version number string, and
+# sim_ac_motif_major_version will contain only the major version
+# number. (based on SIM_AC_QT_VERSION)
+#
+# Authors:
+#   Tamer Fahmy <tamer@sim.no>,
+
+AC_DEFUN([SIM_AC_MOTIF_VERSION], [
+
+AC_CACHE_CHECK([version of Motif library], sim_ac_motif_version, [
+  AC_RUN_IFELSE(
+    [AC_LANG_SOURCE([
+#include <stdio.h>
+#include <Xm/Xm.h>
+
+int
+main(int argc, char **argv)
+{
+  FILE * fd;
+  fd = fopen("conftest.out", "w");
+  fprintf(fd, "%d.%d.%d", XmVERSION, XmREVISION, XmUPDATE_LEVEL);
+  fclose(fd);
+
+  return 0;
+}
+  ])],
+  [sim_ac_motif_version=`cat conftest.out`],
+  [AC_MSG_FAILURE([could not determine the version of the Motif library])])
+])
+
+sim_ac_motif_major_version=`echo $sim_ac_motif_version | cut -c1`
+])
 
 # conf-macros/sogui.m4
 #
