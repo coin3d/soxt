@@ -390,6 +390,9 @@ SIM_CHECK_MOTIF([
   SOGUI_EXTRA_LIBS="$sim_ac_motif_libs $SOGUI_EXTRA_LIBS"
 ], AC_MSG_ERROR([couldn't compile and link with Motif]))
 
+AC_DEFINE_UNQUOTED([GUI_TOOLKIT_VERSION], ["$sim_ac_motif_version"],
+                   [Version string for Motif])
+
 # **************************************************************************
 
 # --with-devcode is a silent option
