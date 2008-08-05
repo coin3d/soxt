@@ -7635,10 +7635,10 @@ fi
 #   Let the user decide if RTTI should be compiled in. The compiled
 #   libraries/executables will use a lot less space if they don't
 #   contain RTTI.
-# 
+#
 #   Note: this macro must be placed after AC_PROG_CXX in the
 #   configure.in script.
-# 
+#
 # Author: Morten Eriksen, <mortene@sim.no>.
 
 AC_DEFUN([SIM_AC_RTTI_SUPPORT], [
@@ -7709,8 +7709,12 @@ if test x"$enable_exceptions" = x"no"; then
     fi
   fi
 else
-  if test x"$GXX" != x"yes"; then
-    AC_MSG_WARN([--enable-exceptions only has effect when using GNU g++])
+  if $BUILD_WITH_MSVC; then
+    SIM_AC_CXX_COMPILER_OPTION([/EHsc], [CXXFLAGS="$CXXFLAGS /EHsc"])
+  else
+    if test x"$GXX" != x"yes"; then
+      AC_MSG_WARN([--enable-exceptions only has effect when using GNU g++])
+    fi
   fi
 fi
 ])
@@ -7962,16 +7966,16 @@ AC_SUBST(DSUFFIX)
 # Description:
 #   Let the user decide if optimization should be attempted turned off
 #   by stripping off an "-O[0-9]" option.
-# 
+#
 #   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
 #   in the configure.in script.
 #
 # FIXME: this is pretty much just a dirty hack. Unfortunately, this
 # seems to be the best we can do without fixing Autoconf to behave
 # properly wrt setting optimization options. 20011021 mortene.
-# 
+#
 # Author: Morten Eriksen, <mortene@sim.no>.
-# 
+#
 
 AC_DEFUN([SIM_AC_COMPILER_OPTIMIZATION], [
 AC_ARG_ENABLE(
@@ -8228,7 +8232,7 @@ if $BUILD_WITH_MSVC && test x$sim_ac_msvc_version = x6; then
       [],
       [sim_ac_have_nobool=true])])
 fi
- 
+
 if $sim_ac_have_nobool; then
   sim_ac_nobool_CXXFLAGS="/noBool"
   AC_MSG_RESULT([yes])
@@ -8519,7 +8523,7 @@ AC_DEFUN([SIM_AC_CHECK_DLD], [
 # SIM_AC_CHECK_DYLD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 # -------------------------------------------------------------------
 #
-#  Try to use the Mac OS X dynamik link editor method 
+#  Try to use the Mac OS X dynamik link editor method
 #  NSLookupAndBindSymbol()
 #
 # Author: Karin Kosina, <kyrah@sim.no>
@@ -8527,7 +8531,7 @@ AC_DEFUN([SIM_AC_CHECK_DLD], [
 AC_DEFUN([SIM_AC_CHECK_DYLD], [
 AC_ARG_ENABLE(
   [dyld],
-  [AC_HELP_STRING([--disable-dyld], 
+  [AC_HELP_STRING([--disable-dyld],
                   [don't use run-time link bindings under Mac OS X])],
   [case $enableval in
   yes | true ) sim_ac_dyld=true ;;
@@ -8581,7 +8585,7 @@ AC_REQUIRE([AC_PATH_XTRA])
 sim_ac_enable_darwin_x11=false
 
 case $host_os in
-  darwin* ) 
+  darwin* )
     AC_ARG_ENABLE([darwin-x11],
       AC_HELP_STRING([--enable-darwin-x11],
                      [enable X11 on Darwin [[default=--disable-darwin-x11]]]),
@@ -8971,7 +8975,7 @@ fi
 
 # **************************************************************************
 # SIM_AC_CHECK_HEADER_SILENT([header], [if-found], [if-not-found], [includes])
-# 
+#
 # This macro will not output any header checking information, nor will it
 # cache the result, so it can be used multiple times on the same header,
 # trying out different compiler options.
@@ -9030,7 +9034,7 @@ if test x"$with_opengl" != x"no"; then
 
   CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
 
-  # Mac OS X framework (no X11, -framework OpenGL) 
+  # Mac OS X framework (no X11, -framework OpenGL)
   if $sim_ac_enable_darwin_x11; then :
   else
     SIM_AC_CHECK_HEADER_SILENT([OpenGL/gl.h], [
@@ -9107,7 +9111,7 @@ if test x"$with_opengl" != x"no"; then
 
   CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
 
-  # Mac OS X framework (no X11, -framework OpenGL) 
+  # Mac OS X framework (no X11, -framework OpenGL)
   if $sim_ac_enable_darwin_x11; then :
   else
     SIM_AC_CHECK_HEADER_SILENT([OpenGL/glu.h], [
@@ -9125,7 +9129,7 @@ if test x"$with_opengl" != x"no"; then
       AC_DEFINE([HAVE_GL_GLU_H], 1, [define if the GLU header should be included as GL/glu.h])
     ])
   fi
- 
+
   CPPFLAGS="$sim_ac_glu_save_CPPFLAGS"
   if $sim_ac_glu_header_avail; then
     if test x"$sim_ac_glu_cppflags" = x""; then
@@ -9184,7 +9188,7 @@ if test x"$with_opengl" != x"no"; then
 
   CPPFLAGS="$CPPFLAGS $sim_ac_glext_cppflags"
 
-  # Mac OS X framework (no X11, -framework OpenGL) 
+  # Mac OS X framework (no X11, -framework OpenGL)
   if $sim_ac_enable_darwin_x11; then :
   else
     SIM_AC_CHECK_HEADER_SILENT([OpenGL/glext.h], [
@@ -9755,14 +9759,14 @@ sim_ac_agl_ldflags="-Wl,-framework,ApplicationServices -Wl,-framework,AGL"
 
 LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
 
-# see comment in Coin/src/glue/gl_agl.c: regarding __CARBONSOUND__ define 
+# see comment in Coin/src/glue/gl_agl.c: regarding __CARBONSOUND__ define
 
 AC_CACHE_CHECK(
   [whether AGL is on the system],
   sim_cv_have_agl,
   AC_TRY_LINK(
     [#include <AGL/agl.h>
-     #define __CARBONSOUND__ 
+     #define __CARBONSOUND__
      #include <Carbon/Carbon.h>],
     [aglGetCurrentContext();],
     [sim_cv_have_agl=true],
@@ -9775,7 +9779,7 @@ else
   ifelse([$2], , :, [$2])
 fi
 ]) # SIM_AC_HAVE_AGL_IFELSE()
- 
+
 
 AC_DEFUN([SIM_AC_HAVE_AGL_PBUFFER], [
   AC_CACHE_CHECK([whether we can use AGL pBuffers],
@@ -9784,7 +9788,7 @@ AC_DEFUN([SIM_AC_HAVE_AGL_PBUFFER], [
                  [AGLPbuffer pbuffer;],
                  [sim_cv_agl_pbuffer_avail=yes],
                  [sim_cv_agl_pbuffer_avail=no])])
-  
+
   if test x"$sim_cv_agl_pbuffer_avail" = xyes; then
     ifelse([$1], , :, [$1])
   else
@@ -10214,7 +10218,7 @@ AC_DEFUN([AC_TOLOWER], [translit([$1], [[A-Z]], [[a-z]])])
 #   Lars J. Aas  <larsa@sim.no>
 #   Morten Eriksen  <mortene@sim.no>
 
-AC_DEFUN([SIM_AC_HAVE_INVENTOR_NODE], 
+AC_DEFUN([SIM_AC_HAVE_INVENTOR_NODE],
 [m4_do([pushdef([cache_variable], sim_cv_have_oiv_[]AC_TOLOWER([$1])_node)],
        [pushdef([DEFINE_VARIABLE], HAVE_[]AC_TOUPPER([$1]))])
 AC_CACHE_CHECK(
@@ -10246,7 +10250,7 @@ m4_do([popdef([cache_variable])],
 #   Lars J. Aas  <larsa@sim.no>
 #   Morten Eriksen  <mortene@sim.no>
 
-AC_DEFUN([SIM_AC_HAVE_INVENTOR_VRMLNODE], 
+AC_DEFUN([SIM_AC_HAVE_INVENTOR_VRMLNODE],
 [m4_do([pushdef([cache_variable], sim_cv_have_oiv_[]AC_TOLOWER([$1])_vrmlnode)],
        [pushdef([DEFINE_VARIABLE], HAVE_[]AC_TOUPPER([$1]))])
 AC_CACHE_CHECK(
@@ -10552,7 +10556,7 @@ describing the situation where this failed.
           fi
           LDFLAGS="$LDFLAGS -L$sim_ac_coindir/lib"
           LIBS="-l$sim_ac_coin_lib_name -lopengl32 $LIBS"
-          
+
           AC_LANG_PUSH(C++)
 
           AC_TRY_LINK(
@@ -10746,7 +10750,7 @@ fi
 #
 # Description:
 #   This macro checks for a GL widget that can be used with Xt/Motif.
-#  
+#
 # Variables:
 #   $sim_cv_motif_glwidget         (cached)  class + header + library
 #   $sim_cv_motif_glwidget_hdrloc  (cached)  GL | X11/GLw
@@ -10755,21 +10759,21 @@ fi
 #                                            glwDrawingAreaWidgetClass
 #   $sim_ac_motif_glwidget_header            GLwDrawA.h | GLwMDrawA.h
 #   $sim_ac_motif_glwidget_library           GLwM | GLw | MesaGLwM | MesaGLw
-#  
+#
 #   $LIBS = -l$sim_ac_motif_glwidget_library $LIBS
-#  
+#
 # Defines:
 #   XT_GLWIDGET                              $sim_ac_motif_glwidget_class
 #   HAVE_GL_GLWDRAWA_H                       #include <GL/GLwDrawA.h>
 #   HAVE_GL_GLWMDRAWA_H                      #include <GL/GLwMDrawA.h>
 #   HAVE_X11_GWL_GLWDRAWA_H                  #include <X11/GLw/GLwDrawA.h>
 #   HAVE_X11_GWL_GLWMDRAWA_H                 #include <X11/GLw/GLwMDrawA.h>
-#  
+#
 # Authors:
 #   Lars J. Aas <larsa@sim.no>,
 #   Loring Holden <lsh@cs.brown.edu>,
 #   Morten Eriksen <mortene@sim.no>
-#  
+#
 
 AC_DEFUN([SIM_CHECK_MOTIF_GLWIDGET], [
 
@@ -10924,36 +10928,6 @@ if $sim_ac_static_defaults; then
 fi
 ])
 
-
-# Usage:
-#   SIM_EXPAND_DIR_VARS
-#
-# Description:
-#   Expand these variables into their correct full directory paths:
-#    $prefix  $exec_prefix  $includedir  $libdir  $datadir
-# 
-# Author: Morten Eriksen, <mortene@sim.no>.
-# 
-
-AC_DEFUN([SIM_EXPAND_DIR_VARS], [
-test x"$prefix" = x"NONE" && prefix="$ac_default_prefix"
-test x"$exec_prefix" = x"NONE" && exec_prefix="${prefix}"
-
-# This is the list of all install-path variables found in configure
-# scripts. FIXME: use another "eval-nesting" to move assignments into
-# a for-loop. 20000704 mortene.
-bindir="`eval echo $bindir`"
-sbindir="`eval echo $sbindir`"
-libexecdir="`eval echo $libexecdir`"
-datadir="`eval echo $datadir`"
-sysconfdir="`eval echo $sysconfdir`"
-sharedstatedir="`eval echo $sharedstatedir`"
-localstatedir="`eval echo $localstatedir`"
-libdir="`eval echo $libdir`"
-includedir="`eval echo $includedir`"
-infodir="`eval echo $infodir`"
-mandir="`eval echo $mandir`"
-])
 
 # Usage:
 #  SIM_AC_DATE_ISO8601([variable])
