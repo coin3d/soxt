@@ -471,8 +471,6 @@ AC_SUBST(WIDGET)
 AC_SUBST(EVENT)
 AC_SUBST(COMPONENTHEADER)
 
-SIM_EXPAND_DIR_VARS
-
 # **************************************************************************
 # For the soxt.spec RPM specification file.
 
