@@ -506,6 +506,7 @@ SIM_AC_UNIQIFY_LIST(LIBS, $LIBS)
 
 AC_CONFIG_FILES([
         soxt-$CONFIG.cfg:src/Inventor/Xt/common/sogui.cfg.in
+	SoXt.pc
         Makefile
         src/Makefile
         src/Inventor/Makefile

@@ -73,6 +73,9 @@ bin_SCRIPTS = so@gui@-config
 
 endif
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA= SoXt.pc
+
 built-sources: $(BUILT_SOURCES)
 all-local: built-sources
 
