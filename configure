@@ -26580,7 +26580,7 @@ exec_prefix=$sim_ac_save_exec_prefix
 # script -- not just from the Makefile -- as the data/configure script
 # depends on it. (data/configure is temporarily disabled, BTW, but anyway..)
 
-                                                                                                                                                                          ac_config_files="$ac_config_files soxt-$CONFIG.cfg:src/Inventor/Xt/common/sogui.cfg.in Makefile src/Makefile src/Inventor/Makefile src/Inventor/Xt/Makefile src/Inventor/Xt/devices/Makefile src/Inventor/Xt/editors/Makefile src/Inventor/Xt/engines/Makefile src/Inventor/Xt/nodes/Makefile src/Inventor/Xt/viewers/Makefile src/Inventor/Xt/widgets/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile test-code/Makefile build/soxt.spec"
+                                                                                                                                                                                    ac_config_files="$ac_config_files soxt-$CONFIG.cfg:src/Inventor/Xt/common/sogui.cfg.in SoXt.pc Makefile src/Makefile src/Inventor/Makefile src/Inventor/Xt/Makefile src/Inventor/Xt/devices/Makefile src/Inventor/Xt/editors/Makefile src/Inventor/Xt/engines/Makefile src/Inventor/Xt/nodes/Makefile src/Inventor/Xt/viewers/Makefile src/Inventor/Xt/widgets/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile test-code/Makefile build/soxt.spec"
 
 
 # MKS will have "\c" as $ECHO_C, but that string in the config.status
@@ -27248,6 +27248,7 @@ do
   case "$ac_config_target" in
   # Handling of arguments.
   "soxt-$CONFIG.cfg" ) CONFIG_FILES="$CONFIG_FILES soxt-$CONFIG.cfg:src/Inventor/Xt/common/sogui.cfg.in" ;;
+  "SoXt.pc" ) CONFIG_FILES="$CONFIG_FILES SoXt.pc" ;;
   "Makefile" ) CONFIG_FILES="$CONFIG_FILES Makefile" ;;
   "src/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
   "src/Inventor/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/Inventor/Makefile" ;;
