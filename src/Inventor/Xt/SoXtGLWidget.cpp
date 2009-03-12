@@ -380,6 +380,22 @@ SoXtGLWidget::setAccumulationBuffer(const SbBool enable)
   }
 }
 
+
+// Documented in common/SoGuiGLWidgetCommon.cpp.in.
+void 
+SoXtGLWidget::setSampleBuffers(const int numsamples)
+{
+  // FIXME: implement
+}
+
+// Documented in common/SoGuiGLWidgetCommon.cpp.in.
+int 
+SoXtGLWidget::getSampleBuffers() const
+{
+  // FIXME: implement
+  return 1;
+}
+
 /*!
   Returns whether the OpenGL accumulation buffer is enabled.
 */
