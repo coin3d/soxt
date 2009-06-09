@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2004 by Systems in Motion.  All rights reserved.
+ *  Copyright (C) 1998-2009 by Systems in Motion.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -314,7 +314,7 @@ SoXtFullViewer::setDecoration(const SbBool enable)
       30 * this->viewerButtonWidgets->getLength();
     if ( enable ) {
       Dimension width, height;
-      XtVaGetValues(shell, 
+      XtVaGetValues(shell,
                     XmNwidth, &width,
                     XmNheight, &height,
                     NULL);
@@ -488,7 +488,7 @@ SoXtFullViewer::buildWidget(Widget parent)
                 NULL);
 
   this->buildDecoration(PRIVATE(this)->viewerbase);
-  
+
   if (this->isTopLevelShell() &&
       PRIVATE(this)->decorations != FALSE) {
     Widget shell = this->getShellWidget();
@@ -1183,6 +1183,12 @@ SoXtFullViewer::setRightWheelString(const char * const string)
 #endif // SOXT_DEBUG
 }
 
+const char *
+SoXtFullViewer::getRightWheelString() const
+{
+  return this->rightWheelStr;
+}
+
 // *************************************************************************
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -1298,7 +1304,7 @@ SoXtFullViewerP::showDecorationWidgets(SbBool enable)
 }
 
 // *************************************************************************
-  
+
 void
 SoXtFullViewerP::selectedViewing(void)
 {
@@ -1433,4 +1439,3 @@ SoXtFullViewerP::setThumbWheelValue(void * wheel, float val)
 
 #undef PRIVATE
 #undef PUBLIC
-

@@ -26,8 +26,6 @@ RegularSources = \
 	So@Gui@InputFocus.cpp \
 	So@Gui@Keyboard.cpp \
 	So@Gui@Mouse.cpp \
-	So@Gui@SpaceballP.h \
-	So@Gui@Spaceball.cpp \
 	So@Gui@LinuxJoystick.h \
 	So@Gui@LinuxJoystick.cpp \
 	6DOFEvents.h
@@ -90,7 +88,6 @@ SoXtDevicesinc_HEADERS = \
 nodist_SoXtDevicesinc_HEADERS = \
 	So@Gui@Device.h \
 	So@Gui@Keyboard.h \
-	So@Gui@Mouse.h \
-	So@Gui@Spaceball.h
+	So@Gui@Mouse.h
 
 ############################################################################

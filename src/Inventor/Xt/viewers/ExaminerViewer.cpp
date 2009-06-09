@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2004 by Systems in Motion.  All rights reserved.
+ *  Copyright (C) 1998-2009 by Systems in Motion.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -228,16 +228,26 @@ SoXtExaminerViewer::setCamera(SoCamera * camera)
     pixmap_ins = PRIVATE(this)->camerapixmaps.perspective_ins;
     SoXtResource rsc(this->getRightWheelLabelWidget());
     char * dollyString = NULL;
-    if (rsc.getResource("dollyString", XmRString, dollyString) &&
-         dollyString != NULL)
+    char * zoomString = NULL;
+    if (
+        (rsc.getResource("dollyString", XmRString, dollyString) && dollyString != NULL)
+        &&
+        (rsc.getResource("zoomString", XmRString, zoomString) && zoomString != NULL)
+        && strcmp(zoomString,this->getRightWheelString())== 0
+        )
       this->setRightWheelString(dollyString);
   } else if (camera->isOfType(SoOrthographicCamera::getClassTypeId())) {
     pixmap = PRIVATE(this)->camerapixmaps.ortho;
     pixmap_ins = PRIVATE(this)->camerapixmaps.ortho_ins;
     SoXtResource rsc(this->getRightWheelLabelWidget());
+    char * dollyString = NULL;
     char * zoomString = NULL;
-    if (rsc.getResource("zoomString", XmRString, zoomString) &&
-         zoomString != NULL)
+    if (
+        (rsc.getResource("dollyString", XmRString, dollyString) && dollyString != NULL)
+        &&
+        (rsc.getResource("zoomString", XmRString, zoomString) && zoomString != NULL)
+        && strcmp(dollyString,this->getRightWheelString())== 0
+        )
       this->setRightWheelString(zoomString);
   } else {
     SoDebugError::postWarning("SoXtExaminerViewer::setCamera",
@@ -283,4 +293,3 @@ SoXtExaminerViewer::setCamera(SoCamera * camera)
 
 #undef PRIVATE
 #undef PUBLIC
-

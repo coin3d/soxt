@@ -29,8 +29,6 @@
 #include <Inventor/Xt/devices/SoXtKeyboardCommon.cpp>
 #include <Inventor/Xt/devices/SoXtMouse.cpp>
 #include <Inventor/Xt/devices/SoXtMouseCommon.cpp>
-#include <Inventor/Xt/devices/SoXtSpaceball.cpp>
-#include <Inventor/Xt/devices/SoXtSpaceballCommon.cpp>
 #include <Inventor/Xt/devices/SoXtLinuxJoystick.cpp>
 #include <Inventor/Xt/devices/spwinput_win32.c>
 #include <Inventor/Xt/devices/spwinput_x11.cpp>

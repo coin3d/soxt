@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2004 by Systems in Motion.  All rights reserved.
+ *  Copyright (C) 1998-2009 by Systems in Motion.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -213,16 +213,26 @@ SoXtPlaneViewer::setCamera(SoCamera * camera)
     pixmap_ins = PRIVATE(this)->pixmaps.perspective_ins;
     SoXtResource rsc(this->getRightWheelLabelWidget());
     char * dollyString = NULL;
-    rsc.getResource("dollyString", XmRString, dollyString);
-    if (dollyString != NULL)
+    char * zoomString = NULL;
+    if (
+        (rsc.getResource("dollyString", XmRString, dollyString) && dollyString != NULL)
+        &&
+        (rsc.getResource("zoomString", XmRString, zoomString) && zoomString != NULL)
+        && strcmp(zoomString,this->getRightWheelString())== 0
+        )
       this->setRightWheelString(dollyString);
   } else if (camera->isOfType(SoOrthographicCamera::getClassTypeId())) {
     pixmap = PRIVATE(this)->pixmaps.ortho;
     pixmap_ins = PRIVATE(this)->pixmaps.ortho_ins;
     SoXtResource rsc(this->getRightWheelLabelWidget());
+    char * dollyString = NULL;
     char * zoomString = NULL;
-    rsc.getResource("zoomString", XmRString, zoomString);
-    if (zoomString != NULL)
+    if (
+        (rsc.getResource("dollyString", XmRString, dollyString) && dollyString != NULL)
+        &&
+        (rsc.getResource("zoomString", XmRString, zoomString) && zoomString != NULL)
+        && strcmp(dollyString,this->getRightWheelString())== 0
+        )
       this->setRightWheelString(zoomString);
   } else {
     SoDebugError::postWarning("SoXtExaminerViewer::setCamera",
@@ -263,7 +273,7 @@ SoXtPlaneViewer::createViewerButtons(Widget parent,
     sizeof(SoXtPlaneViewerP::SoXtPlaneViewerButtons) / sizeof(SoXtViewerButton);
 
   for (int button = 0; button < buttons; button++) {
-    Widget widget = 
+    Widget widget =
       XtVaCreateManagedWidget(PRIVATE(this)->buttons[button].keyword,
                               xmPushButtonWidgetClass, parent,
                               XmNshadowType, XmSHADOW_OUT,
@@ -310,4 +320,3 @@ SoXtPlaneViewer::createViewerButtons(Widget parent,
 
 #undef PRIVATE
 #undef PUBLIC
-
