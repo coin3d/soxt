@@ -104,7 +104,7 @@ AC_PROG_CXXCPP
 AC_LANG(C++)
 
 AM_INIT_AUTOMAKE(SoXt, $SOXT_VERSION)
-AM_CONFIG_HEADER([src/config.h])
+AC_CONFIG_HEADERS([src/config.h])
 
 AM_DISABLE_STATIC
 AM_MAINTAINER_MODE
@@ -134,6 +134,8 @@ AH_TOP([
 #ifndef SOXT_INTERNAL
 #error this is a private header file
 #endif /* !SOXT_INTERNAL */
+
+#include <Xm/Xm.h>
 ])
 
 AC_CHECK_HEADERS([windows.h])
@@ -384,14 +386,15 @@ SIM_AC_CHECK_JOYSTICK_LINUX([
 ])
 AM_CONDITIONAL(HAVE_JOYSTICK_LINUX, $sim_ac_joystick_linux_avail)
 
-SIM_CHECK_MOTIF([
+SIM_AC_MOTIF_VERSION_STRING([
   SOGUI_EXTRA_CPPFLAGS="$SOGUI_EXTRA_CPPFLAGS $sim_ac_motif_cppflags"
   SOGUI_EXTRA_LDFLAGS="$SOGUI_EXTRA_LDFLAGS $sim_ac_motif_ldflags"
   SOGUI_EXTRA_LIBS="$sim_ac_motif_libs $SOGUI_EXTRA_LIBS"
 ], AC_MSG_ERROR([couldn't compile and link with Motif]))
 
-AC_DEFINE_UNQUOTED([GUI_TOOLKIT_VERSION], ["$sim_ac_motif_version"],
+AC_DEFINE_UNQUOTED([GUI_TOOLKIT_VERSION], [XmVERSION_STRING],
                    [Version string for Motif])
+
 
 # **************************************************************************
 
