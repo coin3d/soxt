@@ -5,6 +5,8 @@
 #error this is a private header file
 #endif /* !SOXT_INTERNAL */
 
+#include <Xm/Xm.h>
+
 
 /* Version string for Motif */
 #undef GUI_TOOLKIT_VERSION

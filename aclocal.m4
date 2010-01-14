@@ -840,32 +840,6 @@ AC_CONFIG_COMMANDS_PRE(
 Usually this means the macro was only invoked conditionally.])
 fi])])
 
-# Like AC_CONFIG_HEADER, but automatically create stamp file. -*- Autoconf -*-
-
-# Copyright 1996, 1997, 2000, 2001 Free Software Foundation, Inc.
-
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
-
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-# 02111-1307, USA.
-
-AC_PREREQ([2.52])
-
-# serial 6
-
-# AM_CONFIG_HEADER is obsolete.  It has been replaced by AC_CONFIG_HEADERS.
-AU_DEFUN([AM_CONFIG_HEADER], [AC_CONFIG_HEADERS($@)])
-
 # libtool.m4 - Configure libtool for the host system. -*-Autoconf-*-
 
 # serial 48 AC_PROG_LIBTOOL
@@ -10921,6 +10895,39 @@ main(int argc, char **argv)
 
 sim_ac_motif_major_version=`echo $sim_ac_motif_version | cut -c1`
 ])
+
+# Usage:
+#  SIM_AC_MOTIF_VERSION_STRING([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to compile and link code with the XmVERSION_STRING
+#  from Motif (which is used by the InventorXt library). Sets the
+#  variable $sim_ac_motif_version_string_avail to either "yes" or "no".
+#
+#
+# Author: Tom Fredrik Klaussen, <bfg@sim.no>.
+#
+
+AC_DEFUN([SIM_AC_MOTIF_VERSION_STRING], [
+AC_PREREQ([2.14.1])
+
+sim_ac_motif_version_string_avail=no
+
+AC_CACHE_CHECK(
+  [for XmVERSION_STRING definition in Motif library],
+  sim_cv_lib_motif_version_string_avail,
+  [AC_TRY_LINK([#include <Xm/Xm.h>],
+               [const char * foo = XmVERSION_STRING;],
+               [sim_cv_lib_motif_version_string_avail=yes],
+               [sim_cv_lib_motif_version_string_avail=no])])
+
+if test x"$sim_cv_lib_motif_version_string_avail" = xyes; then
+  sim_ac_motif_version_string_avail=yes
+  $1
+else
+  ifelse([$2], , :, [$2])
+fi
+])
+
 
 # conf-macros/sogui.m4
 #
