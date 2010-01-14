@@ -23,7 +23,6 @@ DISTCLEANFILES = \
 RegularSources = \
 	So@Gui@FullViewerP.h \
 	FullViewer.cpp \
-	So@Gui@ViewerP.h \
 	So@Gui@ExaminerViewerP.h \
 	ExaminerViewer.cpp \
 	So@Gui@PlaneViewerP.h \
