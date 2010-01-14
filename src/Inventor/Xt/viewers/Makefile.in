@@ -426,16 +426,17 @@ SoGuiAllBuiltFiles = \
   $(SoGuiBuiltMetaFiles)
 
 
+SoGuiCommonWinFiles = \
+  cfg/errors.txt \
+  cfg/doxy4win.pl \
+  cfg/gendsp.pl \
+  cfg/wrapmsvc.exe
+
+
 SoGuiCommonDistFiles = \
   BUGS.txt \
   src/Inventor/@Gui@/common/BUGS.txt \
   \
-  cfg/errors.txt \
-  cfg/doxy4win.pl \
-  cfg/gendsp.sh \
-  cfg/wrapmsvc.exe \
-  \
-  src/Inventor/@Gui@/common/ChangeLog \
   src/Inventor/@Gui@/common/Makefile.common \
   src/Inventor/@Gui@/common/sogui-config.in \
   src/Inventor/@Gui@/common/sogui.doxygen.in \
@@ -589,7 +590,6 @@ DISTCLEANFILES = \
 RegularSources = \
 	So@Gui@FullViewerP.h \
 	FullViewer.cpp \
-	So@Gui@ViewerP.h \
 	So@Gui@ExaminerViewerP.h \
 	ExaminerViewer.cpp \
 	So@Gui@PlaneViewerP.h \
@@ -644,7 +644,7 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 libSoXtViewers_la_LDFLAGS =
 libSoXtViewers_la_LIBADD =
 am__libSoXtViewers_la_SOURCES_DIST = So@Gui@FullViewerP.h FullViewer.cpp \
-	So@Gui@ViewerP.h So@Gui@ExaminerViewerP.h ExaminerViewer.cpp \
+	So@Gui@ExaminerViewerP.h ExaminerViewer.cpp \
 	So@Gui@PlaneViewerP.h PlaneViewer.cpp all-viewers-cpp.cpp
 am__objects_1 = all-viewers-cpp.lo
 am__objects_2 = FullViewer.lo ExaminerViewer.lo PlaneViewer.lo

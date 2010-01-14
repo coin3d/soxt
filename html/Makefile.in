@@ -426,16 +426,17 @@ SoGuiAllBuiltFiles = \
   $(SoGuiBuiltMetaFiles)
 
 
+SoGuiCommonWinFiles = \
+  cfg/errors.txt \
+  cfg/doxy4win.pl \
+  cfg/gendsp.pl \
+  cfg/wrapmsvc.exe
+
+
 SoGuiCommonDistFiles = \
   BUGS.txt \
   src/Inventor/@Gui@/common/BUGS.txt \
   \
-  cfg/errors.txt \
-  cfg/doxy4win.pl \
-  cfg/gendsp.sh \
-  cfg/wrapmsvc.exe \
-  \
-  src/Inventor/@Gui@/common/ChangeLog \
   src/Inventor/@Gui@/common/Makefile.common \
   src/Inventor/@Gui@/common/sogui-config.in \
   src/Inventor/@Gui@/common/sogui.doxygen.in \
