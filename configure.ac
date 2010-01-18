@@ -392,6 +392,9 @@ SIM_AC_MOTIF_VERSION_STRING([
   SOGUI_EXTRA_LIBS="$sim_ac_motif_libs $SOGUI_EXTRA_LIBS"
 ], AC_MSG_ERROR([couldn't compile and link with Motif]))
 
+BASIC_HEADER_TOP=
+AC_SUBST([BASIC_HEADER_TOP])
+
 AC_DEFINE_UNQUOTED([GUI_TOOLKIT_VERSION], [XmVERSION_STRING],
                    [Version string for Motif])
 
