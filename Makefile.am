@@ -61,12 +61,12 @@ EXTRA_DIST = \
 
 if BUILD_LIBRARY
 
-acdatadir = $(datarootdir)/aclocal
+acdatadir = $(datadir)/aclocal
 # Don't replace "xt" with "@gui@" here, as it will pøkk up
 # for ``make dist''.
 dist_acdata_DATA = cfg/soxt.m4
 
-cfgdatadir = $(datarootdir)/Coin/conf
+cfgdatadir = $(datadir)/Coin/conf
 cfgdata_DATA = so@gui@-@CONFIG@.cfg
 
 bin_SCRIPTS = so@gui@-config
