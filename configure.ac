@@ -216,10 +216,14 @@ if $sim_ac_build_library; then
 
 # **************************************************************************
 
+# Make it possible for the user to turn off optimization flags.
+SIM_AC_COMPILER_OPTIMIZATION
+
 SIM_AC_RTTI_SUPPORT
 SIM_AC_EXCEPTION_HANDLING
 SIM_AC_CHECK_VAR_FUNCTIONNAME
 SIM_AC_PROFILING_SUPPORT
+
 SIM_AC_COMPILE_DEBUG(
   [CPPFLAGS="$CPPFLAGS -DSOXT_DEBUG=1"],
   [CPPFLAGS="$CPPFLAGS -DSOXT_DEBUG=0"])
