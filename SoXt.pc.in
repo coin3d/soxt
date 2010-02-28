@@ -16,7 +16,6 @@ Cflags: -I${includedir} @SOGUI_EXTRA_CFLAGS@ @SOGUI_EXTRA_CPPFLAGS@
 soxt_host=@host@
 compiler=@COIN_COMPILER@
 compiler_is_gcc=@ac_compiler_gnu@
-datadir=@datadir@
 frameworkdir=@frameworkdir@
 htmldir=@htmldir@
 msvcrt=@SOGUI_MSVC_LIBC@
