@@ -2,6 +2,8 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
+datarootdir=@datarootdir@
+datadir=${datarootdir}
 
 Name: SoXt
 Description: a Xt/Motif Gui-toolkit binding for Coin
@@ -16,4 +18,5 @@ compiler=@COIN_COMPILER@
 compiler_is_gcc=@ac_compiler_gnu@
 datadir=@datadir@
 frameworkdir=@frameworkdir@
+htmldir=@htmldir@
 msvcrt=@SOGUI_MSVC_LIBC@
