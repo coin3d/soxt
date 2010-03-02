@@ -1,5 +1,34 @@
 2010-03-02  Tamer Fahmy  <tamer@sim.no>
 
+	* .hgtags:
+	Removed tag SoXt-1.3.0
+	[34c90173b428] [tip]
+
+	* Makefile.in, configure, html/Makefile.in, man/Makefile.in,
+	man/man1/Makefile.in, man/man3/Makefile.in,
+	src/Inventor/Makefile.in, src/Inventor/Xt/Makefile.in,
+	src/Inventor/Xt/devices/Makefile.in,
+	src/Inventor/Xt/editors/Makefile.in,
+	src/Inventor/Xt/engines/Makefile.in,
+	src/Inventor/Xt/nodes/Makefile.in,
+	src/Inventor/Xt/viewers/Makefile.in,
+	src/Inventor/Xt/widgets/Makefile.in, src/Makefile.in, test-
+	code/Makefile.in:
+	boostrap.
+	[7bee7e79bd99]
+
+	* configure.ac:
+	proper libtool versioning.
+	[030640e726eb]
+
+	* .hgtags:
+	Added tag SoXt-1.3.0 for changeset fc98951ff1d8
+	[d8087643bdaa]
+
+	* ChangeLog, docs/ChangeLog.v1.3.0:
+	updated ChangeLogs.
+	[fc98951ff1d8]
+
 	* .hgsubstate, COPYING, src/Inventor/Xt/SoXt.cpp,
 	src/Inventor/Xt/SoXtClipboard.cpp, src/Inventor/Xt/SoXtClipboard.h,
 	src/Inventor/Xt/SoXtComponent.cpp, src/Inventor/Xt/SoXtComponentP.h,
@@ -49,7 +78,7 @@
 	src/Inventor/Xt/widgets/XtNativePopupMenu.h, src/Inventor/Xt/widgets
 	/all-widgets-cpp.cpp, test-code/examinerviewer.cpp:
 	update copyright headers.
-	[e6dcbbc87d66] [tip]
+	[e6dcbbc87d66]
 
 	* .hgtags:
 	Removed tag SoXt-1.3.0
