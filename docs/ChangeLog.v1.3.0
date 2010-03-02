@@ -1,8 +1,71 @@
 2010-03-02  Tamer Fahmy  <tamer@sim.no>
 
+	* .hgsubstate, COPYING, src/Inventor/Xt/SoXt.cpp,
+	src/Inventor/Xt/SoXtClipboard.cpp, src/Inventor/Xt/SoXtClipboard.h,
+	src/Inventor/Xt/SoXtComponent.cpp, src/Inventor/Xt/SoXtComponentP.h,
+	src/Inventor/Xt/SoXtDirectionalLightEditor.cpp,
+	src/Inventor/Xt/SoXtDirectionalLightEditor.h,
+	src/Inventor/Xt/SoXtGLWidget.cpp, src/Inventor/Xt/SoXtGLWidgetP.h,
+	src/Inventor/Xt/SoXtIcons.cpp, src/Inventor/Xt/SoXtIcons.h,
+	src/Inventor/Xt/SoXtInternal.cpp, src/Inventor/Xt/SoXtInternal.h,
+	src/Inventor/Xt/SoXtLightSliderSet.cpp,
+	src/Inventor/Xt/SoXtLightSliderSet.h,
+	src/Inventor/Xt/SoXtMaterialList.cpp,
+	src/Inventor/Xt/SoXtMaterialSliderSet.cpp,
+	src/Inventor/Xt/SoXtMaterialSliderSet.h,
+	src/Inventor/Xt/SoXtPrintDialog.cpp,
+	src/Inventor/Xt/SoXtPrintDialog.h, src/Inventor/Xt/SoXtResource.cpp,
+	src/Inventor/Xt/SoXtResource.h, src/Inventor/Xt/SoXtSliderSet.cpp,
+	src/Inventor/Xt/SoXtSliderSet.h,
+	src/Inventor/Xt/SoXtSliderSetBase.cpp,
+	src/Inventor/Xt/SoXtSliderSetBase.h,
+	src/Inventor/Xt/SoXtTransformSliderSet.cpp,
+	src/Inventor/Xt/SoXtTransformSliderSet.h, src/Inventor/Xt/all-soxt-
+	cpp.cpp, src/Inventor/Xt/devices/6DOFEvents.h,
+	src/Inventor/Xt/devices/SoXtDevice.cpp,
+	src/Inventor/Xt/devices/SoXtDeviceP.h,
+	src/Inventor/Xt/devices/SoXtInputFocus.cpp,
+	src/Inventor/Xt/devices/SoXtKeyboard.cpp,
+	src/Inventor/Xt/devices/SoXtLinuxJoystick.cpp,
+	src/Inventor/Xt/devices/SoXtLinuxJoystick.h,
+	src/Inventor/Xt/devices/SoXtMouse.cpp, src/Inventor/Xt/devices/all-
+	devices-cpp.cpp, src/Inventor/Xt/editors/all-editors-cpp.cpp,
+	src/Inventor/Xt/engines/all-engines-cpp.cpp, src/Inventor/Xt/nodes
+	/all-nodes-cpp.cpp, src/Inventor/Xt/viewers/ExaminerViewer.cpp,
+	src/Inventor/Xt/viewers/FullViewer.cpp,
+	src/Inventor/Xt/viewers/PlaneViewer.cpp,
+	src/Inventor/Xt/viewers/SoXtExaminerViewerP.h,
+	src/Inventor/Xt/viewers/SoXtFullViewerP.h,
+	src/Inventor/Xt/viewers/SoXtPlaneViewerP.h,
+	src/Inventor/Xt/viewers/WalkViewer.cpp, src/Inventor/Xt/viewers/all-
+	viewers-cpp.cpp, src/Inventor/Xt/viewers/soxtexaminerviewer.scm,
+	src/Inventor/Xt/widgets/SoXtGLArea.README,
+	src/Inventor/Xt/widgets/SoXtSlider.cpp,
+	src/Inventor/Xt/widgets/SoXtSlider.h,
+	src/Inventor/Xt/widgets/SoXtThumbWheel.cpp,
+	src/Inventor/Xt/widgets/SoXtThumbWheel.h,
+	src/Inventor/Xt/widgets/SoXtThumbWheelP.h,
+	src/Inventor/Xt/widgets/XtNativePopupMenu.cpp,
+	src/Inventor/Xt/widgets/XtNativePopupMenu.h, src/Inventor/Xt/widgets
+	/all-widgets-cpp.cpp, test-code/examinerviewer.cpp:
+	update copyright headers.
+	[e6dcbbc87d66] [tip]
+
 	* .hgtags:
 	Removed tag SoXt-1.3.0
-	[5e72f7af9a5f] [tip]
+	[7b24f51eb40d]
+
+	* .hgtags:
+	Added tag SoXt-1.3.0 for changeset 5247cbe3b1e3
+	[ada577f6dfc3]
+
+	* ChangeLog, docs/ChangeLog.v1.3.0:
+	updated ChangeLogs.
+	[5247cbe3b1e3]
+
+	* .hgtags:
+	Removed tag SoXt-1.3.0
+	[5e72f7af9a5f]
 
 	* build/soxt.spec.in:
 	replace datadir with datarootdir.
