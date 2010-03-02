@@ -1,33 +1,42 @@
-SoXt 1.2.0 Released
+SoXt 1.3.0 Released
 ===================
 
-SoXt 1.2.0 is a minor release.  It was made because it was about time to
-get SoXt into a release cycle again.  The release contains bugfixes,
-optimizations, documentation improvements, and configure and build setup
-fixes.  It also contains some minor API extensions beyond the previous
-release.
+SoXt 1.3.0 is a major release. The release contains build setup
+improvements, bugfixes, documentation improvements. It also contains
+some minor API extensions beyond the previous release.
 
 
 NEWS File Excerpt:
 ------------------
 
-New in SoXt v1.2.0 (2004-09-21):
-* New classes SoXtColorEditor, SoXtMaterialEditor
-* support Coin's SORTED_LAYERS_BLEND transparency mode
-* --enable-compact configure option, as with Coin
-* misc bugfixes
-* many Mac OS X improvements
+New in SoXt v1.3.0 (2010-03-02):
+
+* new:
+  - Added getVersionToolkitString() providing the version of the
+    underlying GUI toolkit version in use
+
+* bugfixes:
+  - Various compile and robustness fixes
+  - Plugged memory leaks
+  - Many bug fixes
+
+* build system:
+  - Updated autotools to autoconf-2.65, automake-1.8.3, libtool-1.5.26
+  - Changed default location for generated HTML documentation
+  - Added pkg-config description and detection support
+
+* other:
+  - Removal of Spaceball support
 
 Download Information:
 ---------------------
 
+ChangeLog:
+  http://hg.sim.no/SoXt/default/raw-file/SoXt-1.3.0/ChangeLog
+
 Source Code by FTP:
-  ftp://ftp.coin3d.org/pub/coin/src/SoXt-1.2.0.tar.gz
+  http://ftp.coin3d.org/pub/coin/src/all/SoXt-1.3.0.tar.gz
+  http://ftp.coin3d.org/pub/coin/src/all/SoXt-1.3.0.zip
 
 We do not provide pre-compiled binary packages of the SoXt library
 for any platform.
-
-Regards,
-
-  Lars J. Aas
-  Systems in Motion
