@@ -1,8 +1,24 @@
 2010-03-02  Tamer Fahmy  <tamer@sim.no>
 
+	* .hgtags:
+	Removed tag SoXt-1.3.0
+	[5e72f7af9a5f] [tip]
+
+	* build/soxt.spec.in:
+	replace datadir with datarootdir.
+	[f1d86294f6bd]
+
+	* .hgtags:
+	Added tag SoXt-1.3.0 for changeset 4230e189e786
+	[8cfe7851a7bf]
+
+	* ChangeLog, docs/ChangeLog.v1.3.0:
+	updated ChangeLogs.
+	[4230e189e786]
+
 	* NEWS, docs/announcement-1_3_0.txt:
 	updated NEWS and release announcement.
-	[a64d6e335d3f] [tip]
+	[a64d6e335d3f]
 
 	* Makefile.am, Makefile.in, configure, configure.ac,
 	docs/ChangeLog.v1.3.0, docs/announcement-1_3_0.txt:
