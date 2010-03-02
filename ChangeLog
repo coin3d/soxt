@@ -1,8 +1,32 @@
 2010-03-02  Tamer Fahmy  <tamer@sim.no>
 
+	* docs/announcement-1_3_0.txt:
+	correctify download URLs.
+	[89c5bdfdd8f5] [tip]
+
 	* .hgtags:
 	Removed tag SoXt-1.3.0
-	[34c90173b428] [tip]
+	[0bd7c7cd64e1]
+
+	* .hgtags:
+	Added tag SoXt-1.3.0 for changeset 6ca5b733f266
+	[18e36f35acda]
+
+	* ChangeLog, docs/ChangeLog.v1.3.0:
+	updated ChangeLogs.
+	[6ca5b733f266]
+
+	* .hgtags:
+	Removed tag SoXt-1.3.0
+	[3e53f5621504]
+
+	* .hgtags:
+	Added tag SoXt-1.3.0 for changeset 34c90173b428
+	[0b2b91f66a1e]
+
+	* .hgtags:
+	Removed tag SoXt-1.3.0
+	[34c90173b428]
 
 	* Makefile.in, configure, html/Makefile.in, man/Makefile.in,
 	man/man1/Makefile.in, man/man3/Makefile.in,
