@@ -1,22 +1,23 @@
 /**************************************************************************\
  *
- *  This file is part of a set of example programs for the Coin library.
- *  Copyright (C) 2000-2003 by Systems in Motion. All rights reserved.
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
- *                   <URL:http://www.coin3d.org>
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
  *
- *  This sourcecode can be redistributed and/or modified under the
- *  terms of the GNU General Public License version 2 as published by
- *  the Free Software Foundation. See the file COPYING at the root
- *  directory of the distribution for more details.
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
- *  As a special exception, all sourcecode of the demo examples can be
- *  used for any purpose for licensees of the Coin Professional
- *  Edition License, without the restrictions of the GNU GPL. See our
- *  web pages for information about how to acquire a Professional Edition
- *  License.
+ *  See http://www.coin3d.org/ for more information.
  *
- *  Systems in Motion, <URL:http://www.sim.no>, <mailto:support@sim.no>
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
+ *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
 

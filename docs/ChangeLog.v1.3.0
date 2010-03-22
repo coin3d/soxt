@@ -1,0 +1,522 @@
+2010-03-02  Tamer Fahmy  <tamer@sim.no>
+
+	* docs/announcement-1_3_0.txt:
+	correctify download URLs.
+	[89c5bdfdd8f5] [tip]
+
+	* .hgtags:
+	Removed tag SoXt-1.3.0
+	[0bd7c7cd64e1]
+
+	* .hgtags:
+	Added tag SoXt-1.3.0 for changeset 6ca5b733f266
+	[18e36f35acda]
+
+	* ChangeLog, docs/ChangeLog.v1.3.0:
+	updated ChangeLogs.
+	[6ca5b733f266]
+
+	* .hgtags:
+	Removed tag SoXt-1.3.0
+	[3e53f5621504]
+
+	* .hgtags:
+	Added tag SoXt-1.3.0 for changeset 34c90173b428
+	[0b2b91f66a1e]
+
+	* .hgtags:
+	Removed tag SoXt-1.3.0
+	[34c90173b428]
+
+	* Makefile.in, configure, html/Makefile.in, man/Makefile.in,
+	man/man1/Makefile.in, man/man3/Makefile.in,
+	src/Inventor/Makefile.in, src/Inventor/Xt/Makefile.in,
+	src/Inventor/Xt/devices/Makefile.in,
+	src/Inventor/Xt/editors/Makefile.in,
+	src/Inventor/Xt/engines/Makefile.in,
+	src/Inventor/Xt/nodes/Makefile.in,
+	src/Inventor/Xt/viewers/Makefile.in,
+	src/Inventor/Xt/widgets/Makefile.in, src/Makefile.in, test-
+	code/Makefile.in:
+	boostrap.
+	[7bee7e79bd99]
+
+	* configure.ac:
+	proper libtool versioning.
+	[030640e726eb]
+
+	* .hgtags:
+	Added tag SoXt-1.3.0 for changeset fc98951ff1d8
+	[d8087643bdaa]
+
+	* ChangeLog, docs/ChangeLog.v1.3.0:
+	updated ChangeLogs.
+	[fc98951ff1d8]
+
+	* .hgsubstate, COPYING, src/Inventor/Xt/SoXt.cpp,
+	src/Inventor/Xt/SoXtClipboard.cpp, src/Inventor/Xt/SoXtClipboard.h,
+	src/Inventor/Xt/SoXtComponent.cpp, src/Inventor/Xt/SoXtComponentP.h,
+	src/Inventor/Xt/SoXtDirectionalLightEditor.cpp,
+	src/Inventor/Xt/SoXtDirectionalLightEditor.h,
+	src/Inventor/Xt/SoXtGLWidget.cpp, src/Inventor/Xt/SoXtGLWidgetP.h,
+	src/Inventor/Xt/SoXtIcons.cpp, src/Inventor/Xt/SoXtIcons.h,
+	src/Inventor/Xt/SoXtInternal.cpp, src/Inventor/Xt/SoXtInternal.h,
+	src/Inventor/Xt/SoXtLightSliderSet.cpp,
+	src/Inventor/Xt/SoXtLightSliderSet.h,
+	src/Inventor/Xt/SoXtMaterialList.cpp,
+	src/Inventor/Xt/SoXtMaterialSliderSet.cpp,
+	src/Inventor/Xt/SoXtMaterialSliderSet.h,
+	src/Inventor/Xt/SoXtPrintDialog.cpp,
+	src/Inventor/Xt/SoXtPrintDialog.h, src/Inventor/Xt/SoXtResource.cpp,
+	src/Inventor/Xt/SoXtResource.h, src/Inventor/Xt/SoXtSliderSet.cpp,
+	src/Inventor/Xt/SoXtSliderSet.h,
+	src/Inventor/Xt/SoXtSliderSetBase.cpp,
+	src/Inventor/Xt/SoXtSliderSetBase.h,
+	src/Inventor/Xt/SoXtTransformSliderSet.cpp,
+	src/Inventor/Xt/SoXtTransformSliderSet.h, src/Inventor/Xt/all-soxt-
+	cpp.cpp, src/Inventor/Xt/devices/6DOFEvents.h,
+	src/Inventor/Xt/devices/SoXtDevice.cpp,
+	src/Inventor/Xt/devices/SoXtDeviceP.h,
+	src/Inventor/Xt/devices/SoXtInputFocus.cpp,
+	src/Inventor/Xt/devices/SoXtKeyboard.cpp,
+	src/Inventor/Xt/devices/SoXtLinuxJoystick.cpp,
+	src/Inventor/Xt/devices/SoXtLinuxJoystick.h,
+	src/Inventor/Xt/devices/SoXtMouse.cpp, src/Inventor/Xt/devices/all-
+	devices-cpp.cpp, src/Inventor/Xt/editors/all-editors-cpp.cpp,
+	src/Inventor/Xt/engines/all-engines-cpp.cpp, src/Inventor/Xt/nodes
+	/all-nodes-cpp.cpp, src/Inventor/Xt/viewers/ExaminerViewer.cpp,
+	src/Inventor/Xt/viewers/FullViewer.cpp,
+	src/Inventor/Xt/viewers/PlaneViewer.cpp,
+	src/Inventor/Xt/viewers/SoXtExaminerViewerP.h,
+	src/Inventor/Xt/viewers/SoXtFullViewerP.h,
+	src/Inventor/Xt/viewers/SoXtPlaneViewerP.h,
+	src/Inventor/Xt/viewers/WalkViewer.cpp, src/Inventor/Xt/viewers/all-
+	viewers-cpp.cpp, src/Inventor/Xt/viewers/soxtexaminerviewer.scm,
+	src/Inventor/Xt/widgets/SoXtGLArea.README,
+	src/Inventor/Xt/widgets/SoXtSlider.cpp,
+	src/Inventor/Xt/widgets/SoXtSlider.h,
+	src/Inventor/Xt/widgets/SoXtThumbWheel.cpp,
+	src/Inventor/Xt/widgets/SoXtThumbWheel.h,
+	src/Inventor/Xt/widgets/SoXtThumbWheelP.h,
+	src/Inventor/Xt/widgets/XtNativePopupMenu.cpp,
+	src/Inventor/Xt/widgets/XtNativePopupMenu.h, src/Inventor/Xt/widgets
+	/all-widgets-cpp.cpp, test-code/examinerviewer.cpp:
+	update copyright headers.
+	[e6dcbbc87d66]
+
+	* .hgtags:
+	Removed tag SoXt-1.3.0
+	[7b24f51eb40d]
+
+	* .hgtags:
+	Added tag SoXt-1.3.0 for changeset 5247cbe3b1e3
+	[ada577f6dfc3]
+
+	* ChangeLog, docs/ChangeLog.v1.3.0:
+	updated ChangeLogs.
+	[5247cbe3b1e3]
+
+	* .hgtags:
+	Removed tag SoXt-1.3.0
+	[5e72f7af9a5f]
+
+	* build/soxt.spec.in:
+	replace datadir with datarootdir.
+	[f1d86294f6bd]
+
+	* .hgtags:
+	Added tag SoXt-1.3.0 for changeset 4230e189e786
+	[8cfe7851a7bf]
+
+	* ChangeLog, docs/ChangeLog.v1.3.0:
+	updated ChangeLogs.
+	[4230e189e786]
+
+	* NEWS, docs/announcement-1_3_0.txt:
+	updated NEWS and release announcement.
+	[a64d6e335d3f]
+
+	* Makefile.am, Makefile.in, configure, configure.ac,
+	docs/ChangeLog.v1.3.0, docs/announcement-1_3_0.txt:
+	version bump and add preliminary announcement and ChangeLog files.
+	[e3071240e78f]
+
+	* .hgtags:
+	Added tag SoXt-1.2.2 for changeset c1d57afdaf45
+	[c5789d5683ad]
+
+	* .hgtags:
+	Added tag SoXt-1.2.1 for changeset 7d4494d35c5d
+	[d0fcf4b67d87]
+
+	* .hgtags:
+	Added tag SoXt-1.2.0 for changeset 644353514994
+	[3bcfa3e4671f]
+
+	* .hgtags:
+	Added tag SoXt-1.1.0 for changeset 54546988296d
+	[6c504af84529]
+
+2010-02-28  Tamer Fahmy  <tamer@sim.no>
+
+	* SoXt.pc.in:
+	remove obsolete datadir entry.
+	[8f78b0f04b18]
+
+	* .hgsubstate, Makefile.in, aclocal.m4, cfg/config.guess,
+	cfg/config.sub, cfg/ltmain.sh, configure, html/Makefile.in,
+	man/Makefile.in, man/man1/Makefile.in, man/man3/Makefile.in,
+	src/Inventor/Makefile.in, src/Inventor/Xt/Makefile.in,
+	src/Inventor/Xt/devices/Makefile.in,
+	src/Inventor/Xt/editors/Makefile.in,
+	src/Inventor/Xt/engines/Makefile.in,
+	src/Inventor/Xt/nodes/Makefile.in,
+	src/Inventor/Xt/viewers/Makefile.in,
+	src/Inventor/Xt/widgets/Makefile.in, src/Makefile.in,
+	src/config.h.in, test-code/Makefile.in:
+	bootstrap with updated compatible autotools versions.
+	[c37bf62433cc]
+
+	* SoXt.pc.in:
+	change autoconf datadir to datarootdir and add htmldir.
+	[92f4acaeb589]
+
+	* configure.ac:
+	allow for disabling of compiler optimizations.
+	[7ac69f8a03e8]
+
+2010-02-23  Tamer Fahmy  <tamer@sim.no>
+
+	* .hgsubstate:
+	update subrepos.
+	[da705eb7f301]
+
+2010-02-20  Tamer Fahmy  <tamer@sim.no>
+
+	* .hgsubstate, Makefile.in, configure, html/Makefile.in,
+	man/Makefile.in, man/man1/Makefile.in, man/man3/Makefile.in,
+	src/Inventor/Makefile.in, src/Inventor/Xt/Makefile.in,
+	src/Inventor/Xt/devices/Makefile.in,
+	src/Inventor/Xt/editors/Makefile.in,
+	src/Inventor/Xt/engines/Makefile.in,
+	src/Inventor/Xt/nodes/Makefile.in,
+	src/Inventor/Xt/viewers/Makefile.in,
+	src/Inventor/Xt/widgets/Makefile.in, src/Makefile.in, test-
+	code/Makefile.in:
+	boostrap.
+	[cc2078cdf528]
+
+	* configure.ac:
+	invoke the correct autoconf macro for motif check.
+	[4a76d25382f9]
+
+	* Makefile.in, aclocal.m4, cfg/config.guess, cfg/config.sub,
+	cfg/ltmain.sh, configure, configure.ac, html/Makefile.in,
+	man/Makefile.in, man/man1/Makefile.in, man/man3/Makefile.in,
+	src/Inventor/Makefile.in, src/Inventor/Xt/Makefile.in,
+	src/Inventor/Xt/devices/Makefile.in,
+	src/Inventor/Xt/editors/Makefile.in,
+	src/Inventor/Xt/engines/Makefile.in,
+	src/Inventor/Xt/nodes/Makefile.in,
+	src/Inventor/Xt/viewers/Makefile.in,
+	src/Inventor/Xt/widgets/Makefile.in, src/Makefile.in,
+	src/config.h.in, test-code/Makefile.in:
+	remove ununsed BASIC_HEADER_TOP substitution hack.
+	[b42aecabf86f]
+
+	* Makefile.am:
+	replace datarootdir with datadir for currently used autotools
+	version.
+	[c19e676ba227]
+
+2010-02-18  Tamer Fahmy  <tamer@sim.no>
+
+	* ChangeLog:
+	added ChangeLog placeholder.
+	[de60f92e58c2]
+
+2010-01-20  Tom Fredrik Blenning Klaussen  <bfg@sim.no>
+
+	* Makefile.am, Makefile.in, aclocal.m4, cfg/config.guess,
+	cfg/config.sub, cfg/ltmain.sh, configure, html/Makefile.in,
+	man/Makefile.in, man/man1/Makefile.in, man/man3/Makefile.in,
+	src/Inventor/Makefile.in, src/Inventor/Xt/Makefile.in,
+	src/Inventor/Xt/devices/Makefile.in,
+	src/Inventor/Xt/editors/Makefile.in,
+	src/Inventor/Xt/engines/Makefile.in,
+	src/Inventor/Xt/nodes/Makefile.in,
+	src/Inventor/Xt/viewers/Makefile.in,
+	src/Inventor/Xt/widgets/Makefile.in, src/Makefile.in,
+	src/config.h.in, test-code/Makefile.in:
+	Bootstrap with updated autotools toolchain.
+	[c1b8acab8081]
+
+2010-01-18  Tom Fredrik Blenning Klaussen  <bfg@sim.no>
+
+	* Makefile.in, html/Makefile.in, man/Makefile.in,
+	man/man1/Makefile.in, man/man3/Makefile.in,
+	src/Inventor/Makefile.in, src/Inventor/Xt/Makefile.in,
+	src/Inventor/Xt/devices/Makefile.in,
+	src/Inventor/Xt/editors/Makefile.in,
+	src/Inventor/Xt/engines/Makefile.in,
+	src/Inventor/Xt/nodes/Makefile.in,
+	src/Inventor/Xt/viewers/Makefile.in,
+	src/Inventor/Xt/widgets/Makefile.in, src/Makefile.in, test-
+	code/Makefile.in:
+	Bootstrap.
+	[26dc92bb3035]
+
+	* configure.ac:
+	Empty substitution for header include. Cannot get runtime version of
+	Motif library.
+	[7d891ad7d383]
+
+	* .hgsubstate:
+	Updated subrepos.
+	[f09d22c6b31a]
+
+2010-01-14  Tom Fredrik Blenning Klaussen  <bfg@sim.no>
+
+	* Makefile.in, html/Makefile.in, man/man1/Makefile.in,
+	man/man3/Makefile.in, src/Inventor/Makefile.in,
+	src/Inventor/Xt/Makefile.in, src/Inventor/Xt/devices/Makefile.in,
+	src/Inventor/Xt/editors/Makefile.in,
+	src/Inventor/Xt/engines/Makefile.in,
+	src/Inventor/Xt/nodes/Makefile.in,
+	src/Inventor/Xt/viewers/Makefile.in,
+	src/Inventor/Xt/widgets/Makefile.in, src/Makefile.in:
+	Bootstrap.
+	[65ad2009d04a]
+
+	* src/Inventor/Xt/viewers/Makefile.am:
+	Remove unused file.
+	[c15b8c1c4433]
+
+	* .hgsubstate:
+	Update common.
+	[986a45e0ac7e]
+
+	* .hgsubstate:
+	Update subrepos.
+	[47be8afadc99]
+
+	* aclocal.m4, configure, src/config.h.in:
+	Bootstrap.
+	[a1373cdde873]
+
+	* configure.ac:
+	Avoid run test in configure.
+	[6f49c953710c]
+
+	* Makefile.in, aclocal.m4, cfg/errors.txt, cfg/ltmain.sh,
+	cfg/wrapmsvc.exe, configure, html/Makefile.in, man/Makefile.in,
+	man/man1/Makefile.in, man/man3/Makefile.in,
+	src/Inventor/Makefile.in, src/Inventor/Xt/Makefile.in,
+	src/Inventor/Xt/devices/Makefile.in,
+	src/Inventor/Xt/editors/Makefile.in,
+	src/Inventor/Xt/engines/Makefile.in,
+	src/Inventor/Xt/nodes/Makefile.in,
+	src/Inventor/Xt/viewers/Makefile.in,
+	src/Inventor/Xt/widgets/Makefile.in, src/Makefile.in,
+	src/config.h.in, test-code/Makefile.in:
+	bootstrap.
+	[64114039164e]
+
+2009-10-07  Tom Fredrik Blenning Klaussen  <bfg@sim.no>
+
+	* .hgsub, .hgsubstate:
+	Added subrepos.
+	[562197c5818e]
+
+2009-06-09  Tom Fredrik Blenning Klaussen  <bfg@sim.no>
+
+	* Makefile.in, aclocal.m4, docs/spaceball, html/Makefile.in,
+	man/man1/Makefile.in, man/man3/Makefile.in,
+	src/Inventor/Makefile.in, src/Inventor/Xt/Makefile.in,
+	src/Inventor/Xt/devices/Makefile.am,
+	src/Inventor/Xt/devices/Makefile.in,
+	src/Inventor/Xt/devices/SoXtSpaceball.cpp,
+	src/Inventor/Xt/devices/SoXtSpaceballP.h, src/Inventor/Xt/devices
+	/all-devices-cpp.cpp, src/Inventor/Xt/editors/Makefile.in,
+	src/Inventor/Xt/engines/Makefile.in,
+	src/Inventor/Xt/nodes/Makefile.in,
+	src/Inventor/Xt/viewers/ExaminerViewer.cpp,
+	src/Inventor/Xt/viewers/FullViewer.cpp,
+	src/Inventor/Xt/viewers/Makefile.in,
+	src/Inventor/Xt/viewers/PlaneViewer.cpp,
+	src/Inventor/Xt/widgets/Makefile.in, src/Makefile.in:
+	API Update.
+	[a37a8c4466c7]
+
+2009-03-12  Peder Blekken  <pederb@sim.no>
+
+	* configure, configure.ac, src/Inventor/Xt/SoXtGLWidget.cpp:
+	Add multisample support (STUB).
+	[a08cfda59aa0]
+
+2009-02-17  Tamer Fahmy  <tamer@sim.no>
+
+	* aclocal.m4, cfg/doxy4win.pl, cfg/gendsp.pl.in, configure:
+	bootstrap. (config summary echo fix)
+	[186ece104d47]
+
+2008-10-05  Tamer Fahmy  <tamer@sim.no>
+
+	* Makefile.in, cfg/config.guess, cfg/config.sub, cfg/gendsp.pl.in,
+	configure:
+	bootstrap.
+	[5a0705878a95]
+
+	* Makefile.am, SoXt.pc.in, configure.ac:
+	create pkgconfig metadata file.
+	[2a904c971624]
+
+2008-08-05  Tamer Fahmy  <tamer@sim.no>
+
+	* aclocal.m4, cfg/errors.txt, configure:
+	bootstrap.
+	[2b374e63d4e2]
+
+	* configure.ac:
+	do not expand ac_substed autoconf variables.
+	[9f50e3a2a452]
+
+2007-11-09  Tamer Fahmy  <tamer@sim.no>
+
+	* aclocal.m4, cfg/config.guess, cfg/config.sub, cfg/errors.txt,
+	cfg/gendsp.pl.in, cfg/wrapmsvc.exe, configure, src/config.h.in:
+	bootstrap.
+	[fa03f88aa630]
+
+	* configure.ac:
+	provide the GUI toolkit version definition for
+	SoXt::getVersionToolkitString().
+	[599f4429b321]
+
+2007-08-23  Peder Blekken  <pederb@sim.no>
+
+	* src/Inventor/Xt/SoXtGLWidgetP.h:
+	Compile fix.
+	[f690ffa25ac2]
+
+2007-08-22  Peder Blekken  <pederb@sim.no>
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp:
+	Also recreate Visual when user changes some widget attribute. This
+	will make it possible to add an alpha or other channels after
+	creating the widget.
+	[2e8940cd12ca]
+
+2007-06-05  Tamer Fahmy  <tamer@sim.no>
+
+	* Makefile.in, cfg/csubst.exe, cfg/gendsp.pl.in, html/Makefile.in,
+	man/man1/Makefile.in, man/man3/Makefile.in,
+	src/Inventor/Makefile.in, src/Inventor/Xt/Makefile.in,
+	src/Inventor/Xt/devices/Makefile.in,
+	src/Inventor/Xt/editors/Makefile.in,
+	src/Inventor/Xt/engines/Makefile.in,
+	src/Inventor/Xt/nodes/Makefile.in,
+	src/Inventor/Xt/viewers/Makefile.in,
+	src/Inventor/Xt/widgets/Makefile.in, src/Makefile.in:
+	bootstrap.
+	[01cf3317fea9]
+
+2007-05-29  Tamer Fahmy  <tamer@sim.no>
+
+	* aclocal.m4, cfg/config.guess, cfg/config.sub, cfg/csubst.exe,
+	cfg/errors.txt, cfg/gendsp.pl.in, cfg/gendsp.sh.in,
+	cfg/wrapmsvc.exe, configure:
+	bootstrap.
+	[f4071d1c467f]
+
+2007-05-11  Peder Blekken  <pederb@sim.no>
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp, src/Inventor/Xt/SoXtGLWidgetP.h:
+	Code cleanup and fixed several memory leaks.
+	[aec2d68065f2]
+
+2007-05-10  Peder Blekken  <pederb@sim.no>
+
+	* src/Inventor/Xt/SoXtGLWidget.cpp, src/Inventor/Xt/SoXtGLWidgetP.h:
+	Add support for recreating the GL context if the user adds/removes
+	any extra buffers/features.
+	[9a140a3af87f]
+
+2007-01-04  Frode Øijord  <frodo@sim.no>
+
+	* Makefile.in, cfg/config.guess, cfg/config.sub, cfg/wrapmsvc.exe,
+	html/Makefile.in, man/man1/Makefile.in, man/man3/Makefile.in,
+	src/Inventor/Makefile.in, src/Inventor/Xt/Makefile.in,
+	src/Inventor/Xt/devices/Makefile.in,
+	src/Inventor/Xt/editors/Makefile.in,
+	src/Inventor/Xt/engines/Makefile.in,
+	src/Inventor/Xt/nodes/Makefile.in,
+	src/Inventor/Xt/viewers/Makefile.am,
+	src/Inventor/Xt/viewers/Makefile.in,
+	src/Inventor/Xt/widgets/Makefile.in, src/Makefile.in:
+	bootstrap
+	[f3aa5053bfa5]
+
+2006-10-02  autosvn  <autosvn@sim.no>
+
+	* .cvsignore, src/.cvsignore:
+	remove now obsolete .cvsignore files.
+	[7fa57f69bbc1]
+
+2006-10-01  autosvn  <autosvn@sim.no>
+
+	* cfg/ltmain.sh:
+	Automatic Property adjustment.
+	[1b2d13b71a55]
+
+2006-06-29  Tamer Fahmy  <tamer@sim.no>
+
+	* aclocal.m4, cfg/config.guess, cfg/config.sub, cfg/errors.txt,
+	cfg/ltmain.sh, configure:
+	bootstrap to newer libtool version. (fixes build problems on amd64)
+	[a25e2cc88348]
+
+2006-02-09  Marius Kintel  <kintel@sim.no>
+
+	* src/Inventor/Xt/SoXt.cpp:
+	Use SoAny::init()
+	[c9ab83c7220c]
+
+2005-12-16  Morten Eriksen  <mortene@sim.no>
+
+	* src/Inventor/Xt/SoXt.cpp:
+	Clean-up: very minor clean-up, remove some unnecessary #ifdef'ing.
+	[b6e39f1cfee0]
+
+2005-07-01  Morten Eriksen  <mortene@sim.no>
+
+	* configure.ac:
+	Typo.
+	[e77dbcd3e167]
+
+	* configure.ac:
+	FIXME note about the next release.
+	[7813e82bd147]
+
+2005-06-22  Morten Eriksen  <mortene@sim.no>
+
+	* src/Inventor/Xt/widgets/XtNativePopupMenu.cpp:
+	Radio group items now handled from abstract superclass, update code.
+	[f4aec9c809b5]
+
+2004-12-02  Karin (kyrah) Kosina  <kyrah@sim.no>
+
+	* COPYING:
+	Update. (SoXt has been under the GPL for 19 months... ;))
+	[cf5f7aef9f04]
+
+2004-11-16  Lars J. Aas  <larsa@sim.no>
+
+	* NEWS, configure, configure.ac:
+	set version 1.2.3a
+	[f3aa538d0115]
+
+	* docs/ChangeLog.v1.2.2:
+	move changelog
+	[c1d57afdaf45] [SoXt-1.2.2]
+
