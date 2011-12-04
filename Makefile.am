@@ -38,7 +38,6 @@ DISTCLEANFILES = \
 	test-code/.deps/*.Po
 
 EXTRA_DIST = \
-	LICENSE.GPL \
 	build/so@gui@.spec.in \
 	cfg/soxt.m4 \
 	docs/ChangeLog.v1.1.0 \

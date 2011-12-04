@@ -25,7 +25,7 @@ Summary: Xt/Motif GUI widgets for Coin.
 Name: SoXt
 Version: @VERSION@
 Release: @soxt_configure_date@
-Copyright: GNU GENERAL PUBLIC LICENSE (GPL)
+Copyright: BSD
 Group: Development/Libraries
 URL: http://www.coin3d.org
 Vendor: Kongsberg Oil & Gas Technologies
