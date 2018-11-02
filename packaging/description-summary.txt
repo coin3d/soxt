@@ -1,0 +1,2 @@
+SoXt is an alternative to SGIs InventorXt library, which is a GUI binding
+for using Open Inventor with Xt/Motif.
