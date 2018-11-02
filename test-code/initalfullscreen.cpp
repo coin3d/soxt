@@ -3,6 +3,8 @@
 
 #include <X11/IntrinsicP.h>
 
+#include <Inventor/Xt/SoXt.h>
+#include <Inventor/Xt/viewers/SoXtExaminerViewer.h>
 
 int
 main(
