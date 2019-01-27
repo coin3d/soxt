@@ -5,7 +5,6 @@ add_subdirectory(Inventor/${Gui}/common)
 file(GLOB_RECURSE COMMON_HDRS ${CMAKE_CURRENT_BINARY_DIR}/*.h)
 file(GLOB_RECURSE COMMON_SRCS ${CMAKE_CURRENT_BINARY_DIR}/*.cpp)
 
-
 set(HDRS
   Inventor/${Gui}/So${Gui}Clipboard.h               # added
   Inventor/${Gui}/So${Gui}ComponentP.h
@@ -254,15 +253,30 @@ set(INST_HDRS
   "${CMAKE_CURRENT_BINARY_DIR}/Inventor/${Gui}/So${Gui}Component.h"
   "${CMAKE_CURRENT_BINARY_DIR}/Inventor/${Gui}/So${Gui}Cursor.h"
   "${CMAKE_CURRENT_BINARY_DIR}/Inventor/${Gui}/So${Gui}GLWidget.h"
+  "${CMAKE_CURRENT_BINARY_DIR}/Inventor/${Gui}/So${Gui}MaterialEditor.h"
   "${CMAKE_CURRENT_BINARY_DIR}/Inventor/${Gui}/So${Gui}Object.h"
   "${CMAKE_CURRENT_BINARY_DIR}/Inventor/${Gui}/So${Gui}RenderArea.h"
+  Inventor/${Gui}/So${Gui}Clipboard.h
+  # Inventor/${Gui}/So${Gui}DirectionalLightEditor.h # it's just a STUB
+  Inventor/${Gui}/So${Gui}LightSliderSet.h
+  Inventor/${Gui}/So${Gui}MaterialSliderSet.h
+  Inventor/${Gui}/So${Gui}PrintDialog.h
+  Inventor/${Gui}/So${Gui}Resource.h
+  Inventor/${Gui}/So${Gui}SliderSet.h
+  Inventor/${Gui}/So${Gui}SliderSetBase.h
+  Inventor/${Gui}/So${Gui}TransformSliderSet.h
 )
 
 set(INST_DEVICES_HDRS
   "${CMAKE_CURRENT_BINARY_DIR}/Inventor/${Gui}/devices/So${Gui}Device.h"
+  "${CMAKE_CURRENT_BINARY_DIR}/Inventor/${Gui}/devices/So${Gui}InputFocus.h"
   "${CMAKE_CURRENT_BINARY_DIR}/Inventor/${Gui}/devices/So${Gui}Keyboard.h"
   "${CMAKE_CURRENT_BINARY_DIR}/Inventor/${Gui}/devices/So${Gui}Mouse.h"
 )
+
+if (HAVE_SPACENAV_SUPPORT)
+  list(APPEND INST_DEVICES_HDRS "${CMAKE_CURRENT_BINARY_DIR}/Inventor/${Gui}/devices/So${Gui}SpacenavDevice.h")
+endif()
 
 if(HAVE_JOYSTICK_LINUX)
   list(APPEND INST_DEVICES_HDRS "${CMAKE_CURRENT_SOURCE_DIR}/Inventor/${Gui}/devices/So${Gui}LinuxJoystick.h")
@@ -271,7 +285,6 @@ endif()
 set(INST_EDITORS_HDRS
   "${CMAKE_CURRENT_BINARY_DIR}/Inventor/${Gui}/editors/So${Gui}ColorEditor.h"
   "${CMAKE_CURRENT_BINARY_DIR}/Inventor/${Gui}/editors/So${Gui}MaterialEditor.h"
-  "${CMAKE_CURRENT_BINARY_DIR}/Inventor/${Gui}/devices/So${Gui}SpacenavDevice.h"
 )
 
 set(INST_NODES_HDRS
