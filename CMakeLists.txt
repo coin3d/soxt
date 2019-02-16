@@ -84,6 +84,8 @@ cmake_dependent_option(SO${GUI}_BUILD_DOC_MAN "Build So${Gui} man pages." OFF "S
 cmake_dependent_option(SO${GUI}_BUILD_DOC_QTHELP "Build QtHelp documentation." OFF "SO${GUI}_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(SO${GUI}_BUILD_DOC_CHM "Build compressed HTML help manual (requires HTML help compiler)" OFF "SO${GUI}_BUILD_DOCUMENTATION" OFF)
 
+cmake_dependent_option(SO${GUI}_BUILD_MAC_FRAMEWORK "Build framework instead of dylib on Mac OS X when ON. Only valid if SO${GUI}_BUILD_SHARED_LIBS is ON." ON "APPLE;NOT IOS;SO${GUI}_BUILD_SHARED_LIBS" OFF)
+
 # ############################################################################
 # Find all necessary and optional SoQt dependencies
 # ############################################################################
@@ -91,9 +93,37 @@ cmake_dependent_option(SO${GUI}_BUILD_DOC_CHM "Build compressed HTML help manual
 # Fail early if one of the required packages cannot be found
 
 find_package(OpenGL REQUIRED)
-find_package(Coin REQUIRED)
 find_package(Motif REQUIRED)
 find_package(X11 REQUIRED)
+# On Mac OS X, GLX is provided as a separate OpenGL implementation, different
+# from the standard OpenGL framework which provides support for GLUT and native
+# Mac OS X applications.
+if (X11_FOUND)
+	if (APPLE)
+		find_path(X11_GL_INCLUDE_PATH GL/glx.h ${X11_INC_SEARCH_PATH})
+		if (NOT X11_GL_INCLUDE_PATH)
+			message(FATAL_ERROR "Could not find GL/glx.h")
+		endif()
+		set(X11_INCLUDE_DIR ${X11_INCLUDE_DIR} ${X11_GL_INCLUDE_PATH})
+
+		find_library(X11_GL_LIB GL ${X11_LIB_SEARCH_PATH})
+		if (NOT X11_GL_LIB)
+			message(FATAL_ERROR "Could not find libGL.dylib")
+		endif()
+
+		find_library(X11_GLU_LIB GLU ${X11_LIB_SEARCH_PATH})
+		if (NOT X11_GLU_LIB)
+			message(FATAL_ERROR "Could not find libGLU.dylib")
+		endif()
+	else ()
+		set(X11_INCLUDE_DIR ${X11_INCLUDE_DIR} ${OPENGL_INCLUDE_DIR})
+		set(X11_GL_LIB ${OPENGL_gl_LIBRARY})
+		set(X11_GLU_LIB ${OPENGL_glu_LIBRARY})
+	endif ()
+endif()
+
+# Coin is typically installed as Inventor.framework on APPLE
+find_package(Coin NAMES Inventor Coin REQUIRED)
 
 # ##########################################################################
 # Setup build environment
@@ -142,10 +172,15 @@ elseif(FUNCTION)
 endif()
 check_include_files(dlfcn.h HAVE_DLFCN_H)
 
-set(CMAKE_REQUIRED_INCLUDES ${OPENGL_INCLUDE_DIR})
-set(CMAKE_REQUIRED_LIBRARIES ${OPENGL_LIBRARIES})
+set(CMAKE_REQUIRED_INCLUDES ${X11_INCLUDE_DIR})
+set(CMAKE_REQUIRED_LIBRARIES Coin::Coin ${X11_GL_LIB} ${X11_GLU_LIB})
 
-check_library_exists(GL glXChooseVisual "" HAVE_GLX)
+check_cxx_source_compiles("
+#include <GL/gl.h>
+#include <GL/glx.h>
+int main() { (void)glXChooseVisual(0L, 0, 0L); glEnd(); return 0; }
+" HAVE_GLX)
+#check_library_exists(GL glXChooseVisual "" HAVE_GLX)
 if(HAVE_WINDOWS_H)
   check_include_files("windows.h;GL/gl.h" HAVE_GL_GL_H)
   check_include_files("windows.h;GL/glu.h" HAVE_GL_GLU_H)
@@ -156,8 +191,8 @@ endif()
 check_include_files(OpenGL/gl.h HAVE_OPENGL_GL_H)
 check_include_files(OpenGL/glu.h HAVE_OPENGL_GLU_H)
 
-unset(CMAKE_REQUIRED_INCLUDES)
-unset(CMAKE_REQUIRED_LIBRARIES)
+#unset(CMAKE_REQUIRED_INCLUDES)
+#unset(CMAKE_REQUIRED_LIBRARIES)
 
 check_include_files(inttypes.h HAVE_INTTYPES_H)
 check_include_files(memory.h HAVE_MEMORY_H)
@@ -175,7 +210,7 @@ else()
   " HAVE_PTHREAD_TIMESPEC_NSEC)
 endif()
 
-set(CMAKE_REQUIRED_LIBRARIES ${Coin_LIBRARY})
+#set(CMAKE_REQUIRED_LIBRARIES ${Coin_LIBRARY})
 
 check_cxx_source_compiles("
   #include <Inventor/SbImage.h>
@@ -262,6 +297,7 @@ if(HAVE_X11_AVAILABLE)
   check_include_files(X11/extensions/XInput.h HAVE_X11_EXTENSIONS_XINPUT_H)
   check_include_files(X11/Xproto.h HAVE_X11_XPROTO_H)
 endif()
+unset(CMAKE_REQUIRED_INCLUDES)
 
 set(PACKAGE ${PROJECT_NAME})
 set(PACKAGE_DESCRIPTION "${PROJECT_DESCRIPTION}")

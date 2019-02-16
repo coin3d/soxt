@@ -16,9 +16,9 @@ X11_Xt_LIB
 X11_Xpm_LIB
 )
 
-executable(button           SOURCES button.cpp LIBS SoXt ${X11_Xt_LIB})
+executable(button           SOURCES button.cpp LIBS SoXt)
 executable(coloreditor      SOURCES coloreditor.cpp LIBS SoXt)
 executable(examinerviewer   SOURCES examinerviewer.cpp LIBS SoXt)
-executable(initalfullscreen SOURCES initalfullscreen.cpp LIBS SoXt ${X11_Xt_LIB})
-executable(materialeditor   SOURCES materialeditor.cpp LIBS SoXt )
-executable(initialpos       SOURCES initialpos.c LIBS ${X11_Xt_LIB} ${X11_LIBRARIES})
+executable(initalfullscreen SOURCES initalfullscreen.cpp LIBS SoXt)
+executable(materialeditor   SOURCES materialeditor.cpp LIBS SoXt)
+#executable(initialpos       SOURCES initialpos.c LIBS ${X11_Xt_LIB} ${X11_LIBRARIES})

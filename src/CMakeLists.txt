@@ -68,6 +68,8 @@ set(SRCS
   Inventor/${Gui}/widgets/${Gui}NativePopupMenu.cpp
 )
 
+file(GLOB_RECURSE COMMON_RESOURCES ${CMAKE_BINARY_DIR}/data/materials/*.h)
+
 if(HAVE_JOYSTICK_LINUX)
   list(APPEND HDRS Inventor/${Gui}/devices/So${Gui}LinuxJoystick.h)
   list(APPEND SRCS Inventor/${Gui}/devices/So${Gui}LinuxJoystick.cpp)
@@ -92,14 +94,45 @@ if(WIN32)
   set(CMAKE_RELWITHDEBINFO_POSTFIX ${SO${GUI}_DEFAULT_POSTFIX})
   set(CMAKE_DEBUG_POSTFIX ${SO${GUI}_DEFAULT_POSTFIX}d)
 elseif(APPLE)
+  if(POLICY CMP0042)
+    # get rid of MACOSX_RPATH warning on Mac OS X from CMake 3.12.2
+    cmake_policy(SET CMP0042 NEW)
+  endif()
+
+  if(POLICY CMP0068)
+    # get rid of BUILD_WITH_INSTALL_RPATH warning on Mac OS X from CMake 3.12.2
+    cmake_policy(SET CMP0068 NEW)
+  endif()
+
+  configure_file(${CMAKE_SOURCE_DIR}/Info.plist.in ${CMAKE_BINARY_DIR}/Info.plist)
+  configure_file(${CMAKE_SOURCE_DIR}/version.plist.in ${CMAKE_BINARY_DIR}/version.plist)
+  set(HAVE_GZDOPEN)
+
+  set(SO${GUI}_MAC_FRAMEWORK ${SO${GUI}_BUILD_MAC_FRAMEWORK})
+  set(SO${GUI}_MAC_FRAMEWORK_NAME "SoXt")
+  set(SO${GUI}_MAC_FRAMEWORK_PREFIX "${CMAKE_INSTALL_PREFIX}")
+  set(SO${GUI}_MAC_FRAMEWORK_VERSION "A") # SoXt2 will be "B", to allow parallel installations of SoXt1
+
+  # package config *.pc entries
+  set(frameworkdir "${SO${GUI}_MAC_FRAMEWORK_PREFIX}/${SO${GUI}_MAC_FRAMEWORK_NAME}.framework")
+  set(includedir "${frameworkdir}/Versions/${SO${GUI}_MAC_FRAMEWORK_VERSION}/Resources/include")
+  set(ivincludedir "${includedir}")
+  set(SO${GUI}_EXTRA_CPPFLAGS "-F${SO${GUI}_MAC_FRAMEWORK_PREFIX}")
+  set(SO${GUI}_EXTRA_FP_LDFLAGS "-Wl,-F${SO${GUI}_MAC_FRAMEWORK_PREFIX}")
+  set(SO${GUI}_EXTRA_LDFLAGS "${SO${GUI}_EXTRA_FP_LDFLAGS} -Wl,-framework,${SO${GUI}_MAC_FRAMEWORK_NAME} -Wl,-framework,Inventor -Wl,-framework,OpenGL")
+
+  # Let's enable all OS X specific code
+  set(SO${GUI}_MACOSX_FRAMEWORK ${SO${GUI}_BUILD_MAC_FRAMEWORK})
+  set(SO${GUI}_MACOS_10 1)
+  set(SO${GUI}_MACOS_10_3 1)
 else()
   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
 
 if(SO${GUI}_BUILD_SHARED_LIBS)
-  add_library(${PROJECT_NAME} SHARED ${HDRS} ${COMMON_HDRS} ${SRCS} ${COMMON_SRCS} ${MOC_SRCS})
+  add_library(${PROJECT_NAME} SHARED ${HDRS} ${COMMON_HDRS} ${SRCS} ${COMMON_SRCS} ${COMMON_RESOURCES})
 else()
-  add_library(${PROJECT_NAME} STATIC ${HDRS} ${COMMON_HDRS} ${SRCS} ${COMMON_SRCS} ${MOC_SRCS})
+  add_library(${PROJECT_NAME} STATIC ${HDRS} ${COMMON_HDRS} ${SRCS} ${COMMON_SRCS} ${COMMON_RESOURCES})
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${SO${GUI}_VERSION} SOVERSION ${SO${GUI}_SO_VERSION})
@@ -121,21 +154,47 @@ if(WIN32)
       set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Z7")     # debugging info in the .lib.
     endif()
   endif()
+elseif(APPLE)
+  if(SO${GUI}_BUILD_MAC_FRAMEWORK)
+    # Set the framework target properties just to make sure the relevant links inside the framework 
+    # are created.  Because the default framework name may differ from the project name we change the
+    # output name property.
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+      FRAMEWORK TRUE
+      FRAMEWORK_VERSION ${SO${GUI}_MAC_FRAMEWORK_VERSION}
+      #PUBLIC_HEADER "${SO${GUI}_MAC_FRAMEWORK_HEADER}"
+      #PRIVATE_HEADER "${SO${GUI}_PRIVATE_HEADERS}"
+      RESOURCE "${CMAKE_BINARY_DIR}/version.plist"
+      MACOSX_FRAMEWORK_IDENTIFIER org.coin3d.SoXt.framework
+      MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${PROJECT_VERSION}
+      MACOSX_FRAMEWORK_BUNDLE_VERSION ${PROJECT_VERSION}
+      MACOSX_FRAMEWORK_INFO_PLIST "${CMAKE_BINARY_DIR}/Info.plist"
+      OUTPUT_NAME ${SO${GUI}_MAC_FRAMEWORK_NAME}
+    )
+    # adapt install directory to allow distribution of dylibs/frameworks in users framework/application bundle
+    set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_NAME_DIR "@rpath")
+    if(NOT CMAKE_SKIP_BUILD_RPATH)
+      if(CMAKE_VERSION VERSION_LESS 3.9)
+        set_target_properties(${PROJECT_NAME} PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE)
+      else()
+        set_target_properties(${PROJECT_NAME} PROPERTIES BUILD_WITH_INSTALL_NAME_DIR TRUE)
+      endif()
+    endif()
+  endif()
 endif()
 
 target_include_directories(${PROJECT_NAME}
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-    $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>
-    ${OPENGL_INCLUDE_DIR}
+    ${X11_INCLUDE_DIR} ${MOTIF_INCLUDE_DIR}
 )
+if(NOT SO${GUI}_BUILD_MAC_FRAMEWORK)
+  target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+endif()
 
-target_link_libraries(${PROJECT_NAME}
-${Coin_LIBRARY}
-${OPENGL_LIBRARIES}
-${MOTIF_LIBRARIES}
-)
+target_link_libraries(${PROJECT_NAME} Coin::Coin ${X11_GL_LIB} ${X11_GLU_LIB} ${MOTIF_LIBRARIES})
+
 dump_variable(
 Coin_LIBRARIES
 OPENGL_LIBRARIES
@@ -156,9 +215,15 @@ if(X11_FOUND)
   target_include_directories(${PROJECT_NAME} PUBLIC ${X11_INCLUDE_DIR})
   target_link_libraries(${PROJECT_NAME} ${X11_LIBRARIES})
 endif()
+
 if(X11_Xi_FOUND)
   target_include_directories(${PROJECT_NAME} PUBLIC ${X11_Xi_INCLUDE_DIR})
   target_link_libraries(${PROJECT_NAME} ${X11_Xi_LIB})
+endif()
+
+if(X11_Xt_FOUND)
+  target_include_directories(${PROJECT_NAME} PUBLIC ${X11_Xt_INCLUDE_DIR})
+  target_link_libraries(${PROJECT_NAME} ${X11_Xt_LIB})
 endif()
 
 # Add a target to generate API documentation with Doxygen
@@ -229,16 +294,18 @@ if(SO${GUI}_BUILD_DOCUMENTATION)
 # ############################################################################
 # Install built documentation files
 # ############################################################################
-  install(DIRECTORY "${CMAKE_BINARY_DIR}/html" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation REGEX ".*\\.(chm|qch)" EXCLUDE)
-  if(GENERATE_HTMLHELP)
-    install(FILES "${CMAKE_BINARY_DIR}/html/${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.chm" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation)
-  endif()
-  if(GENERATE_QHP)
-    install(FILES "${CMAKE_BINARY_DIR}/html/${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.qch" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation)
-  endif()
-  if(DOXYGEN_GENERATE_MAN)
-    install(DIRECTORY "${CMAKE_BINARY_DIR}/man/man3" DESTINATION ${CMAKE_INSTALL_MANDIR} COMPONENT documentation)
-    message(STATUS "CMAKE_INSTALL_MANDIR ${CMAKE_INSTALL_MANDIR}")
+  if(NOT SO${GUI}_BUILD_MAC_FRAMEWORK)
+    install(DIRECTORY "${CMAKE_BINARY_DIR}/html" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation REGEX ".*\\.(chm|qch)" EXCLUDE)
+    if(GENERATE_HTMLHELP)
+      install(FILES "${CMAKE_BINARY_DIR}/html/${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.chm" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation)
+    endif()
+    if(GENERATE_QHP)
+      install(FILES "${CMAKE_BINARY_DIR}/html/${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.qch" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation)
+    endif()
+    if(DOXYGEN_GENERATE_MAN)
+      install(DIRECTORY "${CMAKE_BINARY_DIR}/man/man3" DESTINATION ${CMAKE_INSTALL_MANDIR} COMPONENT documentation)
+      message(STATUS "CMAKE_INSTALL_MANDIR ${CMAKE_INSTALL_MANDIR}")
+    endif()
   endif()
 endif()
 
@@ -307,27 +374,119 @@ set(INST_WIDGETS_HDRS
   Inventor/${Gui}/widgets/So${Gui}ThumbWheel.h
 )
 
-install(FILES ${INST_HDRS}         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor/${Gui}         COMPONENT development)
-install(FILES ${INST_DEVICES_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor/${Gui}/devices COMPONENT development)
-install(FILES ${INST_EDITORS_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor/${Gui}/editors COMPONENT development)
-install(FILES ${INST_NODES_HDRS}   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor/${Gui}/nodes   COMPONENT development)
-install(FILES ${INST_VIEWERS_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor/${Gui}/viewers COMPONENT development)
-install(FILES ${INST_WIDGETS_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor/${Gui}/widgets COMPONENT development)
+# Setting up a framework means adding all the files and links under a framework
+# directory. A single install command then moves the entire contents of the
+# framework directory to the SO${GUI}_MAC_FRAMEWORK_PREFIX directory (/Library/Frameworks
+# by default)
+# As the PUBLIC_HEADER and RESOURCE options of install target do not support
+# directory structure creation when building a framework we set the MACOSX_PACKAGE_LOCATION
+# property on the source files and add them to the target. This does however not work
+# for the generated documentation files.
+# All non standard links must be created manually.
+if(SO${GUI}_BUILD_MAC_FRAMEWORK)
+
+# determine which subdirectory this file (header, resource) should be installed into.
+function(set_macosx_properties _removable_prefixes _install_prefix _source_files)
+  foreach(_file ${_source_files})
+    get_filename_component(_loc "${_file}" DIRECTORY)
+    foreach(_prefix ${_removable_prefixes})
+      string(REPLACE "${_prefix}" "" _loc "${_loc}")
+    endforeach()
+    set_source_files_properties(${_file} PROPERTIES MACOSX_PACKAGE_LOCATION ${_install_prefix}${_loc})
+  endforeach()
+endfunction()
 
 # ############################################################################
-# Install targets
+# Add framework headers
+# ############################################################################
+  set_macosx_properties("${CMAKE_CURRENT_SOURCE_DIR}/Inventor/${Gui};${CMAKE_CURRENT_BINARY_DIR}/Inventor/${Gui}"  "Headers" "${INST_HDRS};${INST_DEVICES_HDRS};${INST_EDITORS_HDRS};${INST_NODES_HDRS};${INST_VIEWERS_HDRS};${INST_WIDGETS_HDRS}")
+
+# ############################################################################
+# Add framework data files
+# ############################################################################
+  set_macosx_properties("${CMAKE_SOURCE_DIR}/data;${CMAKE_BINARY_DIR}/data" "Resources" "${COMMON_RESOURCES}")
+
+# ############################################################################
+# Add framework documentation files
 # ############################################################################
 
-install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
-)
+  if(SO${GUI}_BUILD_DOCUMENTATION)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD 
+      COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Documentation
+      COMMAND ${CMAKE_COMMAND} -E create_symlink ./Versions/Current/Documentation $<TARGET_FILE_DIR:${PROJECT_NAME}>/../../Documentation
+      COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/html $<TARGET_FILE_DIR:${PROJECT_NAME}>/Documentation/html
+      COMMAND ${CMAKE_COMMAND} -E remove $<TARGET_FILE_DIR:${PROJECT_NAME}>/Documentation/html/${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.qch)
+    if(GENERATE_QHP)
+      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD 
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/html/${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.qch $<TARGET_FILE_DIR:${PROJECT_NAME}>/Documentation)
+    endif()
+    if(DOXYGEN_GENERATE_MAN)
+      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD 
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/man/man3 $<TARGET_FILE_DIR:${PROJECT_NAME}>/Documentation/man)
+    endif()
+  endif()
 
-if(SO${GUI}_BUILD_SHARED_LIBS)
-  install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development NAMELINK_ONLY)
-  if(MSVC)
-    install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
+# ############################################################################
+# Add framework links
+# ############################################################################
+
+  add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD 
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Libraries
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ./Versions/Current/Libraries $<TARGET_FILE_DIR:${PROJECT_NAME}>/../../Libraries
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ../${SO${GUI}_MAC_FRAMEWORK_NAME} $<TARGET_FILE_DIR:${PROJECT_NAME}>/Libraries/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${SO${GUI}_SO_VERSION}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}${CMAKE_SHARED_LIBRARY_SUFFIX}
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ../${SO${GUI}_MAC_FRAMEWORK_NAME} $<TARGET_FILE_DIR:${PROJECT_NAME}>/Libraries/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${SO${GUI}_SO_VERSION}${CMAKE_SHARED_LIBRARY_SUFFIX}
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ../${SO${GUI}_MAC_FRAMEWORK_NAME} $<TARGET_FILE_DIR:${PROJECT_NAME}>/Libraries/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/include
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/include/Inventor
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ../../../Headers $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/include/Inventor/${Gui}
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+  )
+
+# ############################################################################
+# Install framework target
+# ############################################################################
+
+  install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
+    FRAMEWORK DESTINATION . COMPONENT development
+  )
+
+else()
+
+# ############################################################################
+# Install headers
+# ############################################################################
+
+  install(FILES ${INST_HDRS}         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor/${Gui}         COMPONENT development)
+  install(FILES ${INST_DEVICES_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor/${Gui}/devices COMPONENT development)
+  install(FILES ${INST_EDITORS_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor/${Gui}/editors COMPONENT development)
+  install(FILES ${INST_NODES_HDRS}   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor/${Gui}/nodes   COMPONENT development)
+  install(FILES ${INST_VIEWERS_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor/${Gui}/viewers COMPONENT development)
+  install(FILES ${INST_WIDGETS_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor/${Gui}/widgets COMPONENT development)
+
+# ############################################################################
+# Install data files
+# ############################################################################
+
+  install(DIRECTORY ${CMAKE_BINARY_DIR}/data/materials/ DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/materials)
+
+# ############################################################################
+# Install target
+# ############################################################################
+
+  install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development
+    #PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development
+    RESOURCE DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME} COMPONENT development
+  )
+
+  if(SO${GUI}_BUILD_SHARED_LIBS)
+    install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development NAMELINK_ONLY)
+    if(MSVC)
+      install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
+    endif()
   endif()
 endif()
 
@@ -335,16 +494,25 @@ endif()
 # Install pkgconfig file and CMake config package
 # ############################################################################
 
-if(UNIX OR MINGW)
-  configure_file("${CMAKE_SOURCE_DIR}/So${Gui}.pc.cmake.in" So${Gui}.pc @ONLY)
-  install(FILES "${CMAKE_CURRENT_BINARY_DIR}/So${Gui}.pc" DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+if(SO${GUI}_BUILD_MAC_FRAMEWORK)
+  set(SO${GUI}_CONFIG_PACKAGE_LOCATION ${SO${GUI}_MAC_FRAMEWORK_NAME}.framework/Resources/CMake)
+  string(TOLOWER ${SO${GUI}_MAC_FRAMEWORK_NAME} SO${GUI}_CONFIG_PACKAGE_BASENAME)
+else()
+  set(SO${GUI}_CONFIG_PACKAGE_LOCATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION})
+  string(TOLOWER ${PROJECT_NAME} SO${GUI}_CONFIG_PACKAGE_BASENAME)
+  if(UNIX OR MINGW)
+    configure_file("${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.pc.cmake.in" ${PROJECT_NAME}.pc @ONLY)
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc" DESTINATION ${SO${GUI}_INSTALL_LIBDIR}/pkgconfig)
+  endif()
 endif()
 
-configure_package_config_file("${CMAKE_SOURCE_DIR}/${PROJECT_NAME_LOWER}-config.cmake.in" ${PROJECT_NAME_LOWER}-config.cmake
-  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file("${CMAKE_SOURCE_DIR}/${PROJECT_NAME_LOWER}-config.cmake.in" ${SO${GUI}_CONFIG_PACKAGE_BASENAME}-config.cmake
+  INSTALL_DESTINATION ${SO${GUI}_CONFIG_PACKAGE_LOCATION}
 )
 
-write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake"
+write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${SO${GUI}_CONFIG_PACKAGE_BASENAME}-config-version.cmake"
   VERSION ${PROJECT_VERSION}
   COMPATIBILITY ExactVersion
 )
@@ -352,17 +520,17 @@ write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOW
 # To make the component usable not only from the install directory but also from the build directory
 export(
   TARGETS ${PROJECT_NAME}
-  FILE ${PROJECT_NAME_LOWER}-export.cmake
+  FILE ${SO${GUI}_CONFIG_PACKAGE_BASENAME}-export.cmake
 )
 
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config.cmake" "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake"
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${SO${GUI}_CONFIG_PACKAGE_BASENAME}-config.cmake" "${CMAKE_CURRENT_BINARY_DIR}/${SO${GUI}_CONFIG_PACKAGE_BASENAME}-config-version.cmake"
+  DESTINATION ${SO${GUI}_CONFIG_PACKAGE_LOCATION}
   COMPONENT development
 )
 
 install(EXPORT ${PROJECT_NAME}
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
+  DESTINATION ${SO${GUI}_CONFIG_PACKAGE_LOCATION}
   NAMESPACE ${PROJECT_NAME}::
-  FILE ${PROJECT_NAME_LOWER}-export.cmake
+  FILE ${SO${GUI}_CONFIG_PACKAGE_BASENAME}-export.cmake
   COMPONENT development
 )
