@@ -87,7 +87,7 @@ cmake_dependent_option(SO${GUI}_BUILD_DOC_CHM "Build compressed HTML help manual
 cmake_dependent_option(SO${GUI}_BUILD_MAC_FRAMEWORK "Build framework instead of dylib on Mac OS X when ON. Only valid if SO${GUI}_BUILD_SHARED_LIBS is ON." ON "APPLE;NOT IOS;SO${GUI}_BUILD_SHARED_LIBS" OFF)
 
 # ############################################################################
-# Find all necessary and optional SoQt dependencies
+# Find all necessary and optional SoXt dependencies
 # ############################################################################
 
 # Fail early if one of the required packages cannot be found
