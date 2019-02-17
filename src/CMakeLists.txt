@@ -75,60 +75,6 @@ if(HAVE_JOYSTICK_LINUX)
   list(APPEND SRCS Inventor/${Gui}/devices/So${Gui}LinuxJoystick.cpp)
 endif()
 
-if(WIN32)
-  if(MINGW)
-    set(SO${GUI}_DEFAULT_SHARED_POSTFIX "")
-    set(SO${GUI}_DEFAULT_STATIC_POSTFIX "")
-  else()
-    # On Windows the major version number is part of the library name
-    set(SO${GUI}_DEFAULT_SHARED_POSTFIX ${PROJECT_VERSION_MAJOR})
-    set(SO${GUI}_DEFAULT_STATIC_POSTFIX ${PROJECT_VERSION_MAJOR}s)
-  endif()
-  if(SO${GUI}_BUILD_SHARED_LIBS)
-    set(SO${GUI}_DEFAULT_POSTFIX ${SO${GUI}_DEFAULT_SHARED_POSTFIX})
-  else()
-    set(SO${GUI}_DEFAULT_POSTFIX ${SO${GUI}_DEFAULT_STATIC_POSTFIX})
-  endif()
-  set(CMAKE_RELEASE_POSTFIX ${SO${GUI}_DEFAULT_POSTFIX})
-  set(CMAKE_MINSIZEREL_POSTFIX ${SO${GUI}_DEFAULT_POSTFIX})
-  set(CMAKE_RELWITHDEBINFO_POSTFIX ${SO${GUI}_DEFAULT_POSTFIX})
-  set(CMAKE_DEBUG_POSTFIX ${SO${GUI}_DEFAULT_POSTFIX}d)
-elseif(APPLE)
-  if(POLICY CMP0042)
-    # get rid of MACOSX_RPATH warning on Mac OS X from CMake 3.12.2
-    cmake_policy(SET CMP0042 NEW)
-  endif()
-
-  if(POLICY CMP0068)
-    # get rid of BUILD_WITH_INSTALL_RPATH warning on Mac OS X from CMake 3.12.2
-    cmake_policy(SET CMP0068 NEW)
-  endif()
-
-  configure_file(${CMAKE_SOURCE_DIR}/Info.plist.in ${CMAKE_BINARY_DIR}/Info.plist)
-  configure_file(${CMAKE_SOURCE_DIR}/version.plist.in ${CMAKE_BINARY_DIR}/version.plist)
-  set(HAVE_GZDOPEN)
-
-  set(SO${GUI}_MAC_FRAMEWORK ${SO${GUI}_BUILD_MAC_FRAMEWORK})
-  set(SO${GUI}_MAC_FRAMEWORK_NAME "SoXt")
-  set(SO${GUI}_MAC_FRAMEWORK_PREFIX "${CMAKE_INSTALL_PREFIX}")
-  set(SO${GUI}_MAC_FRAMEWORK_VERSION "A") # SoXt2 will be "B", to allow parallel installations of SoXt1
-
-  # package config *.pc entries
-  set(frameworkdir "${SO${GUI}_MAC_FRAMEWORK_PREFIX}/${SO${GUI}_MAC_FRAMEWORK_NAME}.framework")
-  set(includedir "${frameworkdir}/Versions/${SO${GUI}_MAC_FRAMEWORK_VERSION}/Resources/include")
-  set(ivincludedir "${includedir}")
-  set(SO${GUI}_EXTRA_CPPFLAGS "-F${SO${GUI}_MAC_FRAMEWORK_PREFIX}")
-  set(SO${GUI}_EXTRA_FP_LDFLAGS "-Wl,-F${SO${GUI}_MAC_FRAMEWORK_PREFIX}")
-  set(SO${GUI}_EXTRA_LDFLAGS "${SO${GUI}_EXTRA_FP_LDFLAGS} -Wl,-framework,${SO${GUI}_MAC_FRAMEWORK_NAME} -Wl,-framework,Inventor -Wl,-framework,OpenGL")
-
-  # Let's enable all OS X specific code
-  set(SO${GUI}_MACOSX_FRAMEWORK ${SO${GUI}_BUILD_MAC_FRAMEWORK})
-  set(SO${GUI}_MACOS_10 1)
-  set(SO${GUI}_MACOS_10_3 1)
-else()
-  set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-endif()
-
 if(SO${GUI}_BUILD_SHARED_LIBS)
   add_library(${PROJECT_NAME} SHARED ${HDRS} ${COMMON_HDRS} ${SRCS} ${COMMON_SRCS} ${COMMON_RESOURCES})
 else()
@@ -193,38 +139,8 @@ if(NOT SO${GUI}_BUILD_MAC_FRAMEWORK)
   target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 endif()
 
-target_link_libraries(${PROJECT_NAME} Coin::Coin ${X11_GL_LIB} ${X11_GLU_LIB} ${MOTIF_LIBRARIES})
-
-dump_variable(
-Coin_LIBRARIES
-OPENGL_LIBRARIES
-MOTIF_LIBRARIES
-)
-
-if (X11_Xpm_FOUND)
-  target_include_directories(${PROJECT_NAME} PUBLIC ${X11_Xpm_INCLUDE_PATH})
-  target_link_libraries(${PROJECT_NAME} ${X11_Xpm_LIB})
-endif()
-
-if (X11_Xmu_FOUND)
-  target_include_directories(${PROJECT_NAME} PUBLIC ${X11_Xmu_INCLUDE_PATH})
-  target_link_libraries(${PROJECT_NAME} ${X11_Xmu_LIB})
-endif()
-
-if(X11_FOUND)
-  target_include_directories(${PROJECT_NAME} PUBLIC ${X11_INCLUDE_DIR})
-  target_link_libraries(${PROJECT_NAME} ${X11_LIBRARIES})
-endif()
-
-if(X11_Xi_FOUND)
-  target_include_directories(${PROJECT_NAME} PUBLIC ${X11_Xi_INCLUDE_DIR})
-  target_link_libraries(${PROJECT_NAME} ${X11_Xi_LIB})
-endif()
-
-if(X11_Xt_FOUND)
-  target_include_directories(${PROJECT_NAME} PUBLIC ${X11_Xt_INCLUDE_DIR})
-  target_link_libraries(${PROJECT_NAME} ${X11_Xt_LIB})
-endif()
+target_link_libraries(${PROJECT_NAME} Coin::Coin ${SOXT_OPENGL_LIBRARIES} ${MOTIF_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} "${X11_Xpm_LIB}" "${X11_Xmu_LIB}" "${X11_LIBRARIES}" "${X11_Xi_LIB}" "${X11_Xt_LIB}")
 
 # Add a target to generate API documentation with Doxygen
 if(SO${GUI}_BUILD_DOCUMENTATION)
@@ -233,7 +149,9 @@ if(SO${GUI}_BUILD_DOCUMENTATION)
     message(FATAL_ERROR "Doxygen is needed to build the documentation.")
   endif()
 
-  set(DOXYGEN_TAGFILES "${Coin_DOC_DIR}/html/Coin.tag=${Coin_DOC_DIR}/html")
+  if(NOT "${Coin_DOC_DIR}" STREQUAL "")
+    set(DOXYGEN_TAGFILES "${Coin_DOC_DIR}/html/Coin.tag=${Coin_DOC_DIR}/html")
+  endif()
 
 # ############################################################################
 # Setup documentation options

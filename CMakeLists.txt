@@ -99,27 +99,27 @@ find_package(X11 REQUIRED)
 # from the standard OpenGL framework which provides support for GLUT and native
 # Mac OS X applications.
 if (X11_FOUND)
-	if (APPLE)
-		find_path(X11_GL_INCLUDE_PATH GL/glx.h ${X11_INC_SEARCH_PATH})
-		if (NOT X11_GL_INCLUDE_PATH)
-			message(FATAL_ERROR "Could not find GL/glx.h")
-		endif()
-		set(X11_INCLUDE_DIR ${X11_INCLUDE_DIR} ${X11_GL_INCLUDE_PATH})
+  if (APPLE)
+    find_path(X11_GL_INCLUDE_PATH GL/glx.h ${X11_INC_SEARCH_PATH})
+    if (NOT X11_GL_INCLUDE_PATH)
+      message(FATAL_ERROR "Could not find GL/glx.h")
+    endif()
 
-		find_library(X11_GL_LIB GL ${X11_LIB_SEARCH_PATH})
-		if (NOT X11_GL_LIB)
-			message(FATAL_ERROR "Could not find libGL.dylib")
-		endif()
+    find_library(X11_GL_LIB GL ${X11_LIB_SEARCH_PATH})
+    if (NOT X11_GL_LIB)
+      message(FATAL_ERROR "Could not find libGL.dylib")
+    endif()
 
-		find_library(X11_GLU_LIB GLU ${X11_LIB_SEARCH_PATH})
-		if (NOT X11_GLU_LIB)
-			message(FATAL_ERROR "Could not find libGLU.dylib")
-		endif()
-	else ()
-		set(X11_INCLUDE_DIR ${X11_INCLUDE_DIR} ${OPENGL_INCLUDE_DIR})
-		set(X11_GL_LIB ${OPENGL_gl_LIBRARY})
-		set(X11_GLU_LIB ${OPENGL_glu_LIBRARY})
-	endif ()
+    find_library(X11_GLU_LIB GLU ${X11_LIB_SEARCH_PATH})
+    if (NOT X11_GLU_LIB)
+      message(FATAL_ERROR "Could not find libGLU.dylib")
+    endif()
+    set(SOXT_OPENGL_INCLUDE_DIRECTORIES ${X11_INCLUDE_DIR} ${X11_GL_INCLUDE_PATH})
+    set(SOXT_OPENGL_LIBRARIES ${X11_GL_LIB} ${X11_GLU_LIB})
+  else ()
+    set(SOXT_OPENGL_INCLUDE_DIRECTORIES ${X11_INCLUDE_DIR} ${OPENGL_INCLUDE_DIR})
+    set(SOXT_OPENGL_LIBRARIES ${OPENGL_LIBRARIES})
+  endif ()
 endif()
 
 # Coin is typically installed as Inventor.framework on APPLE
@@ -129,33 +129,91 @@ find_package(Coin NAMES Inventor Coin REQUIRED)
 # Setup build environment
 # ##########################################################################
 
-if (X11_Xmu_FOUND)
-  set(HAVE_LIBXMU 1)
+if(NOT CMAKE_BUILD_TYPE)
+  # Has no effect for multi configuration generators (VisualStudio, Xcode).
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose type of build, options are Debug, Release, RelWithDebInfo, MinSizeRel." FORCE)
 endif()
-
-if (X11_Xpm_FOUND)
-  set(HAVE_LIBXPM 1)
-endif()
-
-if (CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-  set(HAVE_JOYSTICK_LINUX 1)
-endif()
-
-check_include_files(windows.h HAVE_WINDOWS_H)
-check_include_files(sys/types.h HAVE_SYS_TYPES_H)
+# Set common output directories for all targets built.
+# First for the generic no-config case (e.g. with mingw)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+# Second, for multi-config builds (e.g. msvc)
+foreach (_config ${CMAKE_CONFIGURATION_TYPES})
+  string(TOUPPER ${_config} _config)
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${_config} "${CMAKE_BINARY_DIR}/lib")
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${_config} "${CMAKE_BINARY_DIR}/lib")
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${_config} "${CMAKE_BINARY_DIR}/bin")
+endforeach()
 
 # gets the Motif toolkit version
-file(STRINGS "${MOTIF_INCLUDE_DIR}/Xm/Xm.h"  motif REGEX "#define XmVERSION_STRING")
-string(REGEX MATCH "Motif Version ([0-9]+)\\.([0-9]+)\\.([0-9]+)" dummy ${motif})
+file(STRINGS "${MOTIF_INCLUDE_DIR}/Xm/Xm.h" _motif REGEX "#define XmVERSION_STRING")
+string(REGEX MATCH "Motif Version ([0-9]+)\\.([0-9]+)\\.([0-9]+)" dummy ${_motif})
 set(MOTIF_VERSION_MAJOR ${CMAKE_MATCH_1})
 set(MOTIF_VERSION_MINOR ${CMAKE_MATCH_2})
 set(MOTIF_VERSION_PATCH ${CMAKE_MATCH_3})
-dump_variable(
-MOTIF_VERSION_MAJOR
-MOTIF_VERSION_MINOR
-MOTIF_VERSION_PATCH
-)
+
 set(GUI_TOOLKIT_VERSION ${MOTIF_VERSION_MAJOR}${MOTIF_VERSION_MINOR}${MOTIF_VERSION_PATCH})
+
+if(WIN32)
+  if(MINGW)
+    set(SO${GUI}_DEFAULT_SHARED_POSTFIX "")
+    set(SO${GUI}_DEFAULT_STATIC_POSTFIX "")
+  else()
+    # On Windows the major version number is part of the library name
+    set(SO${GUI}_DEFAULT_SHARED_POSTFIX ${PROJECT_VERSION_MAJOR})
+    set(SO${GUI}_DEFAULT_STATIC_POSTFIX ${PROJECT_VERSION_MAJOR}s)
+  endif()
+  if(SO${GUI}_BUILD_SHARED_LIBS)
+    set(SO${GUI}_DEFAULT_POSTFIX ${SO${GUI}_DEFAULT_SHARED_POSTFIX})
+  else()
+    set(SO${GUI}_DEFAULT_POSTFIX ${SO${GUI}_DEFAULT_STATIC_POSTFIX})
+  endif()
+  set(CMAKE_RELEASE_POSTFIX ${SO${GUI}_DEFAULT_POSTFIX})
+  set(CMAKE_MINSIZEREL_POSTFIX ${SO${GUI}_DEFAULT_POSTFIX})
+  set(CMAKE_RELWITHDEBINFO_POSTFIX ${SO${GUI}_DEFAULT_POSTFIX})
+  set(CMAKE_DEBUG_POSTFIX ${SO${GUI}_DEFAULT_POSTFIX}d)
+elseif(APPLE)
+  if(POLICY CMP0042)
+    # get rid of MACOSX_RPATH warning on Mac OS X from CMake 3.12.2
+    cmake_policy(SET CMP0042 NEW)
+  endif()
+
+  if(POLICY CMP0068)
+    # get rid of BUILD_WITH_INSTALL_RPATH warning on Mac OS X from CMake 3.12.2
+    cmake_policy(SET CMP0068 NEW)
+  endif()
+
+  if(POLICY CMP0075)
+    # get rid of CMAKE_REQUIRED_LIBRARIES warning from CMake 3.12
+    cmake_policy(SET CMP0075 NEW)
+  endif()
+
+  configure_file(${CMAKE_SOURCE_DIR}/Info.plist.in ${CMAKE_BINARY_DIR}/Info.plist)
+  configure_file(${CMAKE_SOURCE_DIR}/version.plist.in ${CMAKE_BINARY_DIR}/version.plist)
+  set(HAVE_GZDOPEN)
+
+  set(SO${GUI}_MAC_FRAMEWORK ${SO${GUI}_BUILD_MAC_FRAMEWORK})
+  set(SO${GUI}_MAC_FRAMEWORK_NAME "SoXt")
+  set(SO${GUI}_MAC_FRAMEWORK_PREFIX "${CMAKE_INSTALL_PREFIX}")
+  set(SO${GUI}_MAC_FRAMEWORK_VERSION "A") # SoXt2 will be "B", to allow parallel installations of SoXt1
+  set(PACKAGING_FRAMEWORK_NAME ${SO${GUI}_MAC_FRAMEWORK_NAME})
+
+  # package config *.pc entries
+  set(frameworkdir "${SO${GUI}_MAC_FRAMEWORK_PREFIX}/${SO${GUI}_MAC_FRAMEWORK_NAME}.framework")
+  set(includedir "${frameworkdir}/Versions/${SO${GUI}_MAC_FRAMEWORK_VERSION}/Resources/include")
+  set(ivincludedir "${includedir}")
+  set(SO${GUI}_EXTRA_CPPFLAGS "-F${SO${GUI}_MAC_FRAMEWORK_PREFIX}")
+  set(SO${GUI}_EXTRA_FP_LDFLAGS "-Wl,-F${SO${GUI}_MAC_FRAMEWORK_PREFIX}")
+  set(SO${GUI}_EXTRA_LDFLAGS "${SO${GUI}_EXTRA_FP_LDFLAGS} -Wl,-framework,${SO${GUI}_MAC_FRAMEWORK_NAME} -Wl,-framework,Inventor -Wl,-framework,OpenGL")
+
+  # Let's enable all OS X specific code
+  set(SO${GUI}_MACOSX_FRAMEWORK ${SO${GUI}_BUILD_MAC_FRAMEWORK})
+  set(SO${GUI}_MACOS_10 1)
+  set(SO${GUI}_MACOS_10_3 1)
+else()
+  set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+endif()
 
 check_symbol_exists(__func__ "" FUNC)
 check_symbol_exists(__PRETTY_FUNCTION__ "" PRETTY_FUNCTION)
@@ -170,33 +228,26 @@ elseif(FUNCTION)
   set(HAVE_C_COMPILER_FUNCTION_NAME_VAR __FUNCTION__)
   set(HAVE_CPP_COMPILER_FUNCTION_NAME_VAR __FUNCTION__)
 endif()
-check_include_files(dlfcn.h HAVE_DLFCN_H)
 
-set(CMAKE_REQUIRED_INCLUDES ${X11_INCLUDE_DIR})
-set(CMAKE_REQUIRED_LIBRARIES Coin::Coin ${X11_GL_LIB} ${X11_GLU_LIB})
+set(CMAKE_REQUIRED_INCLUDES ${SOXT_OPENGL_INCLUDE_DIRECTORIES})
 
-check_cxx_source_compiles("
-#include <GL/gl.h>
-#include <GL/glx.h>
-int main() { (void)glXChooseVisual(0L, 0, 0L); glEnd(); return 0; }
-" HAVE_GLX)
-#check_library_exists(GL glXChooseVisual "" HAVE_GLX)
+check_include_files(windows.h HAVE_WINDOWS_H)
 if(HAVE_WINDOWS_H)
   check_include_files("windows.h;GL/gl.h" HAVE_GL_GL_H)
   check_include_files("windows.h;GL/glu.h" HAVE_GL_GLU_H)
+elseif(APPLE)
+  check_include_files(OpenGL/gl.h HAVE_OPENGL_GL_H)
+  check_include_files(OpenGL/glu.h HAVE_OPENGL_GLU_H)
 else()
   check_include_files(GL/gl.h HAVE_GL_GL_H)
   check_include_files(GL/glu.h HAVE_GL_GLU_H)
 endif()
-check_include_files(OpenGL/gl.h HAVE_OPENGL_GL_H)
-check_include_files(OpenGL/glu.h HAVE_OPENGL_GLU_H)
 
-#unset(CMAKE_REQUIRED_INCLUDES)
-#unset(CMAKE_REQUIRED_LIBRARIES)
-
+check_include_files(dlfcn.h HAVE_DLFCN_H)
 check_include_files(inttypes.h HAVE_INTTYPES_H)
 check_include_files(memory.h HAVE_MEMORY_H)
 check_include_files(netinet/in.h HAVE_NETINET_IN_H)
+check_include_files(sys/types.h HAVE_SYS_TYPES_H)
 if(HAVE_SYS_TYPES_H)
   check_cxx_source_compiles("
     #include <sys/types.h>
@@ -210,7 +261,13 @@ else()
   " HAVE_PTHREAD_TIMESPEC_NSEC)
 endif()
 
-#set(CMAKE_REQUIRED_LIBRARIES ${Coin_LIBRARY})
+set(CMAKE_REQUIRED_LIBRARIES Coin::Coin ${SOXT_OPENGL_LIBRARIES})
+
+check_cxx_source_compiles("
+  #include <GL/gl.h>
+  #include <GL/glx.h>
+  int main() { (void)glXChooseVisual(0L, 0, 0L); glEnd(); return 0; }
+" HAVE_GLX)
 
 check_cxx_source_compiles("
   #include <Inventor/SbImage.h>
@@ -288,15 +345,30 @@ if(HAVE_WINDOWS_H)
   endif()
   check_symbol_exists(GetEnvironmentVariable windows.h HAVE_GETENVIRONMENTVARIABLE)
 endif()
+
+if (X11_Xmu_FOUND)
+  set(HAVE_LIBXMU 1)
+endif()
+
+if (X11_Xpm_FOUND)
+  set(HAVE_LIBXPM 1)
+endif()
+
+if (CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+  set(HAVE_JOYSTICK_LINUX 1)
+endif()
+
 set(USE_EXCEPTIONS ON)
-set(X_DISPLAY_MISSING 1)
 check_include_files(X11/Xlib.h HAVE_X11_AVAILABLE)
 if(HAVE_X11_AVAILABLE)
   set(X_DISPLAY_MISSING 0)
   check_include_files(X11/extensions/SGIMisc.h HAVE_X11_EXTENSIONS_SGIMISC_H)
   check_include_files(X11/extensions/XInput.h HAVE_X11_EXTENSIONS_XINPUT_H)
   check_include_files(X11/Xproto.h HAVE_X11_XPROTO_H)
+else()
+  set(X_DISPLAY_MISSING 1)
 endif()
+
 unset(CMAKE_REQUIRED_INCLUDES)
 
 set(PACKAGE ${PROJECT_NAME})
