@@ -1117,7 +1117,7 @@ SoXtFullViewerP::rightWheelFinishCB(Widget, XtPointer closure, XtPointer)
   SoXtFullViewer * viewer = (SoXtFullViewer *) closure;
   viewer->rightWheelFinish();
 }
-#endif DOXYGEN_SKIP_THIS
+#endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
 
