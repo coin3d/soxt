@@ -21,7 +21,7 @@ endfunction()
 set(SO${GUI}_MAJOR_VERSION 1)
 set(SO${GUI}_MINOR_VERSION 3)
 set(SO${GUI}_MICRO_VERSION 2)
-set(SO${GUI}_BETA_VERSION  a)
+set(SO${GUI}_BETA_VERSION a)
 set(SO${GUI}_VERSION ${SO${GUI}_MAJOR_VERSION}.${SO${GUI}_MINOR_VERSION}.${SO${GUI}_MICRO_VERSION}${SO${GUI}_BETA_VERSION})
 
 project(So${Gui} VERSION ${SO${GUI}_MAJOR_VERSION}.${SO${GUI}_MINOR_VERSION}.${SO${GUI}_MICRO_VERSION})
@@ -29,7 +29,7 @@ string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
 # ############################################################################
 # these will be removed after upgrading CMake minimum version to 3.9.6
-set(PROJECT_DESCRIPTION   "Xt/Motif Gui-toolkit binding for Coin")
+set(PROJECT_DESCRIPTION   "SoXt is a Xt/Motif Gui-toolkit binding for Coin")
 # ############################################################################
  
 string(TIMESTAMP SO${GUI}_BUILD_YEAR "%Y")
@@ -65,7 +65,6 @@ include(CheckLibraryExists)
 include(CheckStructHasMember)
 include(CheckSymbolExists)
 include(CMakeDependentOption)
-include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
 # ############################################################################
@@ -78,7 +77,6 @@ option(SO${GUI}_BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(WITH_STATIC_DEFAULTS "Enable statically linked in default materials" ON)
 option(HAVE_SPACENAV_SUPPORT "Enable Space Navigator support" ON)
 option(SO${GUI}_BUILD_DOCUMENTATION "Build and install API documentation (requires Doxygen)." ON)
-
 cmake_dependent_option(SO${GUI}_BUILD_INTERNAL_DOCUMENTATION "Document internal code not part of the API." OFF "SO${GUI}_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(SO${GUI}_BUILD_DOC_MAN "Build So${Gui} man pages." OFF "SO${GUI}_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(SO${GUI}_BUILD_DOC_QTHELP "Build QtHelp documentation." OFF "SO${GUI}_BUILD_DOCUMENTATION" OFF)
@@ -197,7 +195,7 @@ elseif(APPLE)
   set(SO${GUI}_MAC_FRAMEWORK_NAME "SoXt")
   set(SO${GUI}_MAC_FRAMEWORK_PREFIX "${CMAKE_INSTALL_PREFIX}")
   set(SO${GUI}_MAC_FRAMEWORK_VERSION "A") # SoXt2 will be "B", to allow parallel installations of SoXt1
-  set(PACKAGING_FRAMEWORK_NAME ${SO${GUI}_MAC_FRAMEWORK_NAME})
+  set(PACKAGING_FRAMEWORK_NAME "${SO${GUI}_MAC_FRAMEWORK_NAME}")
 
   # package config *.pc entries
   set(frameworkdir "${SO${GUI}_MAC_FRAMEWORK_PREFIX}/${SO${GUI}_MAC_FRAMEWORK_NAME}.framework")
@@ -230,6 +228,7 @@ elseif(FUNCTION)
 endif()
 
 set(CMAKE_REQUIRED_INCLUDES ${SOXT_OPENGL_INCLUDE_DIRECTORIES})
+set(CMAKE_REQUIRED_LIBRARIES Coin::Coin ${SOXT_OPENGL_LIBRARIES})
 
 check_include_files(windows.h HAVE_WINDOWS_H)
 if(HAVE_WINDOWS_H)
@@ -260,8 +259,6 @@ else()
     int main() { struct timespec timeout; timeout.tv_nsec = 0; return 0; }
   " HAVE_PTHREAD_TIMESPEC_NSEC)
 endif()
-
-set(CMAKE_REQUIRED_LIBRARIES Coin::Coin ${SOXT_OPENGL_LIBRARIES})
 
 check_cxx_source_compiles("
   #include <GL/gl.h>
@@ -324,7 +321,6 @@ check_include_files(sys/stat.h HAVE_SYS_STAT_H)
 check_include_files(sys/time.h HAVE_SYS_TIME_H)
 check_include_files(unistd.h HAVE_UNISTD_H)
 check_include_files("assert.h;ctype.h;errno.h;float.h;limits.h;locale.h;math.h;setjmp.h;signal.h;stdarg.h;stddef.h;stdio.h;stdlib.h;string.h;time.h" STDC_HEADERS)
-
 if(HAVE_WINDOWS_H)
   check_include_files("windows.h;tlhelp32.h" HAVE_TLHELP32_H)
   check_cxx_source_compiles("
@@ -372,12 +368,12 @@ endif()
 unset(CMAKE_REQUIRED_INCLUDES)
 
 set(PACKAGE ${PROJECT_NAME})
-set(PACKAGE_DESCRIPTION "${PROJECT_DESCRIPTION}")
+set(PACKAGE_DESCRIPTION "A Xt/Motif Gui-toolkit binding for Coin")
 set(PACKAGE_BUGREPORT "coin-support@coin3d.org")
 set(PACKAGE_NAME ${PROJECT_NAME})
 set(PACKAGE_STRING "${PROJECT_NAME} ${PROJECT_VERSION}")
 set(PACKAGE_TARNAME ${PROJECT_NAME_LOWER})
-set(PACKAGE_URL "https://bitbucket.org/Coin3D/${PROJECT_NAME}")
+set(PACKAGE_URL "https://bitbucket.org/Coin3D/${PROJECT_NAME_LOWER}")
 set(PACKAGE_VERSION ${PROJECT_VERSION})
 set(PACKAGE_HOST ${CMAKE_HOST_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM_NAME})
 set(PACKAGE_COMPILER ${CMAKE_CXX_COMPILER})

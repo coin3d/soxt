@@ -1,5 +1,7 @@
 configure_file(config.h.cmake.in config.h)
 
+# Processing files and headers common to all SoGui libraries
+# This is pulled from the subrepo SoGui.
 add_subdirectory(Inventor/${Gui}/common)
 
 file(GLOB_RECURSE COMMON_HDRS ${CMAKE_CURRENT_BINARY_DIR}/*.h)
@@ -34,7 +36,6 @@ set(HDRS
   Inventor/${Gui}/widgets/So${Gui}ThumbWheel.h
   Inventor/${Gui}/widgets/So${Gui}ThumbWheelP.h     # added
 )
-
 
 set(SRCS
   Inventor/${Gui}/So${Gui}.cpp
@@ -75,6 +76,7 @@ if(HAVE_JOYSTICK_LINUX)
   list(APPEND SRCS Inventor/${Gui}/devices/So${Gui}LinuxJoystick.cpp)
 endif()
 
+# Create the library target
 if(SO${GUI}_BUILD_SHARED_LIBS)
   add_library(${PROJECT_NAME} SHARED ${HDRS} ${COMMON_HDRS} ${SRCS} ${COMMON_SRCS} ${COMMON_RESOURCES})
 else()
@@ -130,17 +132,39 @@ elseif(APPLE)
 endif()
 
 target_include_directories(${PROJECT_NAME}
-  PUBLIC
+  PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-    ${X11_INCLUDE_DIR} ${MOTIF_INCLUDE_DIR}
+  PUBLIC
+    ${X11_INCLUDE_DIR}
+    ${MOTIF_INCLUDE_DIR}
 )
 if(NOT SO${GUI}_BUILD_MAC_FRAMEWORK)
   target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 endif()
 
 target_link_libraries(${PROJECT_NAME} Coin::Coin ${SOXT_OPENGL_LIBRARIES} ${MOTIF_LIBRARIES})
-target_link_libraries(${PROJECT_NAME} "${X11_Xpm_LIB}" "${X11_Xmu_LIB}" "${X11_LIBRARIES}" "${X11_Xi_LIB}" "${X11_Xt_LIB}")
+
+if(X11_Xpm_FOUND)
+  target_include_directories(${PROJECT_NAME} PUBLIC ${X11_Xpm_INCLUDE_DIR})
+  target_link_libraries(${PROJECT_NAME} ${X11_Xpm_LIB})
+endif()
+if(X11_Xmu_FOUND)
+  target_include_directories(${PROJECT_NAME} PUBLIC ${X11_Xmu_INCLUDE_DIR})
+  target_link_libraries(${PROJECT_NAME} ${X11_Xmu_LIB})
+endif()
+if(X11_FOUND)
+  target_include_directories(${PROJECT_NAME} PUBLIC ${X11_INCLUDE_DIR})
+  target_link_libraries(${PROJECT_NAME} ${X11_LIBRARIES})
+endif()
+if(X11_Xi_FOUND)
+  target_include_directories(${PROJECT_NAME} PUBLIC ${X11_Xi_INCLUDE_DIR})
+  target_link_libraries(${PROJECT_NAME} ${X11_Xi_LIB})
+endif()
+if(X11_Xt_FOUND)
+  target_include_directories(${PROJECT_NAME} PUBLIC ${X11_Xt_INCLUDE_DIR})
+  target_link_libraries(${PROJECT_NAME} ${X11_Xt_LIB})
+endif()
 
 # Add a target to generate API documentation with Doxygen
 if(SO${GUI}_BUILD_DOCUMENTATION)
@@ -228,7 +252,7 @@ if(SO${GUI}_BUILD_DOCUMENTATION)
 endif()
 
 # ############################################################################
-# Install headers
+# Installation headers
 # ############################################################################
 
 set(INST_HDRS
