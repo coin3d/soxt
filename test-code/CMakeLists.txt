@@ -16,6 +16,10 @@ X11_Xt_LIB
 X11_Xpm_LIB
 )
 
+include_directories(
+  $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/src>
+  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src>)
+
 executable(button           SOURCES button.cpp LIBS SoXt)
 executable(coloreditor      SOURCES coloreditor.cpp LIBS SoXt)
 executable(examinerviewer   SOURCES examinerviewer.cpp LIBS SoXt)

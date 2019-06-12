@@ -9,7 +9,7 @@
 /* Open Inventor extensions */
 #cmakedefine COIN_IV_EXTENSIONS
 
-/* Version string for Qt */
+/* Version string for Motif */
 #define GUI_TOOLKIT_VERSION "@GUI_TOOLKIT_VERSION@"
 
 /* The CPP compiler has a variable containing the current function name */
