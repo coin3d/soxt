@@ -20,7 +20,11 @@ include_directories(
   $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/src>
   $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src>)
 
-executable(button           SOURCES button.cpp LIBS SoXt)
+if (NOT X11_Xpm_FOUND)
+  message(WARNING "X11::Xpm missing some examples will not be built")
+else()
+  executable(button           SOURCES button.cpp LIBS SoXt)
+endif()
 executable(coloreditor      SOURCES coloreditor.cpp LIBS SoXt)
 executable(examinerviewer   SOURCES examinerviewer.cpp LIBS SoXt)
 executable(initalfullscreen SOURCES initalfullscreen.cpp LIBS SoXt)

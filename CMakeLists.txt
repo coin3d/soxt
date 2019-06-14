@@ -92,7 +92,7 @@ cmake_dependent_option(SO${GUI}_BUILD_MAC_FRAMEWORK "Build framework instead of 
 
 find_package(OpenGL REQUIRED)
 find_package(Motif REQUIRED)
-find_package(X11 REQUIRED)
+find_package(X11 REQUIRED OPTIONAL_COMPONENTS Xpm)
 # On Mac OS X, GLX is provided as a separate OpenGL implementation, different
 # from the standard OpenGL framework which provides support for GLUT and native
 # Mac OS X applications.
