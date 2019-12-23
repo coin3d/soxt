@@ -1,4 +1,11 @@
-2019-11-09 14:52 +0100  Giampiero Gabbiani  <giampiero@gabbiani.org>  (f49517d4247c [tip])
+2019-12-23 23:08 +0100  Volker Enderlein  <volkerenderlein@hotmail.com>  (cf22bad22190 [tip])
+
+	* docs/ChangeLog.v1.4.0: new file.
+	* CMakeLists.txt, Makefile.am, Makefile.in, NEWS, README, configure,
+	configure.ac, docs/ChangeLog.v1.4.0:
+	[skip ci] Update version number for release. Bootstrap.
+
+2019-11-09 14:52 +0100  Giampiero Gabbiani  <giampiero@gabbiani.org>  (f49517d4247c)
 
 	* .hgsubstate:
 	Updated to last cpack.d for centOS and RHEL support
