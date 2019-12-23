@@ -1,3 +1,18 @@
+============================================================================
+==                        BUILDING SOXT ON WINDOWS                        ==
+============================================================================
+
+Building SoXt on Windows is done by using the CMake build configuration.
+Check out the detailed build instructions in the INSTALL file of the Coin
+installation directory.
+
+The Autotools build system is still maintained but at a significantly lower
+priority.
+
+============================================================================
+==             OLD INFORMATION ON BUILDING SOXT ON WINDOWS                ==
+============================================================================
+
 README
 ======
 

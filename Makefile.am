@@ -50,6 +50,7 @@ EXTRA_DIST = \
 	docs/announcement-1_2_1.txt \
 	docs/announcement-1_2_2.txt \
 	docs/announcement-1_3_0.txt \
+	docs/announcement-1_4_0.txt \
 	$(SoGuiCommonDistFiles) \
 	test-code/Makefile.am \
 	test-code/Makefile.in \
