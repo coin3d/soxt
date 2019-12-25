@@ -1,0 +1,9 @@
+[submodule "cpack.d"]
+	path = cpack.d
+	url = https://github.com/coin3d/cpack.d
+[submodule "data"]
+	path = data
+	url = https://github.com/coin3d/soanydata
+[submodule "src/Inventor/Xt/common"]
+	path = src/Inventor/Xt/common
+	url = https://github.com/coin3d/sogui
