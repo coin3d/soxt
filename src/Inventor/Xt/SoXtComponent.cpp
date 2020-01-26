@@ -687,7 +687,7 @@ SoXtComponent::afterRealizeHook(void)
 // *************************************************************************
 
 /*!
-  This method adds a callback that will be invoked when the components
+  This method adds a callback that will be invoked when the component
   visibility changes.
 
   Callback invocation is not implemented yet.
@@ -1010,7 +1010,7 @@ SoXtComponent::setWidgetCursor(Widget w, const SoXtCursor & cursor)
 
   Returns \c FALSE if operation failed.  This might happen if the
   toolkit doesn't support attempts at making the component cover the
-  complete screen or if the component is not a toplevel window.
+  complete screen or if the component is not a top level window.
 */
 
 SbBool

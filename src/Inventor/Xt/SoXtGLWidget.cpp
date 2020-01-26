@@ -176,7 +176,7 @@ SoXtGLWidget::getOverlayColorMapSize(void)
 }
 
 /*!
-  This methos returns the size of the colormap for the normal planes.
+  This method returns the size of the colormap for the normal planes.
 */
 
 int
@@ -363,7 +363,7 @@ SoXtGLWidget::setDrawToFrontBufferEnable(const SbBool enable)
 }
 
 /*!
-  This method returns whether rendering will be done to the front buffer
+  This method returns whether rendering is done to the front buffer
   or not.
 */
 
@@ -489,8 +489,8 @@ SoXtGLWidget::redrawOverlay(void)
   canvas gets piped through this method.
 
   It is overloaded in the subclasses to catch user interaction with
-  the render canvas in the viewers, aswell as forwarding relevant
-  events to the scenegraph.
+  the render canvas in the viewers, as well as forwarding relevant
+  events to the scene graph.
 */
 void
 SoXtGLWidget::processEvent(XAnyEvent * event)
@@ -568,8 +568,8 @@ SoXtGLWidget::initOverlayGraphic(void)
 }
 
 /*!
-  Will be called whenever scene graph needs to be redrawn().
-  If this method return FALSE, redraw() will be called immediately.
+  Will be called whenever the scene graph needs to be redrawn().
+  If this method returns FALSE, redraw() will be called immediately.
 
   Default method simply returns FALSE. Overload this method to
   schedule a redraw and return TRUE if you're trying to do The Right
@@ -627,12 +627,12 @@ SoXtGLWidget::widgetChanged(Widget widget)
 
 /*!
   \fn void SoXtGLWidget::setGlxSize(const SbVec2s size)
-  This method sets the Glx size.
+  This method sets the GLX size.
   \sa setGLSize
 */
 
 /*!
-  This methid sets the size of the GL widget.
+  This method sets the size of the GL widget.
 */
 
 void
@@ -658,7 +658,7 @@ SoXtGLWidget::setGLSize(const SbVec2s size)
 /*!
   \fn const SbVec2s SoXtGLWidget::getGlxSize(void) const
 
-  This method returns the size of the Glx area.
+  This method returns the size of the GLX area.
 
   \sa getGLSize
 */

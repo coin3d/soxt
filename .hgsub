@@ -1,3 +1,0 @@
-data = ../soanydata
-src/Inventor/Xt/common = ../sogui
-cpack.d = ../cpack.d

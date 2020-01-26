@@ -67,7 +67,7 @@ static const char rcsid[] =
 int icstrcmp(const char * str1, const char * str2);
 
 /*!
-  Constructor.   sets up the SoXtResource object to fetch resources for
+  Constructor.  Sets up the SoXtResource object to fetch resources for
   the \a widget Widget.
 */
 
@@ -331,7 +331,7 @@ SoXtResource::getResource(
 
 /*!
   This method retrieves the given X resource and points the \a retval
-  pointer to it's data.
+  pointer to its data.
 
   TRUE is returned if the resource is found, and FALSE otherwise.
 */
