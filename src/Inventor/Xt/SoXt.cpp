@@ -48,10 +48,10 @@
   to use %SoXt.
 
   The corresponding documentation for Coin is located 
-  <a href="http://doc.coin3d.org/Coin/">here</a>.
+  <a href="https://coin3d.github.io/Coin/">here</a>.
 
   See also the documentation of the <a
-  href="http://doc.coin3d.org/SoQt/">SoQt</a> library for elaborate
+  href="https://coin3d.github.io/SoQt/">SoQt</a> library for elaborate
   information on how a binding library such as this fits within a
   development system, and what features it offers.
 */
@@ -191,7 +191,7 @@ SoXtP::X11Errorhandler(Display * d, XErrorEvent * ee)
                      "backtrace. "
 
                      "Then please forward the following information in an "
-                     "e-mail to <coin-bugs@coin3d.org> along with the "
+                     "e-mail to <coin-support@coin3d.org> along with the "
                      "backtrace. ",
 
                      depthsstr.getString());
@@ -379,7 +379,7 @@ debug_eventname(const int type)
 
 /*!
   This function should be used instead of XtAppMainLoop().  The
-  current implementation is no different than the standard event loop,
+  current implementation is not different from the standard event loop,
   but in the future it will add support for input device extensions.
 
   If you need your own event dispatching loop, base your code on this
@@ -429,7 +429,7 @@ SoXt::nextEvent(XtAppContext context, XEvent * event)
 
 /*!
   This method dispatches the event by calling XtDispatchEvent().
-  Special handling of extension input devices will be handled in this
+  Special handling of extension input devices will be done in this
   method in the future.
 */
 Boolean
@@ -485,7 +485,7 @@ SoXt::getDisplay(void)
 }
 
 /*!
-  This function returns the toplevel shell for the application.
+  This function returns the top level shell for the application.
 */
 Widget
 SoXt::getTopLevelWidget(void)
@@ -736,7 +736,7 @@ SoXt::createSimpleErrorDialog(Widget parent, const char * title,
 
 /*!
   This function should add the necessary arguments to the \a args
-  argument list so the popup shell gets the same visual and colormap
+  argument list so the pop-up shell gets the same visual and colormap
   as the rest of the application.
 
   This function is not implemented.

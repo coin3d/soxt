@@ -114,73 +114,73 @@ enum DefaultViewerButtons {
 /*!
   \var float SoXtFullViewer::leftWheelVal
 
-  The value of the left thumb wheel.  Do not set directly, use access method.
+  The value of the left thumbwheel.  Do not set directly, use access method.
 */
 
 /*!
   \var Widget SoXtFullViewer::leftWheel
 
-  The widget for the left thumb wheel.
+  The widget for the left thumbwheel.
 */
 
 /*!
   \var Widget SoXtFullViewer::leftWheelLabel
 
-  The widget for the label below the left thumb wheel.
+  The widget for the label below the left thumbwheel.
 */
 
 /*!
   \var char * SoXtFullViewer::leftWheelStr
 
-  The string used in the label under the left thumb wheel.
+  The string used in the label below the left thumbwheel.
 */
 
 /*!
   \var float SoXtFullViewer::bottomWheelVal
 
-  The value of the bottom thumb wheel.  Do not set directly, use access method.
+  The value of the bottom thumbwheel.  Do not set directly, use access method.
 */
 
 /*!
   \var Widget SoXtFullViewer::bottomWheel
 
-  The widget for the bottom thumb wheel.
+  The widget for the bottom thumbwheel.
 */
 
 /*!
   \var Widget SoXtFullViewer::bottomWheelLabel
 
-  The widget for the label besides the bottom thumb wheel.
+  The widget for the label besides the bottom thumbwheel.
 */
 
 /*!
   \var char * SoXtFullViewer::bottomWheelStr
 
-  The string used in the label besides the bottom thumb wheel.
+  The string used in the label besides the bottom thumbwheel.
 */
 
 /*!
   \var float SoXtFullViewer::rightWheelVal
 
-  The value of the right thumb wheel.  Do not set directly, use access method.
+  The value of the right thumbwheel.  Do not set directly, use access method.
 */
 
 /*!
   \var Widget SoXtFullViewer::rightWheel
 
-  The widget for the right thumb wheel.
+  The widget for the right thumbwheel.
 */
 
 /*!
   \var Widget SoXtFullViewer::rightWheelLabel
 
-  The widget for the label below the right thumb wheel.
+  The widget for the label below the right thumbwheel.
 */
 
 /*!
   \var char * SoXtFullViewer::rightWheelStr
 
-  The string used in the label below the right thumb wheel.
+  The string used in the label below the right thumbwheel.
 */
 
 /*!
@@ -198,19 +198,19 @@ enum DefaultViewerButtons {
 /*!
   \var SbBool SoXtFullViewer::popupEnabled
 
-  Whether the popup menu is enabled or not.
+  Whether the pop-up menu is enabled or not.
 */
 
 /*!
   \var SoXtPopupMenu * SoXtFullViewer::prefmenu
 
-  The popup menu manager object.
+  The pop-up menu manager object.
 */
 
 /*!
   \var char * SoXtFullViewer::popupTitle
 
-  The title for the popup menu,
+  The title for the pop-up menu.
 */
 
 
@@ -357,7 +357,7 @@ SoXtFullViewer::isDecoration(void) const
 // *************************************************************************
 
 /*!
-  This method sets whether the popup menu should be enabled or not.
+  This method sets whether the pop-up menu should be enabled or not.
 */
 
 void
@@ -367,7 +367,7 @@ SoXtFullViewer::setPopupMenuEnabled(const SbBool enable)
 }
 
 /*!
-  This method returns whether the popup menu is enabled or not.
+  This method returns whether the pop-up menu is enabled or not.
 */
 
 SbBool
@@ -585,7 +585,7 @@ SoXtFullViewer::buildLeftTrim(Widget parent)
     XmNrightAttachment, XmATTACH_FORM,
     NULL);
 
-  // add left thumb wheel
+  // add left thumbwheel
   this->leftWheel = XtVaCreateManagedWidget("LeftWheel",
     soxtThumbWheelWidgetClass, trim,
     XmNleftAttachment, XmATTACH_FORM,
@@ -638,7 +638,7 @@ SoXtFullViewer::buildRightTrim(Widget parent)
     XmNbottomOffset, 0 - this->viewerButtonWidgets->getLength() * 30,
     NULL);
 
-  // add right thumb wheel
+  // add right thumbwheel
   this->rightWheel = XtVaCreateManagedWidget("RightWheel",
     soxtThumbWheelWidgetClass, trim,
     XmNleftAttachment, XmATTACH_FORM,
@@ -704,7 +704,7 @@ SoXtFullViewer::buildBottomTrim(Widget parent)
                                                    this->bottomWheelStr, strlen(this->bottomWheelStr)+1,
                                                    NULL);
 
-  // add bottom thumb wheel
+  // add bottom thumbwheel
   this->bottomWheel = XtVaCreateManagedWidget("BottomWheel",
                                               soxtThumbWheelWidgetClass, trim,
                                               XmNorientation, XmHORIZONTAL,
@@ -1122,7 +1122,7 @@ SoXtFullViewerP::rightWheelFinishCB(Widget, XtPointer closure, XtPointer)
 // *************************************************************************
 
 /*!
-  This method sets the label text displayed below the thumb wheel on the
+  This method sets the label text displayed below the thumbwheel on the
   left decoration.
 */
 
@@ -1144,8 +1144,8 @@ SoXtFullViewer::setLeftWheelString(const char * const string)
 }
 
 /*!
-  This method sets the label text that is displayed to the left og the
-  bottom decoration thumb wheel.
+  This method sets the label text that is displayed to the left of the
+  bottom decoration thumbwheel.
 */
 
 void
@@ -1166,8 +1166,8 @@ SoXtFullViewer::setBottomWheelString(const char * const string)
 }
 
 /*!
-  This method sets the label text that is displayed under the right decoration
-  thumb wheel.
+  This method sets the label text that is displayed below the right decoration
+  thumbwheel.
 */
 
 void

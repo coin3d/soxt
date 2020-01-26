@@ -375,10 +375,10 @@ SoXtMaterialList::palette_menu_cb(// static, private
 // *************************************************************************
 
 /*!
-  This method builds the pulldown menu.
+  This method builds the pull-down menu.
   The current implementation demands that the \a parent argument should be
-  the menubar RowColumn widget - only the "Palettes" menubar button and the
-  pulldown menu is built by this method.
+  the menu bar RowColumn widget - only the "Palettes" menu bar button and the
+  pull-down menu is built by this method.
 */
 
 Widget

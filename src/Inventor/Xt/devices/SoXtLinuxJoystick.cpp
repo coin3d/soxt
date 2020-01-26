@@ -341,7 +341,7 @@ SoXtLinuxJoystick::getTranslationScaleFactor(void) const
 // *************************************************************************
 
 /*!
-  This function returns wether there is a Linux Joystick device available
+  This function returns whether there is a Linux Joystick device available
   on the application server.
 */
 
@@ -602,7 +602,7 @@ SoXtLinuxJoystickP::input_cb(XtPointer closure, int * source, XtInputId * id)
 // *************************************************************************
 
 /*!
-  This method translates between custom input device pressure events
+  This method translates between custom input device pressing events
   and Open Inventor SoMotion3Event events.
 */
 

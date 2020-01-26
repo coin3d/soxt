@@ -78,7 +78,7 @@ struct ItemRecord {
 
 /*!
   \class XtNativePopupMenu Inventor/Qt/widgets/XtNativePopupMenu.h
-  \brief The XtNativePopupMenu class implements a common interface for popup
+  \brief The XtNativePopupMenu class implements a common interface for pop-up
   menu management for all the Coin GUI toolkit libraries.
 */
 

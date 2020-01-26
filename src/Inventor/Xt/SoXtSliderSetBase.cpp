@@ -93,7 +93,7 @@ SoXtSliderSetBase::setNode(// virtual
 } // setNode()
 
 /*!
-  This method returns the node the sliderset is attached to, or NULL if there
+  This method returns the node the slider set is attached to, or NULL if there
   is no node attached.
 */
 
