@@ -48,10 +48,10 @@
   to use %SoXt.
 
   The corresponding documentation for Coin is located 
-  <a href="https://coin3d.github.io/Coin/">here</a>.
+  <a href="https://coin3d.github.io/Coin/html/">here</a>.
 
   See also the documentation of the <a
-  href="https://coin3d.github.io/SoQt/">SoQt</a> library for elaborate
+  href="https://coin3d.github.io/SoQt/html/">SoQt</a> library for elaborate
   information on how a binding library such as this fits within a
   development system, and what features it offers.
 */
