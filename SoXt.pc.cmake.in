@@ -13,10 +13,10 @@ htmldir=${docdir}/html
 Name: @PROJECT_NAME@
 Description: @PROJECT_DESCRIPTION@
 Version: @PROJECT_VERSION@
-Requires: Coin, Motif, X11, OpenGL
+Requires: @SOXT_PKG_DEPS@
 Conflicts:
-Libs: -L${libdir} -l@PROJECT_NAME@ @SOXT_EXTRA_LDFLAGS@ @SOXT_EXTRA_LIBS@
-Cflags: -I${includedir} @SOXT_EXTRA_CFLAGS@ @SOXT_EXTRA_CPPFLAGS@
+Libs: -L${libdir} @SOXT_PKG_LIBS@
+Cflags: -I${includedir} @SOXT_PKG_FLAGS@
 
 frameworkdir=@frameworkdir@
 motif_version=@MOTIF_VERSION_MAJOR@.@MOTIF_VERSION_MINOR@.@MOTIF_VERSION_PATCH@

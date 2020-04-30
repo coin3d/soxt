@@ -87,14 +87,15 @@ option(COIN_IV_EXTENSIONS "Enable extra Open Inventor extensions" ON)
 option(SO${GUI}_BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(WITH_STATIC_DEFAULTS "Enable statically linked in default materials" ON)
 option(HAVE_SPACENAV_SUPPORT "Enable Space Navigator support" ON)
+option(SO${GUI}_USE_CPACK "If enabled the cpack subrepo is mandatory" OFF)
 option(SO${GUI}_BUILD_DOCUMENTATION "Build and install API documentation (requires Doxygen)." OFF)
+option(SO${GUI}_BUILD_TESTS "Build small test programs." ON)
 cmake_dependent_option(SO${GUI}_BUILD_INTERNAL_DOCUMENTATION "Document internal code not part of the API." OFF "SO${GUI}_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(SO${GUI}_BUILD_DOC_MAN "Build So${Gui} man pages." OFF "SO${GUI}_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(SO${GUI}_BUILD_DOC_QTHELP "Build QtHelp documentation." OFF "SO${GUI}_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(SO${GUI}_BUILD_DOC_CHM "Build compressed HTML help manual (requires HTML help compiler)" OFF "SO${GUI}_BUILD_DOCUMENTATION" OFF)
 
 cmake_dependent_option(SO${GUI}_BUILD_MAC_FRAMEWORK "Build framework instead of dylib on Mac OS X when ON. Only valid if SO${GUI}_BUILD_SHARED_LIBS is ON." OFF "APPLE;NOT IOS;SO${GUI}_BUILD_SHARED_LIBS" OFF)
-option(SO${GUI}_USE_CPACK "If enabled the cpack subrepo is mandatory" OFF)
 
 report_prepare(
   COIN_IV_EXTENSIONS
@@ -118,7 +119,7 @@ report_prepare(
 
 find_package(OpenGL REQUIRED)
 find_package(Motif REQUIRED)
-find_package(X11 REQUIRED OPTIONAL_COMPONENTS Xpm)
+find_package(X11 REQUIRED OPTIONAL_COMPONENTS Xpm Xmu)
 # On Mac OS X, GLX is provided as a separate OpenGL implementation, different
 # from the standard OpenGL framework which provides support for GLUT and native
 # Mac OS X applications.
@@ -146,8 +147,9 @@ if (X11_FOUND)
   endif ()
 endif()
 
-# Coin is typically installed as Inventor.framework on APPLE
-find_package(Coin NAMES Inventor Coin REQUIRED)
+find_package(Coin REQUIRED)
+
+set(SO${GUI}_PKG_DEPS "Coin Motif X11 Xpm Xmu OpenGL")
 
 # ##########################################################################
 # Setup build environment
@@ -190,13 +192,16 @@ if(WIN32)
   endif()
   if(SO${GUI}_BUILD_SHARED_LIBS)
     set(SO${GUI}_DEFAULT_POSTFIX ${SO${GUI}_DEFAULT_SHARED_POSTFIX})
+    set(SO${GUI}_PKG_FLAGS "-DSOXT_DLL")
   else()
     set(SO${GUI}_DEFAULT_POSTFIX ${SO${GUI}_DEFAULT_STATIC_POSTFIX})
+    set(SO${GUI}_PKG_FLAGS "-DSOXT_NOT_DLL")
   endif()
   set(CMAKE_RELEASE_POSTFIX ${SO${GUI}_DEFAULT_POSTFIX})
   set(CMAKE_MINSIZEREL_POSTFIX ${SO${GUI}_DEFAULT_POSTFIX})
   set(CMAKE_RELWITHDEBINFO_POSTFIX ${SO${GUI}_DEFAULT_POSTFIX})
   set(CMAKE_DEBUG_POSTFIX ${SO${GUI}_DEFAULT_POSTFIX}d)
+  set(SO${GUI}_PKG_LIBS "-l${PROJECT_NAME}")
 elseif(APPLE)
   if(POLICY CMP0042)
     # get rid of MACOSX_RPATH warning on Mac OS X from CMake 3.12.2
@@ -217,25 +222,32 @@ elseif(APPLE)
   configure_file(${CMAKE_SOURCE_DIR}/version.plist.in ${CMAKE_BINARY_DIR}/version.plist)
   set(HAVE_GZDOPEN)
 
-  set(SO${GUI}_MAC_FRAMEWORK ${SO${GUI}_BUILD_MAC_FRAMEWORK})
-  set(SO${GUI}_MAC_FRAMEWORK_NAME "SoXt")
-  set(SO${GUI}_MAC_FRAMEWORK_PREFIX "${CMAKE_INSTALL_PREFIX}")
-  set(SO${GUI}_MAC_FRAMEWORK_VERSION "A") # SoXt2 will be "B", to allow parallel installations of SoXt1
-  set(PACKAGING_FRAMEWORK_NAME "${SO${GUI}_MAC_FRAMEWORK_NAME}")
+  #get rid of all warning related to OpenGL deprecation
+  add_definitions(-DGL_SILENCE_DEPRECATION)
 
-  # package config *.pc entries
-  set(frameworkdir "${SO${GUI}_MAC_FRAMEWORK_PREFIX}/${SO${GUI}_MAC_FRAMEWORK_NAME}.framework")
-  set(includedir "${frameworkdir}/Versions/${SO${GUI}_MAC_FRAMEWORK_VERSION}/Resources/include")
-  set(ivincludedir "${includedir}")
-  set(SO${GUI}_EXTRA_CPPFLAGS "-F${SO${GUI}_MAC_FRAMEWORK_PREFIX}")
-  set(SO${GUI}_EXTRA_FP_LDFLAGS "-Wl,-F${SO${GUI}_MAC_FRAMEWORK_PREFIX}")
-  set(SO${GUI}_EXTRA_LDFLAGS "${SO${GUI}_EXTRA_FP_LDFLAGS} -Wl,-framework,${SO${GUI}_MAC_FRAMEWORK_NAME} -Wl,-framework,Inventor -Wl,-framework,OpenGL")
+  if(SO${GUI}_BUILD_MAC_FRAMEWORK)
+    set(SO${GUI}_MAC_FRAMEWORK ${SO${GUI}_BUILD_MAC_FRAMEWORK})
+    set(SO${GUI}_MAC_FRAMEWORK_NAME "SoXt")
+    set(SO${GUI}_MAC_FRAMEWORK_PREFIX "${CMAKE_INSTALL_PREFIX}")
+    set(SO${GUI}_MAC_FRAMEWORK_VERSION "A") # SoXt2 will be "B", to allow parallel installations of SoXt1
+    set(PACKAGING_FRAMEWORK_NAME "${SO${GUI}_MAC_FRAMEWORK_NAME}")
+
+    # package config *.pc entries
+    set(frameworkdir "${SO${GUI}_MAC_FRAMEWORK_PREFIX}/${SO${GUI}_MAC_FRAMEWORK_NAME}.framework")
+    set(includedir "${frameworkdir}/Versions/${SO${GUI}_MAC_FRAMEWORK_VERSION}/Resources/include")
+    set(ivincludedir "${includedir}")
+    set(SO${GUI}_PKG_FLAGS "-F${SO${GUI}_MAC_FRAMEWORK_PREFIX}")
+    set(SO${GUI}_PKG_LIBS "-Wl,-F${SO${GUI}_MAC_FRAMEWORK_PREFIX} -Wl,-framework,${SO${GUI}_MAC_FRAMEWORK_NAME} -Wl,-framework,Inventor -Wl,-framework,OpenGL")
+  else()
+    set(SO${GUI}_PKG_LIBS "-l${PROJECT_NAME} -Wl,-framework,OpenGL")
+  endif()
 
   # Let's enable all OS X specific code
   set(SO${GUI}_MACOSX_FRAMEWORK ${SO${GUI}_BUILD_MAC_FRAMEWORK})
   set(SO${GUI}_MACOS_10 1)
   set(SO${GUI}_MACOS_10_3 1)
 else()
+  set(SO${GUI}_PKG_LIBS "-l${PROJECT_NAME}")
   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
 
@@ -403,7 +415,7 @@ set(PACKAGE_URL "https://github.com/coin3d/${PROJECT_NAME_LOWER}")
 set(PACKAGE_VERSION ${PROJECT_VERSION})
 set(PACKAGE_HOST ${CMAKE_HOST_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM_NAME})
 set(PACKAGE_COMPILER ${CMAKE_CXX_COMPILER})
-set(PACKAGE_REQUIREMENTS "Coin, ${PACKAGE_ADDITIONAL_REQUIREMENTS}")
+set(PACKAGE_REQUIREMENTS "${SOXT_PKG_DEPS}")
 
 # ############################################################################
 # Setup targets in subdirectories
@@ -412,7 +424,9 @@ set(PACKAGE_REQUIREMENTS "Coin, ${PACKAGE_ADDITIONAL_REQUIREMENTS}")
 add_subdirectory(data)
 add_subdirectory(src)
 ##### small test programs (to be run interactively)
-add_subdirectory(test-code)
+if (SO${GUI}_BUILD_TESTS)
+  add_subdirectory(test-code)
+endif()
 
 ############################################################################
 # New CPACK section, please see the README file inside cpack.d directory.
