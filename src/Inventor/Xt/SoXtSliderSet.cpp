@@ -175,6 +175,7 @@ SoXtSliderSet::setNode(// virtual
 {
   SoNode * const prev = this->getNode();
   if (prev != NULL) {
+    // FIXME: implement proper action
   }
   inherited::setNode(node);
 } // setNode()
