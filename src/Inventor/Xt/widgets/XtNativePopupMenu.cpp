@@ -107,6 +107,7 @@ XtNativePopupMenu::~XtNativePopupMenu(// virtual
 //    if (rec->parent == NULL) delete rec->menu; // menu not attached
     delete rec;
   }
+  delete this->menus;
 
   const int numItems = this->items->getLength();
   for (i = 0; i < numItems; i++) {
@@ -115,6 +116,7 @@ XtNativePopupMenu::~XtNativePopupMenu(// virtual
     delete [] rec->title;
     delete rec;
   }
+  delete this->items;
 
   // delete root popup menu
 //  delete popup;

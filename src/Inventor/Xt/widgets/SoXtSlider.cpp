@@ -110,6 +110,7 @@ SoXtSlider::~SoXtSlider(
   void)
 {
   delete [] this->title;
+  delete this->callbacks;
 } // ~SoXtSlider()
 
 // *************************************************************************
