@@ -19,13 +19,19 @@ environment:
   GH_AUTH_TOKEN:
     secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u
   matrix:
-#    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
 #      CMAKE_GENERATOR: 'Unix Makefiles'
 #      CMAKE_PLATFORM: x86
 #      CMAKE_ARCH_FLAGS: -m32
 #      COMPILER_ID: gcc
 
-    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
+      CMAKE_GENERATOR: 'Unix Makefiles'
+      CMAKE_PLATFORM: x64
+      CMAKE_ARCH_FLAGS: -m64
+      COMPILER_ID: gcc
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2004
       CMAKE_GENERATOR: 'Unix Makefiles'
       CMAKE_PLATFORM: x64
       CMAKE_ARCH_FLAGS: -m64
@@ -87,6 +93,8 @@ after_build:
       if [ -n "${APPVEYOR_REPO_TAG_NAME}" ]; then export CI_REPO_VERSION=${APPVEYOR_REPO_TAG_NAME:1}; else export CI_REPO_VERSION=latest; fi
       BUILD_ARCHIVE=$APPVEYOR_PROJECT_NAME-$CI_REPO_VERSION-$COMPILER_ID-$CMAKE_PLATFORM.tar.gz
       tar czf $BUILD_ARCHIVE Coin3D/*
+      md5sum -b $BUILD_ARCHIVE > $BUILD_ARCHIVE.md5
+      sha256sum -b $BUILD_ARCHIVE > $BUILD_ARCHIVE.sha256
       appveyor DownloadFile https://ci.appveyor.com/api/buildjobs/$APPVEYOR_JOB_ID/log -FileName $APPVEYOR_PROJECT_NAME-$CI_REPO_VERSION-$COMPILER_ID-$CMAKE_PLATFORM.log
 
 artifacts:
