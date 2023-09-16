@@ -468,7 +468,7 @@ createColormap(
   } * cmapCache;
   static int cacheEntries = 0;
   static int cacheMalloced = 0;
-  register int i;
+  int i;
     
   assert(widget->soxtGLArea.visualInfo);
 
@@ -564,7 +564,7 @@ Realize(
   Mask * valueMask,
   XSetWindowAttributes * attributes)
 {
-  register SoXtGLAreaWidget glw = (SoXtGLAreaWidget) widget;
+  SoXtGLAreaWidget glw = (SoXtGLAreaWidget) widget;
   SoXtGLAreaCallbackStruct cb;
   Widget parentShell;
   Status status;
@@ -670,7 +670,7 @@ Destroy(
   Widget parentShell;
   Status status;
   int countReturn;
-  register int i;
+  int i;
 
   if (glw->soxtGLArea.myList && glw->soxtGLArea.attribList)
     XtFree((char *) glw->soxtGLArea.attribList);
