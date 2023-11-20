@@ -38,7 +38,7 @@
 	src/Inventor/Xt/viewers/Makefile.in,
 	src/Inventor/Xt/widgets/Makefile.in, src/Makefile.in, test-
 	code/Makefile.in:
-	boostrap.
+	bootstrap.
 	[7bee7e79bd99]
 
 	* configure.ac:
@@ -203,7 +203,7 @@
 	src/Inventor/Xt/viewers/Makefile.in,
 	src/Inventor/Xt/widgets/Makefile.in, src/Makefile.in, test-
 	code/Makefile.in:
-	boostrap.
+	bootstrap.
 	[cc2078cdf528]
 
 	* configure.ac:
@@ -221,7 +221,7 @@
 	src/Inventor/Xt/viewers/Makefile.in,
 	src/Inventor/Xt/widgets/Makefile.in, src/Makefile.in,
 	src/config.h.in, test-code/Makefile.in:
-	remove ununsed BASIC_HEADER_TOP substitution hack.
+	remove unused BASIC_HEADER_TOP substitution hack.
 	[b42aecabf86f]
 
 	* Makefile.am:

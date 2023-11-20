@@ -776,7 +776,7 @@
 
 	* src/Inventor/Xt/viewers/PlaneViewer.cpp:
 	
-	Moves actualRedraw() to comon code.
+	Moves actualRedraw() to common code.
 
 2002-05-15 09:13  mortene
 

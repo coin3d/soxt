@@ -209,7 +209,7 @@ priority the item has.
     //   SoXtRenderArea *theViewer = new SoXtRenderArea( theMainForm ,
     //       "examinerArea" , true  );
     
-      // and a non ebedded SoXtExaminerViewer works
+      // and a non embedded SoXtExaminerViewer works
     //   SoXtExaminerViewer *theViewer = new SoXtExaminerViewer( NULL ,
     //            "examinerArea" , true , SoXtFullViewer::BUILD_ALL ,
     //            SoXtViewer::EDITOR );

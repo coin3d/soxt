@@ -499,7 +499,7 @@
 
 	* Makefile.am, configure.ac:
 	
-	am-conditional on Xpm library usage, and reenable test-code dir
+	am-conditional on Xpm library usage, and re-enable test-code dir
 
 2003-06-18 17:40  larsa
 

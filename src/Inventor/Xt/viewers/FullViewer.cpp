@@ -427,7 +427,7 @@ void
 SoXtFullViewer::removeAppPushButton(Widget button)
 {
   int idx = PRIVATE(this)->appButtonsList->find(button);
-  assert(idx != -1 && "tried to remove non-existant button");
+  assert(idx != -1 && "tried to remove non-existent button");
   PRIVATE(this)->resetAppPushButtons();
   PRIVATE(this)->appButtonsList->remove(idx);
   PRIVATE(this)->layoutAppPushButtons();

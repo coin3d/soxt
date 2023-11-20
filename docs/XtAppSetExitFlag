@@ -18,7 +18,7 @@ X-Received-Date: Sun, 11 May 2003 19:18:09 MET DST (news01.chello.no)
 Xref: news.teledanmark.no comp.windows.x:133457
 
 JF Mezei  <jfmezei.spamnot@istop.com> wrote:
->Is there a way, from inside a callback funtion to signal to XtAppMainLoop that
+>Is there a way, from inside a callback function to signal to XtAppMainLoop that
 >it should end ?
 >
 >All of the example programs I have seen so far have the callback itself

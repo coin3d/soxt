@@ -176,7 +176,7 @@ AC_ARG_WITH(
 AC_ARG_WITH(
   [suffix],
   [AC_HELP_STRING([--with-suffix=string],
-                  [specify lirary name suffix (e.g. "_g")])],
+                  [specify library name suffix (e.g. "_g")])],
   [SUFFIX=$withval],
   [SUFFIX=])
 

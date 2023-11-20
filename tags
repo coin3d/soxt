@@ -231,7 +231,7 @@ SoXtPopupMenu::SoXtPopupMenu	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPop
 SoXtPopupMenu::getItemRecord	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::getItemRecord($/
 SoXtPopupMenu::getMenuRecord	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::getMenuRecord($/
 SoXtPopupMenu::~SoXtPopupMenu	src/Inventor/Xt/widgets/SoXtPopupMenu.cpp	/^SoXtPopupMenu::~SoXtPopupMenu($/
-SoXtRenderArea::processEvent	src/Inventor/Xt/SoXtRenderAreaExtra.cpp	/^SoXtRenderArea::processEvent( \/\/ virtual, protecte/
+SoXtRenderArea::processEvent	src/Inventor/Xt/SoXtRenderAreaExtra.cpp	/^SoXtRenderArea::processEvent( \/\/ virtual, protected/
 SoXtSpaceball::SoXtSpaceball	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^SoXtSpaceball::SoXtSpaceball($/
 SoXtSpaceball::disable	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^SoXtSpaceball::disable( \/\/ virtual$/
 SoXtSpaceball::enable	src/Inventor/Xt/devices/SoXtSpaceball.cpp	/^SoXtSpaceball::enable( \/\/ virtual$/

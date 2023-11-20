@@ -26,7 +26,7 @@ main(
 
   int screen = DefaultScreen(display);
 
-  // Destroy the window asociated to the widget
+  // Destroy the window associated to the widget
   XtUnrealizeWidget( TheWindow );
 
   // Put some values in the size, otherwise the window creation will complain

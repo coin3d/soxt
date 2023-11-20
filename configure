@@ -1639,7 +1639,7 @@ Optional Packages:
                           both]
   --with-tags[=TAGS]      include additional configurations [automatic]
   --with-alternate=string specify name of alternate configuration
-  --with-suffix=string    specify lirary name suffix (e.g. "_g")
+  --with-suffix=string    specify library name suffix (e.g. "_g")
   --with-doxygen=DIR      DIR is the directory where the doxygen executable
                           resides
   --with-dl=DIR           include support for the dynamic link loader library
@@ -9864,7 +9864,7 @@ if test -n "$hardcode_libdir_flag_spec" || \
    test -n "$runpath_var" || \
    test "X$hardcode_automatic" = "Xyes" ; then
 
-  # We can hardcode non-existant directories.
+  # We can hardcode non-existent directories.
   if test "$hardcode_direct" != no &&
      # If the only mechanism to avoid hardcoding is shlibpath_var, we
      # have to relink, otherwise we might link with an installed library
@@ -13482,7 +13482,7 @@ if test -n "$hardcode_libdir_flag_spec_CXX" || \
    test -n "$runpath_var_CXX" || \
    test "X$hardcode_automatic_CXX" = "Xyes" ; then
 
-  # We can hardcode non-existant directories.
+  # We can hardcode non-existent directories.
   if test "$hardcode_direct_CXX" != no &&
      # If the only mechanism to avoid hardcoding is shlibpath_var, we
      # have to relink, otherwise we might link with an installed library
@@ -16057,7 +16057,7 @@ if test -n "$hardcode_libdir_flag_spec_F77" || \
    test -n "$runpath_var_F77" || \
    test "X$hardcode_automatic_F77" = "Xyes" ; then
 
-  # We can hardcode non-existant directories.
+  # We can hardcode non-existent directories.
   if test "$hardcode_direct_F77" != no &&
      # If the only mechanism to avoid hardcoding is shlibpath_var, we
      # have to relink, otherwise we might link with an installed library
@@ -18624,7 +18624,7 @@ if test -n "$hardcode_libdir_flag_spec_GCJ" || \
    test -n "$runpath_var_GCJ" || \
    test "X$hardcode_automatic_GCJ" = "Xyes" ; then
 
-  # We can hardcode non-existant directories.
+  # We can hardcode non-existent directories.
   if test "$hardcode_direct_GCJ" != no &&
      # If the only mechanism to avoid hardcoding is shlibpath_var, we
      # have to relink, otherwise we might link with an installed library
@@ -22783,7 +22783,7 @@ if test x"$with_pthread" != xno; then
   # FIXME: should investigate and document the exact meaning of
   # the _REENTRANT flag. larsa's commit message mentions
   # "glibc-doc/FAQ.threads.html". Also, kintel points to the
-  # comp.programming.thrads FAQ, which has an entry on the
+  # comp.programming.threads FAQ, which has an entry on the
   # _REENTRANT define.
   #
   # Preferably, it should only be set up when really needed

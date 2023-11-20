@@ -388,7 +388,7 @@ diff -u -r1.14 ExaminerViewer.cpp
 -  PRIVATE(viewer)->axesfieldchanged();
 -}
 -
--// This callback should toggle wether the point of rotation should be
+-// This callback should toggle whether the point of rotation should be
 -// embedded in the model Z-buffer wise, or be printed as overlay data.
 -void
 -SoXtExaminerViewerP::rotaxesoverlaytoggled(void)
