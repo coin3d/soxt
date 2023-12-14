@@ -46,15 +46,9 @@ environment:
 install:
   - sh: |
       sudo apt-get -y update
+      sudo apt-get -y install freeglut3-dev libx11-dev libmotif-dev libxpm-dev libxmu-dev
+      sudo apt-get -y install doxygen jq
       cd $APPVEYOR_BUILD_FOLDER
-      if [ "$CMAKE_PLATFORM" == "x86" ]
-      then
-        sudo apt-get -y install freeglut3-dev:i386 libx11-dev:i386 libmotif-dev:i386 libxpm-dev:i386 libxmu-dev:i386
-      elif [ "$CMAKE_PLATFORM" == "x64" ]
-      then
-        sudo apt-get -y install freeglut3-dev libx11-dev libmotif-dev libxpm-dev libxmu-dev
-      fi
-      sudo apt-get -y install doxygen gcc-multilib g++-multilib jq
   - git submodule update --init --recursive
 
 # Assumes that we use the vx.y.z tagging scheme (e.g. v1.3.0)
