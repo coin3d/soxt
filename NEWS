@@ -1,3 +1,18 @@
+SoXt 1.4.1 (2024-02-03):
+* new:
+  - Version control system has been changed from Mercurial to Git
+  - Home of Coin3d organization has been changed from https://bitbucket.org/Coin3D
+    to https://github.com/coin3d due to Bitbucket ending Mercurial support
+  - Added CI for macOS, and Ubuntu per GitHub actions to repository
+  - Add handling for background color RGBA
+
+* bugfixes:
+  - cpack.d was made optional and disabled by default (add -DQUARTER_USE_CPACK=ON
+    to the cmake commandline to enable it)
+  - Fixed numerous documentation issues
+  - Fix Resource not released in destructor
+  - Fix C++17 does not allow register storage class specifier
+
 SoXt 1.4.0 (2019-12-23):
 * new:
   - Kongsberg Oil & Gas Technologies AS ended SoWin as a commercial product
