@@ -1,0 +1,1455 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.10.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>SoXt: SoXt Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/soxt" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">SoXt
+   &#160;<span id="projectnumber">1.4.1</span>
+   </div>
+   <div id="projectbrief">Coin3D GUI toolkit binding</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.10.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('classSoXt.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
+<a href="classSoXt-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">SoXt Class Reference<div class="ingroups"><a class="el" href="group__misc.html">Miscellaneous Classes</a></div></div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> class takes care of Xt initialization and event dispatching.  
+ <a href="#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoXt_8h_source.html">Inventor/Xt/SoXt.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:adcf3d2f7b3ce989edf4d1fc67dd27b7d" id="r_adcf3d2f7b3ce989edf4d1fc67dd27b7d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adcf3d2f7b3ce989edf4d1fc67dd27b7d">ABIType</a> { <a class="el" href="#adcf3d2f7b3ce989edf4d1fc67dd27b7daf059076af08adf840c208c28e81fd202">DLL</a>
+, <a class="el" href="#adcf3d2f7b3ce989edf4d1fc67dd27b7da9e96adfc13d4b267b8aca10627ac8e98">LIB</a>
+, <a class="el" href="#adcf3d2f7b3ce989edf4d1fc67dd27b7da24e52b897ec115b47a40397f619a8ebf">UNKNOWN</a>
+ }</td></tr>
+<tr class="separator:adcf3d2f7b3ce989edf4d1fc67dd27b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4747ddb30cf40bf44addf66ff3642c33" id="r_a4747ddb30cf40bf44addf66ff3642c33"><td class="memItemLeft" align="right" valign="top">typedef void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4747ddb30cf40bf44addf66ff3642c33">FatalErrorCB</a>(const SbString errmsg, <a class="el" href="#a1f02b065d920209304faacca4f042017">SoXt::FatalErrors</a> errcode, void *userdata)</td></tr>
+<tr class="separator:a4747ddb30cf40bf44addf66ff3642c33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f02b065d920209304faacca4f042017" id="r_a1f02b065d920209304faacca4f042017"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f02b065d920209304faacca4f042017">FatalErrors</a> { <a class="el" href="#a1f02b065d920209304faacca4f042017ab74b11a246b2b9537efb2044444983ff">UNSPECIFIED_ERROR</a> = 0
+, <a class="el" href="#a1f02b065d920209304faacca4f042017abe80f708f681fb3237b0722eb40ec7e1">NO_OPENGL_CANVAS</a>
+, <a class="el" href="#a1f02b065d920209304faacca4f042017a920ade63ddcf5ec3bdbe635941e5b8c9">INTERNAL_ASSERT</a>
+ }</td></tr>
+<tr class="separator:a1f02b065d920209304faacca4f042017"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aa81bb88b1cc57cefbaa2fbb50e620f51" id="r_aa81bb88b1cc57cefbaa2fbb50e620f51"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa81bb88b1cc57cefbaa2fbb50e620f51">addColormapToShell</a> (Widget widget, Widget shell)</td></tr>
+<tr class="separator:aa81bb88b1cc57cefbaa2fbb50e620f51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a731ab1968373656dd36b8ac4ed3dfc5d" id="r_a731ab1968373656dd36b8ac4ed3dfc5d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a731ab1968373656dd36b8ac4ed3dfc5d">addExtensionEventHandler</a> (Widget widget, int eventType, XtEventHandler proc, XtPointer clientData)</td></tr>
+<tr class="separator:a731ab1968373656dd36b8ac4ed3dfc5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8426445391b82e4a627ed12f56c10c6e" id="r_a8426445391b82e4a627ed12f56c10c6e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8426445391b82e4a627ed12f56c10c6e">createSimpleErrorDialog</a> (Widget widget, const char *title, const char *string1, const char *string2=NULL)</td></tr>
+<tr class="separator:a8426445391b82e4a627ed12f56c10c6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abea119a7e5df5464cf4822e72fb5e348" id="r_abea119a7e5df5464cf4822e72fb5e348"><td class="memItemLeft" align="right" valign="top">static char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abea119a7e5df5464cf4822e72fb5e348">decodeString</a> (XmString xstring)</td></tr>
+<tr class="separator:abea119a7e5df5464cf4822e72fb5e348"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada7a8b729323e77c821245fc8c5297b6" id="r_ada7a8b729323e77c821245fc8c5297b6"><td class="memItemLeft" align="right" valign="top">static Boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada7a8b729323e77c821245fc8c5297b6">dispatchEvent</a> (XEvent *event)</td></tr>
+<tr class="separator:ada7a8b729323e77c821245fc8c5297b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e686885e35a1617a612f3a9bd88383c" id="r_a9e686885e35a1617a612f3a9bd88383c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e686885e35a1617a612f3a9bd88383c">done</a> (void)</td></tr>
+<tr class="separator:a9e686885e35a1617a612f3a9bd88383c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05e1dd21742b03c8776949e791153de3" id="r_a05e1dd21742b03c8776949e791153de3"><td class="memItemLeft" align="right" valign="top">static XmString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05e1dd21742b03c8776949e791153de3">encodeString</a> (const char *const str)</td></tr>
+<tr class="separator:a05e1dd21742b03c8776949e791153de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacf3c1df021a6f48ca7cd7d4d5d2dd62" id="r_aacf3c1df021a6f48ca7cd7d4d5d2dd62"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aacf3c1df021a6f48ca7cd7d4d5d2dd62">exitMainLoop</a> (void)</td></tr>
+<tr class="separator:aacf3c1df021a6f48ca7cd7d4d5d2dd62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a001303120b286fc6e9f57d57a1e8b2ab" id="r_a001303120b286fc6e9f57d57a1e8b2ab"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="#adcf3d2f7b3ce989edf4d1fc67dd27b7d">ABIType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a001303120b286fc6e9f57d57a1e8b2ab">getABIType</a> (void)</td></tr>
+<tr class="separator:a001303120b286fc6e9f57d57a1e8b2ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98383302ea3a65ca78981b9e93c886aa" id="r_a98383302ea3a65ca78981b9e93c886aa"><td class="memItemLeft" align="right" valign="top">static XtAppContext&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98383302ea3a65ca78981b9e93c886aa">getAppContext</a> (void)</td></tr>
+<tr class="separator:a98383302ea3a65ca78981b9e93c886aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf2b6f84bdbeeb76388e3c0ecd8c40cb" id="r_abf2b6f84bdbeeb76388e3c0ecd8c40cb"><td class="memItemLeft" align="right" valign="top">static Display *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf2b6f84bdbeeb76388e3c0ecd8c40cb">getDisplay</a> (void)</td></tr>
+<tr class="separator:abf2b6f84bdbeeb76388e3c0ecd8c40cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae31c5b163e0e0f4adb04b039f261aedc" id="r_ae31c5b163e0e0f4adb04b039f261aedc"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae31c5b163e0e0f4adb04b039f261aedc">getPopupArgs</a> (Display *display, int screen, ArgList args, int *n)</td></tr>
+<tr class="separator:ae31c5b163e0e0f4adb04b039f261aedc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a044f98f5f117b8a839555dc20a3fb883" id="r_a044f98f5f117b8a839555dc20a3fb883"><td class="memItemLeft" align="right" valign="top">static Widget&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a044f98f5f117b8a839555dc20a3fb883">getShellWidget</a> (const Widget w)</td></tr>
+<tr class="separator:a044f98f5f117b8a839555dc20a3fb883"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab401536f161e1a0dea65e11f086fc34b" id="r_ab401536f161e1a0dea65e11f086fc34b"><td class="memItemLeft" align="right" valign="top">static Widget&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab401536f161e1a0dea65e11f086fc34b">getTopLevelWidget</a> (void)</td></tr>
+<tr class="separator:ab401536f161e1a0dea65e11f086fc34b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c39c5244b7b4b246c8a7c6f4f7f8b8e" id="r_a2c39c5244b7b4b246c8a7c6f4f7f8b8e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c39c5244b7b4b246c8a7c6f4f7f8b8e">getVersionInfo</a> (int *major=NULL, int *minor=NULL, int *micro=NULL)</td></tr>
+<tr class="separator:a2c39c5244b7b4b246c8a7c6f4f7f8b8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af77e24b3aa0b2415ec239165d1d65c8f" id="r_af77e24b3aa0b2415ec239165d1d65c8f"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af77e24b3aa0b2415ec239165d1d65c8f">getVersionString</a> (void)</td></tr>
+<tr class="separator:af77e24b3aa0b2415ec239165d1d65c8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1416f0c28ea288a68df38985d9f7c9a6" id="r_a1416f0c28ea288a68df38985d9f7c9a6"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1416f0c28ea288a68df38985d9f7c9a6">getVersionToolkitString</a> (void)</td></tr>
+<tr class="separator:a1416f0c28ea288a68df38985d9f7c9a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a865fbcef29552430f936d5762f5878ea" id="r_a865fbcef29552430f936d5762f5878ea"><td class="memItemLeft" align="right" valign="top">static SbVec2s&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a865fbcef29552430f936d5762f5878ea">getWidgetSize</a> (const Widget widget)</td></tr>
+<tr class="separator:a865fbcef29552430f936d5762f5878ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53e73ebf212885c93f437d5c6cf9b0f2" id="r_a53e73ebf212885c93f437d5c6cf9b0f2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53e73ebf212885c93f437d5c6cf9b0f2">hide</a> (Widget const widget)</td></tr>
+<tr class="separator:a53e73ebf212885c93f437d5c6cf9b0f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf68587825e2ad6c6b44580bd89074e9" id="r_acf68587825e2ad6c6b44580bd89074e9"><td class="memItemLeft" align="right" valign="top">static Widget&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf68587825e2ad6c6b44580bd89074e9">init</a> (const char *appname, const char *classname=&quot;SoXt&quot;)</td></tr>
+<tr class="separator:acf68587825e2ad6c6b44580bd89074e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a715c1c1c5790c0628bb576f8ac1e163d" id="r_a715c1c1c5790c0628bb576f8ac1e163d"><td class="memItemLeft" align="right" valign="top">static Widget&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a715c1c1c5790c0628bb576f8ac1e163d">init</a> (int &amp;argc, char **argv, const char *appname, const char *classname=&quot;SoXt&quot;)</td></tr>
+<tr class="separator:a715c1c1c5790c0628bb576f8ac1e163d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa44418909784c34ebeab1ea24f3bbf41" id="r_aa44418909784c34ebeab1ea24f3bbf41"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa44418909784c34ebeab1ea24f3bbf41">init</a> (Widget toplevelwidget)</td></tr>
+<tr class="separator:aa44418909784c34ebeab1ea24f3bbf41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0774f3cffd17aa9d25313705edd55ff6" id="r_a0774f3cffd17aa9d25313705edd55ff6"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0774f3cffd17aa9d25313705edd55ff6">isCompatible</a> (unsigned int major, unsigned int minor)</td></tr>
+<tr class="separator:a0774f3cffd17aa9d25313705edd55ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad182f9cb0d354bd3958ebec83db9240b" id="r_ad182f9cb0d354bd3958ebec83db9240b"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad182f9cb0d354bd3958ebec83db9240b">isDebugLibrary</a> (void)</td></tr>
+<tr class="separator:ad182f9cb0d354bd3958ebec83db9240b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a229df9d4f0cabbbfc3d0f690a8d8ed73" id="r_a229df9d4f0cabbbfc3d0f690a8d8ed73"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a229df9d4f0cabbbfc3d0f690a8d8ed73">lockGL</a> (void)</td></tr>
+<tr class="separator:a229df9d4f0cabbbfc3d0f690a8d8ed73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad17f117e3822cab77bc58f122e308d3f" id="r_ad17f117e3822cab77bc58f122e308d3f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad17f117e3822cab77bc58f122e308d3f">mainLoop</a> (void)</td></tr>
+<tr class="separator:ad17f117e3822cab77bc58f122e308d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8acd246d4629117e36bfddb194739899" id="r_a8acd246d4629117e36bfddb194739899"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8acd246d4629117e36bfddb194739899">nextEvent</a> (XtAppContext, XEvent *)</td></tr>
+<tr class="separator:a8acd246d4629117e36bfddb194739899"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5827c1309a5652e512e6dc3edf005d4b" id="r_a5827c1309a5652e512e6dc3edf005d4b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5827c1309a5652e512e6dc3edf005d4b">registerColormapLoad</a> (Widget widget, Widget shell)</td></tr>
+<tr class="separator:a5827c1309a5652e512e6dc3edf005d4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8164c3024214c4c59b839632ea3deed6" id="r_a8164c3024214c4c59b839632ea3deed6"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8164c3024214c4c59b839632ea3deed6">removeColormapFromShell</a> (Widget widget, Widget shell)</td></tr>
+<tr class="separator:a8164c3024214c4c59b839632ea3deed6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afea788fc332f8bf81ee60b770cee3893" id="r_afea788fc332f8bf81ee60b770cee3893"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afea788fc332f8bf81ee60b770cee3893">removeExtensionEventHandler</a> (Widget widget, int eventType, XtEventHandler proc, XtPointer clientData)</td></tr>
+<tr class="separator:afea788fc332f8bf81ee60b770cee3893"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18ef6f5f70bfc070904336311dd67502" id="r_a18ef6f5f70bfc070904336311dd67502"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="#a4747ddb30cf40bf44addf66ff3642c33">FatalErrorCB</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18ef6f5f70bfc070904336311dd67502">setFatalErrorHandler</a> (<a class="el" href="#a4747ddb30cf40bf44addf66ff3642c33">SoXt::FatalErrorCB</a> *cb, void *userdata)</td></tr>
+<tr class="separator:a18ef6f5f70bfc070904336311dd67502"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c9e3b40eddd8bcc6ab93669adc8c8a9" id="r_a9c9e3b40eddd8bcc6ab93669adc8c8a9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9c9e3b40eddd8bcc6ab93669adc8c8a9">setWidgetSize</a> (Widget const widget, const SbVec2s size)</td></tr>
+<tr class="separator:a9c9e3b40eddd8bcc6ab93669adc8c8a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2528bad803ee42f44fc311bc22917867" id="r_a2528bad803ee42f44fc311bc22917867"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2528bad803ee42f44fc311bc22917867">show</a> (Widget const widget)</td></tr>
+<tr class="separator:a2528bad803ee42f44fc311bc22917867"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae970712091a9bd7a88cfecf0b3bb834a" id="r_ae970712091a9bd7a88cfecf0b3bb834a"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae970712091a9bd7a88cfecf0b3bb834a">unlockGL</a> (void)</td></tr>
+<tr class="separator:ae970712091a9bd7a88cfecf0b3bb834a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:acc996c7d44b4445f4d8d1ac1254ae553" id="r_acc996c7d44b4445f4d8d1ac1254ae553"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc996c7d44b4445f4d8d1ac1254ae553">getExtensionEventHandler</a> (XEvent *event, Widget &amp;widget, XtEventHandler &amp;proc, XtPointer &amp;clientData)</td></tr>
+<tr class="separator:acc996c7d44b4445f4d8d1ac1254ae553"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> class takes care of Xt initialization and event dispatching. </p>
+<p>This is the "application-wide" class with solely static methods handling initialization and event processing tasks. You must use this class in any application built on top of the <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library.</p>
+<p>Typical usage is as follows (complete application code):</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;Inventor/Xt/SoXt.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/Xt/viewers/SoXtExaminerViewer.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/nodes/SoBaseColor.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/nodes/SoCone.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/nodes/SoSeparator.h&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span></div>
+<div class="line">main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> ** argv)</div>
+<div class="line">{</div>
+<div class="line">  <span class="comment">// Initialize SoXt and Inventor API libraries. This returns a main</span></div>
+<div class="line">  <span class="comment">// window to use.</span></div>
+<div class="line">  Widget mainwin = <a class="code hl_function" href="#acf68587825e2ad6c6b44580bd89074e9">SoXt::init</a>(argc, argv, argv[0]);</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Make a dead simple scene graph, only containing a single</span></div>
+<div class="line">  <span class="comment">// yellow cone under the scene graph root.</span></div>
+<div class="line">  SoSeparator * root = <span class="keyword">new</span> SoSeparator;</div>
+<div class="line">  root-&gt;ref();</div>
+<div class="line"> </div>
+<div class="line">  SoBaseColor * col = <span class="keyword">new</span> SoBaseColor;</div>
+<div class="line">  col-&gt;rgb = SbColor(1, 1, 0);</div>
+<div class="line">  root-&gt;addChild(col);</div>
+<div class="line"> </div>
+<div class="line">  root-&gt;addChild(<span class="keyword">new</span> SoCone);</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Use one of the convenient viewer classes.</span></div>
+<div class="line">  <a class="code hl_class" href="classSoXtExaminerViewer.html">SoXtExaminerViewer</a> * eviewer = <span class="keyword">new</span> <a class="code hl_class" href="classSoXtExaminerViewer.html">SoXtExaminerViewer</a>(mainwin);</div>
+<div class="line">  eviewer-&gt;<a class="code hl_function" href="classSoXtViewer.html#ab6ca5ac4e523f26e80f20ade093f36cf">setSceneGraph</a>(root);</div>
+<div class="line">  eviewer-&gt;<a class="code hl_function" href="classSoXtComponent.html#acb1b299c11b096b03875d4deb30cbc62">show</a>();</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Pop up the main window.</span></div>
+<div class="line">  <a class="code hl_function" href="#a2528bad803ee42f44fc311bc22917867">SoXt::show</a>(mainwin);</div>
+<div class="line">  <span class="comment">// Loop until exit.</span></div>
+<div class="line">  <a class="code hl_function" href="#ad17f117e3822cab77bc58f122e308d3f">SoXt::mainLoop</a>();</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Clean up resources.</span></div>
+<div class="line">  <span class="keyword">delete</span> eviewer;</div>
+<div class="line">  root-&gt;unref();</div>
+<div class="line">  <a class="code hl_function" href="#a9e686885e35a1617a612f3a9bd88383c">SoXt::done</a>();</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">return</span> 0;</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassSoXtComponent_html_acb1b299c11b096b03875d4deb30cbc62"><div class="ttname"><a href="classSoXtComponent.html#acb1b299c11b096b03875d4deb30cbc62">SoXtComponent::show</a></div><div class="ttdeci">virtual void show(void)</div><div class="ttdef"><b>Definition</b> SoXtComponent.cpp:293</div></div>
+<div class="ttc" id="aclassSoXtExaminerViewer_html"><div class="ttname"><a href="classSoXtExaminerViewer.html">SoXtExaminerViewer</a></div><div class="ttdoc">The SoXtExaminerViewer class is a 3D-model examination viewer.</div><div class="ttdef"><b>Definition</b> SoXtExaminerViewer.h:50</div></div>
+<div class="ttc" id="aclassSoXtViewer_html_ab6ca5ac4e523f26e80f20ade093f36cf"><div class="ttname"><a href="classSoXtViewer.html#ab6ca5ac4e523f26e80f20ade093f36cf">SoXtViewer::setSceneGraph</a></div><div class="ttdeci">virtual void setSceneGraph(SoNode *root)</div><div class="ttdef"><b>Definition</b> SoXtViewer.cpp:2841</div></div>
+<div class="ttc" id="aclassSoXt_html_a2528bad803ee42f44fc311bc22917867"><div class="ttname"><a href="#a2528bad803ee42f44fc311bc22917867">SoXt::show</a></div><div class="ttdeci">static void show(Widget const widget)</div><div class="ttdef"><b>Definition</b> SoXt.cpp:503</div></div>
+<div class="ttc" id="aclassSoXt_html_a9e686885e35a1617a612f3a9bd88383c"><div class="ttname"><a href="#a9e686885e35a1617a612f3a9bd88383c">SoXt::done</a></div><div class="ttdeci">static void done(void)</div><div class="ttdef"><b>Definition</b> SoXt.cpp:414</div></div>
+<div class="ttc" id="aclassSoXt_html_acf68587825e2ad6c6b44580bd89074e9"><div class="ttname"><a href="#acf68587825e2ad6c6b44580bd89074e9">SoXt::init</a></div><div class="ttdeci">static Widget init(const char *appname, const char *classname=&quot;SoXt&quot;)</div><div class="ttdef"><b>Definition</b> SoXtCommon.cpp:173</div></div>
+<div class="ttc" id="aclassSoXt_html_ad17f117e3822cab77bc58f122e308d3f"><div class="ttname"><a href="#ad17f117e3822cab77bc58f122e308d3f">SoXt::mainLoop</a></div><div class="ttdeci">static void mainLoop(void)</div><div class="ttdef"><b>Definition</b> SoXt.cpp:389</div></div>
+</div><!-- fragment --><p>And voila:</p>
+<center> <img src="sogui-class-example.png" alt="" class="inline"/> </center><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoXtComponent.html" title="The SoXtComponent class is the base class for all GUI components.">SoXtComponent</a> </dd></dl>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a4747ddb30cf40bf44addf66ff3642c33" name="a4747ddb30cf40bf44addf66ff3642c33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4747ddb30cf40bf44addf66ff3642c33">&#9670;&#160;</a></span>FatalErrorCB</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::FatalErrorCB</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>An application function callback for handling fatal errors should be of this type.</p>
+<p>The first argument is an error message in English describing the details of the error. The second argument is an error code used so the application can identify specific conditions. The third argument is the userdata pointer passed in to <a class="el" href="#a18ef6f5f70bfc070904336311dd67502">SoXt::setFatalErrorHandler()</a>. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="adcf3d2f7b3ce989edf4d1fc67dd27b7d" name="adcf3d2f7b3ce989edf4d1fc67dd27b7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adcf3d2f7b3ce989edf4d1fc67dd27b7d">&#9670;&#160;</a></span>ABIType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#adcf3d2f7b3ce989edf4d1fc67dd27b7d">SoXt::ABIType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Numerical identifiers to identify how the library was built. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adcf3d2f7b3ce989edf4d1fc67dd27b7daf059076af08adf840c208c28e81fd202" name="adcf3d2f7b3ce989edf4d1fc67dd27b7daf059076af08adf840c208c28e81fd202"></a>DLL&#160;</td><td class="fielddoc"><p>The <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library was built as a dynamic link library (aka "shared
+library"). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="adcf3d2f7b3ce989edf4d1fc67dd27b7da9e96adfc13d4b267b8aca10627ac8e98" name="adcf3d2f7b3ce989edf4d1fc67dd27b7da9e96adfc13d4b267b8aca10627ac8e98"></a>LIB&#160;</td><td class="fielddoc"><p>The <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library was built as a static library. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="adcf3d2f7b3ce989edf4d1fc67dd27b7da24e52b897ec115b47a40397f619a8ebf" name="adcf3d2f7b3ce989edf4d1fc67dd27b7da24e52b897ec115b47a40397f619a8ebf"></a>UNKNOWN&#160;</td><td class="fielddoc"><p>The <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> introspection mechanisms cannot decide how the library was built. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a1f02b065d920209304faacca4f042017" name="a1f02b065d920209304faacca4f042017"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f02b065d920209304faacca4f042017">&#9670;&#160;</a></span>FatalErrors</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a1f02b065d920209304faacca4f042017">SoXt::FatalErrors</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Numerical identifiers for classifying the different kinds of possible fatal errors. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1f02b065d920209304faacca4f042017ab74b11a246b2b9537efb2044444983ff" name="a1f02b065d920209304faacca4f042017ab74b11a246b2b9537efb2044444983ff"></a>UNSPECIFIED_ERROR&#160;</td><td class="fielddoc"><p>Signifies that we were not able to specify in any greater detail the error condition that came up. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a1f02b065d920209304faacca4f042017abe80f708f681fb3237b0722eb40ec7e1" name="a1f02b065d920209304faacca4f042017abe80f708f681fb3237b0722eb40ec7e1"></a>NO_OPENGL_CANVAS&#160;</td><td class="fielddoc"><p>Could not construct <em>any</em> valid OpenGL canvas. Something is very wrong on the client system. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a1f02b065d920209304faacca4f042017a920ade63ddcf5ec3bdbe635941e5b8c9" name="a1f02b065d920209304faacca4f042017a920ade63ddcf5ec3bdbe635941e5b8c9"></a>INTERNAL_ASSERT&#160;</td><td class="fielddoc"><p>An internal error condition that should never happen was detected. The most likely cause of this are programming errors within the <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library itself. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa81bb88b1cc57cefbaa2fbb50e620f51" name="aa81bb88b1cc57cefbaa2fbb50e620f51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa81bb88b1cc57cefbaa2fbb50e620f51">&#9670;&#160;</a></span>addColormapToShell()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::addColormapToShell </td>
+          <td>(</td>
+          <td class="paramtype">Widget</td>          <td class="paramname"><span class="paramname"><em>widget</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Widget</td>          <td class="paramname"><span class="paramname"><em>shell</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function is not implemented. </p>
+
+</div>
+</div>
+<a id="a731ab1968373656dd36b8ac4ed3dfc5d" name="a731ab1968373656dd36b8ac4ed3dfc5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a731ab1968373656dd36b8ac4ed3dfc5d">&#9670;&#160;</a></span>addExtensionEventHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::addExtensionEventHandler </td>
+          <td>(</td>
+          <td class="paramtype">Widget</td>          <td class="paramname"><span class="paramname"><em>widget</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>type</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">XtEventHandler</td>          <td class="paramname"><span class="paramname"><em>proc</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">XtPointer</td>          <td class="paramname"><span class="paramname"><em>data</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function adds an extension event handler to the application, which will be considered in the <a class="el" href="#ad17f117e3822cab77bc58f122e308d3f">SoXt::mainLoop</a> event dispatching loop.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#afea788fc332f8bf81ee60b770cee3893">SoXt::removeExtensionEventHandler()</a>, <a class="el" href="#acc996c7d44b4445f4d8d1ac1254ae553">SoXt::getExtensionEventHandler()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8426445391b82e4a627ed12f56c10c6e" name="a8426445391b82e4a627ed12f56c10c6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8426445391b82e4a627ed12f56c10c6e">&#9670;&#160;</a></span>createSimpleErrorDialog()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::createSimpleErrorDialog </td>
+          <td>(</td>
+          <td class="paramtype">Widget</td>          <td class="paramname"><span class="paramname"><em>widget</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>title</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>string1</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>string2</em><span class="paramdefsep"> = </span><span class="paramdefval">NULL</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is a convenient way for the application programmer to throw up an obtrusive application-global error dialog.</p>
+<p>If <em>widget</em> is <code>NULL</code>, the dialog will be modal for the whole application (all windows will be blocked for input). If not, only the window for the given <em>widget</em> will be blocked.</p>
+<p><em>title</em> is the title of the dialog box. <em>string1</em> and <em>string2</em> contains the text which will be shown in the dialog box.</p>
+<p>There will only be a single "OK" button for the user to press and continue with the application. </p>
+
+</div>
+</div>
+<a id="abea119a7e5df5464cf4822e72fb5e348" name="abea119a7e5df5464cf4822e72fb5e348"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abea119a7e5df5464cf4822e72fb5e348">&#9670;&#160;</a></span>decodeString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char * SoXt::decodeString </td>
+          <td>(</td>
+          <td class="paramtype">XmString</td>          <td class="paramname"><span class="paramname"><em>xstring</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Decode a left-to-right localized string into a simple character array, and return its memory pointer.</p>
+<p>The caller is responsible for freeing the returned character string with XtFree() to avoid memory leaks. </p>
+
+</div>
+</div>
+<a id="ada7a8b729323e77c821245fc8c5297b6" name="ada7a8b729323e77c821245fc8c5297b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada7a8b729323e77c821245fc8c5297b6">&#9670;&#160;</a></span>dispatchEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Boolean SoXt::dispatchEvent </td>
+          <td>(</td>
+          <td class="paramtype">XEvent *</td>          <td class="paramname"><span class="paramname"><em>event</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method dispatches the event by calling XtDispatchEvent(). Special handling of extension input devices will be done in this method in the future. </p>
+
+</div>
+</div>
+<a id="a9e686885e35a1617a612f3a9bd88383c" name="a9e686885e35a1617a612f3a9bd88383c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e686885e35a1617a612f3a9bd88383c">&#9670;&#160;</a></span>done()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::done </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Cleans up all static data allocated by the <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library on initialization.</p>
+<p>This functions calls SoDB::finish() which means that no Coin classes should be used after it has been called.</p>
+<p>It should never be invoked more than <em>once</em>, and that is just before application exit, as it deallocates <em>static</em> data allocated as "one-off" operations in <a class="el" href="#acf68587825e2ad6c6b44580bd89074e9">SoXt::init()</a>.</p>
+<p>NOTE: <a class="el" href="#a9e686885e35a1617a612f3a9bd88383c">done()</a> is not present in the original API for SGI's InventorXt library. </p>
+
+</div>
+</div>
+<a id="a05e1dd21742b03c8776949e791153de3" name="a05e1dd21742b03c8776949e791153de3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05e1dd21742b03c8776949e791153de3">&#9670;&#160;</a></span>encodeString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">XmString SoXt::encodeString </td>
+          <td>(</td>
+          <td class="paramtype">const char *const</td>          <td class="paramname"><span class="paramname"><em>str</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Create and return a localized string from <em>str</em>.</p>
+<p>The caller is responsible for freeing the returned XmString by using XmStringFree() or just plain XtFree((char *) str). </p>
+
+</div>
+</div>
+<a id="aacf3c1df021a6f48ca7cd7d4d5d2dd62" name="aacf3c1df021a6f48ca7cd7d4d5d2dd62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacf3c1df021a6f48ca7cd7d4d5d2dd62">&#9670;&#160;</a></span>exitMainLoop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::exitMainLoop </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function will make the main event loop finish looping.</p>
+<p>NOTE: <a class="el" href="#aacf3c1df021a6f48ca7cd7d4d5d2dd62">exitMainLoop()</a> is not present in the original API for SGI's InventorXt library.</p>
+<p>This method makes the event loop stop processing events and exit so the program can finish.</p>
+<p>This is an <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> extension not found in InventorXt.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad17f117e3822cab77bc58f122e308d3f">SoXt::mainLoop</a> </dd></dl>
+
+</div>
+</div>
+<a id="a001303120b286fc6e9f57d57a1e8b2ab" name="a001303120b286fc6e9f57d57a1e8b2ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a001303120b286fc6e9f57d57a1e8b2ab">&#9670;&#160;</a></span>getABIType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#adcf3d2f7b3ce989edf4d1fc67dd27b7d">SoXt::ABIType</a> SoXt::getABIType </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns an indication on how the library was compiled: as a dynamic library, or as a static library.</p>
+<p>This method was not part of the original SGI InventorXt library, but is an extension specific to the Coin project. </p>
+
+</div>
+</div>
+<a id="a98383302ea3a65ca78981b9e93c886aa" name="a98383302ea3a65ca78981b9e93c886aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98383302ea3a65ca78981b9e93c886aa">&#9670;&#160;</a></span>getAppContext()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">XtAppContext SoXt::getAppContext </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function returns the Xt Application Context for the application. </p>
+
+</div>
+</div>
+<a id="abf2b6f84bdbeeb76388e3c0ecd8c40cb" name="abf2b6f84bdbeeb76388e3c0ecd8c40cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf2b6f84bdbeeb76388e3c0ecd8c40cb">&#9670;&#160;</a></span>getDisplay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Display * SoXt::getDisplay </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function returns the X Display of the application. </p>
+
+</div>
+</div>
+<a id="acc996c7d44b4445f4d8d1ac1254ae553" name="acc996c7d44b4445f4d8d1ac1254ae553"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc996c7d44b4445f4d8d1ac1254ae553">&#9670;&#160;</a></span>getExtensionEventHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::getExtensionEventHandler </td>
+          <td>(</td>
+          <td class="paramtype">XEvent *</td>          <td class="paramname"><span class="paramname"><em>event</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Widget &amp;</td>          <td class="paramname"><span class="paramname"><em>widget</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">XtEventHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>proc</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">XtPointer &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method returns the extension event handler for the given <em>event</em>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a731ab1968373656dd36b8ac4ed3dfc5d">SoXt::addExtensionEventHandler</a> </dd>
+<dd>
+<a class="el" href="#afea788fc332f8bf81ee60b770cee3893">SoXt::removeExtensionEventHandler</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae31c5b163e0e0f4adb04b039f261aedc" name="ae31c5b163e0e0f4adb04b039f261aedc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae31c5b163e0e0f4adb04b039f261aedc">&#9670;&#160;</a></span>getPopupArgs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::getPopupArgs </td>
+          <td>(</td>
+          <td class="paramtype">Display *</td>          <td class="paramname"><span class="paramname"><em>display</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>screen</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ArgList</td>          <td class="paramname"><span class="paramname"><em>args</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *</td>          <td class="paramname"><span class="paramname"><em>n</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function should add the necessary arguments to the <em>args</em> argument list so the pop-up shell gets the same visual and colormap as the rest of the application.</p>
+<p>This function is not implemented. </p>
+
+</div>
+</div>
+<a id="a044f98f5f117b8a839555dc20a3fb883" name="a044f98f5f117b8a839555dc20a3fb883"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a044f98f5f117b8a839555dc20a3fb883">&#9670;&#160;</a></span>getShellWidget()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Widget SoXt::getShellWidget </td>
+          <td>(</td>
+          <td class="paramtype">const Widget</td>          <td class="paramname"><span class="paramname"><em>widget</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function returns the shell of the given <em>widget</em>. </p>
+
+</div>
+</div>
+<a id="ab401536f161e1a0dea65e11f086fc34b" name="ab401536f161e1a0dea65e11f086fc34b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab401536f161e1a0dea65e11f086fc34b">&#9670;&#160;</a></span>getTopLevelWidget()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Widget SoXt::getTopLevelWidget </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the Widget which is the main widget for the application. When this widget gets closed, <a class="el" href="#ad17f117e3822cab77bc58f122e308d3f">SoXt::mainLoop()</a> will return (unless the close event is caught by the user).</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a044f98f5f117b8a839555dc20a3fb883">getShellWidget()</a></dd></dl>
+<p>This function returns the top level shell for the application. </p>
+
+</div>
+</div>
+<a id="a2c39c5244b7b4b246c8a7c6f4f7f8b8e" name="a2c39c5244b7b4b246c8a7c6f4f7f8b8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c39c5244b7b4b246c8a7c6f4f7f8b8e">&#9670;&#160;</a></span>getVersionInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::getVersionInfo </td>
+          <td>(</td>
+          <td class="paramtype">int *</td>          <td class="paramname"><span class="paramname"><em>major</em><span class="paramdefsep"> = </span><span class="paramdefval">NULL</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *</td>          <td class="paramname"><span class="paramname"><em>minor</em><span class="paramdefsep"> = </span><span class="paramdefval">NULL</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *</td>          <td class="paramname"><span class="paramname"><em>micro</em><span class="paramdefsep"> = </span><span class="paramdefval">NULL</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method will fill in the integers pointed to by the arguments with the corresponding part of the version release number of the <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library.</p>
+<p>A <code>NULL</code> pointer will make that part of the version number be ignored.</p>
+<p>This method is not part of the original InventorXt API from SGI. </p>
+
+</div>
+</div>
+<a id="af77e24b3aa0b2415ec239165d1d65c8f" name="af77e24b3aa0b2415ec239165d1d65c8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af77e24b3aa0b2415ec239165d1d65c8f">&#9670;&#160;</a></span>getVersionString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * SoXt::getVersionString </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method returns a string containing the version id of the library.</p>
+<p>This method is not part of the original InventorXt API from SGI. </p>
+
+</div>
+</div>
+<a id="a1416f0c28ea288a68df38985d9f7c9a6" name="a1416f0c28ea288a68df38985d9f7c9a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1416f0c28ea288a68df38985d9f7c9a6">&#9670;&#160;</a></span>getVersionToolkitString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * SoXt::getVersionToolkitString </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method returns a string containing the version id of the Xt toolkit the <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library is linked against.</p>
+<p>This method is not part of the original InventorXt API from SGI. </p>
+
+</div>
+</div>
+<a id="a865fbcef29552430f936d5762f5878ea" name="a865fbcef29552430f936d5762f5878ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a865fbcef29552430f936d5762f5878ea">&#9670;&#160;</a></span>getWidgetSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbVec2s SoXt::getWidgetSize </td>
+          <td>(</td>
+          <td class="paramtype">const Widget</td>          <td class="paramname"><span class="paramname"><em>widget</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function returns the size of the given widget. </p>
+
+</div>
+</div>
+<a id="a53e73ebf212885c93f437d5c6cf9b0f2" name="a53e73ebf212885c93f437d5c6cf9b0f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53e73ebf212885c93f437d5c6cf9b0f2">&#9670;&#160;</a></span>hide()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::hide </td>
+          <td>(</td>
+          <td class="paramtype">Widget const</td>          <td class="paramname"><span class="paramname"><em>widget</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function hides the given <em>widget</em>. </p>
+
+</div>
+</div>
+<a id="acf68587825e2ad6c6b44580bd89074e9" name="acf68587825e2ad6c6b44580bd89074e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf68587825e2ad6c6b44580bd89074e9">&#9670;&#160;</a></span>init() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Widget SoXt::init </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>appname</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>classname</em><span class="paramdefsep"> = </span><span class="paramdefval">&quot;SoXt&quot;</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function initializes the <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library, as well as the Inventor API. The latter is done by calling <em>SoDB::init()</em>, <em>SoNodeKit::init()</em> and <em>SoInteraction::init()</em>.</p>
+<p>The returned Widget is a top level shell widget for the application, which can be used as a shell for the main component.</p>
+<p>This method is provided for easier porting / compatibility with the original SGI Inventor InventorXt library. It just adds dummy <em>argc</em> and <em>argv</em> arguments and calls the <a class="el" href="#acf68587825e2ad6c6b44580bd89074e9">SoXt::init()</a> method below. </p>
+
+</div>
+</div>
+<a id="a715c1c1c5790c0628bb576f8ac1e163d" name="a715c1c1c5790c0628bb576f8ac1e163d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a715c1c1c5790c0628bb576f8ac1e163d">&#9670;&#160;</a></span>init() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Widget SoXt::init </td>
+          <td>(</td>
+          <td class="paramtype">int &amp;</td>          <td class="paramname"><span class="paramname"><em>argc</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **</td>          <td class="paramname"><span class="paramname"><em>argv</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>appname</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>classname</em><span class="paramdefsep"> = </span><span class="paramdefval">&quot;SoXt&quot;</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function initializes the <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library, as well as the Inventor API. The latter is done by calling <em>SoDB::init()</em>, <em>SoNodeKit::init()</em> and <em>SoInteraction::init()</em>.</p>
+<p>Creates an application framework and constructs and returns a main widget for you.</p>
+<p>The returned Widget is a top level shell widget for the application, which can be used as a shell for the main component. </p>
+
+</div>
+</div>
+<a id="aa44418909784c34ebeab1ea24f3bbf41" name="aa44418909784c34ebeab1ea24f3bbf41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa44418909784c34ebeab1ea24f3bbf41">&#9670;&#160;</a></span>init() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::init </td>
+          <td>(</td>
+          <td class="paramtype">Widget</td>          <td class="paramname"><span class="paramname"><em>toplevelwidget</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function initializes the <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library, as well as the Inventor API. The latter is done by calling <em>SoDB::init()</em>, <em>SoNodeKit::init()</em> and <em>SoInteraction::init()</em>.</p>
+<p>Assumes you are creating your own application framework and main widget. <em>toplevelwidget</em> should be your application's main widget. </p>
+
+</div>
+</div>
+<a id="a0774f3cffd17aa9d25313705edd55ff6" name="a0774f3cffd17aa9d25313705edd55ff6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0774f3cffd17aa9d25313705edd55ff6">&#9670;&#160;</a></span>isCompatible()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoXt::isCompatible </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>major</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>minor</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if this version of the <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library has an Application Binary Interface compatible with the given version.</p>
+<p>This method was not part of the original SGI InventorXt library, but is an extension specific to the Coin project. </p>
+
+</div>
+</div>
+<a id="ad182f9cb0d354bd3958ebec83db9240b" name="ad182f9cb0d354bd3958ebec83db9240b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad182f9cb0d354bd3958ebec83db9240b">&#9670;&#160;</a></span>isDebugLibrary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoXt::isDebugLibrary </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if this binary version of the <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library was compiled with debug settings on.</p>
+<p>This method was not part of the original SGI InventorXt library, but is an extension specific to the Coin project. </p>
+
+</div>
+</div>
+<a id="a229df9d4f0cabbbfc3d0f690a8d8ed73" name="a229df9d4f0cabbbfc3d0f690a8d8ed73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a229df9d4f0cabbbfc3d0f690a8d8ed73">&#9670;&#160;</a></span>lockGL()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::lockGL </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method locks other threads out from a code section until the caller thread invokes <a class="el" href="#ae970712091a9bd7a88cfecf0b3bb834a">SoXt::unlockGL()</a>.</p>
+<p>It is meant to protect several threads invoking OpenGL calls in parallel, in case the underlying OpenGL implementation is not multi-thread safe.</p>
+<p>For convenience, the function can be invoked through the SOXT_ENTER_GL_SECTION().</p>
+<p>This method is not part of the original InventorXt API from SGI. </p>
+
+</div>
+</div>
+<a id="ad17f117e3822cab77bc58f122e308d3f" name="ad17f117e3822cab77bc58f122e308d3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad17f117e3822cab77bc58f122e308d3f">&#9670;&#160;</a></span>mainLoop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::mainLoop </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is the event dispatch loop.</p>
+<p>It doesn't return until application exit is somehow forced, either programmatically from the relevant API-call of the native toolkit, or when the user closes the application's main widget.</p>
+<p>After the main loop has finished execution, call <a class="el" href="#a9e686885e35a1617a612f3a9bd88383c">SoXt::done()</a> to clean up static data.</p>
+<p>This function should be used instead of XtAppMainLoop(). The current implementation is not different from the standard event loop, but in the future it will add support for input device extensions.</p>
+<p>If you need your own event dispatching loop, base your code on this one, and use <a class="el" href="#ada7a8b729323e77c821245fc8c5297b6">SoXt::dispatchEvent()</a> when appropriate. </p>
+
+</div>
+</div>
+<a id="a8acd246d4629117e36bfddb194739899" name="a8acd246d4629117e36bfddb194739899"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8acd246d4629117e36bfddb194739899">&#9670;&#160;</a></span>nextEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::nextEvent </td>
+          <td>(</td>
+          <td class="paramtype">XtAppContext</td>          <td class="paramname"><span class="paramname"><em>context</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">XEvent *</td>          <td class="paramname"><span class="paramname"><em>event</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function calls XtAppNextEvent() to fill in the event structure with the next event for the given context. </p>
+
+</div>
+</div>
+<a id="a5827c1309a5652e512e6dc3edf005d4b" name="a5827c1309a5652e512e6dc3edf005d4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5827c1309a5652e512e6dc3edf005d4b">&#9670;&#160;</a></span>registerColormapLoad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::registerColormapLoad </td>
+          <td>(</td>
+          <td class="paramtype">Widget</td>          <td class="paramname"><span class="paramname"><em>widget</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Widget</td>          <td class="paramname"><span class="paramname"><em>shell</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function is not implemented. </p>
+
+</div>
+</div>
+<a id="a8164c3024214c4c59b839632ea3deed6" name="a8164c3024214c4c59b839632ea3deed6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8164c3024214c4c59b839632ea3deed6">&#9670;&#160;</a></span>removeColormapFromShell()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::removeColormapFromShell </td>
+          <td>(</td>
+          <td class="paramtype">Widget</td>          <td class="paramname"><span class="paramname"><em>widget</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Widget</td>          <td class="paramname"><span class="paramname"><em>shell</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function is not implemented. </p>
+
+</div>
+</div>
+<a id="afea788fc332f8bf81ee60b770cee3893" name="afea788fc332f8bf81ee60b770cee3893"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afea788fc332f8bf81ee60b770cee3893">&#9670;&#160;</a></span>removeExtensionEventHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::removeExtensionEventHandler </td>
+          <td>(</td>
+          <td class="paramtype">Widget</td>          <td class="paramname"><span class="paramname"><em>widget</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>type</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">XtEventHandler</td>          <td class="paramname"><span class="paramname"><em>proc</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">XtPointer</td>          <td class="paramname"><span class="paramname"><em>data</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method removes an extension event handler.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a731ab1968373656dd36b8ac4ed3dfc5d">SoXt::addExtensionEventHandler()</a>, <a class="el" href="#acc996c7d44b4445f4d8d1ac1254ae553">SoXt::getExtensionEventHandler()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a18ef6f5f70bfc070904336311dd67502" name="a18ef6f5f70bfc070904336311dd67502"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18ef6f5f70bfc070904336311dd67502">&#9670;&#160;</a></span>setFatalErrorHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a4747ddb30cf40bf44addf66ff3642c33">SoXt::FatalErrorCB</a> * SoXt::setFatalErrorHandler </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a4747ddb30cf40bf44addf66ff3642c33">SoXt::FatalErrorCB</a> *</td>          <td class="paramname"><span class="paramname"><em>cb</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>userdata</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set up a callback to be invoked in the case of unexpected fatal error conditions within the <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library.</p>
+<p>Almost any error condition within the library is handled in a robust way through return values indicating errors for the offending calls, but there are a few cases that are impossible to handle without seriously crippling the functionality.</p>
+<p>(One example is if we fail to find <em>any</em> way of making a valid OpenGL canvas. This is an indication that something is seriously wrong on the end-user's system, and the <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library will not work properly.)</p>
+<p>In the case of a fatal error, it is expected that the given application callback function communicates the problem to the end-user and then either exits the application or at least refrains from using any part of the <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library.</p>
+<p>If no callback is explicitly set up by the application, the <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> library will display an error message to the end-user and then exit the application.</p>
+<p>When setting a callback, this method returns a pointer to the previous callback function, or <code>NULL</code> if none.</p>
+<p>(This is an extension versus the original SGI InventorXt library API.)</p>
+<p>On a related note, be aware that the end-user will still be notified about non-fatal errors and warning messages through a dialog box. If you want to handle these yourself, or if you don't want your end-user to see any of these non-critical messages, you will also need to install an error handler callback function on the Coin library itself:</p>
+<div class="fragment"><div class="line">SoDebugError::setHandlerCallback(myErrorHandlerCB, myCBUserData);</div>
+</div><!-- fragment --><p>(Please also see the documentation of SoDebugError::setHandlerCallback().) </p>
+
+</div>
+</div>
+<a id="a9c9e3b40eddd8bcc6ab93669adc8c8a9" name="a9c9e3b40eddd8bcc6ab93669adc8c8a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c9e3b40eddd8bcc6ab93669adc8c8a9">&#9670;&#160;</a></span>setWidgetSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::setWidgetSize </td>
+          <td>(</td>
+          <td class="paramtype">Widget const</td>          <td class="paramname"><span class="paramname"><em>widget</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SbVec2s</td>          <td class="paramname"><span class="paramname"><em>size</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function resizes the widget to the given <em>size</em>. </p>
+
+</div>
+</div>
+<a id="a2528bad803ee42f44fc311bc22917867" name="a2528bad803ee42f44fc311bc22917867"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2528bad803ee42f44fc311bc22917867">&#9670;&#160;</a></span>show()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::show </td>
+          <td>(</td>
+          <td class="paramtype">Widget const</td>          <td class="paramname"><span class="paramname"><em>widget</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function realizes the given <em>widget</em>. </p>
+
+</div>
+</div>
+<a id="ae970712091a9bd7a88cfecf0b3bb834a" name="ae970712091a9bd7a88cfecf0b3bb834a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae970712091a9bd7a88cfecf0b3bb834a">&#9670;&#160;</a></span>unlockGL()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXt::unlockGL </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>See documentation for <a class="el" href="#a229df9d4f0cabbbfc3d0f690a8d8ed73">SoXt::lockGL()</a>.</p>
+<p>For convenience, the function can be invoked through the SOXT_LEAVE_GL_SECTION().</p>
+<p>This method is not part of the original InventorXt API from SGI. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoXt_8h_source.html">SoXt.h</a></li>
+<li><b>SoXtCommon.cpp</b></li>
+<li><b>SoXt.cpp</b></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoXt.html">SoXt</a></li>
+    <li class="footer">Generated on Mon May 13 2024 20:12:01 for SoXt by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+  </ul>
+</div>
+</body>
+</html>

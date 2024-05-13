@@ -1,0 +1,354 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.10.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>SoXt: SoXtObject Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/soxt" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">SoXt
+   &#160;<span id="projectnumber">1.4.1</span>
+   </div>
+   <div id="projectbrief">Coin3D GUI toolkit binding</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.10.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('classSoXtObject.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="classSoXtObject-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">SoXtObject Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group__misc.html">Miscellaneous Classes</a></div></div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoXtObject.html" title="The SoXtObject class is the common superclass for all SoXt component classes.">SoXtObject</a> class is the common superclass for all <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> component classes.  
+ <a href="#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoXtObject_8h_source.html">Inventor/Xt/SoXtObject.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SoXtObject:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSoXtObject.png" usemap="#SoXtObject_map" alt=""/>
+  <map id="SoXtObject_map" name="SoXtObject_map">
+<area href="classSoXtComponent.html" title="The SoXtComponent class is the base class for all GUI components." alt="SoXtComponent" shape="rect" coords="157,56,304,80"/>
+<area href="classSoXtDevice.html" title="The SoXtDevice class is the base class for the translation devices." alt="SoXtDevice" shape="rect" coords="392,56,539,80"/>
+<area href="classSoXtGLWidget.html" title="The SoXtGLWidget class manages OpenGL contexts." alt="SoXtGLWidget" shape="rect" coords="157,112,304,136"/>
+<area href="classSoXtKeyboard.html" title="The SoXtKeyboard class is the keyboard input device abstraction." alt="SoXtKeyboard" shape="rect" coords="314,112,461,136"/>
+<area href="classSoXtMouse.html" title="The SoXtMouse class is the mouse input device abstraction." alt="SoXtMouse" shape="rect" coords="471,112,618,136"/>
+<area href="classSoXtRenderArea.html" title="The SoXtRenderArea class adds scene graph handling and event management." alt="SoXtRenderArea" shape="rect" coords="157,168,304,192"/>
+<area href="classSoXtViewer.html" title="The SoXtViewer class is the top level base viewer class." alt="SoXtViewer" shape="rect" coords="157,224,304,248"/>
+<area href="classSoXtFullViewer.html" title="The SoXtFullViewer class adds some user interface components to the viewer canvas." alt="SoXtFullViewer" shape="rect" coords="157,280,304,304"/>
+<area href="classSoXtConstrainedViewer.html" title="The SoXtConstrainedViewer class is the superclass for viewers with constrains on the viewpoint." alt="SoXtConstrainedViewer" shape="rect" coords="0,336,147,360"/>
+<area href="classSoXtExaminerViewer.html" title="The SoXtExaminerViewer class is a 3D-model examination viewer." alt="SoXtExaminerViewer" shape="rect" coords="157,336,304,360"/>
+<area href="classSoXtPlaneViewer.html" title="The SoXtPlaneViewer class is for examining 3D models by moving the camera in orthogonal planes." alt="SoXtPlaneViewer" shape="rect" coords="314,336,461,360"/>
+<area href="classSoXtFlyViewer.html" title="The SoXtFlyViewer class implements controls for moving the camera in a &quot;flying&quot; motion." alt="SoXtFlyViewer" shape="rect" coords="0,392,147,416"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a218c6070bd34ed5ea7106df2afad2eec" id="r_a218c6070bd34ed5ea7106df2afad2eec"><td class="memItemLeft" align="right" valign="top">virtual SoType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a218c6070bd34ed5ea7106df2afad2eec">getTypeId</a> (void) const =0</td></tr>
+<tr class="separator:a218c6070bd34ed5ea7106df2afad2eec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae45be0bca894d0cb1f0e8b5d11a052be" id="r_ae45be0bca894d0cb1f0e8b5d11a052be"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae45be0bca894d0cb1f0e8b5d11a052be">isOfType</a> (SoType type) const</td></tr>
+<tr class="separator:ae45be0bca894d0cb1f0e8b5d11a052be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a504ad32481ce7e8dd83449e5d27436f5" id="r_a504ad32481ce7e8dd83449e5d27436f5"><td class="memItemLeft" align="right" valign="top">static SoType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a504ad32481ce7e8dd83449e5d27436f5">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a504ad32481ce7e8dd83449e5d27436f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a727fcba74f762984a579239e67c0d2bc" id="r_a727fcba74f762984a579239e67c0d2bc"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a727fcba74f762984a579239e67c0d2bc">init</a> (void)</td></tr>
+<tr class="separator:a727fcba74f762984a579239e67c0d2bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab953534e065b59618a80eadd3567822" id="r_aab953534e065b59618a80eadd3567822"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab953534e065b59618a80eadd3567822">initClass</a> (void)</td></tr>
+<tr class="separator:aab953534e065b59618a80eadd3567822"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoXtObject.html" title="The SoXtObject class is the common superclass for all SoXt component classes.">SoXtObject</a> class is the common superclass for all <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> component classes. </p>
+<p>The purpose of making this class the superclass of all <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> device, component and viewer classes is to be able to do runtime type checking of the <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> objects.</p>
+<p>You can place the macro SOXT_OBJECT_HEADER(classname,parentname) within a class definition header for <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> extension components to automatically provide the necessary definitions for setting up a runtime type system for your extension classes:</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#ifndef MYSPECIALVIEWER_H</span></div>
+<div class="line"><span class="preprocessor">#define MYSPECIALVIEWER_H</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">class </span>MySpecialViewer : <span class="keyword">public</span> <a class="code hl_class" href="classSoXtExaminerViewer.html">SoXtExaminerViewer</a> {</div>
+<div class="line">  SOXT_OBJECT_HEADER(MySpecialViewer, <a class="code hl_class" href="classSoXtExaminerViewer.html">SoXtExaminerViewer</a>);</div>
+<div class="line">  <span class="comment">// [rest of class definition follows]</span></div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#endif </span><span class="comment">// !MYSPECIALVIEWER_H</span></div>
+<div class="ttc" id="aclassSoXtExaminerViewer_html"><div class="ttname"><a href="classSoXtExaminerViewer.html">SoXtExaminerViewer</a></div><div class="ttdoc">The SoXtExaminerViewer class is a 3D-model examination viewer.</div><div class="ttdef"><b>Definition</b> SoXtExaminerViewer.h:50</div></div>
+</div><!-- fragment --><p>Then put the SOXT_OBJECT_SOURCE(classname) macro within the actual implementation source code file to include the necessary code for the runtime type system:</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;MySpecialViewer.h&gt;</span></div>
+<div class="line"> </div>
+<div class="line">SOQT_OBJECT_SOURCE(MySpecialViewer);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// [rest of class implementation]</span></div>
+</div><!-- fragment --><p>See also the documentation of the SoType class in Coin or Inventor. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a504ad32481ce7e8dd83449e5d27436f5" name="a504ad32481ce7e8dd83449e5d27436f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a504ad32481ce7e8dd83449e5d27436f5">&#9670;&#160;</a></span>getClassTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoType SoXtObject::getClassTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This static method returns the SoType object associated with objects of this class. </p>
+
+</div>
+</div>
+<a id="a218c6070bd34ed5ea7106df2afad2eec" name="a218c6070bd34ed5ea7106df2afad2eec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a218c6070bd34ed5ea7106df2afad2eec">&#9670;&#160;</a></span>getTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoType SoXtObject::getTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoXtObject.html" title="The SoXtObject class is the common superclass for all SoXt component classes.">SoXtObject</a>. This is used for runtime type checking and "downward" casting.</p>
+<p>Usage example:</p>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<a class="code hl_class" href="classSoXtViewer.html">SoXtViewer</a> * comp)</div>
+<div class="line">{</div>
+<div class="line">  <span class="keywordflow">if</span> (comp-&gt;<a class="code hl_function" href="#a218c6070bd34ed5ea7106df2afad2eec">getTypeId</a>() == <a class="code hl_function" href="#a504ad32481ce7e8dd83449e5d27436f5">SoXtExaminerViewer::getClassTypeId</a>()) {</div>
+<div class="line">    <span class="comment">// safe downward cast, knows the type</span></div>
+<div class="line">    <a class="code hl_class" href="classSoXtExaminerViewer.html">SoXtExaminerViewer</a> * exviewer = (<a class="code hl_class" href="classSoXtExaminerViewer.html">SoXtExaminerViewer</a> *)comp;</div>
+<div class="line">  }</div>
+<div class="line">  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (comp-&gt;<a class="code hl_function" href="#a218c6070bd34ed5ea7106df2afad2eec">getTypeId</a>().isOfType(<a class="code hl_function" href="#a504ad32481ce7e8dd83449e5d27436f5">SoXtFlyViewer::getClassTypeId</a>())) {</div>
+<div class="line">    <span class="comment">// safe downward cast, knows the type</span></div>
+<div class="line">    <a class="code hl_class" href="classSoXtFlyViewer.html">SoXtFlyViewer</a> * flyviewer = (<a class="code hl_class" href="classSoXtFlyViewer.html">SoXtFlyViewer</a> *)comp;</div>
+<div class="line">    <span class="comment">// then something else</span></div>
+<div class="line">  }</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassSoXtFlyViewer_html"><div class="ttname"><a href="classSoXtFlyViewer.html">SoXtFlyViewer</a></div><div class="ttdoc">The SoXtFlyViewer class implements controls for moving the camera in a &quot;flying&quot; motion.</div><div class="ttdef"><b>Definition</b> SoXtFlyViewer.h:42</div></div>
+<div class="ttc" id="aclassSoXtObject_html_a218c6070bd34ed5ea7106df2afad2eec"><div class="ttname"><a href="#a218c6070bd34ed5ea7106df2afad2eec">SoXtObject::getTypeId</a></div><div class="ttdeci">virtual SoType getTypeId(void) const =0</div></div>
+<div class="ttc" id="aclassSoXtObject_html_a504ad32481ce7e8dd83449e5d27436f5"><div class="ttname"><a href="#a504ad32481ce7e8dd83449e5d27436f5">SoXtObject::getClassTypeId</a></div><div class="ttdeci">static SoType getClassTypeId(void)</div><div class="ttdef"><b>Definition</b> SoXtObject.cpp:152</div></div>
+<div class="ttc" id="aclassSoXtViewer_html"><div class="ttname"><a href="classSoXtViewer.html">SoXtViewer</a></div><div class="ttdoc">The SoXtViewer class is the top level base viewer class.</div><div class="ttdef"><b>Definition</b> SoXtViewer.h:90</div></div>
+</div><!-- fragment --> 
+</div>
+</div>
+<a id="a727fcba74f762984a579239e67c0d2bc" name="a727fcba74f762984a579239e67c0d2bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a727fcba74f762984a579239e67c0d2bc">&#9670;&#160;</a></span>init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXtObject::init </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initialize the type system of <a class="el" href="classSoXtObject.html" title="The SoXtObject class is the common superclass for all SoXt component classes.">SoXtObject</a>, all <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> device classes and all <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> components (including viewers). </p>
+
+</div>
+</div>
+<a id="aab953534e065b59618a80eadd3567822" name="aab953534e065b59618a80eadd3567822"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab953534e065b59618a80eadd3567822">&#9670;&#160;</a></span>initClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoXtObject::initClass </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets up initialization for data common to all instances of this class, submitting necessary information to the internal <a class="el" href="classSoXt.html" title="The SoXt class takes care of Xt initialization and event dispatching.">SoXt</a> type system. </p>
+
+</div>
+</div>
+<a id="ae45be0bca894d0cb1f0e8b5d11a052be" name="ae45be0bca894d0cb1f0e8b5d11a052be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae45be0bca894d0cb1f0e8b5d11a052be">&#9670;&#160;</a></span>isOfType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoXtObject::isOfType </td>
+          <td>(</td>
+          <td class="paramtype">SoType</td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if the type of this object is either of the same type or inherited from <em>type</em>. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoXtObject_8h_source.html">SoXtObject.h</a></li>
+<li><b>SoXtObject.cpp</b></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoXtObject.html">SoXtObject</a></li>
+    <li class="footer">Generated on Mon May 13 2024 20:12:01 for SoXt by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+  </ul>
+</div>
+</body>
+</html>
