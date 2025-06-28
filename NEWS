@@ -1,3 +1,8 @@
+SoXt 1.4.2 (2025-06-28):
+* bugfixes:
+  - Updated cmake_minimum_required command to support CMake >= 3.30
+  - Added support for building modern styled documentation
+
 SoXt 1.4.1 (2024-02-03):
 * new:
   - Version control system has been changed from Mercurial to Git
@@ -15,7 +20,7 @@ SoXt 1.4.1 (2024-02-03):
 
 SoXt 1.4.0 (2019-12-23):
 * new:
-  - Kongsberg Oil & Gas Technologies AS ended SoWin as a commercial product
+  - Kongsberg Oil & Gas Technologies AS ended SoXt as a commercial product
     and re-licensed it under the BSD 3-clause license as a service to the
     user community.
   - The build system has been migrated from GNU Autotools to CMake
